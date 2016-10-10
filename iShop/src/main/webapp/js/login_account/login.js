@@ -28,12 +28,15 @@ function login(){
 	if (phone == '' || password == '' || verifyCode == '' || verifyCode !== '' && verifyCode.toUpperCase() !== code.toUpperCase()) {
 		if (phone == "") {
 			$(".portlet-msg-error").html("用户名不能为空");
+			return;
 		}
 		if (password == '') {
 			$(".portlet-msg-error").html("密码不能为空");
+			return;
 		}
 		if (verifyCode == '') {
 			$(".portlet-msg-error").html("验证码不能为空");
+			return;
 		}
 		if (verifyCode !== '' && verifyCode.toUpperCase() !== code.toUpperCase()) {
 			$(".portlet-msg-error").html("验证码不正确");
@@ -73,11 +76,14 @@ function login(){
 $(function() { //点击登陆
 	$('.btn_login').click(function() {
 		login();
-	})
+	});
 	$(window).keydown(function() {
 		var event = window.event || arguments[0];
 		if (event.keyCode == 13) {
 			login();
 		}
 	});
-})
+});
+$("#login-box input").bind("input propertychange",function(){
+	$(".portlet-msg-error").html("");
+});

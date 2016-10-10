@@ -306,6 +306,9 @@ s{
   -moz-appearance: none;
   -ms-appearance: none;
 }
+ .dropdown-toggle.count-info{
+   background: none!important;
+ }
 .count-info .label {
   line-height: 11px;
   padding: 2px 5px;
@@ -7507,11 +7510,11 @@ body.skin-3 {
 ul,li{list-style:none;padding:0;margin:0;}
 .drop_down input{width:420px; height:30px; line-height:30px;border-radius:4px;background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
     background-size: 30px 30px;}
-.drop_down ul{width:420px; background:#e8f5fe; margin-top:2px;margin-left:123px; border:1px solid #a9c9e2; position:absolute;left:10px; display:none;z-index:100;}
+.drop_down ul{width:420px; background:#f5f5f5; margin-top:2px;margin-left:123px; border:1px solid #ddd; position:absolute;left:10px; display:none;z-index:100;}
 .drop_down ul li{height:24px; line-height:24px; text-indent:10px;}
 .drop_down ul li{display:block; height:24px; color:#807a62; text-decoration:none;}
 .drop_down ul li.rel{ background-color:#6cc1c8;}
-.drop_down ul li:hover{background:#6cc1c8; color:#ffffff;}
+.drop_down ul li:hover{background: #4a5f7c;color: white;}
 .down_icon{
   width:30px;
   height:30px;

@@ -510,6 +510,7 @@ function jumpBianse(){
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
+        console.log(value);
         return_jump["filtrate"]=filtrate;//筛选的值
         return_jump["param"]=JSON.stringify(param);//搜索定义的值
         return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
@@ -576,13 +577,14 @@ $("#code_save").click(function(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
 	var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
+    //value=this.value.replace(/\s+/g,"");
     inx=1;
 	param["searchValue"]=value;
 	param["pageNumber"]=inx;
 	param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
 	if(event.keyCode == 13){
+        value=this.value.replace(/\s+/g,"");
 		POST(inx,pageSize);
 	}
 });

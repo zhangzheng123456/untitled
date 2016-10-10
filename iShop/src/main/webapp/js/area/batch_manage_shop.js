@@ -206,7 +206,7 @@ function superaddition(data, num) {
         if (data[j].is_this_area == "Y") {
             $("#"+data[j].id).find("input").parent("div").attr("class", "checkbox2");
             $("#"+data[j].id).find("input")[0].checked = true;
-            $("#"+data[j].id).find("input").attr("disabled", "true");
+            //$("#"+data[j].id).find("input").attr("disabled", "true");
             $("#"+data[j].id).find("input").attr("name", "die");
         }
     }
@@ -333,7 +333,18 @@ $('#save').click(function () {
             ID+=r;
         }
     }
-    param["id"] =ID;
+    var tr1 = $("tbody input[name='die'][type='checkbox']:not(:checked)").parent('div');
+    for(var a=0,quit="";a<tr1.length;a++){
+        var quitID=$(tr1[a]).attr("id");
+        if(a<tr1.length-1){
+            quit+=quitID+",";
+        }else{
+            quit+=quitID;
+        }
+    }
+    console.log(quit);
+    param["choose"] =ID;
+    param["quit"] =quit;
     param["area_code"] = area_code;
     oc.postRequire("post", "/area/stores/save", "0", param, function (data) {
         console.log(data);
@@ -345,4 +356,4 @@ $('#save').click(function () {
             alert("请选择店铺!");
         }
     })
-})
+});

@@ -778,7 +778,7 @@ public class UserController {
     @ResponseBody
     public String addUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_code1 = request.getSession().getAttribute("user_code").toString();
+        String user_code1 = request.getSession().getAttribute("user_code").toString().trim();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
@@ -787,11 +787,11 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String user_code = jsonObject.get("user_code").toString();
-            String user_id = jsonObject.get("user_id").toString();
+            String user_code = jsonObject.get("user_code").toString().trim();
+            String user_id = jsonObject.get("user_id").toString().trim();
 
-            String corp_code = jsonObject.get("corp_code").toString();
-            String phone = jsonObject.get("phone").toString();
+            String corp_code = jsonObject.get("corp_code").toString().trim();
+            String phone = jsonObject.get("phone").toString().trim();
             User user = new User();
             user.setUser_code(user_code);
             if (user_id.equals("")) {
@@ -799,25 +799,36 @@ public class UserController {
             } else {
                 user.setUser_id(user_id);
             }
-            user.setUser_name(jsonObject.get("username").toString());
-            user.setAvatar(jsonObject.get("avater").toString());
-            user.setPosition(jsonObject.get("position").toString());
+            user.setUser_name(jsonObject.get("username").toString().trim());
+            user.setAvatar(jsonObject.get("avater").toString().trim());
+            user.setPosition(jsonObject.get("position").toString().trim());
             user.setPhone(phone);
-            user.setEmail(jsonObject.get("email").toString());
-            user.setSex(jsonObject.get("sex").toString());
+            user.setEmail(jsonObject.get("email").toString().trim());
+            user.setSex(jsonObject.get("sex").toString().trim());
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
-            user.setGroup_code(jsonObject.get("group_code").toString());
-            Group group = groupService.selectByCode(user.getCorp_code(), user.getGroup_code(), "");
-            String role_code = group.getRole_code();
+            user.setGroup_code(jsonObject.get("group_code").toString().trim());
+            Group group = groupService.selectByCode(user.getCorp_code().trim(), user.getGroup_code().trim(), "");
+            String role_code = group.getRole_code().trim();
             if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
-                user.setGroup_code(jsonObject.get("group_code").toString());
+                user.setGroup_code(jsonObject.get("group_code").toString().trim());
             }
             if (role_code.equals(Common.ROLE_AM)) {
-                user.setGroup_code(jsonObject.get("group_code").toString());
-                String area_code = jsonObject.get("area_code").toString();
+                user.setGroup_code(jsonObject.get("group_code").toString().trim());
+                String area_code = jsonObject.get("area_code").toString().trim();
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
+                    int count = 0;
+                    for (int i = 0; i < areas.length; i++) {
+                        List<Store> stores = storeService.selectStoreCountByArea(corp_code,areas[i],Common.IS_ACTIVE_Y);
+                        count = count + stores.size();
+                    }
+                    if(count>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(areas)) {
                         area_code = "";
                         for (int i = 0; i < areas.length; i++) {
@@ -834,10 +845,16 @@ public class UserController {
                 user.setArea_code(area_code);
             }
             if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
-                user.setGroup_code(jsonObject.get("group_code").toString());
-                String store_code = jsonObject.get("store_code").toString();
+                user.setGroup_code(jsonObject.get("group_code").toString().trim());
+                String store_code = jsonObject.get("store_code").toString().trim();
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
+                    if(codes.length>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(codes)) {
                         store_code = "";
                         for (int i = 0; i < codes.length; i++) {
@@ -853,9 +870,21 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+            if (role_code.equals(Common.ROLE_STAFF)){
+                String store_code = jsonObject.get("store_code").toString().trim();
+                if (!store_code.equals("")) {
+                    String[] codes = store_code.split(",");
+                    if (codes.length > 1) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("导购只能属于一家店铺");
+                        return dataBean.getJsonStr();
+                    }
+                }
+            }
             if (role_code.equals(Common.ROLE_BM)){
-                user.setGroup_code(jsonObject.get("group_code").toString());
-                String brand_code = jsonObject.get("brand_code").toString();
+                user.setGroup_code(jsonObject.get("group_code").toString().trim());
+                String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
                 if (WebUtils.checkRepeat(codes)) {
                     brand_code = "";
@@ -908,7 +937,7 @@ public class UserController {
     @ResponseBody
     public String editUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_code = request.getSession().getAttribute("user_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString().trim();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user edit-------------" + jsString);
@@ -917,34 +946,45 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String user_code1 = jsonObject.get("user_code").toString();
-            String user_id = jsonObject.get("user_id").toString();
+            String user_code1 = jsonObject.get("user_code").toString().trim();
+            String user_id = jsonObject.get("user_id").toString().trim();
             User user = new User();
-            user.setId(Integer.parseInt(jsonObject.get("id").toString()));
+            user.setId(Integer.parseInt(jsonObject.get("id").toString().trim()));
             user.setUser_code(user_code1);
             if (user_id.equals("")) {
                 user.setUser_id(user_code1);
             } else {
                 user.setUser_id(user_id);
             }
-            user.setUser_name(jsonObject.get("username").toString());
-            user.setPosition(jsonObject.get("position").toString());
-            user.setAvatar(jsonObject.get("avater").toString());
-            user.setPhone(jsonObject.get("phone").toString());
-            user.setEmail(jsonObject.get("email").toString());
-            user.setSex(jsonObject.get("sex").toString());
+            user.setUser_name(jsonObject.get("username").toString().trim());
+            user.setPosition(jsonObject.get("position").toString().trim());
+            user.setAvatar(jsonObject.get("avater").toString().trim());
+            user.setPhone(jsonObject.get("phone").toString().trim());
+            user.setEmail(jsonObject.get("email").toString().trim());
+            user.setSex(jsonObject.get("sex").toString().trim());
             //       user.setBirthday(jsonObject.get("birthday").toString());
-            user.setCorp_code(jsonObject.get("corp_code").toString());
-            user.setGroup_code(jsonObject.get("group_code").toString());
+            user.setCorp_code(jsonObject.get("corp_code").toString().trim());
+            user.setGroup_code(jsonObject.get("group_code").toString().trim());
 
-            String role_code = jsonObject.get("role_code").toString();
-            String area_code = jsonObject.get("area_code").toString();
-            String store_code = jsonObject.get("store_code").toString();
+            String role_code = jsonObject.get("role_code").toString().trim();
+            String area_code = jsonObject.get("area_code").toString().trim();
+            String store_code = jsonObject.get("store_code").toString().trim();
             user.setArea_code(area_code);
             user.setStore_code(store_code);
             if (role_code.equals(Common.ROLE_AM)) {
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
+                    int count = 0;
+                    for (int i = 0; i < areas.length; i++) {
+                        List<Store> stores = storeService.selectStoreCountByArea(jsonObject.get("corp_code").toString().trim(),areas[i],Common.IS_ACTIVE_Y);
+                        count = count + stores.size();
+                    }
+                    if(count>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(areas)) {
                         area_code = "";
                         for (int i = 0; i < areas.length; i++) {
@@ -963,6 +1003,12 @@ public class UserController {
             if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
+                    if(codes.length>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(codes)) {
                         store_code = "";
                         for (int i = 0; i < codes.length; i++) {
@@ -978,9 +1024,21 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+            if (role_code.equals(Common.ROLE_STAFF)){
+//                String store_code = jsonObject.get("store_code").toString().trim();
+                if (!store_code.equals("")) {
+                    String[] codes = store_code.split(",");
+                    if (codes.length > 1) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("导购只能属于一家店铺");
+                        return dataBean.getJsonStr();
+                    }
+                }
+            }
             if (role_code.equals(Common.ROLE_BM)){
-                user.setGroup_code(jsonObject.get("group_code").toString());
-                String brand_code = jsonObject.get("brand_code").toString();
+                user.setGroup_code(jsonObject.get("group_code").toString().trim());
+                String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
                 if (WebUtils.checkRepeat(codes)) {
                     brand_code = "";
