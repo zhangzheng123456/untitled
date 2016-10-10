@@ -340,12 +340,12 @@ public class UserServiceImpl implements UserService {
         String result = "";
         int user_id = user.getId();
         User old_user = getUserById(user_id);
-        String[] store_code1 = old_user.getStore_code().trim().split(",");
+        String[] store_code1 = old_user.getStore_code().split(",");
         List<User> phone_exist = new ArrayList<User>();
         if (!user.getPhone().trim().equals("")) {
             phone_exist = userPhoneExist(user.getPhone().trim());
         }
-        List<User> email_exist = userEmailExist(user.getEmail());
+        List<User> email_exist = userEmailExist(user.getEmail().trim());
         if (old_user.getCorp_code().trim().equalsIgnoreCase(user.getCorp_code().trim())) {
             List<User> code_exist = userCodeExist(user.getUser_code().trim(), user.getCorp_code().trim(), Common.IS_ACTIVE_Y);
             if (phone_exist.size() > 0 && user_id != phone_exist.get(0).getId()) {
@@ -360,7 +360,7 @@ public class UserServiceImpl implements UserService {
                 }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
                 for (int i = 0; i < store_code1.length; i++) {
-                    if (!user.getStore_code().contains(store_code1[i])) {
+                    if (!user.getStore_code().trim().contains(store_code1[i])) {
                         userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code().trim(), store_code1[i].trim(), user.getUser_code().trim());
                     }
                 }
@@ -425,14 +425,14 @@ public class UserServiceImpl implements UserService {
                 login_user = user2.get(0);
             }
             int user_id = login_user.getId();
-            String user_code = login_user.getUser_code();
-            String corp_code = login_user.getCorp_code();
-            String group_code = login_user.getGroup_code();
-            String store_code = login_user.getStore_code();
-            String area_code = login_user.getArea_code();
-            String brand_code = login_user.getBrand_code();
+            String user_code = login_user.getUser_code().trim();
+            String corp_code = login_user.getCorp_code().trim();
+            String group_code = login_user.getGroup_code().trim();
+            String store_code = login_user.getStore_code().trim();
+            String area_code = login_user.getArea_code().trim();
+            String brand_code = login_user.getBrand_code().trim();
 
-            String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code();
+            String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code().trim();
 
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("user_code", user_code);
