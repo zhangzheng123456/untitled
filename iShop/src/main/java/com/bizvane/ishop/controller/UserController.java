@@ -870,6 +870,18 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+            if (role_code.equals(Common.ROLE_STAFF)){
+                String store_code = jsonObject.get("store_code").toString().trim();
+                if (!store_code.equals("")) {
+                    String[] codes = store_code.split(",");
+                    if (codes.length > 1) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("导购只能属于一家店铺");
+                        return dataBean.getJsonStr();
+                    }
+                }
+            }
             if (role_code.equals(Common.ROLE_BM)){
                 user.setGroup_code(jsonObject.get("group_code").toString().trim());
                 String brand_code = jsonObject.get("brand_code").toString().trim();
@@ -1011,6 +1023,18 @@ public class UserController {
                     }
                 }
                 user.setStore_code(store_code);
+            }
+            if (role_code.equals(Common.ROLE_STAFF)){
+//                String store_code = jsonObject.get("store_code").toString().trim();
+                if (!store_code.equals("")) {
+                    String[] codes = store_code.split(",");
+                    if (codes.length > 1) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("导购只能属于一家店铺");
+                        return dataBean.getJsonStr();
+                    }
+                }
             }
             if (role_code.equals(Common.ROLE_BM)){
                 user.setGroup_code(jsonObject.get("group_code").toString().trim());
