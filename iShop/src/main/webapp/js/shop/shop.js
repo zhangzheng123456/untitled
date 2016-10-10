@@ -320,6 +320,7 @@ jQuery(document).ready(function () {
                 $("#OWN_AREA").val(msg.area_name);
                 $("#OWN_AREA").attr("data-myacode", msg.area_code);
                 $("#OWN_AREA").attr("title",msg.area_name);
+                $("#OWN_BRAND").attr("title",msg.brand_name);
                 if (msg.flg_tob == "Y") {
                     $("#FLG_TOB").val("是");
                 } else if (msg.flg_tob == "N") {
@@ -610,6 +611,7 @@ jQuery(document).ready(function () {
                                 checknow_namedata.push($(this).attr("data-brandname"));
                                 $('#OWN_BRAND').val(checknow_namedata.toString());
                                 $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
+                                $("#OWN_BRAND").attr("title",checknow_namedata.toString());
                             } else if (this.checked == false) {
                                 checknow_namedata.remove($(this).attr("data-brandname"));
                                 checknow_data.remove($(this).val());
@@ -617,6 +619,7 @@ jQuery(document).ready(function () {
                                 console.log(checknow_namedata);
                                 $('#OWN_BRAND').val(checknow_namedata.toString());
                                 $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
+                                $("#OWN_BRAND").attr("title",checknow_namedata.toString());
                             }
                         }
                     }
