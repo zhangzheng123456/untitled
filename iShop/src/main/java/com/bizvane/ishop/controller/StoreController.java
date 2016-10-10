@@ -1045,6 +1045,9 @@ public class StoreController {
                 String brand_name = store.getBrand_name();
                 String replaceStr = WebUtils.StringFilter(brand_name);
                 store.setBrand_name(replaceStr);
+                String area_name = store.getArea_name();
+                String replaceArea = WebUtils.StringFilter(area_name);
+                store.setArea_name(replaceArea);
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -1225,12 +1228,17 @@ public class StoreController {
                 if(column4[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), column4[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
-                if (area == null) {
-                    result = "：第" + (i + 1) + "行区域编号不存在";
-                    int b = 5 / 0;
-                    break;
+                String areas = column4[i].getContents().toString().trim();
+                String[] splitAreas = areas.split(",");
+                for(int j=0;j<splitAreas.length;j++){
+                    Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
+                    if (area == null) {
+                        result = "：第" + (i + 1) + "行,第" + (j + 1) + "个区域编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
                 }
+
             }
             for(int i=0;i<column2.length;i++){
                 if(column2[i].getContents().toString().trim().equals("")){
