@@ -577,8 +577,8 @@ public class StoreController {
             if (role_code.equals(Common.ROLE_SYS) && jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                 corp_code = jsonObject.get("corp_code").toString();
             }
-            if (jsonObject.has("search_value")){
-                search_value = jsonObject.get("search_value").toString();
+            if (jsonObject.has("searchValue")){
+                search_value = jsonObject.get("searchValue").toString();
             }
             List<Brand> brand = brandService.getAllBrand(corp_code, search_value);
             JSONArray array = new JSONArray();
