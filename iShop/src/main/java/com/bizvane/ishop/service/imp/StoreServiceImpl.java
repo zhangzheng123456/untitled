@@ -309,7 +309,14 @@ public class StoreServiceImpl implements StoreService {
                 shop.setStore_id(store_id);
             }
             shop.setStore_name(store_name);
-            shop.setArea_code(jsonObject.get("area_code").toString().trim());
+            String area_code = jsonObject.get("area_code").toString().trim();
+            String[] codes1 = area_code.split(",");
+            String area_code1 = "";
+            for (int i = 0; i < codes1.length; i++) {
+                codes1[i] = Common.SPECIAL_HEAD + codes1[i] + ",";
+                area_code1 = area_code1 + codes1[i];
+            }
+            shop.setArea_code(area_code1);
             shop.setCorp_code(corp_code);
             String brand_code = jsonObject.get("brand_code").toString().trim();
             String[] codes = brand_code.split(",");
@@ -346,6 +353,16 @@ public class StoreServiceImpl implements StoreService {
             brand_code1 = brand_code1 + codes[i];
         }
         store.setBrand_code(brand_code1);
+
+        String area_code = store.getArea_code();
+        String[] codes1 = area_code.split(",");
+        String area_code1 = "";
+        for (int i = 0; i < codes1.length; i++) {
+            codes1[i] = Common.SPECIAL_HEAD + codes1[i] + ",";
+            area_code1 = area_code1 + codes1[i];
+        }
+        store.setArea_code(area_code1);
+
         storeMapper.insertStore(store);
         return "add success";
     }
@@ -474,7 +491,16 @@ public class StoreServiceImpl implements StoreService {
                 }
                 store.setStore_code(store_code);
                 store.setStore_name(store_name);
-                store.setArea_code(jsonObject.get("area_code").toString().trim());
+
+                String area_code = store.getArea_code();
+                String[] codes1 = area_code.split(",");
+                String area_code1 = "";
+                for (int i = 0; i < codes1.length; i++) {
+                    codes1[i] = Common.SPECIAL_HEAD + codes1[i] + ",";
+                    area_code1 = area_code1 + codes1[i];
+                }
+                store.setArea_code(area_code1);
+//                store.setArea_code(jsonObject.get("area_code").toString().trim());
                 store.setCorp_code(corp_code);
                 String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
