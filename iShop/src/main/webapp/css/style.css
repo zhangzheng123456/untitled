@@ -306,6 +306,9 @@ s{
   -moz-appearance: none;
   -ms-appearance: none;
 }
+ .dropdown-toggle.count-info{
+   background: none!important;
+ }
 .count-info .label {
   line-height: 11px;
   padding: 2px 5px;
