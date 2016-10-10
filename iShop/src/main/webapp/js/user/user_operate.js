@@ -49,7 +49,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				return true;
 			}else{
 				this.displayHint(hint,"邮箱格式不正确！")
-				return true;
+				return false;
 			}
 		}else{
 			this.displayHint(hint);
@@ -796,6 +796,8 @@ jQuery(document).ready(function(){
 							+ '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
 							+ '<div class="kuang"><img src="' + qrcodeList[i].qrcode + '" alt="">'
 							+'</div></li>')
+						$(".create").hide();
+						$(".k_close").show();
 					}
 					$(".kuang").show();
 				}
@@ -1024,8 +1026,14 @@ function getAppName(a){
 			var msg=JSON.parse(data.message);
 			var list=msg.list;
 			$(a).next("ul").empty();
-			for(var i=0;i<list.length;i++){
-				$(a).next("ul").append('<li data-id="'+list[i].app_id+'">'+list[i].app_name+'</li>')
+			if(list.length<=0){
+				alert("请先授权公众号!");
+				return;
+			}
+			if(list.length>0){
+				for(var i=0;i<list.length;i++){
+					$(a).next("ul").append('<li data-id="'+list[i].app_id+'">'+list[i].app_name+'</li>')
+				}
 			}
 			$(a).next("ul").find("li").click(function () {
 				var value = $(this).html();
@@ -1045,7 +1053,6 @@ function getAppName(a){
 //点击生成二维码
 function getTwoCode(b){
 	var input=$(b).prevAll("input").val();
-	close_two_code();
 	if(input!==""){
 		$(b).hide();
 		$(b).nextAll(".k_close").show();
@@ -1089,15 +1096,11 @@ function select_down(a){
 		},200);
 	})
 }
-//关闭二维码
-function close_two_code() {
-	$(".k_close").click(function () {
-		$(this).nextAll(".kuang").hide();
-		$(this).hide();
-		$(this).prev(".create").show();
-	})
-}
-
+$(".er_code").on("click",".k_close",function(){
+	$(this).nextAll(".kuang").hide();
+	$(this).hide();
+	$(this).prev(".create").show();
+})
 $("#add_app_id").click(function(){
 	$("#add_app_id").before('<li class="app_li"><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
 		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
@@ -1106,7 +1109,6 @@ $("#add_app_id").click(function(){
 		+'<div class="kuang"><img src="" alt="">'
 		+'</div></li>')
 
-	close_two_code();
 })
 function remove_app_id(obj) {
 	var user_code = $("#USERID").val();//员工编号

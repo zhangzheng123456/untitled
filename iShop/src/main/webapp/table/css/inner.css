@@ -1116,6 +1116,7 @@ input::-webkit-input-placeholder{
 	color: #888;
 }
 .screen_area .screen_title h4{
+	margin: 0;
 	height:40px;
 	line-height:40px;
 	font-weight: normal;

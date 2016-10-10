@@ -36,17 +36,8 @@ a{
 		}
 	}
 	.swiper-wrapper{
-		.swiper-slide{
-			position: relative;
-			text-align: center;
-			 display:table;overflow:hidden;
-		}
 		& img{
-			max-width: 100%;
-	    	max-height: 100%;
-	    	display:table-cell;
-	        vertical-align:middle;
-	    	margin: 0 auto;
+			width: 100%;
 	    	// -webkit-transform: translate3d(-50%,-50%,0);
 		}
 	}
