@@ -482,7 +482,7 @@ public class VIPController {
                 updateCondition.put("_id", corp_code+card_no);
 
                 DBObject updatedValue=new BasicDBObject();
-                if (jsonObject.containsKey("extend")) {
+                if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
                     String extend = jsonObject.get("extend").toString();
                     updatedValue.put("extend", extend);
                 }
@@ -490,9 +490,13 @@ public class VIPController {
                     String remark = jsonObject.get("remark").toString();
                     updatedValue.put("remark", remark);
                 }
-                if (jsonObject.containsKey("avatar")) {
+                if (jsonObject.containsKey("avatar") && !jsonObject.get("avatar").toString().equals("")) {
                     String avatar = jsonObject.get("avatar").toString();
                     updatedValue.put("avatar", avatar);
+                }
+                if (jsonObject.containsKey("vip_group_code") && !jsonObject.get("vip_group_code").toString().equals("")) {
+                    String vip_group_code = jsonObject.get("vip_group_code").toString();
+                    updatedValue.put("vip_group_code", vip_group_code);
                 }
                 DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
                 cursor.update(updateCondition, updateSetValue);
@@ -516,6 +520,10 @@ public class VIPController {
                 if (jsonObject.containsKey("avatar")) {
                     String avatar = jsonObject.get("avatar").toString();
                     saveData.put("avatar", avatar);
+                }
+                if (jsonObject.containsKey("vip_group_code")) {
+                    String vip_group_code = jsonObject.get("vip_group_code").toString();
+                    saveData.put("vip_group_code", vip_group_code);
                 }
                 cursor.save(saveData);
             }
