@@ -132,6 +132,9 @@ public class UserServiceImpl implements UserService {
 
         if (!store_code.equals("")) {
             stores = store_code.split(",");
+        }else {
+            store_code = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+            stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
@@ -141,7 +144,13 @@ public class UserServiceImpl implements UserService {
             for (int i = 0; i < store.size(); i++) {
                 a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
             }
-            stores = a.split(",");
+            if (a.equals("")){
+                a = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+                stores = a.split(",");
+            }else {
+                stores = a.split(",");
+
+            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);
@@ -732,6 +741,9 @@ public class UserServiceImpl implements UserService {
 
         if (!store_code.equals("")) {
             stores = store_code.split(",");
+        }else {
+            store_code = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+            stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
@@ -741,7 +753,13 @@ public class UserServiceImpl implements UserService {
             for (int i = 0; i < store.size(); i++) {
                 a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
             }
-            stores = a.split(",");
+            if (a.equals("")){
+                a = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+                stores = a.split(",");
+            }else {
+                stores = a.split(",");
+
+            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);

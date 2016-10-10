@@ -866,16 +866,23 @@ public class AreaController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String store_id=jsonObject.get("id").toString();
             String area_code=jsonObject.get("area_code").toString();
-            String[] ids = store_id.split(",");
-            for (int i = 0; i < ids.length; i++) {
-                logger.info("--------check-------" + Integer.valueOf(ids[i]));
-                Store store=storeService.getById(Integer.valueOf(ids[i]));
+
+            String choose_id = "";
+            String quit_id = "";
+            if (jsonObject.has("choose"))
+                choose_id = jsonObject.get("choose").toString();
+            if (jsonObject.has("quit"))
+                quit_id = jsonObject.get("quit").toString();
+
+            String[] choose_ids = choose_id.split(",");
+            for (int i = 0; i < choose_ids.length; i++) {
+                logger.info("--------check-------" + Integer.valueOf(choose_ids[i]));
+                Store store=storeService.getById(Integer.valueOf(choose_ids[i]));
                 if(store!=null){
                     String area_code1 = store.getArea_code();
-                    String[] codes = area_code1.split(",");
-                    if (!Arrays.asList(codes).contains(Common.SPECIAL_HEAD+area_code)){
+//                    String[] codes = area_code1.split(",");
+                    if (!area_code1.contains(Common.SPECIAL_HEAD+area_code+",")){
                         area_code1 = area_code1 +Common.SPECIAL_HEAD+area_code+",";
                         store.setArea_code(area_code1);
                         store.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -889,7 +896,30 @@ public class AreaController {
                         dataBean.setId(id);
                         dataBean.setMessage(store.getStore_name()+"已在该区域，请勿重复选择");
                     }
+                }
+            }
 
+            String[] quit_ids = quit_id.split(",");
+            for (int i = 0; i < quit_ids.length; i++) {
+                logger.info("--------check-------" + Integer.valueOf(quit_ids[i]));
+                Store store=storeService.getById(Integer.valueOf(quit_ids[i]));
+                if(store!=null){
+                    String area_code1 = store.getArea_code();
+//                    String[] codes = area_code1.split(",");
+                    if (area_code1.contains(Common.SPECIAL_HEAD+area_code+",")){
+                        area_code1 = area_code.replace(Common.SPECIAL_HEAD+area_code+",","");
+                        store.setArea_code(area_code1);
+                        store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        store.setModifier(user_id);
+                        storeService.updateStore(store);
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId(id);
+                        dataBean.setMessage("success");
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage(store.getStore_name()+"不在该区域");
+                    }
                 }
             }
         } catch (Exception ex) {
