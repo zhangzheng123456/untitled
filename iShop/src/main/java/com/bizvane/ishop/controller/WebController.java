@@ -5,10 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.WeiMobServiceImpl;
 import com.github.pagehelper.PageInfo;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +50,9 @@ public class WebController {
     StoreService storeService;
     @Autowired
     BrandService brandService;
+
+    WeiMobServiceImpl weiMobService = new WeiMobServiceImpl();
+
     /**
      *
      */
@@ -177,7 +182,7 @@ public class WebController {
                     brand_code = brand_code + brand_codes.get(i).toString() + ",";
                 }
                 list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code, "", "", brand_code, "", "", "");
-            }else {
+            } else {
                 list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "");
             }
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
@@ -245,8 +250,8 @@ public class WebController {
             }
 
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code,goods_quarter,
-                    goods_wave,brand_code,time_start,time_end,search_value);
+            PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code, goods_quarter,
+                    goods_wave, brand_code, time_start, time_end, search_value);
 
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
@@ -315,12 +320,12 @@ public class WebController {
                 }
                 List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
                 for (int i = 0; i < brand_codes.size(); i++) {
-                    Brand brand = brandService.getBrandByCode(corp_code,brand_codes.get(i).toString(),Common.IS_ACTIVE_Y);
+                    Brand brand = brandService.getBrandByCode(corp_code, brand_codes.get(i).toString(), Common.IS_ACTIVE_Y);
                     if (brand != null)
                         brands.add(brand);
                 }
-            }else {
-                brands = brandService.getAllBrand(corp_code,"");
+            } else {
+                brands = brandService.getAllBrand(corp_code, "");
             }
 
             JSONObject result = new JSONObject();
@@ -343,4 +348,62 @@ public class WebController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * app获取商品列表（微盟桃花季）
+     */
+    @RequestMapping(value = "/api/weimob/goods", method = RequestMethod.GET)
+    @ResponseBody
+    public String handleWeimob(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String accessToken = generateToken(CommonValue.appID, CommonValue.appSecert);
+            int rowno = Integer.parseInt(request.getParameter("rowno"));
+            JSONArray goodList = weiMobService.getList(accessToken, rowno);
+            JSONArray classifyList = weiMobService.getClassify(accessToken);
+            JSONArray brandList = weiMobService.getClassifySon(accessToken);
+
+            JSONObject message = new JSONObject();
+
+            if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
+                logger.debug("-------------111111111111-------------------");
+                goodList = weiMobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
+                logger.debug("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
+            }
+            if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
+                logger.debug("-------------22222222222------------------");
+                goodList = weiMobService.getSearchTitle(accessToken, request.getParameter("key"));
+                logger.debug("handleWeimob Key ->" + request.getParameter("key"));
+            }
+
+            message.put("goodsList", goodList);
+            message.put("brandLists", brandList);
+            message.put("classifyList", classifyList);
+
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(message.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+
+    }
+
+    public String generateToken(String appID, String appSecert) throws Exception {
+        String accessToken = weiMobService.accessToken;
+        if (accessToken.equals("")) {
+            accessToken = weiMobService.getAccessToken(appID, appSecert);
+        }
+        Date startTime = weiMobService.startTime;
+        Date nowtime = new Date();
+        long timediff = (nowtime.getTime() - startTime.getTime());
+        if (timediff > 120000) {
+            accessToken = weiMobService.getAccessToken(appID, appSecert);
+        }
+        return accessToken;
+    }
+
 }

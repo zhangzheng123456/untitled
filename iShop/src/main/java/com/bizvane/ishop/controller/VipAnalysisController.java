@@ -74,6 +74,7 @@ public class VipAnalysisController {
             JSONObject obj = JSON.parseObject(result);
             String vipLists = obj.get("all_vip_list").toString();
             JSONArray array = JSONArray.parseArray(vipLists);
+            JSONArray new_array = new JSONArray();
             for (int i = 0; i < array.size(); i++) {
                 JSONObject vip = JSONObject.parseObject(array.get(i).toString());
                 String vip_id = vip.get("vip_id").toString();
@@ -100,10 +101,12 @@ public class VipAnalysisController {
                 }
                 vip.put("vip_group_code",vip_group_code);
                 vip.put("vip_group_name",vip_group_name);
+                new_array.add(vip);
             }
+            obj.put("all_vip_list",new_array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(result);
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
