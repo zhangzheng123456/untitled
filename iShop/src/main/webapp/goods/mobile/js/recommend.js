@@ -22,6 +22,29 @@ jQuery(function(){
 	var goods_quarter="";
 	var goods_wave="";
 	var filtrate="";
+	var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
+    return_jump=JSON.parse(return_jump);
+	if(return_jump==null){
+	    if(value==""&&filtrate==""){
+	        getList(rowno);
+	    }
+	}else if(return_jump!==null){
+	    value=return_jump.value;
+	    filtrate=return_jump.filtrate;
+	    brand_code=return_jump.brand_code;
+	    goods_quarter=return_jump.goods_quarter;
+	    goods_wave=return_jump.goods_wave;
+	    if(value==""&&filtrate==""){
+        	getList(rowno);
+        }else if(value!==""||filtrate!==""){
+        	param["brand_code"]=brand_code;
+			param["goods_quarter"]=goods_quarter;
+			param["goods_wave"]=goods_wave;
+			param["search_value"]=value;
+			$("#input").val(value);
+        	getSearchList(rowno);
+        }
+	}
 	function getScreen(){
 		var param={};
 		param["corp_code"]=corp_code;
@@ -113,6 +136,7 @@ jQuery(function(){
 			+ list[i].goods_code + '</p><p class="pice">价格:<span>￥' 
 			+ list[i].goods_price + '</span></p></div></a></div>');
 		}
+		sessionStorage.removeItem("return_jump");
 	}
 	//刚进页面的list请求
 	function getList(a){
@@ -178,6 +202,7 @@ jQuery(function(){
             }
 			if(list.length<=0){
 				$("#kong_img").show();
+				sessionStorage.removeItem("return_jump");
 			}
 			if(list.length>0){
 				$("#kong_img").hide();
@@ -185,7 +210,6 @@ jQuery(function(){
 			}
 		})
 	}
-	getList(rowno);
     //点击加载更多
     $(".more").click(function(){
         var rowno=$('.allShops .shop').length;
@@ -198,14 +222,16 @@ jQuery(function(){
     })
     $(".allShops").on("click",".shop",function(e){
     	var id=$(this).attr("data-id");
+    	var rowno=$('.allShops .shop').length;
+    	var goods_quarter="";
+	    var goods_wave="";
     	var return_jump={};//定义一个对象
-            return_jump["inx"]=inx;//跳转到第几页
+            return_jump["rowno"]=rowno;//跳转到第几页
             return_jump["value"]=value;//搜索的值;
             return_jump["filtrate"]=filtrate;//筛选的值
-            return_jump["param"]=JSON.stringify(param);//搜索定义的值
-            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-            return_jump["list"]=list;//筛选的请求的list;
-            return_jump["pageSize"]=pageSize;//每页多少行
+            return_jump["brand_code"]=brand_code;//品牌
+            return_jump["goods_quarter"]=goods_quarter;//季度
+            return_jump["goods_wave"]=goods_wave;//波段
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
     	window.location.href="/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"";
 	})
