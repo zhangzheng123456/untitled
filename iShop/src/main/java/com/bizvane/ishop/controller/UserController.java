@@ -818,6 +818,17 @@ public class UserController {
                 String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
+                    int count = 0;
+                    for (int i = 0; i < areas.length; i++) {
+                        List<Store> stores = storeService.selectStoreCountByArea(corp_code,areas[i],Common.IS_ACTIVE_Y);
+                        count = count + stores.size();
+                    }
+                    if(count>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(areas)) {
                         area_code = "";
                         for (int i = 0; i < areas.length; i++) {
@@ -838,6 +849,12 @@ public class UserController {
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
+                    if(codes.length>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(codes)) {
                         store_code = "";
                         for (int i = 0; i < codes.length; i++) {
@@ -945,6 +962,17 @@ public class UserController {
             if (role_code.equals(Common.ROLE_AM)) {
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
+                    int count = 0;
+                    for (int i = 0; i < areas.length; i++) {
+                        List<Store> stores = storeService.selectStoreCountByArea(jsonObject.get("corp_code").toString(),areas[i],Common.IS_ACTIVE_Y);
+                        count = count + stores.size();
+                    }
+                    if(count>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(areas)) {
                         area_code = "";
                         for (int i = 0; i < areas.length; i++) {
@@ -963,6 +991,12 @@ public class UserController {
             if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
+                    if(codes.length>100){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("员工拥有店铺数量上限为100");
+                        return dataBean.getJsonStr();
+                    }
                     if (WebUtils.checkRepeat(codes)) {
                         store_code = "";
                         for (int i = 0; i < codes.length; i++) {
