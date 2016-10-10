@@ -437,6 +437,7 @@ div.wx_app_new input:nth-child(3){
 div.wx_app_new p{
 	width: 29px;
 	height:30px;
+	cursor: pointer;
 	margin:10px 0 10px 0;
 	font-size:20px;
 	color:#c26555 ;

@@ -314,9 +314,9 @@ jQuery(document).ready(function () {
                 var msg = JSON.parse(data.message);
                 var list=msg.cus_user;
                 var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test(msg.avatar)==true){
-                    $("#preview img").attr("src",msg.avatar);
-                }else if(reg.test(msg.avatar)==false){
+                if(reg.test(msg.avater)==true){
+                    $("#preview img").attr("src",msg.avater);
+                }else if(reg.test(msg.avater)==false){
                     $("#preview img").attr("src","../img/bg1.png");
                 }
                 if ($("#preview img").attr("src").indexOf('http') !== -1) {

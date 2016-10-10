@@ -653,7 +653,7 @@ input::-webkit-input-placeholder{
 /**回到顶部按钮 回到底部按钮**/
 #side_bar{
 	position: fixed;
-	top:300px;
+	top:50%;
 	z-index: 5;
 	right: 0;
 	font-size: 20px;

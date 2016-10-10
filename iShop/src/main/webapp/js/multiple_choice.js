@@ -120,7 +120,7 @@ CheckboxSelect.prototype = {
             //直接付给他CSS样式省去了定义CSS的步骤
             container.id="brand_data";
             container.style.cssText =
-                'display:none;position: absolute;z-index:9999;margin-left:122px;overflow:hidden;border: 1px solid #a9c9e2;margin-top:2px;background:#e8f5fe;width:'
+                'display:none;position: absolute;z-index:9999;margin-left:122px;overflow:hidden;border: 1px solid #a9c9e2;margin-top:2px;background:#f5f5f5;width:'
                 // IE6/7/8/9/Chrome/Safari input[type=text] border默认为2，Firefox为1，因此取offsetWidth-2保证与FF一致
                 + (brow.firefox ? input.clientWidth : input.offsetWidth-2) + 'px;height:146px;overflow-y: scroll;';
         if(width){
