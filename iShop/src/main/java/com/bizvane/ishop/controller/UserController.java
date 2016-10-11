@@ -678,6 +678,7 @@ public class UserController {
                     String group_code = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                    System.out.println("-----------EXECL-------store_code---------------------:"+store_code);
                     String position = rs.getCell(j++, i).getContents().toString().trim();
                     if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
@@ -763,7 +764,7 @@ public class UserController {
                          //   String store_code2 = "";
                             if (WebUtils.checkRepeat(codes)) {
                                 store_code="";
-                                for (int k = 0; i < codes.length; k++) {
+                                for (int k = 0; k < codes.length; k++) {
                                     codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
                                     store_code = store_code + codes[k];
                                 }
@@ -787,7 +788,7 @@ public class UserController {
                                 int a = 5 / 0;
                             }else{
                                 store_code="";
-                                for (int k = 0; i < codes.length; k++) {
+                                for (int k = 0; k < codes.length; k++) {
                                     codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
                                     store_code = store_code + codes[k];
                                 }
