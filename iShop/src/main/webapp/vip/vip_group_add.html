@@ -49,7 +49,7 @@
             </div>
 
             <div>
-                <span><label>分组成员</label><input type="text" /></span>
+                <span><label>分组成员</label><input id="group_recode" readonly type="text" /></span>
             </div>
             <div>
                 <span>
@@ -170,10 +170,17 @@
                     <th style="text-align: left; padding-left: 22px;">序号</th>
                     <th>姓名</th>
                     <th>性别</th>
-                    <th>会员卡类型</th>
+                    <th>联系电话</th>
+                    <th>会员类型</th>
+                    <th>分组名称</th>
                     <th>所属导购</th>
                     <th>所属店铺</th>
-                    <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th width="50px;" style="text-align: left;">
+                        <div class="checkbox1">
+                            <input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/>
+                            <label for="checkboxTwoInput0"></label>
+                        </div>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -446,6 +453,7 @@
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <!-- error tips -->
 <script type="text/javascript" src="../js/vip/vip_group_add.js"></script>
+<script src="/js/loading.js"></script>
 </body>
 
 </html>

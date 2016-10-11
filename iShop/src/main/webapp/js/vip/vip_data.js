@@ -137,6 +137,11 @@ $("#points tbody").click(function(){
 $("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
+   text_first="";
+   text_second="";
+   text_third="";
+   time_start="";
+   time_end="";
     getConsumCount();
     getVipInfo();
 });

@@ -147,8 +147,7 @@ function removeLeft(a,b){
 	if(li.length>0){
 		for(var i=li.length-1;i>=0;i--){
 			$(li[i]).remove();
-			// $(b).parents(".screen_content").find(".screen_content_l input[value='"+$(li[i]).attr("id")+"']").re
-			$("#screen_brand .screen_content_l input[value='"+$(li[i]).attr("id")+"']").attr("checked","true");
+			$(b).parents(".screen_content").find(".screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked");
 		}
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
@@ -312,6 +311,9 @@ $("#screen_que_shop").click(function(){
 		frame();
 		$('.frame').html("导购只能选一家店铺");
 		return;
+	}
+	if(r_code=="R2000"&&li.length==1){
+		$('.xingming').empty();
 	}
 	for(var i=0;i<li.length;i++){
 		var a=$('.xingming input');

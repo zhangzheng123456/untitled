@@ -98,8 +98,8 @@ function getVipPoints(code,type){
     parmam_jifen['time_start']=time_start;
     parmam_jifen['time_end']=time_end;
     parmam_jifen['order_id']=text_first;
-    parmam_jifen['goods_code']=text_second;
-    parmam_jifen['goods_name']=text_third;
+    parmam_jifen['goods_name']=text_second;
+    parmam_jifen['goods_code']=text_third;
     parmam_jifen['vip_id']=sessionStorage.getItem("id");
     parmam_jifen['store_id']=sessionStorage.getItem("store_id");
     parmam_jifen['corp_code']=sessionStorage.getItem("corp_code");
@@ -284,7 +284,7 @@ function fuzhi(data){
 }
 
 function imgError(image){//图片404默认图片
-    $(image).attr("src", "../img/bg1.png");
+    $(image).attr("src", "../img/goods_default_image.png");
 }
 
 $("#more_message").click(function(){

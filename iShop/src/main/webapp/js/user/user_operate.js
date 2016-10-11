@@ -126,7 +126,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 							time: 1,
 							lock:true,
 							cancel: false,
-							content:"所属群组不能为空！"
+							content:"所属群组不能为空"
 						});
 					return;
 				}
@@ -166,7 +166,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 							time: 1,
 							lock:true,
 							cancel: false,
-							content:"所属店铺或所属区域不能为空！"
+							content:"所属店铺或所属区域不能为空"
 						});
 						return;
 					}
@@ -317,7 +317,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 							time: 1,
 							lock:true,
 							cancel: false,
-							content:"所属店铺或所属区域不能为空！"
+							content:"所属店铺或所属区域不能为空"
 						});
 						return;
 					}
@@ -527,7 +527,7 @@ function role_data(c){//
 				time: 1,
 				lock:true,
 				cancel: false,
-				content:"该企业目前没有群组，请先定义群组！"
+				content:"该企业目前没有群组，请先定义群组"
 			});
 		}
 		whir.loading.remove();//移除加载框
@@ -595,7 +595,7 @@ function store_data(p,c){//店铺
 				time: 1,
 				lock:true,
 				cancel: false,
-				content:"该企业目前没有店铺，请先定义店铺！"
+				content:"该企业目前没有店铺，请先定义店铺"
 			});
 		}
 		whir.loading.remove();//移除加载框
@@ -635,7 +635,7 @@ function area_data(p,c){//区域
 				time: 1,
 				lock:true,
 				cancel: false,
-				content:"该企业目前没有区域，请先定义区域！"
+				content:"该企业目前没有区域，请先定义区域"
 			});
 		}
 		whir.loading.remove();//移除加载框
@@ -982,6 +982,7 @@ function getcorplist(){
 					$("#USER_EMAIL").attr("data-mark","");
 					$("#OWN_RIGHT").val('');
 					$("#OWN_RIGHT").attr("data-myrcode","");
+					$("#OWN_RIGHT").attr("data-myjcode","");
 					$("#OWN_STORE").val('');
 					$("#OWN_STORE").attr("data-myscode","");
 					$('.xingming').empty();
@@ -1000,6 +1001,7 @@ function getcorplist(){
 					$("#USER_EMAIL").attr("data-mark","");
 					$("#OWN_RIGHT").val('');
 					$("#OWN_RIGHT").attr("data-myrcode","");
+					$("#OWN_RIGHT").attr("data-myjcode","");
 					$("#OWN_STORE").val('');
 					$("#OWN_STORE").attr("data-myscode","");
 					$('.xingming').empty();
@@ -1066,7 +1068,7 @@ function getTwoCode(b){
 	_params["corp_code"]=corp_code;
 	_params["app_id"]=app_id;
 	if(app_id==""||app_id==undefined){
-		alert("请选择公众号!");
+		alert("请选择公众号");
 		return;
 	}
 	oc.postRequire("post",user_creat,"", _params, function(data){
@@ -1125,7 +1127,7 @@ function remove_app_id(obj) {
 			if(data.code=="0"){
 				$(obj).parent().remove();
 			}else if(data.code=="-1"){
-				alert("删除失败!");
+				alert("删除失败");
 			}
 		})
 	}else if(src ==""){

@@ -236,6 +236,9 @@
 .drop-down ul li{
 	height:25px;
 	line-height: 25px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .drop-down h5{
 	text-align: left;
