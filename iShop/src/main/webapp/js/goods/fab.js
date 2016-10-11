@@ -709,6 +709,9 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
         var li = "";
         for (var i = 0; i < filter.length; i++) {
             if (filter[i].type == "text") {
+                if(filter[i].show_name=="发布时间"){
+                    li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "' class='laydate-icon' onclick='laydate({istime: true, format: \"YYYY-MM-DD\"})' ></li>";
+                }
                 li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>";
             } else if (filter[i].type == "select") {
                 var msg = filter[i].value;

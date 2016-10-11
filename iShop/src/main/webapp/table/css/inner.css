@@ -1247,6 +1247,11 @@ input::-webkit-input-placeholder{
 	line-height: 40px;
 	cursor:pointer;
 }
+.screen_area .screen_content ul li{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
 .screen_area .screen_que{
 	width:160px;
 	height: 30px;

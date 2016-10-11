@@ -160,13 +160,17 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            screen_value= screen_value.replaceAll(",","|");
-            screen_value= screen_value.replaceAll("，","|");
-            if(screen_value.startsWith("|")||screen_value.startsWith(",")||screen_value.startsWith("，")){
-                screen_value= screen_value.substring(1);
-            }
-            if(screen_value.endsWith("|")||screen_value.endsWith(",")||screen_value.endsWith("，")){
-                screen_value= screen_value.substring(0,screen_value.length()-1);
+            if(!screen_key.equals("created_date_login")) {
+                screen_value = screen_value.replaceAll(",", "|");
+                screen_value = screen_value.replaceAll("，", "|");
+                if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
+                    screen_value = screen_value.substring(1);
+                }
+                if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
+                    screen_value = screen_value.substring(0, screen_value.length() - 1);
+                }
+            }else{
+                System.out.println("-----------created_date_login---------------:"+screen_value);
             }
             map.put(screen_key, screen_value);
         }
