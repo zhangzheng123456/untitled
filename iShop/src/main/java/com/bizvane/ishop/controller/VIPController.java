@@ -136,6 +136,9 @@ public class VIPController {
             String extend_info = "";
             String remark = "";
             String avatar = "";
+            String vip_group_code = "";
+            String vip_group_name = "";
+
             JSONArray extend = new JSONArray();
 
             List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
@@ -183,9 +186,19 @@ public class VIPController {
                     remark = obj.get("remark").toString();
                 if (obj.containsField("avatar"))
                     avatar = obj.get("avatar").toString();
+                if (obj.containsField("vip_group_code"))
+                    vip_group_code = obj.get("vip_group_code").toString();
             }
 
+            if (!vip_group_code.equals("")){
+                VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+                if (vipGroup != null){
+                    vip_group_name = vipGroup.getVip_group_name();
+                }
+            }
             vip.put("vip_avatar",avatar);
+            vip.put("vip_group_name",vip_group_name);
+
             JSONObject result = new JSONObject();
             result.put("list",vip);
             result.put("extend",extend);
