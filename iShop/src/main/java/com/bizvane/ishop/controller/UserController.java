@@ -678,7 +678,7 @@ public class UserController {
                     String group_code = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
-                    System.out.println("-----------EXECL-------store_code---------------------:"+store_code);
+                   // System.out.println("-----------EXECL-------store_code---------------------:"+store_code);
                     String position = rs.getCell(j++, i).getContents().toString().trim();
                     if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
@@ -772,7 +772,7 @@ public class UserController {
                                 result = "：第" + (i + 1) + "行Execl中存在重复店铺";
                                 int a = 5 / 0;
                             }
-                            System.out.println("----------店长店铺----------:"+store_code);
+                          //  System.out.println("----------店长店铺----------:"+store_code);
                         }
                         user.setStore_code(store_code);
                     }
@@ -793,7 +793,7 @@ public class UserController {
                                     store_code = store_code + codes[k];
                                 }
                             }
-                            System.out.println("----------导购店铺----------:"+store_code);
+                          //  System.out.println("----------导购店铺----------:"+store_code);
                         }
                         user.setStore_code(store_code);
                     }
