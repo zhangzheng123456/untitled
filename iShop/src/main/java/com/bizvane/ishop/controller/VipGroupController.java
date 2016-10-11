@@ -110,7 +110,26 @@ public class VipGroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(vipGroupService.getVipGroupById(Integer.parseInt(id)));
+
+            int vip_count = 0;
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
+            if (vipGroup != null) {
+                String corp_code = vipGroup.getCorp_code();
+                String vip_group_code = vipGroup.getVip_group_code();
+                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+                DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+
+                Map keyMap = new HashMap();
+                keyMap.put("corp_code", corp_code);
+                keyMap.put("vip_group_code", vip_group_code);
+
+                BasicDBObject queryCondition = new BasicDBObject();
+                queryCondition.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                vip_count = dbCursor1.size();
+            }
+            vipGroup.setVip_count(vip_count);
+            data = JSON.toJSONString(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(data);
@@ -527,7 +546,7 @@ public class VipGroupController {
                 }
             }
 
-            JSONArray array1 = JSONArray.parseArray(vips_choose);
+            JSONArray array1 = JSONArray.parseArray(vips_quit);
             for (int i = 0; i < array1.size(); i++) {
                 String vip = array1.get(i).toString();
                 JSONObject vip_info = JSONObject.parseObject(vip);
@@ -562,4 +581,41 @@ public class VipGroupController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 获取企业下会员分组
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getCorpGroups", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpGroups(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = "";
+            if (jsonObject.containsKey("searchValue"))
+                search_value = jsonObject.get("searchValue").toString();
+
+            JSONObject result = new JSONObject();
+            List<VipGroup> vipGroups = vipGroupService.selectCorpVipGroups(corp_code,search_value);
+            result.put("list", JSON.toJSONString(vipGroups));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
+
 }

@@ -154,22 +154,6 @@ public class VIPController {
                 extend.add(extend_obj);
             }
 
-//            List<VipGroup> vipGroups = vipGroupService.selectCorpVipGroups(corp_code);
-//            if (vipGroups.size()>0){
-//                String values = "";
-//                for (int i = 0; i < vipGroups.size(); i++) {
-//                    values = values + vipGroups.get(i).getVip_group_name()+",";
-//                }
-//                JSONObject extend_obj = new JSONObject();
-//                extend_obj.put("name","会员分组");
-//                extend_obj.put("key","vip_group");
-//                extend_obj.put("type","select");
-//                extend_obj.put("values",values);
-//                extend_obj.put("is_must","Y");
-//                extend_obj.put("class","");
-//                extend_obj.put("show_order","0");
-//                extend.add(extend_obj);
-//            }
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
 
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
