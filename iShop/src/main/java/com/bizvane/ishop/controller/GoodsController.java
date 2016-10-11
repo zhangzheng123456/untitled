@@ -401,7 +401,7 @@ public class GoodsController {
             }
             Cell[] column5 = rs.getColumn(4);
 
-            Pattern pattern5 = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
+          //  Pattern pattern5 = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
             for (int i = 3; i < column5.length; i++) {
                 if(column5[i].getContents().toString().trim().equals("")){
                     continue;
@@ -455,14 +455,15 @@ public class GoodsController {
                     int b = 5 / 0;
                     break;
                 }
+                String onlyCell10 = LuploadHelper.CheckStringOnly(splitGoods);
+                if(onlyCell10.equals("存在重复值")){
+                    result = "：第" + (i + 1) + "行中Execl关联的商品编号存在重复值";
+                    int b = 5 / 0;
+                }
                 for (int j=0;j<splitGoods.length;j++){
-                    Matcher matcher = pattern5.matcher(splitGoods[j]);
-                    if(matcher.matches()==false){
-                        String onlyCell10 = LuploadHelper.CheckStringOnly(splitGoods);
-                        if(onlyCell10.equals("存在重复值")){
-                            result = "：Execl中关联的商品编号存在重复值";
-                            int b = 5 / 0;
-                        }
+//                    Matcher matcher = pattern5.matcher(splitGoods[j]);
+//                    if(matcher.matches()==false){
+
                         Goods good = goodsService.getGoodsByCode(column3[i].getContents().toString().trim(), splitGoods[j],Common.IS_ACTIVE_Y);
                         if (good == null) {
                             result = "：第" + (i + 1) + "行,第"+(j+1)+"个关联的商品编号不存在";
@@ -471,7 +472,7 @@ public class GoodsController {
                         }
 
 
-                    }
+                 //   }
                 }
 
             }

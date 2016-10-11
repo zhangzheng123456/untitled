@@ -12,8 +12,12 @@ public class CommonValue {
     //OSS请求访问的Bucket名字
     public final static String bucketName = "products-image";
 
-    //table名（mongodb）
 
+    //桃花季 微盟账号
+    public final static String appID = "1bcd0f1a7c6188deecf5009adcfd7906";
+    public final static String appSecert = "0aa192196369e848bce12c664bbdafee";
+
+    //table名（mongodb）
     public final static String table_log_user_action = "log_person_action";
 
     public final static String table_log_production_share = "log_product_share";

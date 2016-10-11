@@ -239,7 +239,7 @@ function superaddition(data,num){//页面加载循环
         + data[i].emp_name
         + "</td><td class='app_id'>"
         + data[i].vip_id
-        + "</td><td><span title='"+data[i].url+"'>"
+        + "</td><td><span style='max-width: 200px;' title='"+data[i].url+"'>"
         + data[i].url
         +"</span></td><td>"
         + data[i].action

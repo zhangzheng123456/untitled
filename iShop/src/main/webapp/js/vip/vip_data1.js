@@ -314,6 +314,12 @@ function showOption(){
             ul.hide();
         }
     });
+    $(".drop_down input").blur(function(){
+        var ul=$(this).next(".expand_selection");
+        setTimeout(function(){
+            ul.hide();
+        },200);
+    })
     $(document).click(function(e){
         if($(e.target).is(".drop_down input")){
             return;

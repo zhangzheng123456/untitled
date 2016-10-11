@@ -534,11 +534,11 @@ public class UserController {
                 }
 
             }
-//            String onlyCell1 = LuploadHelper.CheckOnly(column4);
-//            if (onlyCell1.equals("存在重复值")) {
-//                result = "：Execl中手机号码存在重复值";
-//                int b = 5 / 0;
-//            }
+            String onlyCell1 = LuploadHelper.CheckOnly(column4);
+            if (onlyCell1.equals("存在重复值")) {
+                result = "：Execl中手机号码存在重复值";
+                int b = 5 / 0;
+            }
             String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";
@@ -566,12 +566,12 @@ public class UserController {
                 if (column4[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
-//                List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
-//                if (user.size() > 0) {
-//                    result = "：第" + (i + 1) + "行的电话号码已存在";
-//                    int b = 5 / 0;
-//                    break;
-//                }
+                List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
+                if (user.size() > 0) {
+                    result = "：第" + (i + 1) + "行的电话号码已存在";
+                    int b = 5 / 0;
+                    break;
+                }
             }
 
             for (int i = 3; i < column1.length; i++) {
@@ -698,37 +698,83 @@ public class UserController {
                     user.setAvatar("../img/head.png");//头像
                     user.setPhone(phone);
                     user.setEmail(email);
-                    if (sex.equals("男")) {
-                        user.setSex("M");
-                    } else {
+                    if (sex.equals("女")||sex.equals("F")) {
                         user.setSex("F");
+                    } else {
+                        user.setSex("M");
                     }
                     user.setGroup_code(group_code);
-                    if (!area_code.equals("all") && !area_code.equals("")) {
-                        String[] areas = area_code.split(",");
-                        area_code = "";
-                        for (int i2 = 0; i2 < areas.length; i2++) {
-                            areas[i2] = Common.SPECIAL_HEAD + areas[i2] + ",";
-                            area_code = area_code + areas[i2];
-                        }
-                    }
+//                    if (!area_code.equals("all") && !area_code.equals("")) {
+//                        String[] areas = area_code.split(",");
+//                        area_code = "";
+//                        for (int i2 = 0; i2 < areas.length; i2++) {
+//                            areas[i2] = Common.SPECIAL_HEAD + areas[i2] + ",";
+//                            area_code = area_code + areas[i2];
+//                        }
+//                    }
                     if (!role.equals(Common.ROLE_AM)) {
                         user.setArea_code("");
                     } else {
+                        String[] areas = area_code.split(",");
+                        int count = 0;
+                        for (int k = 0; k < areas.length; k++) {
+                            List<Store> stores = storeService.selectStoreCountByArea(corp_code,areas[k],Common.IS_ACTIVE_Y);
+                            count = count + stores.size();
+                        }
+                        if(count>100){
+                            result = "：第" + (i + 1) + "行员工拥有店铺数量上限为100";
+                            int a = 5 / 0;
+                        }
+                        if (WebUtils.checkRepeat(areas)) {
+                            area_code = "";
+                            for (int k = 0; k < areas.length; k++) {
+                                areas[k] = Common.SPECIAL_HEAD + areas[k] + ",";
+                                area_code = area_code + areas[k];
+                            }
+                        } else {
+                            result = "：第" + (i + 1) + "行Execl中存在重复区域";
+                            int a = 5 / 0;
+                        }
                         user.setArea_code(area_code);
                     }
-                    if (!store_code.equals("all") && !store_code.equals("")) {
-                        String[] codes = store_code.split(",");
-                        store_code = "";
-                        for (int i2 = 0; i2 < codes.length; i2++) {
-                            codes[i2] = Common.SPECIAL_HEAD + codes[i2] + ",";
-                            store_code = store_code + codes[i2];
-                        }
-                    }
+//                    if (!store_code.equals("all") && !store_code.equals("")) {
+//                        String[] codes = store_code.split(",");
+//                        store_code = "";
+//                        for (int i2 = 0; i2 < codes.length; i2++) {
+//                            codes[i2] = Common.SPECIAL_HEAD + codes[i2] + ",";
+//                            store_code = store_code + codes[i2];
+//                        }
+//                    }
                     if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
+                        if (!store_code.equals("all") && !store_code.equals("")) {
+                            String[] codes = store_code.split(",");
+                            if(codes.length>100){
+                                result = "：第" + (i + 1) + "行员工拥有店铺数量上限为100";
+                                int a = 5 / 0;
+                            }
+                            if (WebUtils.checkRepeat(codes)) {
+                                store_code = "";
+                                for (int k = 0; i < codes.length; k++) {
+                                    codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
+                                    store_code = store_code + codes[k];
+                                }
+                            } else {
+                                result = "：第" + (i + 1) + "行Execl中存在重复店铺";
+                                int a = 5 / 0;
+                            }
+                        }
                         user.setStore_code(store_code);
                     } else {
                         user.setStore_code("");
+                    }
+                    if (role_code.equals(Common.ROLE_STAFF)){
+                        if (!store_code.equals("")) {
+                            String[] codes = store_code.split(",");
+                            if (codes.length > 1) {
+                                result = "：第" + (i + 1) + "行导购只能属于一家店铺";
+                                int a = 5 / 0;
+                            }
+                        }
                     }
                     user.setPosition(position);
                     user.setPassword(user.getPhone());
@@ -870,6 +916,18 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+            if (role_code.equals(Common.ROLE_STAFF)){
+                String store_code = jsonObject.get("store_code").toString().trim();
+                if (!store_code.equals("")) {
+                    String[] codes = store_code.split(",");
+                    if (codes.length > 1) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("导购只能属于一家店铺");
+                        return dataBean.getJsonStr();
+                    }
+                }
+            }
             if (role_code.equals(Common.ROLE_BM)){
                 user.setGroup_code(jsonObject.get("group_code").toString().trim());
                 String brand_code = jsonObject.get("brand_code").toString().trim();
@@ -988,7 +1046,7 @@ public class UserController {
                 }
                 user.setArea_code(area_code);
             }
-            if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
+            if (role_code.equals(Common.ROLE_SM)) {
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
                     if(codes.length>100){
@@ -1007,6 +1065,19 @@ public class UserController {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
                         dataBean.setMessage("请勿选择重复的店铺");
+                        return dataBean.getJsonStr();
+                    }
+                }
+                user.setStore_code(store_code);
+            }
+            if (role_code.equals(Common.ROLE_STAFF)){
+//                String store_code = jsonObject.get("store_code").toString().trim();
+                if (!store_code.equals("")) {
+                    String[] codes = store_code.split(",");
+                    if (codes.length > 1) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("导购只能属于一家店铺");
                         return dataBean.getJsonStr();
                     }
                 }

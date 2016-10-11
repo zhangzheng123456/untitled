@@ -32,7 +32,7 @@ whir.loading ={
             //提示文本
             var loading = document.createElement("div");
             loading.id = 'loading';
-            loading.style.position = 'absolute';
+            loading.style.position = 'fixed';
             loading.style.left = ((width / 2) - 75) + "px";
             loading.style.top = (height / 2 - 70) + "px";
             loading.style.width = '10em';

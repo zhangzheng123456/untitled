@@ -122,7 +122,8 @@ function removeRight(a,b){
 					$(input[j]).remove();
 				}
 			}
-			$(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>")
+			$(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
+			$(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
 		}
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
@@ -146,6 +147,8 @@ function removeLeft(a,b){
 	if(li.length>0){
 		for(var i=li.length-1;i>=0;i--){
 			$(li[i]).remove();
+			// $(b).parents(".screen_content").find(".screen_content_l input[value='"+$(li[i]).attr("id")+"']").re
+			$("#screen_brand .screen_content_l input[value='"+$(li[i]).attr("id")+"']").attr("checked","true");
 		}
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
@@ -517,6 +520,7 @@ function getbrandlist(){
 	var searchValue=$("#brand_search").val();
 	var _param={};
 	_param["corp_code"]=corp_code;
+	_param["searchValue"]=searchValue;
 	whir.loading.add("",0.5);//加载等待框
 	$("#mask").css("z-index","10002");
 	oc.postRequire("post","/shop/brand", "",_param, function(data){
@@ -554,9 +558,8 @@ function getbrandlist(){
 	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
 					}
 				}
-				$("#screen_brand .screen_content_l ul").append(brand_html_left);
-				bianse();
 			}
+			$("#screen_brand .screen_content_l ul").append(brand_html_left);
 			if($("#screen_brand .screen_content_r ul li").length<=0){
 				for(var i=0;i<9;i++){
 					brand_html_right+="<li></li>";
