@@ -534,11 +534,11 @@ public class UserController {
                 }
 
             }
-//            String onlyCell1 = LuploadHelper.CheckOnly(column4);
-//            if (onlyCell1.equals("存在重复值")) {
-//                result = "：Execl中手机号码存在重复值";
-//                int b = 5 / 0;
-//            }
+            String onlyCell1 = LuploadHelper.CheckOnly(column4);
+            if (onlyCell1.equals("存在重复值")) {
+                result = "：Execl中手机号码存在重复值";
+                int b = 5 / 0;
+            }
             String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";
@@ -566,12 +566,12 @@ public class UserController {
                 if (column4[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
-//                List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
-//                if (user.size() > 0) {
-//                    result = "：第" + (i + 1) + "行的电话号码已存在";
-//                    int b = 5 / 0;
-//                    break;
-//                }
+                List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
+                if (user.size() > 0) {
+                    result = "：第" + (i + 1) + "行的电话号码已存在";
+                    int b = 5 / 0;
+                    break;
+                }
             }
 
             for (int i = 3; i < column1.length; i++) {
