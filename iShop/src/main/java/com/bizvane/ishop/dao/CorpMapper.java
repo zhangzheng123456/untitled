@@ -48,7 +48,7 @@ public interface CorpMapper {
 
     List<CorpWechat> selectWByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
-    List<CorpWechat> selectWByCorpBrand(@Param("corp_code") String corp_code,@Param("brand_code") String brand_code) throws SQLException;
+    List<CorpWechat> selectWByCorpBrand(Map<String, Object> params) throws SQLException;
 
     List<CorpWechat> selectWAuthByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
