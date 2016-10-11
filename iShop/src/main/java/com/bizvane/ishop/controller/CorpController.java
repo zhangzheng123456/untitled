@@ -649,10 +649,7 @@ public class CorpController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String screen = jsonObject.get("screen").toString();
-//            JSONObject jsonScreen = new JSONObject(screen);
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
-            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Corp> list = corpService.selectAllCorpScreen(page_number, page_size, map);
             result.put("list", JSON.toJSONString(list));

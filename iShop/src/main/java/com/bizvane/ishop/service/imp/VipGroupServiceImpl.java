@@ -72,9 +72,9 @@ public class VipGroupServiceImpl implements VipGroupService {
     }
 
     @Override
-    public List<VipGroup> selectCorpVipGroups(String corp_code) throws Exception {
+    public List<VipGroup> selectCorpVipGroups(String corp_code,String search_value) throws Exception {
         List<VipGroup> vipGroups;
-        vipGroups = vipGroupMapper.selectCorpVipGroups(corp_code);
+        vipGroups = vipGroupMapper.selectCorpVipGroups(corp_code,search_value);
 
         return vipGroups;
     }
