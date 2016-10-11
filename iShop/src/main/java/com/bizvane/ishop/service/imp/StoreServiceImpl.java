@@ -76,12 +76,12 @@ public class StoreServiceImpl implements StoreService {
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
                     brand_name.append(brand_name1);
-                    if (i != ids.length - 1) {
-                        brand_name.append(",");
-                    }
                 }
             }
-            store.setBrand_name(brand_name.toString());
+            String brand_name1 = brand_name.toString();
+            if (brand_name1.endsWith(","))
+                brand_name1 = brand_name1.substring(0,brand_name1.length()-1);
+            store.setBrand_name(brand_name1);
             if (brand_code.endsWith(","))
                 brand_code = brand_code.substring(0,brand_code.length()-1);
             store.setBrand_code(brand_code);
@@ -97,12 +97,12 @@ public class StoreServiceImpl implements StoreService {
                 if (area != null) {
                     String area_name1 = area.getArea_name();
                     area_name.append(area_name1);
-                    if (i != ids.length - 1) {
-                        area_name.append(",");
-                    }
                 }
             }
-            store.setArea_name(area_name.toString());
+            String area_name1 = area_name.toString();
+            if (area_name1.endsWith(","))
+                area_name1 = area_name1.substring(0,area_name1.length()-1);
+            store.setArea_name(area_name1);
             if (area_code.endsWith(","))
                 area_code = area_code.substring(0,area_code.length()-1);
             store.setArea_code(area_code);
@@ -492,7 +492,7 @@ public class StoreServiceImpl implements StoreService {
                 store.setStore_code(store_code);
                 store.setStore_name(store_name);
 
-                String area_code = store.getArea_code();
+                String area_code = jsonObject.get("area_code").toString().trim();
                 String[] codes1 = area_code.split(",");
                 String area_code1 = "";
                 for (int i = 0; i < codes1.length; i++) {
