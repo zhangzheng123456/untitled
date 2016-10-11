@@ -698,10 +698,10 @@ public class UserController {
                     user.setAvatar("../img/head.png");//头像
                     user.setPhone(phone);
                     user.setEmail(email);
-                    if (sex.equals("男")) {
-                        user.setSex("M");
-                    } else {
+                    if (sex.equals("女")||sex.equals("F")) {
                         user.setSex("F");
+                    } else {
+                        user.setSex("M");
                     }
                     user.setGroup_code(group_code);
 //                    if (!area_code.equals("all") && !area_code.equals("")) {
