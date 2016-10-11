@@ -890,13 +890,14 @@ public class AreaController {
                             store.setModified_date(Common.DATETIME_FORMAT.format(now));
                             store.setModifier(user_id);
                             storeService.updateStore(store);
-                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                            dataBean.setId(id);
-                            dataBean.setMessage("success");
+//                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                            dataBean.setId(id);
+//                            dataBean.setMessage("success");
                         } else {
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                             dataBean.setId(id);
                             dataBean.setMessage(store.getStore_name() + "已在该区域，请勿重复选择");
+                            return dataBean.getJsonStr();
                         }
                     }
                 }
@@ -916,17 +917,22 @@ public class AreaController {
                             store.setModified_date(Common.DATETIME_FORMAT.format(now));
                             store.setModifier(user_id);
                             storeService.updateStore(store);
-                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                            dataBean.setId(id);
-                            dataBean.setMessage("success");
+//                            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                            dataBean.setId(id);
+//                            dataBean.setMessage("success");
                         } else {
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                             dataBean.setId(id);
                             dataBean.setMessage(store.getStore_name() + "不在该区域");
+                            return dataBean.getJsonStr();
                         }
                     }
                 }
             }
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
