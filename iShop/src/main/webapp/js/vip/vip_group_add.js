@@ -3,6 +3,7 @@ var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var role='';//识别页面
+var group_cheked=[];
 $(function(){
     window.vip.init();
     if($(".pre_title label").text()=="编辑会员分组"){
@@ -322,11 +323,9 @@ $("#edit_close").click(function(){
 //新增
 $('#screen_add').on('click',function(){
     $(this).attr('data_role')?role=$(this).attr('data_role'):'';
-    GET(1,10);
+    GET(1,10,$("#vip_num").val());//第三个参数  分组编号
     $('#page-wrapper')[0].style.display='none';
     $('.content')[0].style.display='block';
-    //保存分组的编号
-    sessionStorage.setItem('group_cord',$("#vip_num").val())
  //进入页面后保存操作
     $("#save").click(function(){
         var param={};
@@ -340,21 +339,22 @@ $('#screen_add').on('click',function(){
             choose_sub['phone']=$(get_groups[i]).find('td:nth-child(4)').html()
             choose.push(choose_sub);
         }
+        console.log(get_groups);
+        console.log(group_cheked)
         param['vip_group_code']=sessionStorage.getItem('group_cord');
         param['choose']=choose;
         param['quit']=[];
         //发起异步请求
         oc.postRequire("post",'/vipGroup/saveVips',"",param, function(data){
            if(data.code==0){
-              //设置本地缓存
-               sessionStorage.setItem('group_recode',get_groups.length)
+               $('#group_recode').val(get_groups.length)
            }else if(data.code==-1){
                alert(data.message);
            }
         })
         $('#page-wrapper')[0].style.display='block';
         $('.content')[0].style.display='none';
-        $('#group_recode').val(sessionStorage.getItem('group_recode'))
+
     })
 });
 //进入页面的关闭操作
@@ -371,7 +371,7 @@ $('#screen_wrapper_close').on('click',function () {
     $('#screen_wrapper')[0].style.display='none';
 })
 //请求页面数据
-function GET(a,b){
+function GET(a,b,c){
     whir.loading.add("",0.5);//加载等待框
     var param={};
     param["pageNumber"]=a;
@@ -386,7 +386,7 @@ function GET(a,b){
             var list=message.all_vip_list;
             cout=message.pages;
             //var list=list.list;
-            superaddition(list,a);
+            superaddition(list,a,c);
             jumpBianse();
             filtrate="";
             setPage($("#foot-num")[0],cout,a,b);
@@ -402,12 +402,17 @@ function jumpBianse(){
         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
 }
-function superaddition(data,num){
+function superaddition(data,num,c){
     console.log(data);
-    var judge=0;
+    var judge='';
     for (var i = 0; i < data.length; i++) {
-        console.log(data[i].vip_group_code)
-        sessionStorage.getItem('group_code')==data[i].vip_group_code?judge=1:'';
+        console.log(data[i]);
+        if(c==data[i].vip_group_code&&c!=''){
+            judge='checked'
+            group_cheked.push(data[i]);
+        }else{
+            judge='';
+        }
         if(num>=2){
             var a=i+num*pageSize;
         }else{
@@ -431,7 +436,7 @@ function superaddition(data,num){
             +data[i].user_name
             +"</td><td>"
             +data[i].store_name
-            +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='"+data[i].id+"'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='"+data[i].id+"'><input "+judge+" type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
