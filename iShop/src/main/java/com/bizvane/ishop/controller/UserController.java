@@ -715,6 +715,10 @@ public class UserController {
                     if (!role.equals(Common.ROLE_AM)) {
                         user.setArea_code("");
                     } else {
+                        if(role.equals(Common.ROLE_AM ) && area_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为区经，区域编号为必填项";
+                            int a = 5 / 0;
+                        }
                         String[] areas = area_code.split(",");
                         int count = 0;
                         for (int k = 0; k < areas.length; k++) {
@@ -745,15 +749,20 @@ public class UserController {
 //                            store_code = store_code + codes[i2];
 //                        }
 //                    }
-                    if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
-                        if (!store_code.equals("all") && !store_code.equals("")) {
+                    if (role.equals(Common.ROLE_SM)) {
+                        if(role.equals(Common.ROLE_SM ) && store_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为店长，店铺编号为必填项";
+                            int a = 5 / 0;
+                        }
+                        if (!store_code.equals("")) {
                             String[] codes = store_code.split(",");
                             if(codes.length>100){
                                 result = "：第" + (i + 1) + "行员工拥有店铺数量上限为100";
                                 int a = 5 / 0;
                             }
+                         //   String store_code2 = "";
                             if (WebUtils.checkRepeat(codes)) {
-                                store_code = "";
+                                store_code="";
                                 for (int k = 0; i < codes.length; k++) {
                                     codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
                                     store_code = store_code + codes[k];
@@ -762,20 +771,35 @@ public class UserController {
                                 result = "：第" + (i + 1) + "行Execl中存在重复店铺";
                                 int a = 5 / 0;
                             }
+                            System.out.println("----------店长店铺----------:"+store_code);
                         }
                         user.setStore_code(store_code);
-                    } else {
-                        user.setStore_code("");
                     }
-                    if (role_code.equals(Common.ROLE_STAFF)){
+                    if(role.equals(Common.ROLE_STAFF)){
+                        if(role.equals(Common.ROLE_STAFF ) && store_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为导购，店铺编号为必填项";
+                            int a = 5 / 0;
+                        }
                         if (!store_code.equals("")) {
                             String[] codes = store_code.split(",");
                             if (codes.length > 1) {
-                                result = "：第" + (i + 1) + "行导购只能属于一家店铺";
+                                result = "：第" + (i + 1) + "行角色为导购，只能属于一家店铺";
                                 int a = 5 / 0;
+                            }else{
+                                store_code="";
+                                for (int k = 0; i < codes.length; k++) {
+                                    codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
+                                    store_code = store_code + codes[k];
+                                }
                             }
+                            System.out.println("----------导购店铺----------:"+store_code);
                         }
+                        user.setStore_code(store_code);
                     }
+                    if(role.equals(Common.ROLE_GM)||role.equals(Common.ROLE_AM)){
+                        user.setStore_code("");
+                    }
+
                     user.setPosition(position);
                     user.setPassword(user.getPhone());
                     Date now = new Date();
