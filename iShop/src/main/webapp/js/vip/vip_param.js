@@ -310,7 +310,7 @@ function GET(a,b){
             superaddition(list,a);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
-            $(".table tbody").sortable({axis: 'y' , update: function(event, ui) {
+            $(".table tbody").sortable({axis: 'y' ,delay: 500, update: function(event, ui) {
                 var len=$("#table tbody tr");
                 var params=[];
                 for(var i=0;i<len.length;i++){
@@ -472,6 +472,7 @@ $("#d_search").click(function(){
 })
 //搜索的请求函数
 function POST(a,b){
+    $(".table tbody").sortable();
     $(".table tbody").sortable('disable');
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vipparam/search","0",param,function(data){
@@ -806,6 +807,7 @@ function getInputValue(){
 }
 //筛选发送请求
 function filtrates(a,b){
+    $(".table tbody").sortable();
     $(".table tbody").sortable('disable');
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vipparam/screen","0",_param,function(data){
@@ -871,5 +873,7 @@ $(function(){
         $('html,body').animate({'scrollTop':btm},500);
     })
 });
+
+
 
 
