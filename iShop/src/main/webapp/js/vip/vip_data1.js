@@ -284,7 +284,7 @@ function fuzhi(data){
 }
 
 function imgError(image){//图片404默认图片
-    $(image).attr("src", "../img/bg1.png");
+    $(image).attr("src", "../img/goods_default_image.png");
 }
 
 $("#more_message").click(function(){
