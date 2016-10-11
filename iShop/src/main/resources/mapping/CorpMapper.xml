@@ -299,6 +299,7 @@
         FROM rel_corp_wechat
         WHERE corp_code = #{corp_code}
         AND brand_code = #{brand_code}
+        AND is_authorize = 'Y'
         AND isactive = 'Y'
     </select>
 

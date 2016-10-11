@@ -111,22 +111,30 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
 
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
             int vip_count = 0;
             VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
             if (vipGroup != null) {
                 String corp_code = vipGroup.getCorp_code();
                 String vip_group_code = vipGroup.getVip_group_code();
-                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-                DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//                Map keyMap = new HashMap();
+//                keyMap.put("corp_code", corp_code);
+//                keyMap.put("vip_group_code", vip_group_code);
+//
+//                BasicDBObject queryCondition = new BasicDBObject();
+//                queryCondition.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(queryCondition);
 
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code", corp_code);
-                keyMap.put("vip_group_code", vip_group_code);
+                BasicDBObject dbObject=new BasicDBObject();
+                dbObject.put("vip_group_code",vip_group_code);
+                dbObject.put("corp_code",corp_code);
+                DBCursor dbCursor= cursor.find(dbObject);
 
-                BasicDBObject queryCondition = new BasicDBObject();
-                queryCondition.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(queryCondition);
-                vip_count = dbCursor1.size();
+                while (dbCursor.hasNext()) {
+                    System.out.println("---------vip group has vip------------");
+                }
+                vip_count = dbCursor.size();
             }
             vipGroup.setVip_count(vip_count);
             data = JSON.toJSONString(vipGroup);
