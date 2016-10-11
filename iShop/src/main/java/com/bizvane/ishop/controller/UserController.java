@@ -1866,22 +1866,42 @@ public class UserController {
             logger.info("------------UserController creatQrcodesForUser------");
             String corp_code = request.getParameter("corp_code");
             String user_code = request.getParameter("user_code");
-            List<CorpWechat> corpWechats = corpService.getWAuthByCorp(corp_code);
-            for (int i = 0; i < corpWechats.size(); i++) {
-                String auth_appid = corpWechats.get(i).getApp_id();
-                String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_code);
-                if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                    dataBean.setId(id);
-                    dataBean.setMessage("生成二维码失败");
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    return dataBean.getJsonStr();
-                } else if (result.equals("48001")) {
-                    dataBean.setId(id);
-                    dataBean.setMessage("该功能未授权");
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    return dataBean.getJsonStr();
-                }
+
+            List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+            if (users.size() < 1) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("用户不存在");
+                return dataBean.getJsonStr();
             }
+            List<CorpWechat> corpWechats = new ArrayList<CorpWechat>();
+            if (corp_code.equals("C10016")){
+                List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+                for (int i = 0; i < brand_codes.size(); i++) {
+                    String brand_code = brand_codes.get(i);
+
+                     corpWechats.addAll(corpService.selectWByCorpBrand(corp_code, brand_code));
+                }
+            }else {
+                corpWechats = corpService.getWAuthByCorp(corp_code);
+            }
+
+                for (int j = 0; j < corpWechats.size(); j++) {
+                    String auth_appid = corpWechats.get(j).getApp_id();
+                    String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_code);
+                    if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                        dataBean.setId(id);
+                        dataBean.setMessage("生成二维码失败");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
+                    } else if (result.equals("48001")) {
+                        dataBean.setId(id);
+                        dataBean.setMessage("该功能未授权");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
+                    }
+                }
+
             dataBean.setId(id);
             dataBean.setMessage("生成完成");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
