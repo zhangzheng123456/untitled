@@ -50,10 +50,8 @@
         <if test="search_value != null and search_value !=''">
             AND
             (dvp.param_name like concat('%',#{search_value},'%')
-            OR dvp.param_type like concat('%',#{search_value},'%')
             OR dvp.param_values like concat('%',#{search_value},'%')
             OR dvp.param_desc like concat('%',#{search_value},'%')
-            OR dvp.param_class like concat('%',#{search_value},'%')
             OR dc.corp_name like concat('%',#{search_value},'%')
             OR dvp.remark like concat('%',#{search_value},'%')
             )
