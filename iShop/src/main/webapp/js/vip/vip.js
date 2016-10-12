@@ -259,6 +259,8 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }else if(actions[i].act_name=="chooseUser"){
+            $('.more_down').append("<div id='chooseUser'>选择导购</div>");
         }
     }
 }
@@ -389,6 +391,17 @@ function jumpBianse(){
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
+    //选择导购
+    $("#chooseUser").click(function () {
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#screen_wrapper").width())/2;
+        var tp=(arr[1]-$("#screen_wrapper").height())/2;
+        $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
+        $("#p").show();
+        $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
+        $("#screen_wrapper").show();
+    })
+
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -772,7 +785,7 @@ $("#screen_shopl").click(function(){
     var shop_num=1;
     getstorelist(shop_num);
 })
-//点击筛选会员的所属员工
+//点击筛选会员的所属导购
 $("#screen_staffl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
@@ -1439,4 +1452,3 @@ function filtrates(a,b){
         }
     })
 }
-

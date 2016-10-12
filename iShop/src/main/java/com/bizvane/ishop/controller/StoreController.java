@@ -1201,6 +1201,10 @@ public class StoreController {
                 }
                 String brands = column5[i].getContents().toString().trim();
                 String[] splitBrands = brands.split(",");
+                if(splitBrands.length>10){
+                    result = "：第" + (i + 1) + "行品牌编号上限10个";
+                    int b = 5 / 0;
+                }
                 for (int j = 0; j < splitBrands.length; j++) {
 //                    Matcher matcher = pattern.matcher(splitBrands[j]);
 //                    if (matcher.matches() == false) {
@@ -1208,6 +1212,7 @@ public class StoreController {
 //                        int b = 5 / 0;
 //                        break;
 //                    }
+
                     Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j],Common.IS_ACTIVE_Y);
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号不存在";
@@ -1230,6 +1235,10 @@ public class StoreController {
                 }
                 String areas = column4[i].getContents().toString().trim();
                 String[] splitAreas = areas.split(",");
+                if(splitAreas.length>20){
+                    result = "：第" + (i + 1) + "行区域编号上限20个";
+                    int b = 5 / 0;
+                }
                 for(int j=0;j<splitAreas.length;j++){
                     Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
                     if (area == null) {

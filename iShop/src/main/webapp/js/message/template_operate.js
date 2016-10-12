@@ -59,12 +59,16 @@ var oc = new ObjectControl();
 				var template_type=$("#OWN_template").val();//模板类型
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";//是否可用
-				if($("#OWN_template").val()==""){
-					alert("模板分组不能为空");
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(template_type==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"该企业没有设置消息模板分组"
+					});
 					return;
 				}
-				console.log($("#OWN_template").val());
-				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -98,6 +102,15 @@ var oc = new ObjectControl();
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
+				if(template_type==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"该企业没有设置消息模板分组"
+					});
+					return;
+				}
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){

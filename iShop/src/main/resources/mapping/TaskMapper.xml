@@ -56,16 +56,16 @@
         def_task.target_end_time,
         def_task.modifier,
         def_task.ISACTIVE
-        from def_task,def_corp,def_task_type
-        where def_task.corp_code = def_corp.corp_code
-        and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
-        and def_corp.corp_code = def_task_type.corp_code
+        FROM def_task,def_corp,def_task_type
+        WHERE def_task.corp_code = def_corp.corp_code
+        AND def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
+        AND def_corp.corp_code = def_task_type.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
         <if test="role_ident !=null and role_ident!=''">
-            and def_task.task_code in(select rel_task_allocation.task_code from rel_task_allocation
-            where rel_task_allocation.corp_code =#{corp_code} and rel_task_allocation.user_code=#{user_code} )
+            AND def_task.task_code IN(SELECT rel_task_allocation.task_code FROM rel_task_allocation
+            WHERE rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.user_code=#{user_code} )
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
@@ -137,7 +137,7 @@
          rel_task_allocation.creater,
          rel_task_allocation.isactive
          FROM rel_task_allocation,def_corp,def_user
-        where  rel_task_allocation.corp_code=def_corp.corp_code
+        WHERE  rel_task_allocation.corp_code=def_corp.corp_code
         AND def_user.user_code = rel_task_allocation.user_code
         AND rel_task_allocation.corp_code = def_user.corp_code
         AND rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
