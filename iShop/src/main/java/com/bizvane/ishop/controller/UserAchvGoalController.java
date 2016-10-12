@@ -586,8 +586,13 @@ public class UserAchvGoalController {
                     userAchvGoal.setUser_target(user_target);
                     userAchvGoal.setTarget_type(target_type);
                     if (target_type.equals(Common.TIME_TYPE_WEEK)) {
-                        String week = TimeUtils.getWeek(cellTypeForDate);
-                        userAchvGoal.setTarget_time(week);
+                        String week="";
+                        if(cellTypeForDate.equals("格式错误")){
+                            userAchvGoal.setTarget_time(week);
+                        }else {
+                            week = TimeUtils.getWeek(cellTypeForDate);
+                            userAchvGoal.setTarget_time(week);
+                        }
                     } else {
                         userAchvGoal.setTarget_time(cellTypeForDate);
                     }
