@@ -75,7 +75,7 @@ public class StoreServiceImpl implements StoreService {
                 Brand brand = brandMapper.selectByBrandCode(corp_code, ids[i],Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
-                    brand_name.append(brand_name1);
+                    brand_name.append(brand_name1+",");
                 }
             }
             String brand_name1 = brand_name.toString();
@@ -96,7 +96,7 @@ public class StoreServiceImpl implements StoreService {
                 Area area = areaMapper.selectAreaByCode(corp_code,ids[i],Common.IS_ACTIVE_Y);
                 if (area != null) {
                     String area_name1 = area.getArea_name();
-                    area_name.append(area_name1);
+                    area_name.append(area_name1+",");
                 }
             }
             String area_name1 = area_name.toString();
@@ -140,6 +140,10 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             if (store.getArea_name()!=null) {
+//                String area_name = ;
+//                if (i != shops.size() - 1) {
+//                    area_name+=",";
+//                }
                 shops.get(i).setArea_name(store.getArea_name());
             }else {
                 shops.get(i).setArea_name("");
