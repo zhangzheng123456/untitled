@@ -485,8 +485,8 @@ $("#delete").click(function(){
 })
 //删除弹框
  function frame(){
-    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+    var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
     $('.frame').remove();
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);

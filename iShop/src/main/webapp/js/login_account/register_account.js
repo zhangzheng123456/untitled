@@ -72,7 +72,7 @@ $("#repswd").blur(function(){//确认密码框失去焦点的时候的验证
 $("#USERNAME").focus(function(){//姓名
 	$('.USERNAME .notice').html("");
 });
-
+sibile
 $("#USERNAME").blur(function(){//姓名框失去焦点的时候的验证
 	var USERNAME=$('#USERNAME').val();//姓名
     if(USERNAME==""){

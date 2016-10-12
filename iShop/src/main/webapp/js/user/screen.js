@@ -3,6 +3,7 @@ var area_num=1;
 var area_next=false;
 var shop_num=1;
 var shop_next=false;
+var isscroll=false;
 //提示弹框
 function frame(){
     var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
@@ -46,6 +47,7 @@ $("#screen_add").click(function(){
 		bianse();
 	}
 	if(r_code=="R4000"){
+		isscroll=false;
 		whir.loading.add("",0.5);
 		$("#loading").remove();
 		$("#screen_area").show();
@@ -183,6 +185,8 @@ $("#area_search").keydown(function(){
     var event=window.event||arguments[0];
     area_num=1;
     if(event.keyCode == 13){
+    	isscroll=false;
+	    $("#screen_area .screen_content_l").unbind("scroll");
     	$("#screen_area .screen_content_l ul").empty();
         getarealist(area_num);
     }
@@ -208,6 +212,8 @@ $("#brand_search").keydown(function(){
 $("#store_search_f").click(function(){
 	shop_num=1;
 	$("#screen_shop .screen_content_l ul").empty();
+	isscroll=false;
+	$("#screen_area .screen_content_l").unbind("scroll");
 	getstorelist(shop_num);
 })
 //区域放大镜收索
@@ -220,6 +226,7 @@ $("#area_search_f").click(function(){
 $("#screen_close_area").click(function(){
 	$("#screen_area").hide();
 	whir.loading.remove();//移除遮罩层
+	$("#screen_area .screen_content_l").unbind("scroll");
 })
 //店铺关闭
 $("#screen_close_shop").click(function(){
@@ -238,19 +245,19 @@ function bianse(){
     $(".screen_content_r li:even").css("backgroundColor","#ededed");
 }
 //区域滚动事件
-$("#screen_area .screen_content_l").scroll(function () {
-	var nScrollHight = $(this)[0].scrollHeight;
-    var nScrollTop = $(this)[0].scrollTop;
-    var nDivHight=$(this).height();
-    if(nScrollTop + nDivHight >= nScrollHight){
-    	if(area_next){
-    		return;
-    	}
-    	getarealist(area_num);
-    };
-})
+// $("#screen_area .screen_content_l").bind("scroll",function () {
+// 	var nScrollHight = $(this)[0].scrollHeight;
+//     var nScrollTop = $(this)[0].scrollTop;
+//     var nDivHight=$(this).height();
+//     if(nScrollTop + nDivHight >= nScrollHight){
+//     	if(area_next){
+//     		return;
+//     	}
+//     	getarealist(area_num);
+//     };
+// })
 //店铺滚动事件
-$("#screen_shop .screen_content_l").scroll(function () {
+$("#screen_shop .screen_content_l").bind("scroll",function () {
 	var nScrollHight = $(this)[0].scrollHeight;
     var nScrollTop = $(this)[0].scrollTop;
     var nDivHight=$(this).height();
@@ -420,6 +427,20 @@ function getarealist(a){
 				area_next=false;
 			}
 			$("#screen_area .screen_content_l ul").append(area_html_left);
+			if(!isscroll){
+				$("#screen_area .screen_content_l").bind("scroll",function () {
+					var nScrollHight = $(this)[0].scrollHeight;
+				    var nScrollTop = $(this)[0].scrollTop;
+				    var nDivHight=$(this).height();
+				    if(nScrollTop + nDivHight >= nScrollHight){
+				    	if(area_next){
+				    		return;
+				    	}
+				    	getarealist(area_num);
+				    };
+				})
+			}
+			isscroll=true;
 			var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
 			for(var k=0;k<li.length;k++){
 				$("#screen_area .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 

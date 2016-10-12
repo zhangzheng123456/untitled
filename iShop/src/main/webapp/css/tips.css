@@ -264,8 +264,8 @@
 }
 .xingming{
 	margin: 0 !important;
-	/*max-height:200px;*/
-	/*overflow-y: auto;*/
+	max-height:200px;
+    overflow-y: auto;
 }
 .good_imgs{
 	margin-bottom: 0!important;

@@ -290,6 +290,7 @@ var message = JSON.parse(val.message);
 }));
 jQuery(document).ready(function () {
     window.corp.init();//初始化
+    $(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
     if ($(".pre_title label").text() == "编辑企业信息") {
         var id = sessionStorage.getItem("id");
         var key_val = sessionStorage.getItem("key_val");//取页面的function_code

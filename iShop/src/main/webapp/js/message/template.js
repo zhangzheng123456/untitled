@@ -235,15 +235,15 @@ function superaddition(data,num){//页面加载循环
                         + a
                         + "</td><td>"
                         + data[i].template_code
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].template_name+"'>"
                         + data[i].template_name
-                        + "</td><td><span title='"+data[i].template_content+"'>"
+                        + "</span></td><td><span title='"+data[i].template_content+"'>"
                         + data[i].template_content
-                        + "</span></td><td>"
+                        + "</span></td><td><span title='"+data[i].corp.corp_name+"'>"
                         + data[i].corp.corp_name
-                        +"</td><td>"
+                        +"</span></td><td><span title='"+data[i].template_type_name+"'>"
                         + data[i].template_type_name
-                        +"</td><td>"
+                        +"</span></td><td>"
                         +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date

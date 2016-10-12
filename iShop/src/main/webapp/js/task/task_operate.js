@@ -726,3 +726,4 @@ function deleteName(a){
 $("#add_close").click(function(){
 	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
 })
+$(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
