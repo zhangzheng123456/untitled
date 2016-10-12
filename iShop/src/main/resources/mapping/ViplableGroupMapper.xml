@@ -20,11 +20,8 @@
             (
             dvg.label_group_code LIKE concat('%', #{search_value},'%')
             OR dvg.label_group_name LIKE concat('%', #{search_value},'%')
-            OR dvg.modified_date LIKE concat('%', #{search_value},'%')
             OR dc.CORP_NAME LIKE concat('%', #{search_value},'%')
             OR dvg.remark LIKE concat('%', #{search_value},'%')
-            OR dvg.modifier LIKE concat('%', #{search_value},'%')
-            OR dvg.isactive LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY dvg.ID DESC
