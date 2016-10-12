@@ -79,7 +79,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"发布时间不能为空!"
+						content:"发布时间不能为空"
 					});
 					return;
 				}
@@ -118,7 +118,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"商品图片最多可以上传20张!"
+						content:"商品图片最多可以上传20张"
 					});
 				}
 				var li=$(".match_goods ul").find("li");
@@ -199,7 +199,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"发布时间不能为空!"
+						content:"发布时间不能为空"
 					});
 					return;
 				}
@@ -239,7 +239,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"商品图片最多可以上传20张!"
+						content:"商品图片最多可以上传20张"
 					});
 				}
 				var li=$(".match_goods ul").find("li");
@@ -564,7 +564,7 @@ function getvarbrandlist(c,d){
 					time: 1,
 					lock:true,
 					cancel: false,
-					content: "该企业没有品牌,请先定义品牌！"
+					content: "该企业没有品牌,请先定义品牌"
 				});
 			}
 			$('#OWN_BRAND').html(brand_html);

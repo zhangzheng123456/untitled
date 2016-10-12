@@ -504,7 +504,7 @@ function staff_data(d,f,b,e){
 					time: 1,
 					lock:true,
 					cancel: false,
-					content: "该店铺没有员工!"
+					content: "该店铺没有员工"
 			    });
 			}
 			if(e!==""){

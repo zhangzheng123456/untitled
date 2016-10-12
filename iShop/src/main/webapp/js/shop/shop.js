@@ -457,7 +457,7 @@ jQuery(document).ready(function () {
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content: "该企业目前分配区域！"
+                        content: "该企业目前分配区域"
                     });
                 } else {
                     for (var i = 0; i < msg.areas.length; i++) {

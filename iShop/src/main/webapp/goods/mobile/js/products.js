@@ -42,7 +42,7 @@ jQuery(function () {
         if(list.goods_image.indexOf("http")!==-1){
             var goodsImage = list.goods_image.split(",");
             for (var i = 0; i < goodsImage.length; i++) {
-                jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><a class="item"><img src="' + goodsImage[i] + '"></a></div>');
+                jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goodsImage[i] + '"></div>');
             }
         }
         document.title = list.goods_name;
