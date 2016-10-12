@@ -36,9 +36,20 @@ a{
 		}
 	}
 	.swiper-wrapper{
-		& img{
+		.swiper-slide{
 			width: 100%;
-	    	// -webkit-transform: translate3d(-50%,-50%,0);
+			height: 100%;
+			text-align:center;
+			.item{
+				height:100%;
+				display:inline-block;
+				vertical-align:middle;
+			}
+			& img{
+				max-width: 100%;
+				vertical-align: middle;
+		    	// -webkit-transform: translate3d(-50%,-50%,0);
+			}
 		}
 	}
 	.gradex{

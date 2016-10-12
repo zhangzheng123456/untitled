@@ -329,6 +329,16 @@ $("#search").keydown(function() {
         POST();
     }
 });
+//放大镜搜索
+$("#d_search").click(function () {
+    value=$("#search").val().replace(/\s+/g,"");
+    param["searchValue"]=value;
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["group_code"]=group_code;
+    param["corp_code"]=corp_code;
+    POST();
+})
 //搜索的请求函数
 function POST(){
     oc.postRequire("post","/user/group/check_name","0",param,function(data){

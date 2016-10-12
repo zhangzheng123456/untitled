@@ -176,15 +176,15 @@ var message = JSON.parse(val.message);
                     arr.sort();
                     for(var j=0;j<arr.length;j++){
                         if(arr[j]==arr[j+1]&&arr[j]!==""){
-                            alert("公众号ID不能重复！")
+                            alert("公众号ID不能重复")
                             return;
                         }
                     }
                     if(app_id!==""&&app_name==""){
-                        alert("名称不能为空！")
+                        alert("名称不能为空")
                         return;
                     }else if(app_name!==""&&app_id==""){
-                        alert("公众号ID不能为空！")
+                        alert("公众号ID不能为空")
                         return;
                     }
                     var wechat={"app_id":app_id,"app_name":app_name}
@@ -454,16 +454,16 @@ jQuery(document).ready(function () {
             arr.sort();
             for (var j = 0; j < arr.length; j++) {
                 if (arr[j] == arr[j + 1] && arr[j] !== "") {
-                    alert("公众号ID不能重复！")
+                    alert("公众号ID不能重复");
                     return false;
                 }
             }
             if(app_name == "") {
-                alert("名称不能为空！")
+                alert("名称不能为空");
                 return false;
             }
             if (app_id == "") {
-                alert("公众号ID不能为空！")
+                alert("公众号ID不能为空");
                 return false;
             }
             var wechat = {

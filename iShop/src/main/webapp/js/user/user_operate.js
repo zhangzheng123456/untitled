@@ -273,7 +273,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"所属群组不能为空！"
+						content:"所属群组不能为空"
 					});
 					return;
 				}

@@ -430,6 +430,7 @@ function getarealist(a){
 			art.dialog({
 				time: 1,
 				lock: true,
+				
 				cancel: false,
 				content: data.message
 			});
