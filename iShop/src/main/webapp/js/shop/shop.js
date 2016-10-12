@@ -522,14 +522,13 @@ jQuery(document).ready(function () {
         },2000);
     }
     $("#screen_close_area").click(function(){
-        $("#screen_area .screen_content_l").unbind("scroll");
         $("#screen_area").hide();
     });
     $("#screen_close_brand").click(function(){
-        $("#screen_brand .screen_content_l").unbind("scroll");
         $("#screen_brand").hide();
     });
     $("#ADD_AREA").click(function () {
+        $("#screen_area .screen_content_l").unbind("scroll");
         var arr=whir.loading.getPageSize();
         area_num=1;
         $("#area_search").val("");
@@ -544,6 +543,7 @@ jQuery(document).ready(function () {
         console.log(1);
     });
     $("#ADD_BRAND").click(function(){
+        $("#screen_brand .screen_content_l").unbind("scroll");
         var arr=whir.loading.getPageSize();
         area_num=1;
         $("#brand_search").val("");
@@ -850,6 +850,7 @@ jQuery(document).ready(function () {
     });
     //区域放大镜搜索
     $("#area_search_f").click(function(){
+        $("#screen_area .screen_content_l").unbind("scroll");
         area_num=1;
         $("#screen_area .screen_content_l ul").empty();
         getArea(area_num);
@@ -857,6 +858,7 @@ jQuery(document).ready(function () {
     });
     //品牌放大镜搜索
     $("#brand_search_f").click(function(){
+        $("#screen_brand .screen_content_l").unbind("scroll");
         area_num=1;
         $("#screen_brand .screen_content_l ul").empty();
         getBrand(area_num);
