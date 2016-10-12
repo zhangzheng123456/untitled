@@ -27,7 +27,7 @@ function login(){
 	param["password"] = password;
 	if (phone == '' || password == '' || verifyCode == '' || verifyCode !== '' && verifyCode.toUpperCase() !== code.toUpperCase()) {
 		if (phone == "") {
-			$(".portlet-msg-error").html("用户名不能为空");
+			$(".portlet-msg-error").html("手机号不能为空");
 			return;
 		}
 		if (password == '') {
@@ -68,7 +68,7 @@ function login(){
 				window.location.href="home/index_sm.html";
 			}
 		} else if (data.code == "-1") {
-			$(".portlet-msg-error").html("用户名或密码错误");
+			$(".portlet-msg-error").html("手机号或密码错误");
 			$('.btn_login').html("登陆");
 		}
 	})
