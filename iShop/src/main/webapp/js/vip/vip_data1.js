@@ -266,6 +266,9 @@ function fuzhi(data){
     $("#vip_total_amount").html(data.total_amount+'&nbsp元');
     $("#join_date").html(data.join_date);
     $("#vip_birthday").html(data.vip_birthday);
+    $("#store_name").html(data.store_name);
+    $("#store_name_edit").val(data.store_name);
+    $("#user_group_edit").val(data.vip_group_name);
     $("#vip_birthday_edit").val(data.vip_birthday);
     $("#corp_code").html(data.corp_code);
     $("#vip_consume_times").html(data.consume_times+'&nbsp次');
