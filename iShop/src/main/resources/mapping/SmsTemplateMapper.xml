@@ -5,7 +5,7 @@
 
     <resultMap id="MessageTemplates" type="com.bizvane.ishop.entity.SmsTemplate">
         <id column="id" property="id"/>
-        <result column="template_code" property="template_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_code" property="template_code" />
         <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="template_content" property="template_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
       <!--  <result column="template_title" property="template_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>-->
@@ -16,6 +16,7 @@
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_type_name" property="template_type_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -53,6 +54,7 @@
             OR dstt.template_type_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY dmt.id
         ORDER BY dmt.id DESC
     </select>
 
@@ -245,6 +247,7 @@
 
             </choose>
         </foreach>
+        GROUP BY dmt.id
         ORDER by dmt.id DESC
     </select>
 
@@ -269,6 +272,7 @@
         AND dmt.template_type=dstt.template_type_code
         AND dmt.corp_code=#{corp_code}
         AND dmt.template_type = #{template_type}
+        GROUP BY dmt.id
         ORDER BY dmt.id DESC
     </select>
 
