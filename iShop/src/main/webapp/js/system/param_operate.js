@@ -235,7 +235,6 @@ jQuery(document).ready(function () {
         });
     }
 
-
     $(".operadd_btn ul li:nth-of-type(2)").click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/system/param.html");
     });
