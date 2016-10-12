@@ -93,8 +93,6 @@
             OR user_id LIKE concat('%',#{search_value},'%')
             OR user_code LIKE concat('%',#{search_value},'%')
             OR phone LIKE concat('%',#{search_value},'%')
-            OR def_user.store_code LIKE concat('%',#{search_value},'%')
-            OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
             )
@@ -148,8 +146,6 @@
             OR def_user.user_code LIKE concat('%',#{search_value},'%')
             OR def_user.phone LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
-            OR def_user.store_code LIKE concat('%',#{search_value},'%')
-            OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
             )
         </if>

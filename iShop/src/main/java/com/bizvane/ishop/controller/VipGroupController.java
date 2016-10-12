@@ -118,26 +118,14 @@ public class VipGroupController {
             if (vipGroup != null) {
                 String corp_code = vipGroup.getCorp_code();
                 String vip_group_code = vipGroup.getVip_group_code();
-//                Map keyMap = new HashMap();
-//                keyMap.put("corp_code", corp_code);
-//                keyMap.put("vip_group_code", vip_group_code);
-//
-//                BasicDBObject queryCondition = new BasicDBObject();
-//                queryCondition.putAll(keyMap);
-//                DBCursor dbCursor1 = cursor.find(queryCondition);
 
                 BasicDBObject dbObject=new BasicDBObject();
                 dbObject.put("vip_group_code",vip_group_code);
                 dbObject.put("corp_code",corp_code);
                 DBCursor dbCursor= cursor.find(dbObject);
-
-//                while (dbCursor.hasNext()) {
-//                    System.out.println("---------vip group has vip------------");
-                    vip_count = dbCursor.size();
-//                }
-//                vip_count = dbCursor.size();
+                vip_count = dbCursor.size();
+                vipGroup.setVip_count(vip_count);
             }
-            vipGroup.setVip_count(vip_count);
             data = JSON.toJSONString(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
