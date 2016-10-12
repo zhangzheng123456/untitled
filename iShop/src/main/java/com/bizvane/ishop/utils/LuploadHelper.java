@@ -93,7 +93,7 @@ public class LuploadHelper {
      */
     public  static String getCellTypeForDate(Cell cellObject,String target_type) {
         String dateStr="格式错误";
-
+       // System.out.println("------------时间---------:-"+cellObject.getContents().toString() +"------类型----------"+cellObject.getType());
         if(cellObject.getType()== CellType.DATE){
             DateCell cellValue   =   (DateCell)cellObject;
             Date dt   =   cellValue.getDate();
@@ -106,7 +106,7 @@ public class LuploadHelper {
                 formatter =  new   SimpleDateFormat("yyyy-MM-dd");
             }
             dateStr  =  formatter.format(dt);
-        }else if(cellObject.getType()==CellType.NUMBER && Integer.parseInt(cellObject.getContents().toString().trim()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString().trim())>=2016){
+        }else if(Integer.parseInt(cellObject.getContents().toString().trim()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString().trim())>=2016){
           //  DateCell cellValue   =   (DateCell)cellObject;
             dateStr=cellObject.getContents().toString().trim();
         }

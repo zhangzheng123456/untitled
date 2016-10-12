@@ -560,8 +560,15 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setTarget_amount(target_amount);
                     storeAchvGoal.setTime_type(target_type);
                     if (target_type.equals(Common.TIME_TYPE_WEEK)) {
-                        String week = TimeUtils.getWeek(cellTypeForDate);
-                        storeAchvGoal.setTarget_time(week);
+                        String week="";
+                        if(cellTypeForDate.equals("格式错误")){
+                            storeAchvGoal.setTarget_time(week);
+                        }else {
+                            week = TimeUtils.getWeek(cellTypeForDate);
+                            storeAchvGoal.setTarget_time(week);
+                        }
+                    //    String week = TimeUtils.getWeek(cellTypeForDate);
+                     //   storeAchvGoal.setTarget_time(week);
                     } else {
                         storeAchvGoal.setTarget_time(cellTypeForDate);
                     }

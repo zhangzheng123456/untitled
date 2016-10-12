@@ -206,12 +206,30 @@ var isscroll=false;
                     });
                     return;
                 }
+                if(a>20){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "所选区域不能超过20个"
+                    });
+                    return;
+                }
                 if (BRAND_CODE == "") {
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
                         content: "所属品牌不能为空"
+                    });
+                    return;
+                }
+                if(b>10){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "所选品牌不能超过10个"
                     });
                     return;
                 }
@@ -545,7 +563,6 @@ jQuery(document).ready(function () {
         var right="only";
         var div=$(this);
         removeRight(right,div);
-        console.log("右移")
     });
     //点击右移全部
     $(".shift_right_all").click(function(){
@@ -847,7 +864,18 @@ jQuery(document).ready(function () {
     });
 $("#screen_que_area").click(function(){
     var li=$(this).prev().children(".screen_content_r").find("ul li");
+    var hasli=$("#OWN_AREA_All p");
     var a=$('#OWN_AREA_All input');
+    if((li.length+hasli.length)>20){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            zIndex:10003,
+            content: "所选区域不能超过20个"
+        });
+        return;
+    }
     if(li.length>0){
         for(var i=0;i<li.length;i++){
             for(var j=0;j<a.length;j++){
@@ -859,12 +887,22 @@ $("#screen_que_area").click(function(){
         }
     }
     $("#screen_area").hide();
-
 });
     $("#screen_que_brand").click(function(){
     var li=$(this).prev().children(".screen_content_r").find("ul li");
+    var hasli=$("#OWN_BRAND_All p");
     var a=$('#OWN_BRAND_All input');
-    if(li.length>0){
+    if((li.length+hasli.length)>10){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                zIndex:10003,
+                content: "所选品牌不能超过10个"
+            });
+        return;
+        }
+        if(li.length>0){
         for(var i=0;i<li.length;i++){
             for(var j=0;j<a.length;j++){
                 if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
@@ -874,8 +912,7 @@ $("#screen_que_area").click(function(){
             $('#OWN_BRAND_All').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find("span").html()+"'><span class='power remove_app_id'>删除</span></p>");
         }
     }
-    $("#screen_brand").hide();
-
+        $("#screen_brand").hide();
 });
     //删除
     $(".xingming").on("click",".remove_app_id",function(){
