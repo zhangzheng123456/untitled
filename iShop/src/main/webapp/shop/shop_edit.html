@@ -63,22 +63,54 @@
                     <div>
                         <span><label>店铺名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down">
-                        <span><label>所属区域</label><input data-myacode="" type="text" id="OWN_AREA"  class="input_select" readonly  title=""  style="padding-right: 30px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"/>
-                         <ul id="area_select" style="overflow-y: auto;height: 144px;moz-user-select: -moz-none;
-                            -moz-user-select: none;
-                            -o-user-select:none;
-                            -khtml-user-select:none;
-                            -webkit-user-select:none;
-                            -ms-user-select:none;
-                            user-select:none;/**禁止选中文字*/">
-                        </ul>
-                        </span>
-                    </div>
+
                     <div>
-                        <span><label>所属品牌</label><input  title="" data-mybcode="" type="text" id="OWN_BRAND"   name="checkboxSelect" readonly style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;padding-right: 30px;" /></span>
-                        <input type="text" id="hiddencheckboxSelect" name="hiddencheckboxSelect" style="display:none;width:250px;">
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">所属区域</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming" id="OWN_AREA_All" style="max-height: 200px;overflow-y: auto">
+
+                            </div>
+                            <div id="test">
+                                <div class="add_app_id" id="ADD_AREA" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+                    <!--<div>-->
+                        <!--<span><label>所属区域</label>-->
+                            <!--&lt;!&ndash;<input data-myacode="" type="text" id="OWN_AREA"  class="input_select" readonly  title=""  style="padding-right: 30px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"/>&ndash;&gt;-->
+                         <!--&lt;!&ndash;<ul id="area_select" style="overflow-y: auto;height: 144px;moz-user-select: -moz-none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -moz-user-select: none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -o-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -khtml-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -webkit-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash; -ms-user-select:none;&ndash;&gt;-->
+                            <!--&lt;!&ndash;user-select:none;/**禁止选中文字*/">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<span><label>所属品牌</label><input  title="" data-mybcode="" type="text" id="OWN_BRAND"   name="checkboxSelect" readonly style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;padding-right: 30px;" /></span>-->
+                        <!--<input type="text" id="hiddencheckboxSelect" name="hiddencheckboxSelect" style="display:none;width:250px;">-->
+                    <!--</div>-->
+
+                    <div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">所属品牌</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming" id="OWN_BRAND_All" style="max-height: 200px;overflow-y: auto">
+
+                            </div>
+                            <div>
+                                <div class="add_app_id" id="ADD_BRAND" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div class="drop_down item_1" >
                         <span><label>是否直营</label><input class="input_select" id="FLG_TOB" type="text" placeholder="请选择是否直营" readonly />
                             <ul>
@@ -134,13 +166,50 @@
    <div id="screen_area" class="screen_area" >
        <div class="screen_title">
            <h4>筛选区域</h4>
-           <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+           <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
            <div class="xian"></div>
        </div>
        <div class="input_s">
            <div class="input_search">
                <input type="text" placeholder="搜索区域" id="area_search">
                <span class="icon-ishop_3-05" id="area_search_f"></span>
+           </div>
+           <div class="s_center"></div>
+           <div class="s_pitch">
+               已添加&nbsp;<span>0</span>&nbsp;家
+           </div>
+       </div>
+       <div class="screen_content">
+           <div class="screen_content_l">
+               <ul>
+
+               </ul>
+           </div>
+           <div class="screen_content_z">
+               <div class="shift shift_right" title="右移">&gt;</div>
+               <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+               <div class="shift shift_left" title="左移">&lt;</div>
+               <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+           </div>
+           <div class="screen_content_r">
+               <ul>
+
+               </ul>
+           </div>
+       </div>
+       <div class="screen_que" id="screen_que_area">确定</div>
+   </div>
+   <!--选取品牌操作-->
+   <div id="screen_brand" class="screen_area">
+       <div class="screen_title">
+           <h4>筛选品牌</h4>
+           <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+           <div class="xian"></div>
+       </div>
+       <div class="input_s">
+           <div class="input_search">
+               <input type="text" placeholder="搜索品牌" id="brand_search">
+               <span class="icon-ishop_3-05" id="brand_search_f"></span>
            </div>
            <div class="s_center"></div>
            <div class="s_pitch">
@@ -172,22 +241,23 @@
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
-    <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js"></script>
-    <script src="/js/loading.js"></script>
+   <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+   <!-- Custom and plugin javascript -->
+   <script src="../js/hplus.js?v=2.2.0"></script>
+   <!-- moni select -->
+   <script type="text/javascript" src="../js/moni_select.js"></script>
+   <script src="/js/loading.js"></script>
    <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
-    <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-    <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <!-- multiple choice -->
-    <script type="text/javascript" src="../js/multiple_choice.js"></script>
-    <!-- error tips -->
-    <script type="text/javascript" src="../js/shop/shop.js"></script>
+   <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+   <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+   <!-- ajax -->
+   <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+   <!-- 带搜索的下拉框 -->
+   <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+   <!-- multiple choice -->
+   <script type="text/javascript" src="../js/multiple_choice.js"></script>
+   <!-- error tips -->
+   <script type="text/javascript" src="../js/shop/shop.js"></script>
 </body>
 
 </html>

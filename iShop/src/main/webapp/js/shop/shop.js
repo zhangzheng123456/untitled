@@ -1,5 +1,7 @@
-
 var oc = new ObjectControl();
+var area_next=false;
+var area_num=1;
+var isscroll=false;
 (function (root, factory) {
     root.shop = factory();
 }(this, function () {
@@ -64,9 +66,30 @@ var oc = new ObjectControl();
                 var STORE_NAME = $("#STORE_NAME").val();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var store_id = $("#storeId").val();
-                var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
-                var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
-                if (OWN_AREA == "") {
+                //var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
+                //var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
+                var a=$('#OWN_AREA_All input');
+                var AREA_CODE="";
+                for(var i=0;i<a.length;i++){
+                    var u=$(a[i]).attr("data-code");
+                    if(i<a.length-1){
+                        AREA_CODE+=u+",";
+                    }else{
+                        AREA_CODE+=u;
+                    }
+                }
+                var b=$('#OWN_BRAND_All input');
+                var BRAND_CODE="";
+                for(var i=0;i<b.length;i++){
+                    var U=$(b[i]).attr("data-code");
+                    if(i<b.length-1){
+                        BRAND_CODE+=U+",";
+                    }else{
+                        BRAND_CODE+=U;
+                    }
+                }
+
+                if (AREA_CODE == "") {
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -75,7 +98,7 @@ var oc = new ObjectControl();
                     });
                     return;
                 }
-                if (OWN_BRAND == "") {
+                if (BRAND_CODE == "") {
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -107,10 +130,10 @@ var oc = new ObjectControl();
                 };
                 var _params = {
                     "corp_code": OWN_CORP,
-                    "brand_code": OWN_BRAND,
+                    "brand_code": BRAND_CODE,
                     "store_code": STORE_ID,
                     "store_id": store_id,
-                    "area_code": OWN_AREA,
+                    "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
                     "isactive": ISACTIVE
@@ -147,12 +170,34 @@ var oc = new ObjectControl();
                 var ID = sessionStorage.getItem("id");
                 var store_id = $("#storeId").val();
                 var OWN_CORP = $("#OWN_CORP").val();
-                var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
-                var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
+                //var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
+                //var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
                 var STORE_ID = $("#STORE_ID").val();
                 var STORE_NAME = $("#STORE_NAME").val();
                 var is_zhiying = $("#FLG_TOB").val();
-                if (OWN_AREA == "") {
+
+                var a=$('#OWN_AREA_All input');
+                var AREA_CODE="";
+                for(var i=0;i<a.length;i++){
+                    var u=$(a[i]).attr("data-code");
+                    if(i<a.length-1){
+                        AREA_CODE+=u+",";
+                    }else{
+                        AREA_CODE+=u;
+                    }
+                }
+                var b=$('#OWN_BRAND_All input');
+                var BRAND_CODE="";
+                for(var i=0;i<b.length;i++){
+                    var U=$(b[i]).attr("data-code");
+                    if(i<b.length-1){
+                        BRAND_CODE+=U+",";
+                    }else{
+                        BRAND_CODE+=U;
+                    }
+                }
+
+                if (AREA_CODE == "") {
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -161,7 +206,7 @@ var oc = new ObjectControl();
                     });
                     return;
                 }
-                if (OWN_BRAND == "") {
+                if (BRAND_CODE == "") {
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -193,13 +238,14 @@ var oc = new ObjectControl();
                 var _params = {
                     "id": ID,
                     "corp_code": OWN_CORP,
-                    "brand_code": OWN_BRAND,
+                    "brand_code": BRAND_CODE,
                     "store_code": STORE_ID,
                     "store_id": store_id,
-                    "area_code": OWN_AREA,
+                    "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
                     "isactive": ISACTIVE
+
                 };
                 shopjs.ajaxSubmit(_command, _params, opt);
             } else {
@@ -307,20 +353,26 @@ jQuery(document).ready(function () {
                 }
                 console.log(areaDataCode);
                 console.log(areaData);
+                for(var i=0;i<areaData.length;i++){
+                    $('#OWN_AREA_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+areaDataCode[i]+"'  value='"+areaData[i]+"'><span class='power remove_app_id'>删除</span></p>");
+                }
+                for(var i=0;i<checknow_namedata.length;i++){
+                    $('#OWN_BRAND_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+checknow_data[i]+"'  value='"+checknow_namedata[i]+"'><span class='power remove_app_id'>删除</span></p>");
+                }
                 $("#OWN_CORP option").val(msg.corp.corp_code);
                 $("#OWN_CORP option").text(msg.corp.corp_name);
-                $("#OWN_BRAND").val(msg.brand_name);
-                $("#OWN_BRAND").attr("data-mybcode", msg.brand_code);
+                //$("#OWN_BRAND").val(msg.brand_name);
+                //$("#OWN_BRAND").attr("data-mybcode", msg.brand_code);
                 $("#STORE_NAME").val(msg.store_name);
                 $("#STORE_NAME").attr("data-name", msg.store_name);
                 $("#STORE_ID").val(msg.store_code);
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
                 $("#storeId").attr("data-name", msg.store_id);
-                $("#OWN_AREA").val(msg.area_name);
-                $("#OWN_AREA").attr("data-myacode", msg.area_code);
-                $("#OWN_AREA").attr("title",msg.area_name);
-                $("#OWN_BRAND").attr("title",msg.brand_name);
+                //$("#OWN_AREA").val(msg.area_name);
+                //$("#OWN_AREA").attr("data-myacode", msg.area_code);
+                //$("#OWN_AREA").attr("title",msg.area_name);
+                //$("#OWN_BRAND").attr("title",msg.brand_name);
                 if (msg.flg_tob == "Y") {
                     $("#FLG_TOB").val("是");
                 } else if (msg.flg_tob == "N") {
@@ -437,79 +489,226 @@ jQuery(document).ready(function () {
         }
         
     });
-    $("#OWN_AREA").click(function (event) {
-        $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
-        $("#area_select").html('');
-        event = event || window.event;
-        event.stopPropagation();
-        $(this).parent().children('ul').toggle();
-        var area_param = {"corp_code": $("#OWN_CORP").val()};
-        var area_command = "/shop/area";
+
+    $(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
+    //提示弹框
+    function frame(){
+        var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('body').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;position:fixed;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+        },2000);
+    }
+    $("#screen_close_area").click(function(){
+        $("#screen_area .screen_content_l").unbind("scroll");
+        $("#screen_area").hide();
+    });
+    $("#screen_close_brand").click(function(){
+        $("#screen_brand .screen_content_l").unbind("scroll");
+        $("#screen_brand").hide();
+    });
+    $("#ADD_AREA").click(function () {
+        var arr=whir.loading.getPageSize();
+        area_num=1;
+        $("#area_search").val("");
+        $("#screen_area .screen_content_l ul").empty();
+        $("#screen_area .screen_content_r ul").empty();
+        $("#screen_area").show();
+        var left=(arr[0]-$("#screen_area").width())/2;
+        var tp=(arr[1]-$("#screen_area").height())/2+40;
+        $("#screen_area").css({"left":left+"px","top":tp+"px"});
+        getArea(area_num);
+        isscroll=false;
+        console.log(1);
+    });
+    $("#ADD_BRAND").click(function(){
+        var arr=whir.loading.getPageSize();
+        area_num=1;
+        $("#brand_search").val("");
+        $("#screen_brand .screen_content_l ul").empty();
+        $("#screen_brand .screen_content_r ul").empty();
+        $("#screen_brand").show();
+        var left=(arr[0]-$("#screen_brand").width())/2;
+        var tp=(arr[1]-$("#screen_brand").height())/2+40;
+        $("#screen_brand").css({"left":left+"px","top":tp+"px"});
+        //getArea(area_num);
+        getBrand(area_num);
+        isscroll=false;
+        console.log(1);
+    });
+    //点击右移选中
+    $(".shift_right").click(function(){
+        var right="only";
+        var div=$(this);
+        removeRight(right,div);
+        console.log("右移")
+    });
+    //点击右移全部
+    $(".shift_right_all").click(function(){
+        var right="all";
+        var div=$(this);
+        removeRight(right,div);
+    });
+    //点击左移
+    $(".shift_left").click(function(){
+        var left="only";
+        var div=$(this);
+        removeLeft(left,div);
+    });
+//点击左移全部
+    $(".shift_left_all").click(function(){
+        var left="all";
+        var div=$(this);
+        removeLeft(left,div);
+    });
+    //移到左边
+    function removeLeft(a,b){
+        var li="";
+        if(a=="only"){
+            li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']:checked").parents("li");
+        }
+        if(a=="all"){
+            li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
+        }
+        if(li.length=="0"){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        if(li.length>0){
+            for(var i=li.length-1;i>=0;i--){
+                $(li[i]).remove();
+                $(".screen_content .screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked")
+            }
+        }
+        var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+        $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+        bianse();
+    }
+    //移到右边
+    function removeRight(direction,b){
+        var li="";
+        if(direction=="only"){
+            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
+        }
+        if(direction=="all"){
+            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
+        }
+        if(li.length=="0"){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        if(li.length>0){
+            for(var i=0;i<li.length;i++){
+                var html=$(li[i]).html();
+                var id=$(li[i]).find("input[type='checkbox']").val();
+                var input=$(b).parents(".screen_content").find(".screen_content_r li");
+                for(var j=0;j<input.length;j++){
+                    if($(input[j]).attr("id")==id){
+                        $(input[j]).remove();
+                    }
+                }
+                $(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
+                $(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
+            }
+        }
+        var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+        $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+        bianse();
+    }
+    //点击列表显示选中状态
+    $(".screen_content").on("click","li",function(){
+        var input=$(this).find("input")[0];
+        var thinput=$("thead input")[0];
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            input.checked = false;
+        }
+    });
+    //获取区域
+    function getArea(a){
+        whir.loading.add("",0.5);//加载等待框
+        $("#mask").css("z-index","10002");
+        var area_command = "/area/selAreaByCorpCode";
+        var corp_code = $('#OWN_CORP').val();
+        var searchValue=$("#area_search").val().trim();
+        var pageSize=20;
+        var pageNumber=a;
+        var area_param = {};
+        area_param["searchValue"]=searchValue;
+        area_param["pageSize"]=pageSize;
+        area_param["pageNumber"]=pageNumber;
+        area_param["corp_code"]=corp_code;
         oc.postRequire("post", area_command, "", area_param, function (data) {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
-                console.log(msg);
+                var list=JSON.parse(msg.list);
+                var list=list.list;
                 var area_html = '';
-                var a = null;
-                console.log(msg.areas);
-                if (msg.areas.length == 0) {
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: "该企业目前分配区域！"
-                    });
+                if (list.length == 0) {
+                    if(a==1){
+                        for(var h=0;h<9;h++){
+                            area_html+="<li></li>";
+                        }
+                    }
+                    area_next=true;
                 } else {
-                    for (var i = 0; i < msg.areas.length; i++) {
-                        a = msg.areas[i];
-                        area_html += '<li style="margin-bottom: 20px;" data-areacode="' + a.area_code + '"><input type="checkbox" style="width: 14px;height: 14px;border: 1px solid #ddd;border-radius: 4px;color:#888;vertical-align: middle;margin-top: -2px;-webkit-appearance: checkbox">' + a.area_name + '</li>';
-                    }
-                    $("#area_select").append(area_html);
-                    $("#area_select li input").click(function (event) {
-                        var this_ = this;
-                        var txt = $(this_).text();
-                        var a_code = $(this_).attr("data-areacode");
-                        //$(this_).parent().parent().children(".input_select").val(txt);
-                        //$(this_).parent().parent().children(".input_select").attr('data-myacode', a_code);
-                        //$(this_).addClass('rel').siblings().removeClass('rel');
-                        //$(this_).parent().toggle();
-                        console.log(this_.checked);
-                        if(this_.checked){
-                            $(this_).checked=true;
-                            areaData.push($(this_).parent().text());
-                            areaDataCode.push($(this_).parent().attr('data-areacode'));
-                            $("#OWN_AREA").val(areaData.toString());
-                            $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
-                            $("#OWN_AREA").attr("title",areaData.toString());
-                        }else {
-                            $(this_).checked=false;
-                            areaData.remove($(this_).parent().text());
-                            areaDataCode.remove($(this_).parent().attr('data-areacode'));
-                            $("#OWN_AREA").val(areaData.toString());
-                            $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
-                            $("#OWN_AREA").attr("title",areaData.toString());
+                    if(list.length<9&&a==1){
+                        for (var i = 0; i < list.length; i++) {
+                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'/><label for='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
                         }
-                    });
-                    var areaCode=$("#OWN_AREA").attr("data-myacode");
-                    var allSelectData=$("#area_select li input");
-                    if(areaCode.indexOf(",")!=-1){
-                        var areaCodetoArray=areaCode.split(",");
-                        console.log(areaCodetoArray);
-                        for(var a=0;a<areaCodetoArray.length;a++){
-                            for(var b= 0;b<allSelectData.length;b++){
-                                if(areaCodetoArray[a]==$(allSelectData[b]).parent().attr("data-areacode")){
-                                    $(allSelectData[b]).attr("checked",true);
-                                }
-                            }
+                        for(var j=0;j<9-list.length;j++){
+                            area_html+="<li></li>"
                         }
-                    }else{
-                        for(var i=0;i<allSelectData.length;i++){
-                            if($(allSelectData[i]).parent().attr("data-areacode")==areaCode){
-                                $(allSelectData[i]).attr("checked",true);
-                            }
+                    }else if(list.length>=9||list.length<9&&a>1){
+                        for (var i = 0; i < list.length; i++) {
+                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'/><label for='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
                         }
                     }
+                    area_num++;
+                    area_next=false;
+
                 }
+                $("#screen_area .screen_content_l ul").append(area_html);
+                bianse();
+                if(!isscroll){
+                        $("#screen_area .screen_content_l").bind("scroll",function () {
+                            console.log("滚动了吗");
+                            var nScrollHight = $(this)[0].scrollHeight;
+                            var nScrollTop = $(this)[0].scrollTop;
+                            var nDivHight=$(this).height();
+                            if(nScrollTop + nDivHight >=nScrollHight){
+                                if(area_next){
+                                    return;
+                                }
+                                getArea(area_num);
+                                console.log(4)
+                            }
+                        });
+                }
+                isscroll=true;
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -518,8 +717,177 @@ jQuery(document).ready(function () {
                     content: data.message
                 });
             }
+
+            whir.loading.remove();//移除加载框
         });
+
+    }
+    //获取品牌
+    function getBrand(a){
+        whir.loading.add("",0.5);//加载等待框
+        $("#mask").css("z-index","10002");
+        var brand_command = "/shop/brand";
+        var brand_code = $("#OWN_CORP").val();
+        var searchValue=$("#brand_search").val().trim();
+        var pageSize=20;
+        var pageNumber=a;
+        var area_param = {};
+        area_param["searchValue"]=searchValue;
+        area_param["pageSize"]=pageSize;
+        area_param["pageNumber"]=pageNumber;
+        area_param["corp_code"]=brand_code;
+        oc.postRequire("post", brand_command, "", area_param, function (data) {
+            if (data.code == "0") {
+                var msg = JSON.parse(data.message);
+                var list=msg.brands;
+                var area_html = '';
+                if (list.length == 0) {
+                    if(a==1){
+                        for(var h=0;h<9;h++){
+                            area_html+="<li></li>";
+                        }
+                    }
+                    area_next=true;
+                } else {
+                    if(list.length<9&&a==1){
+                        for (var i = 0; i < list.length; i++) {
+                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'/><label for='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+                        }
+                        for(var j=0;j<9-list.length;j++){
+                            area_html+="<li></li>"
+                        }
+                    }else if(list.length>=9||list.length<9&&a>1){
+                        for (var i = 0; i < list.length; i++) {
+                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'/><label for='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+                        }
+                    }
+                    area_num++;
+                    area_next=false;
+
+                }
+                $("#screen_brand .screen_content_l ul").append(area_html);
+                bianse();
+                if(!isscroll){
+                        $("#screen_brand .screen_content_l").bind("scroll",function () {
+                            var nScrollHight = $(this)[0].scrollHeight;
+                            var nScrollTop = $(this)[0].scrollTop;
+                            var nDivHight=$(this).height();
+                            if(nScrollTop + nDivHight >=nScrollHight){
+                                if(area_next){
+                                    return;
+                                }
+                                getBrand(area_num);
+                            }
+                        });
+                }
+                isscroll=true;
+            } else if (data.code == "-1") {
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+            whir.loading.remove();//移除加载框
+        });
+
+    }
+    //区域搜索
+    $("#area_search").keydown(function(){
+        $("#screen_area .screen_content_l").unbind("scroll");
+        isscroll=false;
+        var event=window.event||arguments[0];
+        area_num=1;
+        if(event.keyCode == 13){
+            $("#screen_area .screen_content_l ul").empty();
+            getArea(area_num);
+        }
     });
+    //品牌搜索
+    $("#brand_search").keydown(function(){
+        $("#screen_brand .screen_content_l").unbind("scroll");
+        isscroll=false;
+        var event=window.event||arguments[0];
+        area_num=1;
+        if(event.keyCode == 13){
+            $("#screen_brand .screen_content_l ul").empty();
+            getBrand(area_num);
+        }
+    });
+    //区域放大镜搜索
+    $("#area_search_f").click(function(){
+        area_num=1;
+        $("#screen_area .screen_content_l ul").empty();
+        getArea(area_num);
+        console.log(3)
+    });
+    //品牌放大镜搜索
+    $("#brand_search_f").click(function(){
+        area_num=1;
+        $("#screen_brand .screen_content_l ul").empty();
+        getBrand(area_num);
+        console.log(3)
+    });
+$("#screen_que_area").click(function(){
+    var li=$(this).prev().children(".screen_content_r").find("ul li");
+    var a=$('#OWN_AREA_All input');
+    if(li.length>0){
+        for(var i=0;i<li.length;i++){
+            for(var j=0;j<a.length;j++){
+                if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+                    $(a[j]).parent("p").remove();
+                }
+            }
+            $('#OWN_AREA_All').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find("span").html()+"'><span class='power remove_app_id'>删除</span></p>");
+        }
+    }
+    $("#screen_area").hide();
+
+});
+    $("#screen_que_brand").click(function(){
+    var li=$(this).prev().children(".screen_content_r").find("ul li");
+    var a=$('#OWN_BRAND_All input');
+    if(li.length>0){
+        for(var i=0;i<li.length;i++){
+            for(var j=0;j<a.length;j++){
+                if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+                    $(a[j]).parent("p").remove();
+                }
+            }
+            $('#OWN_BRAND_All').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find("span").html()+"'><span class='power remove_app_id'>删除</span></p>");
+        }
+    }
+    $("#screen_brand").hide();
+
+});
+    //删除
+    $(".xingming").on("click",".remove_app_id",function(){
+        $(this).parent().remove();
+    });
+    function bianse(){
+        $(".screen_content_l li:odd").css("backgroundColor","#fff");
+        $(".screen_content_l li:even").css("backgroundColor","#ededed");
+        $(".screen_content_r li:odd").css("backgroundColor","#fff");
+        $(".screen_content_r li:even").css("backgroundColor","#ededed");
+    }
+
     $(".shopadd_oper_btn ul li:nth-of-type(2)").click(function () {//点击关闭按钮跳转到列表页面
         $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
     });
@@ -527,9 +895,9 @@ jQuery(document).ready(function () {
         sessionStorage.removeItem("edit");
         $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
     });
-    $("#OWN_BRAND").click(function () {
-        $("#OWN_BRAND").parent().children("#brand_data").toggle();
-    });
+    //$("#OWN_BRAND").click(function () {
+    //    //$("#OWN_BRAND").parent().children("#brand_data").toggle();
+    //});
     $(document).click(function (e) {
 
         if($(e.target).is("li")||$(e.target).is("#area_select")||$(e.target).is('input')){
@@ -543,117 +911,117 @@ jQuery(document).ready(function () {
             $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
         }
     });
-    var brandname = [];
-    $("#brand_data").remove();
-    var brand_param = {"corp_code": $("#OWN_CORP").val()};
-    var brand_command = "/shop/brand";
-    oc.postRequire("post", brand_command, "", brand_param, function (rdata) {
-        console.log(rdata);
-        if (rdata.code == "0") {
-            var msg = JSON.parse(rdata.message);
-            console.log(msg);
-            // var index=0;
-            var brand_html = '';
-            var b = null;
-            for (var j = 0; j < msg.brands.length; j++) {
-                b = msg.brands[j];
-                brand_html += '<option value="' + b.brand_code + '">' + b.brand_name + '</option>';
-                brandname.push(b.brand_name);
-            }
-            var checkboxSelect = new CheckboxSelect({
-                input: document.getElementById('OWN_BRAND'),
-                hiddeninput: document.getElementById('hiddencheckboxSelect'),
-                width: 420,
-                opacity: 1,
-                data: brandname,
-            });
-            console.log(brandname);
-        } else if (data.code == "-1") {
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
-        }
-    });
-    $("#OWN_BRAND").click(function () {
-        $(".checkboxselect-container").html('');
-        var brand_param = {"corp_code": $("#OWN_CORP").val()};
-        var brand_command = "/shop/brand";
-        oc.postRequire("post", brand_command, "", brand_param, function (rdata) {
-            console.log(rdata);
-            if (rdata.code == "0") {
-                var msg = JSON.parse(rdata.message);
-                console.log(msg);
-                // var index=0;
-                var brand_html = '';
-                var b = null;
-                if (msg.brands.length == 0) {
-                    art.dialosg({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: "该企业目前没有品牌！"
-                    });
-                    $(".checkboxselect-container").css("display", "none");
-                } else {
-                    for (var m = 0; m < msg.brands.length; m++) {
-                        b = msg.brands[m];
-                        brand_html += '<div class="checkboxselect-item"><input type="checkbox" value="' + b.brand_code + '" data-brandname="' + b.brand_name + '" style="-webkit-appearance: checkbox; width: 14px; height: 14px;">' + b.brand_name + '</div>';
-                    }
-                    $(".checkboxselect-container").html(brand_html);
-                    var check_input = $('.checkboxselect-container input');
-                    for (var c = 0; c < check_input.length; c++) {
-                        check_input[c].onclick = function () {
-                            if (this.checked == true) {
-                                checknow_data.push($(this).val())
-                                checknow_namedata.push($(this).attr("data-brandname"));
-                                $('#OWN_BRAND').val(checknow_namedata.toString());
-                                $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
-                                $("#OWN_BRAND").attr("title",checknow_namedata.toString());
-                            } else if (this.checked == false) {
-                                checknow_namedata.remove($(this).attr("data-brandname"));
-                                checknow_data.remove($(this).val());
-                                console.log(checknow_data);
-                                console.log(checknow_namedata);
-                                $('#OWN_BRAND').val(checknow_namedata.toString());
-                                $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
-                                $("#OWN_BRAND").attr("title",checknow_namedata.toString());
-                            }
-                        }
-                    }
-                    var s = $("#OWN_BRAND").attr("data-mybcode");
-                    var c_input = $('.checkboxselect-container input');
-                    var ss = '';
-                    if (s.indexOf(',')!==-1) {
-                        ss = s.split(",");
-                        for (var i = 0; i < ss.length; i++) {
-                            for (var j = 0; j < c_input.length; j++) {
-                                if ($(c_input[j]).val() == ss[i]) {
-                                    $(c_input[j]).attr("checked", true);
-                                }
-                            }
-                        }
-                    } else {
-                        ss = s;
-                        for (var j = 0; j < c_input.length; j++) {
-                            if ($(c_input[j]).val() == ss) {
-                                $(c_input[j]).attr("checked", true);
-                            }
-                        }
-                    }
-                }
-            } else if (data.code == "-1") {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: data.message
-                });
-            }
-        });
-    });
+    //var brandname = [];
+    //$("#brand_data").remove();
+    //var brand_param = {"corp_code": $("#OWN_CORP").val()};
+    //var brand_command = "/shop/brand";
+    //oc.postRequire("post", brand_command, "", brand_param, function (rdata) {
+    //    console.log(rdata);
+    //    if (rdata.code == "0") {
+    //        var msg = JSON.parse(rdata.message);
+    //        console.log(msg);
+    //        // var index=0;
+    //        var brand_html = '';
+    //        var b = null;
+    //        for (var j = 0; j < msg.brands.length; j++) {
+    //            b = msg.brands[j];
+    //            brand_html += '<option value="' + b.brand_code + '">' + b.brand_name + '</option>';
+    //            brandname.push(b.brand_name);
+    //        }
+    //        var checkboxSelect = new CheckboxSelect({
+    //            input: document.getElementById('OWN_BRAND'),
+    //            hiddeninput: document.getElementById('hiddencheckboxSelect'),
+    //            width: 420,
+    //            opacity: 1,
+    //            data: brandname,
+    //        });
+    //        console.log(brandname);
+    //    } else if (data.code == "-1") {
+    //        art.dialog({
+    //            time: 1,
+    //            lock: true,
+    //            cancel: false,
+    //            content: data.message
+    //        });
+    //    }
+    //});
+    //$("#OWN_BRAND").click(function () {
+    //    $(".checkboxselect-container").html('');
+    //    var brand_param = {"corp_code": $("#OWN_CORP").val()};
+    //    var brand_command = "/shop/brand";
+    //    oc.postRequire("post", brand_command, "", brand_param, function (rdata) {
+    //        console.log(rdata);
+    //        if (rdata.code == "0") {
+    //            var msg = JSON.parse(rdata.message);
+    //            console.log(msg);
+    //            // var index=0;
+    //            var brand_html = '';
+    //            var b = null;
+    //            if (msg.brands.length == 0) {
+    //                art.dialosg({
+    //                    time: 1,
+    //                    lock: true,
+    //                    cancel: false,
+    //                    content: "该企业目前没有品牌！"
+    //                });
+    //                $(".checkboxselect-container").css("display", "none");
+    //            } else {
+    //                for (var m = 0; m < msg.brands.length; m++) {
+    //                    b = msg.brands[m];
+    //                    brand_html += '<div class="checkboxselect-item"><input type="checkbox" value="' + b.brand_code + '" data-brandname="' + b.brand_name + '" style="-webkit-appearance: checkbox; width: 14px; height: 14px;">' + b.brand_name + '</div>';
+    //                }
+    //                $(".checkboxselect-container").html(brand_html);
+    //                var check_input = $('.checkboxselect-container input');
+    //                for (var c = 0; c < check_input.length; c++) {
+    //                    check_input[c].onclick = function () {
+    //                        if (this.checked == true) {
+    //                            checknow_data.push($(this).val())
+    //                            checknow_namedata.push($(this).attr("data-brandname"));
+    //                            $('#OWN_BRAND').val(checknow_namedata.toString());
+    //                            $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
+    //                            $("#OWN_BRAND").attr("title",checknow_namedata.toString());
+    //                        } else if (this.checked == false) {
+    //                            checknow_namedata.remove($(this).attr("data-brandname"));
+    //                            checknow_data.remove($(this).val());
+    //                            console.log(checknow_data);
+    //                            console.log(checknow_namedata);
+    //                            $('#OWN_BRAND').val(checknow_namedata.toString());
+    //                            $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
+    //                            $("#OWN_BRAND").attr("title",checknow_namedata.toString());
+    //                        }
+    //                    }
+    //                }
+    //                var s = $("#OWN_BRAND").attr("data-mybcode");
+    //                var c_input = $('.checkboxselect-container input');
+    //                var ss = '';
+    //                if (s.indexOf(',')!==-1) {
+    //                    ss = s.split(",");
+    //                    for (var i = 0; i < ss.length; i++) {
+    //                        for (var j = 0; j < c_input.length; j++) {
+    //                            if ($(c_input[j]).val() == ss[i]) {
+    //                                $(c_input[j]).attr("checked", true);
+    //                            }
+    //                        }
+    //                    }
+    //                } else {
+    //                    ss = s;
+    //                    for (var j = 0; j < c_input.length; j++) {
+    //                        if ($(c_input[j]).val() == ss) {
+    //                            $(c_input[j]).attr("checked", true);
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        } else if (data.code == "-1") {
+    //            art.dialog({
+    //                time: 1,
+    //                lock: true,
+    //                cancel: false,
+    //                content: data.message
+    //            });
+    //        }
+    //    });
+    //});
     $(".corp_select").click(function () {
         $("#OWN_AREA").val('');
         $("#OWN_BRAND").val('');
