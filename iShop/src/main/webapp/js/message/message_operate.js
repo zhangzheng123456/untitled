@@ -835,5 +835,5 @@ $("#edit_close").click(function(){
 })
 //新增关闭
 $("#send_close").click(function(){
-	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+	$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
 })
