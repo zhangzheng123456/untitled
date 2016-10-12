@@ -182,6 +182,7 @@ input::-webkit-input-placeholder{
 }
 .action_r{
 	float: right;
+	color: black;
 }
 .action_l ul{
 	float: left;
