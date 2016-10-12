@@ -1877,11 +1877,11 @@ public class UserController {
             List<CorpWechat> corpWechats = new ArrayList<CorpWechat>();
             if (corp_code.equals("C10016")){
                 List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+                String brand_code = "";
                 for (int i = 0; i < brand_codes.size(); i++) {
-                    String brand_code = brand_codes.get(i);
-
-                     corpWechats.addAll(corpService.selectWByCorpBrand(corp_code, brand_code));
+                     brand_code = brand_code + Common.SPECIAL_HEAD + brand_codes.get(i) + ",";
                 }
+                corpWechats = corpService.selectWByCorpBrand(corp_code, brand_code);
             }else {
                 corpWechats = corpService.getWAuthByCorp(corp_code);
             }

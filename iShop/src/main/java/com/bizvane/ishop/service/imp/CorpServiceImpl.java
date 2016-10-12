@@ -322,8 +322,15 @@ public class CorpServiceImpl implements CorpService {
         return corpMapper.selectWAuthByCorp(corp_code);
     }
 
-    public List<CorpWechat> selectWByCorpBrand(String corp_code,String brand_code) throws Exception {
-        return corpMapper.selectWByCorpBrand(corp_code,brand_code);
+    public List<CorpWechat> selectWByCorpBrand(String corp_code,String brand_codes) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        String[] brand_code = brand_codes.split(",");
+        for (int i = 0; i < brand_code.length; i++) {
+            brand_code[i] = brand_code[i]+",";
+        }
+        params.put("corp_code",corp_code);
+        params.put("brand_code",brand_code);
+        return corpMapper.selectWByCorpBrand(params);
     }
 
     public int deleteCorpWechat(String app_id,String corp_code) throws Exception{

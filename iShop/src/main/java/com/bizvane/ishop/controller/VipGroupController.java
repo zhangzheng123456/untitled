@@ -131,10 +131,11 @@ public class VipGroupController {
                 dbObject.put("corp_code",corp_code);
                 DBCursor dbCursor= cursor.find(dbObject);
 
-                while (dbCursor.hasNext()) {
-                    System.out.println("---------vip group has vip------------");
-                }
-                vip_count = dbCursor.size();
+//                while (dbCursor.hasNext()) {
+//                    System.out.println("---------vip group has vip------------");
+                    vip_count = dbCursor.size();
+//                }
+//                vip_count = dbCursor.size();
             }
             vipGroup.setVip_count(vip_count);
             data = JSON.toJSONString(vipGroup);

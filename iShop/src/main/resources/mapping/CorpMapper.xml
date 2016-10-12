@@ -274,7 +274,8 @@
         app_id,
         app_name,
         corp_code,
-        is_authorize
+        is_authorize,
+        brand_code
         FROM rel_corp_wechat
         WHERE app_id = #{app_id}
     </select>
@@ -298,9 +299,13 @@
         is_authorize
         FROM rel_corp_wechat
         WHERE corp_code = #{corp_code}
-        AND brand_code = #{brand_code}
+        AND
+        <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
+           brand_code REGEXP #{item}
+        </foreach>
         AND is_authorize = 'Y'
         AND isactive = 'Y'
+        GROUP BY app_id
     </select>
 
     <select id="selectWAuthByCorp" resultMap="CorpWechat">
