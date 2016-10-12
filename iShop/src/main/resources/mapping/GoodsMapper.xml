@@ -71,6 +71,7 @@
         </if>
         AND cp.isactive = 'Y'
         AND db.isactive = 'Y'
+        GROUP BY g.id
         ORDER BY g.id DESC
     </select>
 
@@ -135,6 +136,7 @@
         </if>
         AND cp.isactive = 'Y'
         AND db.isactive = 'Y'
+        GROUP BY g.id
         ORDER BY g.id DESC
     </select>
 
@@ -177,6 +179,7 @@
         AND g.isactive = 'Y'
         AND cp.isactive = 'Y'
         AND db.isactive = 'Y'
+        GROUP BY g.id
         ORDER BY g.id DESC
     </select>
 
@@ -211,6 +214,7 @@
         </if>
         AND cp.isactive = 'Y'
         AND db.isactive = 'Y'
+        GROUP BY g.id
         ORDER BY g.id DESC
     </select>
 
@@ -257,6 +261,7 @@
         </foreach>
         AND cp.isactive = 'Y'
         AND db.isactive = 'Y'
+        GROUP BY g.id
         ORDER BY g.id DESC
     </select>
 
