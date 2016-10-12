@@ -651,18 +651,6 @@ jQuery(document).ready(function () {
                 var list=JSON.parse(msg.list);
                 var list=list.list;
                 var area_html = '';
-                console.log(msg.areas);
-                if (msg.areas.length == 0) {
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: "该企业目前分配区域"
-                    });
-                } else {
-                    for (var i = 0; i < msg.areas.length; i++) {
-                        a = msg.areas[i];
-                        area_html += '<li style="margin-bottom: 20px;" data-areacode="' + a.area_code + '"><input type="checkbox" style="width: 14px;height: 14px;border: 1px solid #ddd;border-radius: 4px;color:#888;vertical-align: middle;margin-top: -2px;-webkit-appearance: checkbox">' + a.area_name + '</li>';
                 if (list.length == 0) {
                     if(a==1){
                         for(var h=0;h<9;h++){
