@@ -95,7 +95,7 @@ public class StoreServiceImpl implements StoreService {
             for (int i = 0; i < ids.length; i++) {
                 Area area = areaMapper.selectAreaByCode(corp_code,ids[i],Common.IS_ACTIVE_Y);
                 if (area != null) {
-                    String area_name1 = area.getArea_name();
+                    String area_name1 = area.getArea_name()+",";
                     area_name.append(area_name1);
                 }
             }
@@ -140,6 +140,10 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             if (store.getArea_name()!=null) {
+//                String area_name = ;
+//                if (i != shops.size() - 1) {
+//                    area_name+=",";
+//                }
                 shops.get(i).setArea_name(store.getArea_name());
             }else {
                 shops.get(i).setArea_name("");
