@@ -48,17 +48,21 @@
                 <span><label>分组名称</label><input type="text" id="vip_id" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组名称不能为空！"></div></div></span>
             </div>
 
-            <div>
-                <span><label>分组成员</label><input id="group_recode" readonly type="text" /></span>
+
+            <div id="check_per">
+                <span><label>分组会员</label><input id="group_recode" type="text" id="name_num" readonly/>
+                    <span class="check_icon"id="screen_add"style="cursor: pointer">新增会员<i class="icon-ishop_8-03"></i>
+                    </span>
+                </span>
             </div>
-            <div>
-                <span>
-                    <label>新增成员</label>
-                 </span>
-                 <div class="add_app_id" id="screen_add" style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px;display:inline-block">
-                                    新增 <span>+</span>
-                 </div>
-            </div>
+            <!--<div>-->
+                <!--<span>-->
+                    <!--<label>新增成员</label>-->
+                 <!--</span>-->
+                 <!--<div class="add_app_id"  style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px;display:inline-block">-->
+                                    <!--新增 <span>+</span>-->
+                 <!--</div>-->
+            <!--</div>-->
             <div>
                 <span><label>备注</label><input type="text" id="vip_remark" /></span>
             </div>
@@ -106,7 +110,7 @@
             <div class="action_l">
                 <ul>
                     <li class="li s">
-                        <input type="text" class="input" placeholder="在当前页面上搜索" id="search">
+                        <input type="text" class="input" placeholder="姓名/手机号/会员卡号" id="search">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
