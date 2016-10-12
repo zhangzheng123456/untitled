@@ -85,6 +85,7 @@
             OR mt.type_description LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP By dum.id
         ORDER BY dum.id DESC
     </select>
 
@@ -100,6 +101,7 @@
     AND dum.corp_code = u1.corp_code
     AND c.corp_code = dum.corp_code
     AND rum.message_receiver = u1.user_code
+    GROUP By rum.id
     ORDER BY rum.id DESC
     </select>
 
@@ -261,6 +263,7 @@
         SELECT *
         FROM def_message_type
         WHERE isactive = 'Y'
+        GROUP By id
         ORDER BY id DESC
     </select>
 
@@ -303,6 +306,7 @@
                 </choose>
             </foreach>
         </if>
+        GROUP By dum.id
         ORDER BY dum.id DESC
     </select>
 </mapper>

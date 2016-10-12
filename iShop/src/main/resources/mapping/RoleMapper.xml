@@ -22,6 +22,7 @@
             OR remark LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY id
         ORDER BY id DESC
     </select>
 
@@ -33,6 +34,7 @@
             AND role_code &lt; #{role_code}
         </if>
         AND isactive = 'Y'
+        GROUP BY id
         ORDER BY id DESC
     </select>
 

@@ -159,6 +159,7 @@
             AND role_code &lt; #{role_code}
         </if>
         AND isactive = 'Y'
+        GROUP By id
         ORDER BY id DESC
     </select>
 
@@ -167,6 +168,7 @@
         SELECT *
         FROM def_group
         WHERE role_code = #{role_code}
+        GROUP By id
         ORDER BY id DESC
     </select>
 
