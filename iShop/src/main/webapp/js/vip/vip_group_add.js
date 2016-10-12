@@ -327,6 +327,8 @@ $("#edit_close").click(function(){
 //绑定单击事件
 //新增
 $('#screen_add').on('click',function(){
+    var str=$('#screen_add').text().trim();
+    str=='编辑会员'&&( role='eidtor');
     group_code=$("#vip_num").val();
     corp_code=$('#OWN_CORP').val()
     $(this).attr('data_role')?role=$(this).attr('data_role'):'';
@@ -381,9 +383,13 @@ $("#save").click(function(){
     //发起异步请求
     oc.postRequire("post",'/vipGroup/saveVips',"",param, function(data){
         if(data.code==0){
-            // alert('保存成功');
-            window.location.reload();
-            $('#group_recode').val(group_code);
+            if(role=='eidtor'){
+                window.location.reload()
+            }else{
+                $('#group_recode').val(group_count);
+                $('#page-wrapper')[0].style.display='block';
+                $('.content')[0].style.display='none';
+            }
         }else if(data.code==-1){
             alert(data.message);
         }
@@ -393,7 +399,6 @@ $("#save").click(function(){
 $('#turnoff').on('click',function () {
     $('#page-wrapper')[0].style.display='block';
     $('.content')[0].style.display='none';
-    $('#group_recode').val(eval($('#group_recode').val(),group_count))
 })
 //打开筛选界面
 $('#filtrate').on('click',function () {
