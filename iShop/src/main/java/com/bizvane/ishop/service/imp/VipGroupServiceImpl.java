@@ -1,14 +1,23 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.VipGroupMapper;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +33,8 @@ import java.util.Map;
 public class VipGroupServiceImpl implements VipGroupService {
     @Autowired
     VipGroupMapper vipGroupMapper;
-
+    @Autowired
+    MongoDBClient mongodbClient;
     /**
      * 根据id
      * 获取会员分组信息
@@ -62,13 +72,12 @@ public class VipGroupServiceImpl implements VipGroupService {
     }
 
     @Override
-    public List<VipGroup> selectCorpVipGroups(String corp_code) throws Exception {
+    public List<VipGroup> selectCorpVipGroups(String corp_code,String search_value) throws Exception {
         List<VipGroup> vipGroups;
-        vipGroups = vipGroupMapper.selectCorpVipGroups(corp_code);
+        vipGroups = vipGroupMapper.selectCorpVipGroups(corp_code,search_value);
 
         return vipGroups;
     }
-
 
     @Override
     public String insert(String message, String user_id) throws Exception {
@@ -169,5 +178,40 @@ public class VipGroupServiceImpl implements VipGroupService {
         return page;
     }
 
+    public JSONArray findVipsGroup(JSONArray array) throws Exception {
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+
+        JSONArray new_array = new JSONArray();
+        for (int i = 0; i < array.size(); i++) {
+            com.alibaba.fastjson.JSONObject vip = com.alibaba.fastjson.JSONObject.parseObject(array.get(i).toString());
+//            String vip_id = vip.get("vip_id").toString();
+            String corp_code = vip.get("corp_code").toString();
+            String cardno = vip.get("cardno").toString();
+
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("_id",corp_code+cardno);
+//                dObject.put("corp_code",corp_code);
+            DBCursor dbCursor= cursor.find(dbObject);
+
+            String vip_group_code = "";
+            String vip_group_name = "";
+            while (dbCursor.hasNext()) {
+                DBObject object = dbCursor.next();
+                if (object.containsField("vip_group_code"))
+                    vip_group_code = object.get("vip_group_code").toString();
+            }
+            if (!vip_group_code.equals("")){
+                VipGroup vipGroup = getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+                if (vipGroup != null){
+                    vip_group_name = vipGroup.getVip_group_name();
+                }
+            }
+            vip.put("vip_group_code",vip_group_code);
+            vip.put("vip_group_name",vip_group_name);
+            new_array.add(vip);
+        }
+        return new_array;
+    }
 
 }

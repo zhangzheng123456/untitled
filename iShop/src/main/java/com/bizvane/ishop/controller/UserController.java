@@ -678,6 +678,7 @@ public class UserController {
                     String group_code = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                   // System.out.println("-----------EXECL-------store_code---------------------:"+store_code);
                     String position = rs.getCell(j++, i).getContents().toString().trim();
                     if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
@@ -715,6 +716,10 @@ public class UserController {
                     if (!role.equals(Common.ROLE_AM)) {
                         user.setArea_code("");
                     } else {
+                        if(role.equals(Common.ROLE_AM ) && area_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为区经，区域编号为必填项";
+                            int a = 5 / 0;
+                        }
                         String[] areas = area_code.split(",");
                         int count = 0;
                         for (int k = 0; k < areas.length; k++) {
@@ -745,16 +750,21 @@ public class UserController {
 //                            store_code = store_code + codes[i2];
 //                        }
 //                    }
-                    if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
-                        if (!store_code.equals("all") && !store_code.equals("")) {
+                    if (role.equals(Common.ROLE_SM)) {
+                        if(role.equals(Common.ROLE_SM ) && store_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为店长，店铺编号为必填项";
+                            int a = 5 / 0;
+                        }
+                        if (!store_code.equals("")) {
                             String[] codes = store_code.split(",");
                             if(codes.length>100){
                                 result = "：第" + (i + 1) + "行员工拥有店铺数量上限为100";
                                 int a = 5 / 0;
                             }
+                         //   String store_code2 = "";
                             if (WebUtils.checkRepeat(codes)) {
-                                store_code = "";
-                                for (int k = 0; i < codes.length; k++) {
+                                store_code="";
+                                for (int k = 0; k < codes.length; k++) {
                                     codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
                                     store_code = store_code + codes[k];
                                 }
@@ -762,20 +772,35 @@ public class UserController {
                                 result = "：第" + (i + 1) + "行Execl中存在重复店铺";
                                 int a = 5 / 0;
                             }
+                          //  System.out.println("----------店长店铺----------:"+store_code);
                         }
                         user.setStore_code(store_code);
-                    } else {
-                        user.setStore_code("");
                     }
-                    if (role_code.equals(Common.ROLE_STAFF)){
+                    if(role.equals(Common.ROLE_STAFF)){
+                        if(role.equals(Common.ROLE_STAFF ) && store_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为导购，店铺编号为必填项";
+                            int a = 5 / 0;
+                        }
                         if (!store_code.equals("")) {
                             String[] codes = store_code.split(",");
                             if (codes.length > 1) {
-                                result = "：第" + (i + 1) + "行导购只能属于一家店铺";
+                                result = "：第" + (i + 1) + "行角色为导购，只能属于一家店铺";
                                 int a = 5 / 0;
+                            }else{
+                                store_code="";
+                                for (int k = 0; k < codes.length; k++) {
+                                    codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
+                                    store_code = store_code + codes[k];
+                                }
                             }
+                          //  System.out.println("----------导购店铺----------:"+store_code);
                         }
+                        user.setStore_code(store_code);
                     }
+                    if(role.equals(Common.ROLE_GM)||role.equals(Common.ROLE_AM)){
+                        user.setStore_code("");
+                    }
+
                     user.setPosition(position);
                     user.setPassword(user.getPhone());
                     Date now = new Date();
@@ -1841,22 +1866,42 @@ public class UserController {
             logger.info("------------UserController creatQrcodesForUser------");
             String corp_code = request.getParameter("corp_code");
             String user_code = request.getParameter("user_code");
-            List<CorpWechat> corpWechats = corpService.getWAuthByCorp(corp_code);
-            for (int i = 0; i < corpWechats.size(); i++) {
-                String auth_appid = corpWechats.get(i).getApp_id();
-                String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_code);
-                if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                    dataBean.setId(id);
-                    dataBean.setMessage("生成二维码失败");
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    return dataBean.getJsonStr();
-                } else if (result.equals("48001")) {
-                    dataBean.setId(id);
-                    dataBean.setMessage("该功能未授权");
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    return dataBean.getJsonStr();
-                }
+
+            List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+            if (users.size() < 1) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("用户不存在");
+                return dataBean.getJsonStr();
             }
+            List<CorpWechat> corpWechats = new ArrayList<CorpWechat>();
+            if (corp_code.equals("C10016")){
+                List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+                String brand_code = "";
+                for (int i = 0; i < brand_codes.size(); i++) {
+                     brand_code = brand_code + Common.SPECIAL_HEAD + brand_codes.get(i) + ",";
+                }
+                corpWechats = corpService.selectWByCorpBrand(corp_code, brand_code);
+            }else {
+                corpWechats = corpService.getWAuthByCorp(corp_code);
+            }
+
+                for (int j = 0; j < corpWechats.size(); j++) {
+                    String auth_appid = corpWechats.get(j).getApp_id();
+                    String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_code);
+                    if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                        dataBean.setId(id);
+                        dataBean.setMessage("生成二维码失败");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
+                    } else if (result.equals("48001")) {
+                        dataBean.setId(id);
+                        dataBean.setMessage("该功能未授权");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
+                    }
+                }
+
             dataBean.setId(id);
             dataBean.setMessage("生成完成");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

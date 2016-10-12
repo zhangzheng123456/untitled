@@ -1,20 +1,26 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.VipGroup;
-import com.bizvane.ishop.entity.ViplableGroup;
 import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +43,8 @@ public class VipGroupController {
     private static final Logger logger = Logger.getLogger(VipGroupController.class);
     @Autowired
     private VipGroupService vipGroupService;
+    @Autowired
+    MongoDBClient mongodbClient;
 
     String id;
 
@@ -52,7 +61,7 @@ public class VipGroupController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
@@ -96,12 +105,40 @@ public class VipGroupController {
             JSONObject result = new JSONObject();
             String jsString = request.getParameter("param");
             logger.info("json-select-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(vipGroupService.getVipGroupById(Integer.parseInt(id)));
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+            int vip_count = 0;
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
+            if (vipGroup != null) {
+                String corp_code = vipGroup.getCorp_code();
+                String vip_group_code = vipGroup.getVip_group_code();
+//                Map keyMap = new HashMap();
+//                keyMap.put("corp_code", corp_code);
+//                keyMap.put("vip_group_code", vip_group_code);
+//
+//                BasicDBObject queryCondition = new BasicDBObject();
+//                queryCondition.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(queryCondition);
+
+                BasicDBObject dbObject=new BasicDBObject();
+                dbObject.put("vip_group_code",vip_group_code);
+                dbObject.put("corp_code",corp_code);
+                DBCursor dbCursor= cursor.find(dbObject);
+
+//                while (dbCursor.hasNext()) {
+//                    System.out.println("---------vip group has vip------------");
+                    vip_count = dbCursor.size();
+//                }
+//                vip_count = dbCursor.size();
+            }
+            vipGroup.setVip_count(vip_count);
+            data = JSON.toJSONString(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(data);
@@ -127,7 +164,7 @@ public class VipGroupController {
             String jsString = request.getParameter("param");
             logger.info("json--vipGroup add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
@@ -164,7 +201,7 @@ public class VipGroupController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json------updateVipGroup---------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = vipGroupService.update(message, user_id);
@@ -199,10 +236,10 @@ public class VipGroupController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--------deleteVipGroup-------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String vipGroup_id = jsonObject.get("id").toString();
             String[] ids = vipGroup_id.split(",");
             String msg = null;
@@ -238,9 +275,9 @@ public class VipGroupController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String vip_group_code = jsonObject.get("vip_group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
@@ -280,9 +317,9 @@ public class VipGroupController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String vip_group_name = jsonObject.get("vip_group_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
@@ -319,10 +356,10 @@ public class VipGroupController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -365,10 +402,10 @@ public class VipGroupController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
@@ -405,7 +442,7 @@ public class VipGroupController {
         String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -457,5 +494,137 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 会员分组批量分配会员
+     * 保存mongodb
+     */
+    @RequestMapping(value = "/saveVips", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveVips(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            //mongodb
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+
+            String vip_group_code = jsonObject.get("vip_group_code").toString();
+            String vips_choose = jsonObject.get("choose").toString();
+            String vips_quit = jsonObject.get("quit").toString();
+
+            JSONArray array = JSONArray.parseArray(vips_choose);
+            for (int i = 0; i < array.size(); i++) {
+                String vip = array.get(i).toString();
+                JSONObject vip_info = JSONObject.parseObject(vip);
+                String vip_id = vip_info.get("vip_id").toString();
+                String corp_code = vip_info.get("corp_code").toString();
+                String card_no = vip_info.get("card_no").toString();
+                String phone = vip_info.get("phone").toString();
+
+                Map keyMap = new HashMap();
+                keyMap.put("_id", corp_code+card_no);
+                BasicDBObject queryCondition = new BasicDBObject();
+                queryCondition.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                if (dbCursor1.size()>0){
+                    //记录存在，更新
+                    DBObject updateCondition=new BasicDBObject();
+                    updateCondition.put("_id", corp_code+card_no);
+                    DBObject updatedValue=new BasicDBObject();
+                    updatedValue.put("vip_group_code", vip_group_code);
+                    DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+                    cursor.update(updateCondition, updateSetValue);
+                }else {
+                    //记录不存在，插入
+                    DBObject saveData = new BasicDBObject();
+                    saveData.put("_id", corp_code + card_no);
+                    saveData.put("vip_id", vip_id);
+                    saveData.put("corp_code", corp_code);
+                    saveData.put("card_no", card_no);
+                    saveData.put("phone", phone);
+                    saveData.put("corp_code", corp_code);
+                    saveData.put("vip_group_code", vip_group_code);
+                    cursor.save(saveData);
+                }
+            }
+
+            JSONArray array1 = JSONArray.parseArray(vips_quit);
+            for (int i = 0; i < array1.size(); i++) {
+                String vip = array1.get(i).toString();
+                JSONObject vip_info = JSONObject.parseObject(vip);
+                String vip_id = vip_info.get("vip_id").toString();
+                String corp_code = vip_info.get("corp_code").toString();
+                String card_no = vip_info.get("card_no").toString();
+                String phone = vip_info.get("phone").toString();
+
+                Map keyMap = new HashMap();
+                keyMap.put("_id", corp_code+card_no);
+                BasicDBObject queryCondition = new BasicDBObject();
+                queryCondition.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                if (dbCursor1.size()>0){
+                    //记录存在，更新
+                    DBObject updateCondition=new BasicDBObject();
+                    updateCondition.put("_id", corp_code+card_no);
+                    DBObject updatedValue=new BasicDBObject();
+                    updatedValue.put("vip_group_code", "");
+                    DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+                    cursor.update(updateCondition, updateSetValue);
+                }
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("save success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取企业下会员分组
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getCorpGroups", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpGroups(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = "";
+            if (jsonObject.containsKey("searchValue"))
+                search_value = jsonObject.get("searchValue").toString();
+
+            JSONObject result = new JSONObject();
+            List<VipGroup> vipGroups = vipGroupService.selectCorpVipGroups(corp_code,search_value);
+            result.put("list", JSON.toJSONString(vipGroups));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
 
 }

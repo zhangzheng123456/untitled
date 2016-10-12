@@ -68,41 +68,10 @@ public class VipAnalysisController {
             logger.info("-------vip列表" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-
             JSONObject obj = JSON.parseObject(result);
             String vipLists = obj.get("all_vip_list").toString();
             JSONArray array = JSONArray.parseArray(vipLists);
-            JSONArray new_array = new JSONArray();
-            for (int i = 0; i < array.size(); i++) {
-                JSONObject vip = JSONObject.parseObject(array.get(i).toString());
-                String vip_id = vip.get("vip_id").toString();
-                String corp_code = vip.get("corp_code").toString();
-                String cardno = vip.get("cardno").toString();
-
-                BasicDBObject dbObject=new BasicDBObject();
-                dbObject.put("_id",corp_code+cardno);
-//                dbObject.put("corp_code",corp_code);
-                DBCursor dbCursor= cursor.find(dbObject);
-
-                String vip_group_code = "";
-                String vip_group_name = "";
-                while (dbCursor.hasNext()) {
-                    DBObject object = dbCursor.next();
-                    if (object.containsField("vip_group_code"))
-                        vip_group_code = obj.get("vip_group_code").toString();
-                }
-                if (!vip_group_code.equals("")){
-                    VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
-                    if (vipGroup != null){
-                        vip_group_name = vipGroup.getVip_group_name();
-                    }
-                }
-                vip.put("vip_group_code",vip_group_code);
-                vip.put("vip_group_name",vip_group_name);
-                new_array.add(vip);
-            }
+            JSONArray new_array = vipGroupService.findVipsGroup(array);
             obj.put("all_vip_list",new_array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

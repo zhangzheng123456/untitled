@@ -154,22 +154,6 @@ public class VIPController {
                 extend.add(extend_obj);
             }
 
-            List<VipGroup> vipGroups = vipGroupService.selectCorpVipGroups(corp_code);
-            if (vipGroups.size()>0){
-                String values = "";
-                for (int i = 0; i < vipGroups.size(); i++) {
-                    values = values + vipGroups.get(i).getVip_group_name()+",";
-                }
-                JSONObject extend_obj = new JSONObject();
-                extend_obj.put("name","会员分组");
-                extend_obj.put("key","vip_group");
-                extend_obj.put("type","select");
-                extend_obj.put("values",values);
-                extend_obj.put("is_must","Y");
-                extend_obj.put("class","");
-                extend_obj.put("show_order","0");
-                extend.add(extend_obj);
-            }
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
 
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
@@ -364,10 +348,15 @@ public class VIPController {
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
+            JSONObject obj = JSON.parseObject(result);
+            String vipLists = obj.get("all_vip_list").toString();
+            JSONArray array = JSONArray.parseArray(vipLists);
+            JSONArray new_array = vipGroupService.findVipsGroup(array);
+            obj.put("all_vip_list",new_array);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result);
-
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -401,7 +390,6 @@ public class VIPController {
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
 
-//            String role_code = "";
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
@@ -448,9 +436,15 @@ public class VIPController {
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
+            JSONObject obj = JSON.parseObject(result);
+            String vipLists = obj.get("all_vip_list").toString();
+            JSONArray array = JSONArray.parseArray(vipLists);
+            JSONArray new_array = vipGroupService.findVipsGroup(array);
+            obj.put("all_vip_list",new_array);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result);
+            dataBean.setMessage(obj.toString());
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

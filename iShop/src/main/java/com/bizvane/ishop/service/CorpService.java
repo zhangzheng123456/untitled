@@ -56,6 +56,8 @@ public interface CorpService {
 
     List<CorpWechat> getWAuthByCorp(String corp_code) throws Exception;
 
+    List<CorpWechat> selectWByCorpBrand(String corp_code,String brand_code) throws Exception;
+
     int deleteCorpWechat(String app_id,String corp_code) throws Exception;
 
     String updateCorpWechat(JSONArray wechat, String corp_code, String user_code) throws Exception;

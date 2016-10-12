@@ -9,6 +9,7 @@ import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.BrandService;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,6 +28,8 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     CorpMapper corpMapper;
     @Autowired
+    CorpService corpService;
+    @Autowired
     BrandMapper brandMapper;
     @Autowired
     StoreMapper storeMapper;
@@ -36,7 +39,7 @@ public class BrandServiceImpl implements BrandService {
     private CodeUpdateMapper codeUpdateMapper;
 
     @Override
-    public Brand getBrandById(int id) throws SQLException {
+    public Brand getBrandById(int id) throws Exception {
         Brand brand = brandMapper.selectByBrandId(id);
         if (brand != null) {
             String cus_user_code = brand.getCus_user_code();
@@ -58,11 +61,11 @@ public class BrandServiceImpl implements BrandService {
                 }
             }
             brand.setCus_user(array_user);
-            List<CorpWechat> corpWechats = corpMapper.selectWByCorpBrand(brand.getCorp_code(), brand.getBrand_code());
+            List<CorpWechat> corpWechats = corpService.selectWByCorpBrand(brand.getCorp_code(), Common.SPECIAL_HEAD+brand.getBrand_code()+",");
             if (corpWechats.size() > 0) {
                 for (int i = 0; i < corpWechats.size(); i++) {
-                    String app_id1 = corpWechats.get(0).getApp_id();
-                    String app_name1 = corpWechats.get(0).getApp_name();
+                    String app_id1 = corpWechats.get(i).getApp_id();
+                    String app_name1 = corpWechats.get(i).getApp_name();
                     app_id = app_id + app_id1 + ",";
                     app_name = app_name + app_name1 + ",";
                 }
@@ -152,10 +155,16 @@ public class BrandServiceImpl implements BrandService {
                     String[] app_ids = app_id.split(",");
                     for (int i = 0; i < app_ids.length; i++) {
                         CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
-                        corpWechat.setBrand_code(brand_code);
-                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        corpWechat.setModifier(user_code);
-                        corpMapper.updateCorpWechat(corpWechat);
+                        String brand_codes = "";
+                        if (corpWechat.getBrand_code() != null)
+                            brand_codes = corpWechat.getBrand_code();
+                        if (!brand_codes.contains(Common.SPECIAL_HEAD+brand_code+",")){
+                            brand_codes = brand_codes + Common.SPECIAL_HEAD+brand_code+",";
+                            corpWechat.setBrand_code(brand_codes);
+                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            corpWechat.setModifier(user_code);
+                            corpMapper.updateCorpWechat(corpWechat);
+                        }
                     }
                 }
             }
@@ -223,10 +232,16 @@ public class BrandServiceImpl implements BrandService {
                         String[] app_ids = app_id.split(",");
                         for (int i = 0; i < app_ids.length; i++) {
                             CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
-                            corpWechat.setBrand_code(brand_code);
-                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                            corpWechat.setModifier(user_code);
-                            corpMapper.updateCorpWechat(corpWechat);
+                            String brand_codes = "";
+                            if (corpWechat.getBrand_code() != null)
+                                brand_codes = corpWechat.getBrand_code();
+                            if (!brand_codes.contains(Common.SPECIAL_HEAD+brand_code+",")){
+                                brand_codes = brand_codes + Common.SPECIAL_HEAD+brand_code+",";
+                                corpWechat.setBrand_code(brand_codes);
+                                corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                                corpWechat.setModifier(user_code);
+                                corpMapper.updateCorpWechat(corpWechat);
+                            }
                         }
                     }
                 }
@@ -257,10 +272,14 @@ public class BrandServiceImpl implements BrandService {
                         String[] app_ids = app_id.split(",");
                         for (int i = 0; i < app_ids.length; i++) {
                             CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
-                            corpWechat.setBrand_code(brand_code);
-                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                            corpWechat.setModifier(user_code);
-                            corpMapper.updateCorpWechat(corpWechat);
+                            String brand_codes = corpWechat.getBrand_code();
+                            if (!brand_codes.contains(Common.SPECIAL_HEAD+brand_code+",")){
+                                brand_codes = brand_codes + Common.SPECIAL_HEAD+brand_code+",";
+                                corpWechat.setBrand_code(brand_codes);
+                                corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                                corpWechat.setModifier(user_code);
+                                corpMapper.updateCorpWechat(corpWechat);
+                            }
                         }
                     }
                 }

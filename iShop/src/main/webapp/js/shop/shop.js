@@ -1,5 +1,7 @@
-
 var oc = new ObjectControl();
+var area_next=false;
+var area_num=1;
+var isscroll=false;
 (function (root, factory) {
     root.shop = factory();
 }(this, function () {
@@ -437,20 +439,227 @@ jQuery(document).ready(function () {
         }
         
     });
+    //提示弹框
+    function frame(){
+        var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('body').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;position:fixed;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+        },2000);
+    }
+    $("#screen_close_brand").click(function(){
+        $("#screen_area .screen_content_l").unbind("scroll");
+        $("#screen_area").hide();
+    });
     $("#OWN_AREA").click(function (event) {
-        $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
-        $("#area_select").html('');
-        event = event || window.event;
-        event.stopPropagation();
-        $(this).parent().children('ul').toggle();
-        var area_param = {"corp_code": $("#OWN_CORP").val()};
-        var area_command = "/shop/area";
+        var arr=whir.loading.getPageSize();
+        area_num=1;
+        $("#area_search").val("");
+        $("#screen_area .screen_content_l ul").empty();
+        $("#screen_area").show();
+        var left=(arr[0]-$("#screen_area").width())/2;
+        var tp=(arr[1]-$("#screen_area").height())/2+40;
+        $("#screen_area").css({"left":left+"px","top":tp+"px"});
+        getArea(area_num);
+        isscroll=false;
+        console.log(1);
+        //$("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
+        //$("#area_select").html('');
+        //event = event || window.event;
+        //event.stopPropagation();
+        //$(this).parent().children('ul').toggle();
+        //var area_param = {"corp_code": $("#OWN_CORP").val()};
+        //var area_command = "/shop/area";
+        //oc.postRequire("post", area_command, "", area_param, function (data) {
+        //    if (data.code == "0") {
+        //        var msg = JSON.parse(data.message);
+        //        console.log(msg);
+        //        var area_html = '';
+        //        var a = null;
+        //        console.log(msg.areas);
+        //        if (msg.areas.length == 0) {
+        //            art.dialog({
+        //                time: 1,
+        //                lock: true,
+        //                cancel: false,
+        //                content: "该企业目前分配区域！"
+        //            });
+        //        } else {
+        //            for (var i = 0; i < msg.areas.length; i++) {
+        //                a = msg.areas[i];
+        //                area_html += '<li style="margin-bottom: 20px;" data-areacode="' + a.area_code + '"><input type="checkbox" style="width: 14px;height: 14px;border: 1px solid #ddd;border-radius: 4px;color:#888;vertical-align: middle;margin-top: -2px;-webkit-appearance: checkbox">' + a.area_name + '</li>';
+        //            }
+        //            $("#area_select").append(area_html);
+        //            $("#area_select li input").click(function (event) {
+        //                var this_ = this;
+        //                var txt = $(this_).text();
+        //                var a_code = $(this_).attr("data-areacode");
+        //                //$(this_).parent().parent().children(".input_select").val(txt);
+        //                //$(this_).parent().parent().children(".input_select").attr('data-myacode', a_code);
+        //                //$(this_).addClass('rel').siblings().removeClass('rel');
+        //                //$(this_).parent().toggle();
+        //                console.log(this_.checked);
+        //                if(this_.checked){
+        //                    $(this_).checked=true;
+        //                    areaData.push($(this_).parent().text());
+        //                    areaDataCode.push($(this_).parent().attr('data-areacode'));
+        //                    $("#OWN_AREA").val(areaData.toString());
+        //                    $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
+        //                    $("#OWN_AREA").attr("title",areaData.toString());
+        //                }else {
+        //                    $(this_).checked=false;
+        //                    areaData.remove($(this_).parent().text());
+        //                    areaDataCode.remove($(this_).parent().attr('data-areacode'));
+        //                    $("#OWN_AREA").val(areaData.toString());
+        //                    $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
+        //                    $("#OWN_AREA").attr("title",areaData.toString());
+        //                }
+        //            });
+        //            var areaCode=$("#OWN_AREA").attr("data-myacode");
+        //            var allSelectData=$("#area_select li input");
+        //            if(areaCode.indexOf(",")!=-1){
+        //                var areaCodetoArray=areaCode.split(",");
+        //                console.log(areaCodetoArray);
+        //                for(var a=0;a<areaCodetoArray.length;a++){
+        //                    for(var b= 0;b<allSelectData.length;b++){
+        //                        if(areaCodetoArray[a]==$(allSelectData[b]).parent().attr("data-areacode")){
+        //                            $(allSelectData[b]).attr("checked",true);
+        //                        }
+        //                    }
+        //                }
+        //            }else{
+        //                for(var i=0;i<allSelectData.length;i++){
+        //                    if($(allSelectData[i]).parent().attr("data-areacode")==areaCode){
+        //                        $(allSelectData[i]).attr("checked",true);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    } else if (data.code == "-1") {
+        //        art.dialog({
+        //            time: 1,
+        //            lock: true,
+        //            cancel: false,
+        //            content: data.message
+        //        });
+        //    }
+        //});
+    });
+    //点击右移选中
+    $(".shift_right").click(function(){
+        var right="only";
+        var div=$(this);
+        removeRight(right,div);
+        console.log("右移")
+    });
+    //点击右移全部
+    $(".shift_right_all").click(function(){
+        var right="all";
+        var div=$(this);
+        removeRight(right,div);
+    });
+    //点击左移
+    $(".shift_left").click(function(){
+        var left="only";
+        var div=$(this);
+        removeLeft(left,div);
+    });
+//点击左移全部
+    $(".shift_left_all").click(function(){
+        var left="all";
+        var div=$(this);
+        removeLeft(left,div);
+    });
+    //移到左边
+    function removeLeft(a,b){
+        var li="";
+        if(a=="only"){
+            li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']:checked").parents("li");
+        }
+        if(a=="all"){
+            li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
+        }
+        if(li.length=="0"){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        if(li.length>0){
+            for(var i=li.length-1;i>=0;i--){
+                $(li[i]).remove();
+                $(".screen_content .screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked")
+            }
+        }
+        var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+        $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+        //bianse();
+    }
+    //移到右边
+    function removeRight(direction,b){
+        var li="";
+        if(direction=="only"){
+            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
+        }
+        if(direction=="all"){
+            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
+        }
+        if(li.length=="0"){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        if(li.length>0){
+            for(var i=0;i<li.length;i++){
+                var html=$(li[i]).html();
+                var id=$(li[i]).find("input[type='checkbox']").val();
+                var input=$(b).parents(".screen_content").find(".screen_content_r li");
+                for(var j=0;j<input.length;j++){
+                    if($(input[j]).attr("id")==id){
+                        $(input[j]).remove();
+                    }
+                }
+                $(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
+                $(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
+            }
+        }
+        var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+        $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+        //bianse();
+    }
+    //点击列表显示选中状态
+    $(".screen_content").on("click","li",function(){
+        var input=$(this).find("input")[0];
+        var thinput=$("thead input")[0];
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            input.checked = false;
+        }
+    });
+    //获取区域
+    function getArea(a){
+        whir.loading.add("",0.5);//加载等待框
+        $("#mask").css("z-index","10002");
+        var area_command = "/area/selAreaByCorpCode";
+        var corp_code = $('#OWN_CORP').val();
+        var searchValue=$("#area_search").val().trim();
+        var pageSize=20;
+        var pageNumber=a;
+        var area_param = {};
+        area_param["searchValue"]=searchValue;
+        area_param["pageSize"]=pageSize;
+        area_param["pageNumber"]=pageNumber;
+        area_param["corp_code"]=corp_code;
         oc.postRequire("post", area_command, "", area_param, function (data) {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
-                console.log(msg);
+                var list=JSON.parse(msg.list);
+                var list=list.list;
                 var area_html = '';
-                var a = null;
                 console.log(msg.areas);
                 if (msg.areas.length == 0) {
                     art.dialog({
@@ -463,53 +672,62 @@ jQuery(document).ready(function () {
                     for (var i = 0; i < msg.areas.length; i++) {
                         a = msg.areas[i];
                         area_html += '<li style="margin-bottom: 20px;" data-areacode="' + a.area_code + '"><input type="checkbox" style="width: 14px;height: 14px;border: 1px solid #ddd;border-radius: 4px;color:#888;vertical-align: middle;margin-top: -2px;-webkit-appearance: checkbox">' + a.area_name + '</li>';
-                    }
-                    $("#area_select").append(area_html);
-                    $("#area_select li input").click(function (event) {
-                        var this_ = this;
-                        var txt = $(this_).text();
-                        var a_code = $(this_).attr("data-areacode");
-                        //$(this_).parent().parent().children(".input_select").val(txt);
-                        //$(this_).parent().parent().children(".input_select").attr('data-myacode', a_code);
-                        //$(this_).addClass('rel').siblings().removeClass('rel');
-                        //$(this_).parent().toggle();
-                        console.log(this_.checked);
-                        if(this_.checked){
-                            $(this_).checked=true;
-                            areaData.push($(this_).parent().text());
-                            areaDataCode.push($(this_).parent().attr('data-areacode'));
-                            $("#OWN_AREA").val(areaData.toString());
-                            $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
-                            $("#OWN_AREA").attr("title",areaData.toString());
-                        }else {
-                            $(this_).checked=false;
-                            areaData.remove($(this_).parent().text());
-                            areaDataCode.remove($(this_).parent().attr('data-areacode'));
-                            $("#OWN_AREA").val(areaData.toString());
-                            $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
-                            $("#OWN_AREA").attr("title",areaData.toString());
-                        }
-                    });
-                    var areaCode=$("#OWN_AREA").attr("data-myacode");
-                    var allSelectData=$("#area_select li input");
-                    if(areaCode.indexOf(",")!=-1){
-                        var areaCodetoArray=areaCode.split(",");
-                        console.log(areaCodetoArray);
-                        for(var a=0;a<areaCodetoArray.length;a++){
-                            for(var b= 0;b<allSelectData.length;b++){
-                                if(areaCodetoArray[a]==$(allSelectData[b]).parent().attr("data-areacode")){
-                                    $(allSelectData[b]).attr("checked",true);
-                                }
-                            }
-                        }
-                    }else{
-                        for(var i=0;i<allSelectData.length;i++){
-                            if($(allSelectData[i]).parent().attr("data-areacode")==areaCode){
-                                $(allSelectData[i]).attr("checked",true);
-                            }
+                if (list.length == 0) {
+                    if(a==1){
+                        for(var h=0;h<9;h++){
+                            area_html+="<li></li>";
                         }
                     }
+                    area_next=true;
+                } else {
+                    if(list.length<9&&a==1){
+                        for (var i = 0; i < list.length; i++) {
+                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'/><label for='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+                        }
+                        for(var j=0;j<9-list.length;j++){
+                            area_html+="<li></li>"
+                        }
+                    }else if(list.length>=9||list.length<9&&a>1){
+                        for (var i = 0; i < list.length; i++) {
+                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'/><label for='checkboxOneInput"
+                                + i
+                                + a
+                                + 1
+                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+                        }
+                    }
+                    area_num++;
+                    area_next=false;
                 }
+                $("#screen_area .screen_content_l ul").append(area_html);
+                if(!isscroll){
+                        $("#screen_area .screen_content_l").bind("scroll",function () {
+                            console.log("滚动了吗");
+                            var nScrollHight = $(this)[0].scrollHeight;
+                            var nScrollTop = $(this)[0].scrollTop;
+                            var nDivHight=$(this).height();
+                            if(nScrollTop + nDivHight >=nScrollHight){
+                                if(area_next){
+                                    return;
+                                }
+                                getArea(area_num);
+                                console.log(4)
+                            }
+                        });
+                }
+                isscroll=true;
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -518,8 +736,60 @@ jQuery(document).ready(function () {
                     content: data.message
                 });
             }
+            whir.loading.remove();//移除加载框
         });
+
+    }
+    //区域搜索
+    $("#area_search").keydown(function(){
+        $("#screen_area .screen_content_l").unbind("scroll");
+        isscroll=false;
+        var event=window.event||arguments[0];
+        area_num=1;
+        if(event.keyCode == 13){
+            $("#screen_area .screen_content_l ul").empty();
+            getArea(area_num);
+            console.log(2)
+        }
     });
+    //区域放大镜搜索
+    $("#area_search_f").click(function(){
+        area_num=1;
+        $("#screen_area .screen_content_l ul").empty();
+        getArea(area_num);
+        console.log(3)
+    });
+$("#screen_que_brand").click(function(){
+    var lidata=[];
+    var li=$(this).prev().children(".screen_content_r").find("ul li");
+    if(li.length>0){
+        for(var i=0;i<li.length;i++){
+            lidata.push($(li[i]).find("span").html())
+        }
+        $("#OWN_AREA").val(lidata.toString());
+        $("#OWN_AREA").attr("title",lidata.toString());
+    }
+    $("#screen_area").hide();
+
+});
+    ////区域滚动事件
+    //$("#screen_area .screen_content_l").scroll(function () {
+    //    console.log("滚动了吗");
+    //    var nScrollHight = $(this)[0].scrollHeight;
+    //    var nScrollTop = $(this)[0].scrollTop;
+    //    var nDivHight=$(this).height();
+    //    console.log(nScrollHight);
+    //    console.log(nScrollTop);
+    //    console.log(nDivHight);
+    //    if(nScrollTop + nDivHight >=nScrollHight){
+    //        if(area_next){
+    //            return;
+    //        }
+    //        getArea(area_num);
+    //        console.log(4)
+    //    }
+    //});
+
     $(".shopadd_oper_btn ul li:nth-of-type(2)").click(function () {//点击关闭按钮跳转到列表页面
         $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
     });

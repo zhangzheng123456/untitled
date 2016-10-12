@@ -233,7 +233,7 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td><span title='"+data[i].content+"'>"
+            + "</td><td><span style='max-width:300px;' title='"+data[i].content+"'>"
             + data[i].content
             + "</span></td><td>"
             + data[i].corp.corp_name

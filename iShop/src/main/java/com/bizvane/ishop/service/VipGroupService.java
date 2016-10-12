@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.VipGroup;
 import com.github.pagehelper.PageInfo;
 
@@ -17,7 +18,7 @@ public interface VipGroupService {
 
     PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    List<VipGroup> selectCorpVipGroups(String corp_code) throws Exception;
+    List<VipGroup> selectCorpVipGroups(String corp_code,String search_value) throws Exception;
 
     String insert(String message, String user_id) throws Exception;
 
@@ -31,4 +32,5 @@ public interface VipGroupService {
 
     PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,  Map<String, String> map) throws Exception;
 
+    JSONArray findVipsGroup(JSONArray array) throws Exception;
 }

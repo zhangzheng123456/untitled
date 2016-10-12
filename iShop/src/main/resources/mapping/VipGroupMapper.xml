@@ -74,6 +74,9 @@
         dvg.isactive
         FROM def_vip_group dvg
         WHERE dvg.corp_code = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND dvg.vip_group_name LIKE concat('%',#{search_value},'%')
+        </if>
         AND dvg.isactive = 'Y'
         ORDER BY dvg.id DESC
     </select>
@@ -82,6 +85,7 @@
         SELECT
         dvg.id,
         dvg.vip_group_code,
+        dvg.vip_group_name,
         dvg.corp_code,
         dvg.isactive
         From def_vip_group dvg

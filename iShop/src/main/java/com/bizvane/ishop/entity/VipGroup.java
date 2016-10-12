@@ -23,6 +23,11 @@ public class VipGroup {
     private String creater;
     //是否可用
     private String isactive;
+    //分组下会员数量
+    private int vip_count;
+
+    private String corp_name;
+    private Corp corp;
 
     public Corp getCorp() {
         return corp;
@@ -31,10 +36,6 @@ public class VipGroup {
     public void setCorp(Corp corp) {
         this.corp = corp;
     }
-
-    private String corp_name;
-    private Corp corp;
-
 
     public int getId() {
         return id;
@@ -122,5 +123,13 @@ public class VipGroup {
 
     public void setCorp_name(String corp_name) {
         this.corp_name = corp_name;
+    }
+
+    public int getVip_count() {
+        return vip_count;
+    }
+
+    public void setVip_count(int vip_count) {
+        this.vip_count = vip_count;
     }
 }

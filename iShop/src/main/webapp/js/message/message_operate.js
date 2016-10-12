@@ -90,7 +90,7 @@ function getarealist(a){
                         + i
                         + a
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+                        + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
 				}
 				if(pageNumber==1){
 					$("#area_code ul").html(area_html);
@@ -182,7 +182,7 @@ function getstorelist(a){
                         + i
                         + a
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+                        + "'></label></div><span class='p16' title='"+list[i].store_name+"'>"+list[i].store_name+"</span></li>"
 				}
 				if(pageNumber==1){
 					$("#store_code ul").html(store_html);
@@ -834,6 +834,6 @@ $("#edit_close").click(function(){
  	window.location.reload();
 })
 //新增关闭
-$("#add_close").click(function(){
-	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+$("#send_close").click(function(){
+	$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
 })

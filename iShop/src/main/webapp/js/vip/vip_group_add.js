@@ -2,6 +2,11 @@ var oc = new ObjectControl();
 var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
+var role='';//识别页面
+var group_cheked=[];
+var corp_code='';//企业编号
+var group_code='';//分组编号
+var group_count='';
 $(function(){
     window.vip.init();
     if($(".pre_title label").text()=="编辑会员分组"){
@@ -26,6 +31,7 @@ $(function(){
             oc.postRequire("post", _command,"", _params, function(data){
                 if(data.code=="0"){
                     var msg=JSON.parse(data.message);
+                    console.log(msg);
                     $("#vip_id").val(msg.vip_group_name);
                     $("#vip_id").attr("data-name",msg.vip_group_name);
                     $("#vip_num").val(msg.vip_group_code);
@@ -317,81 +323,129 @@ $("#edit_close").click(function(){
 /***************************************************************************************/
 //新增分组会员
 //绑定单击事件
+//新增
 $('#screen_add').on('click',function(){
+    group_code=$("#vip_num").val();
+    corp_code=$('#OWN_CORP').val()
+    $(this).attr('data_role')?role=$(this).attr('data_role'):'';
+    GET(1,10,group_code);//第三个参数  分组编号
     $('#page-wrapper')[0].style.display='none';
     $('.content')[0].style.display='block';
+ //进入页面后保存操作
+    $("#save").click(function(){
+        var param={};
+        //获取所有选择项
+        var get_groups=$("#table tbody input:checked").parent().parent().parent();
+          group_count=get_groups.length;
+        var choose=[];
+        for(var i=0,choose_sub={};i<get_groups.length;i++){
+            choose_sub['vip_id']=$(get_groups[i]).find('[data_vip_id]').attr('data_vip_id');
+            choose_sub['corp_code']=$(get_groups[i]).attr('id')
+            choose_sub['card_no']=$(get_groups[i]).find('[data_cardno]').attr('data_cardno')
+            choose_sub['phone']=$(get_groups[i]).find('td:nth-child(4)').html()
+            choose.push(choose_sub);
+        }
+        console.log(get_groups);
+        console.log(group_cheked)
+        param['vip_group_code']=group_code;
+        param['choose']=choose;
+        param['quit']=[];
+        //发起异步请求
+        oc.postRequire("post",'/vipGroup/saveVips',"",param, function(data){
+           if(data.code==0){
+               alert('保存成功');
+           }else if(data.code==-1){
+               alert(data.message);
+           }
+        })
+    })
 });
+//进入页面的关闭操作
 $('#turnoff').on('click',function () {
     $('#page-wrapper')[0].style.display='block';
     $('.content')[0].style.display='none';
+    $('#group_recode').val(group_count)
 })
+//打开筛选界面
 $('#filtrate').on('click',function () {
     $('#screen_wrapper')[0].style.display='block';
 })
+//关闭筛选界面
 $('#screen_wrapper_close').on('click',function () {
     $('#screen_wrapper')[0].style.display='none';
 })
 //请求页面数据
-function GET(a,b){
-    // whir.loading.add("",0.5);//加载等待框
+function GET(a,b,c){
+    whir.loading.add("",0.5);//加载等待框
     var param={};
     param["pageNumber"]=a;
     param["pageSize"]=b;
-    param["corp_code"]='C10000';
+    param["corp_code"]=corp_code;
     oc.postRequire("post","/vipAnalysis/allVip","",param,function(data){
-        console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            console.log(message);
             var list=message.all_vip_list;
             cout=message.pages;
             //var list=list.list;
-            superaddition(list,a);
+            superaddition(list,a,c);
             jumpBianse();
             filtrate="";
             setPage($("#foot-num")[0],cout,a,b);
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
         }
     });
 }
-GET(1,10);
 function jumpBianse(){
     $(document).ready(function(){//隔行变色
         $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
 }
-function superaddition(data,num){
-    console.log(data);
+function superaddition(data,num,c){
+    console.log(c);
+    console.log(data)
+    var judge='';
     for (var i = 0; i < data.length; i++) {
+        if(c==data[i].vip_group_code&&c!=''){
+            judge='checked'
+        }else{
+            judge='';
+        }
         if(num>=2){
             var a=i+num*pageSize;
         }else{
             var a=i+1;
         }
-        var gender=data[i].sex=='F'?'女':'男'
-        $(".table tbody").append("<tr data-action='"+data[i].action_code+"' data-function='"+data[i].function_code+"'>"
+        var gender=data[i].sex=='F'?'女':'男';
+        var tr_node="<tr data-storeid='"+data[i].store_id+"' id='"+data[i].corp_code+"'>"
             + "</td><td style='text-align:left;padding-left:22px'>"
             + a
-            + "</td><td>"
+            + "</td><td data_vip_id='"+data[i].vip_id+"'>"
             + data[i].vip_name
             +"</td><td>"
             +gender
-            + "</td><td>"
+            +"</td><td>"
+            +data[i].vip_phone
+            + "</td><td data_cardno='"+data[i].cardno+"'>"
             +data[i].vip_card_type
+            +"</td><td>"
+            +data[i].vip_group_name
             +"</td><td>"
             +data[i].user_name
             +"</td><td>"
             +data[i].store_name
-            +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='"+data[i].id+"'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='"+data[i].id+"'><input "+judge+" type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
             + i
             + 1
-            + "'></label></div></td></tr>");
+            + "'></label></div></td></tr>";
+        $(".table tbody").append(tr_node);
+        if(judge){group_cheked.push(tr_node)}
     }
 };
 //生成分页
@@ -482,19 +536,17 @@ function setPage(container, count, pageindex,pageSize){
 }
 //点击页码
 function dian(a,b){//点击分页的时候调什么接口
-    console.log(a,b);
-    GET(a,b);
-    // if (value==""&&filtrate=="") {
-    //     GET(a,b);
-    // }else if (value!==""){
-    //     param["pageNumber"] = a;
-    //     param["pageSize"] = b;
-    //     POST(a,b);
-    // }else if (filtrate!=="") {
-    //     _param["pageNumber"] = a;
-    //     _param["pageSize"] = b;
-    //     filtrates(a,b);
-    // }
+    if (value==""&&filtrate=="") {
+        GET(a,b);
+    }else if (value!==""){
+        param["pageNumber"] = a;
+        param["pageSize"] = b;
+        POST(a,b);
+    }else if (filtrate!=="") {
+        _param["pageNumber"] = a;
+        _param["pageSize"] = b;
+        filtrates(a,b);
+    }
 }
 //全选
 function checkAll(name){
@@ -993,6 +1045,7 @@ $("#screen_que_staff").click(function(){
 function getarealist(a){
     var tr= $('#table tbody tr');
     var corp_code=$(tr[0]).attr("id");
+    console.log(corp_code);
     var area_command = "/area/selAreaByCorpCode";
     var searchValue=$("#area_search").val().trim();
     var pageSize=20;
@@ -1293,13 +1346,13 @@ $("#screen_vip_que").click(function(){
     }
     if(area_code!==""||brand_code!==""||store_code!==""||user_code!==""){
         filtrate="sucess";
-        filtrates(inx,pageSize);
+        filtrates(inx,pageSize,_param);
     }
     $("#screen_wrapper").hide();
     $("#p").hide();
 })
 //筛选调接口
-function filtrates(a,b){
+function filtrates(a,b,_param){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vip/vipScreen","", _param, function(data) {
         if(data.code=="0"){
@@ -1316,7 +1369,8 @@ function filtrates(a,b){
                 superaddition(list,a);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,a,b);
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
         }
