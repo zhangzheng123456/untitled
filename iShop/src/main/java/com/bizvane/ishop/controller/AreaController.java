@@ -138,6 +138,8 @@ public class AreaController {
             PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
+                if (jsonObject.has("corp_code"))
+                    corp_code = jsonObject.get("corp_code").toString();
                 list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {

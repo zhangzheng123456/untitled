@@ -146,6 +146,8 @@ public class StoreController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 String area_code = jsonObject.get("area_code").toString();
+                if (jsonObject.has("corp_code"))
+                    corp_code = jsonObject.get("corp_code").toString();
                 list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
                 // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
             } else {

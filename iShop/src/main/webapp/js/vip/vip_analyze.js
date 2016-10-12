@@ -12,7 +12,8 @@ var proportion_list={};
 function getBrand(){
     var search_param=arguments.length;
     var param={};
-    param["corp_code"]= localStorage.getItem('corp_code');
+    // param["corp_code"]= localStorage.getItem('corp_code');
+    param["corp_code"]= "C10000";
     oc.postRequire("post","/shop/brand", "",param, function(data){
         console.log(data);
         var message=JSON.parse(data.message)
@@ -45,6 +46,7 @@ function GetArea(){
     param['pageNumber']=page;
     param['pageSize']="7";
     param['searchValue']=searchValue;
+    param["corp_code"]= "C10000";
     oc.postRequire("post","/area/findAreaByCorpCode","",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
@@ -86,6 +88,7 @@ function getStore(a){
     param['pageSize']=7;
     param['searchValue']=searchValue;
     param["area_code"]=area_code;
+    param["corp_code"]= "C10000";
     oc.postRequire("post","/shop/findByAreaCode","",param,function(data){
         var ul='';
         var message=JSON.parse(data.message);
