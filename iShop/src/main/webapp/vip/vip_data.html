@@ -139,6 +139,9 @@
               <div style="height: 30px;line-height: 30px;">
                   <span class="detail-left">所属导购</span><span class="detail-right" id="user_name"></span>
               </div>
+                  <div style="height: 30px;line-height: 30px;">
+                      <span class="detail-left">所属店铺</span><span class="detail-right" id="store_name"></span>
+                  </div>
               <div style="height: 30px;line-height: 30px;">
                   <span class="detail-left">消费金额</span><span class="detail-right jifen" id="vip_total_amount"></span>
               </div>
@@ -154,9 +157,6 @@
               <div style="height: 30px;line-height: 30px;">
                   <span class="detail-left">会员生日</span><span class="detail-right" id="vip_birthday"></span>
               </div>
-                  <div style="height: 30px;line-height: 30px;">
-                      <span class="detail-left">所属店铺</span><span class="detail-right" id="store_name"></span>
-                  </div>
               <div id="corp_code" style="display: none"></div>
                   <div class="person-more"><label id="more_message">详细资料<i class="icon-ishop_8-03"></i></label></div>
               </div>
@@ -253,6 +253,14 @@
                         <i class="icon-ishop_6-09"></i>
                         <input type="file" id="VIP_avatar" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                         </div>
+                        <div class="item_1">
+                            <span><label>性别</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="" style="background: #dfdfdf" readonly/>
+                                <!--<ul>-->
+                                <!--<li>男</li>-->
+                                <!--<li>女</li>-->
+                                <!--</ul>-->
+                            </span>
+                        </div>
                         <div>
                             <label>会员姓名</label><input class="disabled" id="vip_name_edit" style="background: #dfdfdf" readonly/>
                         </div>
@@ -275,6 +283,14 @@
                             <label>所属导购</label><input verify="Empty" id="user_name_edit" style="background: #dfdfdf" readonly/>
                             <!--<div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>-->
                         </div>
+                        <div class="item_1">
+                            <span><label>所属店铺</label><input class="input_select"  value="" id="store_name_edit" type="text" style="background: #dfdfdf"  readonly/>
+                                <!--<ul>-->
+                                <!--<li>正常</li>-->
+                                <!--<li>异常</li>-->
+                                <!--</ul>-->
+                            </span>
+                        </div>
                         <div>
                             <label>所属分组</label><input verify="Empty" id="user_group_edit" style="background: #dfdfdf" readonly/>
                             <!--<div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>-->
@@ -282,22 +298,8 @@
                         <div>
                             <label>会员生日</label><input  verify='birthday' id="vip_birthday_edit" style="background: #dfdfdf" readonly/>
                         </div>
-                        <div class="item_1">
-                            <span><label>性别</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="" style="background: #dfdfdf" readonly/>
-                            <!--<ul>-->
-                                <!--<li>男</li>-->
-                                <!--<li>女</li>-->
-                            <!--</ul>-->
-                            </span>
-                        </div>
-                        <div class="item_1">
-                            <span><label>所属店铺</label><input class="input_select"  value="" id="store_name_edit" type="text" style="background: #dfdfdf"  readonly/>
-                            <!--<ul>-->
-                                <!--<li>正常</li>-->
-                                <!--<li>异常</li>-->
-                            <!--</ul>-->
-                            </span>
-                        </div>
+
+
                         <!--<div class="editor_detail_em  animated fadeInRight btn_margin">-->
                             <!--<div class="operedit_btn">-->
                                 <!--<ul>-->
