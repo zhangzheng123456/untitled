@@ -331,7 +331,7 @@ $("#search").keydown(function() {
 });
 //放大镜搜索
 $("#d_search").click(function () {
-    value=this.value.replace(/\s+/g,"");
+    value=$("#search").val().replace(/\s+/g,"");
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
