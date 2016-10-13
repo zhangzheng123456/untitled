@@ -255,19 +255,19 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td>"
+            + "</td><td><span title="+data[i].param_name+">"
             + data[i].param_name
-            + "</td><td>"
+            + "</span></td><td>"
             + paramType
             + "</td><td><span title="+data[i].param_values+">"
             + data[i].param_values
-            + "</span></td><td>"
+            + "</span></td><td><span title="+data[i].param_desc+">"
             + data[i].param_desc
-            + "</td><td>"
+            + "</span></td><td>"
             + data[i].corp_name
-            + "</td><td>"
+            + "</td><td><span title="+data[i].param_desc+">"
             + data[i].remark
-            + "</td><td>"
+            + "</span></td><td>"
             + data[i].isactive
             + "</td></tr>");
     }
