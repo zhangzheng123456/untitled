@@ -625,6 +625,7 @@ jQuery(document).ready(function () {
                 var html=$(li[i]).html();
                 var id=$(li[i]).find("input[type='checkbox']").val();
                 var input=$(b).parents(".screen_content").find(".screen_content_r li");
+                $(li[i]).find("span").attr("title",$(li[i]).find("span").text());
                 for(var j=0;j<input.length;j++){
                     if($(input[j]).attr("id")==id){
                         $(input[j]).remove();
@@ -686,7 +687,7 @@ jQuery(document).ready(function () {
                                 + i
                                 + a
                                 + 1
-                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+                                + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
                         }
                         for(var j=0;j<9-list.length;j++){
                             area_html+="<li></li>"
@@ -701,7 +702,7 @@ jQuery(document).ready(function () {
                                 + i
                                 + a
                                 + 1
-                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+                                + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
                         }
                     }
                     area_num++;
@@ -776,7 +777,7 @@ jQuery(document).ready(function () {
                                 + i
                                 + a
                                 + 1
-                                + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+                                + "'></label></div><span class='p16' title='"+list[i].brand_name+"'>"+list[i].brand_name+"</span></li>"
                         }
                         for(var j=0;j<9-list.length;j++){
                             area_html+="<li></li>"
@@ -791,7 +792,7 @@ jQuery(document).ready(function () {
                                 + i
                                 + a
                                 + 1
-                                + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+                                + "'></label></div><span class='p16' title='"+list[i].brand_name+"'>"+list[i].brand_name+"</span></li>"
                         }
                     }
                     area_num++;
@@ -950,117 +951,6 @@ $("#screen_que_area").click(function(){
             $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
         }
     });
-    //var brandname = [];
-    //$("#brand_data").remove();
-    //var brand_param = {"corp_code": $("#OWN_CORP").val()};
-    //var brand_command = "/shop/brand";
-    //oc.postRequire("post", brand_command, "", brand_param, function (rdata) {
-    //    console.log(rdata);
-    //    if (rdata.code == "0") {
-    //        var msg = JSON.parse(rdata.message);
-    //        console.log(msg);
-    //        // var index=0;
-    //        var brand_html = '';
-    //        var b = null;
-    //        for (var j = 0; j < msg.brands.length; j++) {
-    //            b = msg.brands[j];
-    //            brand_html += '<option value="' + b.brand_code + '">' + b.brand_name + '</option>';
-    //            brandname.push(b.brand_name);
-    //        }
-    //        var checkboxSelect = new CheckboxSelect({
-    //            input: document.getElementById('OWN_BRAND'),
-    //            hiddeninput: document.getElementById('hiddencheckboxSelect'),
-    //            width: 420,
-    //            opacity: 1,
-    //            data: brandname,
-    //        });
-    //        console.log(brandname);
-    //    } else if (data.code == "-1") {
-    //        art.dialog({
-    //            time: 1,
-    //            lock: true,
-    //            cancel: false,
-    //            content: data.message
-    //        });
-    //    }
-    //});
-    //$("#OWN_BRAND").click(function () {
-    //    $(".checkboxselect-container").html('');
-    //    var brand_param = {"corp_code": $("#OWN_CORP").val()};
-    //    var brand_command = "/shop/brand";
-    //    oc.postRequire("post", brand_command, "", brand_param, function (rdata) {
-    //        console.log(rdata);
-    //        if (rdata.code == "0") {
-    //            var msg = JSON.parse(rdata.message);
-    //            console.log(msg);
-    //            // var index=0;
-    //            var brand_html = '';
-    //            var b = null;
-    //            if (msg.brands.length == 0) {
-    //                art.dialosg({
-    //                    time: 1,
-    //                    lock: true,
-    //                    cancel: false,
-    //                    content: "该企业目前没有品牌！"
-    //                });
-    //                $(".checkboxselect-container").css("display", "none");
-    //            } else {
-    //                for (var m = 0; m < msg.brands.length; m++) {
-    //                    b = msg.brands[m];
-    //                    brand_html += '<div class="checkboxselect-item"><input type="checkbox" value="' + b.brand_code + '" data-brandname="' + b.brand_name + '" style="-webkit-appearance: checkbox; width: 14px; height: 14px;">' + b.brand_name + '</div>';
-    //                }
-    //                $(".checkboxselect-container").html(brand_html);
-    //                var check_input = $('.checkboxselect-container input');
-    //                for (var c = 0; c < check_input.length; c++) {
-    //                    check_input[c].onclick = function () {
-    //                        if (this.checked == true) {
-    //                            checknow_data.push($(this).val())
-    //                            checknow_namedata.push($(this).attr("data-brandname"));
-    //                            $('#OWN_BRAND').val(checknow_namedata.toString());
-    //                            $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
-    //                            $("#OWN_BRAND").attr("title",checknow_namedata.toString());
-    //                        } else if (this.checked == false) {
-    //                            checknow_namedata.remove($(this).attr("data-brandname"));
-    //                            checknow_data.remove($(this).val());
-    //                            console.log(checknow_data);
-    //                            console.log(checknow_namedata);
-    //                            $('#OWN_BRAND').val(checknow_namedata.toString());
-    //                            $('#OWN_BRAND').attr('data-mybcode', checknow_data.toString());
-    //                            $("#OWN_BRAND").attr("title",checknow_namedata.toString());
-    //                        }
-    //                    }
-    //                }
-    //                var s = $("#OWN_BRAND").attr("data-mybcode");
-    //                var c_input = $('.checkboxselect-container input');
-    //                var ss = '';
-    //                if (s.indexOf(',')!==-1) {
-    //                    ss = s.split(",");
-    //                    for (var i = 0; i < ss.length; i++) {
-    //                        for (var j = 0; j < c_input.length; j++) {
-    //                            if ($(c_input[j]).val() == ss[i]) {
-    //                                $(c_input[j]).attr("checked", true);
-    //                            }
-    //                        }
-    //                    }
-    //                } else {
-    //                    ss = s;
-    //                    for (var j = 0; j < c_input.length; j++) {
-    //                        if ($(c_input[j]).val() == ss) {
-    //                            $(c_input[j]).attr("checked", true);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        } else if (data.code == "-1") {
-    //            art.dialog({
-    //                time: 1,
-    //                lock: true,
-    //                cancel: false,
-    //                content: data.message
-    //            });
-    //        }
-    //    });
-    //});
     $(".corp_select").click(function () {
         $("#OWN_AREA").val('');
         $("#OWN_BRAND").val('');
