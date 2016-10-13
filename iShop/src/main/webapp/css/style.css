@@ -7688,7 +7688,8 @@ ul,li{list-style:none;padding:0;margin:0;}
     text-indent: 10px;
 }
 #per_type ul li:hover{
-  background:#6cc1c8;
+  background: #4a5f7c;
+  /*background:#6cc1c8;*/
   color:#ffffff;
 }
 #store_type input{
@@ -7924,7 +7925,8 @@ li.select_index>a>label>i{
 }
 .paramType li:hover{
   color: #FFFFFF;
-  background: #6cc1c8;
+  background: #4a5f7c;
+  /*background: #6cc1c8;*/
 }
 .paramType li{
   height:30px;
