@@ -12,6 +12,7 @@
             OR validate_code LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY id
         ORDER BY id DESC
     </select>
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
@@ -28,6 +29,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY  id
         ORDER BY id DESC
     </select>
     <select id="selValidateCodeById" resultType="com.bizvane.ishop.entity.ValidateCode">

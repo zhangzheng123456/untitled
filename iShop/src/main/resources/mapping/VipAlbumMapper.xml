@@ -45,6 +45,7 @@
             )
         </if>
         AND dc.isactive = 'Y'
+        GROUP BY dva.id
         ORDER BY dva.id DESC
     </select>
 
@@ -153,6 +154,7 @@
             </choose>
         </foreach>
         AND dc.isactive = 'Y'
+        GROUP BY dva.id
         ORDER BY dva.id DESC
     </select>
 
@@ -172,6 +174,7 @@
         AND dva.corp_code = #{corp_code}
         AND dva.vip_code = #{vip_code}
         AND dc.isactive = 'Y'
+        GROUP BY dva.id
         ORDER BY dva.id DESC
     </select>
 
