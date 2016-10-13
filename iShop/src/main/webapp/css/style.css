@@ -295,7 +295,8 @@ s{
   border: 1px #434960 solid;
   border-radius:5px;
   font-size: 14px;
-  /*height: 80px;*/
+  width: 250px;
+  height: 40px;
   display:inline-block;
   margin: 0;
   z-index: 2000;
