@@ -85,8 +85,8 @@
                 </otherwise>
             </choose>
         </foreach>
-        ORDER BY acc_app_login_log.id DESC
         GROUP BY acc_app_login_log.id
+        ORDER BY acc_app_login_log.id DESC
     </select>
 
     <delete id="delAppLoginlogById">
