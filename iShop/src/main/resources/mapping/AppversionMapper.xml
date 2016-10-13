@@ -19,6 +19,7 @@
             OR isactive LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY ID
         ORDER BY ID DESC
     </select>
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Appversion">
@@ -36,6 +37,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY id
         ORDER BY id DESC
     </select>
     <insert id="addAppversion" parameterType="com.bizvane.ishop.entity.Appversion">

@@ -40,6 +40,7 @@
             OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY def_task.id
         ORDER BY def_task.id DESC
     </select>
     <!--筛选-->
@@ -84,6 +85,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY def_task.id
         ORDER BY def_task.id DESC
     </select>
     <!--验证唯一或编辑时传值-->

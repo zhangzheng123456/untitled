@@ -60,6 +60,7 @@
             OR dc.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY dvg.id
         ORDER BY dvg.id DESC
     </select>
     <select id="selectCorpVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
@@ -78,6 +79,7 @@
             AND dvg.vip_group_name LIKE concat('%',#{search_value},'%')
         </if>
         AND dvg.isactive = 'Y'
+        GROUP BY dvg.id
         ORDER BY dvg.id DESC
     </select>
 
@@ -258,6 +260,7 @@
                 </choose>
             </foreach>
         </if>
+        GROUP BY dvg.id
         ORDER BY dvg.id DESC
     </select>
 </mapper>

@@ -71,6 +71,7 @@
         <if test="isactive != null and isactive !=''">
             AND def_task_type.isactive = #{isactive}
         </if>
+        GROUP BY def_task_type.id
         ORDER BY def_task_type.id DESC
     </select>
 
@@ -190,6 +191,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP By dt.id
         ORDER BY dt.id DESC
     </select>
 

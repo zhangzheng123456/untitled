@@ -24,6 +24,7 @@
             OR dvg.remark LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY dvg.ID
         ORDER BY dvg.ID DESC
     </select>
     <select id="selectViplabGroupScreen" resultType="com.bizvane.ishop.entity.ViplableGroup">
@@ -55,6 +56,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY dvg.ID
         ORDER BY dvg.ID DESC
     </select>
     <delete id="delViplabGroupById">

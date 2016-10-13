@@ -42,7 +42,7 @@
         SELECT *
         FROM def_corp_cfg
         WHERE def_corp_cfg.isactive="Y"
-
+GROUP BY def_corp_cfg.id
        ORDER BY def_corp_cfg.id DESC
     </select>
 
@@ -192,6 +192,7 @@
 
             </choose>
         </foreach>
+        GROUP BY dcc.id
         ORDER BY dcc.id DESC
     </select>
 
