@@ -393,7 +393,7 @@ input::-webkit-input-placeholder{
 	display: inline-block;
 	max-width: 150px;
 	height:40px;
-	line-height: 40px;
+	line-height: 39px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow:ellipsis;
