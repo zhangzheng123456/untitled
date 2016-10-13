@@ -79,6 +79,7 @@
             OR sa.target_time LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY sa.ID
         ORDER BY sa.ID DESC
     </select>
 
@@ -251,6 +252,7 @@
 
             </choose>
         </foreach>
+        GROUP BY sa.ID
         ORDER BY sa.ID DESC
     </select>
 

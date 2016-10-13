@@ -7,8 +7,10 @@
         <result column="brand_code" property="brand_code"/>
         <result column="brand_name" property="brand_name"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="cus_user_code" property="cus_user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="cus_user_code" property="cus_user_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
@@ -46,7 +48,7 @@
 
     <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
         SELECT *
-        FROM  def_brand
+        FROM def_brand
         WHERE corp_code=#{corp_code}
         AND brand_name=#{brand_name}
         <if test="isactive != null and isactive !=''">
@@ -77,6 +79,7 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY def_brand.id
         ORDER BY def_brand.id DESC
     </select>
 
@@ -105,6 +108,7 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY def_brand.id
         ORDER BY def_brand.id DESC
     </select>
 
@@ -119,7 +123,8 @@
             OR BRAND_NAME LIKE concat('%',#{search_value},'%')
             )
         </if>
-        AND  isactive = 'Y'
+        AND isactive = 'Y'
+        GROUP By def_brand.id
         ORDER BY def_brand.id DESC
     </select>
 
@@ -264,6 +269,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP By db.id
         ORDER BY db.id desc
     </select>
 </mapper>

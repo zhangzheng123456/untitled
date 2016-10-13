@@ -50,6 +50,7 @@
             OR def_error_log.version LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP By def_error_log.id
         ORDER BY def_error_log.id DESC
     </select>
 
@@ -68,6 +69,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY def_error_log.id
         ORDER BY def_error_log.id DESC
     </select>
 

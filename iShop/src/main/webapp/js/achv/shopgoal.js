@@ -73,9 +73,15 @@ var oc = new ObjectControl();
 				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if(DATE==""){
-						var div=$("#GOODS_RELEASETIME").next('.hint').children();
-						div.html("不能为空！");
-		            	div.addClass("error_tips");
+                        // var div=$("#GOODS_RELEASETIME").next('.hint').children();
+                        // div.html("不能为空！");
+		            	// div.addClass("error_tips");
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content: "日期不能为空"
+						});
 		            	return;
 					}
 				}else if(TIME_TYPE1=="年"){
@@ -142,9 +148,12 @@ var oc = new ObjectControl();
 				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if(DATE==""){
-						var div=$("#GOODS_RELEASETIME").next('.hint').children();
-						div.html("不能为空！");
-		            	div.addClass("error_tips");
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content: "日期不能为空"
+						});
 		            	return;
 					}
 				}else if(TIME_TYPE1=="年"){

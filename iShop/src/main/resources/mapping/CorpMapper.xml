@@ -68,6 +68,7 @@
             OR contact_phone LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY id
         ORDER BY id DESC
     </select>
 
@@ -79,6 +80,7 @@
         SELECT *
         FROM def_corp
         WHERE isactive = 'Y'
+        GROUP BY id
         ORDER BY id DESC
     </select>
 
@@ -251,6 +253,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY id
         ORDER BY id DESC
 
     </select>

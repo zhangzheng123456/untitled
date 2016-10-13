@@ -56,6 +56,7 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP By dstt.id
         ORDER BY dstt.id DESC
     </select>
     <select id="selectSmsTwmplateTypes" resultType="com.bizvane.ishop.entity.SmsTemplateType">
@@ -71,6 +72,7 @@
         FROM def_sms_template_type dstt
         WHERE dstt.corp_code = #{corp_code}
         AND dstt.isactive = 'Y'
+        GROUP BY dstt.id
         ORDER BY dstt.id DESC
     </select>
     <delete id="deleteSmsTemplateTypeById">
@@ -224,6 +226,7 @@
                 </choose>
             </foreach>
         </if>
+        GROUP BY dstt.id
         ORDER BY dstt.id DESC
     </select>
 </mapper>

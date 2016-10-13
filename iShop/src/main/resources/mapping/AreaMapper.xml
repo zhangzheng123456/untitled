@@ -54,6 +54,7 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        Group By def_area.id
         ORDER BY def_area.id DESC
     </select>
 
@@ -62,6 +63,7 @@
         FROM def_area
         WHERE corp_code = #{corp_code}
         AND ISACTIVE = 'Y'
+        Group By def_area.id
         ORDER BY def_area.id DESC
     </select>
 
@@ -207,6 +209,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP By da.id
         ORDER BY da.id DESC
     </select>
 
@@ -247,6 +250,7 @@
             OR da.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY da.i
         ORDER BY da.id DESC
     </select>
 
@@ -282,6 +286,7 @@
             AND da.area_name LIKE concat('%',#{search_value},'%')
         </if>
         AND da.ISACTIVE ='Y'
+        GROUP By da.id
         ORDER BY da.id DESC
     </select>
 </mapper>
