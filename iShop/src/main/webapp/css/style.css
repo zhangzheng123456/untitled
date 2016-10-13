@@ -8037,7 +8037,8 @@ li.select_index>a>label>i{
 }
 #labelgp_select li:hover{
   color: #FFFFFF;
-  background: #6cc1c8;
+  /*background: #6cc1c8;*/
+  background: #4a5f7c;
 }
 .viplabel_div{
   position: relative;
