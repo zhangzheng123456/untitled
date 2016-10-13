@@ -200,9 +200,11 @@ public class BrandController {
                         break;
                     }
                 }
-                brandService.delete(Integer.valueOf(ids[i]));
             }
             if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    brandService.delete(Integer.valueOf(ids[i]));
+                }
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("删除成功");
