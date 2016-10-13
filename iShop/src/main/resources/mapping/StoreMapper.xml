@@ -8,8 +8,8 @@
         <result column="store_code" property="store_code"/>
         <result column="store_name" property="store_name"/>
         <result column="brand_code" property="brand_code"/>
-        <result column="area_code" property="area_code"/>
-        <result column="area_name" property="area_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_group_code" property="store_group_code"/>
+        <result column="store_group_name" property="store_group_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="flg_tob" property="flg_tob" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
@@ -29,7 +29,7 @@
         store_name,
         brand_code,
         flg_tob,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.corp_code,
         def_store.modified_date,
         def_store.modifier,
@@ -69,7 +69,7 @@
         store_code,
         store_name,
         flg_tob,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.brand_code,
         def_store.corp_code,
         def_store.modified_date,
@@ -115,7 +115,7 @@
         store_name,
         def_store.brand_code,
         flg_tob,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.corp_code,
         def_store.modified_date,
         def_store.modifier,
@@ -124,10 +124,10 @@
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
-        <if test="area_code != null">
+        <if test="store_group_code != null">
             AND
-            <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
-                def_store.area_code REGEXP #{item}
+            <foreach item="item" index="index" collection="store_group_code" open="(" separator="or" close=")">
+                def_store.store_group_code REGEXP #{item}
             </foreach>
         </if>
         <if test="brand_code != null">
@@ -162,16 +162,16 @@
         def_store.id,
         store_code,
         store_name,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.corp_code,
         def_corp.corp_name
         from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
-        <if test="area_code != null and area_code !=''">
+        <if test="store_group_code != null and store_group_code !=''">
             AND
-            <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
-                def_store.area_code regexp #{item}
+            <foreach item="item" index="index" collection="store_group_code" open="(" separator="or" close=")">
+                def_store.store_group_code regexp #{item}
             </foreach>
         </if>
         <if test="brand_code != null and brand_code !=''">
@@ -210,7 +210,7 @@
         def_store.id,
         store_code,
         store_name,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.corp_code,
         def_corp.corp_name
         from def_store,def_corp
@@ -239,7 +239,7 @@
         store_name,
         brand_code,
         flg_tob,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.corp_code,
         def_store.modified_date,
         def_store.modifier,
@@ -279,8 +279,8 @@
             <if test="brand_code!=null">
                 brand_code,
             </if>
-            <if test="area_code!=null">
-                area_code,
+            <if test="store_group_code!=null">
+                store_group_code,
             </if>
             <if test="corp_code!=null">
                 corp_code,
@@ -317,8 +317,8 @@
             <if test="brand_code!=null">
                 #{brand_code},
             </if>
-            <if test="area_code!=null">
-                #{area_code},
+            <if test="store_group_code!=null">
+                #{store_group_code},
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
@@ -362,8 +362,8 @@
             <if test="brand_code!=null ">
                 brand_code=#{brand_code},
             </if>
-            <if test="area_code!=null ">
-                area_code=#{area_code},
+            <if test="store_group_code!=null ">
+                store_group_code=#{store_group_code},
             </if>
             <if test="corp_code!=null ">
                 corp_code=#{corp_code},
@@ -435,17 +435,17 @@
         SELECT
         ds.*,
         dc.corp_name
-        FROM def_store ds,def_corp dc ,def_area da,def_brand db
+        FROM def_store ds,def_corp dc ,def_store_group dsg,def_brand db
         WHERE ds.corp_code = dc.corp_code
-        AND ds.corp_code = da.corp_code
+        AND ds.corp_code = dsg.corp_code
         AND ds.corp_code = db.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND ds.corp_code=#{corp_code}
         </if>
-        <if test="area_codes!=null and area_codes!=''">
+        <if test="store_group_codes!=null and store_group_codes!=''">
             AND
-            <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
-                ds.area_code REGEXP #{item}
+            <foreach collection="store_group_codes" index="index" item="item" open="(" separator="or" close=")">
+                ds.store_group_code REGEXP #{item}
             </foreach>
         </if>
         <if test="brand_codes != null and brand_codes!=''">
@@ -467,9 +467,9 @@
                     <when test="entryKey=='corp_name' and entryValue!=''">
                         dc.${entryKey} REGEXP #{entryValue}
                     </when>
-                    <when test="entryKey=='area_name' and entryValue!=''">
-                        da.${entryKey} REGEXP #{entryValue}
-                        AND ds.area_code LIKE concat('%§',da.area_code,',%')
+                    <when test="entryKey=='store_group_name' and entryValue!=''">
+                        dsg.${entryKey} REGEXP #{entryValue}
+                        AND ds.store_group_code LIKE concat('%§',dsg.store_group_code,',%')
                     </when>
                     <when test="entryKey=='brand_name' and entryValue!=''">
                         db.${entryKey} REGEXP #{entryValue}
@@ -485,7 +485,7 @@
             </foreach>
         </if>
         AND dc.isactive = 'Y'
-        AND da.isactive = 'Y'
+        AND dsg.isactive = 'Y'
         AND db.isactive = 'Y'
         GROUP BY ds.id
         ORDER BY ds.id DESC
@@ -496,7 +496,7 @@
         def_store.id,
         store_code,
         store_name,
-        def_store.area_code,
+        def_store.store_group_code,
         def_store.corp_code,
         def_corp.corp_name
         FROM def_store,def_corp
@@ -507,7 +507,7 @@
             (def_store.store_code LIKE concat('%',#{search_value},'%')
             OR def_store.store_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
-            OR def_store.area_code LIKE concat('%',#{search_value},'%')
+            OR def_store.store_group_code LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_corp.isactive = 'Y'
@@ -520,14 +520,14 @@
         ds.id,
         store_code,
         store_name,
-        ds.area_code,
+        ds.store_group_code,
         ds.corp_code
         FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = #{corp_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            ds.area_code REGEXP #{item}
+            ds.store_group_code REGEXP #{item}
         </foreach>
         <if test="isactive != null and isactive !=''">
         AND ds.isactive = #{isactive}

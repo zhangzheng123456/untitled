@@ -1,14 +1,8 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.AreaMapper;
-import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpParamMapper;
-import com.bizvane.ishop.dao.StoreMapper;
-import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.CorpParam;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.service.AreaService;
 import com.bizvane.ishop.service.CorpParamService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
@@ -18,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;

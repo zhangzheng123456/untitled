@@ -41,7 +41,7 @@ public class User {
 	//是否可登录
 	private String can_login;
 	//区域编号
-	private String area_code;
+	private String store_group_code;
 	//职位
 	private String position;
 	//是否在线
@@ -132,12 +132,12 @@ public class User {
 		return avatar;
 	}
 
-	public String getArea_code() {
-		return area_code;
+	public String getStore_group_code() {
+		return store_group_code;
 	}
 
-	public void setArea_code(String area_code) {
-		this.area_code = area_code;
+	public void setStore_group_code(String store_group_code) {
+		this.store_group_code = store_group_code;
 	}
 
 	public void setAvatar(String avatar) {

@@ -94,7 +94,7 @@ public class WebController {
                         JSONArray array = new JSONArray();
 
                         if (role_code.equals(Common.ROLE_AM)) {
-                            String area_code = user.getArea_code();
+                            String area_code = user.getStore_group_code();
                             String[] areaCodes = area_code.split(",");
                             if (areaCodes[0].contains(Common.SPECIAL_HEAD)) {
                                 areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
