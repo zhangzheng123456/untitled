@@ -310,7 +310,7 @@ function GET(a,b){
             superaddition(list,a);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
-            $(".table tbody").sortable({axis: 'y' ,delay: 500, update: function(event, ui) {
+            $(".table tbody").sortable({helper:'clone',axis: 'y' ,delay: 200,cursor:"move",opacity: 0.6 , update: function(event, ui) {
                 var len=$("#table tbody tr");
                 var params=[];
                 for(var i=0;i<len.length;i++){

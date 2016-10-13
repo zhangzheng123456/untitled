@@ -349,6 +349,14 @@ function getTemplateGroup(a,b){
 			var index=0;
 			var corp_html='';
 			var c=null;
+			if(msg.params.length=="0"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "该企业没有模板分组"
+				});
+			}
 			$('#OWN_template').empty();
 			$('#template_select .searchable-select').remove();
 			for(index in msg.params){
