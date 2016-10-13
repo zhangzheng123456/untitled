@@ -268,6 +268,14 @@
             </ul>
         </div>
     </div>
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
 </div>
 <!--筛选会员-->
 <div class="screen_wrapper" id="screen_wrapper"style="top:40%;left:37%">
@@ -309,7 +317,7 @@
         </div>
         <div class="s_center"></div>
         <div class="s_pitch">
-            已添加&nbsp;<span>0</span>&nbsp;家
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
     </div>
     <div class="screen_content">
@@ -355,7 +363,7 @@
         </div>
         <div class="s_center"></div>
         <div class="s_pitch">
-            已添加&nbsp;<span>0</span>&nbsp;家
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
     </div>
     <div class="screen_content">
@@ -392,7 +400,7 @@
         </div>
         <div class="s_center"></div>
         <div class="s_pitch">
-            已添加&nbsp;<span>0</span>&nbsp;家
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
     </div>
     <div class="screen_content">
@@ -443,7 +451,7 @@
         </div>
         <div class="s_center"></div>
         <div class="s_pitch">
-            已添加&nbsp;<span>0</span>&nbsp;家
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
     </div>
     <div class="screen_content">
@@ -484,6 +492,28 @@
 <!-- error tips -->
 <!--<script type="text/javascript" src="../js/vip/vip_group_edit.js"></script>-->
 <script type="text/javascript" src="../js/vip/vip_group_add.js"></script>
+<script>
+    $(function(){
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 100) {
+                $("#side_bar .gotop").fadeIn();
+            } else {
+                $("#side-bar .gotop").hide();
+            }
+        });
+        $("#side_bar .gotop").click(function() {
+            $('html,body').animate({
+                'scrollTop': 0
+            }, 500);
+        });
+        $("#side_bar .gobottom").click(function() {
+            var btm = $('html,body').height();
+            $('html,body').animate({
+                'scrollTop': btm
+            }, 500);
+        })
+    });
+</script>
 </body>
 
 </html>

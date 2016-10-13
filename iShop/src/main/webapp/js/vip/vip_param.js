@@ -15,6 +15,13 @@ key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
+var fixHelper = function(e, ui) {
+    //console.log(ui)
+    ui.children().each(function() {
+        $(this).width($(this).width());  //在拖动时，拖动行的cell（单元格）宽度会发生改变。在这里做了处理就没问题了
+    });
+    return ui;
+};
 if(return_jump!==null){
     console.log(return_jump);
     inx=return_jump.inx;
@@ -310,7 +317,7 @@ function GET(a,b){
             superaddition(list,a);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
-            $(".table tbody").sortable({axis: 'y' ,delay: 500, update: function(event, ui) {
+            $(".table tbody").sortable({helper:fixHelper,axis: 'y' ,delay: 200,cursor:"move",opacity: 0.6 , update: function(event, ui) {
                 var len=$("#table tbody tr");
                 var params=[];
                 for(var i=0;i<len.length;i++){

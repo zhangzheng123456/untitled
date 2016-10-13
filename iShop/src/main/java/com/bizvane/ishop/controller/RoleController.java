@@ -139,22 +139,29 @@ public class RoleController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String[] role_ids = jsonObject.get("id").toString().split(",");
-
+            String msg = null;
             for (int i = 0; i < role_ids.length; i++) {
                 int role_id = Integer.parseInt(role_ids[i]);
                 String role_code = roleService.selectByRoleId(role_id).getRole_code();
                 List<Group> groups = groupService.selectByRole(role_code);
-                if (groups.size() == 0) {
-                    roleService.deleteByRoleId(role_id,role_code);
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage("角色" + role_code + "下有所属群组，请先处理角色下群组再删除");
-                    return dataBean.getJsonStr();
+                if (groups.size() > 0) {
+                    msg = "角色" + role_code + "下有所属群组，请先处理角色下群组再删除";
+                    break;
                 }
+            }
+            if (msg == null) {
+                for (int i = 0; i < role_ids.length; i++) {
+                    int role_id = Integer.parseInt(role_ids[i]);
+                    String role_code = roleService.selectByRoleId(role_id).getRole_code();
+                    roleService.deleteByRoleId(role_id,role_code);
+                }
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
