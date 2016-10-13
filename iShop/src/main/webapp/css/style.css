@@ -295,7 +295,7 @@ s{
   border: 1px #434960 solid;
   border-radius:5px;
   font-size: 14px;
-  width: 250px;
+  width: 280px;
   height: 40px;
   display:inline-block;
   margin: 0;
@@ -6253,10 +6253,10 @@ body.skin-2 {
   opacity: 0.5;
 }
 #search_icon{
-  font-size: 32px;
+  font-size: 40px;
    position: absolute;
     right: 0px;
-    top: 25px;
+    top: 21px;
     color: #6cc1c8;
 }
 #search_icon:hover{
@@ -8061,7 +8061,6 @@ li.select_index>a>label>i{
  #add_app_id span{
    font-size: 20px;
    margin-left: 10px;
-   vertical-align: middle;
    display: inline-block;
    line-height: 26px;
    height: 26px;
