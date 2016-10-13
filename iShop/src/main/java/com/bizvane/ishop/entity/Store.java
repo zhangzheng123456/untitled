@@ -15,7 +15,7 @@ public class Store {
     //品牌编号
     private String brand_code;
     //区域编号
-    private String area_code;
+    private String store_group_code;
     //是否直营
     private String flg_tob;
     //公司编号
@@ -46,10 +46,19 @@ public class Store {
 
     private Corp corp;
 
-    private Brand brand;
     private String qrcode;
-    private Area area;
+
     private List<StoreQrcode> qrcodeList;
+    private String area_code;
+
+    public String getArea_code() {
+        return area_code;
+    }
+
+    public void setArea_code(String area_code) {
+        this.area_code = area_code;
+    }
+
     public Store(){}
 
     public Store(int id){
@@ -102,12 +111,12 @@ public class Store {
         this.brand_code = brand_code;
     }
 
-    public String getArea_code() {
-        return area_code;
+    public String getStore_group_code() {
+        return store_group_code;
     }
 
-    public void setArea_code(String area_code) {
-        this.area_code = area_code;
+    public void setStore_group_code(String store_group_code) {
+        this.store_group_code = store_group_code;
     }
 
     public String getFlg_tob() {
@@ -125,30 +134,6 @@ public class Store {
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
     }
-
-//    public String getApp_id() {
-//        return app_id;
-//    }
-//
-//    public void setApp_id(String app_id) {
-//        this.app_id = app_id;
-//    }
-//
-//    public String getQrcode() {
-//        return qrcode;
-//    }
-//
-//    public void setQrcode(String qrcode) {
-//        this.qrcode = qrcode;
-//    }
-//
-//    public String getQrcode_content() {
-//        return qrcode_content;
-//    }
-//
-//    public void setQrcode_content(String qrcode_content) {
-//        this.qrcode_content = qrcode_content;
-//    }
 
     public String getModified_date() {
         return modified_date;
@@ -212,22 +197,6 @@ public class Store {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
     }
 
     public String getCorp_name() {

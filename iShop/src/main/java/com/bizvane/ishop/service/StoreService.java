@@ -1,7 +1,5 @@
 package com.bizvane.ishop.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;

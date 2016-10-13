@@ -62,7 +62,7 @@ public class StoreController {
     @Autowired
     private BrandService brandService;
     @Autowired
-    private AreaService areaService;
+    private StoreGroupService storeGroupService;
 
     /***
      * 根据区域拉店铺
@@ -158,7 +158,7 @@ public class StoreController {
                     Store store = new Store();
                     store.setStore_code("");
                     store.setStore_name("全部");
-                    store.setArea_code("");
+                    store.setStore_group_code("");
                     store.setArea_name("");
                     store.setCorp_code("");
                     store.setCorp_name("");
@@ -173,7 +173,7 @@ public class StoreController {
                     Store store = new Store();
                     store.setStore_code("");
                     store.setStore_name("全部");
-                    store.setArea_code("");
+                    store.setStore_group_code("");
                     store.setArea_name("");
                     store.setCorp_code("");
                     store.setCorp_name("");
@@ -629,22 +629,22 @@ public class StoreController {
             String corp_code = jsonObject.get("corp_code").toString();
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            List<Area> list = null;
+            List<StoreGroup> list = null;
             if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list = areaService.selAreaByCorpCode(corp_code, "", "");
+                list = storeGroupService.selAreaByCorpCode(corp_code, "", "");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
-                list = areaService.selAreaByCorpCode(corp_code, area_code, "");
+                list = storeGroupService.selAreaByCorpCode(corp_code, area_code, "");
             } else {
-                list = new ArrayList<Area>();
+                list = new ArrayList<StoreGroup>();
             }
             JSONArray array = new JSONArray();
             JSONObject areas = new JSONObject();
             for (int i = 0; i < list.size(); i++) {
-                Area area1 = list.get(i);
-                String area_code = area1.getArea_code();
-                String area_name = area1.getArea_name();
+                StoreGroup storeGroup1 = list.get(i);
+                String area_code = storeGroup1.getStore_group_code();
+                String area_name = storeGroup1.getStore_group_name();
                 JSONObject obj = new JSONObject();
                 obj.put("area_code", area_code);
                 obj.put("area_name", area_name);
@@ -823,7 +823,7 @@ public class StoreController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String store_name = jsonObject.get("store_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            //         Area area = areaService.getAreaByName(corp_code, store_code);
+            //         StoreGroup area = storeGroupService.getAreaByName(corp_code, store_code);
             Store store = storeService.getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
 
             if (store != null) {
@@ -1251,8 +1251,8 @@ public class StoreController {
                     int b = 5 / 0;
                 }
                 for(int j=0;j<splitAreas.length;j++){
-                    Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
-                    if (area == null) {
+                    StoreGroup storeGroup = storeGroupService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
+                    if (storeGroup == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个区域编号不存在";
                         int b = 5 / 0;
                         break;
@@ -1302,7 +1302,7 @@ public class StoreController {
                     store.setStore_code(store_code);
                     store.setStore_id(store_id);
                     store.setStore_name(store_name);
-                    store.setArea_code(area_code);
+                    store.setStore_group_code(area_code);
                     store.setBrand_code(brand_code);
                     if (flg_tob.toUpperCase().equals("N")) {
                         store.setFlg_tob("N");

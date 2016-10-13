@@ -2,12 +2,12 @@ package com.bizvane.ishop.service.imp;
 
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.AreaMapper;
+import com.bizvane.ishop.dao.StoreGroupMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
-import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.entity.StoreGroup;
 import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.service.AreaService;
+import com.bizvane.ishop.service.StoreGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,9 +27,9 @@ import java.util.Map;
  */
 
 @Service
-public class AreaServiceImpl implements AreaService {
+public class StoreGroupServiceImpl implements StoreGroupService {
     @Autowired
-    AreaMapper areaMapper;
+    StoreGroupMapper storeGroupMapper;
     @Autowired
     StoreMapper storeMapper;
 
@@ -41,22 +41,22 @@ public class AreaServiceImpl implements AreaService {
      * 获取某区域信息
      */
     @Override
-    public Area getAreaById(int id) throws Exception {
-        return areaMapper.selectByAreaId(id);
+    public StoreGroup getAreaById(int id) throws Exception {
+        return storeGroupMapper.selectByAreaId(id);
     }
 
     /**
      * 分页显示区域
      */
     @Override
-    public PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
-        List<Area> areas;
+    public PageInfo<StoreGroup> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
+        List<StoreGroup> storeGroups;
         PageHelper.startPage(page_number, page_size);
-        areas = areaMapper.selectAllArea(corp_code, search_value);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        storeGroups = storeGroupMapper.selectAllArea(corp_code, search_value);
+        for (StoreGroup storeGroup : storeGroups) {
+            storeGroup.setIsactive(CheckUtils.CheckIsactive(storeGroup.getIsactive()));
         }
-        PageInfo<Area> page = new PageInfo<Area>(areas);
+        PageInfo<StoreGroup> page = new PageInfo<StoreGroup>(storeGroups);
 
         return page;
     }
@@ -69,22 +69,22 @@ public class AreaServiceImpl implements AreaService {
         String area_code = jsonObject.get("area_code").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String area_name = jsonObject.get("area_name").toString().trim();
-        Area area = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
-        Area area1 = getAreaByName(corp_code, area_name, Common.IS_ACTIVE_Y);
-        if (area == null && area1 == null) {
-            area = new Area();
+        StoreGroup storeGroup = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
+        StoreGroup storeGroup1 = getAreaByName(corp_code, area_name, Common.IS_ACTIVE_Y);
+        if (storeGroup == null && storeGroup1 == null) {
+            storeGroup = new StoreGroup();
             Date now = new Date();
-            area.setArea_code(area_code);
-            area.setArea_name(area_name);
-            area.setCorp_code(corp_code);
-            area.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            area.setCreater(user_id);
-            area.setModified_date(Common.DATETIME_FORMAT.format(now));
-            area.setModifier(user_id);
-            area.setIsactive(jsonObject.get("isactive").toString());
-            areaMapper.insertArea(area);
+            storeGroup.setStore_group_code(area_code);
+            storeGroup.setStore_group_name(area_name);
+            storeGroup.setCorp_code(corp_code);
+            storeGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            storeGroup.setCreater(user_id);
+            storeGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
+            storeGroup.setModifier(user_id);
+            storeGroup.setIsactive(jsonObject.get("isactive").toString());
+            storeGroupMapper.insertArea(storeGroup);
             result = Common.DATABEAN_CODE_SUCCESS;
-        } else if (area != null) {
+        } else if (storeGroup != null) {
             result = "区域编号已存在";
         } else {
             result = "区域名称已存在";
@@ -106,69 +106,69 @@ public class AreaServiceImpl implements AreaService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String area_name = jsonObject.get("area_name").toString().trim();
 
-        Area old_area = getAreaById(area_id);
-        old_area_code = old_area.getArea_code();
-        if (old_area.getCorp_code().trim().equals(corp_code)) {
-            Area areaByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
-            Area areaByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
-            if (areaByCode != null && areaByCode.getId() != area_id) {
+        StoreGroup old_storeGroup = getAreaById(area_id);
+        old_area_code = old_storeGroup.getStore_group_code();
+        if (old_storeGroup.getCorp_code().trim().equals(corp_code)) {
+            StoreGroup storeGroupByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
+            StoreGroup storeGroupByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
+            if (storeGroupByCode != null && storeGroupByCode.getId() != area_id) {
                 result = "区域编号已存在";
-            } else if (areaByName != null && areaByName.getId() != area_id) {
+            } else if (storeGroupByName != null && storeGroupByName.getId() != area_id) {
                 result = "区域名称已存在";
             } else {
-                old_area = new Area();
+                old_storeGroup = new StoreGroup();
                 Date now = new Date();
-                old_area.setId(area_id);
-                old_area.setArea_code(area_code);
-                old_area.setArea_name(area_name);
-                old_area.setCorp_code(corp_code);
-                old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
-                old_area.setModifier(user_id);
-                old_area.setIsactive(jsonObject.get("isactive").toString());
-                if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
+                old_storeGroup.setId(area_id);
+                old_storeGroup.setStore_group_code(area_code);
+                old_storeGroup.setStore_group_name(area_name);
+                old_storeGroup.setCorp_code(corp_code);
+                old_storeGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
+                old_storeGroup.setModifier(user_id);
+                old_storeGroup.setIsactive(jsonObject.get("isactive").toString());
+                if (storeGroupMapper.updateArea(old_storeGroup) > 0 && !new_area_code.equals(old_area_code)) {
                     updateAreaCode(corp_code, new_area_code, old_area_code);
                 }
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
-            Area areaByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
-            Area areaByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
-            if (areaByCode == null
-                    && areaByName == null) {
-                old_area = new Area();
+            StoreGroup storeGroupByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
+            StoreGroup storeGroupByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
+            if (storeGroupByCode == null
+                    && storeGroupByName == null) {
+                old_storeGroup = new StoreGroup();
                 Date now = new Date();
-                old_area.setId(area_id);
-                old_area.setArea_code(area_code);
-                old_area.setArea_name(area_name);
-                old_area.setCorp_code(corp_code);
-                old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
-                old_area.setModifier(user_id);
-                old_area.setIsactive(jsonObject.get("isactive").toString());
-                areaMapper.updateArea(old_area);
+                old_storeGroup.setId(area_id);
+                old_storeGroup.setStore_group_code(area_code);
+                old_storeGroup.setStore_group_name(area_name);
+                old_storeGroup.setCorp_code(corp_code);
+                old_storeGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
+                old_storeGroup.setModifier(user_id);
+                old_storeGroup.setIsactive(jsonObject.get("isactive").toString());
+                storeGroupMapper.updateArea(old_storeGroup);
                 result = Common.DATABEAN_CODE_SUCCESS;
-            } else if (areaByCode != null) {
+            } else if (storeGroupByCode != null) {
                 result = "区域编号已存在";
             } else {
                 result = "区域名称已存在";
             }
         }
 
-//        if ((old_area.getArea_code().equals(area_code) || areaByCode == null)
-//                && (old_area.getArea_name().equals(area_name) || areaByName == null)) {
-//            old_area = new Area();
+//        if ((old_storeGroup.getStore_group_code().equals(area_code) || areaByCode == null)
+//                && (old_storeGroup.getStore_group_name().equals(area_name) || areaByName == null)) {
+//            old_storeGroup = new StoreGroup();
 //            Date now = new Date();
-//            old_area.setId(area_id);
-//            old_area.setArea_code(area_code);
-//            old_area.setArea_name(area_name);
-//            old_area.setCorp_code(corp_code);
-//            old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
-//            old_area.setModifier(user_id);
-//            old_area.setIsactive(jsonObject.get("isactive").toString());
-//            if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
+//            old_storeGroup.setId(area_id);
+//            old_storeGroup.setStore_group_code(area_code);
+//            old_storeGroup.setStore_group_name(area_name);
+//            old_storeGroup.setCorp_code(corp_code);
+//            old_storeGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
+//            old_storeGroup.setModifier(user_id);
+//            old_storeGroup.setIsactive(jsonObject.get("isactive").toString());
+//            if (storeGroupMapper.updateArea(old_storeGroup) > 0 && !new_area_code.equals(old_area_code)) {
 //                updateAreaCode(corp_code, new_area_code, old_area_code);
 //            }
 //            result = Common.DATABEAN_CODE_SUCCESS;
-//        } else if (!old_area.getArea_code().equals(area_code) && areaByCode != null) {
+//        } else if (!old_storeGroup.getStore_group_code().equals(area_code) && areaByCode != null) {
 //            result = "区域编号已存在";
 //        } else {
 //            result = "区域名称已存在";
@@ -184,7 +184,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     @Transactional
     public int delete(int id) throws Exception {
-        return areaMapper.deleteByAreaId(id);
+        return storeGroupMapper.deleteByAreaId(id);
     }
 
     /**
@@ -192,24 +192,24 @@ public class AreaServiceImpl implements AreaService {
      * 获取区域信息
      */
     @Override
-    public Area getAreaByCode(String corp_code, String area_code, String isactive) throws Exception {
-        return areaMapper.selectAreaByCode(corp_code, area_code, isactive);
+    public StoreGroup getAreaByCode(String corp_code, String area_code, String isactive) throws Exception {
+        return storeGroupMapper.selectAreaByCode(corp_code, area_code, isactive);
     }
 
     @Override
-    public Area getAreaByName(String corp_code, String area_name, String isactive) throws Exception {
-        Area area = this.areaMapper.selectAreaByName(corp_code, area_name, isactive);
-        return area;
+    public StoreGroup getAreaByName(String corp_code, String area_name, String isactive) throws Exception {
+        StoreGroup storeGroup = this.storeGroupMapper.selectAreaByName(corp_code, area_name, isactive);
+        return storeGroup;
     }
 
     @Override
-    public String insertExecl(Area area) throws Exception {
-        areaMapper.insertArea(area);
+    public String insertExecl(StoreGroup storeGroup) throws Exception {
+        storeGroupMapper.insertArea(storeGroup);
         return "add success";
     }
 
     @Override
-    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception {
+    public PageInfo<StoreGroup> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             areaArray = area_codes.split(",");
@@ -217,23 +217,23 @@ public class AreaServiceImpl implements AreaService {
                 areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
             }
         }
-        List<Area> areas;
+        List<StoreGroup> storeGroups;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("area_codes", areaArray);
         params.put("corp_code", corp_code);
         params.put("map", map);
-        areas = areaMapper.selectAllAreaScreen(params);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        storeGroups = storeGroupMapper.selectAllAreaScreen(params);
+        for (StoreGroup storeGroup : storeGroups) {
+            storeGroup.setIsactive(CheckUtils.CheckIsactive(storeGroup.getIsactive()));
         }
-        PageInfo<Area> page = new PageInfo<Area>(areas);
+        PageInfo<StoreGroup> page = new PageInfo<StoreGroup>(storeGroups);
         return page;
     }
 
 
     @Override
-    public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
+    public PageInfo<StoreGroup> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             if (area_codes.contains(Common.SPECIAL_HEAD))
@@ -245,16 +245,16 @@ public class AreaServiceImpl implements AreaService {
         params.put("area_codes", areaArray);
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
-        List<Area> areas = areaMapper.selectByAreaCodeSearch(params);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        List<StoreGroup> storeGroups = storeGroupMapper.selectByAreaCodeSearch(params);
+        for (StoreGroup storeGroup : storeGroups) {
+            storeGroup.setIsactive(CheckUtils.CheckIsactive(storeGroup.getIsactive()));
         }
-        PageInfo<Area> page = new PageInfo<Area>(areas);
+        PageInfo<StoreGroup> page = new PageInfo<StoreGroup>(storeGroups);
         return page;
     }
 
     @Override
-    public List<Area> selectArea(String corp_code, String area_codes) throws SQLException {
+    public List<StoreGroup> selectArea(String corp_code, String area_codes) throws SQLException {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             if (area_codes.contains(Common.SPECIAL_HEAD))
@@ -264,12 +264,12 @@ public class AreaServiceImpl implements AreaService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", areaArray);
-        List<Area> areas = areaMapper.selectArea(params);
-        return areas;
+        List<StoreGroup> storeGroups = storeGroupMapper.selectArea(params);
+        return storeGroups;
     }
 
     @Override
-    public PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes, String store_code, String search_value) throws SQLException {
+    public PageInfo<StoreGroup> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes, String store_code, String search_value) throws SQLException {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
@@ -287,16 +287,16 @@ public class AreaServiceImpl implements AreaService {
         params.put("store_code", storeArray);
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
-        List<Area> areas = areaMapper.selAreaByCorpCode(params);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+        List<StoreGroup> storeGroups = storeGroupMapper.selAreaByCorpCode(params);
+        for (StoreGroup storeGroup : storeGroups) {
+            storeGroup.setIsactive(CheckUtils.CheckIsactive(storeGroup.getIsactive()));
         }
-        PageInfo<Area> page = new PageInfo<Area>(areas);
+        PageInfo<StoreGroup> page = new PageInfo<StoreGroup>(storeGroups);
         return page;
     }
 
     @Override
-    public List<Area> selAreaByCorpCode(String corp_code, String area_codes, String store_code) throws Exception {
+    public List<StoreGroup> selAreaByCorpCode(String corp_code, String area_codes, String store_code) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
@@ -313,9 +313,9 @@ public class AreaServiceImpl implements AreaService {
         params.put("area_codes", areaArray);
         params.put("store_code", storeArray);
         params.put("search_value", "");
-        List<Area> areas = areaMapper.selAreaByCorpCode(params);
+        List<StoreGroup> storeGroups = storeGroupMapper.selAreaByCorpCode(params);
 
-        return areas;
+        return storeGroups;
     }
 
     @Override
@@ -327,18 +327,18 @@ public class AreaServiceImpl implements AreaService {
         List<Store> stores1 = page.getList();
         for (int i = 0; i < stores1.size(); i++) {
             Store store = stores1.get(i);
-            if (store.getArea_code() != null) {
-                String area = store.getArea_code();
+            if (store.getStore_group_code() != null) {
+                String area = store.getStore_group_code();
                 if (area.contains(Common.SPECIAL_HEAD+area_code+",")){
                     store.setIs_this_area("Y");
                 }
                 area = area.replace(Common.SPECIAL_HEAD,"");
                 if (area.endsWith(","))
                     area = area.substring(0,area.length()-1);
-                store.setArea_code(area);
+                store.setStore_group_code(area);
             } else {
-                if (store.getArea_code() == null) {
-                    store.setArea_code("");
+                if (store.getStore_group_code() == null) {
+                    store.setStore_group_code("");
                 }
                 store.setIs_this_area("N");
             }

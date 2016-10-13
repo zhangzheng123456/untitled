@@ -33,7 +33,7 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private BrandMapper brandMapper;
     @Autowired
-    private AreaMapper areaMapper;
+    private StoreGroupMapper storeGroupMapper;
     @Autowired
     private CorpMapper corpMapper;
     @Autowired
@@ -64,7 +64,7 @@ public class StoreServiceImpl implements StoreService {
         StringBuilder brand_name = new StringBuilder("");
         StringBuilder area_name = new StringBuilder("");
         String brand_code = store.getBrand_code();
-        String area_code = store.getArea_code();
+        String store_group_code = store.getStore_group_code();
 
         processStoreToSpecial(store);
 
@@ -89,13 +89,13 @@ public class StoreServiceImpl implements StoreService {
             store.setBrand_name("");
             store.setBrand_code("");
         }
-        if (area_code != null && !area_code.equals("")) {
-            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
-            String[] ids = area_code.split(",");
+        if (store_group_code != null && !store_group_code.equals("")) {
+            store_group_code = store_group_code.replace(Common.SPECIAL_HEAD,"");
+            String[] ids = store_group_code.split(",");
             for (int i = 0; i < ids.length; i++) {
-                Area area = areaMapper.selectAreaByCode(corp_code,ids[i],Common.IS_ACTIVE_Y);
-                if (area != null) {
-                    String area_name1 = area.getArea_name();
+                StoreGroup storeGroup = storeGroupMapper.selectAreaByCode(corp_code,ids[i],Common.IS_ACTIVE_Y);
+                if (storeGroup != null) {
+                    String area_name1 = storeGroup.getStore_group_name();
                     area_name.append(area_name1+",");
                 }
             }
@@ -103,11 +103,11 @@ public class StoreServiceImpl implements StoreService {
             if (area_name1.endsWith(","))
                 area_name1 = area_name1.substring(0,area_name1.length()-1);
             store.setArea_name(area_name1);
-            if (area_code.endsWith(","))
-                area_code = area_code.substring(0,area_code.length()-1);
-            store.setArea_code(area_code);
+            if (store_group_code.endsWith(","))
+                store_group_code = store_group_code.substring(0,store_group_code.length()-1);
+            store.setStore_group_code(store_group_code);
         }else {
-            store.setArea_code("");
+            store.setStore_group_code("");
             store.setArea_name("");
         }
         List<StoreQrcode> qrcodeList = storeMapper.selectByStoreCode(corp_code,store.getStore_code());
@@ -258,14 +258,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     //店铺下所属用户
-    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code,String isactive) throws Exception{
+    public List<User> getStoreUser(String corp_code, String store_code,String store_group_code, String role_code,String isactive) throws Exception{
         List<User> user = new ArrayList<User>();
 
         if (!store_code.equals("")) {
             user = userMapper.selectStoreUser(corp_code, Common.SPECIAL_HEAD +store_code + ",", "", role_code,isactive);
         }
-        if (!area_code.equals("")){
-            user = userMapper.selectStoreUser(corp_code, "", Common.SPECIAL_HEAD +area_code + ",", role_code,isactive);
+        if (!store_group_code.equals("")){
+            user = userMapper.selectStoreUser(corp_code, "", Common.SPECIAL_HEAD +store_group_code + ",", role_code,isactive);
         }
         for (User user1:user) {
             user1.setIsactive(CheckUtils.CheckIsactive(user1.getIsactive()));
@@ -313,14 +313,14 @@ public class StoreServiceImpl implements StoreService {
                 shop.setStore_id(store_id);
             }
             shop.setStore_name(store_name);
-            String area_code = jsonObject.get("area_code").toString().trim();
-            String[] codes1 = area_code.split(",");
-            String area_code1 = "";
+            String store_group_code = jsonObject.get("store_group_code").toString().trim();
+            String[] codes1 = store_group_code.split(",");
+            String store_group_code1 = "";
             for (int i = 0; i < codes1.length; i++) {
                 codes1[i] = Common.SPECIAL_HEAD + codes1[i] + ",";
-                area_code1 = area_code1 + codes1[i];
+                store_group_code1 = store_group_code1 + codes1[i];
             }
-            shop.setArea_code(area_code1);
+            shop.setStore_group_code(store_group_code1);
             shop.setCorp_code(corp_code);
             String brand_code = jsonObject.get("brand_code").toString().trim();
             String[] codes = brand_code.split(",");
@@ -358,28 +358,28 @@ public class StoreServiceImpl implements StoreService {
         }
         store.setBrand_code(brand_code1);
 
-        String area_code = store.getArea_code();
-        String[] codes1 = area_code.split(",");
-        String area_code1 = "";
+        String store_group_code = store.getStore_group_code();
+        String[] codes1 = store_group_code.split(",");
+        String store_group_code1 = "";
         for (int i = 0; i < codes1.length; i++) {
             codes1[i] = Common.SPECIAL_HEAD + codes1[i] + ",";
-            area_code1 = area_code1 + codes1[i];
+            store_group_code1 = store_group_code1 + codes1[i];
         }
-        store.setArea_code(area_code1);
+        store.setStore_group_code(store_group_code1);
 
         storeMapper.insertStore(store);
         return "add success";
     }
 
     @Override
-    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map) throws Exception{
+    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String store_group_codes, String brand_codes,String store_codes, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         String[] areas = null;
         String[] brands = null;
         String[] stores = null;
-        if (!area_codes.equals("")) {
-            area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
-            areas = area_codes.split(",");
+        if (!store_group_codes.equals("")) {
+            store_group_codes = store_group_codes.replace(Common.SPECIAL_HEAD,"");
+            areas = store_group_codes.split(",");
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = Common.SPECIAL_HEAD+areas[i]+",";
             }
@@ -398,7 +398,7 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         params.put("corp_code", corp_code);
-        params.put("area_codes", areas);
+        params.put("store_group_codes", areas);
         params.put("brand_codes", brands);
         params.put("store_codes", stores);
         params.put("map", map);
@@ -496,15 +496,15 @@ public class StoreServiceImpl implements StoreService {
                 store.setStore_code(store_code);
                 store.setStore_name(store_name);
 
-                String area_code = jsonObject.get("area_code").toString().trim();
-                String[] codes1 = area_code.split(",");
-                String area_code1 = "";
+                String store_group_code = jsonObject.get("store_group_code").toString().trim();
+                String[] codes1 = store_group_code.split(",");
+                String store_group_code1 = "";
                 for (int i = 0; i < codes1.length; i++) {
                     codes1[i] = Common.SPECIAL_HEAD + codes1[i] + ",";
-                    area_code1 = area_code1 + codes1[i];
+                    store_group_code1 = store_group_code1 + codes1[i];
                 }
-                store.setArea_code(area_code1);
-//                store.setArea_code(jsonObject.get("area_code").toString().trim());
+                store.setStore_group_code(store_group_code1);
+//                store.setStore_group_code(jsonObject.get("store_group_code").toString().trim());
                 store.setCorp_code(corp_code);
                 String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
@@ -536,7 +536,7 @@ public class StoreServiceImpl implements StoreService {
                     store.setStore_id(store_id1);
                 }
                 store.setStore_name(store_name);
-                store.setArea_code(jsonObject.get("area_code").toString().trim());
+                store.setStore_group_code(jsonObject.get("store_group_code").toString().trim());
                 store.setCorp_code(corp_code);
                 String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
@@ -590,10 +590,10 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code, String[] brand_code, String search_value) throws Exception{
+    public PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] store_group_code, String[] brand_code, String search_value) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-        params.put("area_code", area_code);
+        params.put("store_group_code", store_group_code);
         params.put("brand_code", brand_code);
         params.put("search_value", search_value);
         params.put("isactive", "");
@@ -631,18 +631,18 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception {
+    public PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String store_group_code, String brand_code, String search_value) throws Exception {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-        params.put("area_code", "");
+        params.put("store_group_code", "");
         params.put("brand_code", "");
-        if (!area_code.equals("")){
-            String[] areaCodes = area_code.split(",");
+        if (!store_group_code.equals("")){
+            String[] areaCodes = store_group_code.split(",");
             for (int i = 0; i < areaCodes.length; i++) {
                 areaCodes[i] = Common.SPECIAL_HEAD +areaCodes[i]+",";
             }
-            params.put("area_code", areaCodes);
+            params.put("store_group_code", areaCodes);
         }
         if (!brand_code.equals("")){
             String[] brandCodes = brand_code.split(",");
@@ -660,17 +660,17 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value) throws Exception {
+    public List<Store> selStoreByAreaBrandCode(String corp_code, String store_group_code, String brand_code, String search_value) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-        params.put("area_code", "");
+        params.put("store_group_code", "");
         params.put("brand_code", "");
-        if (!area_code.equals("")){
-            String[] areaCodes = area_code.split(",");
+        if (!store_group_code.equals("")){
+            String[] areaCodes = store_group_code.split(",");
             for (int i = 0; i < areaCodes.length; i++) {
                 areaCodes[i] = Common.SPECIAL_HEAD +areaCodes[i]+",";
             }
-            params.put("area_code", areaCodes);
+            params.put("store_group_code", areaCodes);
         }
         if (!brand_code.equals("")){
             String[] brandCodes = brand_code.split(",");
@@ -685,24 +685,24 @@ public class StoreServiceImpl implements StoreService {
         return stores;
     }
 
-    public List<Store> selectByAreaBrand(String corp_code, String[] area_code, String isactive) throws Exception{
+    public List<Store> selectByAreaBrand(String corp_code, String[] store_group_code, String isactive) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-        params.put("area_code", area_code);
+        params.put("store_group_code", store_group_code);
         params.put("search_value", "");
         params.put("isactive", isactive);
         List<Store> stores = storeMapper.selectByAreaBrand(params);
         return stores;
     }
 
-    public List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception{
-        String[] area_codes = area_code.split(",");
-        for (int i = 0; i < area_codes.length; i++) {
-            area_codes[i] = Common.SPECIAL_HEAD+area_codes[i]+",";
+    public List<Store> selectStoreCountByArea(String corp_code, String store_group_code, String isactive) throws Exception{
+        String[] store_group_codes = store_group_code.split(",");
+        for (int i = 0; i < store_group_codes.length; i++) {
+            store_group_codes[i] = Common.SPECIAL_HEAD+store_group_codes[i]+",";
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code",corp_code);
-        params.put("array",area_codes);
+        params.put("array",store_group_codes);
         params.put("isactive",isactive);
         List<Store> stores = storeMapper.selectStoreCountByArea(params);
         return stores;
@@ -840,7 +840,7 @@ public class StoreServiceImpl implements StoreService {
      */
     public void processStoreToSpecial(Store store) throws Exception {
         String brand_code = store.getBrand_code();
-        String area_code = store.getArea_code();
+        String store_group_code = store.getStore_group_code();
         if (brand_code != null && !brand_code.equals("")) {
             if (!brand_code.startsWith(Common.SPECIAL_HEAD)) {
                 String[] ids = brand_code.split(",");
@@ -851,14 +851,14 @@ public class StoreServiceImpl implements StoreService {
                 store.setBrand_code(brand_code1);
             }
         }
-        if (area_code != null && !area_code.equals("")) {
-            if (!area_code.startsWith(Common.SPECIAL_HEAD)) {
-                String[] ids = area_code.split(",");
-                String area_code1 = "";
+        if (store_group_code != null && !store_group_code.equals("")) {
+            if (!store_group_code.startsWith(Common.SPECIAL_HEAD)) {
+                String[] ids = store_group_code.split(",");
+                String store_group_code1 = "";
                 for (int i = 0; i < ids.length; i++) {
-                    area_code1 = area_code1 + Common.SPECIAL_HEAD + ids[i] + ",";
+                    store_group_code1 = store_group_code1 + Common.SPECIAL_HEAD + ids[i] + ",";
                 }
-                store.setArea_code(area_code1);
+                store.setStore_group_code(store_group_code1);
             }
         }
         storeMapper.updateStore(store);
