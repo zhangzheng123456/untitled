@@ -3,7 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.StoreGroupMapper;
+import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.dao.UserMapper;
@@ -34,7 +34,7 @@ public class CorpServiceImpl implements CorpService {
     private CodeUpdateMapper codeUpdateMapper;
 
     @Autowired
-    private StoreGroupMapper storeGroupMapper;
+    private AreaMapper areaMapper;
 
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
         Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);

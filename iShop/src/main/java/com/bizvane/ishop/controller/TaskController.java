@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.System;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yin on 2016/7/28.
@@ -40,7 +43,7 @@ public class TaskController {
     @Autowired
     private StoreService storeService;
     @Autowired
-    private StoreGroupService storeGroupService;
+    private AreaService areaService;
     String id;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

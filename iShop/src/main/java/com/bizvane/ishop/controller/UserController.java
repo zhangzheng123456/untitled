@@ -62,7 +62,7 @@ public class UserController {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private StoreGroupService storeGroupService;
+    private AreaService areaService;
     @Autowired
     private SignService signService;
     String id;
@@ -331,9 +331,9 @@ public class UserController {
                 int i = 9 / 0;
             }
             for (User user : users) {
-                String areaCode = user.getStore_group_code();
+                String areaCode = user.getArea_code();
                 String replaceStr = WebUtils.StringFilter(areaCode);
-                user.setStore_group_code(replaceStr);
+                user.setArea_code(replaceStr);
                 String store_code = user.getStore_code();
                 String replaceStore = WebUtils.StringFilter(store_code);
                 user.setStore_code(replaceStore);
@@ -633,8 +633,8 @@ public class UserController {
 //                            int b = 5 / 0;
 //                            break;
 //                        }
-                    StoreGroup storeGroup = storeGroupService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
-                    if (storeGroup == null) {
+                    Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
+                    if (area == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个区域编号不存在";
                         int b = 5 / 0;
                         break;
@@ -714,7 +714,7 @@ public class UserController {
 //                        }
 //                    }
                     if (!role.equals(Common.ROLE_AM)) {
-                        user.setStore_group_code("");
+                        user.setArea_code("");
                     } else {
                         if(role.equals(Common.ROLE_AM ) && area_code.equals("")){
                             result = "：第" + (i + 1) + "行角色为区经，区域编号为必填项";
@@ -740,7 +740,7 @@ public class UserController {
                             result = "：第" + (i + 1) + "行Execl中存在重复区域";
                             int a = 5 / 0;
                         }
-                        user.setStore_group_code(area_code);
+                        user.setArea_code(area_code);
                     }
 //                    if (!store_code.equals("all") && !store_code.equals("")) {
 //                        String[] codes = store_code.split(",");
@@ -913,7 +913,7 @@ public class UserController {
                         return dataBean.getJsonStr();
                     }
                 }
-                user.setStore_group_code(area_code);
+                user.setArea_code(area_code);
             }
             if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 user.setGroup_code(jsonObject.get("group_code").toString().trim());
@@ -1040,7 +1040,7 @@ public class UserController {
             String role_code = jsonObject.get("role_code").toString().trim();
             String area_code = jsonObject.get("area_code").toString().trim();
             String store_code = jsonObject.get("store_code").toString().trim();
-            user.setStore_group_code(area_code);
+            user.setArea_code(area_code);
             user.setStore_code(store_code);
             if (role_code.equals(Common.ROLE_AM)) {
                 if (!area_code.equals("all") && !area_code.equals("")) {
@@ -1069,7 +1069,7 @@ public class UserController {
                         return dataBean.getJsonStr();
                     }
                 }
-                user.setStore_group_code(area_code);
+                user.setArea_code(area_code);
             }
             if (role_code.equals(Common.ROLE_SM)) {
                 if (!store_code.equals("all") && !store_code.equals("")) {

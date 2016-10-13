@@ -1,5 +1,6 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.CorpParam;
 import org.apache.ibatis.annotations.Param;
 

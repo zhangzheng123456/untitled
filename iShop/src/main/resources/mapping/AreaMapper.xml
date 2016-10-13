@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.StoreGroupMapper">
+<mapper namespace="com.bizvane.ishop.dao.AreaMapper">
 
-    <resultMap type="com.bizvane.ishop.entity.StoreGroup" id="StoreGroup">
+    <resultMap type="com.bizvane.ishop.entity.Area" id="Area">
         <id column="id" property="id"/>
-        <result column="store_group_code" property="store_group_code"/>
-        <result column="store_group_name" property="store_group_name"/>
+        <result column="area_code" property="area_code"/>
+        <result column="area_name" property="area_name"/>
         <result column="corp_code" property="corp_code"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -15,72 +15,72 @@
         </association>
     </resultMap>
 
-    <select id="selectByAreaId" resultMap="StoreGroup">
+    <select id="selectByAreaId" resultMap="Area">
         SELECT
-        def_store_group.id,
-        store_group_code,
-        store_group_name,
-        def_store_group.corp_code,
-        def_store_group.modified_date,
-        def_store_group.modifier,
-        def_store_group.created_date,
-        def_store_group.creater,
-        def_store_group.isactive,
+        def_area.id,
+        area_code,
+        area_name,
+        def_area.corp_code,
+        def_area.modified_date,
+        def_area.modifier,
+        def_area.created_date,
+        def_area.creater,
+        def_area.isactive,
         def_corp.corp_name
-        FROM def_store_group,def_corp
-        WHERE def_store_group.corp_code = def_corp.corp_code
-        AND  def_store_group.ID=#{id}
+        FROM def_area,def_corp
+        WHERE def_area.corp_code = def_corp.corp_code
+        AND  def_area.ID=#{id}
     </select>
 
-    <select id="selectAllArea" resultMap="StoreGroup">
+    <select id="selectAllArea" resultMap="Area">
         SELECT
-        def_store_group.id,
-        store_group_code,
-        store_group_name,
-        def_store_group.corp_code,
-        def_store_group.modified_date,
-        def_store_group.modifier,
-        def_store_group.isactive,
+        def_area.id,
+        area_code,
+        area_name,
+        def_area.corp_code,
+        def_area.modified_date,
+        def_area.modifier,
+        def_area.isactive,
         def_corp.corp_name
-        FROM def_store_group,def_corp
-        WHERE def_store_group.corp_code = def_corp.corp_code
+        FROM def_area,def_corp
+        WHERE def_area.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND def_store_group.corp_code = #{corp_code}
+            AND def_area.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (store_group_code LIKE concat('%',#{search_value},'%')
-            OR store_group_name LIKE concat('%',#{search_value},'%')
+            (area_code LIKE concat('%',#{search_value},'%')
+            OR area_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
-        Group By def_store_group.id
-        ORDER BY def_store_group.id DESC
+        Group By def_area.id
+        ORDER BY def_area.id DESC
     </select>
 
-    <select id="selectAreas" resultType="com.bizvane.ishop.entity.StoreGroup">
+    <select id="selectAreas" resultType="com.bizvane.ishop.entity.Area">
         SELECT *
-        FROM def_store_group
+        FROM def_area
         WHERE corp_code = #{corp_code}
         AND ISACTIVE = 'Y'
-        Group By def_store_group.id
-        ORDER BY def_store_group.id DESC
+        Group By def_area.id
+        ORDER BY def_area.id DESC
     </select>
 
     <delete id="deleteByAreaId">
         DELETE FROM
-        def_store_group
+        def_area
         WHERE ID=#{id}
     </delete>
 
-    <insert id="insertArea" parameterType="com.bizvane.ishop.entity.StoreGroup">
-        INSERT INTO def_store_group
+    <insert id="insertArea" parameterType="com.bizvane.ishop.entity.Area">
+        INSERT INTO def_area
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="store_group_code!=null">
-                store_group_code,
+            <if test="area_code!=null">
+                area_code,
             </if>
-            <if test="store_group_name!=null">
-                store_group_name,
+            <if test="area_name!=null">
+                area_name,
             </if>
             <if test="corp_code!=null">
                 corp_code,
@@ -102,11 +102,11 @@
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="store_group_code!=null">
-                #{store_group_code},
+            <if test="area_code!=null">
+                #{area_code},
             </if>
-            <if test="store_group_name!=null">
-                #{store_group_name},
+            <if test="area_name!=null">
+                #{area_name},
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
@@ -129,14 +129,14 @@
         </trim>
     </insert>
 
-    <update id="updateArea" parameterType="com.bizvane.ishop.entity.StoreGroup">
-        UPDATE def_store_group
+    <update id="updateArea" parameterType="com.bizvane.ishop.entity.Area">
+        UPDATE def_area
         <trim prefix="SET" suffixOverrides=",">
-            <if test="store_group_code!=null">
-                store_group_code=#{store_group_code},
+            <if test="area_code!=null">
+                area_code=#{area_code},
             </if>
-            <if test="store_group_name!=null">
-                store_group_name=#{store_group_name},
+            <if test="area_name!=null">
+                area_name=#{area_name},
             </if>
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
@@ -160,38 +160,38 @@
         WHERE id=#{id};
     </update>
 
-    <select id="selectAreaByName" resultType="com.bizvane.ishop.entity.StoreGroup">
-        SELECT * FROM def_store_group
+    <select id="selectAreaByName" resultType="com.bizvane.ishop.entity.Area">
+        SELECT * FROM def_area
         WHERE corp_code=#{corp_code}
-        AND store_group_name=#{store_group_name}
+        AND area_name=#{area_name}
         <if test="isactive!=null and isactive!=''">
            AND isactive=#{isactive}
         </if>
     </select>
 
     <!--根据企业code和用户登录时得到的区域code查找所属的区域-->
-    <select id="selectAreaByCode" resultType="com.bizvane.ishop.entity.StoreGroup">
+    <select id="selectAreaByCode" resultType="com.bizvane.ishop.entity.Area">
         SELECT *
-        FROM def_store_group
+        FROM def_area
         WHERE corp_code = #{corp_code}
-        AND store_group_code = #{store_group_code}
+        AND area_code = #{area_code}
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}
         </if>
     </select>
 
-    <select id="selectAllAreaScreen" resultMap="StoreGroup">
+    <select id="selectAllAreaScreen" resultMap="Area">
         SELECT
         da.*,
         dc.corp_name
-        FROM def_store_group da,def_corp dc
+        FROM def_area da,def_corp dc
         WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
-        <if test="store_group_codes!=null">
-            AND da.store_group_code IN
-            <foreach collection="store_group_codes" index="index" item="item" separator="," open="(" close=")">
+        <if test="area_codes!=null">
+            AND da.area_code IN
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
@@ -213,37 +213,37 @@
         ORDER BY da.id DESC
     </select>
 
-    <select id="selectArea" resultType="com.bizvane.ishop.entity.StoreGroup">
-        SELECT store_group_code,store_group_name
-        FROM def_store_group
+    <select id="selectArea" resultType="com.bizvane.ishop.entity.Area">
+        SELECT area_code,area_name
+        FROM def_area
         WHERE 1=1
         AND corp_code=#{corp_code}
-        AND store_group_code IN
-        <foreach collection="store_group_codes" index="index" item="item" separator="," open="(" close=")">
+        AND area_code IN
+        <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>
         AND ISACTIVE = 'Y'
     </select>
 
-    <select id="selectByAreaCodeSearch" resultMap="StoreGroup">
+    <select id="selectByAreaCodeSearch" resultMap="Area">
         SELECT
         da.*,
         dc.corp_name
-        FROM def_store_group da,def_corp dc
+        FROM def_area da,def_corp dc
         WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
-        <if test="store_group_codes!=null">
-            AND da.store_group_code IN
-            <foreach collection="store_group_codes" index="index" item="item" separator="," open="(" close=")">
+        <if test="area_codes!=null">
+            AND da.area_code IN
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (da.store_group_code LIKE concat('%',#{search_value},'%')
-            OR da.store_group_name LIKE concat('%',#{search_value},'%')
+            (da.area_code LIKE concat('%',#{search_value},'%')
+            OR da.area_name LIKE concat('%',#{search_value},'%')
             OR dc.corp_name LIKE concat('%',#{search_value},'%')
             OR da.modified_date LIKE concat('%',#{search_value},'%')
             OR da.modifier LIKE concat('%',#{search_value},'%')
@@ -254,25 +254,27 @@
         ORDER BY da.id DESC
     </select>
 
+
+
 <!--下拉框取值，只取可用数据-->
-    <select id="selAreaByCorpCode" resultMap="StoreGroup">
+    <select id="selAreaByCorpCode" resultMap="Area">
         SELECT
         da.*,
         dc.corp_name
-        FROM def_store_group da,def_corp dc
+        FROM def_area da,def_corp dc
         WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
-        <if test="store_group_codes!=null and store_group_codes != ''">
-            AND da.store_group_code IN
-            <foreach collection="store_group_codes" index="index" item="item" separator="," open="(" close=")">
+        <if test="area_codes!=null and area_codes != ''">
+            AND da.area_code IN
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
         <if test="store_code != null and store_code !=''">
-            AND da.store_group_code IN
-            (SELECT store_group_code from def_store
+            AND da.area_code IN
+            (SELECT area_code from def_store
             WHERE corp_code = #{corp_code} AND
             STORE_CODE IN
             <foreach collection="store_code" index="index" item="item" separator="," open="(" close=")">
@@ -281,7 +283,7 @@
             AND isactive ='Y')
         </if>
         <if test="search_value != null and search_value !=''">
-            AND da.store_group_name LIKE concat('%',#{search_value},'%')
+            AND da.area_name LIKE concat('%',#{search_value},'%')
         </if>
         AND da.ISACTIVE ='Y'
         GROUP By da.id
