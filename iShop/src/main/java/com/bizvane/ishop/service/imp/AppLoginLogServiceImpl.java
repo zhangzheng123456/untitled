@@ -36,11 +36,11 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
     @Override
     public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
-        JSONObject date = JSONObject.parseObject(map.get("created_date_login"));
+        JSONObject date = JSONObject.parseObject(map.get("time_bucket"));
         params.put("created_date_start", date.get("start").toString());
         params.put("created_date_end", date.get("end").toString());
         params.put("corp_code", corp_code);
-        map.remove("created_date_login");
+        map.remove("time_bucket");
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<AppLoginLog> list = loginLogMapper.selectAllScreen(params);
