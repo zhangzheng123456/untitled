@@ -8,6 +8,7 @@ var group_cheked=[];
 var corp_code='';//企业编号
 var group_code='';//分组编号
 var group_count='';
+var param={};//搜索参数
 $(function(){
     window.vip.init();
     if($(".pre_title label").text()=="编辑会员分组"){
@@ -330,7 +331,7 @@ $('#screen_add').on('click',function(){
     var str=$('#screen_add').text().trim();
     str=='编辑会员'&&( role='eidtor');
     group_code=$("#vip_num").val();
-    corp_code=$('#OWN_CORP').val()
+    corp_code=$('#OWN_CORP').val();
     $(this).attr('data_role')?role=$(this).attr('data_role'):'';
     GET(1,10,group_code);//第三个参数  分组编号
     $('#page-wrapper')[0].style.display='none';
@@ -386,7 +387,7 @@ $("#save").click(function(){
             if(role=='eidtor'){
                 window.location.reload()
             }else{
-                $('#group_recode').val(group_count);
+                $('#group_recode').val('共'+group_count+"个会员");
                 $('#page-wrapper')[0].style.display='block';
                 $('.content')[0].style.display='none';
             }
@@ -999,9 +1000,9 @@ $("#screen_que_area").click(function(){
     var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
     $("#screen_area_num").val(area_name);
     $("#screen_area_num").attr("data-code",area_codes);
-    $("#area_num").val("已选"+num+"家");
+    $("#area_num").val("已选"+num+"个");
     $("#area_num").attr("data-areacode",area_codes);
-    $("#staff_area_num").val("已选"+num+"家");
+    $("#staff_area_num").val("已选"+num+"个");
     $("#staff_area_num").attr("data-areacode",area_codes);
     $("#screen_area").hide();
     $("#screen_wrapper").show();
@@ -1025,7 +1026,7 @@ $("#screen_que_shop").click(function(){
     var num=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li").length;
     $("#screen_shop_num").val(store_name);
     $("#screen_shop_num").attr("data-code",store_code);
-    $("#staff_shop_num").val("已选"+num+"家")
+    $("#staff_shop_num").val("已选"+num+"个")
     $("#staff_shop_num").attr("data-storecode",store_code);
     $("#screen_shop").hide();
     $("#screen_wrapper").show();
@@ -1048,10 +1049,10 @@ $("#screen_que_brand").click(function(){
     }
     var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
     $("#brand_num").attr("data-brandcode",brand_codes);
-    $("#brand_num").val("已选"+num+"家");
+    $("#brand_num").val("已选"+num+"个");
     $("#screen_brand_num").val(brand_name);
     $("#screen_brand_num").attr("data-code",brand_codes);
-    $("#staff_brand_num").val("已选"+num+"家");
+    $("#staff_brand_num").val("已选"+num+"个");
     $("#staff_brand_num").attr("data-brandcode",brand_codes);
     $("#screen_brand").hide();
     $("#screen_wrapper").show();
@@ -1406,7 +1407,67 @@ function filtrates(a,b,_param,c){
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,a,b,c);
-            whir.loading.remove();//移除加载框
+            // whir.loading.remove();//移除加载框
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+    })
+}
+//鼠标按下时触发的收索
+$("#search").keydown(function() {
+    var event=window.event||arguments[0];
+    value=this.value.replace(/\s+/g,"");
+    if(value!==""){
+        inx=1;
+        param["searchValue"]=value;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        if(event.keyCode == 13){
+            POST(inx,pageSize,group_code);
+        }
+    }else{
+        if(event.keyCode == 13){
+            GET(inx,pageSize,group_code);
+        }
+    }
+});
+//点击放大镜触发搜索
+$("#d_search").click(function(){
+    value=$("#search").val().replace(/\s+/g,"");
+    if(value!==""){
+        inx=1;
+        param["searchValue"]=value;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        POST(inx,pageSize,group_code);
+    }else{
+        GET(inx,pageSize,group_code);
+    }
+})
+//搜索的请求函数
+function POST(a,b,c){
+    console.log(c);
+    param["corp_code"]=corp_code;
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/vip/vipSearch","0",param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var list=message.all_vip_list;
+            cout=message.pages;
+            var actions=message.actions;
+            $(".table tbody").empty();
+            if(list.length<=0){
+                $(".table p").remove();
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+                $(".table p").remove();
+                superaddition(list,a,c);
+                jumpBianse();
+                whir.loading.remove();//移除加载框
+            }
+            filtrate="";
+            setPage($("#foot-num")[0],cout,a,b,c);
         }else if(data.code=="-1"){
             alert(data.message);
         }
