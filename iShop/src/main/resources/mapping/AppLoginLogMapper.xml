@@ -74,9 +74,9 @@
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     def_corp.${entryKey} REGEXP #{entryValue}
                 </when>
-                <!--<when test="entryValue!='' and entryKey=='created_date'">-->
-                    <!--acc_app_login_log.${entryKey} REGEXP #{entryValue}-->
-                <!--</when>-->
+                <when test="entryValue!='' and entryKey=='time'">
+                    acc_app_login_log.${entryKey} = #{entryValue}
+                </when>
                 <when test="entryValue!=''">
                     acc_app_login_log.${entryKey} REGEXP #{entryValue}
                 </when>
@@ -85,6 +85,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY acc_app_login_log.id
         ORDER BY acc_app_login_log.id DESC
     </select>
 

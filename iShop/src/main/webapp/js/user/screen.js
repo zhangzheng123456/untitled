@@ -34,6 +34,8 @@ $("#screen_add").click(function(){
 		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
 		$("#screen_area").hide();
 		shop_num=1;
+		isscroll=false;
+		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_shop .screen_content_l ul").empty();
 		$("#screen_shop .screen_content_r ul").empty();
 		$("#screen_area .screen_content_l ul").empty();
@@ -48,6 +50,7 @@ $("#screen_add").click(function(){
 	}
 	if(r_code=="R4000"){
 		isscroll=false;
+	    $("#screen_area .screen_content_l").unbind("scroll");
 		whir.loading.add("",0.5);
 		$("#loading").remove();
 		$("#screen_area").show();
@@ -86,6 +89,8 @@ $("#shop_area").click(function(){
 	// $("#screen_area .screen_content_r ul").empty();
 	// $("#screen_area .s_pitch span").html("0");
 	$("#area_search").val("");
+	isscroll=false;
+	$("#screen_area .screen_content_l").unbind("scroll");
 	getarealist(area_num);
 })
 //点击店铺的品牌
@@ -196,6 +201,8 @@ $("#store_search").keydown(function(){
 	var event=window.event||arguments[0];
 	shop_num=1;
 	if(event.keyCode==13){
+		isscroll=false;
+		$("#screen_shop .screen_content_l ul").unbind("scroll");
 		$("#screen_shop .screen_content_l ul").empty();
 		getstorelist(shop_num);
 	}
@@ -211,14 +218,16 @@ $("#brand_search").keydown(function(){
 //店铺放大镜搜索
 $("#store_search_f").click(function(){
 	shop_num=1;
-	$("#screen_shop .screen_content_l ul").empty();
 	isscroll=false;
-	$("#screen_area .screen_content_l").unbind("scroll");
+	$("#screen_shop .screen_content_l").unbind("scroll");
+	$("#screen_shop .screen_content_l ul").empty();
 	getstorelist(shop_num);
 })
 //区域放大镜收索
 $("#area_search_f").click(function(){
 	area_num=1;
+	isscroll=false;
+	$("#screen_area .screen_content_l").unbind("scroll");
 	$("#screen_area .screen_content_l ul").empty();
 	getarealist(area_num);
 })
@@ -226,12 +235,12 @@ $("#area_search_f").click(function(){
 $("#screen_close_area").click(function(){
 	$("#screen_area").hide();
 	whir.loading.remove();//移除遮罩层
-	$("#screen_area .screen_content_l").unbind("scroll");
 })
 //店铺关闭
 $("#screen_close_shop").click(function(){
 	$("#screen_shop").hide();
 	whir.loading.remove();//移除遮罩层
+	$("#screen_shop .screen_content_l").unbind("scroll");
 })
 //品牌关闭
 $("#screen_close_brand").click(function(){
@@ -257,17 +266,17 @@ function bianse(){
 //     };
 // })
 //店铺滚动事件
-$("#screen_shop .screen_content_l").bind("scroll",function () {
-	var nScrollHight = $(this)[0].scrollHeight;
-    var nScrollTop = $(this)[0].scrollTop;
-    var nDivHight=$(this).height();
-    if(nScrollTop + nDivHight >= nScrollHight){
-    	if(shop_next){
-    		return;
-    	}
-    	getstorelist(shop_num);
-    };
-})
+// $("#screen_shop .screen_content_l").bind("scroll",function () {
+// 	var nScrollHight = $(this)[0].scrollHeight;
+//     var nScrollTop = $(this)[0].scrollTop;
+//     var nDivHight=$(this).height();
+//     if(nScrollTop + nDivHight >= nScrollHight){
+//     	if(shop_next){
+//     		return;
+//     	}
+//     	getstorelist(shop_num);
+//     };
+// })
 //点击区域确定追加节点
 $("#screen_que_area").click(function(){
 	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
@@ -301,6 +310,8 @@ $("#screen_que_area").click(function(){
 		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
 		$("#area_num").val("已选"+num+"家");
 		var shop_num=1;
+		isscroll=false;
+		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_shop .screen_content_l ul").empty();
 	    // $("#screen_shop .screen_content_r ul").empty();
 		getstorelist(shop_num);
@@ -356,6 +367,8 @@ $("#screen_que_brand").click(function(){
 	var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
 	var shop_num=1;
 	$("#brand_num").val("已选"+num+"家");
+	isscroll=false;
+	$("#screen_shop .screen_content_l").unbind("scroll");
 	$("#screen_shop .screen_content_l ul").empty();
 	// $("#screen_shop .screen_content_r ul").empty();
 	getstorelist(shop_num);
@@ -522,6 +535,19 @@ function getstorelist(a){
 				shop_next=false;
 			}
 			$("#screen_shop .screen_content_l ul").append(store_html);
+			if(!isscroll){
+				$("#screen_shop .screen_content_l").bind("scroll",function () {
+					var nScrollHight = $(this)[0].scrollHeight;
+				    var nScrollTop = $(this)[0].scrollTop;
+				    var nDivHight=$(this).height();
+				    if(nScrollTop + nDivHight >= nScrollHight){
+				    	if(shop_next){
+				    		return;
+				    	}
+				    	getstorelist(shop_num);
+				    };
+				})
+		    }
 			var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
 			for(var k=0;k<li.length;k++){
 				$("#screen_shop .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 

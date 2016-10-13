@@ -34,6 +34,7 @@
             OR rcc.remark like concat('%',#{search_value},'%')
             )
         </if>
+        GROUP By rcc.id
         ORDER BY rcc.id DESC
     </select>
 
@@ -186,7 +187,7 @@
 
             </choose>
         </foreach>
-
+        GROUP By rcc.id
         ORDER BY rcc.id DESC
     </select>
 </mapper>

@@ -1005,8 +1005,9 @@ input::-webkit-input-placeholder{
 	color:#807a62;
 }
 .isActive_select_down li:hover{
-	color: #fff;
-	background: #6cc1c8;
+	color: #fff!important;
+	/*background: #6cc1c8;*/
+	background: #4a5f7c;
 }
 /****员工批量生成二维码*****/
 #creat_code{

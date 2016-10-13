@@ -141,6 +141,7 @@
         <if test="search_value!=null and search_value!=''">
             AND vtt.type_name LIKE concat('%',#{search_value},'%')
         </if>
+        GROUP BY vtt.id
         ORDER BY vtt.id DESC
     </select>
 

@@ -165,28 +165,29 @@ public class ParamConfigureController {
             logger.info("-------------delete--" + id);
             String param_id = jsonObject.get("id").toString();
             String[] ids = param_id.split(",");
+            String msg = null;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 ParamConfigure paramConfigure = paramConfigureService.getParamById(Integer.valueOf(ids[i]));
                 if (paramConfigure != null) {
                     List<CorpParam> corpParam = corpParamService.selectByParamId(ids[i]);
-                    if (corpParam.size() == 0) {
-                        paramConfigureService.delete(Integer.valueOf(ids[i]));
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                        dataBean.setId(id);
-                        dataBean.setMessage("success");
-                    } else {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId(id);
-                        dataBean.setMessage("请先删除该企业的企业参数配置");
-                        return dataBean.getJsonStr();
+                    if (corpParam.size() > 0) {
+                        msg = "有使用参数" + paramConfigure.getParam_name() + "的企业参数，请先删除企业参数";
+                        break;
                     }
-                } else {
-                    paramConfigureService.delete(Integer.valueOf(ids[i]));
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
                 }
+            }
+            if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    paramConfigureService.delete(Integer.valueOf(ids[i]));
+                }
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
 
         } catch (Exception ex) {

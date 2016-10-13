@@ -41,6 +41,7 @@
             OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY acc_sign.ID
         ORDER BY acc_sign.ID DESC
     </select>
 
@@ -60,6 +61,7 @@
             OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY acc_sign.ID
         ORDER BY acc_sign.ID DESC
     </select>
 
@@ -119,6 +121,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY acc_sign.ID
         ORDER BY acc_sign.ID DESC
     </select>
 
@@ -142,6 +145,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY acc_sign.ID
         ORDER BY acc_sign.ID DESC
     </select>
 
@@ -233,6 +237,7 @@
         AND acc_sign.user_code=#{user_code}
         AND acc_sign.corp_code=#{corp_code}
         AND acc_sign.sign_time REGEXP #{today}
+        GROUP By acc_sign.ID
         ORDER BY acc_sign.ID DESC
     </select>
 </mapper>

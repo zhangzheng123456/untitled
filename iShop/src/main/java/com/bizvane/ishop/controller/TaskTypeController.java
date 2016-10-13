@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.TaskTypeService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -40,6 +41,8 @@ public class TaskTypeController {
     TaskTypeService taskTypeService;
     @Autowired
     FunctionService functionService;
+    @Autowired
+    TaskService taskService;
 
     String id;
 
@@ -218,28 +221,31 @@ public class TaskTypeController {
             JSONObject jsonObject = new JSONObject(message);
             String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
-            int count = 0;
-            String msg = "";
+            String msg = null;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
-//                User user = userService.getById(Integer.parseInt(ids[i]));
-//                List<UserAchvGoal> goal = userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
-//                count = goal.size();
-//                if (count > 0) {
-//                    msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
-//                    break;
-//                }
-                taskTypeService.deleteTaskType(Integer.valueOf(ids[i]));
+                TaskType taskType = taskTypeService.selectById(ids[i]);
+                if (taskType != null) {
+                    String task_type_code = taskType.getTask_type_code();
+                    String corp_code = taskType.getCorp_code();
+                    List<Task> tasks = taskService.selectTaskByTaskType(corp_code,task_type_code);
+                    if (tasks.size()>0){
+                        msg = "该任务类型" + task_type_code + "下有任务，请先处理后再删除";
+                    }
+                }
             }
-//            if (count > 0) {
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage(msg);
-//            } else {
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
-//            }
+            if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    taskTypeService.deleteTaskType(Integer.valueOf(ids[i]));
+                }
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

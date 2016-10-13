@@ -461,12 +461,18 @@ $("#delete").click(function(){
     oc.postRequire("post","/brand/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
-               frame();
-               $('.frame').html('删除成功');
-               GET(pageNumber,pageSize);
+                frame();
+                $('.frame').html('删除成功');
+                var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
+                var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
+                $(".frame").css({"left":+left+"px","top":+tp+"px"});
+                GET(pageNumber,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
+               var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
+               var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
+               $(".frame").css({"left":+left+"px","top":+tp+"px"});
                param["pageNumber"]=pageNumber;
                POST(pageNumber,pageSize);
             }else if(filtrate!==""){
@@ -480,15 +486,19 @@ $("#delete").click(function(){
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
+            var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
+            var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
+            $(".frame").css({"left":+left+"px","top":+tp+"px"});
         }
     })
 })
 //删除弹框
  function frame(){
+    $('.frame').remove();
+    $('.content').append('<div class="frame"></div>');
     var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-    $('.frame').remove();
-    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    $(".frame").css({"left":+left+"px","top":+tp+"px"});
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
      setTimeout(function(){
@@ -500,7 +510,6 @@ function checkAll(name){
     var el=$("tbody input");
     el.parents("tr").addClass("tr");
     var len = el.length;
-
     for(var i=0; i<len; i++)
         {
            if((el[i].type=="checkbox") && (el[i].name==name))

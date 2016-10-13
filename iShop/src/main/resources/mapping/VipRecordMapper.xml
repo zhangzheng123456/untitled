@@ -155,6 +155,7 @@
             OR dc.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY dvc.id
         ORDER BY dvc.id DESC
     </select>
 
@@ -203,6 +204,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP By dvc.id
         ORDER BY dvc.id DESC
     </select>
 

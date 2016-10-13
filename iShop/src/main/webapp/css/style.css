@@ -295,7 +295,8 @@ s{
   border: 1px #434960 solid;
   border-radius:5px;
   font-size: 14px;
-  /*height: 80px;*/
+  width: 250px;
+  height: 40px;
   display:inline-block;
   margin: 0;
   z-index: 2000;
@@ -7688,7 +7689,8 @@ ul,li{list-style:none;padding:0;margin:0;}
     text-indent: 10px;
 }
 #per_type ul li:hover{
-  background:#6cc1c8;
+  background: #4a5f7c;
+  /*background:#6cc1c8;*/
   color:#ffffff;
 }
 #store_type input{
@@ -7923,8 +7925,9 @@ li.select_index>a>label>i{
   display:none;
 }
 .paramType li:hover{
+  color: #FFFFFF;
+  /*background: #6cc1c8;*/
   background: #4a5f7c;
-  color: white;
 }
 .paramType li{
   height:30px;

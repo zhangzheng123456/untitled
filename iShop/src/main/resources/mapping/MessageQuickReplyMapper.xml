@@ -53,6 +53,7 @@
             OR dc.corp_name like concat('%',#{search_value},'%')
             )
         </if>
+        GROUP By dcmm.id
         ORDER BY dcmm.id DESC
     </select>
     <select id="selectMessageQuickReplys" resultType="com.bizvane.ishop.entity.MessageQuickReply">
@@ -69,6 +70,7 @@
         FROM def_chat_message_model dcmm,def_corp dc
         where dcmm.CORP_CODE = #{corp_code}
         AND dcmm.CORP_CODE=dc.CORP_CODE
+        GROUP BY dcmm.id
         ORDER BY dcmm.id DESC
     </select>
 
@@ -215,6 +217,7 @@
                 </choose>
             </foreach>
         </if>
+        GROUP BY dcmm.id
         ORDER BY dcmm.id DESC
     </select>
 </mapper>

@@ -207,7 +207,6 @@ public class SmsTemplateTypeController {
             String smsTemplateTypeId = jsonObject.get("id").toString();
             String[] ids = smsTemplateTypeId.split(",");
             String msg = null;
-            int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
                 SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeById(Integer.valueOf(ids[i]));
@@ -216,16 +215,22 @@ public class SmsTemplateTypeController {
                     String corp_code = smsTemplateType.getCorp_code();
                     List<SmsTemplate> smsTemplates = smsTemplateTypeService.selectByTemplateType(corp_code,template_type_code);
                     if (smsTemplates.size()>0){
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId(id);
-                        dataBean.setMessage("消息模板分类"+template_type_code+"下有消息模板，请处理后再删除");
-                        return dataBean.getJsonStr();
+                        msg = "消息模板分类"+template_type_code+"下有消息模板，请处理后再删除";
+                        break;
                     }
                 }
-                smsTemplateTypeService.delete(Integer.valueOf(ids[i]));
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            }
+            if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    smsTemplateTypeService.delete(Integer.valueOf(ids[i]));
+                }
                 dataBean.setId(id);
-                dataBean.setMessage("success");
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

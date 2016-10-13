@@ -231,17 +231,17 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].area_code+"'>"
                         + data[i].area_code
-                        + "</td><td>"
+                        + "</span></td><td><span title='"+data[i].area_name+"'>"
                         + data[i].area_name
-                        + "</td><td>"
+                        + "</span></td><td><span title='"+data[i].corp.corp_name+"'>"
                         + data[i].corp.corp_name
-                        +"</td><td>"
+                        +"</span></td><td><span title='"+data[i].modifier+"'>"
                         +data[i].modifier
-                        + "</td><td>"
+                        + "</span></td><td><span title='"+data[i].modified_date+"'>"
                         +data[i].modified_date
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].isactive
                         +"</td></tr>");
     }

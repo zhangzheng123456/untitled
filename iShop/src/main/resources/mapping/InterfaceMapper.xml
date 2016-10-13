@@ -12,6 +12,7 @@
             OR corp_code LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP By ID
         ORDER BY ID DESC
     </select>
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Interfacers">
@@ -28,6 +29,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP By ID
         ORDER BY ID DESC
     </select>
     <insert id="addInterface" parameterType="com.bizvane.ishop.entity.Interfacers">
