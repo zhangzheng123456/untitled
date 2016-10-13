@@ -338,6 +338,7 @@ public class AreaController {
             JSONObject jsonObject = new JSONObject(message);
             String area_id = jsonObject.get("id").toString();
             String[] ids = area_id.split(",");
+            String msg = "";
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Area area = areaService.getAreaById(Integer.valueOf(ids[i]));
@@ -345,14 +346,20 @@ public class AreaController {
                     String area_code = area.getArea_code();
                     String corp_code = area.getCorp_code();
                     List<Store> stores = storeService.selectStoreCountByArea(corp_code,area_code,"");
-                    if (stores.size() == 0) {
-                        areaService.delete(Integer.valueOf(ids[i]));
-                    } else {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId(id);
-                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除");
-                        return dataBean.getJsonStr();
+                    if (stores.size() > 0) {
+                        msg = "区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除";
+                        break;
                     }
+                }
+
+            }
+            if (!msg.equals("")) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            } else {
+                for (int i = 0; i < ids.length; i++) {
+                    areaService.delete(Integer.parseInt(ids[i]));
                 }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

@@ -221,6 +221,7 @@ public class GroupController {
             JSONObject jsonObject = new JSONObject(message);
             String area_id = jsonObject.get("id").toString();
             String[] ids = area_id.split(",");
+            String msg = null;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Group group = groupService.getGroupById(Integer.valueOf(ids[i]));
@@ -228,19 +229,29 @@ public class GroupController {
                     String group_code = group.getGroup_code();
                     String corp_code = group.getCorp_code();
                     int size = userService.selectGroupUser(corp_code, group_code);
-                    if (size == 0) {
-                        groupService.deleteGroup(Integer.valueOf(ids[i]),group_code,corp_code);
-                    } else {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId(id);
-                        dataBean.setMessage("群组"+group_code+"下有所属员工，请先处理群组下员工再删除");
-                        return dataBean.getJsonStr();
+                    if (size > 0) {
+                        msg = "群组"+group_code+"下有所属员工，请先处理群组下员工再删除";
+                        break;
                     }
                 }
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
+            if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    Group group = groupService.getGroupById(Integer.valueOf(ids[i]));
+                    if (group != null) {
+                        String group_code = group.getGroup_code();
+                        String corp_code = group.getCorp_code();
+                        groupService.deleteGroup(Integer.valueOf(ids[i]), group_code, corp_code);
+                    }
+                }
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

@@ -93,6 +93,7 @@
        SELECT  * FROM def_task
         WHERE  id =#{id}
     </select>
+
     <select id="selTaskAllocationById" resultType="com.bizvane.ishop.entity.TaskAllocation">
          SELECT  * FROM rel_task_allocation
         WHERE  id =#{id}
@@ -153,6 +154,7 @@
     <delete id="delTaskAllocation">
         DELETE FROM rel_task_allocation WHERE  corp_code =#{corp_code} AND task_code =#{task_code}
     </delete>
+
     <delete id="delTaskAllocationById">
         DELETE FROM rel_task_allocation WHERE id=#{id}
     </delete>
@@ -420,8 +422,33 @@
       </trim>
         WHERE id=#{id}
     </update>
+
     <update id="updTaskBycode" parameterType="com.bizvane.ishop.entity.Task">
         UPDATE def_task  SET TASK_TYPE_CODE =#{task_type_code_old}
         WHERE CORP_CODE =#{corp_code} AND TASK_TYPE_CODE =#{task_type_code_new}
     </update>
+
+    <select id="selectTaskByTaskType" resultType="com.bizvane.ishop.entity.Task">
+        SELECT
+        def_task.id,
+        def_task.task_code,
+        def_task.task_title,
+        def_task_type.task_type_name,
+        def_task.task_description,
+        def_task.corp_code,
+        def_corp.corp_name,
+        def_task.target_start_time,
+        def_task.target_end_time,
+        def_task.modifier,
+        def_task.ISACTIVE
+        FROM def_task,def_corp,def_task_type
+        WHERE def_task.corp_code = def_corp.corp_code
+        AND def_task.task_type_code =def_task_type.task_type_code
+        AND def_corp.corp_code = def_task_type.corp_code
+        AND def_task.corp_code = #{corp_code}
+        AND def_task.task_type_code = #{task_type_code}
+        GROUP BY def_task.id
+        ORDER BY def_task.id DESC
+    </select>
+
 </mapper>

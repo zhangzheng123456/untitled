@@ -21,7 +21,6 @@ public interface TaskMapper {
 
         List<TaskAllocation> selAllTaskAllocation(@Param("corp_code")String corp_code,@Param("task_code")String task_code);
 
-
         TaskAllocation selAllTaskAllocationByUser(@Param("corp_code")String corp_code,@Param("task_code")String task_code,@Param("user_code")String user_code);
 
         int delTaskById(@Param("id")String id);
@@ -39,5 +38,7 @@ public interface TaskMapper {
         int updTaskAllocation(TaskAllocation taskAllocation);
 
         int updTaskBycode(@Param("task_type_code_old")String task_type_code_old,@Param("corp_code")String corp_code,@Param("task_type_code_new")String task_type_code_new);
+
+        List<Task> selectTaskByTaskType(@Param("corp_code")String corp_code,@Param("task_type_code")String task_type_code);
 
 }

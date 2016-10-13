@@ -160,7 +160,7 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if(!screen_key.equals("created_date_login")) {
+            if(!screen_key.equals("time_bucket")) {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {

@@ -1177,27 +1177,30 @@ public class UserController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
                 User user = userService.getById(Integer.parseInt(ids[i]));
-                String user_code = "";
-                String corp_code = "";
                 if (user != null) {
-                    user_code = user.getUser_code();
-                    corp_code = user.getCorp_code();
                     List<UserAchvGoal> goal = userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
                     count = goal.size();
                     if (count > 0) {
                         msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
                         break;
                     }
-                    userService.deleteUserQrcode(corp_code, user_code);
-                    signService.deleteByUser(user_code, corp_code);
                 }
-                userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
             }
             if (count > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(msg);
             } else {
+                for (int i = 0; i < ids.length; i++) {
+                    User user = userService.getById(Integer.parseInt(ids[i]));
+                    if (user != null) {
+                        String user_code = user.getUser_code();
+                        String corp_code = user.getCorp_code();
+                        userService.deleteUserQrcode(corp_code, user_code);
+                        signService.deleteByUser(user_code, corp_code);
+                        userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
+                    }
+                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");

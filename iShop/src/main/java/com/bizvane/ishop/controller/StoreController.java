@@ -448,15 +448,24 @@ public class StoreController {
                         msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除";
                         break;
                     }
-                    storeService.deleteStoreQrcode(corp_code, store_code);
+//                    storeService.deleteStoreQrcode(corp_code, store_code);
                 }
-                storeService.delete(Integer.valueOf(ids[i]));
+//                storeService.delete(Integer.valueOf(ids[i]));
             }
             if (count > 0) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(msg);
             } else {
+                for (int i = 0; i < ids.length; i++) {
+                    Store store = storeService.getById(Integer.valueOf(ids[i]));
+                    if (store != null) {
+                        String store_code = store.getStore_code();
+                        String corp_code = store.getCorp_code();
+                        storeService.deleteStoreQrcode(corp_code, store_code);
+                    }
+                    storeService.delete(Integer.valueOf(ids[i]));
+                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");

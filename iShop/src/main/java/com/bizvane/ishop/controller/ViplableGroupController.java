@@ -150,7 +150,6 @@ public class ViplableGroupController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String result="";
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -159,24 +158,33 @@ public class ViplableGroupController {
             JSONObject jsonObject = new JSONObject(message);
             String app_id = jsonObject.get("id").toString();
             String[] ids = app_id.split(",");
+            String msg=null;
             for (int i=0;i<ids.length;i++){
                 ViplableGroup viplableGroup = viplableGroupService.selectViplableGroupById(Integer.valueOf(ids[i]));
-                List<VipLabel> vipLabels = vipLabelService.lableList(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code());
-                if(vipLabels.size()>0){
-                    result="所选标签分组编号为 "+viplableGroup.getLabel_group_code()+" 下有会员标签正在使用,不可删除";
-                    int a=5/0;
+                if (viplableGroup != null) {
+                    List<VipLabel> vipLabels = vipLabelService.lableList(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code());
+                    if (vipLabels.size() > 0) {
+                        msg = "有使用标签分组 " + viplableGroup.getLabel_group_code() + "的会员标签,请先处理再删除";
+                        break;
+                    }
                 }
             }
-            for (int i = 0; i < ids.length; i++) {
-                viplableGroupService.delViplabGroupById(Integer.valueOf(ids[i]));
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    viplableGroupService.delViplabGroupById(Integer.valueOf(ids[i]));
+                }
                 dataBean.setId(id);
-                dataBean.setMessage("success");
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(result);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

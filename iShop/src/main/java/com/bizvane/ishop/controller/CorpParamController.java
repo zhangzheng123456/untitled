@@ -201,15 +201,7 @@ public class CorpParamController {
             String[] ids = corpParam_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-                CorpParam corpParam = corpParamService.selectById(Integer.valueOf(ids[i]));
-                if (corpParam != null) {
-                    corpParamService.delete(Integer.valueOf(ids[i]));
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage(message);
-                    return dataBean.getJsonStr();
-                }
+                corpParamService.delete(Integer.valueOf(ids[i]));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

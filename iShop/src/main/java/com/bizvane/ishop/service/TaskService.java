@@ -33,4 +33,6 @@ public interface TaskService {
     String delTaskAllocation(String id)throws Exception;
 
     List<TaskType> selectAllTaskType(String corp_code)throws Exception;
+
+    List<Task> selectTaskByTaskType(String corp_code,String task_type_code);
 }
