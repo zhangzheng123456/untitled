@@ -18,8 +18,8 @@ ObjectControl.prototype = {
 				}
 			},
 			error:function(data){
-				window.location.reload();
-				console.log(data.responseText);
+				console.log(data);
+				//window.location.reload();
 			}
 		});
 
