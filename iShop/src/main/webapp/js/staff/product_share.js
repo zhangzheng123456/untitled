@@ -353,13 +353,13 @@ function jumpBianse(){
     //     }
     // })
     // //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var param={};
-        var vip_id=$(this).find("td:eq(4)").html()
-        param["vip_id"]=vip_id;
-        oc.postRequire("post","/userAction/select","0",param,function(data){
-        })
-    })
+    // $(".table tbody tr").dblclick(function(){
+    //     var param={};
+    //     var vip_id=$(this).find("td:eq(4)").html()
+    //     param["vip_id"]=vip_id;
+    //     oc.postRequire("post","/userAction/select","0",param,function(data){
+    //     })
+    // })
     //删除
     $("#remove").click(function(){
         var l=$(window).width();

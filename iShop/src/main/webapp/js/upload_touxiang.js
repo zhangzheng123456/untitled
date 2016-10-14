@@ -73,7 +73,9 @@ $(function(){
             storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
         }
         client.multipartUpload(storeAs, file).then(function (result) {
-            $("#imghead").attr("src",result.url);
+            var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com'+result.name;
+            // $("#imghead").attr("src",result.url);
+            $("#imghead").attr("data-src",storeAs);
         }).catch(function (err) {
             // console.log(err);
         });

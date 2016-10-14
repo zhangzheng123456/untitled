@@ -6,12 +6,14 @@ jQuery(function () {
         jQuery('#match-con').hide();
     });
     $('#match').click(function () {
-        jQuery(this).css({backgroundColor: "#fff", color: "#dd6c5e"});
-        jQuery('#buy').css({backgroundColor: "#dfdfdf", color: "#8d8d8d"});
         jQuery('#match-con').show();
         jQuery('#content').hide();
+        var h=$('.ti_img_wrap').width();
+        $('.ti_img').css({"height":+h+"px"});
+        jQuery(this).css({backgroundColor: "#fff", color: "#dd6c5e"});
+        jQuery('#buy').css({backgroundColor: "#dfdfdf", color: "#8d8d8d"});
     });
-    function GetRequest() {
+    function GetRequest(){
         var url = location.search; //获取url中"?"符后的字串
         var theRequest = new Object();
         if (url.indexOf("?") != -1) {
@@ -54,12 +56,14 @@ jQuery(function () {
                 + corp_code
                 + '&id='
                 + list[i].id
-                + '"><li><img src="'
+                + '"><li class="ti_img_wrap"><div class="ti_img"><img src="'
                 + list[i].goods_image
-                + '" alt="暂无图片"><p>'
+                + '" alt="暂无图片"></div><p>'
                 + list[i].goods_code
                 + '</p></li></a>');
         }
+        var height=$(".swiper-slide").height();
+        $(".swiper-slide").css({"height":+height+"px"});
         $('#swipe').swiper({
             pagination: '#swipe .swiper-pagination',
             slidesPerView: 'auto',
@@ -71,4 +75,8 @@ jQuery(function () {
             autoplayDisableOnInteraction: false
         });
     })
+    window.onresize=function(){  
+        var h=$('.ti_img_wrap').width();
+        $('.ti_img').css({"height":+h+"px"});
+    }  
 });
