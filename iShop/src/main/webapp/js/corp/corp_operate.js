@@ -153,12 +153,13 @@ var message = JSON.parse(val.message);
                     return;
                 }
                 var ID = sessionStorage.getItem("id");
-                var avater="";//头像
-                // var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(data[i].goods_image.indexOf("http")==-1){
+                var avatar="";//头像
                 if($("#preview img").attr("data-src").indexOf("http")==-1){
-                    avater=$("#preview img").attr("data-src");
-                }else if()
+                    avatar=$("#preview img").attr("data-src");
+                }
+                if($("#preview img").attr("data-src").indexOf("http")!==-1){
+                    avatar="";
+                }
                 var CORPID = $("#OWN_CORP").val();
                 var WXID = $("#WXID").val();
                 var CORPNAME = $("#CORPNAME").val();
@@ -213,7 +214,7 @@ var message = JSON.parse(val.message);
                 };
                 var _params = {
                     "id": ID,
-                    "avater":avater,
+                    "avatar":avatar,
                     "corp_code": CORPID,
                     "app_id": WXID,
                     "corp_name": CORPNAME,
@@ -313,11 +314,19 @@ jQuery(document).ready(function () {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=msg.cus_user;
-                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test(msg.avater)==true){
-                    $("#preview img").attr("src",msg.avater);
-                }else if(reg.test(msg.avater)==false){
+                if(msg.avatar!==undefined){
+                    if(msg.avatar.indexOf("http")==-1){
+                        $("#preview img").attr("src","../img/bg1.png");
+                        $("#preview img").attr("data-src","../img/bg1.png");
+                    }
+                    if(msg.avatar.indexOf("http")!==-1){
+                        $("#preview img").attr("src",msg.avatar);
+                        $("#preview img").attr("data-src",msg.avatar);
+                    }
+                }
+                if(msg.avatar==undefined){
                     $("#preview img").attr("src","../img/bg1.png");
+                    $("#preview img").attr("data-src","../img/bg1.png");
                 }
                 if ($("#preview img").attr("src").indexOf('http') !== -1) {
                     $("#c_logo label").html("更换logo");
