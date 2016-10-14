@@ -725,5 +725,8 @@ function deleteName(a){
 //新增关闭
 $("#add_close").click(function(){
 	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
-})
+});
+$("#back_task").click(function(){
+	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+});
 $(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});

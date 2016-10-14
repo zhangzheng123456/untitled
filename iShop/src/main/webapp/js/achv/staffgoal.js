@@ -354,6 +354,9 @@ jQuery(document).ready(function(){
 	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
+	$("#achv_staff").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
+	});
 	//日期类型的点击事件
     $("#drop_down li").click(function(){
     	var text=$(this).html();

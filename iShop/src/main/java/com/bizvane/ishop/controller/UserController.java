@@ -871,7 +871,7 @@ public class UserController {
                 user.setUser_id(user_id);
             }
             user.setUser_name(jsonObject.get("username").toString().trim());
-            user.setAvatar(jsonObject.get("avater").toString().trim());
+            user.setAvatar(jsonObject.get("avatar").toString().trim());
             user.setPosition(jsonObject.get("position").toString().trim());
             user.setPhone(phone);
             user.setEmail(jsonObject.get("email").toString().trim());
@@ -1029,7 +1029,7 @@ public class UserController {
             }
             user.setUser_name(jsonObject.get("username").toString().trim());
             user.setPosition(jsonObject.get("position").toString().trim());
-            user.setAvatar(jsonObject.get("avater").toString().trim());
+            user.setAvatar(jsonObject.get("avatar").toString().trim());
             user.setPhone(jsonObject.get("phone").toString().trim());
             user.setEmail(jsonObject.get("email").toString().trim());
             user.setSex(jsonObject.get("sex").toString().trim());

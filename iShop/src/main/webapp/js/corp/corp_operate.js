@@ -153,12 +153,12 @@ var message = JSON.parse(val.message);
                     return;
                 }
                 var ID = sessionStorage.getItem("id");
-                var avater="";//头像
-                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test($("#preview img").attr("src"))==true){
-                    avater=$("#preview img").attr("src");//头像
-                }else if(reg.test($("#preview img").attr("src"))==false){
-                    avater="";
+                var avatar="";//头像
+                if($("#preview img").attr("data-src").indexOf("http")==-1){
+                    avatar=$("#preview img").attr("data-src");
+                }
+                if($("#preview img").attr("data-src").indexOf("http")!==-1){
+                    avatar="";
                 }
                 var CORPID = $("#OWN_CORP").val();
                 var WXID = $("#WXID").val();
@@ -214,7 +214,7 @@ var message = JSON.parse(val.message);
                 };
                 var _params = {
                     "id": ID,
-                    "avater":avater,
+                    "avatar":avatar,
                     "corp_code": CORPID,
                     "app_id": WXID,
                     "corp_name": CORPNAME,
@@ -314,11 +314,19 @@ jQuery(document).ready(function () {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=msg.cus_user;
-                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test(msg.avater)==true){
-                    $("#preview img").attr("src",msg.avater);
-                }else if(reg.test(msg.avater)==false){
+                if(msg.avatar!==undefined){
+                    if(msg.avatar.indexOf("http")==-1){
+                        $("#preview img").attr("src","../img/bg1.png");
+                        $("#preview img").attr("data-src","../img/bg1.png");
+                    }
+                    if(msg.avatar.indexOf("http")!==-1){
+                        $("#preview img").attr("src",msg.avatar);
+                        $("#preview img").attr("data-src",msg.avatar);
+                    }
+                }
+                if(msg.avatar==undefined){
                     $("#preview img").attr("src","../img/bg1.png");
+                    $("#preview img").attr("data-src","../img/bg1.png");
                 }
                 if ($("#preview img").attr("src").indexOf('http') !== -1) {
                     $("#c_logo label").html("更换logo");
@@ -501,26 +509,6 @@ jQuery(document).ready(function () {
         });
         return a;
     })
-    // //检查是否可否授权状态、
-    // $("#state").click(function () {
-    //     var corp_code = $("#CORPID").val();
-    //     var _params = {};
-    //     _params["corp_code"] = corp_code;
-    //     oc.postRequire("post", "/corp/is_authorize", "", _params, function (data) {
-    //         var message=JSON.parse(data.message);
-    //         for(var i=0;i<message.length;i++){
-                  
-    //         }
-    //         // if (data.code == "0") {
-    //         //     $(".state_val").val(data.message);
-    //         // } else {
-    //         //     alert(data.message);
-    //         // }
-    //         // if(data.code=="0"){
-
-    //         // }
-    //     })
-    // })
     if (message.user_type == "admin") {
         $(".corpadd_oper_btn ul li:nth-of-type(2)").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
@@ -528,10 +516,16 @@ jQuery(document).ready(function () {
         $("#edit_close").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
         });
+        $("#back_corp").click(function(){
+            $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
+        })
     } else {
         $(".corpadd_oper_btn ul li:nth-of-type(2)").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
         });
+        $("#back_corp").click(function(){
+            $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
+        })
         $("#edit_close").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
         });

@@ -584,6 +584,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
     if(data.code=="0"){
         var message=JSON.parse(data.message);
         var filter=message.filter;
+        console.log(filter);
         $("#sxk .inputs ul").empty();
         var li="";
         for(var i=0;i<filter.length;i++){
@@ -607,8 +608,16 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 +"<label class='tm20'>至</label>"
                 +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
                 +"</li>";
+            }else if(filter[i].type=='number'){
+                li+="<li class='isActive_select' id='"
+                    +filter[i].col_name
+                    +"'><label>"
+                    +filter[i].show_name
+                    +"</label>"
+                +"<input style='width: 66px' type='text' id='isactive' readonly>"
+                +" <ul class='isActive_select_down'style='display:none;width:44px;left:69px'><li>>=</li><li><=</li><li>介于</li><li>全部</li></ul>"
+                +"</li>";
             }
-
         }
         $("#sxk .inputs ul").html(li);
         if(filtrate!==""){

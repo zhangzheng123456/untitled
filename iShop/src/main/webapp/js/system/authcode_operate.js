@@ -200,4 +200,7 @@ jQuery(document).ready(function(){
 	$(".codeedit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/authcode.html");
 	});
+	$("#back_authCode").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/system/authcode.html");
+	});
 });

@@ -305,3 +305,6 @@ $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function(){
 $("#edit_close").click(function(){
     $(window.parent.document).find('#iframepage').attr("src","/message/template_group.html");
 });
+$("#back_tem_group").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/message/template_group.html");
+});

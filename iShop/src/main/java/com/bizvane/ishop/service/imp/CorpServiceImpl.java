@@ -71,6 +71,7 @@ public class CorpServiceImpl implements CorpService {
             corp = new Corp();
             corp.setCorp_code(corp_code);
             corp.setCorp_name(corp_name);
+//            corp.setAvatar(jsonObject.get("avatar").toString().trim());
             corp.setAddress(jsonObject.get("address").toString().trim());
             corp.setContact(jsonObject.get("contact").toString().trim());
             corp.setContact_phone(jsonObject.get("phone").toString().trim());
@@ -144,7 +145,7 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setAddress(jsonObject.get("address").toString().trim());
             old_corp.setContact(jsonObject.get("contact").toString().trim());
             old_corp.setContact_phone(jsonObject.get("phone").toString().trim());
-            old_corp.setAvater(jsonObject.get("avater").toString().trim());
+            old_corp.setAvatar(jsonObject.get("avatar").toString().trim());
             if (jsonObject.containsKey("cus_user_code")){
                 old_corp.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
             }
