@@ -367,7 +367,7 @@ function getoselectvalue(){//点击模拟的select 获取值给input
                 $('.frame').html('删除成功');
             }else{
                 frame();
-                $('.frame').html('删除成功');
+                $('.frame').html('删除失败');
             }
         })
     });
@@ -380,9 +380,7 @@ function deleteAblum(key){
     });
     var storeAs=key;
     client.delete(storeAs).then(function (result) {
-        console.log(result)
     }).catch(function (err) {
-        console.log(err);
     });
 }
 function frame(){
@@ -433,8 +431,6 @@ function getexpandValue(){
     return param_expand;
 }
 $("#VIP_avatar").change(function(e){
-    //$("#IMG").attr("src",$(this).val())
-    //console.log($(this).val());
     var corp_code=sessionStorage.getItem("corp_code");
     var id=sessionStorage.getItem("id");
     var file = e.target.files[0];
