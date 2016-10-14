@@ -217,4 +217,7 @@ jQuery(document).ready(function(){
 	$(".appedit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/appversion.html");
 	});
+	$("#back_appVersion").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/system/appversion.html");
+	});
 });

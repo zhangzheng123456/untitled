@@ -143,7 +143,7 @@ var oc = new ObjectControl();
 
 jQuery(document).ready(function(){
 	window.interface.init();//初始化
-	if($(".pre_title label").text()=="编辑接口管理"){
+	if($(".pre_title label").text()=="编辑接口信息"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/interfacers/selectById";
@@ -185,6 +185,9 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/interface.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/system/interface.html");
+	});
+	$("#back_interface").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/interface.html");
 	});
 });

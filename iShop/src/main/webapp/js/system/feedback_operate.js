@@ -246,6 +246,9 @@ jQuery(document).ready(function(){
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/feedback.html");
 	});
+	$("#back_feedBack").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/system/feedback.html");
+	});
 
 
 	 //验证手机是否唯一的方法

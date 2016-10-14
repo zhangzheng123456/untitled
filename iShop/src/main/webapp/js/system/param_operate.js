@@ -241,6 +241,9 @@ jQuery(document).ready(function () {
     $(".operedit_btn ul li:nth-of-type(2)").click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/system/param.html");
     });
+    $("#back_param").click(function () {
+        $(window.parent.document).find('#iframepage').attr("src", "/system/param.html");
+    });
 });
 
 //参数类型下拉

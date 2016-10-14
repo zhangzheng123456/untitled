@@ -236,6 +236,9 @@ jQuery(document).ready(function () {
     $(".operedit_btn ul li:nth-of-type(2)").click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/system/corp_param.html");
     });
+    $("#back_corp_param").click(function () {
+        $(window.parent.document).find('#iframepage').attr("src", "/system/corp_param.html");
+    });
 });
 
 function getcorplist(a, b) {
