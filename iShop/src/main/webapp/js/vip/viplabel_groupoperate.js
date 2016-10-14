@@ -279,6 +279,9 @@ jQuery(document).ready(function(){
     $(".operedit_btn ul li:nth-of-type(2)").click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_group.html");
     });
+    $("#back_vip_labelGroup").click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_group.html");
+    });
 });
 function getcorplist(a){
     //获取所属企业列表

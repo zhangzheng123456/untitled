@@ -7055,6 +7055,9 @@ body.skin-3 {
   color:#6cc1cb;
   margin: 0px 10px;
 }
+.pre_title span,.pre_title label{
+  cursor: pointer;
+}
 *{
   margin:0;
   padding:0;
