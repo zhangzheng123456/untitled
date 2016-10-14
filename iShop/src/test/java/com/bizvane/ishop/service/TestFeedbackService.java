@@ -55,7 +55,7 @@ public class TestFeedbackService {
     public void testselectAllFeedback() {
         try {
 
-            String el2Str = WebUtils.El2Str("\\\\+?");
+            String el2Str = WebUtils.El2Str("*");
             System.out.println(el2Str);
 
             //------------------跟新table_code----------------------------
