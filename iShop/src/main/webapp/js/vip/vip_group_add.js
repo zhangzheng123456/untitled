@@ -1080,9 +1080,9 @@ $("#screen_que_staff").click(function(){
 })
 //拉取区域
 function getarealist(a){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
-    console.log(corp_code);
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
+    // console.log(corp_code);
     var area_command = "/area/selAreaByCorpCode";
     var searchValue=$("#area_search").val().trim();
     var pageSize=20;
@@ -1156,8 +1156,8 @@ function getarealist(a){
 }
 //获取店铺列表
 function getstorelist(a){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var area_code =$('#screen_area_num').attr("data-code");//
     var brand_code=$('#screen_brand_num').attr("data-code");
     var searchValue=$("#store_search").val();
@@ -1230,8 +1230,8 @@ function getstorelist(a){
 }
 //获取品牌列表
 function getbrandlist(){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var _param={};
     _param["corp_code"]=corp_code;
     whir.loading.add("",0.5);//加载等待框
@@ -1289,8 +1289,8 @@ function getbrandlist(){
 }
 //获取员工列表
 function getstafflist(a){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var area_code =$('#screen_area_num').attr("data-code");//区域
     var brand_code=$('#screen_brand_num').attr("data-code");//品牌
     var store_code=$("#screen_shop_num").attr("data-code");//员工
@@ -1365,8 +1365,8 @@ function getstafflist(a){
 $("#screen_vip_que").click(function(){
     inx=1;
     var _param={}
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var area_code =$('#screen_area_num').attr("data-code");//区域
     var brand_code=$('#screen_brand_num').attr("data-code");//品牌
     var store_code=$("#screen_shop_num").attr("data-code");//店铺
@@ -1400,14 +1400,15 @@ function filtrates(a,b,_param,c){
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到信息,请重新搜索</p>");
+                $(".foot ul").empty();
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,a,c);
                 jumpBianse();
+                setPage($("#foot-num")[0],cout,a,b,c);
+                whir.loading.remove();//移除加载框
             }
-            setPage($("#foot-num")[0],cout,a,b,c);
-            // whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
         }

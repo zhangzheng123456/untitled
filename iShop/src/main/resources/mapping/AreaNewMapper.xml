@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.AreaNewMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.AreaNew" id="Area">
+        <id column="id" property="id"/>
+        <result column="area_code" property="area_code"/>
+        <result column="area_name" property="area_name"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" />
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectByAreaId" resultMap="Area">
+        SELECT
+        def_area_new.id,
+        area_code,
+        area_name,
+        def_area_new.corp_code,
+        def_area_new.modified_date,
+        def_area_new.modifier,
+        def_area_new.created_date,
+        def_area_new.creater,
+        def_area_new.isactive,
+        def_corp.corp_name
+        FROM def_area_new,def_corp
+        WHERE def_area_new.corp_code = def_corp.corp_code
+        AND  def_area_new.ID=#{id}
+    </select>
+
+    <select id="selectAllArea" resultMap="Area">
+        SELECT
+        def_area_new.id,
+        area_code,
+        area_name,
+        def_area_new.corp_code,
+        def_area_new.modified_date,
+        def_area_new.modifier,
+        def_area_new.isactive,
+        def_corp.corp_name
+        FROM def_area_new,def_corp
+        WHERE def_area_new.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_area_new.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (area_code LIKE concat('%',#{search_value},'%')
+            OR area_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        Group By def_area_new.id
+        ORDER BY def_area_new.id DESC
+    </select>
+
+    <select id="selectAreas" resultType="com.bizvane.ishop.entity.AreaNew">
+        SELECT *
+        FROM def_area_new
+        WHERE corp_code = #{corp_code}
+        AND ISACTIVE = 'Y'
+        Group By def_area_new.id
+        ORDER BY def_area_new.id DESC
+    </select>
+
+    <delete id="deleteByAreaId">
+        DELETE FROM
+        def_area_new
+        WHERE ID=#{id}
+    </delete>
+
+    <insert id="insertArea" parameterType="com.bizvane.ishop.entity.AreaNew">
+        INSERT INTO def_area_new
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="area_code!=null">
+                area_code,
+            </if>
+            <if test="area_name!=null">
+                area_name,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="area_code!=null">
+                #{area_code},
+            </if>
+            <if test="area_name!=null">
+                #{area_name},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateArea" parameterType="com.bizvane.ishop.entity.AreaNew">
+        UPDATE def_area_new
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="area_code!=null">
+                area_code=#{area_code},
+            </if>
+            <if test="area_name!=null">
+                area_name=#{area_name},
+            </if>
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectAreaByName" resultType="com.bizvane.ishop.entity.AreaNew">
+        SELECT * FROM def_area_new
+        WHERE corp_code=#{corp_code}
+        AND area_name=#{area_name}
+        <if test="isactive!=null and isactive!=''">
+            AND isactive=#{isactive}
+        </if>
+    </select>
+
+    <!--根据企业code和用户登录时得到的区域code查找所属的区域-->
+    <select id="selectAreaByCode" resultType="com.bizvane.ishop.entity.AreaNew">
+        SELECT *
+        FROM def_area_new
+        WHERE corp_code = #{corp_code}
+        AND area_code = #{area_code}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
+
+    <select id="selectAllAreaScreen" resultMap="Area">
+        SELECT
+        da.*,
+        dc.corp_name
+        FROM def_area_new da,def_corp dc
+        WHERE da.corp_code = dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND da.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes!=null">
+            AND da.area_code IN
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} REGEXP #{entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    da.${entryKey} REGEXP #{entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By da.id
+        ORDER BY da.id DESC
+    </select>
+
+    <select id="selectArea" resultType="com.bizvane.ishop.entity.AreaNew">
+        SELECT area_code,area_name
+        FROM def_area_new
+        WHERE 1=1
+        AND corp_code=#{corp_code}
+        AND area_code IN
+        <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND ISACTIVE = 'Y'
+    </select>
+
+    <select id="selectByAreaCodeSearch" resultMap="Area">
+        SELECT
+        da.*,
+        dc.corp_name
+        FROM def_area_new da,def_corp dc
+        WHERE da.corp_code = dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND da.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes!=null">
+            AND da.area_code IN
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (da.area_code LIKE concat('%',#{search_value},'%')
+            OR da.area_name LIKE concat('%',#{search_value},'%')
+            OR dc.corp_name LIKE concat('%',#{search_value},'%')
+            OR da.modified_date LIKE concat('%',#{search_value},'%')
+            OR da.modifier LIKE concat('%',#{search_value},'%')
+            OR da.isactive LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        GROUP BY da.i
+        ORDER BY da.id DESC
+    </select>
+
+
+
+    <!--下拉框取值，只取可用数据-->
+    <select id="selAreaByCorpCode" resultMap="Area">
+        SELECT
+        da.*,
+        dc.corp_name
+        FROM def_area_new da,def_corp dc
+        WHERE da.corp_code = dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND da.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes!=null and area_codes != ''">
+            AND da.area_code IN
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="store_code != null and store_code !=''">
+            AND da.area_code IN
+            (SELECT area_code from def_store
+            WHERE corp_code = #{corp_code} AND
+            STORE_CODE IN
+            <foreach collection="store_code" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            AND isactive ='Y')
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND da.area_name LIKE concat('%',#{search_value},'%')
+        </if>
+        AND da.ISACTIVE ='Y'
+        GROUP By da.id
+        ORDER BY da.id DESC
+    </select>
+</mapper>
