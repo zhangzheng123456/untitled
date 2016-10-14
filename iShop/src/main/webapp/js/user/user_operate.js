@@ -181,7 +181,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["user_code"]=USERID;//员工编号
 				_params["user_id"]=user_id;//员工ID
 				_params["username"]=USER_NAME;//员工名称
-				_params["avater"]="";//新增的时候头像字段先设置为空
+				_params["avatar"]="";//新增的时候头像字段先设置为空
 				_params["phone"]=USER_PHONE;//手机
 				_params["position"]=position;//职务
 				_params["email"]=USER_EMAIL//邮箱
@@ -277,14 +277,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 					});
 					return;
 				}
-				var avater="";//头像
-				var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-				if(reg.test($("#preview img").attr("src"))==true){
-					avater=$("#preview img").attr("src");//头像
-				}else if(reg.test($("#preview img").attr("src"))==false){
-					avater="";
-				}
-					 
+				var avatar="";//头像
+                if($("#preview img").attr("data-src").indexOf("http")==-1){
+                    avatar=$("#preview img").attr("data-src");
+                }
+                if($("#preview img").attr("data-src").indexOf("http")!==-1){
+                    avatar="";
+                }	 
 				var can_login="";//可登录状态
                 var input1=$("#invisible")[0];
                 if(input1.checked==true){
@@ -341,7 +340,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["user_code"]=USERID;//员工编号
 				_params["user_id"]=user_id;//员工ID
 				_params["username"]=USER_NAME;//员工名称
-				_params["avater"]=avater;//头像
+				_params["avatar"]=avatar;//头像
 				_params["position"]=position;//职务
 				_params["phone"]=USER_PHONE;//手机
 				_params["email"]=USER_EMAIL//邮箱
@@ -716,12 +715,20 @@ jQuery(document).ready(function(){
 				$("#user_id").val(msg.user_id);
 				$("#user_id").attr("data-name",msg.user_id);
 				$("#USER_NAME").val(msg.user_name);
-				var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-				if(reg.test(msg.avatar)==true){
-					$("#preview img").attr("src",msg.avatar);
-				}else if(reg.test(msg.avatar)==false){
-					$("#preview img").attr("src","../img/head.png");
-				}
+				if(msg.avatar!==undefined){
+                    if(msg.avatar.indexOf("http")==-1){
+                        $("#preview img").attr("src","../img/bg1.png");
+                        $("#preview img").attr("data-src","../img/bg1.png");
+                    }
+                    if(msg.avatar.indexOf("http")!==-1){
+                        $("#preview img").attr("src",msg.avatar);
+                        $("#preview img").attr("data-src",msg.avatar);
+                    }
+                }
+                if(msg.avatar==undefined){
+                    $("#preview img").attr("src","../img/head.png");
+                    $("#preview img").attr("data-src","../img/head.png");
+                }
 				$("#USER_PHONE").val(msg.phone);
 				$("#USER_PHONE").attr("data-name",msg.phone);
 				$("#USER_EMAIL").val(msg.email);
