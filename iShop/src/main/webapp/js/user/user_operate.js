@@ -826,7 +826,10 @@ jQuery(document).ready(function(){
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
-	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+	});
+	$("#back_user").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
 	//验证编号是否唯一的方法

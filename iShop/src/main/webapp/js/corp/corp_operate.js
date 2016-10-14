@@ -509,26 +509,6 @@ jQuery(document).ready(function () {
         });
         return a;
     })
-    // //检查是否可否授权状态、
-    // $("#state").click(function () {
-    //     var corp_code = $("#CORPID").val();
-    //     var _params = {};
-    //     _params["corp_code"] = corp_code;
-    //     oc.postRequire("post", "/corp/is_authorize", "", _params, function (data) {
-    //         var message=JSON.parse(data.message);
-    //         for(var i=0;i<message.length;i++){
-                  
-    //         }
-    //         // if (data.code == "0") {
-    //         //     $(".state_val").val(data.message);
-    //         // } else {
-    //         //     alert(data.message);
-    //         // }
-    //         // if(data.code=="0"){
-
-    //         // }
-    //     })
-    // })
     if (message.user_type == "admin") {
         $(".corpadd_oper_btn ul li:nth-of-type(2)").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
@@ -536,10 +516,16 @@ jQuery(document).ready(function () {
         $("#edit_close").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
         });
+        $("#back_corp").click(function(){
+            $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
+        })
     } else {
         $(".corpadd_oper_btn ul li:nth-of-type(2)").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
         });
+        $("#back_corp").click(function(){
+            $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
+        })
         $("#edit_close").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
         });

@@ -935,6 +935,10 @@ $("#screen_que_area").click(function(){
         sessionStorage.removeItem("edit");
         $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
     });
+    $("#back_shop").click(function () {//编辑页面点击关闭按钮跳转到列表页面
+        sessionStorage.removeItem("edit");
+        $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
+    });
     //$("#OWN_BRAND").click(function () {
     //    //$("#OWN_BRAND").parent().children("#brand_data").toggle();
     //});

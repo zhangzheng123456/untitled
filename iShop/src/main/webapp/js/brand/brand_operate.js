@@ -19,21 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	// brandjs.checkCode=function(obj,hint){
-	// 	var isCode=/^[B]{1}[0-9]{4}$/;
-	// 	if(!this.isEmpty(obj)){
-	// 		if(isCode.test(obj)){
-	// 			this.hiddenHint(hint);
-	// 			return true;
-	// 		}else{
-	// 			this.displayHint(hint,"品牌编号为必填项，支持以大写B开头必须是4位数字的组合！");
-	// 			return false;
-	// 		}
-	// 	}else{
-	// 		this.displayHint(hint);
-	// 		return false;
-	// 	}
-	// };
 	brandjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -427,6 +412,9 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
 	$("#edit_close").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
+	});
+	$("#back_brand").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
 });

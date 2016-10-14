@@ -329,6 +329,9 @@ jQuery(document).ready(function(){
 	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
 	});
+	$("#back_achvshop").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
+	});
 	//日期类型的点击事件
     $("#drop_down li").click(function(){
     	var text=$(this).html();
