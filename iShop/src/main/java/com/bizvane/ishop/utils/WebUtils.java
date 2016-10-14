@@ -175,6 +175,7 @@ public class WebUtils {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value=El2Str(screen_value);
+                System.out.println("---------转义---------------:"+screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
                 }
