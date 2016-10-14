@@ -420,7 +420,7 @@ div.edui-box {
 
 /*不可选中菜单按钮 */
 .edui-default .edui-toolbar .edui-combox-body .edui-button-body {
-    width: 60px;
+    width: 64px;
     font-size: 12px;
     height: 20px;
     line-height: 20px;
@@ -1170,7 +1170,7 @@ div.edui-box {
 .edui-default .edui-dialog {
     z-index: 2000;
     position: absolute;
-
+   top:50px;
 }
 
 .edui-dialog div{
