@@ -124,8 +124,8 @@
             <if test="isactive != null">
                 isactive,
             </if>
-            <if test="avater!=null ">
-                avater,
+            <if test="avatar!=null ">
+                avatar,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -162,8 +162,8 @@
             <if test="isactive != null">
                 #{isactive},
             </if>
-            <if test="avater!=null ">
-                #{avater},
+            <if test="avatar!=null ">
+                #{avatar},
             </if>
         </trim>
 
@@ -205,8 +205,8 @@
             <if test="isactive != null">
                 isactive = #{isactive},
             </if>
-            <if test="avater!=null">
-                avater=#{avater},
+            <if test="avatar!=null">
+                avatar=#{avatar},
             </if>
         </trim>
         WHERE ID = #{id};

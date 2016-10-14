@@ -1,10 +1,8 @@
 package com.bizvane.ishop.entity;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.lang.*;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,18 +33,18 @@ public class Corp {
     //是否可用
     private String isactive;
     //图片路径
-    private String avater;
+    private String avatar;
 
     private List<CorpWechat> wechats;
 
     private List<JSONObject> cus_user;
 
-    public String getAvater() {
-        return avater;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvater(String avater) {
-        this.avater = avater;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Corp() {
