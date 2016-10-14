@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.parsing.SourceExtractor;
 
 /**
  * Created by lixiang on 2016/6/3.
@@ -148,12 +149,12 @@ public class WebUtils {
     }
     public static String El2Str(String el){
         String str="";
-        str=el.replaceAll("\\*","\\\\\\\\*");
+        str=el.replaceAll("\\\\","");
+        str=str.replaceAll("\\*","\\\\\\\\*");
         str=str.replaceAll("\\(","\\\\\\\\(");
         str=str.replaceAll("\\)","\\\\\\\\)");
         str=str.replaceAll("\\[","\\\\\\\\[");
         str=str.replaceAll("\\]","\\\\\\\\]");
-        str=str.replaceAll("\\\\","");
         str=str.replaceAll("\\+","\\\\\\\\+");
         str=str.replaceAll("\\?","\\\\\\\\?");
         return str;
@@ -171,11 +172,12 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
+       //     System.out.println("---------转义前---------------:"+screen_value);
             if(!screen_key.equals("time_bucket") && !screen_key.equals("time_count")) {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value=El2Str(screen_value);
-                System.out.println("---------转义---------------:"+screen_value);
+               System.out.println("---------转义后---------------:"+screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
                 }
