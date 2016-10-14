@@ -210,7 +210,9 @@ jQuery(document).ready(function(){
 	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
-
+	$("#back_vip_label").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+	});
 	//标签分组下拉菜单
 	$("#label_group").click(function () {
 		$("#labelgp_select").show()
