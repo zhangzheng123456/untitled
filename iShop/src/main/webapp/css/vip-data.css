@@ -773,7 +773,7 @@ hr{
 }
 .own_label{
     width: 510px;
-    min-height:440px;
+    min-height:375px;
     margin-bottom: 20px;
     padding: 10px;
     margin-top: 10px;
@@ -828,7 +828,7 @@ hr{
 }
 .all_label{
     width: 50%;
-    min-height:500px;
+    min-height:435px;
     margin-bottom: 20px;
     float: left;
     padding: 0 20px;

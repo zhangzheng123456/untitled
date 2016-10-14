@@ -317,11 +317,12 @@ function searchHotlabel() {
         }
         //搜索下拉点击事件
         $(".search_list li").click(function () {
+            var a="li";
             cls=$(this).attr("class");
             txt=$(this).html();
             param['label_name']=txt
             $("#search_input").val("");
-            addViplabel();
+            addViplabel(a);
         })
     })
 }
@@ -435,20 +436,16 @@ function labelDelete(obj) {
             $($("#label_org span")[i]).removeClass().addClass("label_g")
         }
     }
-    for(var i=0;i<len_o;i++){
-        if($($("#label_org span")[i]).html()==that){
-            $($("#label_org span")[i]).removeClass().addClass("label_g")
-        }
-    }
     for(var i=0;i<len_u;i++){
         if($($("#label_user span")[i]).html()==that){
             $($("#label_user span")[i]).removeClass().addClass("label_u")
         }
     }
 }
-function addViplabel() {
+function addViplabel(obj) {
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
+    var that="";//获取贴上标签的名字
     param["corp_code"]=sessionStorage.getItem("corp_code");
     param['vip_code']=id;
     param['label_id']="";
@@ -466,6 +463,35 @@ function addViplabel() {
             $("#label_box").append(html);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
+            if(obj=="btn"){
+                that = val;
+            }else if(obj=="li"){
+                that = txt;
+            }
+            var len=$("#hotlabel span").length;
+            var len_o=$("#label_org span").length;
+            var len_u=$("#label_user span").length;
+            for(var i=0;i<len;i++){
+                if($($("#hotlabel span")[i]).html()==that){
+                    var classname=$($("#hotlabel span")[i]).attr("class");
+                    if(classname=="label_u"){
+                        $($("#hotlabel span")[i]).removeClass().addClass("label_u_active");
+                    }
+                    if(classname=="label_g"){
+                        $($("#hotlabel span")[i]).removeClass().addClass("label_g_active");
+                    }
+                }
+            }
+            for(var i=0;i<len_o;i++){
+                if($($("#label_org span")[i]).html()==that){
+                    $($("#label_org span")[i]).removeClass().addClass("label_g_active")
+                }
+            }
+            for(var i=0;i<len_u;i++){
+                if($($("#label_user span")[i]).html()==that){
+                    $($("#label_user span")[i]).removeClass().addClass("label_u_active")
+                }
+            }
         }else if(data.code=="-1"){
             frame();
             $('.frame').html('请勿重复添加');
@@ -473,6 +499,7 @@ function addViplabel() {
     })
 }
 $("#labeladd_btn").click(function () {
+    var a="btn";
     cls="";
     val=$("#search_input").val().replace(/\s+/g,"");
     val=val.substring(0,8);
@@ -480,7 +507,7 @@ $("#labeladd_btn").click(function () {
         return;
     }
     param['label_name']=val;
-    addViplabel();
+    addViplabel(a);
     $("#search_input").val("");
 });
 //右侧点击添加标签
@@ -630,3 +657,5 @@ $(function(){
     upLoadAlbum();
     moreSearch();
 });
+
+
