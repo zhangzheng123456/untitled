@@ -50,15 +50,15 @@ public class Store {
     private String qrcode;
     private Area area;
     private List<StoreQrcode> qrcodeList;
-    private String area_code;
-
-    public String getArea_code() {
-        return area_code;
-    }
-
-    public void setArea_code(String area_code) {
-        this.area_code = area_code;
-    }
+//    private String area_code;
+//
+//    public String getArea_code() {
+//        return area_code;
+//    }
+//
+//    public void setArea_code(String area_code) {
+//        this.area_code = area_code;
+//    }
 
     public Store(){}
 
