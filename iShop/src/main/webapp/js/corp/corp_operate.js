@@ -154,12 +154,11 @@ var message = JSON.parse(val.message);
                 }
                 var ID = sessionStorage.getItem("id");
                 var avater="";//头像
-                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test($("#preview img").attr("src"))==true){
-                    avater=$("#preview img").attr("src");//头像
-                }else if(reg.test($("#preview img").attr("src"))==false){
-                    avater="";
-                }
+                // var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+                if(data[i].goods_image.indexOf("http")==-1){
+                if($("#preview img").attr("data-src").indexOf("http")==-1){
+                    avater=$("#preview img").attr("data-src");
+                }else if()
                 var CORPID = $("#OWN_CORP").val();
                 var WXID = $("#WXID").val();
                 var CORPNAME = $("#CORPNAME").val();

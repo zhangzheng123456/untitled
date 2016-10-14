@@ -179,7 +179,7 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
     window.viplabel.init();//初始化
-    if($(".pre_title label").text()=="编辑会员标签分组"){
+    if($(".pre_title label").text()=="编辑标签分组"){
         var id=sessionStorage.getItem("id");
         var key_val=sessionStorage.getItem("key_val");//取页面的function_code
         key_val=JSON.parse(key_val);
@@ -277,6 +277,9 @@ jQuery(document).ready(function(){
         $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_group.html");
     });
     $(".operedit_btn ul li:nth-of-type(2)").click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_group.html");
+    });
+    $("#back_vip_labelGroup").click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_group.html");
     });
 });

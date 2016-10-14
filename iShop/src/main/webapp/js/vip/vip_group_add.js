@@ -323,6 +323,9 @@ $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function(){
 $("#edit_close").click(function(){
     $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
 });
+$("#back_vip_group").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
+});
 /***************************************************************************************/
 //新增分组会员
 //绑定单击事件

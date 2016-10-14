@@ -393,13 +393,19 @@ function jumpBianse(){
     })
     //选择导购
     $("#chooseUser").click(function () {
+        var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
+        console.log(tr);
         var arr=whir.loading.getPageSize();
-        var left=(arr[0]-$("#screen_wrapper").width())/2;
-        var tp=(arr[3]-$("#screen_wrapper").height())/2+30;
+        var left=(arr[0]-$(".screen_area").width())/2;
+        var tp=(arr[3]-$(".screen_area").height())/2+30;
         $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
         $("#p").show();
-        $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
-        $("#screen_wrapper").show();
+        $("#choose_staff").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+        $("#choose_staff").show();
+        if(tr.length=0){
+            frame();
+            $('.frame').html('请先选择会员');
+        }
     })
 
 }
@@ -1123,12 +1129,222 @@ $("#screen_que_staff").click(function(){
     $("#screen_staff").hide();
     $("#screen_wrapper").show();
 })
+
+//选择导购筛选区域
+$("#staff_choose_area").click(function () {
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_area").width())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
+    var li="";
+    var result=$("#staff_choose_area").val();
+    var result_id=$("#staff_choose_area").attr("data-code");
+    $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
+    $("#p").show();
+    $("#choose_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#choose_staff").hide();
+    $("#choose_area").show();
+       if(result!=="") {
+           result = result.split(",");
+           result_id = result_id.split(",");
+           for(var i=0;i<result.length;i++){
+               li+="<li id='"+result_id[i]+"'><div class='checkbox1'><input  type='checkbox' name='test'  class='check'  id='checkboxOneInput"
+                   + i
+                   + 1
+                   + "'/><label for='checkboxOneInput"
+                   + i
+                   + 1
+                   + "'></label></div><span class='p16'>"+result[i]+"</span></li>"
+           }
+           $("#choose_area .screen_content_r ul").empty();
+           $("#choose_area .screen_content_r ul").append(li);
+           $("#choose_area .s_pitch span").html(result.length);
+           bianse();
+       }
+    var area_num=1
+    if($("#choose_area .screen_content_l ul li").length>1){
+        return;
+    }
+    getarealist(area_num);
+})
+//区域下确定
+$("#choose_area .screen_que").click(function () {
+    var li=$("#choose_area .screen_content_r input[type='checkbox']").parents("li");
+    var area_codes="";
+    var area_name="";
+    for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            area_codes+=r+",";
+            area_name+=p+",";
+        }else{
+            area_codes+=r;
+            area_name+=p;
+        }
+    }
+    // var num=$("#choose_area .screen_content_r input[type='checkbox']").parents("li").length;
+    $("#staff_choose_area").val(area_name);
+    $("#staff_choose_area").attr("data-code",area_codes);
+    // $("#area_num").val("已选"+num+"个");
+    // $("#area_num").attr("data-areacode",area_codes);
+    // $("#staff_area_num").val("已选"+num+"个");
+    // $("#staff_area_num").attr("data-areacode",area_codes);
+    $("#choose_area").hide();
+    $("#choose_staff").show();
+})
+//区域下搜索
+$("#search_area").keydown(function(){
+    var mark="area"
+    var event=window.event||arguments[0];
+    area_num=1;
+    if(event.keyCode == 13){
+        $("#choose_area .screen_content_l ul").empty();
+        getarealist(area_num,mark);
+    }
+})
+$("#search_area_f").click(function () {
+    var mark="area";
+    area_num=1;
+    $("#choose_area .screen_content_l ul").empty();
+    getarealist(area_num,mark);
+})
+//选择导购筛选店铺
+$("#staff_choose_shop").click(function () {
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_area").width())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
+    $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
+    $("#p").show();
+    $("#choose_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#choose_staff").hide();
+    $("#choose_shop").show();
+    var area_num=1
+    if($("#screen_arsea .screen_content_l ul li").length>1){
+        return;
+    }
+    getstorelist(area_num);
+})
+//选择导购筛选品牌
+$("#staff_choose_brand").click(function () {
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_area").width())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
+    var li="";
+    var result=$("#staff_choose_brand").val();
+    var result_id=$("#staff_choose_brand").attr("data-code");
+    $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
+    $("#p").show();
+    $("#choose_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#choose_staff").hide();
+    $("#choose_brand").show();
+    if(result!==""){
+        result = result.split(",");
+        result_id = result_id.split(",");
+        for(var i=0;i<result.length;i++){
+            li+="<li id='"+result_id[i]+"'><div class='checkbox1'><input  type='checkbox' name='test'  class='check'  id='checkboxOneInput"
+                + i
+                + 1
+                + "'/><label for='checkboxOneInput"
+                + i
+                + 1
+                + "'></label></div><span class='p16'>"+result[i]+"</span></li>"
+        }
+        $("#choose_brand .screen_content_r ul").empty();
+        $("#choose_brand .screen_content_r ul").append(li);
+        $("#choose_brand .s_pitch span").html(result.length);
+        bianse();
+    }
+    var area_num=1
+    if($("#screen_arsea .screen_content_l ul li").length>1){
+        return;
+    }
+    getbrandlist(area_num);
+})
+//品牌下确定
+$("#choose_brand .screen_que").click(function () {
+    var li=$("#choose_brand .screen_content_r input[type='checkbox']").parents("li");
+    var brand_codes="";
+    var brand_name="";
+    for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            brand_codes+=r+",";
+            brand_name+=p+",";
+        }else{
+            brand_codes+=r;
+            brand_name+=p;
+        }
+    }
+    $("#staff_choose_brand").val(brand_name);
+    $("#staff_choose_brand").attr("data-code",brand_codes);
+    // $("#area_num").val("已选"+num+"个");
+    // $("#area_num").attr("data-areacode",area_codes);
+    // $("#staff_area_num").val("已选"+num+"个");
+    // $("#staff_area_num").attr("data-areacode",area_codes);
+    $("#choose_brand").hide();
+    $("#choose_staff").show();
+})
+//品牌下搜索
+$("#search_brand").keydown(function(){
+    var mark="brand"
+    var event=window.event||arguments[0];
+    area_num=1;
+    if(event.keyCode == 13){
+        $("#choose_brand .screen_content_l ul").empty();
+        getbrandlist(area_num,mark);
+    }
+})
+$("#search_brand_f").click(function () {
+    var mark="brand";
+    $("#choose_brand .screen_content_l ul").empty();
+    getbrandlist(mark);
+})
+//店铺下筛选区域
+$("#shop_choose_area").click(function () {
+    $("#choose_shop").hide();
+    $("#choose_area").show();
+})
+//店铺下筛选品牌
+$("#shop_choose_brand").click(function () {
+    $("#choose_shop").hide();
+    $("#choose_brand").show();
+})
+//选择导购关闭
+$("#close_choose_staff").click(function(){
+    $("#choose_staff").hide();
+    $("#p").hide();
+})
+//选择导购区域关闭
+$("#close_area").click(function () {
+    $("#choose_staff").show();
+    $("#choose_area").hide();
+    $("#p").hide();
+})
+//选择导购品牌关闭
+$("#close_brand").click(function () {
+    $("#choose_staff").show();
+    $("#choose_brand").hide();
+    $("#p").hide();
+})
+//选择导购店铺关闭
+$("#close_shop").click(function () {
+    $("#choose_staff").show();
+    $("#choose_shop").hide();
+    $("#p").hide();
+})
+
 //拉取区域
-function getarealist(a){
+function getarealist(a,b){
     // var tr= $('#table tbody tr');
     // var corp_code=$(tr[0]).attr("id");
+    var searchValue="";
+    if(b="area"){
+         searchValue=$("#search_area").val().trim();
+    }else {
+         searchValue=$("#area_search").val().trim();
+    }
     var area_command = "/area/selAreaByCorpCode";
-    var searchValue=$("#area_search").val().trim();
     var pageSize=20;
     var pageNumber=a;
     var _param = {};
@@ -1186,6 +1402,7 @@ function getarealist(a){
                 area_next=false;
             }
             $("#screen_area .screen_content_l ul").append(area_html_left);
+            $("#choose_area .screen_content_l ul").append(area_html_left);
             bianse();
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
@@ -1194,12 +1411,12 @@ function getarealist(a){
     })
 }
 //获取店铺列表
-function getstorelist(a){
+function getstorelist(a,b){
     // var tr= $('#table tbody tr');
     // var corp_code=$(tr[0]).attr("id");
-    var area_code =$('#screen_area_num').attr("data-code");//
+    var area_code =$('#screen_area_num').attr("data-code");
     var brand_code=$('#screen_brand_num').attr("data-code");
-    var searchValue=$("#store_search").val();
+    var searchValue=$("#store_search").val().trim();
     var pageSize=20;
     var pageNumber=a;
     var _param={};
@@ -1260,6 +1477,7 @@ function getstorelist(a){
                 shop_next=false;
             }
             $("#screen_shop .screen_content_l ul").append(store_html);
+            $("#choose_shop .screen_content_l ul").append(store_html);
             bianse();
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
@@ -1268,11 +1486,16 @@ function getstorelist(a){
     })
 }
 //获取品牌列表
-function getbrandlist(){
+function getbrandlist(a){
     // var tr= $('#table tbody tr');
     // var corp_code=$(tr[0]).attr("id");
+    var searchValue="";
+    if(a="brand"){
+        searchValue=$("#search_brand").val().trim();
+    }
     var _param={};
     _param["corp_code"]="C10000";
+    _param['searchValue']=searchValue;
     whir.loading.add("",0.5);//加载等待框
     $("#mask").css("z-index","10002");
     oc.postRequire("post","/shop/brand", "",_param, function(data){
@@ -1312,12 +1535,14 @@ function getbrandlist(){
                 }
 
                 $("#screen_brand .screen_content_l ul").append(brand_html_left);
+                $("#choose_brand .screen_content_l ul").html(brand_html_left);
             }
             if($("#screen_brand .screen_content_r ul li").length<=0){
                 for(var i=0;i<9;i++){
                     brand_html_right+="<li></li>";
                 }
                 $("#screen_brand .screen_content_r ul").html(brand_html_right);
+                $("#choose_brand .screen_content_r ul").html(brand_html_right);
             }
             bianse();
             whir.loading.remove();//移除加载框
@@ -1452,3 +1677,5 @@ function filtrates(a,b){
         }
     })
 }
+
+

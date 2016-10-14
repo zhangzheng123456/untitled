@@ -179,7 +179,6 @@ function gethotVIPlabel() {
         //绑定拖拽事件
         $('#hotlabel span').on('dragstart',function (event) {
             var ev=event;
-            //console.log('触发');
             ev=ev.originalEvent;
             ev.dataTransfer.setData("Text",ev.target.id);
         });
@@ -204,7 +203,6 @@ function getOtherlabel() {
                 list=list.list;
             var html="";
             var classname="";
-            //console.log(hasNextPage);
             if(hasNextPage==false){
                 $("#more_label_g").hide();
                 $("#more_label_u").hide();
@@ -244,7 +242,6 @@ function getOtherlabel() {
         //绑定拖拽事件
         $('#label_user span').on('dragstart',function (event) {
             var ev=event;
-            //console.log('触发');
             ev=ev.originalEvent;
             ev.dataTransfer.setData("Text",ev.target.id);
         });
@@ -291,7 +288,6 @@ function searchHotlabel() {
             var hasNextPage=JSON.parse(msg.hasNextPage);
             list=msg.list;
             var html="";
-            //console.log(hasNextPage);
             if(list.length!==0){
                 $(".search_box").show();
             }else {
@@ -420,7 +416,6 @@ function labelDelete(obj) {
         }
     });
     var that=span.parent("span").text();
-    console.log(that);
     var len=$("#hotlabel span").length;
     var len_o=$("#label_org span").length;
     var len_u=$("#label_user span").length;
@@ -537,9 +532,6 @@ function drop(ev)
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
     var val=$(clone).text();
-    //console.log(clone);
-    //console.log(val);
-
     //调用借口
     var id = sessionStorage.getItem("id");
     var store_id = sessionStorage.getItem("store_id");
@@ -586,7 +578,6 @@ function upLoadAlbum(){
         client.multipartUpload(storeAs, file).then(function (result) {
             var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
             $("#upAlbum").val("");
-            //console.log(result);
             addVipAlbum(url)
         }).catch(function (err) {
              console.log(err);
@@ -624,13 +615,14 @@ function getNowFormatDate() {//获取当前日期
     var H=date.getHours();
     var M=date.getMinutes();
     var S=date.getSeconds();
+    var m=date.getMilliseconds();
     if (month >= 1 && month <= 9) {
         month = "0" + month;
     }
     if (strDate >= 0 && strDate <= 9) {
         strDate = "0" + strDate;
     }
-    var currentdate = year+month+strDate+H+M+S;
+    var currentdate = ""+year+month+strDate+H+M+S+m;
     return currentdate
 }
 $(function(){

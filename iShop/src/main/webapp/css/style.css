@@ -7055,6 +7055,9 @@ body.skin-3 {
   color:#6cc1cb;
   margin: 0px 10px;
 }
+.pre_title span,.pre_title label{
+  cursor: pointer;
+}
 *{
   margin:0;
   padding:0;
@@ -8038,7 +8041,6 @@ li.select_index>a>label>i{
 }
 #labelgp_select li:hover{
   color: #FFFFFF;
-  /*background: #6cc1c8;*/
   background: #4a5f7c;
 }
 .viplabel_div{
