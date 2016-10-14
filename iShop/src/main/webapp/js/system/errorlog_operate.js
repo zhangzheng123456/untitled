@@ -2,7 +2,7 @@ var oc=new ObjectControl();
 
 jQuery(document).ready(function(){
     // window.param.init();
-    if($(".pre_title label").text()=="编辑错误日志"){
+    if($(".pre_title label").text()=="查看错误日志"){
         var id=sessionStorage.getItem("id");
         var _params={"id":id};
         var _command="/errorLog/select";
@@ -29,6 +29,9 @@ jQuery(document).ready(function(){
     }
 
     $(".oper_btn ul li").click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/system/errorlog.html");
+    });
+    $("#back_errorlog").click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/system/errorlog.html");
     });
 });
