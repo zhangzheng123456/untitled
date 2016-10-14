@@ -482,6 +482,9 @@ jQuery(document).ready(function(){
 	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
+	$("#back_goods_fab").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+	});
 
 });
 // 删除加载的已存在的商品图片

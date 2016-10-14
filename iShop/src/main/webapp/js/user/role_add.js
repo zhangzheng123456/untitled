@@ -216,4 +216,7 @@ jQuery(document).ready(function(){
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 	});
+	$("#back_role").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+	});
 });

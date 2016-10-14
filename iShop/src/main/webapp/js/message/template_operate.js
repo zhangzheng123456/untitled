@@ -293,6 +293,10 @@ jQuery(document).ready(function(){
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/template.html");
 	});
+	$("#back_tem").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/message/template.html");
+	});
+
 });
 function getcorplist(a,b){
 //获取企业信息列表

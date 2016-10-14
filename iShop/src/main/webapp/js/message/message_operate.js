@@ -832,8 +832,12 @@ $("#edit_close").click(function(){
  // 	$("#content").show();
  // 	$("#details").hide();
  	window.location.reload();
-})
+});
 //新增关闭
 $("#send_close").click(function(){
 	$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
-})
+});
+$("#back_message").click(function(){
+	$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
+});
+

@@ -286,6 +286,9 @@ jQuery(document).ready(function(){
 	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/task/tasktype.html");
 	});
+	$("#back_taskType").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/task/tasktype.html");
+	});
 });
 function getcorplist(a){
 	//获取所属企业列表
