@@ -74,9 +74,6 @@ function login(){
 	})
 }
 $(function() { //点击登陆
-	if(window !=top){
-		top.location.href=location.href;
-	}
 	$('.btn_login').click(function() {
 		login();
 	});
