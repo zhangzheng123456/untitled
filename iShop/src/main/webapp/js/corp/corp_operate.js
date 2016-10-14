@@ -154,10 +154,10 @@ var message = JSON.parse(val.message);
                 }
                 var ID = sessionStorage.getItem("id");
                 var avatar="";//头像
-                if($("#preview img").attr("data-src").indexOf("http")==-1){
+                if($("#preview img").attr("data-src").indexOf("http")!==-1){
                     avatar=$("#preview img").attr("data-src");
                 }
-                if($("#preview img").attr("data-src").indexOf("http")!==-1){
+                if($("#preview img").attr("data-src").indexOf("http")==-1){
                     avatar="";
                 }
                 var CORPID = $("#OWN_CORP").val();
