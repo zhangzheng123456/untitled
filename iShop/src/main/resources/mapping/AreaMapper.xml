@@ -250,11 +250,9 @@
             OR da.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
-        GROUP BY da.i
+        GROUP BY da.id
         ORDER BY da.id DESC
     </select>
-
-
 
 <!--下拉框取值，只取可用数据-->
     <select id="selAreaByCorpCode" resultMap="Area">
