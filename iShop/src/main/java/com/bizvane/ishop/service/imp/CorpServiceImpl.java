@@ -71,7 +71,7 @@ public class CorpServiceImpl implements CorpService {
             corp = new Corp();
             corp.setCorp_code(corp_code);
             corp.setCorp_name(corp_name);
-            corp.setAvatar(jsonObject.get("avatar").toString().trim());
+//            corp.setAvatar(jsonObject.get("avatar").toString().trim());
             corp.setAddress(jsonObject.get("address").toString().trim());
             corp.setContact(jsonObject.get("contact").toString().trim());
             corp.setContact_phone(jsonObject.get("phone").toString().trim());

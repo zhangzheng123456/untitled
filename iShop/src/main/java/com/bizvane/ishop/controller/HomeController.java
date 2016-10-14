@@ -153,7 +153,7 @@ public class HomeController {
             datalist.put(data_area_name.key, data_area_name);
 
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVAreaRanking", datalist);
-            logger.info("======" + dataBox.data.get("message").value);
+//            logger.info("======" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -216,7 +216,7 @@ public class HomeController {
             datalist.put(data_store_name.key, data_store_name);
 
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVStoreRanking", datalist);
-            logger.info("======" + dataBox.data.get("message").value);
+//            logger.info("======" + dataBox.data.get("message").value);
 
             String result = dataBox.data.get("message").value;
 
@@ -283,7 +283,7 @@ public class HomeController {
             datalist.put(data_time_id.key, data_time_id);
             datalist.put(data_store_id.key, data_store_id);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVStaffRanking", datalist);
-            logger.info(dataBox.data.get("message").value);
+//            logger.info(dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -364,7 +364,7 @@ public class HomeController {
             Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
             datalist.put(data_date_type.key, data_date_type);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVAnalysisInfo", datalist);
-            logger.info("home2画面(业绩折线图)" + dataBox.data.get("message").value);
+//            logger.info("home2画面(业绩折线图)" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             object.put(date_type, result);
 
@@ -460,7 +460,7 @@ public class HomeController {
                 Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
                 datalist.put(data_date_type.key, data_date_type);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVAnalysis", datalist);
-                logger.info("home1画面(业绩详细分析)" + dataBox.data.get("message").value);
+//                logger.info("home1画面(业绩详细分析)" + dataBox.data.get("message").value);
                 String result = dataBox.data.get("message").value;
                 object.put(date_type, result);
             }
@@ -509,7 +509,7 @@ public class HomeController {
             datalist.put(data_store_code.key, data_store_code);
 
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVVIPRanking", datalist);
-            logger.info("======" + dataBox.data.get("message").value);
+//            logger.info("======" + dataBox.data.get("message").value);
 
             String result = dataBox.data.get("message").value;
 
