@@ -146,7 +146,18 @@ public class WebUtils {
         Matcher isNum = pattern.matcher(orginal);
         return isNum.matches();
     }
-
+    public static String El2Str(String el){
+        String str="";
+        str=el.replaceAll("\\*","\\\\\\\\*");
+        str=str.replaceAll("\\(","\\\\\\\\(");
+        str=str.replaceAll("\\)","\\\\\\\\)");
+        str=str.replaceAll("\\[","\\\\\\\\[");
+        str=str.replaceAll("\\]","\\\\\\\\]");
+        str=str.replaceAll("\\\\","");
+        str=str.replaceAll("\\+","\\\\\\\\+");
+        str=str.replaceAll("\\?","\\\\\\\\?");
+        return str;
+    }
 
     public static Map Json2Map(JSONObject jsonObject) {
         if (jsonObject == null) {
@@ -160,9 +171,10 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if(!screen_key.equals("time_bucket")) {
+            if(!screen_key.equals("time_bucket") && !screen_key.equals("time_count")) {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
+                screen_value=El2Str(screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
                 }
@@ -344,5 +356,28 @@ public class WebUtils {
         return bean;
     }
 
+    /**
+     * 流水号
+     */
+    private static volatile int serialNumber = 0;
+    /**
+     * 生成流水号
+     * 从1 - 999999，不足六位，从右往左补0
+     * @return
+     */
+    public static synchronized String generateSerialNumber(int j){
+        int n = serialNumber = ++serialNumber;
+        if(n == (99999 + j)){
+            serialNumber = n = j;
+        }
+
+        StringBuffer strbu = new StringBuffer(5);
+        strbu.append(n);
+        for(int i=0, length=5-strbu.length(); i<length; i++){
+            strbu.insert(0, 0);
+        }
+
+        return strbu.toString();
+    }
 }
 

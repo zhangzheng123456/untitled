@@ -116,6 +116,7 @@ public class AppLoginLogController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+           // String type = jsonObject.get("type").toString();
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -190,6 +191,7 @@ public class AppLoginLogController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
+            //String type = jsonObject.get("type").toString();
             PageInfo<AppLoginLog> pageInfo = null;
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {

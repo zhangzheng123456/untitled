@@ -1,16 +1,7 @@
 package com.bizvane.ishop.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.ParamConfigureMapper;
 import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.imp.ParamConfigureServiceImpl;
-import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
-import com.bizvane.sun.v1.common.DataBox;
-import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import java.lang.System;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by yin on 2016/6/20.
@@ -56,12 +44,64 @@ public class TestFeedbackService {
     private VipParamService vipParamService;
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private TableManagerService managerService;
+    @Autowired
+    private AppLoginLogService loginLogService;
     String id;
 
     //成功
     @Test
     public void testselectAllFeedback() {
         try {
+
+            String el2Str = WebUtils.El2Str("\\\\+?");
+            System.out.println(el2Str);
+
+            //------------------跟新table_code----------------------------
+//            List<TableManager> tableManagers = managerService.selTableList();
+//            int i1=0;
+//            for (int i = 0; i < tableManagers.size(); i++) {
+//                i1+= managerService.updateTable("T" + WebUtils.generateSerialNumber(i), tableManagers.get(i).getId() + "");
+//
+//            }
+//            System.out.println("-----------:"+i1);
+
+
+
+//---------------新增系统管理员列表权限----------------------------------------------------
+//            List<TableManager> tableManagers = managerService.selTableList();
+//            int i1=0;
+//            for (int i = 0; i < tableManagers.size(); i++) {
+//                TablePrivilege tablePrivilege=new TablePrivilege();
+//                tablePrivilege.setTable_code(tableManagers.get(i).getTable_code());
+//                tablePrivilege.setFunction_code(tableManagers.get(i).getFunction_code());
+//                tablePrivilege.setMaster_code("R6000");
+//                tablePrivilege.setEnable("Y");
+//                Date now = new Date();
+//                tablePrivilege.setCreater("ly");
+//                tablePrivilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//                tablePrivilege.setModified_date(Common.DATETIME_FORMAT.format(now));
+//                tablePrivilege.setModifier("ly");
+//                tablePrivilege.setIsactive("Y");
+//                i1+= managerService.insert(tablePrivilege);
+//
+//            }
+         //   System.out.println("-----------:"+i1);
+
+         //   ------------------------------测试登录次数------------------------------------------------
+//            Map<String, String> map=new HashMap<String, String>();
+//          //  {"screen_key":"time_count","screen_value":{"type": "","value":"" }}
+//            map.put("time_count","{\"type\": \"gt\",\"value\":\"3\" }");
+//            map.put("time_bucket","{\"start\":\"\",\"end\":\"\"}");
+//            map.put("corp_name","");
+//            PageInfo<AppLoginLog> appLoginLogs = loginLogService.selectAllScreen(1, 20, "C10141", map);
+//            List<AppLoginLog> list = appLoginLogs.getList();
+//
+//            for (AppLoginLog appLoginLog:list
+//                 ) {
+//                System.out.println(appLoginLog.getCorp_name()+"-----"+appLoginLog.getTime()+"-----"+appLoginLog.getUser_name());
+//            }
 //            Area area2=new Area();
 //            area2.setCorp_code("C10141");
 //            area2.setArea_code("98656");
@@ -74,15 +114,15 @@ public class TestFeedbackService {
 //            area2.setModifier("ly");
 //            areaService.insertExecl(area2);
 
-
-            String screen="|";
-            if(screen.startsWith("|")){
-                screen= screen.substring(1);
-            }
-            if(screen.endsWith("|")){
-                screen= screen.substring(0,screen.length()-1);
-            }
-            System.out.println(screen);
+//
+//            String screen = "|";
+//            if (screen.startsWith("|")) {
+//                screen = screen.substring(1);
+//            }
+//            if (screen.endsWith("|")) {
+//                screen = screen.substring(0, screen.length() - 1);
+//            }
+//            System.out.println(screen);
 //
 //            Map<String, String> map =new HashMap<String, String>();
 //            map.put("area_name","南通|自营");
@@ -117,7 +157,6 @@ public class TestFeedbackService {
 //            }
 
 
-
 //            VipParam vipParam=new VipParam();
 //            vipParam.setId(1);
 //            vipParam.setParam_name("3");
@@ -141,8 +180,8 @@ public class TestFeedbackService {
 //                System.out.println(vipParam.getCorp_name()+"---"+vipParam.getParam_name());
 //            }
             //"[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-       //     String str = "aaa,bbb,ccc,dddd";
-         //    System.out.println(WebUtils.StringFilter(str));
+            //     String str = "aaa,bbb,ccc,dddd";
+            //    System.out.println(WebUtils.StringFilter(str));
 //            Task task=new Task();
 //            task.setTask_code("T201608051153111446");
 //            task.setTask_title("顺哥DiuDiu~");
@@ -217,9 +256,6 @@ public class TestFeedbackService {
 //            System.out.println(result);
 
 
-
-
-
 //======================================活跃会员===================================================
 
 //            String ss="§SHBS0001,";
@@ -247,9 +283,6 @@ public class TestFeedbackService {
 //
 //            String result = dataBox.data.get("message").value;
 //            System.out.println(result);
-
-
-
 
 
 //
@@ -309,7 +342,6 @@ public class TestFeedbackService {
 //            System.out.println(result);
 
 
-
 //            String ss="§SHBS0001,";
 //            String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
 //            Data data_user_id = new Data("user_id", "ABC123", ValueType.PARAM);
@@ -359,13 +391,6 @@ public class TestFeedbackService {
 //            System.out.println(result);
 
 
-
-
-
-
-
-
-
 //
 //            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
 //            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
@@ -383,9 +408,6 @@ public class TestFeedbackService {
 //
 //            String result = dataBox.data.get("message").value;
 //            System.out.println(result);
-
-
-
 
 
 //            Data data_user_id = new Data("user_id", "LL001", ValueType.PARAM);
@@ -417,7 +439,6 @@ public class TestFeedbackService {
 //                object.put(date_type,result);
 //            }
 //            System.out.println(object.toString());
-
 
 
 //            int[] a={1,2,3,4,5};

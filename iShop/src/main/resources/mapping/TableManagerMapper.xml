@@ -21,4 +21,71 @@
         AND filter_weight != ''
         ORDER BY filter_weight
     </select>
+    <update id="updateTable">
+        UPDATE def_table_list SET table_code=#{table_code} WHERE id=#{id}
+    </update>
+    <select id="selTableList" resultType="com.bizvane.ishop.entity.TableManager">
+      SELECT * FROM def_table_list
+    </select>
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.TablePrivilege">
+        INSERT INTO def_table_privilage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="table_code!=null">
+                table_code,
+            </if>
+            <if test="function_code!=null">
+                function_code,
+            </if>
+            <if test="master_code!=null">
+                master_code,
+            </if>
+            <if test="enable!=null">
+                enable,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="table_code!=null">
+                #{table_code},
+            </if>
+            <if test="function_code!=null">
+                #{function_code},
+            </if>
+            <if test="master_code!=null">
+                #{master_code},
+            </if>
+            <if test="enable!=null">
+                #{enable},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
  </mapper>

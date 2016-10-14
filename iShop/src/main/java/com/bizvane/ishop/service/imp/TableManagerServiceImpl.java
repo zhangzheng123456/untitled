@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.TableManagerMapper;
 import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.entity.TablePrivilege;
 import com.bizvane.ishop.service.TableManagerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,20 @@ public class TableManagerServiceImpl implements TableManagerService {
     @Override
     public List<TableManager> selByCode(String function_code) throws Exception{
         return managerMapper.selByCode(function_code);
+    }
+
+    @Override
+    public int updateTable(String table_code, String id) {
+        return managerMapper.updateTable(table_code,id);
+    }
+
+    @Override
+    public List<TableManager> selTableList() {
+        return managerMapper.selTableList();
+    }
+
+    @Override
+    public int insert(TablePrivilege tablePrivilege) {
+        return managerMapper.insert(tablePrivilege);
     }
 }
