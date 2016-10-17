@@ -150,6 +150,7 @@ public class WebUtils {
     public static String El2Str(String el){
         String str="";
         str=el.replaceAll("\\\\","");
+        str=str.replaceAll("\\$","");
         str=str.replaceAll("\\*","\\\\\\\\*");
         str=str.replaceAll("\\(","\\\\\\\\(");
         str=str.replaceAll("\\)","\\\\\\\\)");
@@ -172,6 +173,7 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
+            screen_value="'"+screen_value+"'";
        //     System.out.println("---------转义前---------------:"+screen_value);
             if(!screen_key.equals("time_bucket") && !screen_key.equals("time_count")) {
                 screen_value = screen_value.replaceAll(",", "|");

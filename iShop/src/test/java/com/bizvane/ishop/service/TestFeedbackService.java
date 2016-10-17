@@ -47,6 +47,8 @@ public class TestFeedbackService {
     @Autowired
     private TableManagerService managerService;
     @Autowired
+    private BrandService brandService;
+    @Autowired
     private AppLoginLogService loginLogService;
     String id;
 
@@ -54,10 +56,16 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-
-            String el2Str = WebUtils.El2Str("*");
+            String el2Str = WebUtils.El2Str("*$");
             System.out.println(el2Str);
-
+            Map<String,String> map=new HashMap<String, String>();
+            map.put("brand_name","'"+el2Str+"'");
+            PageInfo<Brand> c10141 = brandService.getAllBrandScreen(1, 10, "C10141", null, map);
+            List<Brand> list = c10141.getList();
+            for (Brand brand:list
+                 ) {
+                System.out.println(brand.getCorp_name()+"------------"+brand.getBrand_name());
+            }
             //------------------跟新table_code----------------------------
 //            List<TableManager> tableManagers = managerService.selTableList();
 //            int i1=0;
