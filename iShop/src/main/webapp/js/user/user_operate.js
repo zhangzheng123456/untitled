@@ -278,10 +278,10 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 					return;
 				}
 				var avatar="";//头像
-                if($("#preview img").attr("data-src").indexOf("http")==-1){
+                if($("#preview img").attr("data-src").indexOf("http")!==-1){
                     avatar=$("#preview img").attr("data-src");
                 }
-                if($("#preview img").attr("data-src").indexOf("http")!==-1){
+                if($("#preview img").attr("data-src").indexOf("http")==-1){
                     avatar="";
                 }	 
 				var can_login="";//可登录状态
@@ -717,8 +717,8 @@ jQuery(document).ready(function(){
 				$("#USER_NAME").val(msg.user_name);
 				if(msg.avatar!==undefined){
                     if(msg.avatar.indexOf("http")==-1){
-                        $("#preview img").attr("src","../img/bg1.png");
-                        $("#preview img").attr("data-src","../img/bg1.png");
+                        $("#preview img").attr("src","../img/head.png");
+                        $("#preview img").attr("data-src","../img/head.png");
                     }
                     if(msg.avatar.indexOf("http")!==-1){
                         $("#preview img").attr("src",msg.avatar);

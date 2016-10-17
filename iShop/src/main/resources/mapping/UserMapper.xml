@@ -364,7 +364,6 @@
         (  user_name LIKE concat('%',#{search_value},'%')
            OR user_code LIKE concat('%',#{search_value},'%')
            OR phone LIKE concat('%',#{search_value},'%')
-           OR SEX LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_group.isactive = 'Y'
