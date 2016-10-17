@@ -77,6 +77,9 @@
         <if test="type=='eq' and time_count!=null and time_count!=''">
             AND acc_app_login_log.time =#{time_count}
         </if>
+        <if test="type=='all' and time_count!=null and time_count!=''">
+            AND 1=1
+        </if>
         <if test="type=='between' and count_start!=null and count_start!=''">
             AND acc_app_login_log.time  &gt;=#{count_start}
         </if>
@@ -89,9 +92,6 @@
                 <choose>
                     <when test="entryValue!='' and entryKey=='corp_name'">
                         def_corp.${entryKey} REGEXP ${entryValue}
-                    </when>
-                    <when test="entryValue!='' and entryKey=='time'">
-                        acc_app_login_log.${entryKey} = ${entryValue}
                     </when>
                     <when test="entryValue!=''">
                         acc_app_login_log.${entryKey} REGEXP ${entryValue}

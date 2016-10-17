@@ -806,7 +806,7 @@ public class VIPLabelController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_Number = jsonObject.getInt("pageNumber");
-            int page_Size = 20;
+            int page_Size = 50;
             String search_value = jsonObject.getString("searchValue").toString();
             String type = jsonObject.getString("type").toString();
             String corp_code = jsonObject.getString("corp_code").toString();
@@ -894,11 +894,13 @@ public class VIPLabelController {
                     viplableGroupService.addViplableGroup(viplableGroup);
                 }
                 VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
+                vipLabel.setLabel_group_code("0001");
                 Date now = new Date();
                 vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
                 vipLabel.setModifier(user_id);
                 vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipLabel.setCreater(user_id);
+
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
                 if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
