@@ -109,13 +109,13 @@
                 </div>
                 <div class="inputs">
               <ul>
-				  <li class="isActive_select">
-					  <label>登录次数</label>
-					  <input style='width: 66px' type='text' id='isactive' readonly>
-					  <ul class='isActive_select_down'style='display:none;width:44px;left:69px'>
-							  <li>>=</li><li><=</li><li>介于</li><li>全部</li>
-					  </ul>
-				  </li>
+				  <!--<li class="isActive_select">-->
+					  <!--<label>登录次数</label>-->
+					  <!--<input style='width: 66px' type='text' id='isactive' readonly>-->
+					  <!--<ul class='isActive_select_down'style='display:none;width:44px;left:69px'>-->
+							  <!--<li>>=</li><li><=</li><li>介于</li><li>全部</li>-->
+					  <!--</ul>-->
+				  <!--</li>-->
 			  </ul>
                 </div>
             </div>
@@ -229,7 +229,8 @@
 //			console.log(this);
 //			$(this).nextAll('ul').toggle();
 //		})
-        $('.isActive_select').on('click','li',function () {
+        $('.inputs').on('click','ul li.isActive_select ul li',function () {
+			console.log($(this));
 			$('#isactive').nextAll('input').remove();
 			$('#isactive').val($(this).text())
 			if($(this).text()=='介于'){

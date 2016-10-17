@@ -643,8 +643,8 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 });
 function filtrateDown(){
     //筛选select框
-    $(".isActive_select input").click(function (){
-        var ul=$(this).next(".isActive_select_down");
+    $(".isActive_select input:nth-child(2)").click(function (){
+        var ul=$(this).nextAll("ul.isActive_select_down");
         if(ul.css("display")=="none"){
             ul.show();
         }else{
@@ -670,19 +670,32 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs li');
+    // var input=$('#sxk .inputs li');
+    var input=$('#sxk .inputs>ul>li');
+    console.log(input);
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
-    //_param["funcCode"]=funcCode;
+    _param["funcCode"]=funcCode;
     var num=0;
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
         var screen_key="";
-        var screen_value="";
+        var screen_value={};
         if($(input[i]).attr("class")=="isActive_select"){
-            screen_value=$(input[i]).find("input").attr("data-code");
-            screen_key=$(input[i]).find("input").attr("id");
+            screen_key='time_count';
+            switch ($(input[i]).find("input").val()){
+              case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '介于':screen_value['type']='between';_value();break;
+              case '全部':screen_value['type']='eq';screen_value['value']='';break;
+          }
+            function _value(){
+                screen_value['value']={};
+               var between_value=$(input[i]).find("input").nextAll();
+                screen_value['value'].start=$(between_value[0]).val();
+                screen_value['value'].end=$(between_value[1]).val();
+            }
         }else if($(input[i]).attr("class")=="created_date"){
             var start=$('#start').val();
             var end=$('#end').val();
