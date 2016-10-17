@@ -69,22 +69,22 @@
             AND  acc_app_login_log.created_date &lt;= #{created_date_end}
         </if>
         <if test="type=='gt' and time_count!=null and time_count!=''">
-           AND acc_app_login_log.time  &gt;=#{time_count}
+           AND acc_app_login_log.time  &gt;=${time_count}
         </if>
         <if test="type=='lt' and time_count!=null and time_count!=''">
-            AND acc_app_login_log.time  &lt;=#{time_count}
+            AND acc_app_login_log.time  &lt;=${time_count}
         </if>
         <if test="type=='eq' and time_count!=null and time_count!=''">
-            AND acc_app_login_log.time =#{time_count}
+            AND acc_app_login_log.time =${time_count}
         </if>
         <if test="type=='all' and time_count!=null and time_count!=''">
             AND 1=1
         </if>
         <if test="type=='between' and count_start!=null and count_start!=''">
-            AND acc_app_login_log.time  &gt;=#{count_start}
+            AND acc_app_login_log.time  &gt;=${count_start}
         </if>
         <if test="type=='between' and count_end!=null and count_end!=''">
-            AND acc_app_login_log.time  &lt;=#{count_end}
+            AND acc_app_login_log.time  &lt;=${count_end}
         </if>
         <if test="map!=null">
             AND
