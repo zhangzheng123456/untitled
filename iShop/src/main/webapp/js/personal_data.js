@@ -260,7 +260,7 @@ $("#baocun").click(function(){
     var user_id=$("#id").val();
     var password=$('#first_pwd').val();
     var _params={};
-    _params["password"]=password;
+    _params["password"]=md5(password);
     _params["user_id"]=user_id;
     oc.postRequire("post",pwd_creat,"",_params,function (data) {
         if(data.code=="0"){
