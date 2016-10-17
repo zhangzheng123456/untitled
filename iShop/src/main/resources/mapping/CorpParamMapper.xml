@@ -173,13 +173,13 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
-                    dc.${entryKey} REGEXP #{entryValue}
+                    dc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <when test="entryValue!='' and entryKey=='param_name'">
-                    dcc.${entryKey} REGEXP #{entryValue}
+                    dcc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <when test="entryValue!=''">
-                    rcc.${entryKey} REGEXP #{entryValue}
+                    rcc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <otherwise>
                     1=1

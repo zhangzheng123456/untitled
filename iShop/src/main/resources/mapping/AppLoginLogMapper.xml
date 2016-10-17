@@ -88,13 +88,13 @@
             <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
                 <choose>
                     <when test="entryValue!='' and entryKey=='corp_name'">
-                        def_corp.${entryKey} REGEXP #{entryValue}
+                        def_corp.${entryKey} REGEXP ${entryValue}
                     </when>
                     <when test="entryValue!='' and entryKey=='time'">
-                        acc_app_login_log.${entryKey} = #{entryValue}
+                        acc_app_login_log.${entryKey} = ${entryValue}
                     </when>
                     <when test="entryValue!=''">
-                        acc_app_login_log.${entryKey} REGEXP #{entryValue}
+                        acc_app_login_log.${entryKey} REGEXP ${entryValue}
                     </when>
                     <otherwise>
                         1=1

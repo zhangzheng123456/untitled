@@ -56,7 +56,7 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            String el2Str = WebUtils.El2Str("*$");
+            String el2Str = WebUtils.El2Str("*$|");
             System.out.println(el2Str);
             Map<String,String> map=new HashMap<String, String>();
             map.put("brand_name","'"+el2Str+"'");

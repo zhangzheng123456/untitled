@@ -465,18 +465,18 @@
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
                 <choose>
                     <when test="entryKey=='corp_name' and entryValue!=''">
-                        dc.${entryKey} REGEXP #{entryValue}
+                        dc.${entryKey} REGEXP ${entryValue}
                     </when>
                     <when test="entryKey=='area_name' and entryValue!=''">
-                        da.${entryKey} REGEXP #{entryValue}
+                        da.${entryKey} REGEXP ${entryValue}
                         AND ds.area_code LIKE concat('%§',da.area_code,',%')
                     </when>
                     <when test="entryKey=='brand_name' and entryValue!=''">
-                        db.${entryKey} REGEXP #{entryValue}
+                        db.${entryKey} REGEXP ${entryValue}
                         AND ds.brand_code LIKE concat('%§',db.brand_code,',%')
                     </when>
                     <when test="entryValue!=''">
-                        ds.${entryKey} REGEXP #{entryValue}
+                        ds.${entryKey} REGEXP ${entryValue}
                     </when>
                     <otherwise>
                         1=1

@@ -173,22 +173,29 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            screen_value="'"+screen_value+"'";
-       //     System.out.println("---------转义前---------------:"+screen_value);
+            screen_value=screen_value.replaceAll("'","");
+       //    System.out.println("---------转义前---------------:"+screen_value);
             if(!screen_key.equals("time_bucket") && !screen_key.equals("time_count")) {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value=El2Str(screen_value);
-               System.out.println("---------转义后---------------:"+screen_value);
+          //      System.out.println("---------转义后---------------:"+screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
                 }
                 if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
                     screen_value = screen_value.substring(0, screen_value.length() - 1);
                 }
+             //   System.out.println("---------截取后---------------:"+screen_value);
             }else{
-                System.out.println("-----------created_date_login---------------:"+screen_value);
+               // System.out.println("-----------created_date_login---------------:"+screen_value);
             }
+            if(!screen_value.equals("")){
+                screen_value=screen_value.replaceAll("'","");
+             //   System.out.println("---------再次截取后---------------:"+screen_value);
+                screen_value="'"+screen_value+"'";
+            }
+
             map.put(screen_key, screen_value);
         }
 //        Map result = new HashMap();

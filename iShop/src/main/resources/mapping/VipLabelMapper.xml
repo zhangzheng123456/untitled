@@ -218,16 +218,16 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
-                    cc.${entryKey} REGEXP #{entryValue}
+                    cc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <when test="entryValue!='' and entryKey=='label_group_name'">
-                    dvg.${entryKey} REGEXP #{entryValue}
+                    dvg.${entryKey} REGEXP ${entryValue}
                     AND vt.label_group_code is NOT NULL
                     AND vt.label_group_code != ''
                     AND vt.label_group_code = dvg.label_group_code
                 </when>
                 <when test="entryValue!=''">
-                    vt.${entryKey} REGEXP #{entryValue}
+                    vt.${entryKey} REGEXP ${entryValue}
                 </when>
                 <otherwise>
                     1=1
