@@ -179,7 +179,7 @@ public class WebUtils {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value=El2Str(screen_value);
-                System.out.println("------------------特殊地段------------------------");
+              //  System.out.println("------------------特殊地段------------------------");
           //      System.out.println("---------转义后---------------:"+screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
@@ -195,7 +195,7 @@ public class WebUtils {
              //   System.out.println("---------截取后---------------:"+screen_value);
             }else{
                // System.out.println("-----------created_date_login---------------:"+screen_value);
-                System.out.println("------------------不特殊地段------------------------");
+              //  System.out.println("------------------不特殊地段------------------------");
             }
 
 
