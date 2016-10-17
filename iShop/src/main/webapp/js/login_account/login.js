@@ -24,7 +24,8 @@ function login(){
 	var verifyCode = $('#verifyCode').val();
 	var param = {};
 	param["phone"] = phone;
-	param["password"] = password;
+	param["password"] = md5(password);
+	console.log(param);
 	if (phone == '' || password == '' || verifyCode == '' || verifyCode !== '' && verifyCode.toUpperCase() !== code.toUpperCase()) {
 		if (phone == "") {
 			$(".portlet-msg-error").html("手机号不能为空");
