@@ -179,6 +179,7 @@ public class WebUtils {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value=El2Str(screen_value);
+              //  System.out.println("------------------特殊地段------------------------");
           //      System.out.println("---------转义后---------------:"+screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
@@ -186,15 +187,17 @@ public class WebUtils {
                 if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
                     screen_value = screen_value.substring(0, screen_value.length() - 1);
                 }
+                if(!screen_value.equals("")){
+                    screen_value=screen_value.replaceAll("'","");
+                    //   System.out.println("---------再次截取后---------------:"+screen_value);
+                    screen_value="'"+screen_value+"'";
+                }
              //   System.out.println("---------截取后---------------:"+screen_value);
             }else{
                // System.out.println("-----------created_date_login---------------:"+screen_value);
+              //  System.out.println("------------------不特殊地段------------------------");
             }
-            if(!screen_value.equals("")){
-                screen_value=screen_value.replaceAll("'","");
-             //   System.out.println("---------再次截取后---------------:"+screen_value);
-                screen_value="'"+screen_value+"'";
-            }
+
 
             map.put(screen_key, screen_value);
         }

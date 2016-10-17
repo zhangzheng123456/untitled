@@ -62,6 +62,9 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
             //等于
             params.put("type", "eq");
             params.put("time_count", value);
+        }else if(type.equals("all")){
+            params.put("type", "all");
+            params.put("time_count", value);
         }
         map.remove("time_count");
         params.put("map", map);

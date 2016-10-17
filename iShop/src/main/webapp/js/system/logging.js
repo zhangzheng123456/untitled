@@ -7,6 +7,7 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
+var test_value=''//验证值
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
@@ -615,7 +616,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                     +filter[i].show_name
                     +"</label>"
                 +"<input style='width: 66px' type='text' id='isactive' readonly>"
-                +" <ul class='isActive_select_down'style='display:none;width:44px;left:69px'><li>>=</li><li><=</li><li>介于</li><li>全部</li></ul>"
+                +" <ul class='isActive_select_down'style='display:none;width:41px;left:65px'><li style='text-indent: 5px'>>=</li><li  style='text-indent: 5px'><=</li><li  style='text-indent: 5px'>介于</li><li style='text-indent: 5px'>等于</li><li style='text-indent: 5px'>全部</li></ul>"
                 +"</li>";
             }
         }
@@ -632,15 +633,15 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             }
         }
         filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
-            }
-        })
     }
 });
+//筛选的keydow事件
+$('#sxk .inputs').on("keydown","input",function(){
+    var event=window.event||arguments[0];
+    if(event.keyCode == 13){
+        getInputValue();
+    }
+})
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input:nth-child(2)").click(function (){
@@ -667,6 +668,9 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
+    if(test_value==false){
+        return
+    }
     getInputValue();
 })
 function getInputValue(){
@@ -688,7 +692,8 @@ function getInputValue(){
               case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
               case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
               case '介于':screen_value['type']='between';_value();break;
-              case '全部':screen_value['type']='eq';screen_value['value']='';break;
+              case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
+              case '全部':screen_value['type']='all';screen_value['value']='';;break;
           }
             function _value(){
                 screen_value['value']={};
