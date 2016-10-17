@@ -680,7 +680,7 @@ public class UserController {
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                    // System.out.println("-----------EXECL-------store_code---------------------:"+store_code);
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
+                    if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && group_code.equals("")) {
                         continue;
                     }
                     if (cellCorp.equals("") || user_code.equals("") || user_name.equals("") || group_code.equals("")) {
@@ -802,7 +802,8 @@ public class UserController {
                     }
 
                     user.setPosition(position);
-                    user.setPassword(user.getPhone());
+                    String password = CheckUtils.encryptMD5Hash(phone);
+                    user.setPassword(password);
                     Date now = new Date();
                     user.setLogin_time_recently("");
                     user.setCreated_date(Common.DATETIME_FORMAT.format(now));

@@ -638,6 +638,15 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 $('#sxk .inputs').on("keydown","input",function(){
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
+        var test_input=$('#isactive').nextAll('input');
+        var reg=/^[0-9]*$/g;
+        for(var i=0;i<test_input.length;i++){
+            if(!reg.test($(test_input[i]).val())){
+                frame();
+                $('.frame').html('请输入数字');
+                return
+            }
+        }
         getInputValue();
     }
 })
@@ -667,6 +676,15 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
+    var test_input=$('#isactive').nextAll('input');
+    var reg=/^[0-9]*$/g;
+    for(var i=0;i<test_input.length;i++){
+        if(!reg.test($(test_input[i]).val())){
+            frame();
+            $('.frame').html('请输入数字');
+            return
+        }
+    }
     getInputValue();
 })
 function getInputValue(){
