@@ -308,7 +308,7 @@ $("#screen_que_area").click(function(){
 		$("#screen_area").hide();
 		$("#screen_shop").show();
 		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
-		$("#area_num").val("已选"+num+"家");
+		$("#area_num").val("已选"+num+"个");
 		var shop_num=1;
 		isscroll=false;
 		$("#screen_shop .screen_content_l").unbind("scroll");
@@ -327,7 +327,7 @@ $("#screen_que_shop").click(function(){
 	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
 	if(r_code=="R2000"&&li.length>1){
 		frame();
-		$('.frame').html("导购只能选一家店铺");
+		$('.frame').html("导购只能选一个店铺");
 		return;
 	}
 	if(r_code=="R2000"&&li.length==1){
@@ -366,7 +366,7 @@ $("#screen_que_brand").click(function(){
 	$("#screen_shop").show();
 	var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
 	var shop_num=1;
-	$("#brand_num").val("已选"+num+"家");
+	$("#brand_num").val("已选"+num+"个");
 	isscroll=false;
 	$("#screen_shop .screen_content_l").unbind("scroll");
 	$("#screen_shop .screen_content_l ul").empty();
