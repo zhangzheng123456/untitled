@@ -73,6 +73,7 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
         PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(list);
         return page;
     }
+
 //@Override
 //public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
 //    Map<String, Object> params = new HashMap<String, Object>();
@@ -90,6 +91,9 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
 //    PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(list);
 //    return page;
 //}
+
+
+
     @Override
     public int delAppLoginlogById(int id) {
         return loginLogMapper.delAppLoginlogById(id);

@@ -2022,7 +2022,7 @@ public class UserController {
             String password = jsonObject2.get("password").toString();
             int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
 
-            password = CheckUtils.encryptMD5Hash(password);
+//            password = CheckUtils.encryptMD5Hash(password);
             User user = userService.getUserById(user_id);
             user.setPassword(password);
             Date now = new Date();
