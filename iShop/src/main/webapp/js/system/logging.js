@@ -7,7 +7,6 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
-var test_value=''//验证值
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
@@ -639,6 +638,15 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 $('#sxk .inputs').on("keydown","input",function(){
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
+        var test_input=$('#isactive').nextAll('input');
+        var reg=/^[0-9]*$/g;
+        for(var i=0;i<test_input.length;i++){
+            if(!reg.test($(test_input[i]).val())){
+                frame();
+                $('.frame').html('请输入数字');
+                return
+            }
+        }
         getInputValue();
     }
 })
@@ -668,8 +676,14 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
-    if(test_value==false){
-        return
+    var test_input=$('#isactive').nextAll('input');
+    var reg=/^[0-9]*$/g;
+    for(var i=0;i<test_input.length;i++){
+        if(!reg.test($(test_input[i]).val())){
+            frame();
+            $('.frame').html('请输入数字');
+            return
+        }
     }
     getInputValue();
 })

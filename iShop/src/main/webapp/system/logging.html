@@ -245,10 +245,12 @@
 			//验证input值
 			$('#isactive').nextAll('input').on('blur',function () {
 					var reg=/^[0-9]*$/g
-					if(!reg.test($(this).val()))
+					if(!reg.test($(this).val())){
 						test_value=false;
 						frame();
 						$('.frame').html('请输入数字');
+					}else{
+						test_value=true;
 					}
 			});
 		});
