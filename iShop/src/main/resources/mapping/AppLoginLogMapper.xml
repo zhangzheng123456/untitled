@@ -46,6 +46,67 @@
         ORDER BY acc_app_login_log.id DESC
     </select>
 
+    <!--<select id="selectAllScreen" resultMap="AppLoginLog">-->
+        <!--SELECT acc_app_login_log.id,-->
+        <!--acc_app_login_log.platform,-->
+        <!--acc_app_login_log.user_code,-->
+        <!--acc_app_login_log.user_name,-->
+        <!--acc_app_login_log.store_name,-->
+        <!--acc_app_login_log.position,-->
+        <!--acc_app_login_log.phone,-->
+        <!--def_corp.corp_name,-->
+        <!--acc_app_login_log.time,-->
+        <!--acc_app_login_log.created_date-->
+        <!--FROM acc_app_login_log,def_corp-->
+        <!--WHERE  acc_app_login_log.corp_code=def_corp.corp_code-->
+        <!--<if test="corp_code!=null and corp_code!=''">-->
+            <!--AND  acc_app_login_log.corp_code = #{corp_code}-->
+        <!--</if>-->
+        <!--<if test="created_date_start!=null and created_date_start!=''">-->
+            <!--AND  acc_app_login_log.created_date &gt;= #{created_date_start}-->
+        <!--</if>-->
+        <!--<if test="created_date_end!=null and created_date_end!=''">-->
+            <!--AND  acc_app_login_log.created_date &lt;= #{created_date_end}-->
+        <!--</if>-->
+        <!--<if test="type=='gt'">-->
+           <!--AND acc_app_login_log.time  &gt;=#{time_count}-->
+        <!--</if>-->
+        <!--<if test="type=='lt'">-->
+            <!--AND acc_app_login_log.time  &lt;=#{time_count}-->
+        <!--</if>-->
+        <!--<if test="type=='eq'">-->
+            <!--AND acc_app_login_log.time =#{time_count}-->
+        <!--</if>-->
+        <!--<if test="type=='between' and count_start!=null and count_start!=''">-->
+            <!--AND acc_app_login_log.time  &gt;=#{count_start}-->
+        <!--</if>-->
+        <!--<if test="type=='between' and count_end!=null and count_end!=''">-->
+            <!--AND acc_app_login_log.time  &lt;=#{count_end}-->
+        <!--</if>-->
+        <!--<if test="map!=null">-->
+            <!--AND-->
+            <!--<foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >-->
+                <!--<choose>-->
+                    <!--<when test="entryValue!='' and entryKey=='corp_name'">-->
+                        <!--def_corp.${entryKey} REGEXP #{entryValue}-->
+                    <!--</when>-->
+                    <!--<when test="entryValue!='' and entryKey=='time'">-->
+                        <!--acc_app_login_log.${entryKey} = #{entryValue}-->
+                    <!--</when>-->
+                    <!--<when test="entryValue!=''">-->
+                        <!--acc_app_login_log.${entryKey} REGEXP #{entryValue}-->
+                    <!--</when>-->
+                    <!--<otherwise>-->
+                        <!--1=1-->
+                    <!--</otherwise>-->
+                <!--</choose>-->
+            <!--</foreach>-->
+        <!--</if>-->
+        <!--GROUP BY acc_app_login_log.id-->
+        <!--ORDER BY acc_app_login_log.id DESC-->
+    <!--</select>-->
+
+
     <select id="selectAllScreen" resultMap="AppLoginLog">
         SELECT acc_app_login_log.id,
         acc_app_login_log.platform,
@@ -68,40 +129,23 @@
         <if test="created_date_end!=null and created_date_end!=''">
             AND  acc_app_login_log.created_date &lt;= #{created_date_end}
         </if>
-        <if test="type=='gt'">
-           AND acc_app_login_log.time  &gt;=#{time_count}
-        </if>
-        <if test="type=='lt'">
-            AND acc_app_login_log.time  &lt;=#{time_count}
-        </if>
-        <if test="type=='eq'">
-            AND acc_app_login_log.time =#{time_count}
-        </if>
-        <if test="type=='between' and count_start!=null and count_start!=''">
-            AND acc_app_login_log.time  &gt;=#{count_start}
-        </if>
-        <if test="type=='between' and count_end!=null and count_end!=''">
-            AND acc_app_login_log.time  &lt;=#{count_end}
-        </if>
-        <if test="map!=null">
-            AND
-            <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-                <choose>
-                    <when test="entryValue!='' and entryKey=='corp_name'">
-                        def_corp.${entryKey} REGEXP #{entryValue}
-                    </when>
-                    <when test="entryValue!='' and entryKey=='time'">
-                        acc_app_login_log.${entryKey} = #{entryValue}
-                    </when>
-                    <when test="entryValue!=''">
-                        acc_app_login_log.${entryKey} REGEXP #{entryValue}
-                    </when>
-                    <otherwise>
-                        1=1
-                    </otherwise>
-                </choose>
-            </foreach>
-        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP #{entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='time'">
+                    acc_app_login_log.${entryKey} = #{entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    acc_app_login_log.${entryKey} REGEXP #{entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
         GROUP BY acc_app_login_log.id
         ORDER BY acc_app_login_log.id DESC
     </select>
