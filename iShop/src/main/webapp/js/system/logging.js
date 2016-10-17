@@ -615,7 +615,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                     +filter[i].show_name
                     +"</label>"
                 +"<input style='width: 66px' type='text' id='isactive' readonly>"
-                +" <ul class='isActive_select_down'style='display:none;width:44px;left:69px'><li>>=</li><li><=</li><li>介于</li><li>全部</li></ul>"
+                +" <ul class='isActive_select_down'style='display:none;width:41px;left:65px'><li style='text-indent: 5px'>>=</li><li  style='text-indent: 5px'><=</li><li  style='text-indent: 5px'>介于</li><li style='text-indent: 5px'>等于</li><li style='text-indent: 5px'>全部</li></ul>"
                 +"</li>";
             }
         }
@@ -688,7 +688,8 @@ function getInputValue(){
               case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
               case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
               case '介于':screen_value['type']='between';_value();break;
-              case '全部':screen_value['type']='eq';screen_value['value']='';break;
+              case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
+              case '全部':screen_value['type']='all';screen_value['value']='';;break;
           }
             function _value(){
                 screen_value['value']={};
