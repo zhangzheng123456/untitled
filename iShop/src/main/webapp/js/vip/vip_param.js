@@ -15,7 +15,7 @@ key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
-var fixHelper = function(e, ui) {
+var fixHelper = function(e, ui)     {
     //console.log(ui)
     ui.children().each(function() {
         $(this).width($(this).width());  //在拖动时，拖动行的cell（单元格）宽度会发生改变。在这里做了处理就没问题了
