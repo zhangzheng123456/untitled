@@ -633,15 +633,15 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             }
         }
         filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
-            }
-        })
     }
 });
+//筛选的keydow事件
+$('#sxk .inputs').on("keydown","input",function(){
+    var event=window.event||arguments[0];
+    if(event.keyCode == 13){
+        getInputValue();
+    }
+})
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input:nth-child(2)").click(function (){
