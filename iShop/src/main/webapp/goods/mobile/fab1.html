@@ -108,20 +108,15 @@ function getWebOSType(){
 				}
 			}
 		}
-		catch(err){
-			alert(err);
-		}
-		return userInfo;
+	
 	}
 	function doAppWebRefresh(){
 		var osType = getWebOSType();
-
 		if(osType=="iOS"){
 			userInfo = NSRefreshWebView();
 		}else if(osType == "Android"){
 			userInfo = iShop.RefreshWebView();
 		}
-		
 	}
 
 

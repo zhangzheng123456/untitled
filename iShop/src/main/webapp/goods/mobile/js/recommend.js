@@ -22,29 +22,29 @@ jQuery(function(){
 	var goods_quarter="";
 	var goods_wave="";
 	var filtrate="";
-	var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
-    return_jump=JSON.parse(return_jump);
-	if(return_jump==null){
-	    if(value==""&&filtrate==""){
-	        getList(rowno);
-	    }
-	}else if(return_jump!==null){
-	    value=return_jump.value;
-	    filtrate=return_jump.filtrate;
-	    brand_code=return_jump.brand_code;
-	    goods_quarter=return_jump.goods_quarter;
-	    goods_wave=return_jump.goods_wave;
-	    if(value==""&&filtrate==""){
-        	getList(rowno);
-        }else if(value!==""||filtrate!==""){
-        	param["brand_code"]=brand_code;
-			param["goods_quarter"]=goods_quarter;
-			param["goods_wave"]=goods_wave;
-			param["search_value"]=value;
-			$("#input").val(value);
-        	getSearchList(rowno);
-        }
-	}
+	// var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
+ //    return_jump=JSON.parse(return_jump);
+	// if(return_jump==null){
+	//     if(value==""&&filtrate==""){
+	//         getList(rowno);
+	//     }
+	// }else if(return_jump!==null){
+	//     value=return_jump.value;
+	//     filtrate=return_jump.filtrate;
+	//     brand_code=return_jump.brand_code;
+	//     goods_quarter=return_jump.goods_quarter;
+	//     goods_wave=return_jump.goods_wave;
+	//     if(value==""&&filtrate==""){
+ //        	getList(rowno);
+ //        }else if(value!==""||filtrate!==""){
+ //        	param["brand_code"]=brand_code;
+	// 		param["goods_quarter"]=goods_quarter;
+	// 		param["goods_wave"]=goods_wave;
+	// 		param["search_value"]=value;
+	// 		$("#input").val(value);
+ //        	getSearchList(rowno);
+ //        }
+	// }
 	function getScreen(){
 		var param={};
 		param["corp_code"]=corp_code;
@@ -166,6 +166,7 @@ jQuery(function(){
 			$("#input").val("");
 		})
 	}
+	getList(rowno);
 	//input输入框里面
 	$('#input').bind('input propertychange', function() {
 	    var thatFun=arguments.callee;
@@ -221,19 +222,49 @@ jQuery(function(){
     	
     })
     $(".allShops").on("click",".shop",function(e){
+    	var host=window.location.host;
     	var id=$(this).attr("data-id");
-    	var rowno=$('.allShops .shop').length;
-    	var goods_quarter="";
-	    var goods_wave="";
-    	var return_jump={};//定义一个对象
-            return_jump["rowno"]=rowno;//跳转到第几页
-            return_jump["value"]=value;//搜索的值;
-            return_jump["filtrate"]=filtrate;//筛选的值
-            return_jump["brand_code"]=brand_code;//品牌
-            return_jump["goods_quarter"]=goods_quarter;//季度
-            return_jump["goods_wave"]=goods_wave;//波段
-            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-    	window.location.href="/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"";
+ 		var param={};
+ 		param["type"]="FAB";
+ 		param["url"]="http://"+host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"";
+    	doAppWebRefresh(param);
 	})
+	//获取手机系统
+	function getWebOSType(){
+		var browser = navigator.userAgent;
+		var browser = navigator.userAgent;
+		var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端 
+		var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+		if(isAndroid){
+			return "Android";
+		}else if (isiOS) {
+			return "iOS";
+		}else{
+			return "Unknown"
+		}
+	}
+	//获取iShop用户信息
+	function getAppUserInfo(){
+		var osType = getWebOSType();
+		var userInfo = null;
+		if(osType=="iOS"){
+			userInfo = NSReturnUserInfo();
+		}else if(osType == "Android"){
+			userInfo = iShop.ReturnUserInfo();
+		}
+		return userInfo;
+	}
+	//调用APP方法传参 param 格式 type：** ;url:**
+	function doAppWebRefresh(param){
+		var param=JSON.stringify(param);
+		var osType = getWebOSType();
+		if(osType=="iOS"){
+			NSJumpToWebViewForWeb(param);
+		}else if(osType == "Android"){
+			iShop.jumpToWebViewForWeb(param);
+		}
+		
+	}
 });
 
