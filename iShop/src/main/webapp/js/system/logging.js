@@ -7,6 +7,7 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
+var test_value=''//验证值
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
@@ -667,6 +668,9 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
+    if(test_value==false){
+        return
+    }
     getInputValue();
 })
 function getInputValue(){
