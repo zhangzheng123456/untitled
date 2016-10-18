@@ -17,6 +17,9 @@ public class Sign {
     private String isactive;
     private String avatar;
     private String distance;
+
+    private String location;
+
     private String corp_code;
     private String store_code;
     private String phone;
@@ -150,5 +153,13 @@ public class Sign {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

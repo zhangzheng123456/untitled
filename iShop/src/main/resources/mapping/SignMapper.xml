@@ -107,6 +107,12 @@
             </foreach>
         </if>
         )
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  acc_sign.sign_time &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  acc_sign.sign_time &lt;= #{created_date_end}
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
@@ -131,6 +137,12 @@
         AND acc_sign.status !='1'
         AND
         acc_sign.user_code=#{user_code} AND  acc_sign.corp_code=#{corp_code}
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  acc_sign.sign_time &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  acc_sign.sign_time &lt;= #{created_date_end}
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>

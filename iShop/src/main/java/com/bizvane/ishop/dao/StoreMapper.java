@@ -44,6 +44,8 @@ public interface StoreMapper {
 
     List<Store> selectAllStoreScreen(Map<String, Object> params) throws SQLException;
 
+    List<Store> selectAllStoreScreenEasy(Map<String, Object> params) throws SQLException;
+
     List<Store> selectAllStoresByCorpCode(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
     List<Store> selectStoreCountByArea(Map<String, Object> params) throws SQLException;
