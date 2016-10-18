@@ -42,10 +42,7 @@ public class GoodsServiceImpl implements GoodsService {
             String goods_code_match = matches1.get(i).getGoods_code_match();
             Goods match = getGoodsByCode(corp_code,goods_code_match,Common.IS_ACTIVE_Y);
             if (match != null) {
-                String goods_image = match.getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    match.setGoods_image(goods_image.split(",")[0]);
-                }
+                transterGoods(match);
                 matchgoods.add(match);
             }
         }
@@ -53,16 +50,13 @@ public class GoodsServiceImpl implements GoodsService {
             String good_code = matches2.get(i).getGoods_code();
             Goods match = getGoodsByCode(corp_code,good_code,Common.IS_ACTIVE_Y);
             if (match != null) {
-                String goods_image = match.getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    match.setGoods_image(goods_image.split(",")[0]);
-                }
+                transterGoods(match);
                 matchgoods.add(match);
             }
         }
         goods.setMatchgoods(matchgoods);
 
-        transter(goods);
+        transterGoodsImg(goods);
         return goods;
     }
 
@@ -319,7 +313,7 @@ public class GoodsServiceImpl implements GoodsService {
      * @param goods ： 商品对象
      */
     private Goods transterGoods(Goods goods) {
-        String image = "11";
+        String image = "";
         if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
             String goods_image = goods.getGoods_image();
             if (goods_image.startsWith("[{")) {
@@ -337,6 +331,30 @@ public class GoodsServiceImpl implements GoodsService {
             goods.setGoods_image(image);
         }
         return goods;
+    }
+
+    /**
+     * FAB详情页
+     * 将商品图片转换为前台能够读取的JSON格式
+     *
+     * @param goods ： 商品对象
+     */
+    private void transterGoodsImg(Goods goods) throws Exception{
+        String image = "11";
+        if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
+            String goods_image = goods.getGoods_image();
+            if (!goods_image.startsWith("[{")) {
+                JSONArray array = new JSONArray();
+                String[] images = goods_image.split(",");
+                for (int i = 0; i < images.length; i++) {
+                    JSONObject object = new JSONObject();
+                    object.put("image",images[i]);
+                    object.put("is_public","N");
+                    array.add(object);
+                }
+                goods.setGoods_image(array.toString());
+            }
+        }
     }
 
 }

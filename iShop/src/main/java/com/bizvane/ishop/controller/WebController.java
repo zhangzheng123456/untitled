@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -346,18 +350,30 @@ public class WebController {
     /**
      * app获取FAB列表接口
      */
-    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.GET)
     @ResponseBody
-    public String fabPublicImg(HttpServletRequest request) {
+    public String fabPublicImg(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
         JSONObject result = new JSONObject();
         try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            String user_code = jsonObject.get("user_id").toString();
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(data);
+
+            String corp_code = jsonObj.getString("corp_code");
+            String user_code = jsonObj.getString("user_code");
+            String search_value = jsonObj.getString("search_value");
+//            String corp_code = request.getParameter("corp_code");
+//            String user_code = request.getParameter("user_code");
+//            String search_value = request.getParameter("search_value");
+
+            logger.info("--------corp_code:"+corp_code+"user_code:"+user_code+"search_value:"+search_value+"----------- ");
 
             List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
             if (users.size() < 1) {
@@ -371,7 +387,11 @@ public class WebController {
             for (int i = 0; i < brand_codes.size(); i++) {
                 brand_code = brand_code + brand_codes.get(i).toString() + ",";
             }
-            List<Goods> list = goodsService.selectCorpPublicImgs(corp_code,brand_code,"");
+            logger.info("--------brand_code:"+brand_code+"----------- ");
+
+            List<Goods> list = goodsService.selectCorpPublicImgs(corp_code,brand_code,search_value);
+            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
+
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -381,6 +401,7 @@ public class WebController {
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
+//        response.setHeader("Content-Type", "application/json;charset=GBK");
         return dataBean.getJsonStr();
     }
 
