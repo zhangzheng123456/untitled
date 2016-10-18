@@ -22,29 +22,6 @@ jQuery(function(){
 	var goods_quarter="";
 	var goods_wave="";
 	var filtrate="";
-	// var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
- //    return_jump=JSON.parse(return_jump);
-	// if(return_jump==null){
-	//     if(value==""&&filtrate==""){
-	//         getList(rowno);
-	//     }
-	// }else if(return_jump!==null){
-	//     value=return_jump.value;
-	//     filtrate=return_jump.filtrate;
-	//     brand_code=return_jump.brand_code;
-	//     goods_quarter=return_jump.goods_quarter;
-	//     goods_wave=return_jump.goods_wave;
-	//     if(value==""&&filtrate==""){
- //        	getList(rowno);
- //        }else if(value!==""||filtrate!==""){
- //        	param["brand_code"]=brand_code;
-	// 		param["goods_quarter"]=goods_quarter;
-	// 		param["goods_wave"]=goods_wave;
-	// 		param["search_value"]=value;
-	// 		$("#input").val(value);
- //        	getSearchList(rowno);
- //        }
-	// }
 	function getScreen(){
 		var param={};
 		param["corp_code"]=corp_code;
