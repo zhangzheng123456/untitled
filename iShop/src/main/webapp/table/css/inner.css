@@ -213,18 +213,24 @@ input::-webkit-input-placeholder{
 }
 .action_l li,.action_r li{
 	float: left;
-	width: 80px;
+	min-width: 80px;
 	height: 30px;
 	line-height: 30px;
 	margin-top: 10px;
 	background-color: #fff;
 	position: relative;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-right: 8px;
 }
 .action_l li.li{
 	width: 320px;
 	height: 30px;
 	margin-left: 20px;
 	border-radius: 18px;
+	position: relative;
 }
 .action_l li.field_input{
 	width: 320px;
@@ -279,6 +285,7 @@ input::-webkit-input-placeholder{
 	vertical-align: middle;
 	font-size: 30px;
 	color: #888;
+	position: absolute;
 }
 .sxk{
 	background-color: #d7d8da;

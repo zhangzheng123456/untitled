@@ -263,7 +263,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="qrcode"){
-            $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成</a></li>");
+            $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成二维码</a></li>");
         }
     }
 }

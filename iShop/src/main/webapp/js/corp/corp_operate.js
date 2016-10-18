@@ -320,7 +320,8 @@ jQuery(document).ready(function () {
                         $("#preview img").attr("data-src","../img/bg1.png");
                     }
                     if(msg.avatar.indexOf("http")!==-1){
-                        $("#preview img").attr("src",msg.avatar);
+                        var date=new Date().getTime();
+                        $("#preview img").attr("src",msg.avatar+"?"+date);
                         $("#preview img").attr("data-src",msg.avatar);
                     }
                 }
