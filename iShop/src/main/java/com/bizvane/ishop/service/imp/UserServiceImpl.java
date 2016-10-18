@@ -451,7 +451,6 @@ public class UserServiceImpl implements UserService {
                 String group_code = login_user.getGroup_code().trim();
                 String store_code = login_user.getStore_code().trim();
                 String area_code = login_user.getArea_code().trim();
-//            String brand_code = login_user.getBrand_code().trim();
 
                 String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code().trim();
 
@@ -477,7 +476,11 @@ public class UserServiceImpl implements UserService {
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     user_type = "am";
-//                request.getSession().setAttribute("brand_code", brand_code);
+                    if (login_user.getBrand_code() != null) {
+                        String brand_code = login_user.getBrand_code().trim();
+
+                        request.getSession().setAttribute("brand_code", brand_code);
+                    }
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     user_type = "am";

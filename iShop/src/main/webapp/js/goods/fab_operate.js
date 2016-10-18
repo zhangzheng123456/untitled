@@ -387,8 +387,8 @@ jQuery(document).ready(function(){
 					}
 				}
 				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
-				var corp_code=msg.corp.corp_code;//公司编号
-				var brand_code=msg.brand.brand_code;//品牌编号
+				var corp_code=msg.corp_code;//公司编号
+				var brand_code=msg.brand_code;//品牌编号
 				$("#GOODS_CODE").val(msg.goods_code);
 				$("#GOODS_CODE").attr("data-name",msg.goods_code);//编辑的时候code区分
 				$("#GOODS_NAME").val(msg.goods_name);
