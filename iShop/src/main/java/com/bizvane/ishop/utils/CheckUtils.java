@@ -3,6 +3,8 @@ package com.bizvane.ishop.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
+
 import java.security.MessageDigest;
 import java.util.*;
 
@@ -117,6 +119,21 @@ public class CheckUtils {
 
         return list3;
     }
+    //判断字符创是否是json
+    public static boolean checkJson(String json){
 
+        // String jsonstr = "({name: 1, obj: 3,[dd]})";
+        Boolean bool=false;
+        try
+        {
+            JSONObject.parseObject(json);
+            bool=true;
+        }
+        catch (Exception e)
+        {
+           bool=false;
+        }
+        return  bool;
+    }
 
 }

@@ -94,7 +94,9 @@ public class LuploadHelper {
     public  static String getCellTypeForDate(Cell cellObject,String target_type) {
         String dateStr="格式错误";
        // System.out.println("------------时间---------:-"+cellObject.getContents().toString() +"------类型----------"+cellObject.getType());
-        if(cellObject.getType()== CellType.DATE){
+        if(cellObject.getContents().toString().trim().equals("")){
+            dateStr="";
+        }else if(cellObject.getType()== CellType.DATE){
             DateCell cellValue   =   (DateCell)cellObject;
             Date dt   =   cellValue.getDate();
             SimpleDateFormat formatter   =null;

@@ -1,6 +1,8 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.junit.Test;
@@ -56,16 +58,29 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            String el2Str = WebUtils.El2Str("*$|");
-            System.out.println(el2Str);
-            Map<String,String> map=new HashMap<String, String>();
-            map.put("brand_name","'"+el2Str+"'");
-            PageInfo<Brand> c10141 = brandService.getAllBrandScreen(1, 10, "C10141", null, map);
-            List<Brand> list = c10141.getList();
-            for (Brand brand:list
-                 ) {
-                System.out.println(brand.getCorp_name()+"------------"+brand.getBrand_name());
-            }
+
+            String str="{\"type\":\"between\",\"value\":{\"start\":\"2\",\"end\":\"12\"}}";
+            boolean b = CheckUtils.checkJson(str);
+            System.out.println(b);
+
+//String str="<img src=\"/image/upload/20161018/1476771476538038849.jpg\" _src=\"/image/upload/20161018/1476771476538038849.jpg\" title=\"1476771476538038849.jpg\" alt=\"1476771476538038849.jpg\" width=\"87\" height=\"78\" border=\"0\" vspace=\"0\" style=\"width: 87px; height: 78px; float: right;\">";
+//            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(str);
+//      //      System.out.println(htmlImageSrcList.size());
+//            for (String s:htmlImageSrcList
+//                 ) {
+//                System.out.println(s);
+//            }
+
+//            String el2Str = WebUtils.El2Str("*$|");
+//            System.out.println(el2Str);
+//            Map<String,String> map=new HashMap<String, String>();
+//            map.put("brand_name","'"+el2Str+"'");
+//            PageInfo<Brand> c10141 = brandService.getAllBrandScreen(1, 10, "C10141", null, map);
+//            List<Brand> list = c10141.getList();
+//            for (Brand brand:list
+//                 ) {
+//                System.out.println(brand.getCorp_name()+"------------"+brand.getBrand_name());
+//            }
             //------------------跟新table_code----------------------------
 //            List<TableManager> tableManagers = managerService.selTableList();
 //            int i1=0;

@@ -29,9 +29,10 @@
         FROM def_corp_cfg
         <if test="search_value != null and search_value !=''">
             WHERE
-            (param_name LIKE concat('%',#{search_value},'%')
-            OR param_values LIKE concat('%',#{search_value},'%')
-            OR param_desc LIKE concat('%',#{search_value},'%')
+            (def_corp_cfg.param_name LIKE concat('%',#{search_value},'%')
+            OR def_corp_cfg.param_values LIKE concat('%',#{search_value},'%')
+            OR def_corp_cfg.param_type LIKE concat('%',#{search_value},'%')
+            OR def_corp_cfg.param_desc LIKE concat('%',#{search_value},'%')
             OR def_corp_cfg.remark LIKE concat('%',#{search_value},'%')
             )
         </if>
@@ -183,8 +184,9 @@ GROUP BY def_corp_cfg.id
         WHERE
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryValue!=''and entryKey!=''">
-                    dcc.${entryKey} REGEXP #{entryValue}
+
+                <when test="entryValue!=''">
+                    dcc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <otherwise>
                     1=1

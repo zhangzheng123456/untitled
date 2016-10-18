@@ -222,7 +222,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -237,6 +237,8 @@ function superaddition(data,num){//页面加载循环
                         + data[i].user_name
                         + "</td><td><span>"
                         + data[i].corp_name
+                        + "</span></td><td onmouseover='mapInit(this)' onmouseleave='mapHide(this)'><span>"
+                        + data[i].location
                         + "</span></td><td>"
                         + data[i].distance
                         + "</td><td>"
@@ -245,7 +247,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].status
                         + "</td><td>"
                         +data[i].isactive
-                        +"</td></tr>");
+                        +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 900px;'></td></tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -591,11 +593,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                if(filter[i].show_name=="最近签到"){
-                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' class='laydate-icon' onclick=\"laydate({istime: true, format: 'YYYY-MM-DD'})\" readonly/></li>";
-                }else {
-                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
-                }
+                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
                 console.log(msg);
@@ -605,6 +603,16 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 }
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }else if(filter[i].type=="date"){
+                li+="<li class='created_date' id='"
+                    +filter[i].col_name
+                    +"'><label>"
+                    +filter[i].show_name
+                    +"</label>"
+                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<label class='tm20'>至</label>"
+                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"</li>";
             }
 
         }
@@ -659,21 +667,27 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
+    var input=$('#sxk .inputs>ul>li');
    inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
    var num=0;
+   var screen_key="";
+   var screen_value={};
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
-        var screen_value="";
        if($(input[i]).parent("li").attr("class")=="isActive_select"){
+           screen_key=$(input[i]).attr("id")
            screen_value=$(input[i]).attr("data-code");
+       }else if($(input[i]).attr("class")=="created_date"){
+           var start=$('#start').val();
+           var end=$('#end').val();
+           screen_key=$(input[i]).attr("id");
+           screen_value={"start":start,"end":end};
        }else{
-           screen_value=$(input[i]).val().trim();
+           screen_key=$(input[i]).find("input").attr("id");
+           screen_value=$(input[i]).find("input").val().trim();
        }
         if(screen_value!=""){
             num++;
@@ -741,3 +755,32 @@ $("#input-txt").keydown(function() {
         };
     }
 })
+//签到位置在地图显示
+function mapInit(obj) {
+    $(obj).parents("tr").children("td:last-child").show();
+    for(var j=0;j<$(".table tbody tr").length;j++){
+        var map = new BMap.Map('ghy'+j);          // 创建地图实例
+        var location=$($(".table tbody tr")[j]).children("td:nth-child(6)").children("span").html();
+        if(location!=="undefined"){
+            location=location.split(",");
+            var x=location[0];
+            var y=location[1];
+            var point = new BMap.Point(y,x);  // 创建点坐标
+            map.centerAndZoom(point, 16);     // 初始化地图，设置中心点坐标和地图级别
+            var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
+            map.addControl(new BMap.NavigationControl(opts));
+            var marker = new BMap.Marker(point);        // 创建标注
+            map.addOverlay(marker);                     // 将标注添加到地图中
+            // var myicon = new BMap.Icon("../img/line.png", new BMap.Size(30,15));
+           // var marker = new BMap.Marker(point, {icon: myicon});
+           // map.addOverlay(marker);
+
+        }
+    }
+}
+function mapHide(obj) {
+    $(obj).parents("tr").children("td:last-child").hide();
+}
+function mapShow(obj) {
+    $(obj).parents("tr").children("td:last-child").show();
+}

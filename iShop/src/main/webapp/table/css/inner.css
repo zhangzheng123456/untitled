@@ -1400,4 +1400,9 @@ input::-webkit-input-placeholder{
     color: #fff;
     cursor: pointer;
 }
-
+.screen_tip{
+	margin-left: 10px;
+	line-height: 30px;
+	font-size: 10px;
+	color: #888;
+}
