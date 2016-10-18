@@ -47,7 +47,18 @@ public class OssUtils {
     public static List<String> getHtmlImageSrcList(String htmlText)
     {
         List<String> imgSrc = new ArrayList<String>();
-        Matcher m = Pattern.compile("src=\"?(.*?)(\"|>|\\s+)").matcher(htmlText);
+//        List<String> _imgSrc = new ArrayList<String>();
+//        Matcher m2 = Pattern.compile("_src=\"?(.*?)(\"|>|\\s+)").matcher(htmlText);
+//        while(m2.find())
+//        {
+//            System.out.println("--------"+m2.group(1));
+//            _imgSrc.add(m2.group(1));
+//        }
+//        for (int i=0;i<_imgSrc.size();i++){
+//           htmlText= htmlText.replaceAll(_imgSrc.get(i),"");
+//            System.out.println("======="+htmlText);
+//        }
+        Matcher m = Pattern.compile("_src=\"?(.*?)(\"|>|\\s+)").matcher(htmlText);
         while(m.find())
         {
             imgSrc.add(m.group(1));
