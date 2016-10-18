@@ -639,9 +639,11 @@ $('#sxk .inputs').on("keydown","input",function(){
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
         var test_input=$('#isactive').nextAll('input');
-        var reg=/^[0-9]*$/g;
         for(var i=0;i<test_input.length;i++){
-            if(!reg.test($(test_input[i]).val())){
+            var reg=/^[0-9]*$/g;
+            var input_value=$(test_input[i]).val().trim();
+            var test_value=reg.test(input_value);
+            if(!test_value){
                 frame();
                 $('.frame').html('请输入数字');
                 return
@@ -677,9 +679,11 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
     var test_input=$('#isactive').nextAll('input');
-    var reg=/^[0-9]*$/g;
     for(var i=0;i<test_input.length;i++){
-        if(!reg.test($(test_input[i]).val())){
+        var reg=/^[0-9]*$/g;
+        var input_value=$(test_input[i]).val().trim();
+        var test_value=reg.test(input_value);
+        if(!test_value){
             frame();
             $('.frame').html('请输入数字');
             return
@@ -701,13 +705,14 @@ function getInputValue(){
         var screen_key="";
         var screen_value={};
         if($(input[i]).attr("class")=="isActive_select"){
-            screen_key='time_count';
+            screen_key=$(input[i]).attr("id");
             switch ($(input[i]).find("input").val()){
               case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
               case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
               case '介于':screen_value['type']='between';_value();break;
               case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
               case '全部':screen_value['type']='all';screen_value['value']='';;break;
+              case '':screen_value['type']='all';screen_value['value']='';;break;
           }
             function _value(){
                 screen_value['value']={};

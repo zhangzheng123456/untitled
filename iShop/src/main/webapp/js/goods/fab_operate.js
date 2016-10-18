@@ -54,7 +54,7 @@ var oc = new ObjectControl();
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			function getContent() {
 				var arr = [];
-				arr.push(UE.getEditor('editor').getContent());
+				arr.push(UE.getEditor('editor').getPlainTxt());
 				return arr.join("\n");
 			}
 			if(fabjs.firstStep()){
@@ -130,7 +130,6 @@ var oc = new ObjectControl();
 						matchgoods+=r;
 					}
 				}
-				console.log(matchgoods);
 				var _command="/goods/fab/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -151,6 +150,7 @@ var oc = new ObjectControl();
 					"isactive": ISACTIVE,
 					"match_goods":matchgoods
 				};
+				console.log(_params);
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -387,7 +387,8 @@ jQuery(document).ready(function(){
 					}
 				}
 				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
-				var corp_code=msg.corp.corp_code;//公司编号
+				console.log(msg);
+				var corp_code=msg.corp_code;//公司编号
 				var brand_code=msg.brand.brand_code;//品牌编号
 				$("#GOODS_CODE").val(msg.goods_code);
 				$("#GOODS_CODE").attr("data-name",msg.goods_code);//编辑的时候code区分
