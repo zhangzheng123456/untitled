@@ -53,15 +53,15 @@
     						<span class="icon-ishop_6-05"></span>
     						筛选
     					</li>
+    					<!--<li class="bg">-->
+    						<!--<span class="icon-ishop_6-06"></span>-->
+    						<!--配置-->
+    					<!--</li>-->
     					<li class="bg">
-    						<span class="icon-ishop_6-06"></span>
-    						配置
-    					</li>
-    					<li>
     						<span class="icon-ishop_6-07"></span>
     						刷新
     					</li>
-    					<li class="bg" id="more">
+    					<li id="more">
                             <span class="icon-ishop_6-08"></span>
                             更多
                             <div class="more_down">
@@ -417,6 +417,9 @@
             $("#side_bar .gobottom").click(function(){
                 var btm=$('html,body').height();
                 $('html,body').animate({'scrollTop':btm},500);
+            })
+            $(".icon-ishop_6-07").parent().click(function () {
+                window.location.reload();
             })
         });
     </script>

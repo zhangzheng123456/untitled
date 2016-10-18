@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
@@ -147,9 +148,8 @@ public class GoodsServiceImpl implements GoodsService {
         list = goodsMapper.selectAllGoods(corp_code, search_value,"");
         for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
-        }
-        for (int i = 0; list != null && i < list.size(); i++) {
-            transter(list.get(i));
+//            transter(goods);
+            transterGoods(goods);
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
@@ -185,11 +185,11 @@ public class GoodsServiceImpl implements GoodsService {
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoodsForApp(map);
         for (int i = 0; list != null && i < list.size(); i++) {
-            transter(list.get(i));
-            String goods_image = list.get(i).getGoods_image();
-            if (goods_image != null && !goods_image.isEmpty()) {
-                list.get(i).setGoods_image(goods_image.split(",")[0]);
-            }
+            transterGoods(list.get(i));
+//            String goods_image = list.get(i).getGoods_image();
+//            if (goods_image != null && !goods_image.isEmpty()) {
+//                list.get(i).setGoods_image(goods_image.split(",")[0]);
+//            }
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
@@ -201,11 +201,7 @@ public class GoodsServiceImpl implements GoodsService {
         PageHelper.startPage(page_number, page_size);
         List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value,goods_code,brand_code,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
-            transter(list.get(i));
-            String goods_image = list.get(i).getGoods_image();
-            if (goods_image != null && !goods_image.isEmpty()) {
-                list.get(i).setGoods_image(goods_image.split(",")[0]);
-            }
+            transterGoods(list.get(i));
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
@@ -216,16 +212,14 @@ public class GoodsServiceImpl implements GoodsService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("corp_code", corp_code);
-        List<Goods> labels;
+        List<Goods> list;
         PageHelper.startPage(page_number, page_size);
-        labels = goodsMapper.selectAllGoodsScreen(params);
-        for (Goods goods:labels) {
+        list = goodsMapper.selectAllGoodsScreen(params);
+        for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
+            transterGoods(goods);
         }
-        for (int i = 0; labels != null && i < labels.size(); i++) {
-            transter(labels.get(i));
-        }
-        PageInfo<Goods> page = new PageInfo<Goods>(labels);
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
     }
 
@@ -280,4 +274,69 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Goods> selectCorpGoodsWave(String corp_code) throws Exception{
         return goodsMapper.selectCorpGoodsWave(corp_code);
     }
+
+    public List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception{
+        List<Goods> goodsList = new ArrayList<Goods>();
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("brand_code",brand_code);
+        if (!brand_code.equals("")) {
+            String[] brand_codes = brand_code.split(",");
+            map.put("brand_code",brand_codes);
+        }
+        map.put("corp_code",corp_code);
+        map.put("search_value",search_value);
+        map.put("isactive",Common.IS_ACTIVE_Y);
+        List<Goods> list = goodsMapper.selectAllGoodsForApp(map);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            String image = "";
+            Goods goods = list.get(i);
+            if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
+                String goods_image = goods.getGoods_image();
+                if (goods_image.startsWith("[{")) {
+                    JSONArray array = JSONArray.parseArray(goods_image);
+                    for (int j = 0; j < array.size(); j++) {
+                        String jstring = array.get(j).toString();
+                        JSONObject object = JSONObject.parseObject(jstring);
+                        String good_image = object.get("image").toString();
+                        String is_public = object.get("is_public").toString();
+                        if (is_public.equals("Y")){
+                            image = image + good_image + ",";
+                        }
+                    }
+                }
+            }
+            if (!image.equals("")){
+                goods.setGoods_image(image.substring(0,image.length()-1));
+                goodsList.add(goods);
+            }
+        }
+        return goodsList;
+    }
+
+    /**
+     * 将商品列表，只显示一张图片
+     *
+     * @param goods ： 商品对象
+     */
+    private Goods transterGoods(Goods goods) {
+        String image = "11";
+        if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
+            String goods_image = goods.getGoods_image();
+            if (goods_image.startsWith("[{")) {
+                JSONArray array = JSONArray.parseArray(goods_image);
+                if (array.size() > 0) {
+                    String jstring = array.get(0).toString();
+                    JSONObject object = JSONObject.parseObject(jstring);
+                    image = object.get("image").toString();
+                } else {
+                    image = "";
+                }
+            } else {
+                image = goods_image.split(",")[0];
+            }
+            goods.setGoods_image(image);
+        }
+        return goods;
+    }
+
 }

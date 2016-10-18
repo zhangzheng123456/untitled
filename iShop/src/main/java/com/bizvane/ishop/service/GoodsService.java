@@ -80,4 +80,6 @@ public interface GoodsService {
     List<Goods> selectCorpGoodsQuarter(String corp_code) throws Exception;
 
     List<Goods> selectCorpGoodsWave(String corp_code) throws Exception;
+
+    List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception;
 }

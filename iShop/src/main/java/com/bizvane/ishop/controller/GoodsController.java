@@ -82,12 +82,6 @@ public class GoodsController {
             } else {
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
             }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -136,12 +130,7 @@ public class GoodsController {
                     list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map);
                 }
             }
-//            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-//                String goods_image = list.getList().get(i).getGoods_image();
-//                if (goods_image != null && !goods_image.isEmpty()) {
-//                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-//                }
-//            }
+
             List<Goods> goodses = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -200,12 +189,6 @@ public class GoodsController {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
             }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
@@ -242,28 +225,12 @@ public class GoodsController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
-//            String jlist = jsonObject.get("list").toString();
-//            JSONArray array = JSONArray.parseArray(jlist);
-//            Map<String,String> map = new HashMap<String, String>();
-//            for(int i=0;i<array.size();i++){
-//                String info = array.get(i).toString();
-//                JSONObject json = new JSONObject(info);
-//                String screen_key = json.get("screen_key").toString();
-//                String screen_value = json.get("screen_value").toString();
-//                map.put(screen_key,screen_value);
-//            }
             PageInfo<Goods> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = goodsService.selectAllGoodsScreen(page_number, page_size, "", map);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map);
-            }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
             }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));

@@ -209,7 +209,7 @@ jQuery(document).ready(function(){
 				$("#AREA_NAME").attr("data-name",msg.area_name);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
-				$("#area_shop").val("共"+msg.store_count+"家店铺");
+				$("#area_shop").val("共"+msg.store_count+"个店铺");
 				// $("#OWN_CORP").val(msg.corp_code);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);

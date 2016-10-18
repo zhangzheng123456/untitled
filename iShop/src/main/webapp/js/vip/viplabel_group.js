@@ -779,5 +779,9 @@ $(function(){
         var btm=$('html,body').height();
         $('html,body').animate({'scrollTop':btm},500);
     })
+    //刷新列表
+    $(".icon-ishop_6-07").parent().click(function () {
+        window.location.reload();
+    })
 });
 

@@ -22,12 +22,15 @@
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
-        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
-            <result column="corp_name" property="corp_name"/>
-        </association>
-        <association property="brand" javaType="com.bizvane.ishop.entity.Brand">
-            <result column="brand_name" property="brand_name"/>
-        </association>
+        <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <!--<association property="corp" javaType="com.bizvane.ishop.entity.Corp">-->
+            <!--<result column="corp_name" property="corp_name"/>-->
+        <!--</association>-->
+        <!--<association property="brand" javaType="com.bizvane.ishop.entity.Brand">-->
+            <!--<result column="brand_name" property="brand_name"/>-->
+        <!--</association>-->
     </resultMap>
     <select id="selectAllGoods" resultMap="GoodsInfo">
         SELECT g.id,

@@ -222,7 +222,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -237,7 +237,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].user_name
                         + "</td><td><span>"
                         + data[i].corp_name
-                        + "</span></td><td><span>"
+                        + "</span></td><td onmouseover='ghy(this)' onmouseleave='ghy1(this)'><span>"
                         + data[i].location
                         + "</span></td><td>"
                         + data[i].distance
@@ -247,7 +247,26 @@ function superaddition(data,num){//页面加载循环
                         + data[i].status
                         + "</td><td>"
                         +data[i].isactive
-                        +"</td></tr>");
+                        +"</td><td id='ghy"+i+"' onmouseover='ghy(this)' onmouseleave='ghy1(this)' style='display:none;width:200px;height:200px;position: absolute;z-index: 1000;left: 800px;'></td></tr>");
+        if(data[i].location!==undefined){
+            var map = new BMap.Map('ghy'+i);          // 创建地图实例
+            var location=data[i].location.split(",");
+            var x=location[0];
+            var y=location[1];
+            var point = new BMap.Point(y,x);  // 创建点坐标
+            map.centerAndZoom(point, 18);     // 初始化地图，设置中心点坐标和地图级别
+            var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM}
+            map.addControl(new BMap.NavigationControl(opts));
+            // var marker = new BMap.Marker(point);        // 创建标注
+            // map.addOverlay(marker);                     // 将标注添加到地图中
+            var icon = new BMap.Icon('../img/logo.png', new BMap.Size(20, 32), {
+                anchor: new BMap.Size(10, 30)
+            });
+            var mkr = new BMap.Marker(point, {
+                icon: icon
+            });
+            map.addOverlay(mkr);
+        }
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -755,3 +774,10 @@ $("#input-txt").keydown(function() {
         };
     }
 })
+
+function ghy(obj) {
+    $(obj).parents("tr").children("td:last-child").show();
+}
+function ghy1(obj) {
+    $(obj).parents("tr").children("td:last-child").hide();
+}
