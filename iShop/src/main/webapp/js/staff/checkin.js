@@ -237,7 +237,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].user_name
                         + "</td><td><span>"
                         + data[i].corp_name
-                        + "</span></td><td onmouseover='ghy(this)' onmouseleave='ghy1(this)'><span>"
+                        + "</span></td><td onmouseover='mapInit(this)' onmouseleave='mapHide(this)'><span>"
                         + data[i].location
                         + "</span></td><td>"
                         + data[i].distance
@@ -247,26 +247,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].status
                         + "</td><td>"
                         +data[i].isactive
-                        +"</td><td id='ghy"+i+"' onmouseover='ghy(this)' onmouseleave='ghy1(this)' style='display:none;width:200px;height:200px;position: absolute;z-index: 1000;left: 800px;'></td></tr>");
-        if(data[i].location!==undefined){
-            var map = new BMap.Map('ghy'+i);          // 创建地图实例
-            var location=data[i].location.split(",");
-            var x=location[0];
-            var y=location[1];
-            var point = new BMap.Point(y,x);  // 创建点坐标
-            map.centerAndZoom(point, 18);     // 初始化地图，设置中心点坐标和地图级别
-            var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM}
-            map.addControl(new BMap.NavigationControl(opts));
-            // var marker = new BMap.Marker(point);        // 创建标注
-            // map.addOverlay(marker);                     // 将标注添加到地图中
-            var icon = new BMap.Icon('../img/logo.png', new BMap.Size(20, 32), {
-                anchor: new BMap.Size(10, 30)
-            });
-            var mkr = new BMap.Marker(point, {
-                icon: icon
-            });
-            map.addOverlay(mkr);
-        }
+                        +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 900px;'></td></tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -774,10 +755,32 @@ $("#input-txt").keydown(function() {
         };
     }
 })
-
-function ghy(obj) {
+//签到位置在地图显示
+function mapInit(obj) {
     $(obj).parents("tr").children("td:last-child").show();
+    for(var j=0;j<$(".table tbody tr").length;j++){
+        var map = new BMap.Map('ghy'+j);          // 创建地图实例
+        var location=$($(".table tbody tr")[j]).children("td:nth-child(6)").children("span").html();
+        if(location!=="undefined"){
+            location=location.split(",");
+            var x=location[0];
+            var y=location[1];
+            var point = new BMap.Point(y,x);  // 创建点坐标
+            map.centerAndZoom(point, 16);     // 初始化地图，设置中心点坐标和地图级别
+            var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
+            map.addControl(new BMap.NavigationControl(opts));
+            var marker = new BMap.Marker(point);        // 创建标注
+            map.addOverlay(marker);                     // 将标注添加到地图中
+            // var myicon = new BMap.Icon("../img/line.png", new BMap.Size(30,15));
+           // var marker = new BMap.Marker(point, {icon: myicon});
+           // map.addOverlay(marker);
+
+        }
+    }
 }
-function ghy1(obj) {
+function mapHide(obj) {
     $(obj).parents("tr").children("td:last-child").hide();
+}
+function mapShow(obj) {
+    $(obj).parents("tr").children("td:last-child").show();
 }
