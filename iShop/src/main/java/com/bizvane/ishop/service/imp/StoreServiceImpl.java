@@ -397,14 +397,28 @@ public class StoreServiceImpl implements StoreService {
                 stores[i] = stores[i].substring(1, stores[i].length());
             }
         }
+        int flg = 0;
+        for (int i = 0; i < map.size(); i++) {
+            if (map.containsKey("area_name") && !map.get("area_name").equals("")){
+                flg = 1;
+            }
+            if (map.containsKey("brand_name") && !map.get("brand_name").equals("")){
+                flg = 1;
+            }
+        }
         params.put("corp_code", corp_code);
         params.put("area_codes", areas);
         params.put("brand_codes", brands);
         params.put("store_codes", stores);
         params.put("map", map);
-
-        PageHelper.startPage(page_number, page_size);
-        List<Store> shops = storeMapper.selectAllStoreScreen(params);
+        List<Store> shops;
+        if (flg == 1) {
+            PageHelper.startPage(page_number, page_size);
+            shops = storeMapper.selectAllStoreScreen(params);
+        }else {
+            PageHelper.startPage(page_number, page_size);
+            shops = storeMapper.selectAllStoreScreenEasy(params);
+        }
 
 
         for (int i=0;i<shops.size();i++) {

@@ -139,13 +139,9 @@
         <if test="search_value != null and search_value !=''">
             AND
             (store_code like concat('%',#{search_value},'%')
-            OR def_store.ID like concat('%',#{search_value},'%')
             OR store_id LIKE concat('%',#{search_value},'%')
             OR store_name like concat('%',#{search_value},'%')
             OR def_corp.corp_name like concat('%',#{search_value},'%')
-            OR def_store.modified_date like concat('%',#{search_value},'%')
-            OR def_store.modifier like concat('%',#{search_value},'%')
-            OR def_store.isactive like concat('%',#{search_value},'%')
             )
         </if>
         <if test="isactive != null and isactive !=''">
@@ -433,9 +429,19 @@
 
     <select id="selectAllStoreScreen" resultMap="Store">
         SELECT
-        ds.*,
+        ds.id,
+        store_id,
+        store_code,
+        store_name,
+        flg_tob,
+        ds.area_code,
+        ds.brand_code,
+        ds.corp_code,
+        ds.modified_date,
+        ds.modifier,
+        ds.isactive,
         dc.corp_name
-        FROM def_store ds,def_corp dc ,def_area da,def_brand db
+        FROM def_store ds,def_corp dc,def_area da,def_brand db
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = da.corp_code
         AND ds.corp_code = db.corp_code
@@ -464,16 +470,16 @@
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
                 <choose>
-                    <when test="entryKey=='corp_name' and entryValue!=''">
+                    <when test="entryValue!='' and entryKey=='corp_name'">
                         dc.${entryKey} REGEXP ${entryValue}
                     </when>
-                    <when test="entryKey=='area_name' and entryValue!=''">
-                        da.${entryKey} REGEXP ${entryValue}
-                        AND ds.area_code LIKE concat('%§',da.area_code,',%')
+                    <when test="entryValue!='' and entryKey=='area_name'">
+                        ds.area_code LIKE concat('%§',da.area_code,',%')
+                        AND da.${entryKey} REGEXP ${entryValue}
                     </when>
-                    <when test="entryKey=='brand_name' and entryValue!=''">
-                        db.${entryKey} REGEXP ${entryValue}
-                        AND ds.brand_code LIKE concat('%§',db.brand_code,',%')
+                    <when test="entryValue!='' and entryKey=='brand_name'">
+                        ds.brand_code LIKE concat('%§',db.brand_code,',%')
+                        AND db.${entryKey} REGEXP ${entryValue}
                     </when>
                     <when test="entryValue!=''">
                         ds.${entryKey} REGEXP ${entryValue}
@@ -487,6 +493,64 @@
         AND dc.isactive = 'Y'
         AND da.isactive = 'Y'
         AND db.isactive = 'Y'
+        GROUP BY ds.id
+        ORDER BY ds.id DESC
+    </select>
+
+    <select id="selectAllStoreScreenEasy" resultMap="Store">
+        SELECT
+        ds.id,
+        store_id,
+        store_code,
+        store_name,
+        flg_tob,
+        ds.area_code,
+        ds.brand_code,
+        ds.corp_code,
+        ds.modified_date,
+        ds.modifier,
+        ds.isactive,
+        dc.corp_name
+        FROM def_store ds,def_corp dc
+        WHERE ds.corp_code = dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND ds.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes!=null and area_codes!=''">
+            AND
+            <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
+                ds.area_code REGEXP #{item}
+            </foreach>
+        </if>
+        <if test="brand_codes != null and brand_codes!=''">
+            AND
+            <foreach collection="brand_codes" item="item" index="index" open="(" separator="or" close=")">
+                ds.brand_code REGEXP #{item}
+            </foreach>
+        </if>
+        <if test="store_codes!=null and store_codes!=''">
+            AND ds.store_code IN
+            <foreach collection="store_codes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+                <choose>
+                    <when test="entryValue!='' and entryKey=='corp_name'">
+                        dc.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <when test="entryValue!=''">
+                        ds.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        AND dc.isactive = 'Y'
         GROUP BY ds.id
         ORDER BY ds.id DESC
     </select>

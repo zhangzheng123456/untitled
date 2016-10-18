@@ -185,12 +185,6 @@ public class WebController {
             } else {
                 list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "");
             }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -338,6 +332,47 @@ public class WebController {
             result.put("waves", JSON.toJSONString(waves));
             result.put("brands", JSON.toJSONString(brands));
 
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * app获取FAB列表接口
+     */
+    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST)
+    @ResponseBody
+    public String fabPublicImg(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String user_code = jsonObject.get("user_id").toString();
+
+            List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+            if (users.size() < 1) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("用户不存在");
+                return dataBean.getJsonStr();
+            }
+            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+            String brand_code = "";
+            for (int i = 0; i < brand_codes.size(); i++) {
+                brand_code = brand_code + brand_codes.get(i).toString() + ",";
+            }
+            List<Goods> list = goodsService.selectCorpPublicImgs(corp_code,brand_code,"");
+            result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
