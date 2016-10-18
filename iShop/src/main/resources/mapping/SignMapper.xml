@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.SignMapper">
-    <select id="selectSignByInp" resultType="com.bizvane.ishop.entity.Sign">
+
+    <resultMap id="Sign" type="com.bizvane.ishop.entity.Sign">
+        <id column="id" property="id"/>
+        <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="status" property="status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sign_time" property="sign_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="distance" property="distance" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="location" property="location" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="phone" property="phone" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+    </resultMap>
+    <select id="selectSignByInp"  resultMap="Sign">
         SELECT acc_sign.*,
         def_corp.corp_name
         FROM acc_sign,def_corp
@@ -45,7 +65,7 @@
         ORDER BY acc_sign.ID DESC
     </select>
 
-    <select id="selectByUser" resultType="com.bizvane.ishop.entity.Sign">
+    <select id="selectByUser"  resultType="com.bizvane.ishop.entity.Sign">
         SELECT * FROM acc_sign,def_corp
         WHERE acc_sign.corp_code=def_corp.corp_code
         AND acc_sign.status !='1'
@@ -76,7 +96,7 @@
         AND corp_code = #{corp_code};
     </delete>
 
-    <select id="selectSignAllScreen" resultType="com.bizvane.ishop.entity.Sign">
+    <select id="selectSignAllScreen"  resultMap="Sign">
         SELECT acc_sign.*,
         def_corp.corp_name
         FROM acc_sign,def_corp
@@ -241,7 +261,7 @@
         </trim>
     </insert>
 
-    <select id="selectUserRecord" resultType="com.bizvane.ishop.entity.Sign">
+    <select id="selectUserRecord"  resultMap="Sign">
         SELECT *
         FROM acc_sign,def_corp
         WHERE acc_sign.corp_code=def_corp.corp_code
