@@ -36,14 +36,14 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
     @Override
     public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
-        JSONObject date = JSONObject.parseObject(map.get("time_bucket"));
-        JSONObject time_count = JSONObject.parseObject(map.get("time_count"));
+        JSONObject date = JSONObject.parseObject(map.get("created_date"));
+        JSONObject time_count = JSONObject.parseObject(map.get("time"));
         String type=time_count.get("type").toString();
         String value=time_count.get("value").toString();
         params.put("created_date_start", date.get("start").toString());
         params.put("created_date_end", date.get("end").toString());
         params.put("corp_code", corp_code);
-        map.remove("time_bucket");
+        map.remove("created_date");
         if(type.equals("gt")){
             //大于
             params.put("type", "gt");
@@ -66,7 +66,7 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
             params.put("type", "all");
             params.put("time_count", value);
         }
-        map.remove("time_count");
+        map.remove("time");
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<AppLoginLog> list = loginLogMapper.selectAllScreen(params);

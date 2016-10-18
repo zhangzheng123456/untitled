@@ -21,9 +21,11 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.parsing.SourceExtractor;
 
@@ -147,17 +149,18 @@ public class WebUtils {
         Matcher isNum = pattern.matcher(orginal);
         return isNum.matches();
     }
-    public static String El2Str(String el){
-        String str="";
-        str=el.replaceAll("\\\\","");
-        str=str.replaceAll("\\$","");
-        str=str.replaceAll("\\*","\\\\\\\\*");
-        str=str.replaceAll("\\(","\\\\\\\\(");
-        str=str.replaceAll("\\)","\\\\\\\\)");
-        str=str.replaceAll("\\[","\\\\\\\\[");
-        str=str.replaceAll("\\]","\\\\\\\\]");
-        str=str.replaceAll("\\+","\\\\\\\\+");
-        str=str.replaceAll("\\?","\\\\\\\\?");
+
+    public static String El2Str(String el) {
+        String str = "";
+        str = el.replaceAll("\\\\", "");
+        str = str.replaceAll("\\$", "");
+        str = str.replaceAll("\\*", "\\\\\\\\*");
+        str = str.replaceAll("\\(", "\\\\\\\\(");
+        str = str.replaceAll("\\)", "\\\\\\\\)");
+        str = str.replaceAll("\\[", "\\\\\\\\[");
+        str = str.replaceAll("\\]", "\\\\\\\\]");
+        str = str.replaceAll("\\+", "\\\\\\\\+");
+        str = str.replaceAll("\\?", "\\\\\\\\?");
         return str;
     }
 
@@ -173,49 +176,32 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            screen_value=screen_value.replaceAll("'","");
-       //    System.out.println("---------转义前---------------:"+screen_value);
-            if(!screen_key.equals("time_bucket") && !screen_key.equals("time_count")) {
+            screen_value = screen_value.replaceAll("'", "");
+            //    System.out.println("---------转义前---------------:"+screen_value);
+            if (CheckUtils.checkJson(screen_value) == false) {
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
-                screen_value=El2Str(screen_value);
-              //  System.out.println("------------------特殊地段------------------------");
-          //      System.out.println("---------转义后---------------:"+screen_value);
+                screen_value = El2Str(screen_value);
+                //  System.out.println("------------------特殊地段------------------------");
+                //      System.out.println("---------转义后---------------:"+screen_value);
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
                 }
                 if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
                     screen_value = screen_value.substring(0, screen_value.length() - 1);
                 }
-                if(!screen_value.equals("")){
-                    screen_value=screen_value.replaceAll("'","");
+                if (!screen_value.equals("")) {
+                    screen_value = screen_value.replaceAll("'", "");
                     //   System.out.println("---------再次截取后---------------:"+screen_value);
-                    screen_value="'"+screen_value+"'";
+                    screen_value = "'" + screen_value + "'";
                 }
-             //   System.out.println("---------截取后---------------:"+screen_value);
-            }else{
-               // System.out.println("-----------created_date_login---------------:"+screen_value);
-              //  System.out.println("------------------不特殊地段------------------------");
+                //   System.out.println("---------截取后---------------:"+screen_value);
+            } else {
+                 System.out.println("-----------created_date_login---------------:"+screen_value);
+                //  System.out.println("------------------不特殊地段------------------------");
             }
-
-
             map.put(screen_key, screen_value);
         }
-//        Map result = new HashMap();
-//        Object key, value;
-//        Iterator keyIterator = jsonObject.keys();
-//        while (keyIterator.hasNext()) {
-//            key = keyIterator.next();
-//            value = jsonObject.get(key.toString());
-//
-//            if (value instanceof JSONObject) {
-//                result.put(key, Json2Map((JSONObject) value));
-//            } else if (value instanceof JSONArray) {
-//                result.put(key, Json2List((JSONArray) value));
-//            } else {
-//                result.put(key, value);
-//            }
-//        }
         return map;
     }
 
@@ -258,34 +244,36 @@ public class WebUtils {
 
     /**
      * 特殊字符替换(现在主要针对导出)
+     *
      * @param str
      * @return
      * @throws PatternSyntaxException
      */
-    public  static  String StringFilter(String   str)  throws PatternSyntaxException {
+    public static String StringFilter(String str) throws PatternSyntaxException {
         // 只允许字母和数字
         // String   regEx  =  "[^a-zA-Z0-9]";
         // 清除掉所有特殊字符
-        String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，？]";
-        Pattern   p   =   Pattern.compile(regEx);
-        Matcher   m   =   p.matcher(str);
-        return   m.replaceAll("、").trim();
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("、").trim();
     }
 
     /**
      * 检查某个数组中是否有重复值
+     *
      * @param array
      * @return Boolean
      * @throws Exception
      */
-    public static Boolean checkRepeat(String[] array) throws Exception{
-        String[] array1=new String[array.length];
+    public static Boolean checkRepeat(String[] array) throws Exception {
+        String[] array1 = new String[array.length];
         for (int i = 0; i < array.length; i++) {
             String a = array[i];
 
-            if (Arrays.asList(array1).contains(a)){
+            if (Arrays.asList(array1).contains(a)) {
                 return false;
-            }else {
+            } else {
                 array1[i] = a;
             }
         }
@@ -294,6 +282,7 @@ public class WebUtils {
 
     /**
      * 把实体bean对象转换成DBObject
+     *
      * @param bean
      * @return
      * @throws IllegalArgumentException
@@ -348,6 +337,7 @@ public class WebUtils {
 
     /**
      * 把DBObject转换成bean对象
+     *
      * @param dbObject
      * @param bean
      * @return
@@ -375,20 +365,22 @@ public class WebUtils {
      * 流水号
      */
     private static volatile int serialNumber = 0;
+
     /**
      * 生成流水号
      * 从1 - 999999，不足六位，从右往左补0
+     *
      * @return
      */
-    public static synchronized String generateSerialNumber(int j){
+    public static synchronized String generateSerialNumber(int j) {
         int n = serialNumber = ++serialNumber;
-        if(n == (99999 + j)){
+        if (n == (99999 + j)) {
             serialNumber = n = j;
         }
 
         StringBuffer strbu = new StringBuffer(5);
         strbu.append(n);
-        for(int i=0, length=5-strbu.length(); i<length; i++){
+        for (int i = 0, length = 5 - strbu.length(); i < length; i++) {
             strbu.insert(0, 0);
         }
 

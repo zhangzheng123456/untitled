@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -57,13 +58,18 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-String str="<img src=\"/image/upload/20161018/1476771476538038849.jpg\" _src=\"/image/upload/20161018/1476771476538038849.jpg\" title=\"1476771476538038849.jpg\" alt=\"1476771476538038849.jpg\" width=\"87\" height=\"78\" border=\"0\" vspace=\"0\" style=\"width: 87px; height: 78px; float: right;\">";
-            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(str);
-      //      System.out.println(htmlImageSrcList.size());
-            for (String s:htmlImageSrcList
-                 ) {
-                System.out.println(s);
-            }
+
+            String str="{\"type\":\"between\",\"value\":{\"start\":\"2\",\"end\":\"12\"}}";
+            boolean b = CheckUtils.checkJson(str);
+            System.out.println(b);
+
+//String str="<img src=\"/image/upload/20161018/1476771476538038849.jpg\" _src=\"/image/upload/20161018/1476771476538038849.jpg\" title=\"1476771476538038849.jpg\" alt=\"1476771476538038849.jpg\" width=\"87\" height=\"78\" border=\"0\" vspace=\"0\" style=\"width: 87px; height: 78px; float: right;\">";
+//            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(str);
+//      //      System.out.println(htmlImageSrcList.size());
+//            for (String s:htmlImageSrcList
+//                 ) {
+//                System.out.println(s);
+//            }
 
 //            String el2Str = WebUtils.El2Str("*$|");
 //            System.out.println(el2Str);
