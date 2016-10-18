@@ -275,7 +275,7 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.selectCorpGoodsWave(corp_code);
     }
 
-    public List<Goods> selectCorpPublicGoods(String corp_code, String brand_code, String search_value) throws Exception{
+    public List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception{
         List<Goods> goodsList = new ArrayList<Goods>();
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("brand_code",brand_code);
