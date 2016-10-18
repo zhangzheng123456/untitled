@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.SignMapper;
 import com.bizvane.ishop.entity.*;
@@ -121,6 +122,12 @@ public class SignServiceImpl implements SignService {
             }
             stores = sb.toString().split(",");
         }
+
+        JSONObject date = JSONObject.parseObject(map.get("time_bucket"));
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString());
+        map.remove("time_bucket");
+
         params.put("array", stores);
         params.put("corp_code", corp_code);
         params.put("store_code", store_code);
@@ -147,6 +154,11 @@ public class SignServiceImpl implements SignService {
     @Override
     public PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
+        JSONObject date = JSONObject.parseObject(map.get("time_bucket"));
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString());
+        map.remove("time_bucket");
+
         params.put("corp_code", corp_code);
         params.put("user_code", user_code);
         params.put("map", map);

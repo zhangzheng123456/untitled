@@ -31,6 +31,7 @@
             OR dc.corp_name like concat('%',#{search_value},'%')
             OR dcc.param_name like concat('%',#{search_value},'%')
             OR rcc.param_value like concat('%',#{search_value},'%')
+            OR dcc.param_desc like concat('%',#{search_value},'%')
             OR rcc.remark like concat('%',#{search_value},'%')
             )
         </if>
@@ -176,6 +177,9 @@
                     dc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <when test="entryValue!='' and entryKey=='param_name'">
+                    dcc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='param_desc'">
                     dcc.${entryKey} REGEXP ${entryValue}
                 </when>
                 <when test="entryValue!=''">
