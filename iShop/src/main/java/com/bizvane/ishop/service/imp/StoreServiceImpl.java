@@ -118,21 +118,21 @@ public class StoreServiceImpl implements StoreService {
         if (province!=null && !province.equals("")){
             Location location = locationMapper.selectByLocationCode(province);
             if (location!=null){
-                store.setProvince(location.getLocation_name());
+                store.setProvince_location_name(location.getLocation_name());
             }
         }
         String city = store.getCity();
         if (city!=null && !city.equals("")){
             Location location = locationMapper.selectByLocationCode(city);
             if (location!=null){
-                store.setCity(location.getLocation_name());
+                store.setCity_location_name(location.getLocation_name());
             }
         }
         String area = store.getArea();
         if (area!=null && !area.equals("")){
             Location location = locationMapper.selectByLocationCode(area);
             if (location!=null){
-                store.setArea(location.getLocation_name());
+                store.setArea_location_name(location.getLocation_name());
             }
         }
         List<StoreQrcode> qrcodeList = storeMapper.selectByStoreCode(corp_code,store.getStore_code());

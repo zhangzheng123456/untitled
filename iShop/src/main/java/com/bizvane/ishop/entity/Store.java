@@ -22,10 +22,13 @@ public class Store {
     private String corp_code;
     //省
     private String province;
+    private String province_location_name;
     //市
     private String city;
+    private String city_location_name;
     //区
     private String area;
+    private String area_location_name;
     //街道
     private String street;
     //修改时间
@@ -160,6 +163,30 @@ public class Store {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getProvince_location_name() {
+        return province_location_name;
+    }
+
+    public void setProvince_location_name(String province_location_name) {
+        this.province_location_name = province_location_name;
+    }
+
+    public String getCity_location_name() {
+        return city_location_name;
+    }
+
+    public void setCity_location_name(String city_location_name) {
+        this.city_location_name = city_location_name;
+    }
+
+    public String getArea_location_name() {
+        return area_location_name;
+    }
+
+    public void setArea_location_name(String area_location_name) {
+        this.area_location_name = area_location_name;
     }
 
     public String getModified_date() {
