@@ -7,12 +7,17 @@
         <result column="store_id" property="store_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_code" property="store_code"/>
         <result column="store_name" property="store_name"/>
-        <result column="brand_code" property="brand_code"/>
-        <result column="area_code" property="area_code"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="area_name" property="area_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="flg_tob" property="flg_tob" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
+        <result column="province" property="province" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="city" property="city" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="area" property="area" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="street" property="street" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_location" property="store_location" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
@@ -29,6 +34,11 @@
         store_name,
         brand_code,
         flg_tob,
+        def_store.province,
+        def_store.city,
+        def_store.area,
+        def_store.street,
+        def_store.store_location,
         def_store.area_code,
         def_store.corp_code,
         def_store.modified_date,
@@ -284,6 +294,18 @@
             <if test="flg_tob!=null">
                 flg_tob,
             </if>
+            <if test="province!=null">
+                province,
+            </if>
+            <if test="city!=null">
+                city,
+            </if>
+            <if test="area!=null">
+                area,
+            </if>
+            <if test="street!=null">
+                street,
+            </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
@@ -301,6 +323,9 @@
             </if>
             <if test="store_id!=null">
                 store_id,
+            </if>
+            <if test="store_location!=null">
+                store_location,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -322,6 +347,18 @@
             <if test="flg_tob!=null">
                 #{flg_tob},
             </if>
+            <if test="province!=null">
+                #{province},
+            </if>
+            <if test="city!=null">
+                #{city},
+            </if>
+            <if test="area!=null">
+                #{area},
+            </if>
+            <if test="street!=null">
+                #{street},
+            </if>
             <if test="modified_date!=null">
                 #{modified_date},
             </if>
@@ -339,6 +376,9 @@
             </if>
             <if test="store_id!=null">
                 #{store_id},
+            </if>
+            <if test="store_location!=null">
+                #{store_location},
             </if>
         </trim>
     </insert>
@@ -367,8 +407,20 @@
             <if test="flg_tob!=null ">
                 flg_tob = #{flg_tob},
             </if>
-            <if test="flg_tob!=null ">
-                flg_tob = #{flg_tob},
+            <if test="province!=null ">
+                province = #{province},
+            </if>
+            <if test="city!=null ">
+                city = #{city},
+            </if>
+            <if test="area!=null ">
+                area = #{area},
+            </if>
+            <if test="street!=null ">
+                street = #{street},
+            </if>
+            <if test="store_location!=null ">
+                store_location = #{store_location},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},

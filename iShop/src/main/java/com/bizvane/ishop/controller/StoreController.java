@@ -303,43 +303,6 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
-
-    /**
-     * 新增
-     */
-    @RequestMapping(value = "/corp_exist", method = RequestMethod.POST)
-    @ResponseBody
-    public String corpExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject msg = new JSONObject(message);
-            String corp_code = msg.get("corp_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
-            if (corp == null) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("该企业编号不存在");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("企业编号可用");
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-
-    }
-
-
     /**
      * 新增
      */
@@ -497,7 +460,7 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String shop_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(storeService.getStoreById(Integer.parseInt(shop_id)));
+            data = JSON.toJSONString(storeService.getStoreDetailById(Integer.parseInt(shop_id)));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

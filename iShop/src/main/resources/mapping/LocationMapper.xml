@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.LocationMapper">
+
+    <select id="selectAllProvince" resultType="com.bizvane.ishop.entity.Location">
+        SELECT *
+        FROM def_location
+        WHERE higher_level_code IS NULL
+        OR higher_level_code = ''
+    </select>
+
+    <select id="selectByHigherLevelCode" resultType="com.bizvane.ishop.entity.Location">
+        SELECT *
+        FROM def_location
+        WHERE higher_level_code = #{higher_level_code}
+    </select>
+
+    <select id="selectByLocationCode" resultType="com.bizvane.ishop.entity.Location">
+        SELECT *
+        FROM def_location
+        WHERE location_code = #{location_code}
+    </select>
+
+</mapper>

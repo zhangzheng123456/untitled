@@ -20,12 +20,14 @@ public class Store {
     private String flg_tob;
     //公司编号
     private String corp_code;
-//    //app_id
-//    private String app_id;
-//    //二维码图片地址
-//    private String qrcode;
-//    //二维码图片地址
-//    private String qrcode_content;
+    //省
+    private String province;
+    //市
+    private String city;
+    //区
+    private String area;
+    //街道
+    private String street;
     //修改时间
     private String modified_date;
     //修改人
@@ -36,6 +38,8 @@ public class Store {
     private String creater;
     //是否可用
     private String isactive;
+    //店铺坐标
+    private String store_location;
 
     private String brand_name;
     private String corp_name;
@@ -46,19 +50,9 @@ public class Store {
 
     private Corp corp;
 
-    private Brand brand;
     private String qrcode;
-    private Area area;
+
     private List<StoreQrcode> qrcodeList;
-//    private String area_code;
-//
-//    public String getArea_code() {
-//        return area_code;
-//    }
-//
-//    public void setArea_code(String area_code) {
-//        this.area_code = area_code;
-//    }
 
     public Store(){}
 
@@ -136,29 +130,37 @@ public class Store {
         this.corp_code = corp_code;
     }
 
-//    public String getApp_id() {
-//        return app_id;
-//    }
-//
-//    public void setApp_id(String app_id) {
-//        this.app_id = app_id;
-//    }
-//
-//    public String getQrcode() {
-//        return qrcode;
-//    }
-//
-//    public void setQrcode(String qrcode) {
-//        this.qrcode = qrcode;
-//    }
-//
-//    public String getQrcode_content() {
-//        return qrcode_content;
-//    }
-//
-//    public void setQrcode_content(String qrcode_content) {
-//        this.qrcode_content = qrcode_content;
-//    }
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
     public String getModified_date() {
         return modified_date;
@@ -200,6 +202,15 @@ public class Store {
         this.isactive = isactive;
     }
 
+    public String getStore_location() {
+
+        return store_location;
+    }
+
+    public void setStore_location(String store_location) {
+        this.store_location = store_location;
+    }
+
     public String getBrand_name() {
         return brand_name;
     }
@@ -222,22 +233,6 @@ public class Store {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
     }
 
     public String getCorp_name() {

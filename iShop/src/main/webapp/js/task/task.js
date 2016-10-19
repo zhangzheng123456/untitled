@@ -370,9 +370,14 @@ function jumpBianse(){
                 alert(data.message);
             }
         })
-    })
+    });
     //任务详情关闭按钮
     $('#turnoff').click(function(){
+        $('#details').hide();
+        $('#content').show();
+    });
+    //回来任务列表
+    $('#back_task_list').click(function(){
         $('#details').hide();
         $('#content').show();
     })

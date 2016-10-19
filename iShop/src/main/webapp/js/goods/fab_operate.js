@@ -208,32 +208,42 @@ var oc = new ObjectControl();
 				 */
 				// var img_list=[];
 				// var isexit_flg=[];
-				var img_list_json="";
+				var img_list_json=[];
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
+				console.log(img_url_list);
 				if(img_url_list.length<=20){
-					for(var i=0;i<img_url_list.length;i++){
-						if(i<img_url_list.length-1){
-							if(img_url_list[i].src.indexOf("http")!==-1){
-								img_list_json+=img_url_list[i].src+",";
-								// img_list.push(img_url_list[i].src);
-							}else{
-								img_list_json+=$(img_url_list[i]).attr("data-name")+",";
-								// img_list.push($(img_url_list[i]).attr("data-name"));
-							}
-						}else {
-							if(img_url_list[i].src.indexOf("http")!==-1){
-								img_list_json+=img_url_list[i].src;
-								// img_list.push(img_url_list[i].src);
-							}else{
-								img_list_json+=$(img_url_list[i]).attr("data-name");
-								// img_list.push($(img_url_list[i]).attr("data-name"));
-							}
-						}
-					}
+					// for(var i=0;i<img_url_list.length;i++){
+					// 	var img_list_json_sub={};
+					// 	if(i<img_url_list.length-1){
+					// 		if(img_url_list[i].src.indexOf("http")!==-1){
+					// 			img_list_json+=img_url_list[i].src+",";
+					// 			// img_list.push(img_url_list[i].src);
+					// 		}else{
+					// 			img_list_json+=$(img_url_list[i]).attr("data-name")+",";
+					// 			// img_list.push($(img_url_list[i]).attr("data-name"));
+					// 		}
+					// 	}else {
+					// 		if(img_url_list[i].src.indexOf("http")!==-1){
+					// 			img_list_json+=img_url_list[i].src;
+					// 			// img_list.push(img_url_list[i].src);
+					// 		}else{
+					// 			img_list_json+=$(img_url_list[i]).attr("data-name");
+					// 			// img_list.push($(img_url_list[i]).attr("data-name"));
+					// 		}
+					// 	}
+					// }
 					// for(var j=0;j<img_list.length;j++){
 					// 	img_list_json[j]=img_list[j];
 					// }
 					// img_list_json=JSON.stringify(img_list_json);
+                    console.log(img_url_list.length);
+					for(var i=0;i<img_url_list.length;i++){
+						var img_list_json_sub={};
+						img_list_json_sub.image=$(img_url_list[i]).attr('src');
+						console.log($(img_url_list[i]).parent().parent().find('input').attr('checked'));
+						img_list_json_sub.is_public=$(img_url_list[i]).parent().parent().find('input').attr('checked')?' Y':'N'
+						img_list_json.push(img_list_json_sub);
+					}
 				}else{
 					art.dialog({
 						time: 1,
@@ -359,36 +369,54 @@ jQuery(document).ready(function(){
 				console.log(msg.goods_description);
 				//将读取到的卖点信息保存在本地
 				sessionStorage.setItem('goods_description',msg.goods_description)
-				var goods_img=msg.goods_image;
+				var goods_arr=JSON.parse(msg.goods_image);
 				ue.ready(function() {
 					ue.setContent(msg.goods_description);
 				});
-				var goods_arr=[];
-				var filename;//图片名
-				if(goods_img.indexOf(',')!==-1){
-					goods_arr= goods_img.split(",");
-				}else{
-					goods_arr.push(goods_img);
-				}
+				console.log(goods_arr);
+				// var goods_arr=[];
+				// var filename;//图片名
+				// if(goods_img.indexOf(',')!==-1){
+				// 	goods_arr= goods_img.split(",");
+				// }else{
+				// 	goods_arr.push(goods_img);
+				// }
 				for(var i=0;i<goods_arr.length;i++){
-					if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
-					{
-					    filename=goods_arr[i].substring(goods_arr[i].lastIndexOf("/")+1,goods_arr[i].length);
-					    img_html +='<li id="fileBox_WU_FILE_'+(i+10)+'" class="diyUploadHover">'
-                                   	+'<div class="viewThumb"><img src="'+goods_arr[i]+'"></div>'
+					// if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
+					// {
+					//     filename=goods_arr[i].substring(goods_arr[i].lastIndexOf("/")+1,goods_arr[i].length);
+					var check__or='';
+					console.log(goods_arr[i].is_public=='N');
+					if(goods_arr[i].is_public=='N'){
+						check__or='<em style="position: absolute; top: 0px;left: -9px;">'
+							+'<input style="width: 30px;margin:0px" type="checkbox" value="" name="test" class="check">'
+							+'<label onclick="public_click(this)"class="check_public"></label>';
+					}else{
+						check__or='<em class="checkbox_isactive" style="position: absolute; top: 0px;left: -9px;">'
+							+'<input style="width: 30px;margin:0px"checked type="checkbox" value="" name="test" class="check">'
+							+'<label onclick="public_click(this)"class="check_public"></label>';
+					}
+					    img_html +='<li id="fileBox_WU_FILE_'+(i+10)+'" class="diyUploadHover"style="height: 90px">'
+                                   	+'<div class="viewThumb"><img src="'+goods_arr[i].image+'"></div>'
                                    	+'<div class="diyCancel" onclick="img_del(this)"></div>'
                                     +'<div class="diySuccess"></div>'
-                                    +'<div class="diyFileName">'+filename+'</div>'
+                                    // +'<div class="diyFileName">'+filename+'</div>'
                                     +'<div class="diyBar">'
                                         +'<div class="diyProgress"></div>'
                                         +'<div class="diyProgressText">0%</div>'
                                     +'</div>'
-                                +'</li>';
-					}
+							+'<span style="position: absolute;top: 60px;width: 60px;padding-right:4px;margin-top: 2px">'
+				+'<label>公开</label>'
+				// +'<em class="checkbox_isactive"style="position: absolute; top: 0px;left: -9px;">'
+				// +'<input style="width: 30px;margin:0px" checked type="checkbox" value="" name="test" class="check">'
+				// +'<label onclick="public_click(this)"class="check_public"></label>'
+				+check__or
+				+'</em>'
+				+'</span>'
+						+	'</li>';
+					// }
 				}
 				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
-
-				console.log(msg);
 				var corp_code=msg.corp_code;//公司编号
 				var brand_code=msg.brand_code;//品牌编号
 				$("#GOODS_CODE").val(msg.goods_code);
@@ -727,5 +755,17 @@ $("#search_match_goods").keydown(function () {
 		getmatchgoodsList(num);
 	}
 })
+//publick_click   class="checkbox_isactive"
+function public_click(a) {
+	if($(a).prev().attr('checked')){
+		$(a).prev().removeAttr('checked');
+		$(a).parent().addClass("checkbox_isactive");
+		$(a).addClass('check_public');
+	}else{
+		$(a).prev()[0].checked='true';
+		$(a).parent().addClass("checkbox_isactive");
+		$(a).prev().attr('checked','true')
+	}
+}
 
 

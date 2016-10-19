@@ -326,6 +326,9 @@ $("#edit_close").click(function(){
 $("#back_vip_group").click(function(){
     $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
 });
+$("#back_vip_group_1").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
+});
 /***************************************************************************************/
 //新增分组会员
 //绑定单击事件
@@ -398,20 +401,25 @@ $("#save").click(function(){
             alert(data.message);
         }
     });
-})
+});
 //进入页面的关闭操作
 $('#turnoff').on('click',function () {
     $('#page-wrapper')[0].style.display='block';
     $('.content')[0].style.display='none';
-})
+});
+//返回编辑会员分组
+$('#back_edit_vip_group').on('click',function () {
+    $('#page-wrapper')[0].style.display='block';
+    $('.content')[0].style.display='none';
+});
 //打开筛选界面
 $('#filtrate').on('click',function () {
     $('#screen_wrapper')[0].style.display='block';
-})
+});
 //关闭筛选界面
 $('#screen_wrapper_close').on('click',function () {
     $('#screen_wrapper')[0].style.display='none';
-})
+});
 //请求页面数据
 function GET(a,b,c){
     whir.loading.add("",0.5);//加载等待框

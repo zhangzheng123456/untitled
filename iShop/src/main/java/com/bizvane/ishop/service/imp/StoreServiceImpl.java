@@ -37,6 +37,8 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private CorpMapper corpMapper;
     @Autowired
+    private LocationMapper locationMapper;
+    @Autowired
     private CodeUpdateMapper codeUpdateMapper;
 
     private static final Logger logger = Logger.getLogger(StoreServiceImpl.class);
@@ -54,8 +56,94 @@ public class StoreServiceImpl implements StoreService {
         return storeMapper.deleteStoreUser(user_id, store_code);
     }
 
+    /**
+     * 根据id获取店铺信息
+     * 品牌，区域，二维码，地理位置
+     */
+    @Override
+    public Store getStoreDetailById(int id) throws Exception {
+        Store store = storeMapper.selectByStoreId(id);
+        String corp_code = store.getCorp_code();
 
-    //根据id获取店铺信息
+        StringBuilder brand_name = new StringBuilder("");
+        StringBuilder area_name = new StringBuilder("");
+        String brand_code = store.getBrand_code();
+        String area_code = store.getArea_code();
+
+        processStoreToSpecial(store);
+
+        if (brand_code != null && !brand_code.equals("")) {
+            brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+            String[] ids = brand_code.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                Brand brand = brandMapper.selectByBrandCode(corp_code, ids[i],Common.IS_ACTIVE_Y);
+                if (brand != null) {
+                    String brand_name1 = brand.getBrand_name();
+                    brand_name.append(brand_name1+",");
+                }
+            }
+            String brand_name1 = brand_name.toString();
+            if (brand_name1.endsWith(","))
+                brand_name1 = brand_name1.substring(0,brand_name1.length()-1);
+            store.setBrand_name(brand_name1);
+            if (brand_code.endsWith(","))
+                brand_code = brand_code.substring(0,brand_code.length()-1);
+            store.setBrand_code(brand_code);
+        }else {
+            store.setBrand_name("");
+            store.setBrand_code("");
+        }
+        if (area_code != null && !area_code.equals("")) {
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            String[] ids = area_code.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                Area area = areaMapper.selectAreaByCode(corp_code,ids[i],Common.IS_ACTIVE_Y);
+                if (area != null) {
+                    String area_name1 = area.getArea_name();
+                    area_name.append(area_name1+",");
+                }
+            }
+            String area_name1 = area_name.toString();
+            if (area_name1.endsWith(","))
+                area_name1 = area_name1.substring(0,area_name1.length()-1);
+            store.setArea_name(area_name1);
+            if (area_code.endsWith(","))
+                area_code = area_code.substring(0,area_code.length()-1);
+            store.setArea_code(area_code);
+        }else {
+            store.setArea_code("");
+            store.setArea_name("");
+        }
+        String province = store.getProvince();
+        if (province!=null && !province.equals("")){
+            Location location = locationMapper.selectByLocationCode(province);
+            if (location!=null){
+                store.setProvince(location.getLocation_name());
+            }
+        }
+        String city = store.getCity();
+        if (city!=null && !city.equals("")){
+            Location location = locationMapper.selectByLocationCode(city);
+            if (location!=null){
+                store.setCity(location.getLocation_name());
+            }
+        }
+        String area = store.getArea();
+        if (area!=null && !area.equals("")){
+            Location location = locationMapper.selectByLocationCode(area);
+            if (location!=null){
+                store.setArea(location.getLocation_name());
+            }
+        }
+        List<StoreQrcode> qrcodeList = storeMapper.selectByStoreCode(corp_code,store.getStore_code());
+        store.setQrcodeList(qrcodeList);
+        return store;
+    }
+
+    /**
+     * 根据id获取店铺信息
+     * 品牌，区域，二维码
+     */
     @Override
     public Store getStoreById(int id) throws Exception {
         Store store = storeMapper.selectByStoreId(id);
@@ -140,10 +228,6 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             if (store.getArea_name()!=null) {
-//                String area_name = ;
-//                if (i != shops.size() - 1) {
-//                    area_name+=",";
-//                }
                 shops.get(i).setArea_name(store.getArea_name());
             }else {
                 shops.get(i).setArea_name("");
@@ -159,13 +243,6 @@ public class StoreServiceImpl implements StoreService {
                     }
                 }
             }
-//            for (StoreQrcode storeQrcode:qrcodeList) {
-//                if (storeQrcode != null) {
-//                    String qrcode1 = storeQrcode.getQrcode();
-//                    qrcode.append(qrcode1);
-//                    qrcode.append("、");
-//                }
-//            }
             shops.get(i).setQrcode(qrcode.toString());
             shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
@@ -488,7 +565,7 @@ public class StoreServiceImpl implements StoreService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String store_name = jsonObject.get("store_name").toString().trim();
 
-        Store store = getStoreById(store_id);
+        Store store = getById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
         Store store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
         if (store.getCorp_code().trim().equalsIgnoreCase(corp_code)) {

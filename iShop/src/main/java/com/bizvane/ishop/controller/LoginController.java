@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Group;
-import com.bizvane.ishop.entity.LoginLog;
-import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -41,6 +38,8 @@ public class LoginController {
     FunctionService functionService;
     @Autowired
     TableManagerService tableManagerService;
+    @Autowired
+    LocationService locationService;
 
     private static final Logger log = Logger.getLogger(LoginController.class);
 
@@ -514,6 +513,37 @@ public class LoginController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取所有的省
+     */
+    @RequestMapping(value = "/location/getProvince", method = RequestMethod.POST)
+    @ResponseBody
+    public String getProvince(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            List<Location> locations;
+            if (jsonObject.has("jsonObject") && !jsonObject.get("higher_level_code").equals("")){
+                String higher_level_code = jsonObject.get("higher_level_code").toString();
+                locations = locationService.selectByHigherLevelCode(higher_level_code);
+            }else {
+                locations = locationService.selectAllProvince();
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(JSON.toJSONString(locations));
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

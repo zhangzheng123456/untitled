@@ -19,7 +19,8 @@ function GET(){
                         $(".editor_1 .shop_logo img").attr("src","../img/bg1.png");
                     }
                     if(list.avatar.indexOf("http")!==-1){
-                        $(".editor_1 .shop_logo img").attr("src",list.avatar);
+                        var date=new Date().getTime();
+                        $(".editor_1 .shop_logo img").attr("src",list.avatar+"?"+date);
                     }
                 }
                 if(list.avatar==undefined){

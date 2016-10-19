@@ -328,6 +328,14 @@ jQuery(document).ready(function(){
     	var corp_code = $('#OWN_CORP').val();
 		var corp_code1=$('#OWN_CORP').attr("corp_code1");
 		if(corp_code==corp_code1){
+			if($('#Acc_dropdown li').length=="0"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:"请先授权公众号"
+				});
+			} 
 			return;
 		}
 		$('#OWN_CORP').attr("corp_code1",corp_code);
@@ -354,53 +362,49 @@ jQuery(document).ready(function(){
                 }
                 if(list.length>0){
                     for(var i=0;i<list.length;i++){
-                   		html+="<li><p class='checkbox_isactive'><input  type='checkbox' value='"+list[i].app_id+"' data-appname='"+list[i].app_name+"' name='test'  class='check'  id='checkboxOneInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxOneInput"
-                        + i
-                        + 1
+                   		html+="<li><p class='checkbox_isactive'><input  type='checkbox' value='"+list[i].app_id+"' data-appname='"+list[i].app_name+"' name='test'  class='check'"
+                        + "'/><label"
                         + "'></label></p><span class='p16'>"+list[i].app_name+"</span></li>"
                     }
                 }
                 $("#Acc_dropdown").html(html);
-                var check_input = $('#Acc_dropdown input');
-                console.log(check_input[0]);
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-appname"));
-							$('#Accounts').val(checknow_namedata.toString());
-							$('#Accounts').attr('data-appid', checknow_data.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-appname"));
-							checknow_data.remove($(this).val());
-							$('#Accounts').val(checknow_namedata.toString());
-							$('#Accounts').attr('data-appid', checknow_data.toString());
-						}
-					}
-				}
-				var s = $('#Accounts').attr("data-appid");
-                var c_input = $('#Acc_dropdown input');
-                var ss = '';
-                if (s.indexOf(',')!==-1) {
-                    ss = s.split(",");
-                    for (var i = 0; i < ss.length; i++) {
-                        for (var j = 0; j < c_input.length; j++) {
-                            if ($(c_input[j]).val() == ss[i]) {
-                                $(c_input[j]).attr("checked", true);
-                            }
-                        }
-                    }
-                } else {
-                    ss = s;
-                    for (var j = 0; j < c_input.length; j++) {
-                        if ($(c_input[j]).val() == ss) {
-                            $(c_input[j]).attr("checked", true);
-                        }
-                    }
-                }
+    //             var check_input = $('#Acc_dropdown input');
+    //             var li=$("#Acc_dropdown li");
+				// for (var c = 0; c < check_input.length; c++) {
+				// 	check_input[c].onclick = function() {
+				// 		if (this.checked == true) {
+				// 			checknow_data.push($(this).val());
+				// 			checknow_namedata.push($(this).attr("data-appname"));
+				// 			$('#Accounts').val(checknow_namedata.toString());
+				// 			$('#Accounts').attr('data-appid', checknow_data.toString());
+				// 		} else if (this.checked == false) {
+				// 			checknow_namedata.remove($(this).attr("data-appname"));
+				// 			checknow_data.remove($(this).val());
+				// 			$('#Accounts').val(checknow_namedata.toString());
+				// 			$('#Accounts').attr('data-appid', checknow_data.toString());
+				// 		}
+				// 	}
+				// }
+				// var s = $('#Accounts').attr("data-appid");
+    //             var c_input = $('#Acc_dropdown input');
+    //             var ss = '';
+    //             if (s.indexOf(',')!==-1) {
+    //                 ss = s.split(",");
+    //                 for (var i = 0; i < ss.length; i++) {
+    //                     for (var j = 0; j < c_input.length; j++) {
+    //                         if ($(c_input[j]).val() == ss[i]) {
+    //                             $(c_input[j]).attr("checked", true);
+    //                         }
+    //                     }
+    //                 }
+    //             } else {
+    //                 ss = s;
+    //                 for (var j = 0; j < c_input.length; j++) {
+    //                     if ($(c_input[j]).val() == ss) {
+    //                         $(c_input[j]).attr("checked", true);
+    //                     }
+    //                 }
+    //             }
             }else if(data.code=="-1"){
                 // frame();
                 // $('.frame').html(data.message);
@@ -408,6 +412,23 @@ jQuery(document).ready(function(){
             whir.loading.remove();//移除加载框
     	});
     }
+    $("#Acc_dropdown").on("click","li",function(e){
+    	e.stopPropagation();
+    	var input=$(this).find("input")[0];
+	    if(input.type=="checkbox"&&input.checked==false){
+	        input.checked = true;
+	        checknow_data.push($(this).find("input").val());
+			checknow_namedata.push($(this).find("input").attr("data-appname"));
+			$('#Accounts').val(checknow_namedata.toString());
+			$('#Accounts').attr('data-appid', checknow_data.toString());
+	    }else if(input.type=="checkbox"&&input.checked==true){
+	        input.checked = false;
+	        checknow_namedata.remove($(this).find("input").attr("data-appname"));
+			checknow_data.remove($(this).find("input").val());
+			$('#Accounts').val(checknow_namedata.toString());
+			$('#Accounts').attr('data-appid', checknow_data.toString());
+	    }
+    })
 	$(".brandadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
