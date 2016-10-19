@@ -41,10 +41,17 @@ jQuery(function () {
     oc.postRequire("post", "/api/fab/select", "", query, function (data) {
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
-        if(list.goods_image.indexOf("http")!==-1){
-            var goodsImage = list.goods_image.split(",");
-            for (var i = 0; i < goodsImage.length; i++) {
-                jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goodsImage[i] + '"></div>');
+        var goods_image=JSON.parse(list.goods_image);
+        console.log(goods_image);
+        // if(list.goods_image.indexOf("http")!==-1){
+        //     var goodsImage = list.goods_image.split(",");
+        //     for (var i = 0; i < goodsImage.length; i++){
+        //         jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goodsImage[i] + '"></div>');
+        //     }
+        // }
+        for(var i=0;i<goods_image.length;i++){
+            if(goods_image[i].image.indexOf("http")!==-1){
+                jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goods_image[i].image+ '"></div>');
             }
         }
         document.title = list.goods_name;
