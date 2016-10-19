@@ -14,7 +14,14 @@ console.log(group_corp);
 //关闭弹框
 $('#turnoff').click(function(){
     $(window.parent.document).find('#iframepage').attr("src","user/group_edit.html");
-})
+});
+//返回编辑群组
+$('#back_edit_group').click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","user/group_edit.html");
+});
+$("#back_group").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/user/group.html");
+});
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
