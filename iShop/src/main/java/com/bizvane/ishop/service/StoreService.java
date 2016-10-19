@@ -34,6 +34,8 @@ public interface StoreService {
 
     int deleteStoreUser(String user_id, String store_code) throws Exception;
 
+    Store getStoreDetailById(int id) throws Exception;
+
     Store getStoreById(int id) throws Exception;
 
     Store getById(int id) throws Exception;

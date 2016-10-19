@@ -15,4 +15,10 @@
         WHERE higher_level_code = #{higher_level_code}
     </select>
 
+    <select id="selectByLocationCode" resultType="com.bizvane.ishop.entity.Location">
+        SELECT *
+        FROM def_location
+        WHERE location_code = #{location_code}
+    </select>
+
 </mapper>

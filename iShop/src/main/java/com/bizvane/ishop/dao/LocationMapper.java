@@ -15,4 +15,6 @@ public interface LocationMapper {
 
     public List<Location> selectByHigherLevelCode(@Param("higher_level_code")String higher_level_code) throws SQLException;
 
+    public Location selectByLocationCode(@Param("location_code")String location_code) throws SQLException;
+
 }

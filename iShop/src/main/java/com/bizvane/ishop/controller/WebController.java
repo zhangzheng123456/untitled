@@ -350,7 +350,7 @@ public class WebController {
     /**
      * app获取FAB列表接口
      */
-    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     @ResponseBody
     public String fabPublicImg(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
@@ -401,7 +401,8 @@ public class WebController {
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
-//        response.setHeader("Content-Type", "application/json;charset=GBK");
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
+        System.out.print("222");
         return dataBean.getJsonStr();
     }
 
