@@ -643,7 +643,13 @@ $("#add_save").click(function(){
 	oc.postRequire("post","/task/addTask","", _param, function(data) {
 		if(data.code=="0"){
 			if(data.message=="新增成功"){
-				$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content:"保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/task/task.html");
 				whir.loading.remove();//移除加载框
 			}
 		}

@@ -927,17 +927,13 @@ $("#edit_save").click(function(){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/task/edit","", _param, function(data) {
         if(data.code=="0"){
-            $("#page-wrapper").hide();
-            $("#content").show();
-            $("#details").hide();
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content:"保存成功"
+            });
             whir.loading.remove();//移除加载框
-            if(value==""&&filtrate==""){
-                GET(inx,pageSize);
-            }else if(value!==""){
-                POST(inx,pageSize); 
-            }else if(filtrate!==""){
-                filtrates(inx,pageSize); 
-            }
         }
     })
 })
@@ -946,6 +942,13 @@ $("#edit_close").click(function(){
     $("#page-wrapper").hide();
     $("#content").show();
     $("#details").hide();
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }else if(value!==""){
+        POST(inx,pageSize); 
+    }else if(filtrate!==""){
+        filtrates(inx,pageSize); 
+    }
 })
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {

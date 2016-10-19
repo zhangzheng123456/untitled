@@ -238,11 +238,17 @@ var message = JSON.parse(val.message);
         console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                if (message.user_type == "admin") {
-                    $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
-                } else {
-                    $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
-                }
+                // if (message.user_type == "admin") {
+                //     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
+                // } else {
+                //     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
+                // }
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:"保存成功"
+                });
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -254,7 +260,6 @@ var message = JSON.parse(val.message);
             whir.loading.remove();//移除加载框
         });
     };
-
     var bindFun = function (obj1) {//绑定函数，根据校验规则调用相应的校验函数
         var _this;
         if (obj1) {

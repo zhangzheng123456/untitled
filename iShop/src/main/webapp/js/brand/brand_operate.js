@@ -157,7 +157,13 @@ var oc = new ObjectControl();
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -440,13 +446,15 @@ function getcorplist(){
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];
 				if(event.keyCode == 13){
+					$("#services").html("");
 					$("input[verify='Code']").val("");
 					$("#BRAND_NAME").val("");
 					$("input[verify='Code']").attr("data-mark","");
 					$("#BRAND_NAME").attr("data-mark","");
 				}
-			})
+			});
 			$('.searchable-select-item').click(function(){
+				$("#services").html("");
 				$("input[verify='Code']").val("");
 				$("#BRAND_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
