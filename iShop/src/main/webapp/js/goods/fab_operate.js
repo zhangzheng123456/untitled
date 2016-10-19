@@ -173,7 +173,7 @@ var oc = new ObjectControl();
 			//如果有内容则进行比较
 			function getContent() {
 				var arr = [];
-				arr.push(UE.getEditor('editor').getContent());
+				arr.push(UE.getEditor('editor').getPlainTxt());
 				return arr.join("\n");
 			}
 			if(fabjs.firstStep()){
@@ -370,9 +370,10 @@ jQuery(document).ready(function(){
 				console.log(msg.goods_description);
 				//将读取到的卖点信息保存在本地
 				sessionStorage.setItem('goods_description',msg.goods_description)
-				var goods_arr=JSON.parse(msg.goods_image);
+				var goods_arr=msg.goods_image==''?'':JSON.parse(msg.goods_image);
 				ue.ready(function() {
-					ue.setContent(msg.goods_description);
+					// ue.setContent(msg.goods_description);
+					ue.body.innerHTML=msg.goods_description;
 				});
 				console.log(goods_arr);
 				// var goods_arr=[];
