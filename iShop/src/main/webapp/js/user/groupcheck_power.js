@@ -47,13 +47,23 @@ $("#check_name").click(function(){
     console.log(check_name);
     sessionStorage.setItem("check_name",JSON.stringify(check_name));//保存到本地
     $(window.parent.document).find('#iframepage').attr("src","user/groupcheck_name.html");
-})
+});
 //关闭弹框
 $('#turnoff').click(function(){
     $("#page-wrapper").show();
     $(".content").hide();
     sessionStorage.removeItem('group_corp');
-})
+});
+//回到编辑群组
+$('#back_group_edit').click(function(){
+    $("#page-wrapper").show();
+    $(".content").hide();
+    sessionStorage.removeItem('group_corp');
+});
+//回到群组管理
+$("#back_group_1").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/user/group.html");
+});
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
