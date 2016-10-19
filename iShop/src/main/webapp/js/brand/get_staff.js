@@ -285,6 +285,7 @@ $('#test').click(function(e){
 	} else {
 		event.cancelBubble = true;
 	}
+	$("#Acc_dropdown").hide();
 	if(flase=="0"){
 		$(".distribution_frame").show();
 		flase=1;

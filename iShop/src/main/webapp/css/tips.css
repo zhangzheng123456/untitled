@@ -552,6 +552,9 @@ div.wx_app_new p{
 .Acc_dropdown li{
 	height: 30px !important;
 	line-height: 30px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden;
 }
 .Acc_dropdown li:hover{
 	background-color: #e8f5fe !important;
