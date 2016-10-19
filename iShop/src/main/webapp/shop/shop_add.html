@@ -62,19 +62,19 @@
                     </div>
                     <div class="drop_down">
                         <span>
-                            <label>店铺地址</label>
+                            <label style="margin-right: 15px;">店铺地址</label>
                             <input type="text" id="STORE_address">
                             <div class="address_container">
                                 <div class="address_nav_box">
                                     <div class="address_nav" id="address_nav">
-                                        <a>省份</a>
+                                        <a class="address_liActive">省份</a>
                                         <a>城市</a>
                                         <a>县区</a>
                                         <a>街道</a>
                                     </div>
                                 </div>
                                 <div class="address_content">
-                                    <div class="dl_box" id="province">
+                                    <div class="dl_box" id="province" style="display: block">
                                         <dl>
                                             <dd>
                                                 <!--<a title="安徽"  href="javascript:;">安徽1</a>-->
@@ -94,47 +94,24 @@
                                             </dd>
                                         </dl>
                                     </div>
-                                    <div class="dl_box">
+                                    <div class="dl_box" id="city">
                                         <dl>
                                             <dd>
-                                                <a title="安徽"  href="javascript:;">安徽2</a>
-                                                <a title="北京"  href="javascript:;">北京</a>
-                                                <a title="重庆"  href="javascript:;">重庆</a>
-                                                <a title="福建"  href="javascript:;">福建</a>
-                                                <a title="甘肃"  href="javascript:;">甘肃</a>
-                                                <a title="广东"  href="javascript:;">广东</a>
-                                                <a title="广西"  href="javascript:;">广西</a>
-                                                <a title="贵州"  href="javascript:;">贵州</a>
-                                                <a title="贵州"  href="javascript:;">陕西</a>
-                                                <a title="贵州"  href="javascript:;">日本</a>
-                                                <a title="贵州"  href="javascript:;">东京</a>
-                                                <a title="贵州"  href="javascript:;">云南</a>
-                                                <a title="贵州"  href="javascript:;">新疆</a>
-                                                <a title="贵州"  href="javascript:;">湖南</a>
+
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box" id="county">
+                                        <dl>
+                                            <dd>
+
                                             </dd>
                                         </dl>
                                     </div>
                                     <div class="dl_box">
-                                        <dl>
-                                            <dd>
-                                                <a title="安徽"  href="javascript:;">安徽3</a>
-                                                <a title="北京"  href="javascript:;">北京</a>
-                                                <a title="重庆"  href="javascript:;">重庆</a>
-                                                <a title="福建"  href="javascript:;">福建</a>
-                                                <a title="甘肃"  href="javascript:;">甘肃</a>
-                                                <a title="广东"  href="javascript:;">广东</a>
-                                                <a title="广西"  href="javascript:;">广西</a>
-                                                <a title="贵州"  href="javascript:;">贵州</a>
-                                                <a title="贵州"  href="javascript:;">陕西</a>
-                                                <a title="贵州"  href="javascript:;">日本</a>
-                                                <a title="贵州"  href="javascript:;">东京</a>
-                                                <a title="贵州"  href="javascript:;">云南</a>
-                                                <a title="贵州"  href="javascript:;">新疆</a>
-                                                <a title="贵州"  href="javascript:;">湖南</a>
-                                            </dd>
-                                        </dl>
+                                        <input type="text" placeholder="请输入街道地址" class="street">
+                                        <span class="enter" id="enter">确定</span>
                                     </div>
-                                    <div class="dl_box"></div>
                                 </div>
                             </div>
                         </span>
@@ -291,27 +268,5 @@
     <script type="text/javascript" src="../js/multiple_choice.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/shop/shop.js"></script>
-    <script>
-        $("#address_nav a").click(function () {
-            var index=$(this).index();
-            $(this).addClass("address_liActive");
-            $(this).siblings().removeClass("address_liActive");
-            $(".address_content").children('.dl_box').eq(index).show();
-            $(".address_content").children('.dl_box').eq(index).siblings().hide();
-        })
-        $(".dl_box a").click(function () {
-            var val=$(this).html();
-            var input=$("#STORE_address").val();
-            $(this).addClass("current");
-            $(this).siblings().removeClass("current");
-            if(input == ""){
-                input = val;
-                $("#STORE_address").val(input);
-            }else{
-                input +='/'+val;
-                $("#STORE_address").val(input);
-            }
-        })
-    </script>
 </body>
 </html>

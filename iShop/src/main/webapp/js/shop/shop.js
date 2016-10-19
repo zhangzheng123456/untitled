@@ -66,6 +66,12 @@ var isscroll=false;
                 var STORE_NAME = $("#STORE_NAME").val();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var store_id = $("#storeId").val();
+                var address = $("#STORE_address").attr("data-code");
+                    address = address.split(",");
+                var province = address[0];//获取省份code
+                var city = address[1];//获取市code
+                var area = address[2];//获取县区code
+                var street = address[3];//获取街道值
                 //var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
                 //var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
                 var a=$('#OWN_AREA_All input');
@@ -88,7 +94,6 @@ var isscroll=false;
                         BRAND_CODE+=U;
                     }
                 }
-
                 if (AREA_CODE == "") {
                     art.dialog({
                         time: 1,
@@ -133,6 +138,10 @@ var isscroll=false;
                     "brand_code": BRAND_CODE,
                     "store_code": STORE_ID,
                     "store_id": store_id,
+                    "province":province,
+                    "city":city,
+                    "area":area,
+                    "street":street,
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
@@ -175,9 +184,14 @@ var isscroll=false;
                 var STORE_ID = $("#STORE_ID").val();
                 var STORE_NAME = $("#STORE_NAME").val();
                 var is_zhiying = $("#FLG_TOB").val();
-
                 var a=$('#OWN_AREA_All input');
                 var AREA_CODE="";
+                var address = $("#STORE_address").attr("data-code");
+                address = address.split(",");
+                var province = address[0];//获取省份code
+                var city = address[1];//获取市code
+                var area = address[2];//获取县区code
+                var street = address[3];//获取街道值
                 for(var i=0;i<a.length;i++){
                     var u=$(a[i]).attr("data-code");
                     if(i<a.length-1){
@@ -258,6 +272,10 @@ var isscroll=false;
                     "corp_code": OWN_CORP,
                     "brand_code": BRAND_CODE,
                     "store_code": STORE_ID,
+                    "province":province,
+                    "city":city,
+                    "area":area,
+                    "street":street,
                     "store_id": store_id,
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
@@ -387,6 +405,8 @@ jQuery(document).ready(function () {
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
                 $("#storeId").attr("data-name", msg.store_id);
+                var address=msg.province+'/'+msg.city+'/'+msg.area+'/'+msg.street;
+                $("#STORE_address").val(address);
                 //$("#OWN_AREA").val(msg.area_name);
                 //$("#OWN_AREA").attr("data-myacode", msg.area_code);
                 //$("#OWN_AREA").attr("title",msg.area_name);
@@ -965,8 +985,9 @@ $("#screen_que_area").click(function(){
         checknow_namedata = [];
     });
     $("#STORE_address").click(function () {
-        getaddress();
+        $(".address_container").show();
     })
+    getProvince();
 });
 function getcorplist() {
     //获取所属企业列表
@@ -1132,17 +1153,104 @@ function remove_app_id(obj) {
     }
 }
 //获取省市区
-function getaddress() {
+function getProvince() {
     var param={};
     oc.postRequire('post','/location/getProvince','',param,function (data) {
         if(data.code == "0"){
+            $(".dl_box dl dd").empty();
             var msg = JSON.parse(data.message);
-            console.log(msg.length);
             for(var i=0;i<msg.length;i++){
-                $("#province dl dd").append('<a title="'+msg[i].short_name+'">'+msg[i].short_name+'</a>');
+                $("#province dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
             }
+            $("#province a").click(function () {
+                var val=$(this).html();
+                $(this).addClass("current");
+                $(this).siblings().removeClass("current");
+                $("#address_nav a:nth-child(2)").trigger("click");
+                $("#county dl dd").empty();
+                getCity();
+                $("#STORE_address").val(val);
+                $("#STORE_address").attr("data-code",$(this).attr("data-code"));
+            })
         }else {
             console.log(data.message);
         }
     })
 }
+function getCity() {
+    var param={};
+    param['higher_level_code'] = $("#province .current").attr("data-code");
+    oc.postRequire('post','/location/getProvince','',param,function (data) {
+        var msg = JSON.parse(data.message);
+        if(data.code == "0"){
+            $("#city dl dd").empty();
+            for(var i=0;i<msg.length;i++){
+                $("#city dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
+            }
+            $("#city a").click(function () {
+                var val=$("#province .current").html();
+                    val+='/'+$(this).html();
+                var data_code = $("#province .current").attr("data-code")+','+$(this).attr("data-code");
+                $(this).addClass("current");
+                $(this).siblings().removeClass("current");
+                $("#address_nav a:nth-child(3)").trigger("click");
+                getCounty();
+                $("#STORE_address").val(val);
+                $("#STORE_address").attr("data-code",data_code);
+            })
+        }else {
+            console.log(data.message);
+        }
+    })
+}
+function getCounty() {
+    var param={};
+    param['higher_level_code'] = $("#city .current").attr("data-code");
+    oc.postRequire('post','/location/getProvince','',param,function (data) {
+        var msg = JSON.parse(data.message);
+        if(data.code == "0"){
+            $("#county dl dd").empty();
+            for(var i=0;i<msg.length;i++){
+                $("#county dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
+            }
+            $("#county a").click(function () {
+                var val=$("#province .current").html()+'/'+$("#city .current").html()+'/'+$(this).html();
+                var data_code = $("#province .current").attr("data-code")+','+$("#city .current").attr("data-code")+','+$(this).attr("data-code");
+                $(this).addClass("current");
+                $(this).siblings().removeClass("current");
+                $("#address_nav a:nth-child(3)").trigger("click");
+                $("#STORE_address").val(val);
+                $("#STORE_address").attr("data-code",data_code);
+            })
+        }else {
+            console.log(data.message);
+        }
+    })
+}
+$("#address_nav a").click(function () {
+    var index=$(this).index();
+    $(this).addClass("address_liActive");
+    $(this).siblings().removeClass("address_liActive");
+    $(".address_content").children('.dl_box').eq(index).show();
+    $(".address_content").children('.dl_box').eq(index).siblings().hide();
+})
+//添加街道
+$("#enter").click(function () {
+    var val = $(".street").val().trim();
+    var input = $("#province .current").html()+'/'+$("#city .current").html()+'/'+$("#county .current").html();
+    var current = $("#county .current").html();
+    var data_code = $("#province .current").attr("data-code")+','+$("#city .current").attr("data-code")+','+$("#county .current").attr("data-code");
+    if(current==undefined){
+        alert("您还没选择县区");
+    }else {
+        if(val == ""){
+            $("#STORE_address").val(input);
+            $("#STORE_address").attr("data-code",data_code);
+        }else {
+            input+='/'+val;
+            data_code+=','+val;
+            $("#STORE_address").val(input);
+            $("#STORE_address").attr("data-code",data_code);
+        }
+    }
+})

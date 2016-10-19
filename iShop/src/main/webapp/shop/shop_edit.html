@@ -63,7 +63,62 @@
                     <div>
                         <span><label>店铺名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
                     </div>
+                    <div class="drop_down">
+                        <span>
+                            <label style="margin-right: 15px;">店铺地址</label>
+                            <input type="text" id="STORE_address">
+                            <div class="address_container">
+                                <div class="address_nav_box">
+                                    <div class="address_nav" id="address_nav">
+                                        <a class="address_liActive">省份</a>
+                                        <a>城市</a>
+                                        <a>县区</a>
+                                        <a>街道</a>
+                                    </div>
+                                </div>
+                                <div class="address_content">
+                                    <div class="dl_box" id="province" style="display: block">
+                                        <dl>
+                                            <dd>
+                                                <!--<a title="安徽"  href="javascript:;">安徽1</a>-->
+                                                <!--<a title="北京"  href="javascript:;">北京</a>-->
+                                                <!--<a title="重庆"  href="javascript:;">重庆</a>-->
+                                                <!--<a title="福建"  href="javascript:;">福建</a>-->
+                                                <!--<a title="甘肃"  href="javascript:;">甘肃</a>-->
+                                                <!--<a title="广东"  href="javascript:;">广东</a>-->
+                                                <!--<a title="广西"  href="javascript:;">广西</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">贵州</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">陕西</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">日本</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">东京</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">云南</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">新疆</a>-->
+                                                <!--<a title="贵州"  href="javascript:;">湖南</a>-->
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box" id="city">
+                                        <dl>
+                                            <dd>
 
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box" id="county">
+                                        <dl>
+                                            <dd>
+
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="dl_box">
+                                        <input type="text" placeholder="请输入街道地址" class="street">
+                                        <span class="enter" id="enter">确定</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
                     <div>
                         <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">所属区域</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
