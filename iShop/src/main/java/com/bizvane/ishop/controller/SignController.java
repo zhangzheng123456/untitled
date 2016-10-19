@@ -235,6 +235,11 @@ public class SignController {
                 }
             }
             List<Sign> signs = list.getList();
+            for (Sign sign :signs) {
+                String location = sign.getLocation();
+                String replaceStr = WebUtils.StringFilter(location);
+                sign.setLocation(replaceStr);
+            }
             if (signs.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;

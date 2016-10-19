@@ -36,7 +36,7 @@ function getarealist(a){
             var list=list.list;
 			var area_html = '';
 			if (list.length == 0) {
-				$("#area_code ul").html("<li class='search_c'>没有内容</li>");
+				$("#area_code ul").html("<li class='search_c'>暂无区域</li>");
 				$("#area_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
@@ -128,7 +128,7 @@ function getstorelist(a){
             var list=list.list;
 			var store_html = '';
 			if (list.length == 0) {
-				$("#store_code ul").html("<li class='search_c'>没有内容</li>");
+				$("#store_code ul").html("<li class='search_c'>暂无店铺</li>");
 				$("#store_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
@@ -221,7 +221,7 @@ function getstafflist(a){
             console.log(list);
 			var staff_html = '';
 			if (list.length == 0) {
-				$("#staff_code ul").html("<li class='search_c'>没有内容</li>");
+				$("#staff_code ul").html("<li class='search_c'>暂无员工</li>");
 				$("#staff_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
