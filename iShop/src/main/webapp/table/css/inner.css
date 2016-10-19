@@ -1415,6 +1415,7 @@ input::-webkit-input-placeholder{
 	border: 1px solid #ddd;
 	width:420px;
 	overflow: hidden;
+	display: none;
 }
 .conpany_msg .address_nav_box{
 	height: 30px;
@@ -1442,7 +1443,7 @@ input::-webkit-input-placeholder{
 .address_content dl{
 	line-height: 2;
 	clear: both;
-	padding: 3px 0
+	margin-bottom: 0;
 }
 .address_content dl a{
 	display: inline-block;
