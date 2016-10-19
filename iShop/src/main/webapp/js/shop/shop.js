@@ -405,7 +405,9 @@ jQuery(document).ready(function () {
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
                 $("#storeId").attr("data-name", msg.store_id);
-                var address=msg.province+'/'+msg.city+'/'+msg.area+'/'+msg.street;
+                var address_code=msg.province+','+msg.city+','+msg.area+','+msg.street;
+                var address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name+'/'+msg.street;
+                $("#STORE_address").attr("data-code",address_code);
                 $("#STORE_address").val(address);
                 //$("#OWN_AREA").val(msg.area_name);
                 //$("#OWN_AREA").attr("data-myacode", msg.area_code);

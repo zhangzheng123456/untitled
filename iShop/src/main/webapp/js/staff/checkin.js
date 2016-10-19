@@ -757,11 +757,14 @@ $("#input-txt").keydown(function() {
 })
 //签到位置在地图显示
 function mapInit(obj) {
-    $(obj).parents("tr").children("td:last-child").show();
+    var val=$(obj).parents("tr").children("td:nth-child(6)").children('span').html();
+    if(val!==""){
+        $(obj).parents("tr").children("td:last-child").show();
+    }
     for(var j=0;j<$(".table tbody tr").length;j++){
         var map = new BMap.Map('ghy'+j);          // 创建地图实例
         var location=$($(".table tbody tr")[j]).children("td:nth-child(6)").children("span").html();
-        if(location!=="undefined"){
+        if(location!==""){
             location=location.split(",");
             var x=location[0];
             var y=location[1];
@@ -771,10 +774,9 @@ function mapInit(obj) {
             map.addControl(new BMap.NavigationControl(opts));
             var marker = new BMap.Marker(point);        // 创建标注
             map.addOverlay(marker);                     // 将标注添加到地图中
-            // var myicon = new BMap.Icon("../img/line.png", new BMap.Size(30,15));
-           // var marker = new BMap.Marker(point, {icon: myicon});
-           // map.addOverlay(marker);
-
+            // var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
+            // var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+            // map.addOverlay(marker2);              // 将标注添加到地图中
         }
     }
 }
@@ -782,5 +784,5 @@ function mapHide(obj) {
     $(obj).parents("tr").children("td:last-child").hide();
 }
 function mapShow(obj) {
-    $(obj).parents("tr").children("td:last-child").show();
+        $(obj).parents("tr").children("td:last-child").show();
 }
