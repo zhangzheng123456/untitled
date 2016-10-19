@@ -252,6 +252,7 @@ var oc = new ObjectControl();
 						content:"商品图片最多可以上传20张"
 					});
 				}
+				console.log(img_list_json);
 				var li=$(".match_goods ul").find("li");
 				for(var i=0,matchgoods="";i<li.length;i++){
 					var r=$(li[i]).attr("id");
@@ -398,7 +399,7 @@ jQuery(document).ready(function(){
 					}
 					    img_html +='<li id="fileBox_WU_FILE_'+(i+10)+'" class="diyUploadHover"style="height: 90px">'
                                    	+'<div class="viewThumb"><img src="'+goods_arr[i].image+'"></div>'
-                                   	+'<div class="diyCancel" onclick="img_del(this)"></div>'
+                                   	+'<div class="diyCancel"></div>'
                                     +'<div class="diySuccess"></div>'
                                     // +'<div class="diyFileName">'+filename+'</div>'
                                     +'<div class="diyBar">'
