@@ -9,7 +9,6 @@ function createCode() { //随机生成验证码
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //所有候选组成验证码的字符，当然也可以用中文的
 	for (var i = 0; i < codeLength; i++) {
 		var charNum = Math.floor(Math.random() * 52);
-		console.log(charNum);
 		code += codeChars[charNum];
 	}
 	if (checkCode) {

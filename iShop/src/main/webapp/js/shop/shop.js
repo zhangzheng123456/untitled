@@ -964,6 +964,9 @@ $("#screen_que_area").click(function(){
         checknow_data = [];
         checknow_namedata = [];
     });
+    $("#STORE_address").click(function () {
+        getaddress();
+    })
 });
 function getcorplist() {
     //获取所属企业列表
@@ -1127,4 +1130,19 @@ function remove_app_id(obj) {
     }else if(src ==""){
         $(obj).parent().remove();
     }
+}
+//获取省市区
+function getaddress() {
+    var param={};
+    oc.postRequire('post','/location/getProvince','',param,function (data) {
+        if(data.code == "0"){
+            var msg = JSON.parse(data.message);
+            console.log(msg.length);
+            for(var i=0;i<msg.length;i++){
+                $("#province dl dd").append('<a title="'+msg[i].short_name+'">'+msg[i].short_name+'</a>');
+            }
+        }else {
+            console.log(data.message);
+        }
+    })
 }
