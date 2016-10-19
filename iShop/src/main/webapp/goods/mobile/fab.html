@@ -31,172 +31,53 @@
 		</div>
 	</div>
 	<div id="cover"></div>
-	<div id="guide" class="screen_list" >
-			<div class="screen_content" id="screen_content">
-				<div class="brand_content">
-					<div id="brand" class="parent">
-						<h4>筛选品牌</h4>
-						<div class="list">
-							<ul>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-							</ul>
-						</div>
-						<div class="xian"></div>
-					</div>
-					<div id="waves" class="parent">
-						<h4>筛选波段</h4>
-						<div class="list">
-							<ul>
-								<li>第一波段</li>
-								<li>第二波段</li>
-								<li>第三波段</li>
-								<li>第四波段</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-							</ul>
-						</div>
-						<div class="xian"></div>
-					</div>
-					<div id="goods_quarter" class="parent row-last">
-						<h4>筛选季度</h4>
-						<div class="list">
-							<ul>
-								<li>第一季度</li>
-								<li>第二季度</li>
-								<li>第三季度</li>
-								<li>第四季度</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-								<li>玖姿</li>
-							</ul>
-						</div>
+	<div id="guide" class="screen_list">
+		<div class="screen_content" id="screen_content">
+			<div id="brand" class="parent">
+				<h4>筛选品牌</h4>
+				<div class="list">
+					<ul>
+						<li>玖姿</li>
+						<li>玖姿</li>
+						<li>玖姿</li>
+						<li>玖姿</li>
+					</ul>
+				</div>
+				<div class="xian"></div>
+			</div>
+			<div id="waves" class="parent">
+				<h4>筛选波段</h4>
+				<div class="list">
+					<ul>
+						<li>第一波段</li>
+						<li>第二波段</li>
+						<li>第三波段</li>
+						<li>第四波段</li>
+					</ul>
+				</div>
+				<div class="xian"></div>
+			</div>
+			<div id="goods_quarter" class="parent row-last">
+				<h4>筛选季度</h4>
+				<div class="list">
+					<ul>
+						<li>第一季度</li>
+						<li>第二季度</li>
+						<li>第三季度</li>
+						<li>第四季度</li>
+					</ul>
 				</div>
 			</div>
-			<div class="screen_footer">
-				<div id="reset" class="bg_h">重置</div>
-				<div id="complete" class="bg_h">完成</div>
-			</div>
+		</div>
+		<div class="screen_footer">
+			<div id="reset" class="bg_h">重置</div>
+			<div id="complete" class="bg_h">完成</div>
 		</div>
 	</div>
 </body>
-<script src="js/iscroll.js"></script>
 <script src="js/recommend.js"></script>
 <script>
-	 // //v基本参数定义
-  //               var page_flip, vertical_scroll = [], pages, t, p, iDevice = (/iphone|ipad/gi).test(navigator.appVersion), $id = function(id){  
-  //                   return document.getElementById(id);  
-  //               },initScroll = function(){//初始化iscroll  
-  //                   // if (window.scrollY != 1) {  
-  //                   //     t = setTimeout(initScroll, 100);  
-  //                   // }  
-  //                   // else {
-  //                       // clearTimeout(t);  
-  //                       t = null;  
-  //                       //获取上下滚动的iscroll  
-  //                       pages = $('.screen_content'); 
-  //                       console.log(pages); 
-  //                       //设置左右滚动的iscroll  
-  //                       page_flip = new iScroll('guide', {  
-  //                           bounce: false,  
-  //                           hScrollbar: false,  
-  //                           vScrollbar: false,  
-  //                           snap: true,//此处必须为true  
-  //                           momentum: false,  
-  //                           lockDirection: true,  
-  //                           fixedScrollbar: false,//只有按住屏幕的时候才能显示出滚动条  
-  //                           // onScrollEnd: function(){  
-  //                           //     //此处利用this.currPagex 获取当前是在第几屏 . 从0开始:0,1,2,3,4.....  
-  //                           //     //active为处于当前某个栏目时导航的样式.  
-  //                           //     $s('#nav a.active').className = '';  
-  //                           //     $s('#nav li:nth-child(' + (this.currPageX + 1) + ') a').className = 'active';  
-  //                           // }  
-  //                       }); 
-  //                       setSize();  
-  //                       for (var a = 0; a < pages.length; a++) {  
-  //                       //利用数组来定义出上下滚动的iscroll  
-  //                           vertical_scroll[a] = new iScroll(pages[a], {  
-  //                               bounce: false,  
-  //                               hScrollbar: false,  
-  //                               vScrollbar: true,  
-  //                               fixedScrollbar: false,  
-  //                               lockDirection: true,  
-  //                               fadeScrollbar: true,  
-  //                               hideScrollbar: true  
-  //                           });  
-  //                       }
-  //                   // }  
-  //               }, setSize = function(){//重新计算宽度  
-  //                   if (window.scrollY != 1) {  
-  //                       window.scrollTo(0, 1);  
-  //                       p = setTimeout(setSize, 100);  
-  //                   }  
-  //                   else {
-  //                       //清除  
-  //                       clearTimeout(p);  
-  //                       p = null;  
-  //                       //vsrollH 为屏幕高度- 头部高度，即为滚动区域高度  
-  //                       var vscrollH = window.innerHeight - $id('nav').offsetHeight;  
-  //                       if (iDevice) {  
-  //                           //高度设置。其实完全可以在css里设置height：100%。  
-  //                           $id('guide').style.height = vscrollH + 'px';  
-  //                       }  
-  //                       var e = $('#guide'), a = $('#pageflip'), b = e.offsetWidth;
-  //                       //这里的4可以随便替换成你所要  
-  //                       //几个左右滚动页这里为几。  
-  //                       //宽度设置  
-  //                       //同样可以在css里设置  
-  //                       a.style.width = b * 4 + 'px';  
-  //                       for (var c = 0; c < pages.length; c++) {  
-  //                           pages[c].style.width = b + 'px';  
-  //                           if (vertical_scroll[c]) {  
-  //                               //设置上下滚动的每个iscroll的高度  
-  //                               pages[c].style.height = vscrollH + 'px';  
-  //                               vertical_scroll[c].refresh();  
-  //                           }  
-  //                       }  
-  //                       page_flip.refresh();  
-  //                   }  
-                      
-  //               }, loaded = function(){//初始化load事件  
-  //                   window.scrollTo(0, 1);  
-  //                   t = setTimeout(initScroll, 100);  
-  //                   window.removeEventListener('load', loaded, false);  
-  //               }, stopDefault = function(e){  
-  //                   e.preventDefault()  
-  //               }, delegate = function(obj, fun, callback){  
-  //                   var parent = $id(obj);  
-  //                   parent.addEventListener(fun, callback, false);  
-  //               }, goToPage = function(n){  
-  //                   page_flip.scrollToPage(n, 0, 400);  
-  //               }, init = function(){  
-  //                   window.addEventListener('DOMContentLoaded', loaded, false);  
-  //               }
-  //          init();
 	$("#screen").click(function(){
-		// vertical_scroll[0].refresh();
-  //       page_flip.refresh();
 		$("#guide").show();
 		$("#cover").show();
 		$("html").addClass("sift-move");

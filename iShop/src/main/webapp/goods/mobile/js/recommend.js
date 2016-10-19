@@ -212,6 +212,7 @@ jQuery(function(){
 		var browser = navigator.userAgent;
 		var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端 
 		var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
 		if(isAndroid){
 			return "Android";
 		}else if (isiOS) {
@@ -243,3 +244,4 @@ jQuery(function(){
 		
 	}
 });
+
