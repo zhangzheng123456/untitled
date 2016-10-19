@@ -530,7 +530,7 @@ public class LoginController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             List<Location> locations;
-            if (jsonObject.has("jsonObject") && !jsonObject.get("higher_level_code").equals("")){
+            if (jsonObject.has("higher_level_code") && !jsonObject.get("higher_level_code").equals("")){
                 String higher_level_code = jsonObject.get("higher_level_code").toString();
                 locations = locationService.selectByHigherLevelCode(higher_level_code);
             }else {

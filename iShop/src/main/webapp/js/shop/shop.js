@@ -987,14 +987,18 @@ function getcorplist() {
             $('.corp_select .searchable-select-input').keydown(function(event){
                 var event=window.event||arguments[0];
                 if(event.keyCode == 13){
+                    $("#OWN_AREA_All").html("");
+                    $("#OWN_BRAND_All").html("");
                     $("#STORE_ID").val("");
                     $("#storeId").val("");
                     $("#STORE_NAME").val("");
                     $("input[verify='Code']").attr("data-mark", "");
                     $("#STORE_NAME").attr("data-mark", "");
                 }
-            })
+            });
             $('.searchable-select-item').click(function () {
+                $("#OWN_AREA_All").html("");
+                $("#OWN_BRAND_All").html("");
                 $("#STORE_ID").val("");
                 $("#storeId").val("");
                 $("#STORE_NAME").val("");
