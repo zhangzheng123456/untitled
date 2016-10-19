@@ -329,6 +329,7 @@ jQuery(document).ready(function(){
 	$("#back_group").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 	});
+
 });
 function getcorplist(){
 	//获取所属企业列表
