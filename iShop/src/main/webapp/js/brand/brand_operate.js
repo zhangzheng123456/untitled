@@ -440,13 +440,15 @@ function getcorplist(){
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];
 				if(event.keyCode == 13){
+					$("#services").html("");
 					$("input[verify='Code']").val("");
 					$("#BRAND_NAME").val("");
 					$("input[verify='Code']").attr("data-mark","");
 					$("#BRAND_NAME").attr("data-mark","");
 				}
-			})
+			});
 			$('.searchable-select-item').click(function(){
+				$("#services").html("");
 				$("input[verify='Code']").val("");
 				$("#BRAND_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
