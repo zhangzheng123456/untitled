@@ -408,6 +408,11 @@ public class StoreServiceImpl implements StoreService {
             }
             shop.setBrand_code(brand_code1);
             shop.setFlg_tob(jsonObject.get("flg_tob").toString().trim());
+            shop.setProvince(jsonObject.get("province").toString().trim());
+            shop.setCity(jsonObject.get("city").toString().trim());
+            shop.setArea(jsonObject.get("area").toString().trim());
+            shop.setStreet(jsonObject.get("street").toString().trim());
+
             Date now = new Date();
             shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
             shop.setCreater(user_id);
@@ -606,6 +611,10 @@ public class StoreServiceImpl implements StoreService {
                 }
                 store.setBrand_code(brand_code1);
                 store.setFlg_tob(jsonObject.get("flg_tob").toString().trim());
+                store.setProvince(jsonObject.get("province").toString().trim());
+                store.setCity(jsonObject.get("city").toString().trim());
+                store.setArea(jsonObject.get("area").toString().trim());
+                store.setStreet(jsonObject.get("street").toString().trim());
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
@@ -638,6 +647,10 @@ public class StoreServiceImpl implements StoreService {
                 }
                 store.setBrand_code(brand_code1);
                 store.setFlg_tob(jsonObject.get("flg_tob").toString().trim());
+                store.setProvince(jsonObject.get("province").toString().trim());
+                store.setCity(jsonObject.get("city").toString().trim());
+                store.setArea(jsonObject.get("area").toString().trim());
+                store.setStreet(jsonObject.get("street").toString().trim());
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
