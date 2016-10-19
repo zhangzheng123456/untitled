@@ -1409,3 +1409,6 @@ input::-webkit-input-placeholder{
 	font-size: 10px;
 	color: #888;
 }
+.con_table .title span:not(.icon-ishop_8-03){
+	cursor: pointer;
+}

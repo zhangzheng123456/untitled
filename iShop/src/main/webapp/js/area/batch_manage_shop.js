@@ -166,11 +166,18 @@ $("#edit_shop_icon").click(function () {
     $("#page-wrapper").hide();
     $(".content").show();
     GET(inx,pageSize);
-})
+});
 $('#turnoff').click(function () {
     $("#page-wrapper").show();
     $(".content").hide();
-})
+});
+$('#back_area_edit').click(function () {
+    $("#page-wrapper").show();
+    $(".content").hide();
+});
+$("#back_area_1").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/area/area.html");
+});
 //加载完成以后页面进行的操作
 function jumpBianse() {
     $(document).ready(function () {//隔行变色
