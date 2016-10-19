@@ -188,9 +188,16 @@ $(function(){
         });
     };
     vipjs.ajaxSubmit=function(_command,_params,opt){
+        whir.loading.add("", 0.5);
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
-                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: "保存成功"
+                });
+                // $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
@@ -199,6 +206,7 @@ $(function(){
                     content: data.message
                 });
             }
+            whir.loading.remove();
         });
     };
     var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数

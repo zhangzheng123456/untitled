@@ -105,10 +105,17 @@ var oc = new ObjectControl();
 		});
 	};
 	viplabeljs.ajaxSubmit=function(_command,_params,opt){
-		console.log(_params);
+		// console.log(_params);
+		whir.loading.add("", 0.5);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:"保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -117,6 +124,7 @@ var oc = new ObjectControl();
 					content: data.message
 				});
 			}
+			whir.loading.remove();
 		});
 	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数

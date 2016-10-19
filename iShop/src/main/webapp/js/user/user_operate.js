@@ -380,7 +380,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -882,6 +888,10 @@ jQuery(document).ready(function(){
     	var email1=$("#USER_EMAIL").attr("data-name");//编辑的标志
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();//企业编号
+    	if(email==""){
+    		div.html("");
+	        $("#USER_EMAIL").attr("data-mark","Y");
+    	}
     	if(email!==""&&email!==email1){
 	    	var _params={};
 	    	_params["email"]=email;//邮箱
@@ -904,6 +914,10 @@ jQuery(document).ready(function(){
     	var phone1=$("#USER_PHONE").attr("data-name");//取手机号的一个标志
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();
+    	if(phone==""){
+    		div.html("");
+	        $("#USER_PHONE").attr("data-mark","Y");
+    	}
     	if(phone!==""&&phone!==phone1){
 	    	var _params={};
 	    	_params["phone"]=phone;
