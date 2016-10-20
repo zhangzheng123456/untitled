@@ -772,11 +772,11 @@ function mapInit(obj) {
             map.centerAndZoom(point, 16);     // 初始化地图，设置中心点坐标和地图级别
             var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
             map.addControl(new BMap.NavigationControl(opts));
-            var marker = new BMap.Marker(point);        // 创建标注
-            map.addOverlay(marker);                     // 将标注添加到地图中
-            // var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
-            // var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
-            // map.addOverlay(marker2);              // 将标注添加到地图中
+            // var marker = new BMap.Marker(point);        // 创建标注
+            // map.addOverlay(marker);                     // 将标注添加到地图中
+            var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(50,50));
+            var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+            map.addOverlay(marker2);              // 将标注添加到地图中
         }
     }
 }

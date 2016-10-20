@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" href="../table/css/inner.css">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa"></script>
     <style>
         body{
             margin-top:81px;
@@ -60,16 +61,18 @@
                     <div>
                         <span><label>店铺名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺名称不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down">
+                    <div>
                         <span>
                             <label style="margin-right: 15px;">店铺地址</label>
-                            <input type="text" id="STORE_address">
+                            <span class="input_box"><input type="text" id="STORE_address" data-code="" readonly/><i class="drop"></i></span>
                             <div class="address_container">
                                 <div class="address_nav_box">
                                     <div class="address_nav" id="address_nav">
                                         <a class="address_liActive">省份</a>
                                         <a>城市</a>
                                         <a>县区</a>
+                                        <a>街道</a>
+                                        <a>地图</a>
                                         <a>街道</a>
                                     </div>
                                 </div>
@@ -109,9 +112,10 @@
                                         </dl>
                                     </div>
                                     <div class="dl_box">
-                                        <input type="text" placeholder="请输入街道地址" class="street">
+                                        <input type="text" placeholder="请输入街道地址" maxlength="30" class="street">
                                         <span class="enter" id="enter">确定</span>
                                     </div>
+                                    <div class="dl_box" id="show_map"></div>
                                 </div>
                             </div>
                         </span>

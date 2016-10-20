@@ -66,12 +66,31 @@ var isscroll=false;
                 var STORE_NAME = $("#STORE_NAME").val();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var store_id = $("#storeId").val();
+                var province="";
+                var city = "";
+                var area = "";
+                var street = "";
                 var address = $("#STORE_address").attr("data-code");
-                    address = address.split(",");
-                var province = address[0];//获取省份code
-                var city = address[1];//获取市code
-                var area = address[2];//获取县区code
-                var street = address[3];//获取街道值
+                address = address.split(",");
+                if(address.length > 0 && address[0] !== ""){
+                    province = address[0];//获取省份code
+                    city = address[1];//获取市code
+                    area = address[2];//获取县区code
+                    street = address[3];//获取街道值
+                }
+                if(city == undefined){
+                    console.log(address);
+                    console.log(city);
+                    alert("您还没选择城市");
+                    return ;
+                }
+                if(area == undefined){
+                    alert("您还没选择县区");
+                    return ;
+                }
+                if(street == undefined){
+                    street = "";
+                }
                 //var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
                 //var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
                 var a=$('#OWN_AREA_All input');
@@ -186,12 +205,31 @@ var isscroll=false;
                 var is_zhiying = $("#FLG_TOB").val();
                 var a=$('#OWN_AREA_All input');
                 var AREA_CODE="";
+                var province="";
+                var city = "";
+                var area = "";
+                var street = "";
                 var address = $("#STORE_address").attr("data-code");
                 address = address.split(",");
-                var province = address[0];//获取省份code
-                var city = address[1];//获取市code
-                var area = address[2];//获取县区code
-                var street = address[3];//获取街道值
+                if(address.length > 0 && address[0] !== ""){
+                    province = address[0];//获取省份code
+                    city = address[1];//获取市code
+                    area = address[2];//获取县区code
+                    street = address[3];//获取街道值
+                }
+                if(city == undefined){
+                    console.log(address);
+                    console.log(city);
+                    alert("您还没选择城市");
+                    return ;
+                }
+                if(area == undefined){
+                    alert("您还没选择县区");
+                    return ;
+                }
+                if(street == undefined){
+                    street = "";
+                }
                 for(var i=0;i<a.length;i++){
                     var u=$(a[i]).attr("data-code");
                     if(i<a.length-1){
@@ -405,8 +443,18 @@ jQuery(document).ready(function () {
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
                 $("#storeId").attr("data-name", msg.store_id);
-                var address_code=msg.province+','+msg.city+','+msg.area+','+msg.street;
-                var address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name+'/'+msg.street;
+                var address_code = "";
+                var address = "";
+                if(msg.province_location_name!==""){
+                    if(msg.street == ""){
+                        address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name;
+                        address_code=msg.province+','+msg.city+','+msg.area;
+                    }else {
+                        address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name+'/'+msg.street;
+                        address_code=msg.province+','+msg.city+','+msg.area+','+msg.street;
+                    }
+                }
+                $("#STORE_address").attr("title",address);
                 $("#STORE_address").attr("data-code",address_code);
                 $("#STORE_address").val(address);
                 //$("#OWN_AREA").val(msg.area_name);
@@ -976,6 +1024,11 @@ $("#screen_que_area").click(function(){
         } else {
             $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
         }
+        if($(e.target).is('#STORE_address') || $(e.target).is('.address_container a') || $(e.target).is('.dl_box dl dd') || $(e.target).is('.address_content') || $(e.target).is('#enter') ||$(e.target).is('.drop') ||$(e.target).is('#show_map .BMap_mask')||$(e.target).is("#show_map .BMap_Marker")){
+            return ;
+        } else {
+            $(".address_container").hide();
+        }
     });
     $(".corp_select").click(function () {
         $("#OWN_AREA").val('');
@@ -986,8 +1039,12 @@ $("#screen_que_area").click(function(){
         checknow_data = [];
         checknow_namedata = [];
     });
-    $("#STORE_address").click(function () {
-        $(".address_container").show();
+    $(".drop").click(function () {
+        if($(".address_container").css("display")=="none"){
+            $(".address_container").show();
+        }else {
+            $(".address_container").hide();
+        }
     })
     getProvince();
 });
@@ -1243,9 +1300,12 @@ $("#address_nav a").click(function () {
 //添加街道
 $("#enter").click(function () {
     var val = $(".street").val().trim();
-    var input = $("#province .current").html()+'/'+$("#city .current").html()+'/'+$("#county .current").html();
-    var current = $("#county .current").html();
-    var data_code = $("#province .current").attr("data-code")+','+$("#city .current").attr("data-code")+','+$("#county .current").attr("data-code");
+    var input = $("#STORE_address").val();
+    var input_l =  input.split("/");
+        input = input_l[0]+'/'+input_l[1]+'/'+input_l[2];
+    // var input = $("#province .current").html()+'/'+$("#city .current").html()+'/'+$("#county .current").html();
+    var current = input_l[2];
+    var data_code = $("#STORE_address").attr("data-code");
     if(current==undefined){
         alert("您还没选择县区");
     }else {
@@ -1259,4 +1319,17 @@ $("#enter").click(function () {
             $("#STORE_address").attr("data-code",data_code);
         }
     }
+})
+//创建地图
+$("#address_nav a:last-child").click(function () {
+    var map = new BMap.Map("show_map");
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 15);
+    var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
+    map.addControl(new BMap.NavigationControl(opts));
+    map = new BMap.Map("#show_map",{enableMapClick:false});
+    map.addEventListener("click",function(e){
+        console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+        map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+    });
 })
