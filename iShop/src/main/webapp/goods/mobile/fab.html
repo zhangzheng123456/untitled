@@ -8,6 +8,7 @@
 	<script src="js/flexible.js"></script><meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 	<script src="js/jquery-1.11.1.js"></script>
 	<script src="js/gqrequest.js"></script>
+	<script src="js/iscroll.js"></script>
 </head>
 <body style="font-size: 12px;">
 	<div class="header_line">
@@ -65,6 +66,26 @@
 						<li>第二季度</li>
 						<li>第三季度</li>
 						<li>第四季度</li>
+						<li>第一季度</li>
+						<li>第二季度</li>
+						<li>第三季度</li>
+						<li>第四季度</li>
+						<li>第一季度</li>
+						<li>第二季度</li>
+						<li>第三季度</li>
+						<li>第四季度</li>
+						<li>第一季度</li>
+						<li>第二季度</li>
+						<li>第三季度</li>
+						<li>第四季度</li>
+						<li>第一季度</li>
+						<li>第二季度</li>
+						<li>第三季度</li>
+						<li>第四季度</li>
+						<li>第一季度</li>
+						<li>第二季度</li>
+						<li>第三季度</li>
+						<li>第四季度</li>
 					</ul>
 				</div>
 			</div>
@@ -77,15 +98,29 @@
 </body>
 <script src="js/recommend.js"></script>
 <script>
+	var myScroll;
+	function loaded() {
+		myScroll = new iScroll('guide', { checkDOMChanges: true });
+		
+		// setInterval(function () {
+		// 	if (myScroll.isReady())
+		// 		document.getElementById('thelist').innerHTML += '<li>new row</li>';
+		// }, 2000);
+	}
+	window.onload=function(){loaded();} 
+	// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	// document.addEventListener('DOMContentLoaded', loaded, false);
 	$("#screen").click(function(){
 		$("#guide").show();
 		$("#cover").show();
 		$("html").addClass("sift-move");
+		$("body").addClass("sift-move");
 	})
 	$("#cover").click(function(){
 		$("#guide").hide();
 		$("#cover").hide();
 		$("html").removeClass("sift-move");
+		$("body").removeClass("sift-move");
 	})
 </script>
 </html>

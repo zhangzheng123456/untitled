@@ -301,7 +301,6 @@ input::-webkit-input-placeholder {
   height: 100%;
   overflow: hidden; }
   .screen_list .screen_content {
-    height: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 56px; }
