@@ -197,7 +197,7 @@ public class WebUtils {
                 }
                 //   System.out.println("---------截取后---------------:"+screen_value);
             } else {
-                 System.out.println("-----------created_date_login---------------:"+screen_value);
+               //  System.out.println("-----------created_date_login---------------:"+screen_value);
                 //  System.out.println("------------------不特殊地段------------------------");
             }
             map.put(screen_key, screen_value);
