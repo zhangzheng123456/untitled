@@ -108,24 +108,26 @@ var oc = new ObjectControl();
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
 		console.log(_params);
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
-				$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:"保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 			}else if(data.code=="-1"){
-				// alert(data.message);
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				alert(data.message);
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
