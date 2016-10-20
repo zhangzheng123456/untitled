@@ -188,7 +188,7 @@ var oc = new ObjectControl();
 				var GOODS_BUYPOINT=getContent();
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -241,7 +241,7 @@ var oc = new ObjectControl();
 						var img_list_json_sub={};
 						img_list_json_sub.image=$(img_url_list[i]).attr('src');
 						console.log($(img_url_list[i]).parent().parent().find('input').attr('checked'));
-						img_list_json_sub.is_public=$(img_url_list[i]).parent().parent().find('input').attr('checked')?' Y':'N'
+						img_list_json_sub.is_public=$(img_url_list[i]).parent().parent().find('input').attr('checked')?'Y':'N'
 						img_list_json.push(img_list_json_sub);
 					}
 				}else{
@@ -446,7 +446,7 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
-				var input=$(".checkbox_isactive").find("input")[0];
+				var input=$("#is_active")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
@@ -769,5 +769,6 @@ function public_click(a) {
 		$(a).prev().attr('checked','true')
 	}
 }
-
+//
+console.log($('.add_new_touxiang').prev().html());
 

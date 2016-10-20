@@ -21,17 +21,20 @@
         AND filter_weight != ''
         ORDER BY filter_weight
     </select>
+
     <update id="updateTable">
         UPDATE def_table_manager SET column_code=#{table_code} WHERE id=#{id}
     </update>
+
     <select id="selTableList" resultType="com.bizvane.ishop.entity.TableManager">
       SELECT * FROM def_table_list
     </select>
+
     <insert id="insert" parameterType="com.bizvane.ishop.entity.TablePrivilege">
         INSERT INTO def_table_privilage
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="table_code!=null">
-                table_code,
+            <if test="column_code!=null">
+                column_code,
             </if>
             <if test="function_code!=null">
                 function_code,
@@ -59,8 +62,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="table_code!=null">
-                #{table_code},
+            <if test="column_code!=null">
+                #{column_code},
             </if>
             <if test="function_code!=null">
                 #{function_code},
@@ -88,4 +91,15 @@
             </if>
         </trim>
     </insert>
- </mapper>
+
+    <select id="selColumnsByFunc" resultType="com.bizvane.ishop.entity.TableManager">
+        SELECT *
+        FROM def_table_manager
+        WHERE function_code = #{function_code}
+        AND column_code IN
+        <foreach collection="column_codes" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

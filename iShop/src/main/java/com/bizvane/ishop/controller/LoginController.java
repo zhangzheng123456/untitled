@@ -339,8 +339,13 @@ public class LoginController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String function_code = jsonObject.get("funcCode").toString();
+            //获取动作权限
             JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
+            //获取列表显示字段权限
+            List<TableManager> tableManagers = functionService.selectColumnByFun(corp_code, user_code, group_code, role_code, function_code);
+
             menus.put("actions", actions);
+            menus.put("columns", JSON.toJSONString(tableManagers));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());

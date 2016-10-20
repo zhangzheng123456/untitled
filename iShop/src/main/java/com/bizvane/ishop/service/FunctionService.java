@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.Function;
 import com.bizvane.ishop.entity.Goods;
+import com.bizvane.ishop.entity.TableManager;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface FunctionService {
     JSONArray selectAllFunctions(String corp_code,String user_code,String group_code, String role_code)throws Exception;
 
     JSONArray selectActionByFun(String corp_code,String user_code,String group_code, String role_code,String function_code)throws Exception;
+
+    List<TableManager> selectColumnByFun(String corp_code, String user_code, String group_code, String role_code, String function_code) throws Exception;
 
     List<Function> selectAllPrivilege(String corp_code,String role_code, String user_code, String group_code,String search_value)throws Exception;
 
