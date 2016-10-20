@@ -418,7 +418,7 @@ jQuery(document).ready(function(){
 						+	'</li>';
 					// }
 				}
-				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
+				$(".good_imgs .parentFileBox .fileBoxUl").prepend(img_html);
 				var corp_code=msg.corp_code;//公司编号
 				var brand_code=msg.brand_code;//品牌编号
 				$("#GOODS_CODE").val(msg.goods_code);
@@ -552,7 +552,8 @@ function getcorplist(a,b){
 					getvarbrandlist(c,b);
 					$("#GOODS_CODE").val("");
 					$("#GOODS_CODE").attr("data-mark","");
-					$(".good_imgs .parentFileBox .fileBoxUl").empty();
+					// $(".good_imgs .parentFileBox .fileBoxUl").empty();
+					$(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
 					$("#search_match_goods ul").empty();
 					$("#search").empty();
 					$(".match_goods ul").empty();
@@ -564,7 +565,8 @@ function getcorplist(a,b){
 				getvarbrandlist(c,b);
 				$("#GOODS_CODE").val("");
 				$("#GOODS_CODE").attr("data-mark","");
-				$(".good_imgs .parentFileBox .fileBoxUl").empty();
+				// $(".good_imgs .parentFileBox .fileBoxUl").empty();
+				$(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
 				$("#search_match_goods ul").empty();
 				$("#search").empty();
 				$(".match_goods ul").empty();
@@ -770,5 +772,4 @@ function public_click(a) {
 	}
 }
 //
-console.log($('.add_new_touxiang').prev().html());
 

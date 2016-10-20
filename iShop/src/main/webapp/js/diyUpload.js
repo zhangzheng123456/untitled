@@ -251,13 +251,13 @@
 
 	//创建文件操作div;
 	function createBox( $fileInput, file, webUploader ) {
-		    console.log(file);
+		    console.log($fileInput.parent());
 			var file_id = file.id;
-			var $parentFileBox =$('.parentFileBox').insertBefore($fileInput.parent());
-
+		    console.log(file_id);
+			// var $parentFileBox =$('.parentFileBox').insertBefore($fileInput.parent());
+		   var $parentFileBox =$('.parentFileBox');
 			//添加父系容器;
 			if ( $parentFileBox.length <= 0 ) {
-
 				var div = '<span class="parentFileBox" style="display:inline-flex;vertical-align: middle;"> \
 							<ul class="fileBoxUl" data-name="0,1,2,3,4"></ul>\
 						</span>';
