@@ -208,10 +208,20 @@
     </select>
 
     <select id="selectAllStoreAchvScreen" resultMap="storeAchvGoals">
-        SELECT 
-        sa.*,
+        SELECT
+        sa.id,
+        sa.store_code,
         dc.corp_name,
-        ds.store_name
+        ds.store_name,
+        sa.corp_code,
+        sa.target_amount,
+        sa.time_type,
+        sa.target_time,
+        sa.modified_date,
+        sa.modifier,
+        sa.created_date,
+        sa.creater,
+        sa.isactive
         FROM 
         def_store_achv_goal sa,
         def_store ds,
