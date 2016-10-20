@@ -10,6 +10,8 @@ public interface PrivilegeMapper {
 
     int insert(Privilege record) throws SQLException;
 
+    int update(Privilege record) throws SQLException;
+
     int delete(@Param("master_code") String master_code) throws SQLException;
 
 }

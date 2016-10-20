@@ -258,10 +258,16 @@ public class FunctionServiceImpl implements FunctionService {
                 JSONObject json = new JSONObject(info);
                 String action_code = json.get("action_code").toString();
                 String function_code = json.get("function_code").toString();
+                String column_code = "";
+                if (json.has("column_code") && !json.get("column_code").equals("")){
+                    column_code = json.get("column_code").toString();
+                }
                 Privilege privilege = new Privilege();
                 privilege.setAction_code(action_code);
                 privilege.setFunction_code(function_code);
                 privilege.setMaster_code(master_code);
+                privilege.setColumn_code(column_code);
+
                 privilege.setEnable(Common.IS_ACTIVE_Y);
                 privilege.setModified_date(Common.DATETIME_FORMAT.format(now));
                 privilege.setModifier(user_id);

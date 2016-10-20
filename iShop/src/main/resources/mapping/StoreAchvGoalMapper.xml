@@ -73,7 +73,6 @@
             AND
             ( sa.STORE_CODE LIKE concat('%',#{search_value},'%')
             OR sa.STORE_NAME LIKE concat('%',#{search_value},'%')
-            OR c.corp_name LIKE concat('%',#{search_value},'%')
             OR sa.target_amount LIKE concat('%',#{search_value},'%')
             OR sa.time_type LIKE concat('%',#{search_value},'%')
             OR sa.target_time LIKE concat('%',#{search_value},'%')
@@ -208,10 +207,20 @@
     </select>
 
     <select id="selectAllStoreAchvScreen" resultMap="storeAchvGoals">
-        SELECT 
-        sa.*,
+        SELECT
+        sa.id,
+        sa.store_code,
         dc.corp_name,
-        ds.store_name
+        ds.store_name,
+        sa.corp_code,
+        sa.target_amount,
+        sa.time_type,
+        sa.target_time,
+        sa.modified_date,
+        sa.modifier,
+        sa.created_date,
+        sa.creater,
+        sa.isactive
         FROM 
         def_store_achv_goal sa,
         def_store ds,

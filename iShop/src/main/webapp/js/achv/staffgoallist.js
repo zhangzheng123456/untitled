@@ -239,6 +239,8 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].store.store_name
                         +"</td><td>"
+                        + data[i].store.corp_name
+                        +"</td><td>"
                         + data[i].user_target
                         +"</td><td>"
                         + data[i].target_type
