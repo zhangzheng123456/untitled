@@ -268,7 +268,7 @@ function jurisdiction(actions){
 //页面加载调权限接口
 function qjia(){
     var param={};
-    param["funcCode"]="F0018";
+    param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
@@ -573,7 +573,7 @@ $("#leading_out").click(function(){
     $('.file').show();
     $(".into_frame").hide();
     var param={};
-    param["function_code"]="F0018";
+    param["function_code"]=funcCode;
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/list/getCols","0",param,function(data){
         if(data.code=="0"){
