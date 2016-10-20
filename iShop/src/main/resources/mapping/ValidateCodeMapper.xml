@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.ValidataCodeMapper">
+<mapper namespace="com.bizvane.ishop.dao.ValidateCodeMapper">
+
     <select id="selectAllValidateCode" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT *
         FROM def_validate_code
@@ -15,10 +16,12 @@
         GROUP BY id
         ORDER BY id DESC
     </select>
+
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
     SELECT *
     FROM def_validate_code
     WHERE 1 = 1
+        AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
             <choose>
                 <when test="entryValue!=''">
@@ -32,10 +35,12 @@
         GROUP BY  id
         ORDER BY id DESC
     </select>
+
     <select id="selValidateCodeById" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT * FROM def_validate_code
         WHERE ID=#{id}
     </select>
+
     <select id="selectByCodeId" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT *
         FROM def_validate_code
@@ -143,4 +148,41 @@
         def_validate_code
         WHERE ID = #{id}
     </delete>
+
+    <select id="selectValidateCodeByCorp" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT *
+        FROM def_validate_code AS dvc ,def_user AS du
+        WHERE dvc.phone = du.phone
+        AND du.corp_code = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            phone LIKE concat('%', #{search_value},'%')
+            OR validate_code LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        GROUP BY id
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectByCorpScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT *
+        FROM def_validate_code AS dvc ,def_user AS du
+        WHERE dvc.phone = du.phone
+        AND du.corp_code = #{corp_code}
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            <choose>
+                <when test="entryValue!=''">
+                    ${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY id
+        ORDER BY id DESC
+    </select>
+
 </mapper>
