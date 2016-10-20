@@ -342,6 +342,16 @@ $("#back_vip_group_1").click(function(){
 //绑定单击事件
 //新增
 $('#screen_add').on('click',function(){
+    var a=$('#vip_num').val();
+    var b=$('#vip_id').val();
+    if($('#vip_num').val()==''){
+        $('#vip_num').next().find('div').addClass('error_tips').html('分组编号不能为空！');
+        return
+    }
+    if($('#vip_id').val()==''){
+        $('#vip_id').next().find('div').addClass('error_tips').html('分组名称不能为空！');
+        return
+    }
     var str=$('#screen_add').text().trim();
     str=='编辑会员'&&( role='eidtor');
     group_code=$("#vip_num").val();
@@ -350,6 +360,8 @@ $('#screen_add').on('click',function(){
     GET(1,10,group_code);//第三个参数  分组编号
     $('#page-wrapper')[0].style.display='none';
     $('.content')[0].style.display='block';
+    $('#group_id').val(a);
+    $('#group_name').val(b);
 });
 //进入页面后保存操作
 $("#save").click(function(){
