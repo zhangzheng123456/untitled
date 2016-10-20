@@ -7,6 +7,9 @@ var store_corp=sessionStorage.getItem("store_corp");//获取本地储存的store
 store_corp=JSON.parse(store_corp);//转成json格式
 var store_code=store_corp.store_code;//店仓编号
 var corp_code=store_corp.corp_code;//企业编号
+$("#store_code").val(store_code);
+$("#store_name").val(store_corp.store_name);
+
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
 })
