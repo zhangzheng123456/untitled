@@ -9,20 +9,6 @@ var store_code=store_corp.store_code;//店仓编号
 var corp_code=store_corp.corp_code;//企业编号
 $("#store_code").val(store_code);
 $("#store_name").val(store_corp.store_name);
-
-$("#filtrate").click(function(){//点击筛选框弹出下拉框
-    $(".sxk").slideToggle();
-})
-$("#pack_up").click(function(){//点击收回 取消下拉框
-    $(".sxk").slideUp();
-})
-//点击清空  清空input的value值
-$("#empty").click(function(){
-    var input=$(".inputs input");
-    for(var i=0;i<input.length;i++){
-        input[i].value="";
-    }
-})
 function superaddition(data){
     console.log(data);
     console.log(data.length);
@@ -110,14 +96,6 @@ function jumpBianse(){
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
-    // //双击跳转
-    // $(".table tbody tr").dblclick(function(){
-    //     var id=$(this).attr("id");
-    //     sessionStorage.setItem("id",id);
-    //     console.log(id);
-    //     $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
-    // })
-    //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
@@ -186,6 +164,11 @@ function jumpBianse(){
         })
     })
     $('#turnoff').click(function(){
+        sessionStorage.removeItem("store_corp");
+        $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+    })
+    $('#back_shop').click(function(){
+        sessionStorage.removeItem("store_corp");
         $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
     })
 }
