@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.FunctionMapper">
 
+    <resultMap id="privilege" type="com.bizvane.ishop.entity.Privilege">
+        <id column="id" property="id"/>
+        <result column="action_code" property="action_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="action_name" property="action_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="function_code" property="function_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="master_code" property="master_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="column_code" property="column_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
     <select id="selectAllFun" resultType="com.bizvane.ishop.entity.Function">
         SELECT *
         FROM def_function WHERE function_code IN (
@@ -17,7 +26,7 @@
         ORDER BY show_order
     </select>
 
-    <select id="selectActionByFun" resultType="com.bizvane.ishop.entity.Action">
+    <select id="selectActionByFun" resultMap="privilege">
        SELECT *
         FROM def_action a, def_privilege p
         WHERE a.action_code = p.action_code

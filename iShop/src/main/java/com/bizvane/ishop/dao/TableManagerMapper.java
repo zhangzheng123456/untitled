@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/30.
@@ -15,9 +16,12 @@ public interface TableManagerMapper {
 
     List<TableManager> selByCode(@Param("function_code")String function_code) throws SQLException;
 
-    int updateTable(@Param("table_code")String table_code,@Param("id")String id);
+    int updateTable(@Param("column_code")String column_code,@Param("id")String id);
 
     List<TableManager> selTableList();
 
     int insert(TablePrivilege tablePrivilege);
+
+    List<TableManager> selColumnsByFunc(Map<String, Object> params) throws SQLException;
+
 }

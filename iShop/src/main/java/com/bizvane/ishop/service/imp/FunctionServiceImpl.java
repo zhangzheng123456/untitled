@@ -5,10 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.FunctionMapper;
 import com.bizvane.ishop.dao.PrivilegeMapper;
-import com.bizvane.ishop.entity.Action;
-import com.bizvane.ishop.entity.Function;
-import com.bizvane.ishop.entity.Privilege;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.dao.TableManagerMapper;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/5/24.
@@ -30,6 +30,8 @@ public class FunctionServiceImpl implements FunctionService {
     FunctionMapper functionMapper;
     @Autowired
     PrivilegeMapper privilegeMapper;
+    @Autowired
+    TableManagerMapper tableManagerMapper;
 
     /**
      * 获取user所有列表功能模块
@@ -153,7 +155,7 @@ public class FunctionServiceImpl implements FunctionService {
      * 按功能获取user动作权限
      */
     public JSONArray selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
-        List<Action> act_info;
+        List<Privilege> act_info;
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
@@ -166,6 +168,30 @@ public class FunctionServiceImpl implements FunctionService {
         }
         return actions;
     }
+
+    /**
+     * 按功能获取user列表显示字段
+     */
+    public List<TableManager> selectColumnByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
+        List<Privilege> act_info;
+        String column_code = "";
+        user_code = corp_code +"U"+user_code;
+        group_code = corp_code +"G"+group_code;
+        act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
+        for (int i = 0; i < act_info.size(); i++) {
+            String act = act_info.get(i).getAction_name();
+            if (act.equals("show")){
+                column_code = act_info.get(i).getColumn_code();
+            }
+        }
+        String[] columns = column_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("function_code",function_code);
+        params.put("column_codes",columns);
+        List<TableManager> tableManagers = tableManagerMapper.selColumnsByFunc(params);
+        return tableManagers;
+    }
+
 
     /**
      * 列出登录用户的所有权限
