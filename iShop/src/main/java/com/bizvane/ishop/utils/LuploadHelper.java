@@ -14,6 +14,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by yin on 2016/7/12.
@@ -88,6 +90,17 @@ public class LuploadHelper {
         }
         return result;
     }
+    public static String checkDate(String date){
+        String el="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)";
+        Pattern p = Pattern.compile(el);
+        Matcher m = p.matcher(date);
+        boolean b = m.matches();
+        if(b==true){
+            return date;
+        }else{
+            return "格式错误";
+        }
+    }
     /***
      * 把jxl.jar中日期类型进行转换
      */
@@ -96,22 +109,25 @@ public class LuploadHelper {
        // System.out.println("------------时间---------:-"+cellObject.getContents().toString() +"------类型----------"+cellObject.getType());
         if(cellObject.getContents().toString().trim().equals("")){
             dateStr="";
-        }else if(cellObject.getType()== CellType.DATE){
-            DateCell cellValue   =   (DateCell)cellObject;
-            Date dt   =   cellValue.getDate();
-            SimpleDateFormat formatter   =null;
-            if(target_type.equals("Y")){
-              formatter =  new   SimpleDateFormat("yyyy");
-            }else if(target_type.equals("M")){
-                formatter =  new   SimpleDateFormat("yyyy-MM");
-            }else{
-                formatter =  new   SimpleDateFormat("yyyy-MM-dd");
+        }else if(cellObject.getType()== CellType.DATE) {
+            DateCell cellValue = (DateCell) cellObject;
+            Date dt = cellValue.getDate();
+            SimpleDateFormat formatter = null;
+            if (target_type.equals("Y")) {
+                formatter = new SimpleDateFormat("yyyy");
+            } else if (target_type.equals("M")) {
+                formatter = new SimpleDateFormat("yyyy-MM");
+            } else {
+                formatter = new SimpleDateFormat("yyyy-MM-dd");
             }
-            dateStr  =  formatter.format(dt);
-        }else if(Integer.parseInt(cellObject.getContents().toString().trim()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString().trim())>=2016){
-          //  DateCell cellValue   =   (DateCell)cellObject;
+            dateStr = formatter.format(dt);
+        }else{
             dateStr=cellObject.getContents().toString().trim();
         }
+//        }else if(Integer.parseInt(cellObject.getContents().toString().trim()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString().trim())>=2016){
+//          //  DateCell cellValue   =   (DateCell)cellObject;
+//            dateStr=cellObject.getContents().toString().trim();
+//        }
         return dateStr;
     }
     //返回去掉空行的记录数

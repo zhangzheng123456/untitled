@@ -22,7 +22,7 @@
         ORDER BY filter_weight
     </select>
     <update id="updateTable">
-        UPDATE def_table_list SET table_code=#{table_code} WHERE id=#{id}
+        UPDATE def_table_manager SET column_code=#{table_code} WHERE id=#{id}
     </update>
     <select id="selTableList" resultType="com.bizvane.ishop.entity.TableManager">
       SELECT * FROM def_table_list

@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -58,10 +59,12 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-
-            String str="{\"type\":\"between\",\"value\":{\"start\":\"2\",\"end\":\"12\"}}";
-            boolean b = CheckUtils.checkJson(str);
-            System.out.println(b);
+            String date="2008-06-06";
+            String checkDate = LuploadHelper.checkDate(date);
+            System.out.println(checkDate);
+//            String str="{\"type\":\"between\",\"value\":{\"start\":\"2\",\"end\":\"12\"}}";
+//            boolean b = CheckUtils.checkJson(str);
+//            System.out.println(b);
 
 //String str="<img src=\"/image/upload/20161018/1476771476538038849.jpg\" _src=\"/image/upload/20161018/1476771476538038849.jpg\" title=\"1476771476538038849.jpg\" alt=\"1476771476538038849.jpg\" width=\"87\" height=\"78\" border=\"0\" vspace=\"0\" style=\"width: 87px; height: 78px; float: right;\">";
 //            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(str);
