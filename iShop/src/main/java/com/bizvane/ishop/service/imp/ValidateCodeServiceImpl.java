@@ -1,19 +1,14 @@
 package com.bizvane.ishop.service.imp;
 
-import com.bizvane.ishop.dao.ValidataCodeMapper;
-import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Feedback;
-import com.bizvane.ishop.entity.UserAchvGoal;
+import com.bizvane.ishop.dao.ValidateCodeMapper;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +20,10 @@ import java.util.Map;
 public class ValidateCodeServiceImpl implements ValidateCodeService {
 
     @Autowired
-    private ValidataCodeMapper validataCodeMapper;
+    private ValidateCodeMapper validateCodeMapper;
 
     public int insertValidateCode(ValidateCode code) throws Exception{
-        return validataCodeMapper.insertValidateCode(code);
+        return validateCodeMapper.insertValidateCode(code);
     }
 
     @Override
@@ -36,7 +31,21 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
-        List<ValidateCode> list = validataCodeMapper.selectAllScreen(params);
+        List<ValidateCode> list = validateCodeMapper.selectAllScreen(params);
+        for (ValidateCode validateCode:list) {
+            validateCode.setIsactive(CheckUtils.CheckIsactive(validateCode.getIsactive()));
+        }
+        PageInfo<ValidateCode> page = new PageInfo<ValidateCode>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<ValidateCode> selectByCorpScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        params.put("corp_code", corp_code);
+        PageHelper.startPage(page_number, page_size);
+        List<ValidateCode> list = validateCodeMapper.selectByCorpScreen(params);
         for (ValidateCode validateCode:list) {
             validateCode.setIsactive(CheckUtils.CheckIsactive(validateCode.getIsactive()));
         }
@@ -45,31 +54,42 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     }
 
     public ValidateCode selectValidateCode(int code_id, String phone, String isactive) throws Exception{
-        return validataCodeMapper.selectByCodeId(code_id, phone,isactive);
+        return validateCodeMapper.selectByCodeId(code_id, phone,isactive);
     }
 
     public int updateValidateCode(ValidateCode code) throws Exception{
-        return validataCodeMapper.updateByCodeId(code);
+        return validateCodeMapper.updateByCodeId(code);
     }
 
     public int deleteValidateCode(int code_id) throws Exception{
-        return validataCodeMapper.deleteByCodeId(code_id);
+        return validateCodeMapper.deleteByCodeId(code_id);
     }
 
     @Override
     public ValidateCode selValidateCodeById(int id) throws Exception{
-        return validataCodeMapper.selValidateCodeById(id);
+        return validateCodeMapper.selValidateCodeById(id);
     }
 
     @Override
     public List<ValidateCode> selectAll() throws Exception{
-        return validataCodeMapper.selectAllValidateCode("");
+        return validateCodeMapper.selectAllValidateCode("");
     }
 
     @Override
     public PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value) throws Exception{
         PageHelper.startPage(page_number, page_size);
-        List<ValidateCode> validateCodes = validataCodeMapper.selectAllValidateCode(search_value);
+        List<ValidateCode> validateCodes = validateCodeMapper.selectAllValidateCode(search_value);
+        for (ValidateCode validateCode:validateCodes) {
+            validateCode.setIsactive(CheckUtils.CheckIsactive(validateCode.getIsactive()));
+        }
+        PageInfo<ValidateCode> page=new PageInfo<ValidateCode>(validateCodes);
+        return page;
+    }
+
+    @Override
+    public PageInfo<ValidateCode> selectValidateCodeByCorp(int page_number, int page_size, String corp_code, String search_value) throws Exception{
+        PageHelper.startPage(page_number, page_size);
+        List<ValidateCode> validateCodes = validateCodeMapper.selectValidateCodeByCorp(corp_code,search_value);
         for (ValidateCode validateCode:validateCodes) {
             validateCode.setIsactive(CheckUtils.CheckIsactive(validateCode.getIsactive()));
         }

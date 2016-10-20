@@ -28,7 +28,7 @@ public class Privilege {
 
     private Function function;
 
-    private Action action;
+    private String action_name;
 
     public int getId() {
         return id;
@@ -126,11 +126,11 @@ public class Privilege {
         this.function = function;
     }
 
-    public Action getAction() {
-        return action;
+    public String getAction_name() {
+        return action_name;
     }
 
-    public void setAction(Action action) {
-        this.action = action;
+    public void setAction_name(String action_name) {
+        this.action_name = action_name;
     }
 }

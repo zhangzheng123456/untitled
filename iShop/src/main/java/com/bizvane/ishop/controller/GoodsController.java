@@ -455,7 +455,7 @@ public class GoodsController {
                     String quarter = rs.getCell(j++, i).getContents().toString().trim();
                     String wave = rs.getCell(j++, i).getContents().toString().trim();
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
+                    String cellTypeForDate = LuploadHelper.checkDate(rs.getCell(j++, i).getContents().toString().trim());
                     String goods_description = rs.getCell(j++, i).getContents().toString().trim();
                     String match_goods = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();

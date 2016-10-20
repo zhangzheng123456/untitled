@@ -37,35 +37,36 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
     public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         JSONObject date = JSONObject.parseObject(map.get("created_date"));
-        JSONObject time_count = JSONObject.parseObject(map.get("time"));
-        String type=time_count.get("type").toString();
-        String value=time_count.get("value").toString();
+
+//        JSONObject time_count = JSONObject.parseObject(map.get("time"));
+//        String type=time_count.get("type").toString();
+//        String value=time_count.get("value").toString();
         params.put("created_date_start", date.get("start").toString());
         params.put("created_date_end", date.get("end").toString());
         params.put("corp_code", corp_code);
         map.remove("created_date");
-        if(type.equals("gt")){
-            //大于
-            params.put("type", "gt");
-            params.put("time_count",value);
-        }else if(type.equals("lt")){
-            //小于
-            params.put("type", "lt");
-            params.put("time_count", value);
-        }else if(type.equals("between")){
-            //介于
-            JSONObject values = JSONObject.parseObject(value);
-            params.put("type", "between");
-            params.put("count_start", values.get("start").toString());
-            params.put("count_end", values.get("end").toString());
-        }else if(type.equals("eq")){
-            //等于
-            params.put("type", "eq");
-            params.put("time_count", value);
-        }else if(type.equals("all")){
-            params.put("type", "all");
-            params.put("time_count", value);
-        }
+//        if(type.equals("gt")){
+//            //大于
+//            params.put("type", "gt");
+//            params.put("time_count",value);
+//        }else if(type.equals("lt")){
+//            //小于
+//            params.put("type", "lt");
+//            params.put("time_count", value);
+//        }else if(type.equals("between")){
+//            //介于
+//            JSONObject values = JSONObject.parseObject(value);
+//            params.put("type", "between");
+//            params.put("count_start", values.get("start").toString());
+//            params.put("count_end", values.get("end").toString());
+//        }else if(type.equals("eq")){
+//            //等于
+//            params.put("type", "eq");
+//            params.put("time_count", value);
+//        }else if(type.equals("all")){
+//            params.put("type", "all");
+//            params.put("time_count", value);
+//        }
         map.remove("time");
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);

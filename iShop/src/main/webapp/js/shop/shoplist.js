@@ -235,7 +235,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].store_code
                         +"</span></td><td><span title='"+data[i].store_id+"'>"
                         + data[i].store_id
-                        + "</td><td><span title='"+data[i].store_name+"'>"
+                        + "</td><td><span class='store_name' title='"+data[i].store_name+"'>"
                         + data[i].store_name
                         + "</span></td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
                         +"查看"
@@ -402,7 +402,8 @@ function jumpBianse(){
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         var store_code=$(this).parents('tr').find("td:eq(2) span").html();
         var corp_code=$(this).attr("data-code");
-        var store_corp={"store_code":store_code,"corp_code":corp_code};
+        var store_name=$(this).parents('tr').find("td .store_name").html();
+        var store_corp={"store_code":store_code,"corp_code":corp_code,"store_name":store_name};
         sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })

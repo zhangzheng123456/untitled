@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public interface ValidataCodeMapper {
+public interface ValidateCodeMapper {
     int deleteByCodeId(int id) throws SQLException;
 
     int insertValidateCode(ValidateCode record) throws SQLException;
@@ -20,5 +20,10 @@ public interface ValidataCodeMapper {
 
     List<ValidateCode> selectAllValidateCode(@Param("search_value")String search_value) throws SQLException;
 
+    List<ValidateCode> selectValidateCodeByCorp(@Param("corp_code")String corp_code,@Param("search_value")String search_value) throws SQLException;
+
     List<ValidateCode> selectAllScreen(Map<String,Object> params) throws SQLException;
+
+    List<ValidateCode> selectByCorpScreen(Map<String,Object> params) throws SQLException;
+
 }

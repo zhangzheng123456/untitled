@@ -57,11 +57,20 @@ public class ValidateCodeController {
     //列表
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+
         try {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONObject result = new JSONObject();
-            PageInfo<ValidateCode> list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
+            PageInfo<ValidateCode> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
+            }else {
+                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, "");
+
+            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -79,6 +88,8 @@ public class ValidateCodeController {
     //条件查询
     public String search(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -89,8 +100,15 @@ public class ValidateCodeController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
+
+            PageInfo<ValidateCode> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = validateCodeService.selectAllValidateCode(page_number, page_size, search_value);
+            }else {
+                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, search_value);
+
+            }
             JSONObject result = new JSONObject();
-            PageInfo<ValidateCode> list = validateCodeService.selectAllValidateCode(page_number, page_size, search_value);
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -102,11 +120,15 @@ public class ValidateCodeController {
         }
         return dataBean.getJsonStr();
     }
+
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     //条件查询
     public String selectByScreen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -116,12 +138,14 @@ public class ValidateCodeController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String screen = jsonObject.get("screen").toString();
-//            JSONObject jsonScreen = new JSONObject(screen);
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
-            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<ValidateCode> list = validateCodeService.selectAllScreen(page_number, page_size, map);
+            PageInfo<ValidateCode> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = validateCodeService.selectAllScreen(page_number, page_size, map);
+            }else {
+                list = validateCodeService.selectByCorpScreen(page_number, page_size, corp_code, map);
+            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

@@ -424,7 +424,9 @@ public class StoreServiceImpl implements StoreService {
             shop.setCity(jsonObject.get("city").toString().trim());
             shop.setArea(jsonObject.get("area").toString().trim());
             shop.setStreet(jsonObject.get("street").toString().trim());
-
+            if (jsonObject.has("store_location")){
+                shop.setStore_location(jsonObject.get("store_location").toString().trim());
+            }
             Date now = new Date();
             shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
             shop.setCreater(user_id);
@@ -627,6 +629,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setCity(jsonObject.get("city").toString().trim());
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
+                if (jsonObject.has("store_location")){
+                    store.setStore_location(jsonObject.get("store_location").toString().trim());
+                }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
@@ -663,6 +668,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setCity(jsonObject.get("city").toString().trim());
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
+                if (jsonObject.has("store_location")){
+                    store.setStore_location(jsonObject.get("store_location").toString().trim());
+                }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
