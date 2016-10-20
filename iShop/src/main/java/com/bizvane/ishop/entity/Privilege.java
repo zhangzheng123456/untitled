@@ -11,6 +11,8 @@ public class Privilege {
     private String function_code;
     //用户，角色或群组编号
     private String master_code;
+    //列表显示字段编号
+    private String column_code;
     //可用
     private String enable;
     //修改时间
@@ -58,6 +60,14 @@ public class Privilege {
 
     public void setMaster_code(String master_code) {
         this.master_code = master_code;
+    }
+
+    public String getColumn_code() {
+        return column_code;
+    }
+
+    public void setColumn_code(String column_code) {
+        this.column_code = column_code;
     }
 
     public String getEnable() {
