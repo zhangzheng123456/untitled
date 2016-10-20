@@ -1056,7 +1056,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }else {
-            List<Brand> brands = brandService.getAllBrand(corp_code,"");
+            List<Brand> brands = brandService.getActiveBrand(corp_code,"",null);
             for (int i = 0; i < brands.size(); i++) {
                 if (!brand_codes.contains(brands.get(i).getBrand_code())){
                     brand_codes.add(brands.get(i).getBrand_code());

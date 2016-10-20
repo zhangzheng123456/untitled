@@ -121,12 +121,19 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrand(String corp_code,String search_value) throws Exception {
+    public List<Brand> getActiveBrand(String corp_code, String search_value, String[] brand_codes) throws Exception {
+        String[] brand_code = null;
+        if (brand_codes != null && brand_codes.length>0 && !brand_codes[0].equals("")){
+            brand_code = brand_codes;
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("brand_code",brand_code);
+        params.put("search_value",search_value);
         List<Brand> brands;
-        brands = brandMapper.selectBrands(corp_code,search_value);
+        brands = brandMapper.selectBrands(params);
         return brands;
     }
-
 
     @Override
     @Transactional

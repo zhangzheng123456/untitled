@@ -14,8 +14,9 @@ function getBrand(){
     var param={};
     // param["corp_code"]= localStorage.getItem('corp_code');
     param["corp_code"]= "C10000";
-    oc.postRequire("post","/shop/brand", "",param, function(data){
-        console.log(data);
+    oc.postRequire("post","/brand/findBrandByCorpCode", "",param, function(data){
+    //     oc.postRequire("post","/shop/brands", "",param, function(data){
+            console.log(data);
         var message=JSON.parse(data.message)
         var brands=message.brands;//数组
         console.log(brands);
