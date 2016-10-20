@@ -59,7 +59,7 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            String date="2008-06-06";
+            String date="2008-02-30";
             String checkDate = LuploadHelper.checkDate(date);
             System.out.println(checkDate);
 //            String str="{\"type\":\"between\",\"value\":{\"start\":\"2\",\"end\":\"12\"}}";
