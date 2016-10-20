@@ -74,6 +74,15 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				if(brand_code==""||brand_code==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"品牌不能为空"
+					});
+					return;
+				}
 				if(GOODS_RELEASETIME==""){
 					art.dialog({
 						time: 1,
@@ -194,6 +203,15 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				if(brand_code==""||brand_code==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"品牌不能为空"
+					});
+					return;
+				}
 				if(GOODS_RELEASETIME==""){
 					art.dialog({
 						time: 1,
@@ -291,9 +309,16 @@ var oc = new ObjectControl();
 		});
 	};
 	fabjs.ajaxSubmit=function(_command,_params,opt){
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:"保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -302,6 +327,7 @@ var oc = new ObjectControl();
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
