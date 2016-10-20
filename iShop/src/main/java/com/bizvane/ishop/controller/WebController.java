@@ -323,7 +323,7 @@ public class WebController {
                         brands.add(brand);
                 }
             } else {
-                brands = brandService.getAllBrand(corp_code, "");
+                brands = brandService.getActiveBrand(corp_code, "",null);
             }
 
             JSONObject result = new JSONObject();

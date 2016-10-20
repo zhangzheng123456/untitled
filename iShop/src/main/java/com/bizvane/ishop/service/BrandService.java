@@ -22,7 +22,7 @@ public interface BrandService {
 
     PageInfo<Brand> getPartBrandByPage(int page_number, int page_size, String corp_code,String[] brand_code, String search_value) throws SQLException;
 
-    List<Brand> getAllBrand(String corp_code,String search_value) throws Exception;
+    List<Brand> getActiveBrand(String corp_code, String search_value, String[] brand_codes) throws Exception;
 
     String insert(String message, String user_id) throws Exception;
 

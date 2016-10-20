@@ -116,6 +116,12 @@
         SELECT *
         FROM def_brand
         WHERE corp_code = #{corp_code}
+        <if test="brand_code != null and brand_code !=''">
+            AND def_brand.brand_code IN
+            <foreach collection="brand_code" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (
