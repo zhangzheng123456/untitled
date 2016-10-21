@@ -71,8 +71,8 @@ var isscroll=false;
                 var city = "";
                 var area = "";
                 var street = "";
-                var address = $("#STORE_address").attr("data-code");
-                address = address.split(",");
+                var address = $("#STORE_address").val();
+                address = address.split("/");
                 if(location==undefined){
                     location="";
                 }
@@ -215,8 +215,8 @@ var isscroll=false;
                 var city = "";
                 var area = "";
                 var street = "";
-                var address = $("#STORE_address").attr("data-code");
-                address = address.split(",");
+                var address = $("#STORE_address").val();
+                address = address.split("/");
                 if(location==undefined){
                     location="";
                 }
