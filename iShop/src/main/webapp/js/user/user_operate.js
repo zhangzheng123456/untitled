@@ -799,7 +799,7 @@ jQuery(document).ready(function(){
             	}else if(j_code=="R5000"||j_code=="R6000"){
             		$('.task_allot').parent().hide();
             	}else if(j_code="R4800"){
-            		$('.task_allot').html("所属区域");
+            		$('.task_allot').html("所属品牌");
 	            	if(msg.brand_name!==""){
 		            	var brand_lists=msg.brand_name.split(",");
 						var brandcode_list=msg.brand_code.split(",");
