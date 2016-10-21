@@ -703,8 +703,8 @@ function getmatchgoodsList(a) {
 	param["goods_code"]=goods_code;
 	param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
-	param["searchValue"]=searchValue;
-	whir.loading.add("",0.5);//加载等待框
+	param["searchValue"]=searchValue;whir.loading.add("",0.5);//加载等待框
+	
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);

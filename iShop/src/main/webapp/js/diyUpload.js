@@ -10,6 +10,7 @@
 		*	serverCallBack回调函数 每个文件上传至服务端后,服务端返回参数,无论成功失败都会调用 参数为服务器返回信息;
 		*/
         diyUpload:function( opt, serverCallBack ) {
+			console.log(opt);
  			if ( typeof opt != "object" ) {
  				art.dialog({
 					time: 1,
@@ -96,7 +97,6 @@
 				$diyBar.show();
 				percentage = percentage*100;
 				showDiyProgress( percentage.toFixed(2), $diyBar);
-
 			});
 
 			//全部上传结束后触发;
@@ -134,6 +134,7 @@
 
 			//选择文件错误触发事件;
 			webUploader.on('error', function( code ) {
+				sessionStorage.setItem('error','error')
 				var text = '';
 				switch( code ) {
 					case  'F_DUPLICATE' : text = '该文件已经被选择了!' ;
@@ -217,7 +218,7 @@
 	//实例化Web Uploader
 	function getUploader( opt ) {
 
-		return new WebUploader.Uploader( opt );;
+		return new WebUploader.Uploader( opt );
 	}
 
 	//操作进度条;
