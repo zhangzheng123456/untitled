@@ -46,7 +46,7 @@ public class SignServiceImpl implements SignService {
 //            for (int i = 0; i < areas.length; i++) {
 //                areas[i] = areas[i].substring(1, areas[i].length());
 //            }
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, "");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -115,7 +115,7 @@ public class SignServiceImpl implements SignService {
             for (int i = 0; null != stores && i < stores.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> stores1 = storeService.selectByAreaBrand(corp_code, areas, "");
+            List<Store> stores1 = storeService.selectByAreaBrand(corp_code, areas,null, "");
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < stores1.size(); i++) {
                 sb.append(stores1.get(i).getStore_code()).append(",");
@@ -123,10 +123,10 @@ public class SignServiceImpl implements SignService {
             stores = sb.toString().split(",");
         }
 
-        JSONObject date = JSONObject.parseObject(map.get("time_bucket"));
+        JSONObject date = JSONObject.parseObject(map.get("sign_time"));
         params.put("created_date_start", date.get("start").toString());
         params.put("created_date_end", date.get("end").toString());
-        map.remove("time_bucket");
+        map.remove("sign_time");
 
         params.put("array", stores);
         params.put("corp_code", corp_code);

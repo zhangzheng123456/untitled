@@ -316,7 +316,7 @@ public class GoodsServiceImpl implements GoodsService {
         String image = "";
         if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
             String goods_image = goods.getGoods_image();
-            if (goods_image.startsWith("[{")) {
+            if (goods_image.startsWith("[")) {
                 JSONArray array = JSONArray.parseArray(goods_image);
                 if (array.size() > 0) {
                     String jstring = array.get(0).toString();
@@ -343,7 +343,7 @@ public class GoodsServiceImpl implements GoodsService {
         String image = "11";
         if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
             String goods_image = goods.getGoods_image();
-            if (!goods_image.startsWith("[{")) {
+            if (!goods_image.startsWith("[")) {
                 JSONArray array = new JSONArray();
                 String[] images = goods_image.split(",");
                 for (int i = 0; i < images.length; i++) {

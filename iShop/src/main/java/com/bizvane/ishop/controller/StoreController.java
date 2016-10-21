@@ -601,12 +601,15 @@ public class StoreController {
             List<Brand> brand = new ArrayList<Brand>();
             if (role_code.equals(Common.ROLE_SYS) && jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                 corp_code = jsonObject.get("corp_code").toString();
+                brand = brandService.getActiveBrand(corp_code, search_value,codes);
             }else if (role_code.equals(Common.ROLE_BM)){
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                 codes = brand_code.split(",");
+                brand = brandService.getActiveBrand(corp_code, search_value,codes);
+            }else if (role_code.equals(Common.ROLE_GM)){
+                brand = brandService.getActiveBrand(corp_code, search_value,codes);
             }
-            brand = brandService.getActiveBrand(corp_code, search_value,codes);
 
             JSONArray array = new JSONArray();
             JSONObject brands = new JSONObject();

@@ -809,10 +809,11 @@ public class StoreServiceImpl implements StoreService {
         return stores;
     }
 
-    public List<Store> selectByAreaBrand(String corp_code, String[] area_code, String isactive) throws Exception{
+    public List<Store> selectByAreaBrand(String corp_code, String[] area_code, String[] brand_code, String isactive) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
+        params.put("brand_code", brand_code);
         params.put("search_value", "");
         params.put("isactive", isactive);
         List<Store> stores = storeMapper.selectByAreaBrand(params);

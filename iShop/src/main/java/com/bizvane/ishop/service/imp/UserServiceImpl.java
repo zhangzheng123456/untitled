@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
         }
         if (!area_code.equals("")) {
             String[] area_codes = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, area_codes,Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.selectByAreaBrand(corp_code, area_codes, null,Common.IS_ACTIVE_Y);
             String a = "";
             if (store.size()>0) {
                 for (int i = 0; i < store.size(); i++) {
@@ -114,6 +114,7 @@ public class UserServiceImpl implements UserService {
         params.put("search_value", search_value);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
+        //根据areas拉取区经
         params.put("areas", areas);
         PageHelper.startPage(page_number, page_size);
         List<User> users = userMapper.selectUsersByRole(params);
@@ -139,7 +140,7 @@ public class UserServiceImpl implements UserService {
         if (!area_code.equals("")) {
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null ,Common.IS_ACTIVE_Y);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
@@ -764,7 +765,7 @@ public class UserServiceImpl implements UserService {
         if (!area_code.equals("")) {
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null,Common.IS_ACTIVE_Y);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
@@ -962,7 +963,7 @@ public class UserServiceImpl implements UserService {
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
-                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, Common.IS_ACTIVE_Y);
+                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code,null, Common.IS_ACTIVE_Y);
                         if (stores.size() > 0)
                             sign.setStore_code(stores.get(0).getStore_code());
                     }
@@ -1006,7 +1007,7 @@ public class UserServiceImpl implements UserService {
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
-                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, Common.IS_ACTIVE_Y);
+                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, null, Common.IS_ACTIVE_Y);
                         if (stores.size() > 0)
                             sign.setStore_code(stores.get(0).getStore_code());
                     }
@@ -1044,7 +1045,7 @@ public class UserServiceImpl implements UserService {
             String area_code = user.getArea_code();
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            stores = storeService.selectByAreaBrand(corp_code,areas,Common.IS_ACTIVE_Y);
+            stores = storeService.selectByAreaBrand(corp_code,areas, null,Common.IS_ACTIVE_Y);
             for (int i = 0; i < stores.size(); i++) {
                 String brand_code = stores.get(i).getBrand_code();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
