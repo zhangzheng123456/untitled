@@ -1248,6 +1248,10 @@ public class StoreController {
                     String store_name = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String province = rs.getCell(j++, i).getContents().toString().trim();
+                    String city = rs.getCell(j++, i).getContents().toString().trim();
+                    String area = rs.getCell(j++, i).getContents().toString().trim();
+                    String street = rs.getCell(j++, i).getContents().toString().trim();
                     String flg_tob = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
                     if(cellCorp.equals("") && store_code.equals("")  && store_name.equals("") && area_code.equals("")  && brand_code.equals("") ){
@@ -1267,6 +1271,10 @@ public class StoreController {
                     store.setStore_name(store_name);
                     store.setArea_code(area_code);
                     store.setBrand_code(brand_code);
+                    store.setProvince(province);
+                    store.setCity(city);
+                    store.setArea(area);
+                    store.setStreet(street);
                     if (flg_tob.toUpperCase().equals("N")) {
                         store.setFlg_tob("N");
                     } else {
