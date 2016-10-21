@@ -502,7 +502,11 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String shop_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(storeService.getStoreDetailById(Integer.parseInt(shop_id)));
+            Store store = storeService.getStoreById(Integer.parseInt(shop_id));
+            store.setProvince_location_name(store.getProvince());
+            store.setCity_location_name(store.getCity());
+            store.setArea_location_name(store.getArea());
+            data = JSON.toJSONString(store);
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

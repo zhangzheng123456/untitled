@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Interfacers;
-import com.bizvane.ishop.entity.Sign;
-import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.SignService;
+import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -40,16 +38,15 @@ public class SignController {
     @Autowired
     private SignService signService;
     @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private TableManagerService managerService;
+    private StoreService storeService;
+
     String id;
 
     private static final Logger logger = Logger.getLogger(InterfaceController.class);
 
+    //列表
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    //列表
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -67,7 +64,17 @@ public class SignController {
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
                 list = signService.selectSignByInp(page_number, page_size, corp_code, "","", "", role_code);
-            } else if (role_code.equals(Common.ROLE_SM)) {
+            } else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                String store_code = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                }
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code);
+            }else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
                 list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code);
@@ -92,9 +99,9 @@ public class SignController {
         return dataBean.getJsonStr();
     }
 
+    //条件查询
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
-    //条件查询
     public String search(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -119,6 +126,16 @@ public class SignController {
                 if (role_code.equals(Common.ROLE_GM)) {
                     //企业管理员
                     list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", "", role_code);
+                } else if (role_code.equals(Common.ROLE_BM)) {
+                    //品牌管理员
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                    }
+                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, store_code, "", role_code);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
@@ -142,7 +159,6 @@ public class SignController {
         }
         return dataBean.getJsonStr();
     }
-
 
     /**
      * 删除(用了事务)
@@ -178,8 +194,6 @@ public class SignController {
         return dataBean.getJsonStr();
     }
 
-
-
     /***
      * 导出数据
      */
@@ -206,6 +220,16 @@ public class SignController {
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     //系统管理员
                     list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", "", role_code);
+                } else if (role_code.equals(Common.ROLE_BM)) {
+                    //品牌管理员
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                    }
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, store_code, "", role_code);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
@@ -224,7 +248,17 @@ public class SignController {
                     list = signService.selectSignAllScreen(1, 30000, "", "", "", "", map);
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     list = signService.selectSignAllScreen(1, 30000, corp_code, "", "", "", map);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                }  else if (role_code.equals(Common.ROLE_BM)) {
+                    //品牌管理员
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                    }
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", store_code, role_code, map);
+                }else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = signService.selectSignAllScreen(1, 30000, corp_code, area_code, "", role_code, map);
                 } else if (role_code.equals(Common.ROLE_SM)) {
@@ -297,7 +331,17 @@ public class SignController {
                 list = signService.selectSignAllScreen(page_number, page_size, "", "", "", role_code, map);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", role_code, map);
-            } else if (role_code.equals(Common.ROLE_AM)) {
+            } else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                String store_code = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                }
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map);
+            }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
             } else if (role_code.equals(Common.ROLE_SM)) {

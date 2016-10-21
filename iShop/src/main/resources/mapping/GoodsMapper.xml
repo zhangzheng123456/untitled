@@ -56,6 +56,12 @@
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
         </if>
+        <if test="brand_code!=null and brand_code!=''">
+            AND
+            <foreach collection="brand_code" index="index" item="item" open="(" separator="or" close=")">
+                g.brand_code = #{item}
+            </foreach>
+        </if>
         <if test="search_value!=null and search_value!=''">
             AND
             (g.goods_code LIKE concat('%',#{search_value},'%')
@@ -174,10 +180,19 @@
             (g.goods_code LIKE concat('%',#{search_value},'%')
             OR g.goods_name LIKE concat('%',#{search_value},'%')
             OR g.goods_price LIKE concat('%',#{search_value},'%')
+            OR g.goods_time LIKE concat('%',#{search_value},'%')
+            OR g.goods_quarter LIKE concat('%',#{search_value},'%')
+            OR g.goods_wave LIKE concat('%',#{search_value},'%')
+            OR g.goods_description LIKE concat('%',#{search_value},'%')
+            OR cp.corp_name LIKE concat('%',#{search_value},'%')
+            OR db.brand_name like concat('%',#{search_value},'%')
             )
         </if>
         <if test="brand_code!=null and brand_code!=''">
-            AND g.brand_code = #{brand_code}
+            AND
+            <foreach collection="brand_code" index="index" item="item" open="(" separator="or" close=")">
+                g.brand_code = #{item}
+            </foreach>
         </if>
         AND g.isactive = 'Y'
         AND cp.isactive = 'Y'
@@ -244,6 +259,12 @@
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
+        </if>
+        <if test="brand_code!=null and brand_code!=''">
+            AND
+            <foreach collection="brand_code" index="index" item="item" open="(" separator="or" close=")">
+                g.brand_code = #{item}
+            </foreach>
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">

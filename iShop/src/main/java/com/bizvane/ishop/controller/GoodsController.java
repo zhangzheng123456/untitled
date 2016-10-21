@@ -49,12 +49,7 @@ import java.util.regex.Pattern;
 public class GoodsController {
 
     @Autowired
-    private FunctionService functionService;
-
-    @Autowired
     private GoodsService goodsService;
-    @Autowired
-    private TableManagerService managerService;
     @Autowired
     private CorpService corpService;
     @Autowired
@@ -76,11 +71,18 @@ public class GoodsController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<Goods> list;
+            PageInfo<Goods> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.goodsService.selectBySearch(page_number, page_size, "", "");
+                list = this.goodsService.selectBySearch(page_number, page_size, "", "",null);
             } else {
-                list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = goodsService.selectBySearch(page_number, page_size, corp_code, "",null);
+                }else if (role_code.equals(Common.ROLE_BM)){
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    String[] brands = brand_code.split(",");
+                    list = goodsService.selectBySearch(page_number, page_size, corp_code, "",brands);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
@@ -93,8 +95,6 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
-
-
 
     /***
      * 导出数据
@@ -114,20 +114,33 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
-            PageInfo<Goods> list;
+            PageInfo<Goods> list = null;
             if (screen.equals("")) {
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    list = this.goodsService.selectBySearch(1, 30000, "", search_value);
+                if (role_code.contains(Common.ROLE_SYS)) {
+                    list = goodsService.selectBySearch(1, 30000, "", search_value,null);
                 } else {
-                    //   String corp_code = request.getParameter("corp_code");
-                    list = goodsService.selectBySearch(1, 30000, corp_code, search_value);
+                    if (role_code.equals(Common.ROLE_GM)) {
+                        list = goodsService.selectBySearch(1, 30000, corp_code, search_value,null);
+                    }else if (role_code.equals(Common.ROLE_BM)){
+                        String brand_code = request.getSession().getAttribute("brand_code").toString();
+                        brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                        String[] brands = brand_code.split(",");
+                        list = goodsService.selectBySearch(1, 30000, corp_code, search_value,brands);
+                    }
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.contains(Common.ROLE_SYS)) {
-                    list = goodsService.selectAllGoodsScreen(1, 30000, "", map);
+                    list = goodsService.selectAllGoodsScreen(1, 30000, "", map,null);
                 } else {
-                    list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map);
+                    if (role_code.equals(Common.ROLE_GM)) {
+                        list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,null);
+                    }else if (role_code.equals(Common.ROLE_BM)){
+                        String brand_code = request.getSession().getAttribute("brand_code").toString();
+                        brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                        String[] brands = brand_code.split(",");
+                        list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,brands);
+                    }
                 }
             }
 
@@ -171,6 +184,8 @@ public class GoodsController {
     @ResponseBody
     public String selectBySearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession(false).getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -178,16 +193,22 @@ public class GoodsController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
+
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Goods> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
-                list = goodsService.selectBySearch(page_number, page_size, "", search_value);
+                list = goodsService.selectBySearch(page_number, page_size, "", search_value,null);
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value,null);
+                }else if (role_code.equals(Common.ROLE_BM)){
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    String[] brands = brand_code.split(",");
+                    list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value,brands);
+                }
             }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));
@@ -201,7 +222,6 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
-
 
     /**
      * 商品管理
@@ -227,10 +247,17 @@ public class GoodsController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             PageInfo<Goods> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
-                list = goodsService.selectAllGoodsScreen(page_number, page_size, "", map);
+                list = goodsService.selectAllGoodsScreen(page_number, page_size, "", map,null);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map,null);
+                }else if (role_code.equals(Common.ROLE_BM)){
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    String[] brands = brand_code.split(",");
+                    list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map,brands);
+                }
             }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));
@@ -715,52 +742,6 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
-
-    /**
-     * 商品培训
-     * 查找
-     */
-    @RequestMapping(value = "/fab/find", method = RequestMethod.POST)
-    @ResponseBody
-    public String findGoodsTrain(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String search_value = jsonObject.get("searchValue").toString();
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            PageInfo<Goods> list = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = this.goodsService.selectBySearch(page_number, page_size, "", search_value);
-            } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
-            }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
-            org.json.JSONObject result = new org.json.JSONObject();
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
     /**
      * 商品培训
      * 删除
@@ -793,7 +774,6 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
-
 
     /**
      * 商品管理

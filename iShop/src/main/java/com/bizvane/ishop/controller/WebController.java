@@ -187,7 +187,7 @@ public class WebController {
                 }
                 list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code, "", "", brand_code, "", "", "");
             } else {
-                list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "");
+                list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "",null);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");

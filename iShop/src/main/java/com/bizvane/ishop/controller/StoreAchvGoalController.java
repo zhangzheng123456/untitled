@@ -87,6 +87,16 @@ public class StoreAchvGoalController {
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", "");
+            }else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                String store_code = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                }
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", "", "");
             } else if (role_code.equals(Common.ROLE_AM)) {
@@ -328,7 +338,17 @@ public class StoreAchvGoalController {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", search_value);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", "", search_value);
-            } else if (role_code.equals(Common.ROLE_AM)) {
+            } else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                String store_code = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                }
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, search_value);
+            }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, area_code, "", search_value);
             } else {
@@ -373,7 +393,17 @@ public class StoreAchvGoalController {
                     list = storeAchvGoalService.selectBySearch(1, 30000, "", "", "", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", "", search_value);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_BM)) {
+                    //品牌管理员
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                    }
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value);
+                }else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, area_code, "", search_value);
                 } else {
@@ -386,6 +416,16 @@ public class StoreAchvGoalController {
                     list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, "", "", "", map);
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", "", map);
+                } else if (role_code.equals(Common.ROLE_BM)) {
+                    //品牌管理员
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                    }
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, area_code, "", map);
@@ -641,7 +681,17 @@ public class StoreAchvGoalController {
                 list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, "", "", "", map);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", "", map);
-            } else if (role_code.equals(Common.ROLE_AM)) {
+            } else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                String store_code = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                }
+                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", store_code, map);
+            }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, area_code, "", map);
             } else {

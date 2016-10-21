@@ -116,13 +116,6 @@ public class GoodsServiceImpl implements GoodsService {
                 return Common.DATABEAN_CODE_SUCCESS;
             }
         }
-//        else {
-//            if (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR)) {
-//                return "编号已经存在";
-//            } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-//                return Common.DATABEAN_CODE_SUCCESS;
-//            }
-//        }
         return Common.DATABEAN_CODE_ERROR;
     }
 
@@ -136,10 +129,35 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
+    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception{
         List<Goods> list;
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("corp_code",corp_code);
+        map.put("search_value",search_value);
+        map.put("brand_code",brand_code);
+        map.put("isactive","");
+
         PageHelper.startPage(page_number, page_size);
-        list = goodsMapper.selectAllGoods(corp_code, search_value,"");
+        list = goodsMapper.selectAllGoods(map);
+        for (Goods goods:list) {
+            goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
+//            transter(goods);
+            transterGoods(goods);
+        }
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Goods> selectAllGoodsByBrand(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception{
+        List<Goods> list;
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("corp_code",corp_code);
+        map.put("search_value",search_value);
+        map.put("brand_code",brand_code);
+
+        PageHelper.startPage(page_number, page_size);
+        list = goodsMapper.selectAllGoodsByBrand(map);
         for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
 //            transter(goods);
@@ -180,15 +198,10 @@ public class GoodsServiceImpl implements GoodsService {
         list = goodsMapper.selectAllGoodsForApp(map);
         for (int i = 0; list != null && i < list.size(); i++) {
             transterGoods(list.get(i));
-//            String goods_image = list.get(i).getGoods_image();
-//            if (goods_image != null && !goods_image.isEmpty()) {
-//                list.get(i).setGoods_image(goods_image.split(",")[0]);
-//            }
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
     }
-
 
     @Override
     public PageInfo<Goods> matchGoodsList(int page_number, int page_size,String corp_code, String search_value,String goods_code,String brand_code) throws Exception{
@@ -202,10 +215,12 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
+    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map,String[] brand_code) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("corp_code", corp_code);
+        params.put("brand_code", brand_code);
+
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoodsScreen(params);
