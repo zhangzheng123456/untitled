@@ -88,7 +88,7 @@ public class AreaController {
                 }
                 list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
             } else {
-                if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
@@ -116,24 +116,25 @@ public class AreaController {
 
     /**
      * session企业拉取区域
+     * (包含全部)
      * @param request
      * @return
      */
     @RequestMapping(value = "/findAreaByCorpCode", method = RequestMethod.POST)
     @ResponseBody
     public String findAreaByCorpCode(HttpServletRequest request) {
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code =request.getSession().getAttribute("corp_code").toString();
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String corp_code =request.getSession().getAttribute("corp_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
             PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -141,13 +142,28 @@ public class AreaController {
                 if (jsonObject.has("corp_code"))
                     corp_code = jsonObject.get("corp_code").toString();
                 list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+                List<Area> areas = new ArrayList<Area>();
+                Area area = new Area();
+                area.setArea_code("");
+                area.setArea_name("全部");
+                area.setCorp_code("");
+                area.setCorp_name("");
+                area.setCreated_date("");
+                area.setCreater("");
+                area.setId(0);
+                area.setIsactive("");
+                area.setModified_date("");
+                area.setModifier("");
+                areas.add(0,area);
+                areas.addAll(list.getList());
+                list.setList(areas);
             } else {
-                if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
                     List<Area> areas = new ArrayList<Area>();
                     Area area = new Area();
                     area.setArea_code("");
-                    area.setArea_name("");
+                    area.setArea_name("全部");
                     area.setCorp_code("");
                     area.setCorp_name("");
                     area.setCreated_date("");
@@ -438,7 +454,7 @@ public class AreaController {
                 list = areaService.getAllAreaByPage(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", search_value);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     // list = areaService.getAllAreaByPage(page_number, page_size, corp
@@ -798,7 +814,7 @@ public class AreaController {
                 list = areaService.getAllAreaScreen(page_number, page_size, "", "", map);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
                     list = areaService.getAllAreaScreen(page_number, page_size, corp_code, "", map);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();

@@ -66,12 +66,35 @@ var isscroll=false;
                 var STORE_NAME = $("#STORE_NAME").val();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var store_id = $("#storeId").val();
-                var address = $("#STORE_address").attr("data-code");
-                    address = address.split(",");
-                var province = address[0];//获取省份code
-                var city = address[1];//获取市code
-                var area = address[2];//获取县区code
-                var street = address[3];//获取街道值
+                var location = $("#show_map").attr("data-location");
+                var province="";
+                var city = "";
+                var area = "";
+                var street = "";
+                var address = $("#STORE_address").val();
+                address = address.split("/");
+                if(location==undefined){
+                    location="";
+                }
+                if(address.length > 0 && address[0] !== ""){
+                    province = address[0];//获取省份code
+                    city = address[1];//获取市code
+                    area = address[2];//获取县区code
+                    street = address[3];//获取街道值
+                }
+                if(city == undefined){
+                    console.log(address);
+                    console.log(city);
+                    alert("您还没选择城市");
+                    return ;
+                }
+                if(area == undefined){
+                    alert("您还没选择县区");
+                    return ;
+                }
+                if(street == undefined){
+                    street = "";
+                }
                 //var OWN_AREA = $("#OWN_AREA").attr("data-myacode");
                 //var OWN_BRAND = $("#OWN_BRAND").attr("data-mybcode");
                 var a=$('#OWN_AREA_All input');
@@ -142,6 +165,7 @@ var isscroll=false;
                     "city":city,
                     "area":area,
                     "street":street,
+                    "store_location":location,
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
@@ -185,13 +209,36 @@ var isscroll=false;
                 var STORE_NAME = $("#STORE_NAME").val();
                 var is_zhiying = $("#FLG_TOB").val();
                 var a=$('#OWN_AREA_All input');
+                var location = $("#show_map").attr("data-location");
                 var AREA_CODE="";
-                var address = $("#STORE_address").attr("data-code");
-                address = address.split(",");
-                var province = address[0];//获取省份code
-                var city = address[1];//获取市code
-                var area = address[2];//获取县区code
-                var street = address[3];//获取街道值
+                var province="";
+                var city = "";
+                var area = "";
+                var street = "";
+                var address = $("#STORE_address").val();
+                address = address.split("/");
+                if(location==undefined){
+                    location="";
+                }
+                if(address.length > 0 && address[0] !== ""){
+                    province = address[0];//获取省份code
+                    city = address[1];//获取市code
+                    area = address[2];//获取县区code
+                    street = address[3];//获取街道值
+                }
+                if(city == undefined){
+                    console.log(address);
+                    console.log(city);
+                    alert("您还没选择城市");
+                    return ;
+                }
+                if(area == undefined){
+                    alert("您还没选择县区");
+                    return ;
+                }
+                if(street == undefined){
+                    street = "";
+                }
                 for(var i=0;i<a.length;i++){
                     var u=$(a[i]).attr("data-code");
                     if(i<a.length-1){
@@ -276,6 +323,7 @@ var isscroll=false;
                     "city":city,
                     "area":area,
                     "street":street,
+                    "store_location":location,
                     "store_id": store_id,
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
@@ -405,8 +453,19 @@ jQuery(document).ready(function () {
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
                 $("#storeId").attr("data-name", msg.store_id);
-                var address_code=msg.province+','+msg.city+','+msg.area+','+msg.street;
-                var address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name+'/'+msg.street;
+                $("#show_map").attr("data-location",msg.store_location);
+                var address_code = "";
+                var address = "";
+                if(msg.province_location_name!==""){
+                    if(msg.street == ""){
+                        address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name;
+                        address_code=msg.province+','+msg.city+','+msg.area;
+                    }else {
+                        address=msg.province_location_name+'/'+msg.city_location_name+'/'+msg.area_location_name+'/'+msg.street;
+                        address_code=msg.province+','+msg.city+','+msg.area+','+msg.street;
+                    }
+                }
+                $("#STORE_address").attr("title",address);
                 $("#STORE_address").attr("data-code",address_code);
                 $("#STORE_address").val(address);
                 //$("#OWN_AREA").val(msg.area_name);
@@ -976,6 +1035,11 @@ $("#screen_que_area").click(function(){
         } else {
             $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
         }
+        if($(e.target).is('#STORE_address') || $(e.target).is('.address_container a') || $(e.target).is('.dl_box dl dd') || $(e.target).is('.address_content') || $(e.target).is('#enter') ||$(e.target).is('.drop') ||$(e.target).is('#show_map .BMap_mask')||$(e.target).is("#show_map .BMap_Marker")){
+            return ;
+        } else {
+            $(".address_container").hide();
+        }
     });
     $(".corp_select").click(function () {
         $("#OWN_AREA").val('');
@@ -986,8 +1050,12 @@ $("#screen_que_area").click(function(){
         checknow_data = [];
         checknow_namedata = [];
     });
-    $("#STORE_address").click(function () {
-        $(".address_container").show();
+    $(".drop").click(function () {
+        if($(".address_container").css("display")=="none"){
+            $(".address_container").show();
+        }else {
+            $(".address_container").hide();
+        }
     })
     getProvince();
 });
@@ -1170,6 +1238,8 @@ function getProvince() {
             }
             $("#province a").click(function () {
                 var val=$(this).html();
+                var j=$(this).index();
+                var location = msg[j].lat+","+msg[j].lng;
                 $(this).addClass("current");
                 $(this).siblings().removeClass("current");
                 $("#address_nav a:nth-child(2)").trigger("click");
@@ -1177,6 +1247,7 @@ function getProvince() {
                 getCity();
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",$(this).attr("data-code"));
+                $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1194,6 +1265,8 @@ function getCity() {
                 $("#city dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
             }
             $("#city a").click(function () {
+                var j=$(this).index();
+                var location = msg[j].lat+","+msg[j].lng;
                 var val=$("#province .current").html();
                     val+='/'+$(this).html();
                 var data_code = $("#province .current").attr("data-code")+','+$(this).attr("data-code");
@@ -1203,6 +1276,7 @@ function getCity() {
                 getCounty();
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",data_code);
+                $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1220,6 +1294,8 @@ function getCounty() {
                 $("#county dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
             }
             $("#county a").click(function () {
+                var j=$(this).index();
+                var location = msg[j].lat+","+msg[j].lng;
                 var val=$("#province .current").html()+'/'+$("#city .current").html()+'/'+$(this).html();
                 var data_code = $("#province .current").attr("data-code")+','+$("#city .current").attr("data-code")+','+$(this).attr("data-code");
                 $(this).addClass("current");
@@ -1227,6 +1303,7 @@ function getCounty() {
                 $("#address_nav a:nth-child(3)").trigger("click");
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",data_code);
+                $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1243,9 +1320,12 @@ $("#address_nav a").click(function () {
 //添加街道
 $("#enter").click(function () {
     var val = $(".street").val().trim();
-    var input = $("#province .current").html()+'/'+$("#city .current").html()+'/'+$("#county .current").html();
-    var current = $("#county .current").html();
-    var data_code = $("#province .current").attr("data-code")+','+$("#city .current").attr("data-code")+','+$("#county .current").attr("data-code");
+    var input = $("#STORE_address").val();
+    var input_l =  input.split("/");
+        input = input_l[0]+'/'+input_l[1]+'/'+input_l[2];
+    // var input = $("#province .current").html()+'/'+$("#city .current").html()+'/'+$("#county .current").html();
+    var current = input_l[2];
+    var data_code = $("#STORE_address").attr("data-code");
     if(current==undefined){
         alert("您还没选择县区");
     }else {
@@ -1258,5 +1338,96 @@ $("#enter").click(function () {
             $("#STORE_address").val(input);
             $("#STORE_address").attr("data-code",data_code);
         }
+    }
+})
+//创建地图
+$("#address_nav a:last-child").click(function () {
+    var map = new BMap.Map("show_map");
+    var location_detail = $("#show_map").attr("data-location");
+    var point;
+    if(location_detail==undefined || location_detail==""){
+         point = new BMap.Point(116.404, 39.915);
+        function myFun(result){
+            var cityName = result.name;
+            map.setCenter(cityName);
+        }
+        var myCity = new BMap.LocalCity();
+        myCity.get(myFun);
+    }else {
+        location_detail=location_detail.split(",");
+         point = new BMap.Point(location_detail[1], location_detail[0]);
+    }
+    map.centerAndZoom(point, 15);
+    var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
+    map.addControl(new BMap.NavigationControl(opts));
+    var marker = new BMap.Marker(point); //创建marker对象
+    map.addOverlay(marker);
+    marker.enableDragging(); //marker可拖拽
+    map.enableScrollWheelZoom();
+    map.addEventListener("click",function(e){
+        console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+        map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+        var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+        var location =e.point.lat+","+e.point.lng;
+        marker.setPosition(now_point);//设置覆盖物位置
+        $("#show_map").attr("data-location",location);
+    });
+    marker.addEventListener("dragend", function(){
+        var o_Point_now =  marker.getPosition();
+        var lng = o_Point_now.lng;//获取经度
+        var lat = o_Point_now.lat;//获取纬度
+        var location = lat+","+lng;
+        map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+        $("#show_map").attr("data-location",location);
+    })
+    function G(id) {
+        return document.getElementById(id);
+    }
+    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+        {"input" : "suggestId"
+            ,"location" : map
+        });
+
+    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+        var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+        value = "";
+        if (e.toitem.index > -1) {
+            _value = e.toitem.value;
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+        G("searchResultPanel").innerHTML = str;
+    });
+
+    var myValue;
+    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+        var _value = e.item.value;
+        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+        setPlace();
+    });
+
+    function setPlace(){
+        map.clearOverlays();    //清除地图上所有覆盖物
+        function myFun(){
+            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+            var location = marker.getPosition();
+                location = location.lat+","+location.lng;
+            $("#show_map").attr("data-location",location);
+            map.centerAndZoom(pp, 18);
+            map.addOverlay(new BMap.Marker(pp));    //添加标注
+        }
+        var local = new BMap.LocalSearch(map, { //智能搜索
+            onSearchComplete: myFun
+        });
+        local.search(myValue);
     }
 })

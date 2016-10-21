@@ -342,6 +342,16 @@ $("#back_vip_group_1").click(function(){
 //绑定单击事件
 //新增
 $('#screen_add').on('click',function(){
+    var a=$('#vip_num').val();
+    var b=$('#vip_id').val();
+    if($('#vip_num').val()==''){
+        $('#vip_num').next().find('div').addClass('error_tips').html('分组编号不能为空！');
+        return
+    }
+    if($('#vip_id').val()==''){
+        $('#vip_id').next().find('div').addClass('error_tips').html('分组名称不能为空！');
+        return
+    }
     var str=$('#screen_add').text().trim();
     str=='编辑会员'&&( role='eidtor');
     group_code=$("#vip_num").val();
@@ -350,6 +360,8 @@ $('#screen_add').on('click',function(){
     GET(1,10,group_code);//第三个参数  分组编号
     $('#page-wrapper')[0].style.display='none';
     $('.content')[0].style.display='block';
+    $('#group_id').val(a);
+    $('#group_name').val(b);
 });
 //进入页面后保存操作
 $("#save").click(function(){
@@ -708,20 +720,20 @@ var staff_next=false;
 $("#filtrate").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_wrapper").width())/2;
-    var tp=(arr[1]-$("#screen_wrapper").height())/2;
+    var tp=(arr[3]-$("#screen_wrapper").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_wrapper").show();
+    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    console.log(123123);
 })
 //点击筛选会员的所属区域
 $("#screen_areal").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_area").show();
     var area_num=1
@@ -734,11 +746,10 @@ $("#screen_areal").click(function(){
 $("#screen_brandl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_wrapper").hide();
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_brand").show();
     if($("#screen_brand .screen_content_l ul li").length>1){
         return;
@@ -749,10 +760,10 @@ $("#screen_brandl").click(function(){
 $("#screen_shopl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_shop").show();
     $("#screen_shop .screen_content_l ul").empty();
@@ -763,10 +774,10 @@ $("#screen_shopl").click(function(){
 $("#screen_staffl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_staff").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_staff").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_staff").show();
     $("#screen_staff .screen_content_l ul").empty();
@@ -787,10 +798,10 @@ $(".screen_content").on("click","li",function(){
 $("#shop_area").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+80;
+    var tp=(arr[3]-$("#screen_shop").height())/2+30;
     $("#screen_shop").hide();
     $("#screen_area").show();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     var area_num=1;
     $("#screen_area .screen_content_l ul").empty();
     // $("#screen_area .screen_content_r ul").empty();
@@ -802,10 +813,10 @@ $("#shop_area").click(function(){
 $("#shop_brand").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+80;
+    var tp=(arr[3]-$("#screen_shop").height())/2+30;
     $("#screen_shop").hide();
     $("#screen_brand").show();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_brand .screen_content_l ul").empty();
     // $("#screen_brand .screen_content_r ul").empty();
     getbrandlist();
@@ -1193,8 +1204,9 @@ function getstorelist(a){
     _param['pageSize']=pageSize;
     whir.loading.add("",0.5);//加载等待框
     $("#mask").css("z-index","10002");
-    oc.postRequire("post","/user/stores","", _param, function(data) {
-        if (data.code == "0") {
+    // oc.postRequire("post","/user/stores","", _param, function(data) {
+    oc.postRequire("post","/shop/selectByAreaCode","", _param, function(data) {
+            if (data.code == "0") {
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
@@ -1292,12 +1304,6 @@ function getbrandlist(){
                 }
 
                 $("#screen_brand .screen_content_l ul").append(brand_html_left);
-            }
-            if($("#screen_brand .screen_content_r ul li").length<=0){
-                for(var i=0;i<9;i++){
-                    brand_html_right+="<li></li>";
-                }
-                $("#screen_brand .screen_content_r ul").html(brand_html_right);
             }
             bianse();
             whir.loading.remove();//移除加载框

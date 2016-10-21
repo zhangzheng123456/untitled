@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" href="../table/css/inner.css">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa"></script>
     <style>
         body{
             margin-top:81px;
@@ -60,10 +61,10 @@
                     <div>
                         <span><label>店铺名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店铺名称不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down">
+                    <div>
                         <span>
                             <label style="margin-right: 15px;">店铺地址</label>
-                            <input type="text" id="STORE_address">
+                            <span class="input_box"><input type="text" id="STORE_address" data-code="" readonly/><i class="drop"></i></span>
                             <div class="address_container">
                                 <div class="address_nav_box">
                                     <div class="address_nav" id="address_nav">
@@ -71,6 +72,7 @@
                                         <a>城市</a>
                                         <a>县区</a>
                                         <a>街道</a>
+                                        <a>地图</a>
                                     </div>
                                 </div>
                                 <div class="address_content">
@@ -109,8 +111,13 @@
                                         </dl>
                                     </div>
                                     <div class="dl_box">
-                                        <input type="text" placeholder="请输入街道地址" class="street">
+                                        <input type="text" placeholder="请输入街道地址" maxlength="30" class="street">
                                         <span class="enter" id="enter">确定</span>
+                                    </div>
+                                    <div class="dl_box">
+                                        <div id="show_map"></div>
+                                        <input type="text" id="suggestId" size="20" placeholder="输入地址" style="width:380px;margin-top: 22px;border: 1px solid #888888;" />
+                                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
                                     </div>
                                 </div>
                             </div>

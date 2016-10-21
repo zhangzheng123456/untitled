@@ -74,6 +74,15 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				if(brand_code==""||brand_code==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"品牌不能为空"
+					});
+					return;
+				}
 				if(GOODS_RELEASETIME==""){
 					art.dialog({
 						time: 1,
@@ -194,6 +203,15 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				if(brand_code==""||brand_code==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"品牌不能为空"
+					});
+					return;
+				}
 				if(GOODS_RELEASETIME==""){
 					art.dialog({
 						time: 1,
@@ -291,9 +309,16 @@ var oc = new ObjectControl();
 		});
 	};
 	fabjs.ajaxSubmit=function(_command,_params,opt){
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:"保存成功"
+				});
+				// $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -302,6 +327,7 @@ var oc = new ObjectControl();
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
@@ -418,7 +444,7 @@ jQuery(document).ready(function(){
 						+	'</li>';
 					// }
 				}
-				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
+				$(".good_imgs .parentFileBox .fileBoxUl").prepend(img_html);
 				var corp_code=msg.corp_code;//公司编号
 				var brand_code=msg.brand_code;//品牌编号
 				$("#GOODS_CODE").val(msg.goods_code);
@@ -552,7 +578,8 @@ function getcorplist(a,b){
 					getvarbrandlist(c,b);
 					$("#GOODS_CODE").val("");
 					$("#GOODS_CODE").attr("data-mark","");
-					$(".good_imgs .parentFileBox .fileBoxUl").empty();
+					// $(".good_imgs .parentFileBox .fileBoxUl").empty();
+					$(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
 					$("#search_match_goods ul").empty();
 					$("#search").empty();
 					$(".match_goods ul").empty();
@@ -564,7 +591,8 @@ function getcorplist(a,b){
 				getvarbrandlist(c,b);
 				$("#GOODS_CODE").val("");
 				$("#GOODS_CODE").attr("data-mark","");
-				$(".good_imgs .parentFileBox .fileBoxUl").empty();
+				// $(".good_imgs .parentFileBox .fileBoxUl").empty();
+				$(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
 				$("#search_match_goods ul").empty();
 				$("#search").empty();
 				$(".match_goods ul").empty();
@@ -675,8 +703,8 @@ function getmatchgoodsList(a) {
 	param["goods_code"]=goods_code;
 	param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
-	param["searchValue"]=searchValue;
-	whir.loading.add("",0.5);//加载等待框
+	param["searchValue"]=searchValue;whir.loading.add("",0.5);//加载等待框
+	
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
@@ -770,5 +798,4 @@ function public_click(a) {
 	}
 }
 //
-console.log($('.add_new_touxiang').prev().html());
 

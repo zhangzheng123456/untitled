@@ -57,6 +57,7 @@ jQuery(function(){
 		$("#guide").hide();
 		$("#cover").hide();
 		$("html").removeClass("sift-move");
+		$("body").removeClass("sift-move");
 		var brand=$("#brand .list .active");
 		var quarter=$("#goods_quarter .list .active");
 		var wave=$("#waves .list .active");

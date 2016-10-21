@@ -1686,8 +1686,9 @@ function getstorelist(a,b,c){
     _param['pageSize']=pageSize;
     whir.loading.add("",0.5);//加载等待框
     $("#mask").css("z-index","10002");
-    oc.postRequire("post","/user/stores","", _param, function(data) {
-        if (data.code == "0") {
+    // oc.postRequire("post","/user/stores","", _param, function(data) {
+    oc.postRequire("post","/shop/selectByAreaCode","", _param, function(data) {
+            if (data.code == "0") {
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
@@ -1792,13 +1793,6 @@ function getbrandlist(a){
 
                 $("#screen_brand .screen_content_l ul").append(brand_html_left);
                 $("#choose_brand .screen_content_l ul").html(brand_html_left);
-            }
-            if($("#screen_brand .screen_content_r ul li").length<=0){
-                for(var i=0;i<9;i++){
-                    brand_html_right+="<li></li>";
-                }
-                $("#screen_brand .screen_content_r ul").html(brand_html_right);
-                $("#choose_brand .screen_content_r ul").html(brand_html_right);
             }
             bianse();
             whir.loading.remove();//移除加载框

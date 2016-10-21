@@ -37,6 +37,7 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
     public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         JSONObject date = JSONObject.parseObject(map.get("created_date"));
+
         JSONObject time_count = JSONObject.parseObject(map.get("time"));
         String type=time_count.get("type").toString();
         String value=time_count.get("value").toString();

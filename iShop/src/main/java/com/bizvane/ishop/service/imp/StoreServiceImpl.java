@@ -67,6 +67,8 @@ public class StoreServiceImpl implements StoreService {
 
         StringBuilder brand_name = new StringBuilder("");
         StringBuilder area_name = new StringBuilder("");
+        StringBuilder brand_code1 = new StringBuilder("");
+        StringBuilder area_code1 = new StringBuilder("");
         String brand_code = store.getBrand_code();
         String area_code = store.getArea_code();
 
@@ -80,9 +82,11 @@ public class StoreServiceImpl implements StoreService {
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
                     brand_name.append(brand_name1+",");
+                    brand_code1.append(ids[i]+",");
                 }
             }
             String brand_name1 = brand_name.toString();
+            brand_code = brand_code1.toString();
             if (brand_name1.endsWith(","))
                 brand_name1 = brand_name1.substring(0,brand_name1.length()-1);
             store.setBrand_name(brand_name1);
@@ -101,9 +105,11 @@ public class StoreServiceImpl implements StoreService {
                 if (area != null) {
                     String area_name1 = area.getArea_name();
                     area_name.append(area_name1+",");
+                    area_code1.append(ids[i]+",");
                 }
             }
             String area_name1 = area_name.toString();
+            area_code = area_code1.toString();
             if (area_name1.endsWith(","))
                 area_name1 = area_name1.substring(0,area_name1.length()-1);
             store.setArea_name(area_name1);
@@ -163,6 +169,8 @@ public class StoreServiceImpl implements StoreService {
 
         StringBuilder brand_name = new StringBuilder("");
         StringBuilder area_name = new StringBuilder("");
+        StringBuilder brand_code1 = new StringBuilder("");
+        StringBuilder area_code1 = new StringBuilder("");
         String brand_code = store.getBrand_code();
         String area_code = store.getArea_code();
 
@@ -176,9 +184,11 @@ public class StoreServiceImpl implements StoreService {
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
                     brand_name.append(brand_name1+",");
+                    brand_code1.append(ids[i]+",");
                 }
             }
             String brand_name1 = brand_name.toString();
+            brand_code = brand_code1.toString();
             if (brand_name1.endsWith(","))
                 brand_name1 = brand_name1.substring(0,brand_name1.length()-1);
             store.setBrand_name(brand_name1);
@@ -197,9 +207,11 @@ public class StoreServiceImpl implements StoreService {
                 if (area != null) {
                     String area_name1 = area.getArea_name();
                     area_name.append(area_name1+",");
+                    area_code1.append(ids[i]+",");
                 }
             }
             String area_name1 = area_name.toString();
+            area_code = area_code1.toString();
             if (area_name1.endsWith(","))
                 area_name1 = area_name1.substring(0,area_name1.length()-1);
             store.setArea_name(area_name1);
@@ -424,7 +436,9 @@ public class StoreServiceImpl implements StoreService {
             shop.setCity(jsonObject.get("city").toString().trim());
             shop.setArea(jsonObject.get("area").toString().trim());
             shop.setStreet(jsonObject.get("street").toString().trim());
-
+            if (jsonObject.has("store_location")){
+                shop.setStore_location(jsonObject.get("store_location").toString().trim());
+            }
             Date now = new Date();
             shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
             shop.setCreater(user_id);
@@ -627,6 +641,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setCity(jsonObject.get("city").toString().trim());
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
+                if (jsonObject.has("store_location")){
+                    store.setStore_location(jsonObject.get("store_location").toString().trim());
+                }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
@@ -663,6 +680,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setCity(jsonObject.get("city").toString().trim());
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
+                if (jsonObject.has("store_location")){
+                    store.setStore_location(jsonObject.get("store_location").toString().trim());
+                }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
@@ -801,10 +821,11 @@ public class StoreServiceImpl implements StoreService {
         return stores;
     }
 
-    public List<Store> selectByAreaBrand(String corp_code, String[] area_code, String isactive) throws Exception{
+    public List<Store> selectByAreaBrand(String corp_code, String[] area_code, String[] brand_code, String isactive) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
+        params.put("brand_code", brand_code);
         params.put("search_value", "");
         params.put("isactive", isactive);
         List<Store> stores = storeMapper.selectByAreaBrand(params);

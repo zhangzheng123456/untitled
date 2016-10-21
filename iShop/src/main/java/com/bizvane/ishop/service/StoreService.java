@@ -72,7 +72,7 @@ public interface StoreService {
 
     List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value) throws Exception ;
 
-    List<Store> selectByAreaBrand(String corp_code, String[] area_code, String isactive) throws Exception;
+    List<Store> selectByAreaBrand(String corp_code, String[] area_code, String[] brand_code, String isactive) throws Exception;
 
     List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception;
 

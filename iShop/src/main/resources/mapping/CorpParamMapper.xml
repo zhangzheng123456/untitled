@@ -29,7 +29,6 @@
             AND
             (rcc.corp_code like concat('%',#{search_value},'%')
             OR dc.corp_name like concat('%',#{search_value},'%')
-            OR dcc.param_name like concat('%',#{search_value},'%')
             OR rcc.param_value like concat('%',#{search_value},'%')
             OR dcc.param_desc like concat('%',#{search_value},'%')
             OR rcc.remark like concat('%',#{search_value},'%')
