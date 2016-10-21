@@ -66,12 +66,16 @@ var isscroll=false;
                 var STORE_NAME = $("#STORE_NAME").val();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var store_id = $("#storeId").val();
+                var location = $("#show_map").attr("data-location");
                 var province="";
                 var city = "";
                 var area = "";
                 var street = "";
                 var address = $("#STORE_address").attr("data-code");
                 address = address.split(",");
+                if(location==undefined){
+                    location="";
+                }
                 if(address.length > 0 && address[0] !== ""){
                     province = address[0];//获取省份code
                     city = address[1];//获取市code
@@ -161,6 +165,7 @@ var isscroll=false;
                     "city":city,
                     "area":area,
                     "street":street,
+                    "store_location":location,
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
@@ -204,6 +209,7 @@ var isscroll=false;
                 var STORE_NAME = $("#STORE_NAME").val();
                 var is_zhiying = $("#FLG_TOB").val();
                 var a=$('#OWN_AREA_All input');
+                var location = $("#show_map").attr("data-location");
                 var AREA_CODE="";
                 var province="";
                 var city = "";
@@ -211,6 +217,9 @@ var isscroll=false;
                 var street = "";
                 var address = $("#STORE_address").attr("data-code");
                 address = address.split(",");
+                if(location==undefined){
+                    location="";
+                }
                 if(address.length > 0 && address[0] !== ""){
                     province = address[0];//获取省份code
                     city = address[1];//获取市code
@@ -314,6 +323,7 @@ var isscroll=false;
                     "city":city,
                     "area":area,
                     "street":street,
+                    "store_location":location,
                     "store_id": store_id,
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
@@ -443,6 +453,7 @@ jQuery(document).ready(function () {
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
                 $("#storeId").attr("data-name", msg.store_id);
+                $("#show_map").attr("data-location",msg.store_location);
                 var address_code = "";
                 var address = "";
                 if(msg.province_location_name!==""){
@@ -1227,6 +1238,8 @@ function getProvince() {
             }
             $("#province a").click(function () {
                 var val=$(this).html();
+                var j=$(this).index();
+                var location = msg[j].lat+","+msg[j].lng;
                 $(this).addClass("current");
                 $(this).siblings().removeClass("current");
                 $("#address_nav a:nth-child(2)").trigger("click");
@@ -1234,6 +1247,7 @@ function getProvince() {
                 getCity();
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",$(this).attr("data-code"));
+                $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1251,6 +1265,8 @@ function getCity() {
                 $("#city dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
             }
             $("#city a").click(function () {
+                var j=$(this).index();
+                var location = msg[j].lat+","+msg[j].lng;
                 var val=$("#province .current").html();
                     val+='/'+$(this).html();
                 var data_code = $("#province .current").attr("data-code")+','+$(this).attr("data-code");
@@ -1260,6 +1276,7 @@ function getCity() {
                 getCounty();
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",data_code);
+                $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1277,6 +1294,8 @@ function getCounty() {
                 $("#county dl dd").append('<a title="'+msg[i].short_name+'" data-code="'+msg[i].location_code+'" href="javascript:;">'+msg[i].short_name+'</a>');
             }
             $("#county a").click(function () {
+                var j=$(this).index();
+                var location = msg[j].lat+","+msg[j].lng;
                 var val=$("#province .current").html()+'/'+$("#city .current").html()+'/'+$(this).html();
                 var data_code = $("#province .current").attr("data-code")+','+$("#city .current").attr("data-code")+','+$(this).attr("data-code");
                 $(this).addClass("current");
@@ -1284,6 +1303,7 @@ function getCounty() {
                 $("#address_nav a:nth-child(3)").trigger("click");
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",data_code);
+                $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1323,13 +1343,91 @@ $("#enter").click(function () {
 //创建地图
 $("#address_nav a:last-child").click(function () {
     var map = new BMap.Map("show_map");
-    var point = new BMap.Point(116.404, 39.915);
+    var location_detail = $("#show_map").attr("data-location");
+    var point;
+    if(location_detail==undefined || location_detail==""){
+         point = new BMap.Point(116.404, 39.915);
+        function myFun(result){
+            var cityName = result.name;
+            map.setCenter(cityName);
+        }
+        var myCity = new BMap.LocalCity();
+        myCity.get(myFun);
+    }else {
+        location_detail=location_detail.split(",");
+         point = new BMap.Point(location_detail[1], location_detail[0]);
+    }
     map.centerAndZoom(point, 15);
     var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
     map.addControl(new BMap.NavigationControl(opts));
-    map = new BMap.Map("#show_map",{enableMapClick:false});
+    var marker = new BMap.Marker(point); //创建marker对象
+    map.addOverlay(marker);
+    marker.enableDragging(); //marker可拖拽
+    map.enableScrollWheelZoom();
     map.addEventListener("click",function(e){
         console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
         map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+        var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+        var location =e.point.lat+","+e.point.lng;
+        marker.setPosition(now_point);//设置覆盖物位置
+        $("#show_map").attr("data-location",location);
     });
+    marker.addEventListener("dragend", function(){
+        var o_Point_now =  marker.getPosition();
+        var lng = o_Point_now.lng;//获取经度
+        var lat = o_Point_now.lat;//获取纬度
+        var location = lat+","+lng;
+        map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+        $("#show_map").attr("data-location",location);
+    })
+    function G(id) {
+        return document.getElementById(id);
+    }
+    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+        {"input" : "suggestId"
+            ,"location" : map
+        });
+
+    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+        var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+        value = "";
+        if (e.toitem.index > -1) {
+            _value = e.toitem.value;
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+        G("searchResultPanel").innerHTML = str;
+    });
+
+    var myValue;
+    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+        var _value = e.item.value;
+        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+        setPlace();
+    });
+
+    function setPlace(){
+        map.clearOverlays();    //清除地图上所有覆盖物
+        function myFun(){
+            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+            var location = marker.getPosition();
+                location = location.lat+","+location.lng;
+            $("#show_map").attr("data-location",location);
+            map.centerAndZoom(pp, 18);
+            map.addOverlay(new BMap.Marker(pp));    //添加标注
+        }
+        var local = new BMap.LocalSearch(map, { //智能搜索
+            onSearchComplete: myFun
+        });
+        local.search(myValue);
+    }
 })
