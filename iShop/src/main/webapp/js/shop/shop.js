@@ -466,7 +466,7 @@ jQuery(document).ready(function () {
                     }
                 }
                 $("#STORE_address").attr("title",address);
-                $("#STORE_address").attr("data-code",address_code);
+                // $("#STORE_address").attr("data-code",address_code);
                 $("#STORE_address").val(address);
                 //$("#OWN_AREA").val(msg.area_name);
                 //$("#OWN_AREA").attr("data-myacode", msg.area_code);
