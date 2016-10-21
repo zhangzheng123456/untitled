@@ -457,6 +457,7 @@ public class UserServiceImpl implements UserService {
 
                 request.getSession().setAttribute("user_id", user_id);
                 request.getSession().setAttribute("user_code", user_code);
+                request.getSession().setAttribute("phone", phone);
                 request.getSession().setAttribute("corp_code", corp_code);
                 request.getSession().setAttribute("role_code", role_code);
                 request.getSession().setAttribute("group_code", group_code);

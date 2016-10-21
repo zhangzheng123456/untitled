@@ -73,7 +73,6 @@
                                         <a>县区</a>
                                         <a>街道</a>
                                         <a>地图</a>
-                                        <a>街道</a>
                                     </div>
                                 </div>
                                 <div class="address_content">
@@ -115,7 +114,11 @@
                                         <input type="text" placeholder="请输入街道地址" maxlength="30" class="street">
                                         <span class="enter" id="enter">确定</span>
                                     </div>
-                                    <div class="dl_box" id="show_map"></div>
+                                    <div class="dl_box">
+                                        <div id="show_map"></div>
+                                        <input type="text" id="suggestId" size="20" placeholder="输入地址" style="width:380px;margin-top: 22px;border: 1px solid #888888;" />
+                                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </span>
