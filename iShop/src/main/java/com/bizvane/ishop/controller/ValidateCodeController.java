@@ -59,17 +59,17 @@ public class ValidateCodeController {
         DataBean dataBean = new DataBean();
         String role_code = request.getSession().getAttribute("role_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String phone = request.getSession().getAttribute("phone").toString();
 
         try {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONObject result = new JSONObject();
             PageInfo<ValidateCode> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
+            if (role_code.equals(Common.ROLE_SYS) || phone.equals("18900001111")) {
                 list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
             }else {
                 list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, "");
-
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -90,6 +90,7 @@ public class ValidateCodeController {
         DataBean dataBean = new DataBean();
         String role_code = request.getSession().getAttribute("role_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String phone = request.getSession().getAttribute("phone").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -102,11 +103,10 @@ public class ValidateCodeController {
             String search_value = jsonObject.get("searchValue").toString();
 
             PageInfo<ValidateCode> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = validateCodeService.selectAllValidateCode(page_number, page_size, search_value);
+            if (role_code.equals(Common.ROLE_SYS) || phone.equals("18900001111")) {
+                list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
             }else {
-                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, search_value);
-
+                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, "");
             }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
