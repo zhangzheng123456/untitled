@@ -1794,13 +1794,6 @@ function getbrandlist(a){
                 $("#screen_brand .screen_content_l ul").append(brand_html_left);
                 $("#choose_brand .screen_content_l ul").html(brand_html_left);
             }
-            if($("#screen_brand .screen_content_r ul li").length<=0){
-                for(var i=0;i<9;i++){
-                    brand_html_right+="<li></li>";
-                }
-                $("#screen_brand .screen_content_r ul").html(brand_html_right);
-                $("#choose_brand .screen_content_r ul").html(brand_html_right);
-            }
             bianse();
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {

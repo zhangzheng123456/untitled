@@ -783,13 +783,16 @@ input::-webkit-input-placeholder{
 }
 #file_list_l{
 	width: 42%;
-	min-height:30px;
+	height:200px;
 	float: left;
 	margin-right: 15.7%;
+	background:url("../../img/bjs.png");
 }
 #file_list_r{
 	width: 42%;
+	height: 200px;
 	float: left;
+	background:url("../../img/bjs.png");
 }
 #file_list_z{
 	width: 15.7%;
@@ -1248,6 +1251,7 @@ input::-webkit-input-placeholder{
 }
 .screen_area .screen_content .screen_content_r{
 	width: 310px;
+	background:url("../../img/bjs.png");
 }
 .screen_area .screen_content .screen_content_z{
 	width: 80px;
@@ -1256,6 +1260,7 @@ input::-webkit-input-placeholder{
 }
 .screen_area .screen_content .screen_content_l{
 	width: 310px;
+	background:url("../../img/bjs.png");
 }
 .screen_area .screen_content .screen_content_l li,.screen_area .screen_content .screen_content_r li{
 	width: 100%;

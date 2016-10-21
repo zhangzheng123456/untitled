@@ -195,19 +195,28 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				if(r_code=="R2000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R3000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R4000"){
 	            	_params["store_code"]=""//店铺编号
 	            	_params["area_code"]=STORE_CODE;//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }
 	            else if(r_code=="R5000"){
 	            	_params["store_code"]=""//店铺编号
 	            	_params["area_code"]=""//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R6000"){
 	            	_params["store_code"]=""//店铺编号
 	            	_params["area_code"]=""//区域编号
+	            	_params["brand_code"]="";//品牌编号
+	            }else if(r_code=="R4800"){
+	            	_params["store_code"]=""//店铺编号
+	            	_params["area_code"]=""//区域编号
+	            	_params["brand_code"]=STORE_CODE;//品牌编号
 	            }
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -356,19 +365,28 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				if(r_code=="R2000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R3000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R4000"){
 	            	_params["store_code"]=""//店铺编号
 	            	_params["area_code"]=STORE_CODE;//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }
 	            else if(r_code=="R5000"){
 	            	_params["store_code"]=""//店铺编号
 	            	_params["area_code"]=""//区域编号
+	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R6000"){
 	            	_params["store_code"]=""//店铺编号
 	            	_params["area_code"]=""//区域编号
+	            	_params["brand_code"]="";//品牌编号
+	            }else if(r_code=="R4800"){
+	            	_params["store_code"]=""//店铺编号
+	            	_params["area_code"]=""//区域编号
+	            	_params["brand_code"]=STORE_CODE;//品牌编号
 	            }
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -559,6 +577,10 @@ function role_data(c){//
             	$('.task_allot').parent().hide();
             }else if(j_code=="R6000"){
             	$('.task_allot').parent().hide();
+            }else if(j_code=="R4800"){
+            	$('.task_allot').html("所属品牌");
+            	$('.task_allot').parent().show();
+            	$('.xingming').empty();
             }
         });
 	});
@@ -767,7 +789,7 @@ jQuery(document).ready(function(){
 					}
             	}else if(j_code=="R4000"){
 	            	$('.task_allot').html("所属区域");
-	            	if(msg.area_lists!==""){
+	            	if(msg.area_name!==""){
 		            	var area_lists=msg.area_name.split(",");
 						var areacode_list=msg.area_code.split(",");
 						for(var i=0;i<area_lists.length;i++){
@@ -776,6 +798,15 @@ jQuery(document).ready(function(){
 					}
             	}else if(j_code=="R5000"||j_code=="R6000"){
             		$('.task_allot').parent().hide();
+            	}else if(j_code="R4800"){
+            		$('.task_allot').html("所属区域");
+	            	if(msg.brand_name!==""){
+		            	var brand_lists=msg.brand_name.split(",");
+						var brandcode_list=msg.brand_code.split(",");
+						for(var i=0;i<brand_lists.length;i++){
+							$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+brandcode_list[i]+"'  value='"+brand_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+						}
+					}
             	}	
 				$("#register_time").val(msg.created_date);//创建时间
 				$("#recently_login").val(msg.login_time_recently);//是否登录

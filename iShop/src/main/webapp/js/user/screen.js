@@ -65,6 +65,19 @@ $("#screen_add").click(function(){
 		getarealist(area_num);
 		bianse();
 	}
+	if(r_code=="R4800"){
+		whir.loading.add("",0.5);
+		$("#loading").remove();
+		$("#screen_brand").show();
+		$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_shop").hide();
+		$("#screen_area").hide();
+		$("#screen_brand .screen_content_l ul").empty();
+		$("#screen_brand .screen_content_r ul").empty();
+		$(".s_pitch span").html("0");
+		getbrandlist();
+
+	}
 })
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){
@@ -348,6 +361,21 @@ $("#screen_que_shop").click(function(){
 //点击品牌确定追加节点
 $("#screen_que_brand").click(function(){
 	var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
+	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
+	if(r_code=="R4800"){
+		for(var i=0;i<li.length;i++){
+			var a=$('.xingming input');
+			for(var j=0;j<a.length;j++){
+				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+					$(a[j]).parent("p").remove();
+				}
+			}
+			$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
+	    }
+	    $("#screen_brand").hide();
+	    whir.loading.remove();//移除遮罩层
+	    return;
+	}
 	var brand_codes="";
 	for(var i=0;i<li.length;i++){
 		var r=$(li[i]).attr("id");
@@ -550,6 +578,7 @@ function getstorelist(a){
 				    };
 				})
 		    }
+		    isscroll=true;
 			var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
 			for(var k=0;k<li.length;k++){
 				$("#screen_shop .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
@@ -612,12 +641,6 @@ function getbrandlist(){
 				}
 			}
 			$("#screen_brand .screen_content_l ul").append(brand_html_left);
-			if($("#screen_brand .screen_content_r ul li").length<=0){
-				for(var i=0;i<9;i++){
-					brand_html_right+="<li></li>";
-				}
-				$("#screen_brand .screen_content_r ul").html(brand_html_right);
-			}
 			var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
 			for(var k=0;k<li.length;k++){
 				$("#screen_brand .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 

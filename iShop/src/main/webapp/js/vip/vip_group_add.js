@@ -720,20 +720,20 @@ var staff_next=false;
 $("#filtrate").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_wrapper").width())/2;
-    var tp=(arr[1]-$("#screen_wrapper").height())/2;
+    var tp=(arr[3]-$("#screen_wrapper").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_wrapper").show();
+    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    console.log(123123);
 })
 //点击筛选会员的所属区域
 $("#screen_areal").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_area").show();
     var area_num=1
@@ -746,11 +746,10 @@ $("#screen_areal").click(function(){
 $("#screen_brandl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_wrapper").hide();
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_brand").show();
     if($("#screen_brand .screen_content_l ul li").length>1){
         return;
@@ -761,10 +760,10 @@ $("#screen_brandl").click(function(){
 $("#screen_shopl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_shop").show();
     $("#screen_shop .screen_content_l ul").empty();
@@ -775,10 +774,10 @@ $("#screen_shopl").click(function(){
 $("#screen_staffl").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_area").width())/2;
-    var tp=(arr[1]-$("#screen_area").height())/2;
+    var tp=(arr[3]-$("#screen_area").height())/2+30;
     $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
     $("#p").show();
-    $("#screen_staff").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_staff").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_staff").show();
     $("#screen_staff .screen_content_l ul").empty();
@@ -799,10 +798,10 @@ $(".screen_content").on("click","li",function(){
 $("#shop_area").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+80;
+    var tp=(arr[3]-$("#screen_shop").height())/2+30;
     $("#screen_shop").hide();
     $("#screen_area").show();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     var area_num=1;
     $("#screen_area .screen_content_l ul").empty();
     // $("#screen_area .screen_content_r ul").empty();
@@ -814,10 +813,10 @@ $("#shop_area").click(function(){
 $("#shop_brand").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+80;
+    var tp=(arr[3]-$("#screen_shop").height())/2+30;
     $("#screen_shop").hide();
     $("#screen_brand").show();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_brand .screen_content_l ul").empty();
     // $("#screen_brand .screen_content_r ul").empty();
     getbrandlist();
@@ -1305,12 +1304,6 @@ function getbrandlist(){
                 }
 
                 $("#screen_brand .screen_content_l ul").append(brand_html_left);
-            }
-            if($("#screen_brand .screen_content_r ul li").length<=0){
-                for(var i=0;i<9;i++){
-                    brand_html_right+="<li></li>";
-                }
-                $("#screen_brand .screen_content_r ul").html(brand_html_right);
             }
             bianse();
             whir.loading.remove();//移除加载框
