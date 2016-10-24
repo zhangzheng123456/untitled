@@ -5,6 +5,7 @@
 	<meta content="telephone=no,email=no" name="format-detection">
 	<title>FAB</title>
 	<link rel="stylesheet" href="css/goods.css">
+	<link rel="stylesheet" href="css/animate.css">
 	<script src="js/flexible.js"></script><meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 	<script src="js/jquery-1.11.1.js"></script>
 	<script src="js/gqrequest.js"></script>
@@ -82,13 +83,13 @@
 	// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 	// document.addEventListener('DOMContentLoaded', loaded, false);
 	$("#screen").click(function(){
-		$("#guide").show();
+		$("#guide").animate({right:'0'},300);
 		$("#cover").show();
 		$("html").addClass("sift-move");
 		$("body").addClass("sift-move");
 	})
 	$("#cover").click(function(){
-		$("#guide").hide();
+		$("#guide").animate({right:"-"+$("#guide").width()+"px"},300);
 		$("#cover").hide();
 		$("html").removeClass("sift-move");
 		$("body").removeClass("sift-move");

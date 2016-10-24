@@ -294,16 +294,16 @@ input::-webkit-input-placeholder {
   width: 66.6%;
   position: fixed;
   top: 0;
-  right: 0;
+  right: -66.6%;
   background-color: #fff;
   z-index: 5;
-  display: none;
   height: 100%;
   overflow: hidden; }
   .screen_list .screen_content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    margin-bottom: 56px; }
+    margin-bottom: 56px;
+    width: 100%; }
     .screen_list .screen_content .parent {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -342,12 +342,12 @@ input::-webkit-input-placeholder {
     .screen_list .screen_content .row-last {
       margin-bottom: 56px; }
   .screen_list .screen_footer {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     display: block;
     width: 100%; }
     .screen_list .screen_footer .bg_h {
-      width: 33.3%;
+      width: 50%;
       height: 56px;
       float: left;
       text-align: center;

@@ -39,7 +39,7 @@
 .laydate_body .laydate_table .laydate_nothis{color:#999;}
 .laydate_body .laydate_table thead{border-bottom:1px solid #ccc; height:21px!important; line-height:21px!important;}
 .laydate_body .laydate_table thead th{}
-.laydate_body .laydate_bottom{border:1px solid #ccc; border-top:none;}
+.laydate_body .laydate_bottom{border:1px solid #ccc; border-top:none;display: none}
 .laydate_body .laydate_bottom #laydate_hms{background-color:#fff;}
 .laydate_body .laydate_time{background-color:#fff;}
 .laydate_body .laydate_time1{width: 226px!important; height: 152px!important;}

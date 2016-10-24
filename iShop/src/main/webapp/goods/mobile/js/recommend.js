@@ -54,7 +54,7 @@ jQuery(function(){
 		$(this).toggleClass("active");
 	})
 	$("#complete").click(function(){
-		$("#guide").hide();
+		$("#guide").animate({right:"-"+$("#guide").width()+"px"},300);
 		$("#cover").hide();
 		$("html").removeClass("sift-move");
 		$("body").removeClass("sift-move");
