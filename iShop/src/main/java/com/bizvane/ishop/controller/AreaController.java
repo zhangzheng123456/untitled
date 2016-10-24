@@ -845,6 +845,7 @@ public class AreaController {
     @ResponseBody
     public String checkStores(HttpServletRequest request)throws Exception {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json-----stores/check----------" + jsString);
@@ -860,8 +861,19 @@ public class AreaController {
             }
             String area_code = jsonObject.get("area_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            PageInfo<Store> list;
-            list=areaService.getAllStoresByCorpCode( page_number, page_size, corp_code, search_value,area_code);
+            PageInfo<Store> list = new PageInfo<Store>();
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
+                list = areaService.getAllStoresByCorpCode(page_number, page_size, corp_code, search_value);
+            }else if (role_code.equals(Common.ROLE_BM)){
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                list = areaService.selectAllStoresByAreaBrand(page_number, page_size, corp_code, "", brand_code, search_value);
+            }else if (role_code.equals(Common.ROLE_AM)){
+                String area_code1 = request.getSession().getAttribute("area_code").toString();
+                area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
+                list = areaService.selectAllStoresByAreaBrand(page_number, page_size, corp_code, area_code1, "", search_value);
+            }
+            areaService.trans(list,area_code);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -238,7 +239,7 @@ public class HomeController {
         DataBean dataBean = new DataBean();
         try {
             String time_id;
-            String store_id;
+            String store_id = "";
             String area_code = "";
             String user_id = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -256,10 +257,16 @@ public class HomeController {
             }
             if (jsonObject.has("store_code")) {
                 store_id = jsonObject.get("store_code").toString();
-            } else {
+            } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 String store_code = request.getSession().getAttribute("store_code").toString();
                 String[] store_ids = store_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_id = store_ids[0];
+            } else if (role_code.equals(Common.ROLE_BM)){
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                store_id = list.get(0).getStore_code();
             }
             Map datalist = new HashMap<String, Data>();
             if (role_code.equals(Common.ROLE_AM)) {
@@ -329,13 +336,19 @@ public class HomeController {
                 store_code = request.getSession().getAttribute("store_code").toString();
                 String[] store_ids = store_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_code = store_ids[0];
+            } else if (role_code.equals(Common.ROLE_BM)){
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                store_code = list.get(0).getStore_code();
             }
             if (jsonObject.has("area_code")) {
                 area_code = jsonObject.get("area_code").toString();
-            } else if (role_code.equals(Common.ROLE_AM)) {
+            } else if (role_code.equals(Common.ROLE_AM)){
                 area_code = request.getSession().getAttribute("area_code").toString();
-                String[] area_ids = area_code.replace(Common.SPECIAL_HEAD, "").split(",");
-                area_code = area_ids[0];
+                String[] area_codes  = area_code.replace(Common.SPECIAL_HEAD, "").split(",");
+                area_code = area_codes[0];
             }
 
             if (!store_code.equals("")) {
@@ -368,16 +381,6 @@ public class HomeController {
             String result = dataBox.data.get("message").value;
             object.put(date_type, result);
 
-//            String[] date_types = new String[]{Common.TIME_TYPE_WEEK, Common.TIME_TYPE_MONTH, Common.TIME_TYPE_YEAR};
-//            for (int i = 0; i < date_types.length; i++) {
-//                String date_type = date_types[i];
-//                Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
-//                datalist.put(data_date_type.key, data_date_type);
-//                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo", datalist);
-//                logger.info("home2画面(业绩折线图)" + dataBox.data.get("message").value);
-//                String result = dataBox.data.get("message").value;
-//                object.put(date_type, result);
-//            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(object.toString());
@@ -422,7 +425,14 @@ public class HomeController {
                 store_code = request.getSession().getAttribute("store_code").toString();
                 String[] store_ids = store_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_code = store_ids[0];
+            } else if (role_code.equals(Common.ROLE_BM)){
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                store_code = list.get(0).getStore_code();
             }
+
             if (jsonObject.has("area_code")) {
                 area_code = jsonObject.get("area_code").toString();
             } else if (role_code.equals(Common.ROLE_AM)) {
