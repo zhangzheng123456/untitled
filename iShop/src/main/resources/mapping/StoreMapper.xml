@@ -631,6 +631,47 @@
         ORDER BY def_store.id DESC
     </select>
 
+    <!--搜索支持搜area_code-->
+    <select id="selectAllStoresByAreaBrand" resultType="com.bizvane.ishop.entity.Store">
+        select
+        def_store.id,
+        store_code,
+        store_name,
+        def_store.area_code,
+        def_store.corp_code,
+        def_corp.corp_name
+        from def_store,def_corp
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = #{corp_code}
+        <if test="area_code != null and area_code !=''">
+            AND
+            <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
+                def_store.area_code regexp #{item}
+            </foreach>
+        </if>
+        <if test="brand_code != null and brand_code !=''">
+            AND
+            <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
+                def_store.brand_code regexp #{item}
+            </foreach>
+        </if>
+
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_store.store_code LIKE concat('%',#{search_value},'%')
+            OR def_store.store_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_store.area_code LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND def_store.isactive = #{isactive}
+        </if>
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_store.id
+        ORDER BY def_store.id DESC
+    </select>
+
     <select id="selectStoreCountByArea" resultType="com.bizvane.ishop.entity.Store">
         SELECT
         ds.id,
