@@ -140,6 +140,7 @@ function removeRight(a,b){
 		for(var i=0;i<li.length;i++){
 			var html=$(li[i]).html();
 			var id=$(li[i]).find("input[type='checkbox']").val();
+			$(li[i]).find("input[type='checkbox']")[0].checked=true;
 			var input=$(b).parents(".screen_content").find(".screen_content_r li");
 			for(var j=0;j<input.length;j++){
 				if($(input[j]).attr("id")==id){
@@ -472,11 +473,14 @@ function getarealist(a){
 				area_next=false;
 			}
 			$("#screen_area .screen_content_l ul").append(area_html_left);
+			console.log(isscroll);
 			if(!isscroll){
+				console.log(123123);
 				$("#screen_area .screen_content_l").bind("scroll",function () {
 					var nScrollHight = $(this)[0].scrollHeight;
 				    var nScrollTop = $(this)[0].scrollTop;
 				    var nDivHight=$(this).height();
+				    console.log(nDivHight);
 				    if(nScrollTop + nDivHight >= nScrollHight){
 				    	if(area_next){
 				    		return;

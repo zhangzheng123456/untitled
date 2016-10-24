@@ -112,32 +112,40 @@ var oc = new ObjectControl();
 				获取上传的图片地址
 				 */
 				// var img_list=[];
-				var img_list_json="";
+				var img_list_json=[];
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=20){
-					for(var i=0;i<img_url_list.length;i++){
-						if(i<img_url_list.length-1){
-							if(img_url_list[i].src.indexOf("http")!==-1){
-								img_list_json+=img_url_list[i].src+",";
-								// img_list.push(img_url_list[i].src);
-							}else{
-								img_list_json+=$(img_url_list[i]).attr("data-name")+",";
-								// img_list.push($(img_url_list[i]).attr("data-name"));
-							}
-						}else {
-							if(img_url_list[i].src.indexOf("http")!==-1){
-								img_list_json+=img_url_list[i].src;
-								// img_list.push(img_url_list[i].src);
-							}else{
-								img_list_json+=$(img_url_list[i]).attr("data-name");
-								// img_list.push($(img_url_list[i]).attr("data-name"));
-							}
-						}
-					}
+					// for(var i=0;i<img_url_list.length;i++){
+					// 	if(i<img_url_list.length-1){
+					// 		if(img_url_list[i].src.indexOf("http")!==-1){
+					// 			img_list_json+=img_url_list[i].src+",";
+					// 			// img_list.push(img_url_list[i].src);
+					// 		}else{
+					// 			img_list_json+=$(img_url_list[i]).attr("data-name")+",";
+					// 			// img_list.push($(img_url_list[i]).attr("data-name"));
+					// 		}
+					// 	}else {
+					// 		if(img_url_list[i].src.indexOf("http")!==-1){
+					// 			img_list_json+=img_url_list[i].src;
+					// 			// img_list.push(img_url_list[i].src);
+					// 		}else{
+					// 			img_list_json+=$(img_url_list[i]).attr("data-name");
+					// 			// img_list.push($(img_url_list[i]).attr("data-name"));
+					// 		}
+					// 	}
+					// }
 					// for(var j=0;j<img_list.length;j++){
 					// 	img_list_json[j]=img_list[j];
 					// }
 					// img_list_json=JSON.stringify(img_list_json);
+					console.log(img_url_list.length);
+					for(var i=0;i<img_url_list.length;i++){
+						var img_list_json_sub={};
+						img_list_json_sub.image=$(img_url_list[i]).attr('src');
+						console.log($(img_url_list[i]).parent().parent().find('input').attr('checked'));
+						img_list_json_sub.is_public=$(img_url_list[i]).parent().parent().find('input').attr('checked')?'Y':'N'
+						img_list_json.push(img_list_json_sub);
+					}
 				}else{
 					art.dialog({
 						time: 1,
@@ -265,7 +273,7 @@ var oc = new ObjectControl();
 				// var isexit_flg=[];
 				var img_list_json=[];
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
-				console.log(img_url_list);
+				// console.log(img_url_list);
 				if(img_url_list.length<=20){
 					// for(var i=0;i<img_url_list.length;i++){
 					// 	var img_list_json_sub={};
