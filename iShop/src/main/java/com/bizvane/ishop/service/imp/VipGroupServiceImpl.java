@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.dao.VipGroupMapper;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
@@ -34,6 +36,8 @@ public class VipGroupServiceImpl implements VipGroupService {
     @Autowired
     VipGroupMapper vipGroupMapper;
     @Autowired
+    UserMapper userMapper;
+    @Autowired
     MongoDBClient mongodbClient;
     /**
      * 根据id
@@ -45,7 +49,36 @@ public class VipGroupServiceImpl implements VipGroupService {
      */
     @Override
     public VipGroup getVipGroupById(int id) throws Exception {
-        return vipGroupMapper.selectVipGroupById(id);
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+        int vip_count = 0;
+        VipGroup vipGroup = vipGroupMapper.selectVipGroupById(id);
+        if (vipGroup != null) {
+            String corp_code = vipGroup.getCorp_code();
+            String user_code = vipGroup.getUser_code();
+            String vip_group_code = vipGroup.getVip_group_code();
+            //分组所属导购
+            if (user_code != null && !user_code.equals("")){
+                List<User> users = userMapper.selectUserCode(user_code,corp_code,Common.IS_ACTIVE_Y);
+                if (users.size()>0) {
+                    vipGroup.setUser_name(users.get(0).getUser_name());
+                }
+                else {
+                    vipGroup.setUser_name("");
+                }
+            } else {
+                vipGroup.setUser_name("");
+            }
+            //分组所拥有的会员个数
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("vip_group_code",vip_group_code);
+            dbObject.put("corp_code",corp_code);
+            DBCursor dbCursor= cursor.find(dbObject);
+            vip_count = dbCursor.size();
+            vipGroup.setVip_count(vip_count);
+        }
+
+        return vipGroup;
     }
 
 
@@ -65,6 +98,20 @@ public class VipGroupServiceImpl implements VipGroupService {
         PageHelper.startPage(page_number, page_size);
         vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
         for (VipGroup vipGroup : vipGroups) {
+            String corp_code1 = vipGroup.getCorp_code();
+            String user_code = vipGroup.getUser_code();
+            //分组所属导购
+            if (user_code != null && !user_code.equals("")){
+                List<User> users = userMapper.selectUserCode(user_code,corp_code1,Common.IS_ACTIVE_Y);
+                if (users.size()>0) {
+                    vipGroup.setUser_name(users.get(0).getUser_name());
+                }
+                else {
+                    vipGroup.setUser_name("");
+                }
+            } else {
+                vipGroup.setUser_name("");
+            }
             vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
         }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(vipGroups);
@@ -85,6 +132,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         JSONObject jsonObject = new JSONObject(message);
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
+        String user_code = jsonObject.get("user_code").toString().trim();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
@@ -100,6 +148,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroup.setRemark(remark);
             vipGroup.setVip_group_code(vip_group_code);
             vipGroup.setVip_group_name(vip_group_name);
+            vipGroup.setUser_code(user_code);
             vipGroup.setCorp_code(corp_code);
             vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setCreater(user_id);
@@ -121,6 +170,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         int id = Integer.parseInt(vipGroup_id);
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
+        String user_code = jsonObject.get("user_code").toString().trim();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
@@ -137,6 +187,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroup.setRemark(remark);
             vipGroup.setVip_group_code(vip_group_code);
             vipGroup.setVip_group_name(vip_group_name);
+            vipGroup.setUser_code(user_code);
             vipGroup.setCorp_code(corp_code);
             vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setModifier(user_id);
@@ -172,6 +223,20 @@ public class VipGroupServiceImpl implements VipGroupService {
         PageHelper.startPage(page_number, page_size);
         List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);
         for (VipGroup vipGroup : list1) {
+            String corp_code1 = vipGroup.getCorp_code();
+            String user_code = vipGroup.getUser_code();
+            //分组所属导购
+            if (user_code != null && !user_code.equals("")){
+                List<User> users = userMapper.selectUserCode(user_code,corp_code1,Common.IS_ACTIVE_Y);
+                if (users.size()>0) {
+                    vipGroup.setUser_name(users.get(0).getUser_name());
+                }
+                else {
+                    vipGroup.setUser_name("");
+                }
+            } else {
+                vipGroup.setUser_name("");
+            }
             vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
         }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(list1);

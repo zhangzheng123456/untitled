@@ -124,41 +124,41 @@ public class LoginController {
         return "";
     }
 
-    /**
-     * 手机号是否已注册
-     */
-    @RequestMapping(value = "/phone_exist", method = RequestMethod.GET)
-    @ResponseBody
-    public String phoneExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String param = request.getParameter("param");
-            log.info("json--phoneExist-------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String phone = jsonObject.get("PHONENUMBER").toString();
-            System.out.println(phone);
-            List<User> user = userService.userPhoneExist(phone);
-            if (user.size() == 0) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("the phone can registered");
-                return dataBean.getJsonStr();
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("the phone has registered");
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 手机号是否已注册
+//     */
+//    @RequestMapping(value = "/phone_exist", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String phoneExist(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String param = request.getParameter("param");
+//            log.info("json--phoneExist-------------" + param);
+//            JSONObject jsonObj = new JSONObject(param);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = new JSONObject(message);
+//            String phone = jsonObject.get("PHONENUMBER").toString();
+//            System.out.println(phone);
+//            List<User> user = userService.userPhoneExist(phone);
+//            if (user.size() == 0) {
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setId(id);
+//                dataBean.setMessage("the phone can registered");
+//                return dataBean.getJsonStr();
+//            } else {
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setId(id);
+//                dataBean.setMessage("the phone has registered");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 获取验证码
@@ -198,36 +198,36 @@ public class LoginController {
     /**
      * 点击注册
      */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ResponseBody
-    public String register(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        System.out.println("-------------------");
-        try {
-            String param = request.getParameter("param");
-            log.info("json--register-------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            String result = userService.register(message);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(result);
-                dataBean.setId(id);
-                dataBean.setMessage("register success");
-            } else {
-                System.out.println("---------auth_code-xxx---------");
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/register", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String register(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        System.out.println("-------------------");
+//        try {
+//            String param = request.getParameter("param");
+//            log.info("json--register-------------" + param);
+//            JSONObject jsonObj = new JSONObject(param);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            String result = userService.register(message);
+//            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+//                dataBean.setCode(result);
+//                dataBean.setId(id);
+//                dataBean.setMessage("register success");
+//            } else {
+//                System.out.println("---------auth_code-xxx---------");
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setId(id);
+//                dataBean.setMessage(result);
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 点击登录
@@ -523,7 +523,7 @@ public class LoginController {
     }
 
     /**
-     * 获取所有的省
+     * 获取所有的省,市,区
      */
     @RequestMapping(value = "/location/getProvince", method = RequestMethod.POST)
     @ResponseBody
