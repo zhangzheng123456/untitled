@@ -8079,3 +8079,25 @@ li.select_index>a>label>i{
  #add_app_id .jia {
    margin-top: -4px;
  }
+.allUser{
+  width: 420px;
+  height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  left: 125px;
+  top: 25px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  border-radius: 4px;
+  display: none;
+}
+.allUser li{
+  width: 100%;
+  line-height: 30px;
+  padding-left: 5px;
+  cursor: pointer;
+}
+.allUser li:hover{
+  background: #4a5f7c;
+  color: white;
+}
