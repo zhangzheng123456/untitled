@@ -3,16 +3,20 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.IceInterfaceService;
+import com.bizvane.ishop.service.StoreService;
 import com.bizvane.sun.app.client.Client;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.Status;
 import com.bizvane.sun.v1.common.ValueType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +30,9 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
 
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
+
+    @Autowired
+    StoreService storeService;
 
     //
     public DataBox iceInterface(String method ,Map datalist) throws Exception{
@@ -68,6 +75,15 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             store_id = store_code.replace(Common.SPECIAL_HEAD,"");
         } else if (role_code.equals(Common.ROLE_STAFF)){
             user_id = user_code;
+        }else if (role_code.equals(Common.ROLE_BM)){
+            role_code = Common.ROLE_SM;
+            String brand_code = request.getSession().getAttribute("brand_code").toString();
+            brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+            List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+            String store_code = "";
+            for (int i = 0; i < stores.size(); i++) {
+                store_code = store_code + stores.get(i).getStore_code() + ",";
+            }
         }
 
         Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
