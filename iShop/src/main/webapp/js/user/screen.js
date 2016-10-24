@@ -475,12 +475,10 @@ function getarealist(a){
 			$("#screen_area .screen_content_l ul").append(area_html_left);
 			console.log(isscroll);
 			if(!isscroll){
-				console.log(123123);
 				$("#screen_area .screen_content_l").bind("scroll",function () {
 					var nScrollHight = $(this)[0].scrollHeight;
 				    var nScrollTop = $(this)[0].scrollTop;
 				    var nDivHight=$(this).height();
-				    console.log(nDivHight);
 				    if(nScrollTop + nDivHight >= nScrollHight){
 				    	if(area_next){
 				    		return;
