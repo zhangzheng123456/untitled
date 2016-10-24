@@ -82,6 +82,8 @@ public class GoodsController {
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                     String[] brands = brand_code.split(",");
                     list = goodsService.selectBySearch(page_number, page_size, corp_code, "",brands);
+                }else {
+                    list = goodsService.selectBySearch(page_number, page_size, corp_code, "",null);
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -126,6 +128,8 @@ public class GoodsController {
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                         String[] brands = brand_code.split(",");
                         list = goodsService.selectBySearch(1, 30000, corp_code, search_value,brands);
+                    }else {
+                        list = goodsService.selectBySearch(1, 30000,  corp_code, search_value,null);
                     }
                 }
             } else {
@@ -140,6 +144,8 @@ public class GoodsController {
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                         String[] brands = brand_code.split(",");
                         list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,brands);
+                    }else {
+                        list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,null);
                     }
                 }
             }
@@ -208,6 +214,8 @@ public class GoodsController {
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                     String[] brands = brand_code.split(",");
                     list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value,brands);
+                }else {
+                    list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value,null);
                 }
             }
             org.json.JSONObject result = new org.json.JSONObject();
@@ -257,6 +265,8 @@ public class GoodsController {
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                     String[] brands = brand_code.split(",");
                     list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map,brands);
+                }else {
+                    list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map,null);
                 }
             }
             org.json.JSONObject result = new org.json.JSONObject();
