@@ -252,9 +252,17 @@ public class StoreController {
         DataBean dataBean = new DataBean();
         try {
             JSONObject result = new JSONObject();
-            String store_code = request.getSession(false).getAttribute("store_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            List<Store>   list = storeService.selectStore(corp_code, store_code);
+            List<Store> list = new ArrayList<Store>();
+            if (role_code.equals(Common.ROLE_SM)) {
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = storeService.selectStore(corp_code, store_code);
+            }else if (role_code.equals(Common.ROLE_BM)){
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

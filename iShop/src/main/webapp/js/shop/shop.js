@@ -341,7 +341,13 @@ var isscroll=false;
         whir.loading.add("", 0.5);//加载等待框
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "保存成功"
+                });
+                // $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,

@@ -91,13 +91,20 @@ var oc = new ObjectControl();
                 }else if(USER_SEX=="女"){
                     SEX="F";
                 }
-                var avater="";//头像
-                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test($("#IMG").attr("src"))==true){
-                    avater=$("#IMG").attr("src");//头像
-                }else if(reg.test($("#IMG").attr("src"))==false){
-                    avater="";
+                // var avatar="";//头像
+                // var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+                // if(reg.test($("#IMG").attr("src"))==true){
+                //     avatar=$("#IMG").attr("src");//头像
+                // }else if(reg.test($("#IMG").attr("src"))==false){
+                //     avatar="";
+                // }
+                var avatar="";//头像
+                if($("#preview img").attr("data-src").indexOf("http")!==-1){
+                    avatar=$("#preview img").attr("data-src");
                 }
+                if($("#preview img").attr("data-src").indexOf("http")==-1){
+                    avatar="";
+                }    
                 var _command="/user/edit";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
@@ -108,7 +115,7 @@ var oc = new ObjectControl();
                 _params["id"]=ID;//ID
                 _params["user_code"]=USERID;//员工编号
                 _params["username"]=USER_NAME;//员工名称
-                _params["avater"]=avater;//头像
+                _params["avatar"]=avatar;//头像
                 _params["position"]=POSITION;//职务
                 _params["phone"]=USER_PHONE;//手机
                 _params["email"]=USER_EMAIL//邮箱
@@ -189,11 +196,19 @@ jQuery(document).ready(function(){
                 var msg = JSON.parse(data.message);
                     msg=JSON.parse(msg.user);
                 $("#id").val(msg.id);
-                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
-                if(reg.test(msg.avatar)==true){
-                    $("#IMG").attr("src",msg.avatar);
-                }else if(reg.test(msg.avatar)==false){
-                    $("#IMG").attr("src","../img/head.png");
+                if(msg.avatar!==undefined){
+                    if(msg.avatar.indexOf("http")==-1){
+                        $("#preview img").attr("src","../img/head.png");
+                         $("#preview img").attr("data-src","../img/head.png");
+                    }
+                    if(msg.avatar.indexOf("http")!==-1){
+                         $("#preview img").attr("src",msg.avatar);
+                         $("#preview img").attr("data-src",msg.avatar);
+                    }
+                }
+                if(msg.avatar==undefined){
+                    $("#preview img").attr("src","../img/head.png");
+                    $("#preview img").attr("data-src","../img/head.png");
                 }
                  $("#corp_code").val(msg.corp_name);
                  $("#USERID").val(msg.user_code);

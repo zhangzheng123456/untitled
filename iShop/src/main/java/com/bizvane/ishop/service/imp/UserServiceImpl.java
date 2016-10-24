@@ -477,7 +477,7 @@ public class UserServiceImpl implements UserService {
                     user_type = "gm";
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
-                    user_type = "am";
+                    user_type = "sm";
                     if (login_user.getBrand_code() != null) {
                         String brand_code = login_user.getBrand_code().trim();
 
