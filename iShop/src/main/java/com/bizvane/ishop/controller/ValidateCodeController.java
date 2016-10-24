@@ -104,9 +104,9 @@ public class ValidateCodeController {
 
             PageInfo<ValidateCode> list;
             if (role_code.equals(Common.ROLE_SYS) || phone.equals("18900001111")) {
-                list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
+                list = validateCodeService.selectAllValidateCode(page_number, page_size, search_value);
             }else {
-                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, "");
+                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, search_value);
             }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
