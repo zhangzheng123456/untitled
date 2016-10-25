@@ -245,6 +245,7 @@ function superaddition(data,num){//页面加载循环
         +"</td></tr>");
     }
     whir.loading.remove();//移除加载框
+    $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
 };
 //权限配置
