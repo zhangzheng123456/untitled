@@ -587,6 +587,57 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 会员分组批量分配会员
+     * 保存
+     */
+    @RequestMapping(value = "/saveVips", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveVips(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            String vip_group_code = jsonObject.get("vip_group_code").toString();
+            int vips_group_id = Integer.valueOf(jsonObject.get("vip_group_id").toString());
+
+            String vips_choose = jsonObject.get("choose").toString();
+            String vips_quit = jsonObject.get("quit").toString();
+
+            String[] choose = vips_choose.split(",");
+            String[] quit = vips_quit.split(",");
+
+            VipGroup vipGroup = vipGroupService.getVipGroupById(vips_group_id);
+            String vip_ids = vipGroup.getVip_ids();
+            if (vip_ids == null){
+                vip_ids = "";
+            }
+            for (int i = 0; i < choose.length; i++) {
+                vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
+            }
+            for (int i = 0; i < quit.length; i++) {
+                vip_ids = vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
+            }
+            vipGroup.setVip_ids(vip_ids);
+            vipGroupService.updateVipGroup(vipGroup);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("save success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 //    /**
 //     * 会员分组批量分配会员
 //     * 保存mongodb
