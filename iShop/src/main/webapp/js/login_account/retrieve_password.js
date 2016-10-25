@@ -132,6 +132,18 @@ function pwd(){
         $("#pwd_tip a").html("");
     }
 }
+//弹框
+function frame(){
+    var left=($(window).width())/2;//弹框定位的left值
+    var tp=($(window).height())/2;//弹框定位的top值
+    $('.frame').remove();
+    $(".main").append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;position: absolute"></div>');
+    $(".frame").animate({opacity:"1"},1000);
+    $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+        $(".frame").hide();
+    },2000);
+}
 $(function(){
 //如果手机号码不能通过验证
     $("#tel").blur(checkphone);
@@ -181,6 +193,9 @@ $(function(){
             oc.postRequire("post", "/user/change_passwd", "0", param, function(data) {
                if(data.code==0){
                 window.location.href="login.html"
+               }else if(data.code=-1){
+                   frame();
+                   $('.frame').html("操作失败");
                }
             })
         }else{
