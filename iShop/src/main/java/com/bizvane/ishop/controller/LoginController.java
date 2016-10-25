@@ -124,42 +124,6 @@ public class LoginController {
         return "";
     }
 
-//    /**
-//     * 手机号是否已注册
-//     */
-//    @RequestMapping(value = "/phone_exist", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String phoneExist(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String param = request.getParameter("param");
-//            log.info("json--phoneExist-------------" + param);
-//            JSONObject jsonObj = new JSONObject(param);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = new JSONObject(message);
-//            String phone = jsonObject.get("PHONENUMBER").toString();
-//            System.out.println(phone);
-//            List<User> user = userService.userPhoneExist(phone);
-//            if (user.size() == 0) {
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setId(id);
-//                dataBean.setMessage("the phone can registered");
-//                return dataBean.getJsonStr();
-//            } else {
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setId(id);
-//                dataBean.setMessage("the phone has registered");
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-
     /**
      * 获取验证码
      */
@@ -176,7 +140,7 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String phone = jsonObject.get("PHONENUMBER").toString();
             System.out.println(phone);
-            String msg = userService.getAuthCode(phone, "网页注册");
+            String msg = userService.getAuthCode(phone, "web");
             if (msg.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -185,6 +149,42 @@ public class LoginController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(msg);
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 校验验证码
+     */
+    @RequestMapping(value = "/checkAuthcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkAuthcode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            log.info("json--authcode-------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String phone = jsonObject.get("phone").toString();
+            String authcode = jsonObject.get("authcode").toString();
+
+            ValidateCode validateCode = validateCodeService.selectByPhone(phone,authcode);
+            if (validateCode == null) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("fail");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("ok");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

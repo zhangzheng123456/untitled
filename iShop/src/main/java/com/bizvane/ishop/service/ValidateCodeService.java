@@ -33,4 +33,6 @@ public interface ValidateCodeService {
     PageInfo<ValidateCode> selectAllScreen(int page_number, int page_size, Map<String,String> map)throws Exception;
 
     PageInfo<ValidateCode> selectByCorpScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
+
+    ValidateCode selectByPhone(String phone,String validate_code) throws Exception;
 }
