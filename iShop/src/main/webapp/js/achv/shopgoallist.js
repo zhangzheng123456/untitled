@@ -59,7 +59,7 @@ $(function(){
             }else{  
                 showLi();  
             }  
-        });                                     
+        });                             
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
@@ -80,15 +80,15 @@ $(function(){
                 $("#page_row").val($(this).html());  
                 hideLi();
             });    
-        });      
+        });
         $("#page_row").blur(function(){  
             setTimeout(hideLi,200);  
-        });          
+        });         
     }      
 );
-function showLi(){  
-    $("#liebiao").show();  
-}  
+function showLi(){
+    $("#liebiao").show(); 
+}
 function hideLi(){  
     $("#liebiao").hide();  
 }
