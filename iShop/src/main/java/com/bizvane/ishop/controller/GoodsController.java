@@ -614,6 +614,9 @@ public class GoodsController {
 
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
+                if(!htmlImageSrcList.get(k).contains("image/upload")){
+                    continue;
+                }
 //                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
 //                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
@@ -721,7 +724,7 @@ public class GoodsController {
             }
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
-                if(htmlImageSrcList.get(k).startsWith("http://")){
+                if(!htmlImageSrcList.get(k).contains("image/upload")){
                     continue;
                 }
 //                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));

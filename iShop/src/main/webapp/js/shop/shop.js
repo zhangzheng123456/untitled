@@ -471,7 +471,7 @@ jQuery(document).ready(function () {
                         address_code=msg.province+','+msg.city+','+msg.area+','+msg.street;
                     }
                 }
-                $("#STORE_address").attr("title",address);
+                // $("#STORE_address").attr("title",address);
                 // $("#STORE_address").attr("data-code",address_code);
                 $("#STORE_address").val(address);
                 //$("#OWN_AREA").val(msg.area_name);
@@ -1351,6 +1351,8 @@ $("#enter").click(function () {
             data_code+=','+val;
             $("#STORE_address").val(input);
             $("#STORE_address").attr("data-code",data_code);
+            var location = input_l[1]+input_l[2]+val;
+            $("#show_map").attr("data-location",location);
         }
     }
 })
@@ -1367,33 +1369,87 @@ $("#address_nav a:last-child").click(function () {
         }
         var myCity = new BMap.LocalCity();
         myCity.get(myFun);
+        map.centerAndZoom(point, 15);
+        var marker = new BMap.Marker(point); //创建marker对象
+        map.addOverlay(marker);
+        marker.enableDragging(); //marker可拖拽
+        map.addEventListener("click",function(e){
+            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+            map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+            var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+            var location =e.point.lat+","+e.point.lng;
+            marker.setPosition(now_point);//设置覆盖物位置
+            $("#show_map").attr("data-location",location);
+        });
+        marker.addEventListener("dragend", function(){
+            var o_Point_now =  marker.getPosition();
+            var lng = o_Point_now.lng;//获取经度
+            var lat = o_Point_now.lat;//获取纬度
+            var location = lat+","+lng;
+            map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+            $("#show_map").attr("data-location",location);
+        })
+    }else if(location_detail.indexOf(",") == -1){
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(location_detail, function(point){
+            if (point) {
+                map.centerAndZoom(point, 15);
+                var marker = new BMap.Marker(point); //创建marker对象
+                map.addOverlay(marker);
+                marker.enableDragging(); //marker可拖拽
+                var o_Point_now =  marker.getPosition();
+                var lng = o_Point_now.lng;//获取经度
+                var lat = o_Point_now.lat;//获取纬度
+                var location = lat+","+lng;
+                $("#show_map").attr("data-location",location);
+                map.addEventListener("click",function(e){
+                    console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+                    map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+                    var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+                    var location =e.point.lat+","+e.point.lng;
+                    marker.setPosition(now_point);//设置覆盖物位置
+                    $("#show_map").attr("data-location",location);
+                });
+                marker.addEventListener("dragend", function(){
+                    var o_Point_now =  marker.getPosition();
+                    var lng = o_Point_now.lng;//获取经度
+                    var lat = o_Point_now.lat;//获取纬度
+                    var location = lat+","+lng;
+                    map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+                    $("#show_map").attr("data-location",location);
+                })
+            }else{
+                alert("您选择地址没有解析到结果!");
+            }
+        });
     }else {
         location_detail=location_detail.split(",");
-         point = new BMap.Point(location_detail[1], location_detail[0]);
+        point = new BMap.Point(location_detail[1], location_detail[0]);
+        map.centerAndZoom(point, 15);
+        var marker = new BMap.Marker(point); //创建marker对象
+        map.addOverlay(marker);
+        marker.enableDragging(); //marker可拖拽
+        map.addEventListener("click",function(e){
+            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+            map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+            var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+            var location =e.point.lat+","+e.point.lng;
+            marker.setPosition(now_point);//设置覆盖物位置
+            $("#show_map").attr("data-location",location);
+        });
+        marker.addEventListener("dragend", function(){
+            var o_Point_now =  marker.getPosition();
+            var lng = o_Point_now.lng;//获取经度
+            var lat = o_Point_now.lat;//获取纬度
+            var location = lat+","+lng;
+            map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+            $("#show_map").attr("data-location",location);
+        })
     }
-    map.centerAndZoom(point, 15);
     var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
     map.addControl(new BMap.NavigationControl(opts));
-    var marker = new BMap.Marker(point); //创建marker对象
-    map.addOverlay(marker);
-    marker.enableDragging(); //marker可拖拽
     map.enableScrollWheelZoom();
-    map.addEventListener("click",function(e){
-        console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
-        map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
-        var now_point =  new BMap.Point(e.point.lng, e.point.lat );
-        var location =e.point.lat+","+e.point.lng;
-        marker.setPosition(now_point);//设置覆盖物位置
-        $("#show_map").attr("data-location",location);
-    });
-    marker.addEventListener("dragend", function(){
-        var o_Point_now =  marker.getPosition();
-        var lng = o_Point_now.lng;//获取经度
-        var lat = o_Point_now.lat;//获取纬度
-        var location = lat+","+lng;
-        map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
-        $("#show_map").attr("data-location",location);
-    })
     function G(id) {
         return document.getElementById(id);
     }

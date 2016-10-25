@@ -190,6 +190,7 @@ var oc = new ObjectControl();
 			}
 		});
 		$("#edit_save").click(function(){
+			$('#close_match_goods').trigger("click");
 			var delete_image=[];//需要删除的数据
 			console.log(sessionStorage.getItem('goods_description'));
 			console.log(getContent()==sessionStorage.getItem('goods_description'))

@@ -555,6 +555,7 @@ $('#screen_wrapper_close').on('click', function () {
 function GET(a, b, c) {
     whir.loading.add("", 0.5);//加载等待框
     var user_code =$("#PARAM_NAME").attr("data-code");
+    var vip_group_code = $("#vip_num").val();
     if(user_code == undefined){
         user_code = "";
     }
@@ -563,6 +564,7 @@ function GET(a, b, c) {
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
     param["user_code"] = user_code;
+    param["vip_group_code"] =vip_group_code;
     oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
@@ -591,7 +593,7 @@ function superaddition(data, num, c) {
     group_cheked = [];
     var judge = '';
     for (var i = 0; i < data.length; i++) {
-        if (c == data[i].vip_group_code && c != '') {
+        if ( data[i].is_this_group == "Y") {
             judge = 'checked'
         } else {
             judge = '';
