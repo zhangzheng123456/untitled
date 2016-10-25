@@ -256,6 +256,7 @@ function superaddition(data,num){
             +"</td></tr>");
     }
     whir.loading.remove();//移除加载框
+    $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
 };
 //权限配置

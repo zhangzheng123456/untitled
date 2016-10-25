@@ -250,6 +250,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 900px;'></td></tr>");
     }
     whir.loading.remove();//移除加载框
+    $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
 };
 //权限配置

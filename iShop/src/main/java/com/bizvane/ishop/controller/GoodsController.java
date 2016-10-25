@@ -186,7 +186,7 @@ public class GoodsController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/fab/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/fab/search", method = RequestMethod.POST)
     @ResponseBody
     public String selectBySearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -200,8 +200,8 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
 
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Goods> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {

@@ -93,6 +93,7 @@
         <mvc:exclude-mapping path="/Retrieve_password.html"/>
         <mvc:exclude-mapping path="/user/PhoneExist"/>
         <mvc:exclude-mapping path="/userlogin"/>
+        <mvc:exclude-mapping path="/checkAuthcode"/>
         <mvc:exclude-mapping path="/api/**"/>
         <mvc:exclude-mapping path="/Websocket/**"/>
         <mvc:exclude-mapping path="/user/creatQrcodesForUser"/>

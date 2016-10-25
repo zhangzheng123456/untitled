@@ -52,14 +52,14 @@ if(return_jump==null){
     }
 }
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  
                 showLi();  
             }  
-        });                                     
+        });                             
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
@@ -80,15 +80,15 @@ $(function(){
                 $("#page_row").val($(this).html());  
                 hideLi();
             });    
-        });      
+        });
         $("#page_row").blur(function(){  
             setTimeout(hideLi,200);  
-        });          
+        });         
     }      
 );
-function showLi(){  
-    $("#liebiao").show();  
-}  
+function showLi(){
+    $("#liebiao").show(); 
+}
 function hideLi(){  
     $("#liebiao").hide();  
 }
@@ -252,6 +252,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td></tr>");
     }
     whir.loading.remove();//移除加载框
+    $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
 };
 //权限配置

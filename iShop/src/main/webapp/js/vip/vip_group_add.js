@@ -246,6 +246,8 @@ $(function () {
                     "corp_code": OWN_CORP,
                     "user_code": user_code,
                     "remark": vip_remark,
+                    'choose':sessionStorage.getItem('vip_choose'),
+                    'quit':sessionStorage.getItem('vip_quit'),
                     "isactive": ISACTIVE
                 };
                 vipjs.ajaxSubmit(_command, _params, opt);
@@ -495,43 +497,49 @@ $("#save").click(function () {
         if (get_group_sub.indexOf(group_cheked[r]) == -1) {
             var selector = "#table tbody td[data_vip_id='" + group_cheked[r] + "']";
             quit_obj.push($(selector).parent());
-        }
-        ;
+        };
     }
     console.log(quit_obj);
     for (var i = 0; i < quit_obj.length; i++) {
-        var quit_sub = {}
-        quit_sub['vip_id'] = $(quit_obj[i]).find('[data_vip_id]').attr('data_vip_id');
-        quit_sub['corp_code'] = $(quit_obj[i]).attr('id');
-        quit_sub['card_no'] = $(quit_obj[i]).find('[data_cardno]').attr('data_cardno');
-        quit_sub['phone'] = $(quit_obj[i]).find('td:nth-child(4)').html();
-        quit.push(quit_sub)
+        // var quit_sub = {}
+        // quit_sub['vip_id'] = $(quit_obj[i]).find('[data_vip_id]').attr('data_vip_id');
+        // quit_sub['corp_code'] = $(quit_obj[i]).attr('id');
+        // quit_sub['card_no'] = $(quit_obj[i]).find('[data_cardno]').attr('data_cardno');
+        // quit_sub['phone'] = $(quit_obj[i]).find('td:nth-child(4)').html();
+        // quit.push(quit_sub)
+        quit.push($(quit_obj[i]).find('[data_vip_id]').attr('data_vip_id'));
     }
     for (var i = 0; i < get_groups.length; i++) {
-        var choose_sub = {}
-        choose_sub['vip_id'] = $(get_groups[i]).find('[data_vip_id]').attr('data_vip_id');
-        choose_sub['corp_code'] = $(get_groups[i]).attr('id');
-        choose_sub['card_no'] = $(get_groups[i]).find('[data_cardno]').attr('data_cardno');
-        choose_sub['phone'] = $(get_groups[i]).find('td:nth-child(4)').html();
-        choose.push(choose_sub)
+        // var choose_sub = {}
+        // choose_sub['vip_id'] = $(get_groups[i]).find('[data_vip_id]').attr('data_vip_id');
+        // choose_sub['corp_code'] = $(get_groups[i]).attr('id');
+        // choose_sub['card_no'] = $(get_groups[i]).find('[data_cardno]').attr('data_cardno');
+        // choose_sub['phone'] = $(get_groups[i]).find('td:nth-child(4)').html();
+        // choose.push(choose_sub);
+        choose.push($(get_groups[i]).find('[data_vip_id]').attr('data_vip_id'));
     }
+    sessionStorage.setItem('vip_choose',choose);
+    sessionStorage.setItem('vip_quit',quit)
     param['vip_group_code'] = group_code;
     param['choose'] = choose;
     param['quit'] = quit;
     //发起异步请求
-    oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
-        if (data.code == 0) {
-            if (role == 'eidtor') {
-                window.location.reload()
-            } else {
-                $('#group_recode').val('共' + group_count + "个会员");
-                $('#page-wrapper')[0].style.display = 'block';
-                $('.content')[0].style.display = 'none';
-            }
-        } else if (data.code == -1) {
-            alert(data.message);
-        }
-    });
+    // oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
+    //     if (data.code == 0) {
+    //         if (role == 'eidtor') {
+    //             window.location.reload()
+    //         } else {
+    //             $('#group_recode').val('共' + group_count + "个会员");
+    //             $('#page-wrapper')[0].style.display = 'block';
+    //             $('.content')[0].style.display = 'none';
+    //         }
+    //     } else if (data.code == -1) {
+    //         alert(data.message);
+    //     }
+    // });
+    //关闭当前页面
+    $('#page-wrapper')[0].style.display = 'block';
+    $('.content')[0].style.display = 'none';
 });
 //进入页面的关闭操作
 $('#turnoff').on('click', function () {
@@ -555,6 +563,7 @@ $('#screen_wrapper_close').on('click', function () {
 function GET(a, b, c) {
     whir.loading.add("", 0.5);//加载等待框
     var user_code =$("#PARAM_NAME").attr("data-code");
+    var vip_group_code = $("#vip_num").val();
     if(user_code == undefined){
         user_code = "";
     }
@@ -563,6 +572,7 @@ function GET(a, b, c) {
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
     param["user_code"] = user_code;
+    param["vip_group_code"] =vip_group_code;
     oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
@@ -591,7 +601,7 @@ function superaddition(data, num, c) {
     group_cheked = [];
     var judge = '';
     for (var i = 0; i < data.length; i++) {
-        if (c == data[i].vip_group_code && c != '') {
+        if ( data[i].is_this_group == "Y") {
             judge = 'checked'
         } else {
             judge = '';
@@ -614,8 +624,8 @@ function superaddition(data, num, c) {
             + data[i].vip_phone
             + "</td><td data_cardno='" + data[i].cardno + "'>"
             + data[i].vip_card_type
-            + "</td><td>"
-            + data[i].vip_group_name
+            // + "</td><td>"
+            // + data[i].vip_group_name
             + "</td><td>"
             + data[i].user_name
             + "</td><td>"

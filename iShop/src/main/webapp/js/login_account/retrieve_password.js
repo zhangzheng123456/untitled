@@ -4,7 +4,7 @@
 var oc = new ObjectControl();
 var retiveve={
     telright:false,
-    verify:null,
+    verify:false,
     lasttel:null
 };
 function getCode(){
@@ -14,9 +14,9 @@ function getCode(){
         var tel=$("#tel").val().trim(); //获取手机号
         param["PHONENUMBER"]=tel;
         if(tel==""){
-            $("#tel_tip").show();
             $("#tel_tip img").attr("src","img/icon_error.png");
             $("#tel_tip a").html("请输入手机号");
+            $("#tel_tip").show();
             return false;
         }
         $(this).html(N+' S');
@@ -32,7 +32,7 @@ function getCode(){
         },1000);
         oc.postRequire("post", "/authcode","", param, function(data) {
            if(data.code==0){
-               retiveve.verify=data.message;
+               //retiveve.verify=data.message;
            }
         })
     });
@@ -43,19 +43,18 @@ function checkphone(){
     var tel = $("#tel").val().trim(); //获取手机号
     var telReg =reg.test(tel);
     if(tel==""){
-        $("#tel_tip").show();
         $("#tel_tip img").attr("src","img/icon_error.png");
         $("#tel_tip a").html("请输入手机号");
+        $("#tel_tip").show();
         return false;
     }
     if(telReg == false){
-        $("#tel_tip").show();
         $("#tel_tip img").attr("src","img/icon_error.png");
-        $("#tel_tip a").html("手机号格式不正确")
+        $("#tel_tip a").html("手机号格式不正确");
+        $("#tel_tip").show();
     }else {
         param["phone"]=tel;
         retiveve.lasttel=tel;
-        $("#tel_tip").show();
         oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
             if(data.code==0){
                 $("#tel_tip img").attr("src","img/icon_error.png");
@@ -66,6 +65,7 @@ function checkphone(){
                 $("#get_code").trigger("done");
                 retiveve.telright=true;
             }
+            $("#tel_tip").show();
         });
     }
 }
@@ -73,63 +73,68 @@ function checkyzm(){
     var yzm=$("#yzm").val().trim(); //获取输入的验证码
     var reg=/^\d{6}$/;
     if(yzm==""){
-        $("#yzm_tip").show();
+        retiveve.verify=false;
         $("#yzm_tip img").attr("src","img/icon_error.png");
         $("#yzm_tip a").html("请输入验证码");
+        $("#yzm_tip").show();
         return false;
     }else if(reg.test(yzm)==false){
-        $("#yzm_tip").show();
+        retiveve.verify=false;
         $("#yzm_tip img").attr("src","img/icon_error.png");
         $("#yzm_tip a").html("验证码不正确");
-        return false;
-    }else if(retiveve.verify==null){
         $("#yzm_tip").show();
-        $("#yzm_tip img").attr("src","img/icon_error.png");
-        $("#yzm_tip a").html("请先获取验证码");
         return false;
-    }else if(retiveve.verify!==null){
-        console.log(retiveve.verify);
-        console.log(md5(yzm));
-        if(md5(yzm)==retiveve.verify){
-            $("#yzm_tip").show();
-            $("#yzm_tip img").attr("src","img/icon_right.png");
-            $("#yzm_tip a").html("")
-        }else{
-            $("#yzm_tip").show();
-            $("#yzm_tip img").attr("src","img/icon_error.png");
-            $("#yzm_tip a").html("验证码不正确");
-        }
+    }else if(reg.test(yzm)==true){
+        retiveve.verify=true;
     }
+        // else if(retiveve.verify==null){
+    //    $("#yzm_tip").show();
+    //    $("#yzm_tip img").attr("src","img/icon_error.png");
+    //    $("#yzm_tip a").html("请先获取验证码");
+    //    return false;
+    //}else if(retiveve.verify!==null){
+    //    console.log(retiveve.verify);
+    //    console.log(md5(yzm));
+    //    if(md5(yzm)==retiveve.verify){
+    //        $("#yzm_tip").show();
+    //        $("#yzm_tip img").attr("src","img/icon_right.png");
+    //        $("#yzm_tip a").html("")
+    //    }else{
+    //        $("#yzm_tip").show();
+    //        $("#yzm_tip img").attr("src","img/icon_error.png");
+    //        $("#yzm_tip a").html("验证码不正确");
+    //    }
+    //}
 
 }
 function pwdd(){
     var pwdd=$("#pwdd").val();
     var pwd=$("#pwd").val();
     if(pwdd==""){
-        $("#pwdd_tip").show();
         $("#pwdd_tip img").attr("src","img/icon_error.png");
         $("#pwdd_tip a").html("请再次输入密码");
-    }else if(pwd!=pwdd){
         $("#pwdd_tip").show();
+    }else if(pwd!=pwdd){
         $("#pwdd_tip img").attr("src","img/icon_error.png");
         $("#pwdd_tip a").html("输入密码不一致");
-    }else if(pwd==pwdd&&pwd!=''&&pwdd!=""){
         $("#pwdd_tip").show();
+    }else if(pwd==pwdd&&pwd!=''&&pwdd!=""){
         $("#pwdd_tip img").attr("src","img/icon_right.png");
         $("#pwdd_tip a").html("");
+        $("#pwdd_tip").show();
     }
 }
 function pwd(){
     var pwd=$("#pwd").val();
     var pwdd=$("#pwdd").val();
     if(pwd==""){
-        $("#pwd_tip").show();
         $("#pwd_tip img").attr("src","img/icon_error.png");
         $("#pwd_tip a").html("请输入密码");
-    }else{
         $("#pwd_tip").show();
+    }else{
         $("#pwd_tip img").attr("src","img/icon_right.png");
         $("#pwd_tip a").html("");
+        $("#pwd_tip").show();
     }
 }
 //弹框
@@ -163,24 +168,37 @@ $(function(){
         var tel=$("#tel").val().trim();
         var yzm=$("#yzm").val().trim();
         if(tel==""){
-            $("#tel_tip").show();
             $("#tel_tip img").attr("src","img/icon_error.png");
             $("#tel_tip a").html("请输入手机号");
+            $("#tel_tip").show();
         }
         if(yzm==""){
-            $("#yzm_tip").show();
             $("#yzm_tip img").attr("src","img/icon_error.png");
             $("#yzm_tip a").html("请输入验证码");
+            $("#yzm_tip").show();
         }
-        if(tel!=""&&yzm!=""&&retiveve.telright==true){
-            if(md5(yzm)==retiveve.verify){
-                $("#step1").hide();
-                $("#step2").show();
-            }else{
-                $("#yzm_tip").show();
-                $("#yzm_tip img").attr("src","img/icon_error.png");
-                $("#yzm_tip a").html("验证码不正确");
-            }
+        if(tel!=""&&yzm!=""&&retiveve.telright==true&& retiveve.verify==true){
+            var param={};
+            param["phone"]=retiveve.lasttel;
+            param["authcode"]=yzm;
+            oc.postRequire("post", "/checkAuthcode","", param, function(data) {
+                if(data.code==0){
+                        $("#step1").hide();
+                        $("#step2").show();
+                }else if(data.code==-1){
+                    $("#yzm_tip img").attr("src","img/icon_error.png");
+                    $("#yzm_tip a").html("验证码不正确");
+                    $("#yzm_tip").show();
+                }
+            });
+            //if(md5(yzm)==retiveve.verify){
+            //    $("#step1").hide();
+            //    $("#step2").show();
+            //}else{
+            //    $("#yzm_tip").show();
+            //    $("#yzm_tip img").attr("src","img/icon_error.png");
+            //    $("#yzm_tip a").html("验证码不正确");
+            //}
         }
     });
     $("#submit").click(function(){
@@ -199,9 +217,9 @@ $(function(){
                }
             })
         }else{
-            $("#pwdd_tip").show();
             $("#pwdd_tip img").attr("src","img/icon_error.png");
             $("#pwdd_tip a").html("输入密码不一致");
+            $("#pwdd_tip").show();
         }
 
     })
