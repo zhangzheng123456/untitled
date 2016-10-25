@@ -1153,7 +1153,7 @@ public class StoreController {
         try {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = 8;//得到所有的列
+            int clos = 12;//得到所有的列
             int rows = rs.getRows();//得到所有的行
             System.out.println("----------------clos--------------------------"+clos);
             System.out.println("----------------rows--------------------------"+rows);
