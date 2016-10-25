@@ -669,6 +669,39 @@ jQuery(document).ready(function () {
         var div=$(this);
         removeLeft(left,div);
     });
+    //移到右边
+    function removeRight(a,b){
+        var li="";
+        if(a=="only"){
+            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
+        }
+        if(a=="all"){
+            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
+        }
+        if(li.length=="0"){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        if(li.length>0){
+            for(var i=0;i<li.length;i++){
+                var html=$(li[i]).html();
+                var id=$(li[i]).find("input[type='checkbox']").val();
+                $(li[i]).find("input[type='checkbox']")[0].checked=true;
+                var input=$(b).parents(".screen_content").find(".screen_content_r li");
+                for(var j=0;j<input.length;j++){
+                    if($(input[j]).attr("id")==id){
+                        $(input[j]).remove();
+                    }
+                }
+                $(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
+                $(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
+            }
+        }
+        var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+        $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+        bianse();
+    }
     //移到左边
     function removeLeft(a,b){
         var li="";
@@ -686,40 +719,7 @@ jQuery(document).ready(function () {
         if(li.length>0){
             for(var i=li.length-1;i>=0;i--){
                 $(li[i]).remove();
-                $(".screen_content .screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked")
-            }
-        }
-        var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
-        $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-        bianse();
-    }
-    //移到右边
-    function removeRight(direction,b){
-        var li="";
-        if(direction=="only"){
-            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
-        }
-        if(direction=="all"){
-            li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
-        }
-        if(li.length=="0"){
-            frame();
-            $('.frame').html("请先选择");
-            return;
-        }
-        if(li.length>0){
-            for(var i=0;i<li.length;i++){
-                var html=$(li[i]).html();
-                var id=$(li[i]).find("input[type='checkbox']").val();
-                var input=$(b).parents(".screen_content").find(".screen_content_r li");
-                $(li[i]).find("span").attr("title",$(li[i]).find("span").text());
-                for(var j=0;j<input.length;j++){
-                    if($(input[j]).attr("id")==id){
-                        $(input[j]).remove();
-                    }
-                }
-                $(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
-                $(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
+                $(b).parents(".screen_content").find(".screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked");
             }
         }
         var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
@@ -814,6 +814,10 @@ jQuery(document).ready(function () {
                         });
                 }
                 isscroll=true;
+                var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
+                for(var k=0;k<li.length;k++){
+                    $("#screen_area .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
+                }
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -902,6 +906,10 @@ jQuery(document).ready(function () {
                         });
                 }
                 isscroll=true;
+                var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
+                for(var k=0;k<li.length;k++){
+                    $("#screen_brand .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
+                }
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,

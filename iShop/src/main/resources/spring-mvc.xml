@@ -90,7 +90,8 @@
         <mvc:exclude-mapping path="/user/change_passwd"/>
         <mvc:exclude-mapping path="/login.html"/>
         <mvc:exclude-mapping path="/register_account.html"/>
-        <mvc:exclude-mapping path="/phone_exist"/>
+        <mvc:exclude-mapping path="/Retrieve_password.html"/>
+        <mvc:exclude-mapping path="/user/PhoneExist"/>
         <mvc:exclude-mapping path="/userlogin"/>
         <mvc:exclude-mapping path="/api/**"/>
         <mvc:exclude-mapping path="/Websocket/**"/>

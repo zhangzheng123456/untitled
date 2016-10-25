@@ -6,11 +6,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.VipGroup;
+import com.bizvane.ishop.service.IceInterfaceService;
+import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -44,7 +52,13 @@ public class VipGroupController {
     @Autowired
     private VipGroupService vipGroupService;
     @Autowired
-    MongoDBClient mongodbClient;
+    private UserService userService;
+    @Autowired
+    private StoreService storeService;
+    @Autowired
+    IceInterfaceService iceInterfaceService;
+//    @Autowired
+//    MongoDBClient mongodbClient;
 
     String id;
 
@@ -102,7 +116,6 @@ public class VipGroupController {
         DataBean dataBean = new DataBean();
         String data = null;
         try {
-            JSONObject result = new JSONObject();
             String jsString = request.getParameter("param");
             logger.info("json-select-------------" + jsString);
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -111,21 +124,21 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
 
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-            int vip_count = 0;
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//            int vip_count = 0;
             VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
-            if (vipGroup != null) {
-                String corp_code = vipGroup.getCorp_code();
-                String vip_group_code = vipGroup.getVip_group_code();
-
-                BasicDBObject dbObject=new BasicDBObject();
-                dbObject.put("vip_group_code",vip_group_code);
-                dbObject.put("corp_code",corp_code);
-                DBCursor dbCursor= cursor.find(dbObject);
-                vip_count = dbCursor.size();
-                vipGroup.setVip_count(vip_count);
-            }
+//            if (vipGroup != null) {
+//                String corp_code = vipGroup.getCorp_code();
+//                String vip_group_code = vipGroup.getVip_group_code();
+//
+//                BasicDBObject dbObject=new BasicDBObject();
+//                dbObject.put("vip_group_code",vip_group_code);
+//                dbObject.put("corp_code",corp_code);
+//                DBCursor dbCursor= cursor.find(dbObject);
+//                vip_count = dbCursor.size();
+//                vipGroup.setVip_count(vip_count);
+//            }
             data = JSON.toJSONString(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -482,14 +495,13 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
-
-    /**
-     * 会员分组批量分配会员
-     * 保存mongodb
+    /***
+     * 根据所选导购
+     * 获取会员列表
      */
-    @RequestMapping(value = "/saveVips", method = RequestMethod.POST)
+    @RequestMapping(value = "/allVip", method = RequestMethod.POST)
     @ResponseBody
-    public String saveVips(HttpServletRequest request) {
+    public String allVip(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -499,85 +511,186 @@ public class VipGroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            //mongodb
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+            String user_code = jsonObject.get("user_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
             String vip_group_code = jsonObject.get("vip_group_code").toString();
-            String vips_choose = jsonObject.get("choose").toString();
-            String vips_quit = jsonObject.get("quit").toString();
 
-            JSONArray array = JSONArray.parseArray(vips_choose);
-            for (int i = 0; i < array.size(); i++) {
-                String vip = array.get(i).toString();
-                JSONObject vip_info = JSONObject.parseObject(vip);
-                String vip_id = vip_info.get("vip_id").toString();
-                String corp_code = vip_info.get("corp_code").toString();
-                String card_no = vip_info.get("card_no").toString();
-                String phone = vip_info.get("phone").toString();
-
-                Map keyMap = new HashMap();
-                keyMap.put("_id", corp_code+card_no);
-                BasicDBObject queryCondition = new BasicDBObject();
-                queryCondition.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(queryCondition);
-                if (dbCursor1.size()>0){
-                    //记录存在，更新
-                    DBObject updateCondition=new BasicDBObject();
-                    updateCondition.put("_id", corp_code+card_no);
-                    DBObject updatedValue=new BasicDBObject();
-                    updatedValue.put("vip_group_code", vip_group_code);
-                    DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
-                    cursor.update(updateCondition, updateSetValue);
-                }else {
-                    //记录不存在，插入
-                    DBObject saveData = new BasicDBObject();
-                    saveData.put("_id", corp_code + card_no);
-                    saveData.put("vip_id", vip_id);
-                    saveData.put("corp_code", corp_code);
-                    saveData.put("card_no", card_no);
-                    saveData.put("phone", phone);
-                    saveData.put("corp_code", corp_code);
-                    saveData.put("vip_group_code", vip_group_code);
-                    cursor.save(saveData);
+            String vip_ids = "";
+            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            if (vipGroup != null && vipGroup.getVip_ids() != null && !vipGroup.getVip_ids().equals("")){
+                vip_ids = vipGroup.getVip_ids();
+                vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
+            }
+            String role_code = "";
+            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
+            if (users.size()>0) {
+                User user = userService.getUserById(users.get(0).getId());
+                role_code = user.getRole_code();
+            }
+            String user_id = "";
+            String area_code = "";
+            String store_id = "";
+            if (role_code.equals(Common.ROLE_AM)){
+                area_code = users.get(0).getArea_code();
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            } else if (role_code.equals(Common.ROLE_SM)){
+                String store_code = users.get(0).getStore_code();
+                store_id = store_code.replace(Common.SPECIAL_HEAD,"");
+            } else if (role_code.equals(Common.ROLE_STAFF)){
+                user_id = user_code;
+            }else if (role_code.equals(Common.ROLE_BM)){
+                role_code = Common.ROLE_SM;
+                String brand_code = users.get(0).getBrand_code();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                for (int i = 0; i < stores.size(); i++) {
+                    store_id = store_id + stores.get(i).getStore_code() + ",";
                 }
             }
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
-            JSONArray array1 = JSONArray.parseArray(vips_quit);
-            for (int i = 0; i < array1.size(); i++) {
-                String vip = array1.get(i).toString();
-                JSONObject vip_info = JSONObject.parseObject(vip);
-                String vip_id = vip_info.get("vip_id").toString();
-                String corp_code = vip_info.get("corp_code").toString();
-                String card_no = vip_info.get("card_no").toString();
-                String phone = vip_info.get("phone").toString();
 
-                Map keyMap = new HashMap();
-                keyMap.put("_id", corp_code+card_no);
-                BasicDBObject queryCondition = new BasicDBObject();
-                queryCondition.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(queryCondition);
-                if (dbCursor1.size()>0){
-                    //记录存在，更新
-                    DBObject updateCondition=new BasicDBObject();
-                    updateCondition.put("_id", corp_code+card_no);
-                    DBObject updatedValue=new BasicDBObject();
-                    updatedValue.put("vip_group_code", "");
-                    DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
-                    cursor.update(updateCondition, updateSetValue);
-                }
-            }
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_id.key, data_store_id);
+            datalist.put(data_area_code.key, data_area_code);
+            datalist.put(data_role_code.key, data_role_code);
+            datalist.put(data_page_num.key, data_page_num);
+            datalist.put(data_page_size.key, data_page_size);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            logger.info("-------vip列表" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+
+            JSONObject obj = JSON.parseObject(result);
+            String vipLists = obj.get("all_vip_list").toString();
+            JSONArray array = JSONArray.parseArray(vipLists);
+            JSONArray new_array = vipGroupService.checkVipsGroup(array,vip_ids);
+            obj.put("all_vip_list",new_array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("save success");
+            dataBean.setId(id);
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
+//    /**
+//     * 会员分组批量分配会员
+//     * 保存mongodb
+//     */
+//    @RequestMapping(value = "/saveVips", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String saveVips(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String param = request.getParameter("param");
+//            logger.info("json---------------" + param);
+//            JSONObject jsonObj = JSONObject.parseObject(param);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//
+//            //mongodb
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//
+//            String vip_group_code = jsonObject.get("vip_group_code").toString();
+//            String vips_choose = jsonObject.get("choose").toString();
+//            String vips_quit = jsonObject.get("quit").toString();
+//
+//            JSONArray array = JSONArray.parseArray(vips_choose);
+//            for (int i = 0; i < array.size(); i++) {
+//                String vip = array.get(i).toString();
+//                JSONObject vip_info = JSONObject.parseObject(vip);
+//                String vip_id = vip_info.get("vip_id").toString();
+//                String corp_code = vip_info.get("corp_code").toString();
+//                String card_no = vip_info.get("card_no").toString();
+//                String phone = vip_info.get("phone").toString();
+//
+//                Map keyMap = new HashMap();
+//                keyMap.put("_id", corp_code+card_no);
+//                BasicDBObject queryCondition = new BasicDBObject();
+//                queryCondition.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(queryCondition);
+//                if (dbCursor1.size()>0){
+//                    //记录存在，更新
+//                    String vip_group_code1 = "";
+//                    DBObject object = dbCursor1.next();
+//                    if (object.containsField("vip_group_code"))
+//                        vip_group_code1 = object.get("vip_group_code").toString();
+//                    DBObject updateCondition=new BasicDBObject();
+//                    updateCondition.put("_id", corp_code+card_no);
+//                    DBObject updatedValue=new BasicDBObject();
+//                    updatedValue.put("vip_group_code", vip_group_code1 + vip_group_code + ",");
+//                    DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+//                    cursor.update(updateCondition, updateSetValue);
+//                }else {
+//                    //记录不存在，插入
+//                    DBObject saveData = new BasicDBObject();
+//                    saveData.put("_id", corp_code + card_no);
+//                    saveData.put("vip_id", vip_id);
+//                    saveData.put("corp_code", corp_code);
+//                    saveData.put("card_no", card_no);
+//                    saveData.put("phone", phone);
+//                    saveData.put("corp_code", corp_code);
+//                    saveData.put("vip_group_code", vip_group_code+",");
+//                    cursor.save(saveData);
+//                }
+//            }
+//
+//            JSONArray array1 = JSONArray.parseArray(vips_quit);
+//            for (int i = 0; i < array1.size(); i++) {
+//                String vip = array1.get(i).toString();
+//                JSONObject vip_info = JSONObject.parseObject(vip);
+//                String vip_id = vip_info.get("vip_id").toString();
+//                String corp_code = vip_info.get("corp_code").toString();
+//                String card_no = vip_info.get("card_no").toString();
+//                String phone = vip_info.get("phone").toString();
+//
+//                Map keyMap = new HashMap();
+//                keyMap.put("_id", corp_code+card_no);
+//                BasicDBObject queryCondition = new BasicDBObject();
+//                queryCondition.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(queryCondition);
+//                if (dbCursor1.size()>0){
+//                    //记录存在，更新
+//                    String vip_group_code1 = "";
+//                    DBObject object = dbCursor1.next();
+//                    if (object.containsField("vip_group_code"))
+//                        vip_group_code1 = object.get("vip_group_code").toString();
+//                    vip_group_code1 = vip_group_code1.replace(vip_group_code+",","");
+//                    DBObject updateCondition=new BasicDBObject();
+//                    updateCondition.put("_id", corp_code+card_no);
+//                    DBObject updatedValue=new BasicDBObject();
+//                    updatedValue.put("vip_group_code", vip_group_code1);
+//                    DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+//                    cursor.update(updateCondition, updateSetValue);
+//                }
+//            }
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage("save success");
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 获取企业下会员分组

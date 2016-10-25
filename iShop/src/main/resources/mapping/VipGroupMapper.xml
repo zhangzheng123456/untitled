@@ -7,6 +7,8 @@
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="vip_group_name" property="vip_group_name"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_ids" property="vip_ids" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date"
@@ -19,11 +21,14 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
+
     <select id="selectVipGroupById" resultMap="VipGroup">
         SELECT
         dvg.id,
         dvg.vip_group_code,
         dvg.vip_group_name,
+        dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
@@ -35,10 +40,13 @@
         WHERE dvg.corp_code=dc.corp_code
         AND dvg.id=#{id}
     </select>
+
     <select id="selectAllVipGroup" resultMap="VipGroup">
         SELECT dvg.id,
         dvg.vip_group_code,
         dvg.vip_group_name,
+        dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
@@ -63,11 +71,14 @@
         GROUP BY dvg.id
         ORDER BY dvg.id DESC
     </select>
+
     <select id="selectCorpVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
         SELECT 
         dvg.id,
         dvg.vip_group_code,
         dvg.vip_group_name,
+        dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
@@ -88,6 +99,8 @@
         dvg.id,
         dvg.vip_group_code,
         dvg.vip_group_name,
+        dvg.user_code,
+        dvg.vip_ids,
         dvg.corp_code,
         dvg.isactive
         From def_vip_group dvg
@@ -97,6 +110,7 @@
             AND dvg.isactive = #{isactive}
         </if>
     </select>
+
     <select id="selectByVipGroupName" resultType="com.bizvane.ishop.entity.VipGroup">
         SELECT
         dvg.id,
@@ -110,26 +124,13 @@
             AND isactive = #{isactive}
         </if>
     </select>
-    <select id="selectByVipGroupId" resultType="com.bizvane.ishop.entity.VipGroup">
-         SELECT
-        dvg.id,
-        dvg.vip_group_code,
-        dvg.vip_group_name,
-        dvg.remark,
-        dvg.corp_code,
-        dvg.modified_date,
-        dvg.modifier,
-         dvg.created_date,
-        dvg.creater,
-        dvg.isactive
-        FROM def_vip_group
-        WHERE id=#{id}
-    </select>
+
     <delete id="deleteVipGroupById">
         DELETE FROM
         def_vip_group
         WHERE ID=#{id}
     </delete>
+
     <insert id="insertVipGroup" parameterType="com.bizvane.ishop.entity.VipGroup">
         INSERT INTO def_vip_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -139,10 +140,15 @@
             <if test="vip_group_name!=null">
                 vip_group_name,
             </if>
+            <if test="user_code!=null">
+                user_code,
+            </if>
+            <if test="vip_ids!=null">
+                vip_ids,
+            </if>
             <if test="remark!=null">
                 remark,
             </if>
-
             <if test="corp_code!=null">
                 corp_code,
             </if>
@@ -169,10 +175,15 @@
             <if test="vip_group_name!=null">
                 #{vip_group_name},
             </if>
+            <if test="user_code!=null">
+                #{user_code},
+            </if>
+            <if test="vip_ids!=null">
+                #{vip_ids},
+            </if>
             <if test="remark!=null">
                 #{remark},
             </if>
-
             <if test="corp_code!=null">
                 #{corp_code},
             </if>
@@ -193,6 +204,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateVipGroup" parameterType="com.bizvane.ishop.entity.VipGroup">
         UPDATE def_vip_group
         <trim prefix="SET" suffixOverrides=",">
@@ -202,10 +214,15 @@
             <if test="vip_group_name!=null">
                 vip_group_name=#{vip_group_name},
             </if>
+            <if test="user_code!=null">
+                user_code=#{user_code},
+            </if>
+            <if test="vip_ids!=null">
+                vip_ids=#{vip_ids},
+            </if>
             <if test="remark!=null">
                 remark=#{remark},
             </if>
-
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
@@ -227,19 +244,23 @@
         </trim>
         WHERE id=#{id};
     </update>
+
     <select id="selectAllVipGroupScreen" resultMap="VipGroup">
         SELECT
         dvg.id,
         dvg.vip_group_code,
         dvg.vip_group_name,
+        dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
         dvg.modifier,
         dvg.isactive,
         dc.corp_name
-        FROM def_vip_group dvg,def_corp dc
+        FROM def_vip_group dvg,def_corp dc,def_user du
         WHERE dvg.corp_code=dc.corp_code
+        AND dvg.corp_code = du.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND dvg.corp_code=#{corp_code}
         </if>
@@ -250,6 +271,10 @@
                 <choose>
                     <when test="entryKey=='corp_name' and entryValue!=''">
                         dc.${entryKey} REGEXP ${entryValue}
+                    </when>
+                    <when test="entryValue!='' and entryKey=='user_name'">
+                        dvg.user_code = du.user_code
+                        AND du.${entryKey} REGEXP ${entryValue}
                     </when>
                     <when test="entryValue!=''">
                         dvg.${entryKey} REGEXP ${entryValue}
