@@ -2092,16 +2092,22 @@ public class UserController {
             String message = jsonObject1.get("message").toString();
             JSONObject jsonObject2 = new JSONObject(message);
             String password = jsonObject2.get("password").toString();
-            int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
+            User user = null;
+            if (jsonObject2.has("user_id")) {
+                int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
+                user = userService.getUserById(user_id);
+            }
+            if (jsonObject2.has("phone")){
+                user = userService.userPhoneExist(jsonObject2.get("phone").toString()).get(0);
+            }
+            if (user != null) {
+                user.setPassword(password);
+                Date now = new Date();
+                user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                user.setModifier(user_code);
 
-//            password = CheckUtils.encryptMD5Hash(password);
-            User user = userService.getUserById(user_id);
-            user.setPassword(password);
-            Date now = new Date();
-            user.setModified_date(Common.DATETIME_FORMAT.format(now));
-            user.setModifier(user_code);
-
-            userService.updateUser(user);
+                userService.updateUser(user);
+            }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("重置密码成功");
