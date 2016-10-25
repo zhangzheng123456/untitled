@@ -68,14 +68,14 @@ public class VipAnalysisController {
             logger.info("-------vip列表" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
-            JSONObject obj = JSON.parseObject(result);
-            String vipLists = obj.get("all_vip_list").toString();
-            JSONArray array = JSONArray.parseArray(vipLists);
-            JSONArray new_array = vipGroupService.findVipsGroup(array);
-            obj.put("all_vip_list",new_array);
+//            JSONObject obj = JSON.parseObject(result);
+//            String vipLists = obj.get("all_vip_list").toString();
+//            JSONArray array = JSONArray.parseArray(vipLists);
+//            JSONArray new_array = vipGroupService.checkVipsGroup(array,"");
+//            obj.put("all_vip_list",new_array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(obj.toString());
+            dataBean.setMessage(result);
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

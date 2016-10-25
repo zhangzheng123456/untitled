@@ -1,25 +1,17 @@
 package com.bizvane.ishop.service.imp;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.dao.VipGroupMapper;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
-import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +29,7 @@ public class VipGroupServiceImpl implements VipGroupService {
     VipGroupMapper vipGroupMapper;
     @Autowired
     UserMapper userMapper;
-    @Autowired
-    MongoDBClient mongodbClient;
+
     /**
      * 根据id
      * 获取会员分组信息
@@ -49,14 +40,13 @@ public class VipGroupServiceImpl implements VipGroupService {
      */
     @Override
     public VipGroup getVipGroupById(int id) throws Exception {
-        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
         int vip_count = 0;
         VipGroup vipGroup = vipGroupMapper.selectVipGroupById(id);
         if (vipGroup != null) {
             String corp_code = vipGroup.getCorp_code();
             String user_code = vipGroup.getUser_code();
             String vip_group_code = vipGroup.getVip_group_code();
+            String vip_id = vipGroup.getVip_ids();
             //分组所属导购
             if (user_code != null && !user_code.equals("")){
                 List<User> users = userMapper.selectUserCode(user_code,corp_code,Common.IS_ACTIVE_Y);
@@ -70,14 +60,9 @@ public class VipGroupServiceImpl implements VipGroupService {
                 vipGroup.setUser_name("");
             }
             //分组所拥有的会员个数
-            BasicDBObject dbObject=new BasicDBObject();
-            dbObject.put("vip_group_code",vip_group_code);
-            dbObject.put("corp_code",corp_code);
-            DBCursor dbCursor= cursor.find(dbObject);
-            vip_count = dbCursor.size();
+            vip_count = vip_id.split(",").length;
             vipGroup.setVip_count(vip_count);
         }
-
         return vipGroup;
     }
 
@@ -133,6 +118,13 @@ public class VipGroupServiceImpl implements VipGroupService {
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
         String user_code = jsonObject.get("user_code").toString().trim();
+        String vips_choose = jsonObject.get("choose").toString();
+        String vip_ids = "";
+        String[] vips = vips_choose.split(",");
+        for (int i = 0; i < vips.length; i++) {
+            vip_ids = vip_ids + Common.SPECIAL_HEAD + vips[i] + ",";
+        }
+
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
@@ -149,6 +141,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroup.setVip_group_code(vip_group_code);
             vipGroup.setVip_group_name(vip_group_name);
             vipGroup.setUser_code(user_code);
+            vipGroup.setVip_ids(vip_ids);
             vipGroup.setCorp_code(corp_code);
             vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setCreater(user_id);
@@ -173,6 +166,11 @@ public class VipGroupServiceImpl implements VipGroupService {
         String user_code = jsonObject.get("user_code").toString().trim();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
+        String vips_choose = jsonObject.get("choose").toString();
+        String vips_quit = jsonObject.get("quit").toString();
+        String[] choose = vips_choose.split(",");
+        String[] quit = vips_quit.split(",");
+
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
@@ -181,7 +179,17 @@ public class VipGroupServiceImpl implements VipGroupService {
         } else if (vipGroup2 != null && vipGroup2.getId() != id) {
             result = "该会员分组名称已存在";
         } else {
-            VipGroup vipGroup = new VipGroup();
+            VipGroup vipGroup = getVipGroupById(id);
+            String vip_ids = vipGroup.getVip_ids();
+            if (vip_ids != null && !vip_ids.equals("")){
+                for (int i = 0; i < choose.length; i++) {
+                    vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
+                }
+                for (int i = 0; i < quit.length; i++) {
+                    vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
+                }
+            }
+            vipGroup = new VipGroup();
             Date now = new Date();
             vipGroup.setId(id);
             vipGroup.setRemark(remark);
@@ -243,40 +251,64 @@ public class VipGroupServiceImpl implements VipGroupService {
         return page;
     }
 
-    public JSONArray findVipsGroup(JSONArray array) throws Exception {
-        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//    public JSONArray findVipsGroup(JSONArray array) throws Exception {
+//        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//
+//        JSONArray new_array = new JSONArray();
+//        for (int i = 0; i < array.size(); i++) {
+//            com.alibaba.fastjson.JSONObject vip = com.alibaba.fastjson.JSONObject.parseObject(array.get(i).toString());
+////            String vip_id = vip.get("vip_id").toString();
+//            String corp_code = vip.get("corp_code").toString();
+//            String cardno = vip.get("cardno").toString();
+//
+//            BasicDBObject dbObject=new BasicDBObject();
+//            dbObject.put("_id",corp_code+cardno);
+////                dObject.put("corp_code",corp_code);
+//            DBCursor dbCursor= cursor.find(dbObject);
+//
+//            String vip_group_code = "";
+//            String vip_group_name = "";
+//            while (dbCursor.hasNext()) {
+//                DBObject object = dbCursor.next();
+//                if (object.containsField("vip_group_code"))
+//                    vip_group_code = object.get("vip_group_code").toString();
+//            }
+//            if (!vip_group_code.equals("")){
+//                String[] codes = vip_group_code.split(",");
+//                for (int j = 0; j < codes.length; j++) {
+//                    VipGroup vipGroup = getVipGroupByCode(corp_code,codes[j],Common.IS_ACTIVE_Y);
+//                    if (vipGroup != null){
+//                        vip_group_name = vip_group_name + vipGroup.getVip_group_name() + ",";
+//                    }
+//                }
+//            }
+//            if (vip_group_name.endsWith(","))
+//                vip_group_name = vip_group_name.substring(0,vip_group_name.length()-1);
+//            if (vip_group_code.endsWith(","))
+//                vip_group_code = vip_group_code.substring(0,vip_group_code.length()-1);
+//            vip.put("vip_group_code",vip_group_code);
+//            vip.put("vip_group_name",vip_group_name);
+//            new_array.add(vip);
+//        }
+//        return new_array;
+//    }
 
+    public JSONArray checkVipsGroup(JSONArray array,String vip_ids) throws Exception {
         JSONArray new_array = new JSONArray();
+        String[] vips = vip_ids.split(",");
         for (int i = 0; i < array.size(); i++) {
             com.alibaba.fastjson.JSONObject vip = com.alibaba.fastjson.JSONObject.parseObject(array.get(i).toString());
-//            String vip_id = vip.get("vip_id").toString();
-            String corp_code = vip.get("corp_code").toString();
-            String cardno = vip.get("cardno").toString();
-
-            BasicDBObject dbObject=new BasicDBObject();
-            dbObject.put("_id",corp_code+cardno);
-//                dObject.put("corp_code",corp_code);
-            DBCursor dbCursor= cursor.find(dbObject);
-
-            String vip_group_code = "";
-            String vip_group_name = "";
-            while (dbCursor.hasNext()) {
-                DBObject object = dbCursor.next();
-                if (object.containsField("vip_group_code"))
-                    vip_group_code = object.get("vip_group_code").toString();
-            }
-            if (!vip_group_code.equals("")){
-                VipGroup vipGroup = getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
-                if (vipGroup != null){
-                    vip_group_name = vipGroup.getVip_group_name();
+            String vip_id = vip.get("vip_id").toString();
+            for (int j = 0; j < vips.length; j++) {
+                if (vip_id.equals(vips[j])){
+                    vip.put("is_this_group","Y");
+                }else {
+                    vip.put("is_this_group","N");
                 }
             }
-            vip.put("vip_group_code",vip_group_code);
-            vip.put("vip_group_name",vip_group_name);
             new_array.add(vip);
         }
         return new_array;
     }
-
 }

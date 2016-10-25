@@ -8,6 +8,7 @@
         <result column="vip_group_name" property="vip_group_name"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_ids" property="vip_ids" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date"
@@ -27,6 +28,7 @@
         dvg.vip_group_code,
         dvg.vip_group_name,
         dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
@@ -44,6 +46,7 @@
         dvg.vip_group_code,
         dvg.vip_group_name,
         dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
@@ -75,6 +78,7 @@
         dvg.vip_group_code,
         dvg.vip_group_name,
         dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
@@ -96,6 +100,7 @@
         dvg.vip_group_code,
         dvg.vip_group_name,
         dvg.user_code,
+        dvg.vip_ids,
         dvg.corp_code,
         dvg.isactive
         From def_vip_group dvg
@@ -138,10 +143,12 @@
             <if test="user_code!=null">
                 user_code,
             </if>
+            <if test="vip_ids!=null">
+                vip_ids,
+            </if>
             <if test="remark!=null">
                 remark,
             </if>
-
             <if test="corp_code!=null">
                 corp_code,
             </if>
@@ -171,10 +178,12 @@
             <if test="user_code!=null">
                 #{user_code},
             </if>
+            <if test="vip_ids!=null">
+                #{vip_ids},
+            </if>
             <if test="remark!=null">
                 #{remark},
             </if>
-
             <if test="corp_code!=null">
                 #{corp_code},
             </if>
@@ -208,6 +217,9 @@
             <if test="user_code!=null">
                 user_code=#{user_code},
             </if>
+            <if test="vip_ids!=null">
+                vip_ids=#{vip_ids},
+            </if>
             <if test="remark!=null">
                 remark=#{remark},
             </if>
@@ -239,6 +251,7 @@
         dvg.vip_group_code,
         dvg.vip_group_name,
         dvg.user_code,
+        dvg.vip_ids,
         dvg.remark,
         dvg.corp_code,
         dvg.modified_date,

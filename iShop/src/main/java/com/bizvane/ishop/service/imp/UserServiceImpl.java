@@ -668,12 +668,12 @@ public class UserServiceImpl implements UserService {
         datalist.put(data_text.key, data_text);
 
         DataBox dataBox = iceInterfaceService.iceInterface("SendSMS", datalist);
-        logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
-        String msg = dataBox.data.get("message").value;
-        System.out.println("------------" + msg);
-        logger.info("------------" + msg);
-        JSONObject obj = new JSONObject(msg);
-        if (obj.get("message").toString().equals("短信发送成功")) {
+//        logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
+//        String msg = dataBox.data.get("message").value;
+//        System.out.println("------------" + msg);
+//        logger.info("------------" + msg);
+//        JSONObject obj = new JSONObject(msg);
+        if (dataBox.data.get("message").value.equals("短信发送成功")) {
             //验证码存表
             ValidateCode code = validateCodeService.selectValidateCode(0, phone, "");
             Date now = new Date();
@@ -696,7 +696,7 @@ public class UserServiceImpl implements UserService {
                 code.setIsactive(Common.IS_ACTIVE_Y);
                 validateCodeService.updateValidateCode(code);
             }
-            return authcode;
+            return CheckUtils.encryptMD5Hash(authcode);
         }
         return Common.DATABEAN_CODE_ERROR;
     }

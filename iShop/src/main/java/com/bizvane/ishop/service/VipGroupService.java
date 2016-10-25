@@ -32,5 +32,7 @@ public interface VipGroupService {
 
     PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,  Map<String, String> map) throws Exception;
 
-    JSONArray findVipsGroup(JSONArray array) throws Exception;
+//    JSONArray findVipsGroup(JSONArray array) throws Exception;
+
+    JSONArray checkVipsGroup(JSONArray array,String vip_ids) throws Exception;
 }

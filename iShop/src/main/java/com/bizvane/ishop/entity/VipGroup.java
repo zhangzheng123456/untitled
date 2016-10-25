@@ -11,6 +11,8 @@ public class VipGroup {
     private String vip_group_name;
     //导购编号
     private String user_code;
+    //分组下会员
+    private String vip_ids;
     //备注
     private String remark;
     //企业编号
@@ -72,6 +74,14 @@ public class VipGroup {
 
     public void setUser_code(String user_code) {
         this.user_code = user_code;
+    }
+
+    public String getVip_ids() {
+        return vip_ids;
+    }
+
+    public void setVip_ids(String vip_ids) {
+        this.vip_ids = vip_ids;
     }
 
     public String getRemark() {
