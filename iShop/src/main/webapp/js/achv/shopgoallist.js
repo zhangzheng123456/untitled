@@ -52,7 +52,7 @@ if(return_jump==null){
     }
 }
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
