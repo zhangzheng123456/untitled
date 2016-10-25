@@ -26,4 +26,6 @@ public interface ValidateCodeMapper {
 
     List<ValidateCode> selectByCorpScreen(Map<String,Object> params) throws SQLException;
 
+    ValidateCode selectByPhone(@Param("phone") String phone,@Param("validate_code") String validate_code) throws SQLException;
+
 }

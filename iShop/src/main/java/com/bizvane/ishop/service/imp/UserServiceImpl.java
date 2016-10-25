@@ -655,7 +655,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String getAuthCode(String phone, String platform) throws Exception {
 
-        String text = "[爱秀]您的注册验证码为：";
+        String text = "[爱秀]您的验证码为：";
         Random r = new Random();
         Double d = r.nextDouble();
         String authcode = d.toString().substring(3, 3 + 6);

@@ -185,4 +185,12 @@
         ORDER BY id DESC
     </select>
 
+    <select id="selectByPhone" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT *
+        FROM def_validate_code
+        WHERE phone = #{phone}
+        AND validate_code = #{validate_code}
+        AND platform = 'web'
+    </select>
+
 </mapper>

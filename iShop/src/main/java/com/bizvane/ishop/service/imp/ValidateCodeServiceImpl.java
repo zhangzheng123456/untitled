@@ -96,4 +96,9 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         PageInfo<ValidateCode> page=new PageInfo<ValidateCode>(validateCodes);
         return page;
     }
+
+    @Override
+    public ValidateCode selectByPhone(String phone,String validate_code) throws Exception{
+        return validateCodeMapper.selectByPhone(phone,validate_code);
+    }
 }

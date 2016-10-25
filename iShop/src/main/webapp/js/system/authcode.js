@@ -261,6 +261,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td></tr>");
     }
     sessionStorage.removeItem("return_jump");
+    $(".th th:first-child input").removeAttr("checked");
 };
 //权限配置
 function jurisdiction(actions){
