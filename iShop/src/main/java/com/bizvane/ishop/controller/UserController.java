@@ -65,6 +65,8 @@ public class UserController {
     private AreaService areaService;
     @Autowired
     private SignService signService;
+    @Autowired
+    private BrandService brandService;
     String id;
 
     /***
@@ -550,6 +552,7 @@ public class UserController {
             Cell[] column7 = rs.getColumn(7);//群组编号
             Cell[] column8 = rs.getColumn(8);//区域编号
             Cell[] column9 = rs.getColumn(9);//店铺编号
+            Cell[] column10 = rs.getColumn(10);//品牌编号
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
@@ -714,6 +717,26 @@ public class UserController {
                 }
                 //  }
             }
+
+            for (int i = 3; i < column10.length; i++) {
+                String brandCheck = column10[i].getContents().toString().trim();
+                if (brandCheck == null || brandCheck.equals("")) {
+                    continue;
+                }
+//                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
+//                if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
+                String brands = column10[i].getContents().toString().trim();
+                String[] splitbrands = brands.split(",");
+                for (int j = 0; j < splitbrands.length; j++) {
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitbrands[j], Common.IS_ACTIVE_Y);
+                    if (brand == null) {
+                        result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+                //  }
+            }
             ArrayList<User> users = new ArrayList<User>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
@@ -731,6 +754,7 @@ public class UserController {
                     String group_code = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                    // System.out.println("-----------EXECL-------store_code---------------------:"+store_code);
                     String position = rs.getCell(j++, i).getContents().toString().trim();
                     if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && group_code.equals("")) {
@@ -803,6 +827,26 @@ public class UserController {
 //                            store_code = store_code + codes[i2];
 //                        }
 //                    }
+                    if (role.equals(Common.ROLE_BM)) {
+                        if(role.equals(Common.ROLE_BM ) && brand_code.equals("")){
+                            result = "：第" + (i + 1) + "行角色为品牌管理员，品牌编号为必填项";
+                            int a = 5 / 0;
+                        }
+                        if (!store_code.equals("")) {
+                            String[] codes = brand_code.split(",");
+                            if (WebUtils.checkRepeat(codes)) {
+                                brand_code="";
+                                for (int k = 0; k < codes.length; k++) {
+                                    codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
+                                    brand_code = brand_code + codes[k];
+                                }
+                            } else {
+                                result = "：第" + (i + 1) + "行Execl中存在重复品牌";
+                                int a = 5 / 0;
+                            }
+                        }
+                        user.setBrand_code(brand_code);
+                    }
                     if (role.equals(Common.ROLE_SM)) {
                         if(role.equals(Common.ROLE_SM ) && store_code.equals("")){
                             result = "：第" + (i + 1) + "行角色为店长，店铺编号为必填项";
