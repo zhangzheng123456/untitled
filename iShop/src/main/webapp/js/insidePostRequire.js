@@ -18,9 +18,11 @@ ObjectControl.prototype = {
 				}
 			},
 			error:function(data){
-				// window.location.reload();
-				location.href=data;
-				console.log(data.responseText);
+				var data=data.responseText.trim();
+				var str=data.substring(252,257);
+				if(str=="iShop"){
+					location.href=data;
+				}
 			}
 		});
 
