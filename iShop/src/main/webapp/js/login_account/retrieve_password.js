@@ -206,6 +206,17 @@ $(function(){
         var pwdd=$("#pwdd").val();
         var param={};
         param['phone']=retiveve.lasttel;
+        if(pwd==""){
+            $("#pwd_tip img").attr("src","img/icon_error.png");
+            $("#pwd_tip a").html("请输入密码");
+            $("#pwd_tip").show();
+        }
+        if(pwdd==""){
+            $("#pwdd_tip img").attr("src","img/icon_error.png");
+            $("#pwdd_tip a").html("请输入密码");
+            $("#pwdd_tip").show();
+            return false;
+        }
         if(pwd==pwdd&&pwd!=""&&pwdd!=""){
             param['password']=pwdd;
             oc.postRequire("post", "/user/change_passwd", "0", param, function(data) {
