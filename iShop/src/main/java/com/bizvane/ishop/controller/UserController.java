@@ -2125,7 +2125,7 @@ public class UserController {
     @RequestMapping(value = "/change_passwd", method = RequestMethod.POST)
     @ResponseBody
     public String changePasswd(HttpServletRequest request) {
-        String user_code = request.getSession().getAttribute("user_code").toString();
+//
 
         DataBean dataBean = new DataBean();
         String id = "";
@@ -2137,19 +2137,21 @@ public class UserController {
             JSONObject jsonObject2 = new JSONObject(message);
             String password = jsonObject2.get("password").toString();
             User user = null;
+            String user_code = "";
             if (jsonObject2.has("user_id")) {
                 int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
                 user = userService.getUserById(user_id);
+                user_code = request.getSession().getAttribute("user_code").toString();
             }
             if (jsonObject2.has("phone")){
                 user = userService.userPhoneExist(jsonObject2.get("phone").toString()).get(0);
+                user_code = user.getUser_code();
             }
             if (user != null) {
                 user.setPassword(password);
                 Date now = new Date();
                 user.setModified_date(Common.DATETIME_FORMAT.format(now));
                 user.setModifier(user_code);
-
                 userService.updateUser(user);
             }
             dataBean.setId(id);

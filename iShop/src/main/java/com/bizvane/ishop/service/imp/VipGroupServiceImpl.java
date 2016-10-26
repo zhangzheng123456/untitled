@@ -60,7 +60,9 @@ public class VipGroupServiceImpl implements VipGroupService {
                 vipGroup.setUser_name("");
             }
             //分组所拥有的会员个数
-            vip_count = vip_id.split(",").length;
+            if (vip_id != null && !vip_id.equals("")) {
+                vip_count = vip_id.split(",").length;
+            }
             vipGroup.setVip_count(vip_count);
         }
         return vipGroup;
