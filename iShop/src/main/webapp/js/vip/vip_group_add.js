@@ -246,8 +246,8 @@ $(function () {
                     "corp_code": OWN_CORP,
                     "user_code": user_code,
                     "remark": vip_remark,
-                    'choose':sessionStorage.getItem('vip_choose'),
-                    'quit':sessionStorage.getItem('vip_quit'),
+                    // 'choose':sessionStorage.getItem('vip_choose'),
+                    // 'quit':sessionStorage.getItem('vip_quit'),
                     "isactive": ISACTIVE
                 };
                 vipjs.ajaxSubmit(_command, _params, opt);
@@ -454,6 +454,8 @@ $("#back_vip_group_1").click(function () {
 //绑定单击事件
 //新增
 $('#screen_add').on('click', function () {
+    //如果是新增就退出，不调用接口
+    if($(this).hasClass('vip_group_add'))return;
     var a = $('#vip_num').val();
     var b = $('#vip_id').val();
     if ($('#vip_num').val() == '') {
@@ -518,25 +520,27 @@ $("#save").click(function () {
         // choose.push(choose_sub);
         choose.push($(get_groups[i]).find('[data_vip_id]').attr('data_vip_id'));
     }
-    sessionStorage.setItem('vip_choose',choose);
-    sessionStorage.setItem('vip_quit',quit)
-    param['vip_group_code'] = group_code;
-    param['choose'] = choose;
-    param['quit'] = quit;
+    // sessionStorage.setItem('vip_choose',choose);
+    // sessionStorage.setItem('vip_quit',quit);
+    param['vip_group_id'] =sessionStorage.getItem("id");
+    param['choose'] = choose.toString();
+    param['quit'] = quit.toString();
+    console.log(param);
     //发起异步请求
-    // oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
-    //     if (data.code == 0) {
-    //         if (role == 'eidtor') {
-    //             window.location.reload()
-    //         } else {
-    //             $('#group_recode').val('共' + group_count + "个会员");
-    //             $('#page-wrapper')[0].style.display = 'block';
-    //             $('.content')[0].style.display = 'none';
-    //         }
-    //     } else if (data.code == -1) {
-    //         alert(data.message);
-    //     }
-    // });
+    oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
+        if (data.code == 0) {
+            console.log(role);
+            if (role == 'eidtor') {
+                window.location.reload()
+            } else {
+                $('#group_recode').val('共' + group_count + "个会员");
+                $('#page-wrapper')[0].style.display = 'block';
+                $('.content')[0].style.display = 'none';
+            }
+        } else if (data.code == -1) {
+            alert(data.message);
+        }
+    });
     //关闭当前页面
     $('#page-wrapper')[0].style.display = 'block';
     $('.content')[0].style.display = 'none';
