@@ -673,7 +673,7 @@ public class UserServiceImpl implements UserService {
 //        System.out.println("------------" + msg);
 //        logger.info("------------" + msg);
 //        JSONObject obj = new JSONObject(msg);
-        if (dataBox.data.get("message").value.equals("短信发送成功")) {
+        if (dataBox.status.toString().equals("SUCCESS")) {
             //验证码存表
             ValidateCode code = validateCodeService.selectValidateCode(0, phone, "");
             Date now = new Date();

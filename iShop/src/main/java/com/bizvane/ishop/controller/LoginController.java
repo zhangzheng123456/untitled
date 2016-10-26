@@ -182,9 +182,18 @@ public class LoginController {
                 dataBean.setId(id);
                 dataBean.setMessage("fail");
             } else {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("ok");
+                Date nowtime = new Date();
+                Date modifided_date = Common.DATETIME_FORMAT.parse(validateCode.getModified_date());
+                long timediff = (nowtime.getTime() - modifided_date.getTime());
+                if (timediff<3600000) {
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("ok");
+                }else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("fail");
+                }
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

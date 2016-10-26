@@ -51,6 +51,14 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
 
         return dataBox;
     }
+    //v3接口（数据类）
+    public DataBox iceInterfaceV3(String method ,Map datalist) throws Exception{
+        String methods = "com.bizvane.sun.app.method.v3."+method;
+        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", methods, datalist, null, null, System.currentTimeMillis());
+        DataBox dataBox = client.put(dataBox1);
+
+        return dataBox;
+    }
 
     public Map vipBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
         String user_code = request.getSession().getAttribute("user_code").toString();

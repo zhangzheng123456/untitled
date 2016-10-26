@@ -118,12 +118,12 @@ public class VipGroupServiceImpl implements VipGroupService {
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
         String user_code = jsonObject.get("user_code").toString().trim();
-        String vips_choose = jsonObject.get("choose").toString();
-        String vip_ids = "";
-        String[] vips = vips_choose.split(",");
-        for (int i = 0; i < vips.length; i++) {
-            vip_ids = vip_ids + Common.SPECIAL_HEAD + vips[i] + ",";
-        }
+//        String vips_choose = jsonObject.get("choose").toString();
+//        String vip_ids = "";
+//        String[] vips = vips_choose.split(",");
+//        for (int i = 0; i < vips.length; i++) {
+//            vip_ids = vip_ids + Common.SPECIAL_HEAD + vips[i] + ",";
+//        }
 
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
@@ -141,7 +141,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroup.setVip_group_code(vip_group_code);
             vipGroup.setVip_group_name(vip_group_name);
             vipGroup.setUser_code(user_code);
-            vipGroup.setVip_ids(vip_ids);
+//            vipGroup.setVip_ids(vip_ids);
             vipGroup.setCorp_code(corp_code);
             vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setCreater(user_id);
@@ -166,10 +166,10 @@ public class VipGroupServiceImpl implements VipGroupService {
         String user_code = jsonObject.get("user_code").toString().trim();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
-        String vips_choose = jsonObject.get("choose").toString();
-        String vips_quit = jsonObject.get("quit").toString();
-        String[] choose = vips_choose.split(",");
-        String[] quit = vips_quit.split(",");
+//        String vips_choose = jsonObject.get("choose").toString();
+//        String vips_quit = jsonObject.get("quit").toString();
+//        String[] choose = vips_choose.split(",");
+//        String[] quit = vips_quit.split(",");
 
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
@@ -180,15 +180,15 @@ public class VipGroupServiceImpl implements VipGroupService {
             result = "该会员分组名称已存在";
         } else {
             VipGroup vipGroup = getVipGroupById(id);
-            String vip_ids = vipGroup.getVip_ids();
-            if (vip_ids != null && !vip_ids.equals("")){
-                for (int i = 0; i < choose.length; i++) {
-                    vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
-                }
-                for (int i = 0; i < quit.length; i++) {
-                    vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
-                }
-            }
+//            String vip_ids = vipGroup.getVip_ids();
+//            if (vip_ids != null && !vip_ids.equals("")){
+//                for (int i = 0; i < choose.length; i++) {
+//                    vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
+//                }
+//                for (int i = 0; i < quit.length; i++) {
+//                    vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
+//                }
+//            }
             vipGroup = new VipGroup();
             Date now = new Date();
             vipGroup.setId(id);
@@ -205,6 +205,10 @@ public class VipGroupServiceImpl implements VipGroupService {
         }
         return result;
 
+    }
+
+    public int updateVipGroup(VipGroup vipGroup) throws Exception{
+        return vipGroupMapper.updateVipGroup(vipGroup);
     }
 
     @Override
@@ -299,12 +303,11 @@ public class VipGroupServiceImpl implements VipGroupService {
         String[] vips = vip_ids.split(",");
         for (int i = 0; i < array.size(); i++) {
             com.alibaba.fastjson.JSONObject vip = com.alibaba.fastjson.JSONObject.parseObject(array.get(i).toString());
+            vip.put("is_this_group","N");
             String vip_id = vip.get("vip_id").toString();
             for (int j = 0; j < vips.length; j++) {
                 if (vip_id.equals(vips[j])){
                     vip.put("is_this_group","Y");
-                }else {
-                    vip.put("is_this_group","N");
                 }
             }
             new_array.add(vip);

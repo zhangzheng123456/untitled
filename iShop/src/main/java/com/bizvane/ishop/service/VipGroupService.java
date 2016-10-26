@@ -24,6 +24,8 @@ public interface VipGroupService {
 
     String update(String message, String user_id) throws Exception;
 
+    int updateVipGroup(VipGroup vipGroup) throws Exception;
+
     int delete(int id) throws Exception;
 
     VipGroup   getVipGroupByCode(String corp_code, String code,String isactive) throws Exception;
