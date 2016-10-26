@@ -1,4 +1,5 @@
 var oc = new ObjectControl();
+var role='';
 (function(root,factory){
 	root.fab = factory();
 }(this,function(){
@@ -52,6 +53,7 @@ var oc = new ObjectControl();
 	};
 	fabjs.bindbutton=function(){
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			role='add';
 			function getContent() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getContent());
@@ -185,12 +187,14 @@ var oc = new ObjectControl();
 				};
 				console.log(_params);
 				fabjs.ajaxSubmit(_command,_params,opt);
+
 			}else{
 				return;
 			}
 		});
 		$("#edit_save").click(function(){
-			$('#close_match_goods').trigger("click");
+			role='edit';
+			// $('#close_match_goods').trigger("click");
 			var delete_image=[];//需要删除的数据
 			console.log(sessionStorage.getItem('goods_description'));
 			console.log(getContent()==sessionStorage.getItem('goods_description'))
@@ -349,6 +353,7 @@ var oc = new ObjectControl();
 					'delImgPath':delete_image.join('')
 				};
 				fabjs.ajaxSubmit(_command,_params,opt);
+
 			}else{
 				return;
 			}
@@ -364,6 +369,11 @@ var oc = new ObjectControl();
 					cancel: false,
 					content:"保存成功"
 				});
+				if(role=='add'){
+					$(".fabadd_oper_btn ul li:nth-of-type(2)").trigger('click');
+				}else if(role=='edit'){
+					window.location.reload();
+				}
 				// $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 			}else if(data.code=="-1"){
 				art.dialog({
