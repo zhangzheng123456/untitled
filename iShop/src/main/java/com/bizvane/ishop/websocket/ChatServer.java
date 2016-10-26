@@ -23,7 +23,7 @@ public class ChatServer {
     private static int onlineCount = 0; //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static CopyOnWriteArraySet<ChatServer> webSocketSet = new CopyOnWriteArraySet<ChatServer>();
     private Session session;    //与某个客户端的连接会话，需要通过它来给客户端发送数据
-    private String userid;      //用户名
+    private String user_code;      //用户名
     private HttpSession httpSession;    //request的session
 
     private static List list = new ArrayList();   //在线列表,记录用户名称
@@ -35,14 +35,16 @@ public class ChatServer {
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config){
+        System.out.println("-------------连接建立成功-----------------");
         this.session = session;
         webSocketSet.add(this);     //加入set中
         addOnlineCount();           //在线数加1;
         this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-        this.userid=(String) httpSession.getAttribute("userid");    //获取当前用户
-        list.add(userid);           //将用户名加入在线列表
-        routetab.put(userid, session);   //将用户名和session绑定到路由表
-        String message = getMessage("[" + userid + "]加入聊天室,当前在线人数为"+getOnlineCount()+"位", "notice",  list);
+        this.user_code=String.valueOf(httpSession.getAttribute("user_code")+"");   //获取当前用户
+        System.out.println("---------当前登录人user-----"+user_code);
+        list.add(user_code);           //将用户名加入在线列表
+        routetab.put(user_code, session);   //将用户名和session绑定到路由表
+        String message = getMessage("[" + user_code + "]加入聊天室,当前在线人数为"+getOnlineCount()+"位", "notice",  list);
         broadcast(message);     //广播
     }
 
@@ -51,11 +53,12 @@ public class ChatServer {
      */
     @OnClose
     public void onClose(){
+        System.out.println("-------------连接建立关闭-----------------");
         webSocketSet.remove(this);  //从set中删除
         subOnlineCount();           //在线数减1
-        list.remove(userid);        //从在线列表移除这个用户
-        routetab.remove(userid);
-        String message = getMessage("[" + userid +"]离开了聊天室,当前在线人数为"+getOnlineCount()+"位", "notice", list);
+        list.remove(user_code);        //从在线列表移除这个用户
+        routetab.remove(user_code);
+        String message = getMessage("[" + user_code +"]离开了聊天室,当前在线人数为"+getOnlineCount()+"位", "notice", list);
         broadcast(message);         //广播
     }
 
@@ -65,6 +68,7 @@ public class ChatServer {
      */
     @OnMessage
     public void onMessage(String _message) {
+        System.out.println("-------message内容-----:"+_message);
         JSONObject chat = JSON.parseObject(_message);
         JSONObject message = JSON.parseObject(chat.get("message").toString());
         if(message.get("to") == null || message.get("to").equals("")){      //如果to为空,则广播;如果不为空,则对指定的用户发送消息
@@ -86,6 +90,7 @@ public class ChatServer {
      */
     @OnError
     public void onError(Throwable error){
+        System.out.println("------错误----------");
         error.printStackTrace();
     }
 

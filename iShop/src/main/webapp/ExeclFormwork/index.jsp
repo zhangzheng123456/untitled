@@ -4,13 +4,14 @@
 <html>
 <head>
     <title>WebChat | 聊天</title>
-    <jsp:include page="include/commonfile.jsp"/>
+    <%--<jsp:include page="include/commonfile.jsp"/>--%>
+    <script src="/js/jquery-2.1.1.min.js"></script>
     <script src="${ctx}/plugins/sockjs/sockjs.js"></script>
 </head>
 <body>
-<jsp:include page="include/header.jsp"/>
+<%--<jsp:include page="include/header.jsp"/>--%>
 <div class="am-cf admin-main">
-    <jsp:include page="include/sidebar.jsp"/>
+    <%--<jsp:include page="include/sidebar.jsp"/>--%>
 
     <!-- content start -->
     <div class="admin-content">
@@ -54,7 +55,7 @@
 <a href="#" class="am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}">
     <span class="am-icon-btn am-icon-th-list"></span>
 </a>
-<jsp:include page="include/footer.jsp"/>
+
 
 <script>
     $(function () {
@@ -187,7 +188,7 @@
         ws.send(JSON.stringify({
             message : {
                 content : message,
-                from : '${userid}',
+                from : '${user_code}',
                 to : to,      //接收人,如果没有则置空,如果有多个接收人则用,分隔
                 time : getDateFull()
             },
@@ -233,7 +234,7 @@
      */
     function showChat(message){
         var to = message.to == null || message.to == ""? "全体成员" : message.to;   //获取接收人
-        var isSef = '${userid}' == message.from ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
+        var isSef = '${user_code}' == message.from ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
         var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+message.from+"/head\"></a><div class=\"am-comment-main\">\n" +
                 "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+message.from+"</a> 发表于<time> "+message.time+"</time> 发送给: "+to+" </div></header><div class=\"am-comment-bd\"> <p>"+message.content+"</p></div></div></li>";
         $("#chat").append(html);
@@ -249,7 +250,7 @@
         $("#list").html("");    //清空在线列表
         $.each(list, function(index, item){     //添加私聊按钮
             var li = "<li>"+item+"</li>";
-            if('${userid}' != item){    //排除自己
+            if('${user_code}' != item){    //排除自己
                 li = "<li>"+item+" <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('"+item+"');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
             }
             $("#list").append(li);
@@ -266,11 +267,11 @@
         $.getJSON("http://www.tuling123.com/openapi/api?key=6ad8b4d96861f17d68270216c880d5e3&info=" + message,function(data){
             if(data.code == 100000){
                 html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
-                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: ${userid}</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p></div></div></li>";
+                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: ${user_code}</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p></div></div></li>";
             }
             if(data.code == 200000){
                 html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
-                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: ${userid}</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p><a href=\""+data.url+"\" target=\"_blank\">"+data.url+"</a></div></div></li>";
+                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: ${user_code}</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p><a href=\""+data.url+"\" target=\"_blank\">"+data.url+"</a></div></div></li>";
             }
             $("#chat").append(html);
             var chat = $("#chat-view");
