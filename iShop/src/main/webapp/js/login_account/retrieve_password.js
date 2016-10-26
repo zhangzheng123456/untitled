@@ -31,9 +31,9 @@ function getCode(){
             }
         },1000);
         oc.postRequire("post", "/authcode","", param, function(data) {
-           if(data.code==0){
+            if(data.code==0){
 
-           }
+            }
         })
     });
 }
@@ -174,8 +174,8 @@ $(function(){
             param["authcode"]=yzm;
             oc.postRequire("post", "/checkAuthcode","", param, function(data) {
                 if(data.code==0){
-                        $("#step1").hide();
-                        $("#step2").show();
+                    $("#step1").hide();
+                    $("#step2").show();
                 }else if(data.code==-1){
                     $("#yzm_tip img").attr("src","img/icon_error.png");
                     $("#yzm_tip a").html("验证码不正确");
@@ -205,14 +205,14 @@ $(function(){
             return false;
         }
         if(pwd==pwdd&&pwd!=""&&pwdd!=""){
-            param['password']=pwdd;
+            param['password']=md5(pwdd);
             oc.postRequire("post", "/user/change_passwd", "0", param, function(data) {
-               if(data.code==0){
-                window.location.href="login.html"
-               }else if(data.code=-1){
-                   frame();
-                   $('.frame').html("操作失败");
-               }
+                if(data.code==0){
+                    window.location.href="login.html"
+                }else if(data.code=-1){
+                    frame();
+                    $('.frame').html("操作失败");
+                }
             })
         }else{
             $("#pwdd_tip img").attr("src","img/icon_error.png");
@@ -225,30 +225,32 @@ $(function(){
             var tel = $("#tel").val().trim(); //获取手机号
             var yzm = $("#yzm").val().trim(); //获取验证码
             var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;
-           if($("#step1").css("display")=="block"){
-               if(reg.test(tel)){
-                   var param={};
-                   param["phone"]=tel;
-                   retiveve.lasttel=tel;
-                   oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
-                       if(data.code==0){
-                           $("#tel_tip img").attr("src","img/icon_error.png");
-                           $("#tel_tip a").html("手机号未被注册");
-                           $("#tel_tip").show();
-                           return false
-                       }else if(data.code==-1){
-                           $("#tel_tip img").attr("src","img/icon_right.png");
-                           $("#tel_tip a").html("");
-                           $("#tel_tip").show();
-                       }
+            if($("#step1").css("display")=="block"){
+                if(reg.test(tel)){
+                    var param={};
+                    param["phone"]=tel;
+                    retiveve.lasttel=tel;
+                    oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
+                        if(data.code==0){
+                            $("#tel_tip img").attr("src","img/icon_error.png");
+                            $("#tel_tip a").html("手机号未被注册");
+                            $("#tel_tip").show();
+                            return false
+                        }else if(data.code==-1){
+                            $("#tel_tip img").attr("src","img/icon_right.png");
+                            $("#tel_tip a").html("");
+                            $("#tel_tip").show();
+                        }
 
-                   });
-               };
-               $("#next").click();
-           }
+                    });
+                };
+                $("#next").click();
+            }
             if($("#step2").css("display")=="block"){
                 $("#submit").click();
             }
         }
     });
-});
+});/**
+ * Created by Administrator on 2016/10/26.
+ */
