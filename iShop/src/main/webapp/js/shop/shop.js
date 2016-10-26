@@ -1070,7 +1070,14 @@ $("#screen_que_area").click(function(){
         }else {
             $(".address_container").hide();
         }
-    })
+    });
+    $("#STORE_address").click(function () {
+        if($(".address_container").css("display")=="none"){
+            $(".address_container").show();
+        }else {
+            $(".address_container").hide();
+        }
+    });
     getProvince();
 });
 function getcorplist() {
