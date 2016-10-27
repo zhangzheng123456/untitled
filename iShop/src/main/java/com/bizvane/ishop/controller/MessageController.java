@@ -130,8 +130,8 @@ public class MessageController {
         String message = jsonObj.get("message").toString();
         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
            String role_code = request.getSession().getAttribute("role_code").toString();
-           String userid= request.getSession().getAttribute("user_code").toString();
-           String corp_code = request.getSession().getAttribute("corp_code").toString();
+           String operator= request.getSession().getAttribute("user_id").toString();
+           String corp_code = "";
             String send_mode=jsonObject.get("send_mode").toString();
            String user_id =  jsonObject.get("user_id").toString();
            String area_code = "";
@@ -152,9 +152,10 @@ public class MessageController {
            } else if (role_code.equals(Common.ROLE_STAFF)){
 
            }
-
            String title=jsonObject.get("title").toString();
            String message_content=jsonObject.get("message_content").toString();
+
+           Data data_operator = new Data("operator", operator, ValueType.PARAM);
            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
@@ -164,6 +165,7 @@ public class MessageController {
 
            Map datalist = new HashMap<String, Data>();
            datalist.put(data_user_id.key, data_user_id);
+           datalist.put(data_operator.key, data_operator);
            datalist.put(data_corp_code.key, data_corp_code);
            datalist.put(data_store_id.key, data_store_id);
            datalist.put(data_area_code.key, data_area_code);
@@ -172,19 +174,19 @@ public class MessageController {
 
 
 
-        DataBox dataBox = iceInterfaceService.iceInterfaceV3("AnalysisAllVip", datalist);
+        DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
         logger.info("-------发送通知" + dataBox.data.get("message").value);
         String result = dataBox.data.get("message").value;
 
             logger.info("after------addd----- result" + result);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+            if (result.equals("消息发送成功")){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add-----success");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage(result);
+                dataBean.setMessage("error");
             }
         } catch (Exception ex) {
             dataBean.setId(id);

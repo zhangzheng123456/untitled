@@ -449,8 +449,8 @@ jQuery(document).ready(function () {
                 for(var i=0;i<checknow_namedata.length;i++){
                     $('#OWN_BRAND_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+checknow_data[i]+"'  value='"+checknow_namedata[i]+"'><span class='power remove_app_id'>删除</span></p>");
                 }
-                $("#OWN_CORP option").val(msg.corp.corp_code);
-                $("#OWN_CORP option").text(msg.corp.corp_name);
+                // $("#OWN_CORP option").val(msg.corp.corp_code);
+                // $("#OWN_CORP option").text(msg.corp.corp_name);
                 //$("#OWN_BRAND").val(msg.brand_name);
                 //$("#OWN_BRAND").attr("data-mybcode", msg.brand_code);
                 $("#STORE_NAME").val(msg.store_name);
@@ -516,7 +516,7 @@ jQuery(document).ready(function () {
                         $(this).parents(".kuang").hide();
                     })
                 }
-                getcorplist();
+                getcorplist(msg.corp.corp_code);
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -1080,7 +1080,7 @@ $("#screen_que_area").click(function(){
     });
     getProvince();
 });
-function getcorplist() {
+function getcorplist(a) {
     //获取所属企业列表
     var corp_command = "/user/getCorpByUser";
     oc.postRequire("post", corp_command, "", "", function (data) {
@@ -1095,6 +1095,9 @@ function getcorplist() {
                 corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
             }
             $("#OWN_CORP").append(corp_html);
+            if(a!==""){
+                $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+            }
             $('.corp_select select').searchableSelect();
             $('.corp_select .searchable-select-input').keydown(function(event){
                 var event=window.event||arguments[0];
@@ -1380,6 +1383,15 @@ $("#address_nav a:last-child").click(function () {
         var marker = new BMap.Marker(point); //创建marker对象
         map.addOverlay(marker);
         marker.enableDragging(); //marker可拖拽
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
+        marker.setLabel(label);
         map.addEventListener("click",function(e){
             console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
@@ -1405,6 +1417,15 @@ $("#address_nav a:last-child").click(function () {
                 var marker = new BMap.Marker(point); //创建marker对象
                 map.addOverlay(marker);
                 marker.enableDragging(); //marker可拖拽
+                var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+                label.setStyle({
+                    "font-size":"10px",
+                    "color":"#333",
+                    "width":"171px",
+                    "max-width":"200px",
+                    "height":"20px"
+                });
+                marker.setLabel(label);
                 var o_Point_now =  marker.getPosition();
                 var lng = o_Point_now.lng;//获取经度
                 var lat = o_Point_now.lat;//获取纬度
@@ -1437,6 +1458,15 @@ $("#address_nav a:last-child").click(function () {
         var marker = new BMap.Marker(point); //创建marker对象
         map.addOverlay(marker);
         marker.enableDragging(); //marker可拖拽
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
+        marker.setLabel(label);
         map.addEventListener("click",function(e){
             console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
@@ -1494,8 +1524,9 @@ $("#address_nav a:last-child").click(function () {
 
     function setPlace(){
         map.clearOverlays();    //清除地图上所有覆盖物
+        var pp;
         function myFun(){
-            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
             var location = marker.getPosition();
                 location = location.lat+","+location.lng;
             $("#show_map").attr("data-location",location);
@@ -1506,5 +1537,33 @@ $("#address_nav a:last-child").click(function () {
             onSearchComplete: myFun
         });
         local.search(myValue);
+        var marker = new BMap.Marker(point); //创建marker对象
+        map.addOverlay(marker);
+        marker.enableDragging(); //marker可拖拽
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
+        marker.setLabel(label);
+        map.addEventListener("click",function(e){
+            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+            map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+            var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+            var location =e.point.lat+","+e.point.lng;
+            marker.setPosition(now_point);//设置覆盖物位置
+            $("#show_map").attr("data-location",location);
+        });
+        marker.addEventListener("dragend", function(){
+            var o_Point_now =  marker.getPosition();
+            var lng = o_Point_now.lng;//获取经度
+            var lat = o_Point_now.lat;//获取纬度
+            var location = lat+","+lng;
+            map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+            $("#show_map").attr("data-location",location);
+        })
     }
 })

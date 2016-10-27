@@ -286,9 +286,15 @@ public class AreaController {
 
             String result = areaService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                JSONObject jsonObject = new JSONObject(message);
+
+                String area_code = jsonObject.get("area_code").toString().trim();
+                String corp_code = jsonObject.get("corp_code").toString().trim();
+                String isactive = jsonObject.get("isactive").toString();
+                Area area = areaService.getAreaByCode(corp_code,area_code,isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(area.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -478,7 +484,7 @@ public class AreaController {
     }
 
 
-    @RequestMapping(value = "Area_codeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/areaCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String areaCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -508,7 +514,7 @@ public class AreaController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "Area_nameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/areaNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String Area_nameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

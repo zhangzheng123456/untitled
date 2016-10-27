@@ -215,10 +215,9 @@ jQuery(document).ready(function(){
 				$("#AREA_ID").attr("data-name",msg.area_code);
 				$("#AREA_NAME").val(msg.area_name);
 				$("#AREA_NAME").attr("data-name",msg.area_name);
-				$("#OWN_CORP option").val(msg.corp.corp_code);
-				$("#OWN_CORP option").text(msg.corp.corp_name);
+				// $("#OWN_CORP option").val(msg.corp.corp_code);
+				// $("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#area_shop").val("共"+msg.store_count+"个店铺");
-				// $("#OWN_CORP").val(msg.corp_code);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -229,7 +228,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
+				getcorplist(msg.corp.corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -254,7 +253,7 @@ jQuery(document).ready(function(){
 			_params["area_code"]=area_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/area/Area_codeExist","", _params, function(data){
+			oc.postRequire("post","/area/areaCodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#AREA_ID").attr("data-mark","Y");
@@ -276,7 +275,7 @@ jQuery(document).ready(function(){
 	    	var _params={};
 	    	_params["area_name"]=area_name;
 	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
+	    	oc.postRequire("post","/area/areaNameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
 	            	$("#AREA_NAME").attr("data-mark","Y");
@@ -298,7 +297,7 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/area/area.html");
 	});
 });
-function getcorplist(){
+function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -314,6 +313,9 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];

@@ -82,14 +82,14 @@ $(function () {
         }
     });
     $(document).click(function (e) {
-        if($(e.target).is("#search_param")||$(e.target).is("#allUser_list li")||$(e.target).is("#PARAM_NAME")||$(e.target).is("#allUser")){
+        if($(e.target).is("#search_user")||$(e.target).is("#PARAM_NAME")){
             return;
         }else {
             $("#allUser").hide();
         }
     });
     //搜索导购
-    $("#search_param").keydown(function (e) {
+    $("#search_user").keydown(function (e) {
         user_num = 1;
         var event=window.event||arguments[0]
         if(event.keyCode == 13){
@@ -102,9 +102,12 @@ $(function () {
         e.stopPropagation();
         $("#PARAM_NAME").val($(this).text());
         $("#PARAM_NAME").attr("data-code", $(this).attr("id"));
+        $("#allUser").hide();
+        $(this).addClass("groupUser_checked");
+        $(this).siblings("li").removeClass("groupUser_checked");
     })
     //绑定导购滚动事件
-    $("#allUser").scroll(function () {
+    $("#allUser_list").scroll(function () {
         var nScrollHight = $(this)[0].scrollHeight;
         var nScrollTop = $(this)[0].scrollTop;
         var nDivHight = $(this).height();
@@ -116,6 +119,8 @@ $(function () {
             }
         }
     })
+    //滚动条样式
+    $("#allUser_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0)",cursoropacitymin:"0",boxzoom:false});
 });
 (function (root, factory) {
     root.vip = factory();
@@ -362,7 +367,7 @@ function getuserlist() {
     var area_code = "";
     var brand_code = "";
     var store_code = "";
-    var searchValue = $("#search_param").val().trim();
+    var searchValue = $("#search_user").val().trim();
     var pageSize = 20;
     var pageNumber = user_num;
     var _param = {};
@@ -385,7 +390,11 @@ function getuserlist() {
                 user_nextpage=false;
             }
             for (var i = 0; i < list.length; i++) {
-                $("#allUser_list").append("<li id='" + list[i].user_code + "'>" + list[i].user_name + "</li>")
+                if(list[i].user_code == $("#PARAM_NAME").attr("data-code")){
+                    $("#allUser_list").append("<li class='groupUser_checked' id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
+                }else {
+                    $("#allUser_list").append("<li id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
+                }
             }
         } else if (data.code == "-1") {
             console.log(data.message);

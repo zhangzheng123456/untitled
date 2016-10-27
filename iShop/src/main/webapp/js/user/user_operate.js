@@ -773,8 +773,6 @@ jQuery(document).ready(function(){
 					$("#kuang").show();
     				$('#kuang img').attr("src",msg.qrcode);
 				}
-				$("#OWN_CORP option").val(msg.corp.corp_code);
-				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_RIGHT").val(msg.group.group_name);
 				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
@@ -846,7 +844,7 @@ jQuery(document).ready(function(){
 					}
 					$(".kuang").show();
 				}
-				getcorplist();
+				getcorplist(msg.corp.corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -1010,7 +1008,7 @@ jQuery(document).ready(function(){
 		})
 	})
 });
-function getcorplist(){
+function getcorplist(a){
 	//获取企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -1024,6 +1022,9 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];

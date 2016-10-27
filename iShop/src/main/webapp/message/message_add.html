@@ -37,7 +37,7 @@
                         </ul>
                     </div>
                     <div id="drop_down" class="drop_down item_2">
-                        <span><label>发送范围</label><input class="input_select" type="text" id="send_mode" placeholder="请选择发送范围" readonly/>
+                        <span><label>发送范围</label><input class="input_select" type="text" data-type="" id="send_mode" placeholder="请选择发送范围" readonly/>
                             <ul>
                                 <!-- <li>全体成员</li>
                                 <li>指定区域</li>
@@ -47,7 +47,7 @@
                         </span>
                     </div>
                     <div class="check_per" id="sendee">
-                    <span><label>接收对象</label><input type="text" id="sendee_r" value="已选0个" readonly=""><span class="check_icon" id="add_sendee">选择对象<i class="icon-ishop_8-03"></i></span>
+                    <span><label>接收对象</label><input type="text" id="sendee_r" value="已选0个" data-code="" readonly=""><span class="check_icon" id="add_sendee">选择对象<i class="icon-ishop_8-03"></i></span>
                         </span>
                     </div>
                     <!-- <div id="drop_down" class="drop_down item_1">
@@ -59,10 +59,10 @@
                         </span>
                     </div> -->
                     <div>
-                        <span><label>消息标题</label><input type="text" id="message_title" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="内容标题不能为空！"></div></div></span>
+                        <span><label>通知标题</label><input type="text" id="message_title" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="内容标题不能为空！"></div></div></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:260px;">消息内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="message_content"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%"><label style="height:260px;">通知内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="message_content"></textarea></span></span>
                     </div>
                 </form>
             </div>
