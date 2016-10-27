@@ -11,6 +11,8 @@ var proportion_list={};
 var page_shop=1;
 var page_brand=1;
 var page_area=1;
+var next_shop_page='';
+var next_area_page='';
 /**********************左侧数据**************************************************************************************/
 //获取品牌
 function getBrand(){
@@ -51,7 +53,7 @@ function GetArea(){
     var searchValue=$('#select_analyze input').val();
     var param={};
     param['pageNumber']=arguments[0]?arguments[0]:page;
-    param['pageSize']="7";
+    param['pageSize']=8;
     param['searchValue']=searchValue;
     param["corp_code"]= "C10000";
     oc.postRequire("post","/area/findAreaByCorpCode","",param,function(data){
@@ -62,13 +64,14 @@ function GetArea(){
             var first_area='';
             var first_area_code='';
             var output_list=output.list;
-            console.log(output);
+            next_area_page=output.hasNextPage;
             // output_list.length<7&&($('#select_analyze s').attr('style','display:none'));
             if(output_list.length<8){
                 $('#select_analyze s').attr('style','display:none')
             }else{
                 $('#select_analyze s').attr('style','display:block')
             }
+            console.log(output);
             first_area=output_list[0].area_name;
             first_area_code=output_list[0].area_code;//区域号
             //设置本地缓存企业编号
@@ -100,10 +103,9 @@ function getStore(a){
     var searchValue=$('#select_analyze_shop input').val();
     var area_code=a;
     var param={};
-    console.log($('#side_analyze ul li:nth-child(1) s').attr('brand_code'));
     param['brand_code']=$('#side_analyze ul li:nth-child(1) s').attr('brand_code');
     param['pageNumber']=arguments[1]?arguments[1]:page;
-    param['pageSize']=7;
+    param['pageSize']=8;
     param['searchValue']=searchValue;
     param["area_code"]=area_code;
     param["corp_code"]= "C10000";
@@ -116,8 +118,8 @@ function getStore(a){
         var message=JSON.parse(data.message);
         var message=JSON.parse(data.message);
         var output=JSON.parse(message.list);
+        next_shop_page=output.hasNextPage;
         var output_list=output.list;
-        console.log(output_list);
         if(output_list.length<8){
             $('#select_analyze_shop s').attr('style','display:none')
         }else{
@@ -211,12 +213,40 @@ function getMore(e){
         getBrand(page_brand);
     }
 }
+function getShopMore(){
+    un_push=1;
+    var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
+    page_shop++;
+    getStore(area_code,page_shop);
+}
+function getAreaMore() {
+     un_push=1;
+     page_area++;
+    GetArea(page_area);
+}
+//滚动监听加载更多
+//区域滚动事件
+$("#select_analyze_shop ul").bind("scroll",function () {
+	var nScrollHight = $(this)[0].scrollHeight;
+    var nScrollTop = $(this)[0].scrollTop;
+    var nDivHight=$(this).height();
+    if(nScrollTop + nDivHight >= nScrollHight){
+         next_shop_page?getShopMore():page_shop=1;
+    };
+});
+$("#select_analyze ul").bind("scroll",function () {
+    var nScrollHight = $(this)[0].scrollHeight;
+    var nScrollTop = $(this)[0].scrollTop;
+    var nDivHight=$(this).height();
+    if(nScrollTop + nDivHight >= nScrollHight){
+        next_area_page?getAreaMore():page_area=1;
+    };
+});
 //搜索
 function searchValue(e){
-    //页面搜索
-    var search=2;
     //page初始化
     page=1;
+    un_push=1;
     //进入搜索清空内容
     $(e.target).parent().next().html('');
     //清楚加载更多
@@ -227,7 +257,7 @@ function searchValue(e){
     var parent=$(e.target).parent().parent().parent();
     //判断是区域搜索还是店铺搜索
       if($(parent).attr('id')=='select_analyze'){
-          GetArea(search);
+          GetArea();
       }else if($(parent).attr('id')=='select_analyze_brand'){
           getBrand();
       }else{
