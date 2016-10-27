@@ -1081,9 +1081,10 @@ public class UserController {
             user.setCan_login(jsonObject.get("can_login").toString());
             String result = userService.insert(user);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                List<User> users = userService.userCodeExist(user_code,corp_code,jsonObject.get("isactive").toString());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(users.get(0).getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);

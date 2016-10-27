@@ -253,7 +253,7 @@ jQuery(document).ready(function(){
 			_params["area_code"]=area_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/area/Area_codeExist","", _params, function(data){
+			oc.postRequire("post","/area/areaCodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#AREA_ID").attr("data-mark","Y");
@@ -275,7 +275,7 @@ jQuery(document).ready(function(){
 	    	var _params={};
 	    	_params["area_name"]=area_name;
 	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
+	    	oc.postRequire("post","/area/areaNameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
 	            	$("#AREA_NAME").attr("data-mark","Y");
