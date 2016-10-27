@@ -52,15 +52,42 @@ function getcorplist(a){
 }
 function getmodelist(){
 	oc.postRequire("post","/message/pullSendScope", "","", function(data) {
-			var send_scope=JSON.parse(data.send_scope);
+		if(data.code=="0"){
+			var message=JSON.parse(data.message);
+			var send_scope=message.send_scope;
+			console.log(send_scope);
 			var html="";
 			for(var i=0;i<send_scope.length;i++){
-				html+="<li>"+send_scope[i]+"</li>"
+				var data_type="";
+				if(send_scope[i]=="全体成员"){
+					data_type="corp";
+				}
+				if(send_scope[i]=="指定区域"){
+					data_type="area";
+				}
+				if(send_scope[i]=="指定店铺"){
+					data_type="store";
+				}
+				if(send_scope[i]=="指定员工"){
+					data_type="staff";
+				}
+				html+="<li data-type='"+data_type+"''>"+send_scope[i]+"</li>"
 			}
-			$("#drop_down ul").html(html);
+		}
+		$("#drop_down ul").html(html);
 	})
 }
 getmodelist();
+$("#drop_down ul").on("click","li",function(){
+	var txt = $(this).text();
+	if(txt=="全体成员"){
+		$("#sendee").hide();
+	}else if(txt=="指定区域"||txt=="指定店铺"||txt=="指定员工"){
+		$("#sendee").show();
+	}
+	$("#send_mode").val(txt);
+	$("#drop_down ul").hide();
+});
 //点击接收人
 $("#add_sendee").click(function(){
 	var send_mode=$("#send_mode").val();
@@ -162,6 +189,15 @@ $("#brand_search").keydown(function(){
 	if(event.keyCode==13){
 		$("#screen_brand .screen_content_l ul").empty();
 		getbrandlist();
+	}
+})
+//员工搜索
+$("#staff_search").keydown(function(){
+	var event=window.event||arguments[0];
+	staff_num=1;
+	if(event.keyCode==13){
+		$("#screen_staff .screen_content_l ul").empty();
+		getstafflist(staff_num);
 	}
 })
 //店铺放大镜搜索
@@ -425,24 +461,9 @@ function getstafflist(a){
                 }
                 staff_next=true;
             } else {
-                if(list.length<9&&a==1){
+                if(list.length>0){
                     for (var i = 0; i < list.length; i++) {
-                    staff_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].user_code+"' data-storename='"+list[i].user_name+"' name='test'  class='check'  id='checkboxFourInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxFourInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
-                    }
-                    for(var j=0;j<9-list.length;j++){
-                        staff_html+="<li></li>"
-                    }
-                }else if(list.length>=9||list.length<9&&a>1){
-                    for (var i = 0; i < list.length; i++) {
-                    staff_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].user_code+"' data-storename='"+list[i].user_name+"' name='test'  class='check'  id='checkboxFourInput"
+                    staff_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].user_code+"' data-phone='"+list[i].phone+"' data-storename='"+list[i].user_name+"' name='test'  class='check'  id='checkboxFourInput"
                         + i
                         + a
                         + 1
@@ -520,15 +541,20 @@ $("#screen_que_shop").click(function(){
 $("#screen_que_staff").click(function(){
 	var li=$("#screen_staff .screen_content_r input[type='checkbox']").parents("li");
 	var store_code="";
+	var phone=""
 	for(var i=0;i<li.length;i++){
 		var r=$(li[i]).attr("id");
+		var p=$(li[i]).find("input").attr("data-phone");
 		if(i<li.length-1){
             store_code+=r+",";
+            phone+=p+",";
         }else{
             store_code+=r;
+            phone+=p;
         }
 	}
 	$("#sendee_r").attr("data-code",store_code);
+	$("#sendee_r").attr("data-phone",phone);
 	$("#screen_staff").hide();
 	$("#sendee_r").val("已选"+li.length+"个");
 	whir.loading.remove();//移除遮罩层
@@ -622,8 +648,15 @@ $("#send").click(function(){
 	if(send_mode=="corp"){
 		param["corp"]=corp_code;
 		param["store_id"]="";
+		param["user_id"]="";
+		param["area_code"]="";
 	}
-
+	if(send_mode=="area"){
+		param["corp"]=corp_code;
+		param["store_id"]="";
+		param["user_id"]="";
+		param["area_code"]="";
+	}
 });
 //编辑关闭
 $("#edit_close").click(function(){
