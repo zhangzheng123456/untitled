@@ -49,8 +49,10 @@ textarea{
 }
 
 ::-webkit-input-placeholder{color:#D2CFCF;}
-::-moz-placeholder{color:#D2CFCF;}
-:-moz-placeholder{color:#D2CFCF;}
+/*::-moz-placeholder{color:#D2CFCF;}*/
+/*:-moz-placeholder{color:#D2CFCF;}*/
+ ::-moz-placeholder{color:#000;}
+ :-moz-placeholder{color:#000;}
 
 .nav > li > a {
   /*color: #a7b1c2;*/
