@@ -623,8 +623,8 @@ jQuery(document).ready(function () {
         $("#screen_area .screen_content_r ul").empty();
         $("#screen_area").show();
         var left=(arr[0]-$("#screen_area").width())/2;
-        var tp=(arr[1]-$("#screen_area").height())/2+40;
-        $("#screen_area").css({"left":left+"px","top":tp+"px"});
+        var tp=(arr[3]-$("#screen_area").height())/2+40;
+        $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
         getArea(area_num);
         isscroll=false;
         console.log(1);
@@ -638,8 +638,8 @@ jQuery(document).ready(function () {
         $("#screen_brand .screen_content_r ul").empty();
         $("#screen_brand").show();
         var left=(arr[0]-$("#screen_brand").width())/2;
-        var tp=(arr[1]-$("#screen_brand").height())/2+40;
-        $("#screen_brand").css({"left":left+"px","top":tp+"px"});
+        var tp=(arr[3]-$("#screen_brand").height())/2+40;
+        $("#screen_brand").css({"left":left+"px","top":tp+"px","position":"fixed"});
         //getArea(area_num);
         getBrand(area_num);
         isscroll=false;
