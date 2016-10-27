@@ -21,10 +21,13 @@ public class CommonValue {
     public final static String REDIRECT_URL = "http://ishop.dev.bizvane.com/api/weimob/auth";
 
     //table名（mongodb）
+    //用户行为日志
     public final static String table_log_user_action = "log_person_action";
-
+    //产品分享日志
     public final static String table_log_production_share = "log_product_share";
-
+    //会员信息
     public final static String table_vip_info = "vip_info";
+    //会员回访记录
+    public final static String table_vip_back_record = "vip_back_record";
 
 }

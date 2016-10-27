@@ -558,6 +558,8 @@ public class VipGroupController {
                 String store_code = users.get(0).getStore_code();
                 store_id = store_code.replace(Common.SPECIAL_HEAD,"");
             } else if (role_code.equals(Common.ROLE_STAFF)){
+                String store_code = users.get(0).getStore_code();
+                store_id = store_code.replace(Common.SPECIAL_HEAD,"");
                 user_id = user_code;
             }else if (role_code.equals(Common.ROLE_BM)){
                 role_code = Common.ROLE_SM;
