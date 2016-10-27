@@ -172,22 +172,18 @@ public class MessageController {
            datalist.put(data_title.key, data_title);
            datalist.put(data_message_content.key, data_message_content);
 
-
+           logger.info("-------发送通知" +datalist.toString());
 
         DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
         logger.info("-------发送通知" + dataBox.data.get("message").value);
         String result = dataBox.data.get("message").value;
 
             logger.info("after------addd----- result" + result);
-            if (result.equals("消息发送成功")){
+
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add-----success");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("error");
-            }
+                dataBean.setMessage(result);
+
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
