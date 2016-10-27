@@ -357,7 +357,7 @@ input::-webkit-input-placeholder{
  /*}*/
 .sxk .inputs label{
 	display: inline-block;
-	width:56px;
+	min-width:56px;
 	color: #888;
 	text-align: right;
 }
