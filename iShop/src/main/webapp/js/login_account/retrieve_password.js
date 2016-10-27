@@ -160,25 +160,6 @@ function frame(){
                 }
             });
         }
-        //if(){
-        //    $("get_code").attr("disabled","disabled");
-        //    $(this).html(N+' S');
-        //    var t=setInterval(function(){
-        //        N--;
-        //        $("#get_code").html(N+' S');
-        //        if(N<=0){
-        //            clearInterval(t);
-        //            $("#get_code").html("发送验证码");
-        //            $("#get_code").removettr("disabled");
-        //        }
-        //    },1000);
-        //    console.log("发送。。。")
-        //}
-        //oc.postRequire("post", "/authcode","", param, function(data) {
-        //    if(data.code==0){
-        //
-        //    }
-        //})
     });
 $(function(){
 //如果手机号码不能通过验证
