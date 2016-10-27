@@ -136,29 +136,14 @@ public class MessageController {
            String user_id =  jsonObject.get("user_id").toString();
            String area_code = "";
            String store_id = "";
-           if (role_code.equals(Common.ROLE_SYS)) {
-               corp_code = jsonObject.get("corp_code").toString();
 
-           } else if (role_code.equals(Common.ROLE_GM)){
-
-           } else if (role_code.equals(Common.ROLE_AM)){
-
-               area_code = request.getSession().getAttribute("area_code").toString();
-               area_code = area_code.replace(Common.SPECIAL_HEAD,"");
-           } else if (role_code.equals(Common.ROLE_SM)){
-
-               String store_code = request.getSession().getAttribute("store_code").toString();
-               store_id = store_code.replace(Common.SPECIAL_HEAD,"");
-           } else if (role_code.equals(Common.ROLE_STAFF)){
-
-           }
            String title=jsonObject.get("title").toString();
            String message_content=jsonObject.get("message_content").toString();
 
            Data data_operator = new Data("operator", operator, ValueType.PARAM);
            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-           Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+           Data data_store_id = new Data("store_id",store_id , ValueType.PARAM);
            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
            Data data_title = new Data("title", title, ValueType.PARAM);
            Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
