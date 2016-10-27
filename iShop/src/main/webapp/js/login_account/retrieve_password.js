@@ -117,12 +117,14 @@ function frame(){
     },2000);
 }
     $("#get_code").click(function(){
-        var N=10;
+        var N=60;
         var param={};
+        var param_code={};
         var tel=$("#tel").val().trim(); //获取手机号
         var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;
         var telReg =reg.test(tel);
-        //param["PHONENUMBER"]=tel;
+        $("#get_code").attr("disabled","disabled");
+        param_code["PHONENUMBER"]=tel;
         if(tel==""){
             $("#tel_tip img").attr("src","img/icon_error.png");
             $("#tel_tip a").html("请输入手机号");
@@ -136,11 +138,10 @@ function frame(){
                     $("#tel_tip img").attr("src","img/icon_error.png");
                     $("#tel_tip a").html("手机号未注册");
                     $("#tel_tip").show();
+                    $("#get_code").removeAttr("disabled");
                 }else if(data.code==-1){
                     $("#tel_tip img").attr("src","img/icon_right.png");
                     $("#tel_tip a").html("");
-
-                    $("#get_code").attr("disabled","disabled");
                         $("#get_code").html(N+' S');
                         var t=setInterval(function(){
                             N--;
@@ -151,12 +152,11 @@ function frame(){
                                 $("#get_code").removeAttr("disabled");
                             }
                         },1000);
-                        console.log("发送验证码"+tel)
-                    //oc.postRequire("post", "/authcode","", param, function(data) {
-                    //    if(data.code==0){
-                    //
-                    //    }
-                    //})
+                    oc.postRequire("post", "/authcode","", param_code, function(data) {
+                        if(data.code==0){
+
+                        }
+                    })
                 }
             });
         }
@@ -201,14 +201,17 @@ $(function(){
         if(tel==""){
             $("#tel_tip img").attr("src","img/icon_error.png");
             $("#tel_tip a").html("请输入手机号");
+            $("#tel_tip").show();
         }
         if(yzm==""){
             $("#yzm_tip img").attr("src","img/icon_error.png");
             $("#yzm_tip a").html("请输入验证码");
+            $("#yzm_tip").show();
         }
         if(tel!="" && !reg.test(tel)){
             $("#tel_tip img").attr("src","img/icon_error.png");
             $("#tel_tip a").html("手机号格式不正确");
+            $("#tel_tip").show();
         }
         if(yzm!="" && !regyzm.test(yzm)){
             $("#yzm_tip img").attr("src","img/icon_error.png");
@@ -217,12 +220,21 @@ $(function(){
         if(regyzm.test(yzm)){
             $("#yzm_tip").hide();
         }
-        if( reg.test(tel) && yzm==""){
-            $("#tel_tip").hide();
-        }
-        $("#tel_tip").show();
-        $("#yzm_tip").show();
-        if(tel!="" && yzm!="" && regyzm.test(yzm) && reg.test(tel)){
+
+        if(tel!="" && !regyzm.test(yzm) && reg.test(tel)){
+            param_exist["phone"]=tel;
+            oc.postRequire("post", "/user/PhoneExist","", param_exist, function(data) {
+                if(data.code==0){
+                    $("#tel_tip img").attr("src","img/icon_error.png");
+                    $("#tel_tip a").html("手机号未注册");
+                    $("#tel_tip").show();
+                }else if(data.code==-1){
+                    $("#tel_tip img").attr("src","img/icon_right.png");
+                    $("#tel_tip a").html("");
+                    $("#tel_tip").show();
+                }
+            });
+        }else if(tel!="" && yzm!="" && regyzm.test(yzm) && reg.test(tel)){
             param_exist["phone"]=tel;
             oc.postRequire("post", "/user/PhoneExist","", param_exist, function(data) {
                 if(data.code==0){
@@ -236,13 +248,8 @@ $(function(){
                     checkAuthcode(tel,yzm);
                 }
             });
-        }else{
-
         }
 
-
-        //checkAuthcode(tel,yzm);
-        //checkPhoenExist(tel,yzm);
     });
     $("#submit").click(function(){
         var pwd=$("#pwd").val();
