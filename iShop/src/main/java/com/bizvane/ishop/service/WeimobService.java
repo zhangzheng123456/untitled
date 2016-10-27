@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.VIPEmpRelation;
 import com.bizvane.ishop.entity.VIPStoreRelation;
 import com.bizvane.ishop.entity.Weimob;
@@ -31,7 +32,11 @@ public interface WeimobService {
 
     JSONArray getSearchTitle(String accessToken,String xx) throws Exception;
 
+    JSONObject spuFullInfoGet(String accessToken, int isOnsale, int pageNo, int pageSize, boolean includeDescription) throws Exception;
+
     String getAccessTokenByCode(String client_id,String client_secret) throws Exception;
+
+    String refreshAccessToken(String client_id,String client_secret,String refresh_token) throws Exception;
 
     String generateToken(String client_id,String client_secret) throws Exception;
 }

@@ -120,9 +120,13 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             String result = corpService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                JSONObject jsonObject = JSONObject.parseObject(message);
+                String corp_code = jsonObject.get("corp_code").toString().trim();
+                String isactive = jsonObject.get("isactive").toString();
+                Corp corp = corpService.selectByCorpId(0,corp_code,isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(corp.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
