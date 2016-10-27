@@ -50,6 +50,17 @@ function getcorplist(a){
 		}
 	});
 }
+function getmodelist(){
+	oc.postRequire("post","/message/pullSendScope", "","", function(data) {
+			var send_scope=JSON.parse(data.send_scope);
+			var html="";
+			for(var i=0;i<send_scope.length;i++){
+				html+="<li>"+send_scope[i]+"</li>"
+			}
+			$("#drop_down ul").html(html);
+	})
+}
+getmodelist();
 //点击接收人
 $("#add_sendee").click(function(){
 	var send_mode=$("#send_mode").val();
@@ -134,7 +145,7 @@ $("#area_search").keydown(function(){
         getarealist(area_num);
     }
 });
-//店铺搜索
+//店铺搜
 $("#store_search").keydown(function(){
 	var event=window.event||arguments[0];
 	shop_num=1;
@@ -604,6 +615,16 @@ $(".shift_left_all").click(function(){
 	removeLeft(left,div);
 })
 getcorplist(a);
+$("#send").click(function(){
+	var corp_code = $('#OWN_CORP').val();//企业编号
+	var send_mode=$('#send_mode').attr("data-type",'');
+	var param={};
+	if(send_mode=="corp"){
+		param["corp"]=corp_code;
+		param["store_id"]="";
+	}
+
+});
 //编辑关闭
 $("#edit_close").click(function(){
 	// $("#page-wrapper").hide();
