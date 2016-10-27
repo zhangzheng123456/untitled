@@ -7,11 +7,16 @@ var month_type='';//会员生日月份类型
 var count='';
 var un_push='';
 var proportion_list={};
+//点击更多加载的页码参数
+var page_shop=1;
+var page_brand=1;
+var page_area=1;
 /**********************左侧数据**************************************************************************************/
 //获取品牌
 function getBrand(){
     var search_param=arguments.length;
     var param={};
+    var ul='';
     // param["corp_code"]= localStorage.getItem('corp_code');
     param["corp_code"]= "C10000";
     oc.postRequire("post","/brand/findBrandByCorpCode", "",param, function(data){
@@ -19,15 +24,16 @@ function getBrand(){
             console.log(data);
         var message=JSON.parse(data.message)
         var brands=message.brands;//数组
-        console.log(brands);
+        console.log(brands.length);
         //遍历数组添加页面元素
-        if(brands.length<7){
-            $('#select_analyze_brand s').attr('style','display:none')
-        }else{
-            $('#select_analyze_brand s').attr('style','display:block')
-        }
-        for(var i=0,ul='';i<brands.length;i++){
-            ul+="<li brand_cord='"+brands[i].brand_code+"'>"+brands[i].brand_name+"</li>";
+        // if(brands.length<=8){
+        //     $('#select_analyze_brand s').attr('style','display:none')
+        // }else{
+        //     $('#select_analyze_brand s').attr('style','display:block')
+        // }
+        if(brands.length<=0){return}
+        for(var i=0;i<brands.length;i++){
+            brands[i].brand_name=='全部'?'':ul+="<li brand_cord='"+brands[i].brand_code+"'>"+brands[i].brand_name+"</li>";
         }
         var brand_name=brands[0].brand_name;
         var brand_code=brands[0].brand_code;//区域号
@@ -44,7 +50,7 @@ function GetArea(){
     var search_param=arguments.length;
     var searchValue=$('#select_analyze input').val();
     var param={};
-    param['pageNumber']=page;
+    param['pageNumber']=arguments[0]?arguments[0]:page;
     param['pageSize']="7";
     param['searchValue']=searchValue;
     param["corp_code"]= "C10000";
@@ -56,13 +62,20 @@ function GetArea(){
             var first_area='';
             var first_area_code='';
             var output_list=output.list;
-            output_list.length<7&&($('#select_analyze s').attr('style','display:none'));
+            console.log(output);
+            // output_list.length<7&&($('#select_analyze s').attr('style','display:none'));
+            if(output_list.length<8){
+                $('#select_analyze s').attr('style','display:none')
+            }else{
+                $('#select_analyze s').attr('style','display:block')
+            }
             first_area=output_list[0].area_name;
             first_area_code=output_list[0].area_code;//区域号
             //设置本地缓存企业编号
-            localStorage.setItem('corp_code',output_list[0].corp_code?output_list[0].corp_code:'');
+            // localStorage.setItem('corp_code',output_list[0].corp_code?output_list[0].corp_code:'');
+            localStorage.setItem('corp_code','C10000');
             for(var i= 0;i<output_list.length;i++){
-                ul+="<li data_area='"+output_list[i].area_code+"'>"+output_list[i].area_name+"</li>";
+                output_list[i].area_name=='全部'?'':ul+="<li data_area='"+output_list[i].area_code+"'>"+output_list[i].area_name+"</li>";
             }
             if(search_param==0){
                 $('#side_analyze ul li:nth-child(2) s').html(first_area);
@@ -71,9 +84,11 @@ function GetArea(){
             var area_code=output_list[0].area_code;
             // console.log(area_code);
             // localStorage.setItem('area_code',area_code);
-            //清除内容店铺下拉列表
-            $('#select_analyze_shop ul').html('');
-            getStore(area_code);
+            //如果是加载跟多就不清除内容店铺下拉列表
+            if(un_push){un_push=0;}else{
+                $('#select_analyze_shop ul').html('');
+                getStore(area_code);
+            }
             $('#select_analyze ul').append(ul);
         }else if(data.code=="-1"){
             alert(data.message);
@@ -87,7 +102,7 @@ function getStore(a){
     var param={};
     console.log($('#side_analyze ul li:nth-child(1) s').attr('brand_code'));
     param['brand_code']=$('#side_analyze ul li:nth-child(1) s').attr('brand_code');
-    param['pageNumber']=page;
+    param['pageNumber']=arguments[1]?arguments[1]:page;
     param['pageSize']=7;
     param['searchValue']=searchValue;
     param["area_code"]=area_code;
@@ -102,7 +117,8 @@ function getStore(a){
         var message=JSON.parse(data.message);
         var output=JSON.parse(message.list);
         var output_list=output.list;
-        if(output_list.length<7){
+        console.log(output_list);
+        if(output_list.length<8){
             $('#select_analyze_shop s').attr('style','display:none')
         }else{
             $('#select_analyze_shop s').attr('style','display:block')
@@ -117,16 +133,17 @@ function getStore(a){
         $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
         $('#select_analyze_shop ul').append(ul);
-       un_push?un_push=0:brithVipGet();getData();//正常调用当为加载更多时不调用
+       // un_push?un_push=0;page=1:brithVipGet();getData();//正常调用当为加载更多时不调用
+        if(un_push){un_push=0;}else{
+            brithVipGet();getData();page=1;
+        }
     });
-    page=1;
 }
 //点击li填充s中的数据显示
 function showNameClick(e){
     un_push=1;
     var e= e.target;
     var d=$(e).parent().parent().parent();
-    console.log($(d).attr('id'));
     if($(d).attr('id')=='select_analyze'){
         var area_code=$(e).attr('data_area');
         $('#side_analyze ul li:nth-child(2) s').html($(e).html());
@@ -177,11 +194,22 @@ $(document).on('click',function(e){
 });
 //加载更多
 function getMore(e){
-    var e= e.target;
-    page+=1;
+    // page+=1;
     un_push=1;
     var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
-    getStore(area_code);
+    var e= e.target;
+   if($(e).hasClass('select_analyze_shop')){
+       page_shop++;
+       getStore(area_code,page_shop);
+   }
+    if($(e).hasClass('select_analyze')){
+        page_area++;
+        GetArea(page_area);
+    }
+    if( $(e).hasClass('select_analyze_brand')){
+        page_brand++;
+        getBrand(page_brand);
+    }
 }
 //搜索
 function searchValue(e){
@@ -1453,12 +1481,14 @@ require(
 $().ready(function(){
     //页面加载时，异步加载显示的数据
     $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
-    $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
     $('#select_analyze_shop ul').on('click','li',showNameClick);
     $('#select_analyze_brand ul').on('click','li',showNameClick);
     //加载更多
     $('#side_analyze div s').click(getMore);
+    // $('#select_analyze_brand s').click(getMore);
+    // $('#select_analyze s').click(getMore);
+    // $('#select_analyze_shop s').click(getMore);
     //添加搜索
     $('#side_analyze div b span').click(searchValue);
     $('#side_analyze div b input').keydown(function () {
