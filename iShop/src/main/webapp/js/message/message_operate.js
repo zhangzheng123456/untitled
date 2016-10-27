@@ -27,18 +27,7 @@ function getcorplist(a){
 			$("#OWN_CORP").searchableSelect();
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
-				$("#sendee_r").empty();
-				$("#area_input").val("");
-				$("#area_input").attr("data-areacode","");
-				$("#store_input").val("");
-				$("#store_input").attr("data-storecode","");
-				$("#staff_input").val("");
-				$("#staff_input").attr("data-usercode","");
-				$("#staff_input").attr("data-userphone","");
-				$("#group_input").val("");
-				$("#group_input").attr("data-groupcode","");
-				$("#store_code ul").empty();
-				$("#staff_code ul").empty();
+				$("#sendee_r").val("已选0个");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
@@ -78,6 +67,7 @@ function getmodelist(){
 	})
 }
 getmodelist();
+getcorplist(a);
 $("#drop_down ul").on("click","li",function(){
 	var txt = $(this).text();
 	if(txt=="全体成员"){
@@ -570,8 +560,13 @@ function removeRight(a,b){
 		li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
 	}
 	if(li.length=="0"){
-		frame();
-		$('.frame').html("请先选择");
+		art.dialog({
+			zIndex:10003,
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择"
+		});
 		return;
 	}
 	if(li.length>0){
@@ -603,8 +598,13 @@ function removeLeft(a,b){
 		li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
 	}
 	if(li.length=="0"){
-		frame();
-		$('.frame').html("请先选择");
+		art.dialog({
+			zIndex:10003,
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择"
+		});
 		return;
 	}
 	if(li.length>0){
@@ -641,16 +641,33 @@ $(".shift_left_all").click(function(){
 	var div=$(this);
 	removeLeft(left,div);
 })
-getcorplist(a);
 $("#send").click(function(){
+	var param={};
 	var corp_code = $('#OWN_CORP').val();//企业编号
 	var send_mode=$('#send_mode').attr("data-type");
 	var title=$("#message_title").val();
 	var message_content=$("#message_content").val();
-	var param={};
 	param["corp_code"]=corp_code;
 	param["title"]=title;
 	param["message_content"]=message_content;
+	if(corp_code==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "所属企业不能为空"
+		});
+		return;
+	}
+	if(send_mode==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "发送范围不能为空"
+		});
+		return;
+	}
 	if(send_mode=="corp"){
 		param["store_id"]="";
 		param["user_id"]="";
@@ -667,6 +684,15 @@ $("#send").click(function(){
 		param["store_id"]="";
 		param["user_id"]="";
 		param["area_code"]=area_codes;
+		if(area_code==""){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "接受对象不能为空"
+		    });
+		    return;
+		}
 	}
 	if(send_mode=="store"){
 		var store_id=$("#sendee_r").attr("data-code");
@@ -679,6 +705,15 @@ $("#send").click(function(){
 		param["store_id"]=store_ids;
 		param["user_id"]="";
 		param["area_code"]="";
+		if(store_id==""){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "接受对象不能为空"
+		    });
+		    return;
+		}
 	}
 	if(send_mode=="staff"){
 		var user_id=$("#sendee_r").attr("data-code");
@@ -693,17 +728,37 @@ $("#send").click(function(){
 		param["store_id"]="";
 		param["user_id"]=user_ids;
 		param["area_code"]="";
+		if(user_id==""){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "接受对象不能为空"
+		    });
+		    return;
+		}
 	}
-	oc.postRequire("post","/message/add","",param, function(data) {
+	if(title==""){
+		art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "通知标题不能为空"
+		});
+		return;
+	}
+	if(message_content==""){
+		art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "通知内容不能为空"
+		});
+		return;
+	}
+	oc.postRequire("post","/message/add","",param, function(data){
 		console.log(data);
 	})
-});
-//编辑关闭
-$("#edit_close").click(function(){
-	// $("#page-wrapper").hide();
- // 	$("#content").show();
- // 	$("#details").hide();
- 	window.location.reload();
 });
 //新增关闭
 $("#send_close").click(function(){
