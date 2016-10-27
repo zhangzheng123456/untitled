@@ -663,6 +663,10 @@ function consumeVipGet() {
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
+            if(msg="{}"){
+                whir.loading.remove();//移除加载框
+                return ;
+            }
             count=msg.pages;
             var pageIndex=msg.pageNum;
             msg=msg.vip_consume_recently_list;

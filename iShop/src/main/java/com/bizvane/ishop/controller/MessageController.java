@@ -8,6 +8,9 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -24,10 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -46,8 +46,11 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
     @Autowired
+    StoreService storeService;
+    @Autowired
     private TableManagerService managerService;
-
+    @Autowired
+    IceInterfaceService iceInterfaceService;
     String id;
 
     /**
@@ -91,7 +94,7 @@ public class MessageController {
      * 发送消息
      * 获取消息类型
      */
-    @RequestMapping(value = "/type", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/type", method = RequestMethod.GET)
     @ResponseBody
     public String getMessageType(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -108,12 +111,147 @@ public class MessageController {
         }
         return dataBean.getJsonStr();
     }
+*/
 
     /**
      * 发送消息
      * 新增
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public String sendMessage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+       try{
+        String param = request.getParameter("param");
+        logger.info("json---------------" + param);
+        com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(param);
+        id = jsonObj.get("id").toString();
+        String message = jsonObj.get("message").toString();
+        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+           String role_code = request.getSession().getAttribute("role_code").toString();
+           String userid= request.getSession().getAttribute("user_code").toString();
+           String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String send_mode=jsonObject.get("send_mode").toString();
+           String user_id =  jsonObject.get("user_id").toString();
+           String area_code = "";
+           String store_id = "";
+           if (role_code.equals(Common.ROLE_SYS)) {
+               corp_code = jsonObject.get("corp_code").toString();
+
+           } else if (role_code.equals(Common.ROLE_GM)){
+
+           } else if (role_code.equals(Common.ROLE_AM)){
+
+               area_code = request.getSession().getAttribute("area_code").toString();
+               area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+           } else if (role_code.equals(Common.ROLE_SM)){
+
+               String store_code = request.getSession().getAttribute("store_code").toString();
+               store_id = store_code.replace(Common.SPECIAL_HEAD,"");
+           } else if (role_code.equals(Common.ROLE_STAFF)){
+
+           }
+
+           String title=jsonObject.get("title").toString();
+           String message_content=jsonObject.get("message_content").toString();
+           Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+           Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+           Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+           Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+           Data data_title = new Data("title", title, ValueType.PARAM);
+           Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
+
+           Map datalist = new HashMap<String, Data>();
+           datalist.put(data_user_id.key, data_user_id);
+           datalist.put(data_corp_code.key, data_corp_code);
+           datalist.put(data_store_id.key, data_store_id);
+           datalist.put(data_area_code.key, data_area_code);
+           datalist.put(data_title.key, data_title);
+           datalist.put(data_message_content.key, data_message_content);
+
+
+
+        DataBox dataBox = iceInterfaceService.iceInterfaceV3("AnalysisAllVip", datalist);
+        logger.info("-------发送通知" + dataBox.data.get("message").value);
+        String result = dataBox.data.get("message").value;
+
+            logger.info("after------addd----- result" + result);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add-----success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.toString());
+            logger.info("send notice  error : " + ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+    /**
+     * 发送消息
+     * 新增
+     * /message/pullSendScope
+     */
+    @RequestMapping(value = "/pullSendScope", method = RequestMethod.POST)
+    @ResponseBody
+    public String pullSendScope(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try{
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONArray scope=new JSONArray();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                scope.add("全体成员");
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_GM)){
+                scope.add("全体成员");
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_AM)){
+
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_SM)){
+
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_STAFF)){
+
+                scope.add("指定员工");
+            }
+             com.alibaba.fastjson.JSONObject obj=new com.alibaba.fastjson.JSONObject();
+            obj.put("send_scope",scope);
+
+
+            String result = obj.toString();
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    /*@RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String sendMessage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -146,7 +284,7 @@ public class MessageController {
         }
         return dataBean.getJsonStr();
     }
-
+*/
     /**
      * 发送消息
      * 选择

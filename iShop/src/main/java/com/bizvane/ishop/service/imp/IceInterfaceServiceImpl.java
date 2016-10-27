@@ -88,9 +88,9 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             String brand_code = request.getSession().getAttribute("brand_code").toString();
             brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
             List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
-            String store_code = "";
+//            String store_code = "";
             for (int i = 0; i < stores.size(); i++) {
-                store_code = store_code + stores.get(i).getStore_code() + ",";
+                store_id = store_id + stores.get(i).getStore_code() + ",";
             }
         }
 

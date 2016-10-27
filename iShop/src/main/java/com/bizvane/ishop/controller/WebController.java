@@ -54,8 +54,8 @@ public class WebController {
     StoreService storeService;
     @Autowired
     BrandService brandService;
-
-    WeiMobServiceImpl weiMobService = new WeiMobServiceImpl();
+    @Autowired
+    WeimobService weimobService;
 
     /**
      *
@@ -348,7 +348,7 @@ public class WebController {
     }
 
     /**
-     * app获取FAB列表接口
+     * app获取FAB公开图片接口
      */
     @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     @ResponseBody
@@ -414,22 +414,22 @@ public class WebController {
     public String handleWeimob(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String accessToken = generateToken(CommonValue.appID, CommonValue.appSecert);
+            String accessToken = weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
             int rowno = Integer.parseInt(request.getParameter("rowno"));
-            JSONArray goodList = weiMobService.getList(accessToken, rowno);
-            JSONArray classifyList = weiMobService.getClassify(accessToken);
-            JSONArray brandList = weiMobService.getClassifySon(accessToken);
+            JSONArray goodList = weimobService.getList(accessToken, rowno);
+            JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
+            JSONArray brandList = weimobService.goodsclassifyGetSon(accessToken);
 
             JSONObject message = new JSONObject();
 
             if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
                 logger.debug("-------------111111111111-------------------");
-                goodList = weiMobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
+                goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
                 logger.debug("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
             }
             if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
                 logger.debug("-------------22222222222------------------");
-                goodList = weiMobService.getSearchTitle(accessToken, request.getParameter("key"));
+                goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"));
                 logger.debug("handleWeimob Key ->" + request.getParameter("key"));
             }
 
@@ -446,21 +446,30 @@ public class WebController {
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
-
     }
 
-    public String generateToken(String appID, String appSecert) throws Exception {
-        String accessToken = weiMobService.accessToken;
-        if (accessToken.equals("")) {
-            accessToken = weiMobService.getAccessToken(appID, appSecert);
+    /**
+     * app获取商品列表（微盟桃花季）
+     */
+    @RequestMapping(value = "/api/weimob/auth", method = RequestMethod.GET)
+    @ResponseBody
+    public String weimobAuth(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String code = request.getParameter("code");
+            Weimob weimob = weimobService.selectByCorpId("C10116");
+            weimob.setCode(code);
+            weimobService.update(weimob);
+            weimobService.getAccessTokenByCode(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("3Q");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
         }
-        Date startTime = weiMobService.startTime;
-        Date nowtime = new Date();
-        long timediff = (nowtime.getTime() - startTime.getTime());
-        if (timediff > 120000) {
-            accessToken = weiMobService.getAccessToken(appID, appSecert);
-        }
-        return accessToken;
+        return dataBean.getJsonStr();
     }
 
 }

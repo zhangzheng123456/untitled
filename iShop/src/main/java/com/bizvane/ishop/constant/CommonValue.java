@@ -14,8 +14,11 @@ public class CommonValue {
 
 
     //桃花季 微盟账号
-    public final static String appID = "1bcd0f1a7c6188deecf5009adcfd7906";
-    public final static String appSecert = "0aa192196369e848bce12c664bbdafee";
+//    public final static String appID = "1bcd0f1a7c6188deecf5009adcfd7906";
+//    public final static String appSecert = "0aa192196369e848bce12c664bbdafee";
+    public final static String CLIENT_ID = "6A18998AA80E9AF0A0B18A1CA26295CB";
+    public final static String CLIENT_SECRET = "D747A297458D75239387F46DC95D2B35";
+    public final static String REDIRECT_URL = "http://ishop.dev.bizvane.com/api/weimob/auth";
 
     //table名（mongodb）
     public final static String table_log_user_action = "log_person_action";
