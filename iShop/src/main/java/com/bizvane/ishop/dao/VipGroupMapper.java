@@ -15,7 +15,7 @@ public interface VipGroupMapper {
 
     List<VipGroup> selectCorpVipGroups(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
-    List<VipGroup> selectAllVipGroup(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<VipGroup> selectAllVipGroup(@Param("corp_code") String corp_code, @Param("user_code") String user_code,@Param("role_code") String role_code,@Param("search_value") String search_value) throws SQLException;
 
     int insertVipGroup(VipGroup vipGroup) throws SQLException;
 

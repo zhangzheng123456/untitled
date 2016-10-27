@@ -16,7 +16,7 @@ public interface VipGroupService {
     VipGroup getVipGroupById(int id) throws Exception;
 
 
-    PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
+    PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code,String user_code1, String role_code, String search_value) throws Exception;
 
     List<VipGroup> selectCorpVipGroups(String corp_code,String search_value) throws Exception;
 

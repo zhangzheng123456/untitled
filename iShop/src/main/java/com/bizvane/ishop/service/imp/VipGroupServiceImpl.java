@@ -80,10 +80,10 @@ public class VipGroupServiceImpl implements VipGroupService {
      * @throws Exception
      */
     @Override
-    public PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
+    public PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String user_code1, String role_code, String search_value) throws Exception {
         List<VipGroup> vipGroups;
         PageHelper.startPage(page_number, page_size);
-        vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
+        vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, user_code1, role_code ,search_value);
         for (VipGroup vipGroup : vipGroups) {
             String corp_code1 = vipGroup.getCorp_code();
             String user_code = vipGroup.getUser_code();
