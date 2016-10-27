@@ -270,6 +270,9 @@
 	max-height:200px;
     overflow-y: auto;
 }
+.xingming>p{
+	margin-bottom: 20px;
+}
 .good_imgs{
 	margin-bottom: 0!important;
 }
