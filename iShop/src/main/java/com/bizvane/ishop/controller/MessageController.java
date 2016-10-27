@@ -130,10 +130,10 @@ public class MessageController {
         String message = jsonObj.get("message").toString();
         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
            String role_code = request.getSession().getAttribute("role_code").toString();
-           String user_code= request.getSession().getAttribute("user_code").toString();
+           String userid= request.getSession().getAttribute("user_code").toString();
            String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-           String user_id = "";
+            String send_mode=jsonObject.get("send_mode").toString();
+           String user_id =  jsonObject.get("user_id").toString();
            String area_code = "";
            String store_id = "";
            if (role_code.equals(Common.ROLE_SYS)) {
@@ -151,7 +151,6 @@ public class MessageController {
                store_id = store_code.replace(Common.SPECIAL_HEAD,"");
            } else if (role_code.equals(Common.ROLE_STAFF)){
 
-               user_id = user_code;
            }
 
            String title=jsonObject.get("title").toString();
@@ -214,12 +213,12 @@ public class MessageController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONArray scope=new JSONArray();
             if (role_code.equals(Common.ROLE_SYS)) {
-                scope.add("全部成员");
+                scope.add("全体成员");
                 scope.add("指定区域");
                 scope.add("指定店铺");
                 scope.add("指定员工");
             } else if (role_code.equals(Common.ROLE_GM)){
-                scope.add("全部成员");
+                scope.add("全体成员");
                 scope.add("指定区域");
                 scope.add("指定店铺");
                 scope.add("指定员工");
@@ -236,21 +235,15 @@ public class MessageController {
 
                 scope.add("指定员工");
             }
-         com.alibaba.fastjson.JSONObject obj=new com.alibaba.fastjson.JSONObject();
+             com.alibaba.fastjson.JSONObject obj=new com.alibaba.fastjson.JSONObject();
             obj.put("send_scope",scope);
 
 
             String result = obj.toString();
-
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage(result+"123");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result+"456");
-            }
+                dataBean.setMessage(result);
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
