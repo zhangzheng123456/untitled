@@ -8109,3 +8109,14 @@ li.select_index>a>label>i{
   background: #4a5f7c;
   color: white;
 }
+.allUser input{
+  width: 410px;
+  height: 30px;
+  border-radius: 7px;
+  border: 1px solid #EAE2E2;
+  margin:3px 3px;
+}
+.groupUser_checked{
+  background:#6dc1c8;
+  color:white;
+}
