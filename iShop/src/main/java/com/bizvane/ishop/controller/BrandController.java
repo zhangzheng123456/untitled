@@ -195,9 +195,14 @@ public class BrandController {
 
             String result = brandService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String brand_code = jsonObject.get("brand_code").toString().trim();
+                String corp_code = jsonObject.get("corp_code").toString().trim();
+                String isactive = jsonObject.get("isactive").toString();
+                Brand brand = brandService.getBrandByCode(corp_code,brand_code,isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(brand.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);

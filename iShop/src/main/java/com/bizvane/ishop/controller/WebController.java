@@ -350,7 +350,7 @@ public class WebController {
     /**
      * app获取FAB公开图片接口
      */
-    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String fabPublicImg(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
@@ -409,7 +409,7 @@ public class WebController {
     /**
      * app获取商品列表（微盟桃花季）
      */
-    @RequestMapping(value = "/api/weimob/goods", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/weimob/goods", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String handleWeimob(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
