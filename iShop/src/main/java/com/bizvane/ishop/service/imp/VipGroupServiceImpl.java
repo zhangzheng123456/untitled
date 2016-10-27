@@ -80,10 +80,10 @@ public class VipGroupServiceImpl implements VipGroupService {
      * @throws Exception
      */
     @Override
-    public PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
+    public PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String user_code1, String role_code, String search_value) throws Exception {
         List<VipGroup> vipGroups;
         PageHelper.startPage(page_number, page_size);
-        vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
+        vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, user_code1, role_code ,search_value);
         for (VipGroup vipGroup : vipGroups) {
             String corp_code1 = vipGroup.getCorp_code();
             String user_code = vipGroup.getUser_code();
@@ -230,9 +230,11 @@ public class VipGroupServiceImpl implements VipGroupService {
         return vipGroup;
     }
 
-    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
+    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,String user_code1, String role_code, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
+        params.put("user_code", user_code1);
+        params.put("role_code", role_code);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);

@@ -27,7 +27,6 @@ function getCode(){
             if(N<=0){
                 clearInterval(t);
                 $("#get_code").html("发送验证码");
-                getCode();
             }
         },1000);
         oc.postRequire("post", "/authcode","", param, function(data) {
@@ -58,7 +57,8 @@ function checkphone(){
         oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
             if(data.code==0){
                 $("#tel_tip img").attr("src","img/icon_error.png");
-                $("#tel_tip a").html("手机号未被注册");
+                $("#tel_tip a").html("手机号未注册");
+                $("#get_code").unbind("click");
             }else if(data.code==-1){
                 $("#tel_tip img").attr("src","img/icon_right.png");
                 $("#tel_tip a").html("");
@@ -141,6 +141,7 @@ $(function(){
     $("#get_code").on("done",getCode);
     getCode();
     $("#next").click(function(){
+        var param={};
         var tel=$("#tel").val().trim();
         var yzm=$("#yzm").val().trim();
         var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;
@@ -168,18 +169,36 @@ $(function(){
         if(regyzm.test(yzm)){
             $("#yzm_tip").hide();
         }
+        //if(reg.test(tel)){
+        //    $("#tel_tip img").attr("src","img/icon_right.png");
+        //    $("#tel_tip a").html("");
+        //    $("#tel_tip").show();
+        //}
         if(tel!="" && yzm!="" && regyzm.test(yzm)){
-            var param={};
-            param["phone"]=retiveve.lasttel;
-            param["authcode"]=yzm;
-            oc.postRequire("post", "/checkAuthcode","", param, function(data) {
+            param["phone"]=tel;
+            retiveve.lasttel=tel;
+            oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
                 if(data.code==0){
-                    $("#step1").hide();
-                    $("#step2").show();
+                    $("#tel_tip img").attr("src","img/icon_error.png");
+                    $("#tel_tip a").html("手机号未注册");
+                    $("#get_code").unbind("click");
+                    $("#tel_tip").show();
                 }else if(data.code==-1){
-                    $("#yzm_tip img").attr("src","img/icon_error.png");
-                    $("#yzm_tip a").html("验证码不正确");
-                    $("#yzm_tip").show();
+                    $("#tel_tip img").attr("src","img/icon_right.png");
+                    $("#tel_tip a").html("");
+                    var param_1={};
+                    param_1["phone"]=retiveve.lasttel;
+                    param_1["authcode"]=yzm;
+                    oc.postRequire("post", "/checkAuthcode","", param_1, function(data) {
+                        if(data.code==0){
+                            $("#step1").hide();
+                            $("#step2").show();
+                        }else if(data.code==-1){
+                            $("#yzm_tip img").attr("src","img/icon_error.png");
+                            $("#yzm_tip a").html("验证码不正确");
+                            $("#yzm_tip").show();
+                        }
+                    });
                 }
             });
         }
@@ -222,28 +241,7 @@ $(function(){
     });
     $(document).bind('keyup', function(e) {
         if (e.keyCode == 13) {
-            var tel = $("#tel").val().trim(); //获取手机号
-            var yzm = $("#yzm").val().trim(); //获取验证码
-            var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;
             if($("#step1").css("display")=="block"){
-                if(reg.test(tel)){
-                    var param={};
-                    param["phone"]=tel;
-                    retiveve.lasttel=tel;
-                    oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
-                        if(data.code==0){
-                            $("#tel_tip img").attr("src","img/icon_error.png");
-                            $("#tel_tip a").html("手机号未被注册");
-                            $("#tel_tip").show();
-                            return false
-                        }else if(data.code==-1){
-                            $("#tel_tip img").attr("src","img/icon_right.png");
-                            $("#tel_tip a").html("");
-                            $("#tel_tip").show();
-                        }
-
-                    });
-                };
                 $("#next").click();
             }
             if($("#step2").css("display")=="block"){
