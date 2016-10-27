@@ -129,14 +129,14 @@ public class MessageController {
         id = jsonObj.get("id").toString();
         String message = jsonObj.get("message").toString();
         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
-           String role_code = request.getSession().getAttribute("role_code").toString();
-           String operator= request.getSession().getAttribute("user_id").toString();
-           String corp_code = "";
+          // String role_code = request.getSession().getAttribute("role_code").toString();
+           String operator= request.getSession().getAttribute("user_code").toString();
+
+           String corp_code = jsonObject.get("corp_code").toString();
             String send_mode=jsonObject.get("send_mode").toString();
            String user_id =  jsonObject.get("user_id").toString();
-           String area_code = "";
-           String store_id = "";
-
+           String area_code = jsonObject.get("area_code").toString();
+           String store_id = jsonObject.get("store_id").toString();
            String title=jsonObject.get("title").toString();
            String message_content=jsonObject.get("message_content").toString();
 
@@ -160,15 +160,20 @@ public class MessageController {
            logger.info("-------发送通知" +datalist.toString());
 
         DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
-        logger.info("-------发送通知" + dataBox.data.get("message").value);
-        String result = dataBox.data.get("message").value;
+        logger.info("-------发送通知" + dataBox.status);
+//        String result = dataBox.data.get("message").value;
 
-            logger.info("after------addd----- result" + result);
+//            logger.info("after------addd----- result" + result);
 
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-
+           if (dataBox.status.toString().equals("SUCCESS")) {
+               dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+               dataBean.setId(id);
+               dataBean.setMessage("SUCCESS");
+           }else {
+               dataBean.setId(id);
+               dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+               dataBean.setMessage("fail");
+           }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
