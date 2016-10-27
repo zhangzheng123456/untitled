@@ -28,6 +28,7 @@ function getcorplist(a){
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
 				$("#sendee_r").val("已选0个");
+				$("#sendee_r").attr("data-code","");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
@@ -650,6 +651,7 @@ $("#send").click(function(){
 	param["corp_code"]=corp_code;
 	param["title"]=title;
 	param["message_content"]=message_content;
+	param["send_mode"]=send_mode;
 	if(corp_code==""){
 		art.dialog({
 			time: 1,
