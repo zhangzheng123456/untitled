@@ -86,6 +86,7 @@ $("#drop_down ul").on("click","li",function(){
 		$("#sendee").show();
 	}
 	$("#send_mode").val(txt);
+	$("#send_mode").attr("data-type",$(this).attr("data-type"));
 	$("#drop_down ul").hide();
 });
 //点击接收人
@@ -478,6 +479,7 @@ function getstafflist(a){
                 staff_next=false;
             }
             $("#screen_staff .screen_content_l ul").append(staff_html);
+            bianse();
             if(!isscroll){
 				$("#screen_staff .screen_content_l").bind("scroll",function () {
 					var nScrollHight = $(this)[0].scrollHeight;
@@ -496,7 +498,6 @@ function getstafflist(a){
 			for(var k=0;k<li.length;k++){
 				$("#screen_staff .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-            bianse();
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
             alert(data.message);
@@ -643,20 +644,59 @@ $(".shift_left_all").click(function(){
 getcorplist(a);
 $("#send").click(function(){
 	var corp_code = $('#OWN_CORP').val();//企业编号
-	var send_mode=$('#send_mode').attr("data-type",'');
+	var send_mode=$('#send_mode').attr("data-type");
+	var title=$("#message_title").val();
+	var message_content=$("#message_content").val();
 	var param={};
+	param["corp_code"]=corp_code;
+	param["title"]=title;
+	param["message_content"]=message_content;
 	if(send_mode=="corp"){
-		param["corp"]=corp_code;
 		param["store_id"]="";
 		param["user_id"]="";
 		param["area_code"]="";
 	}
 	if(send_mode=="area"){
-		param["corp"]=corp_code;
+		var area_code=$("#sendee_r").attr("data-code");
+		var area_code=area_code.split(",");
+		var area_codes=[];
+		for(var i=0;i<area_code.length;i++){
+		 	var param1={"area_code":area_code[i]};
+            area_codes.push(param1);
+		}
 		param["store_id"]="";
+		param["user_id"]="";
+		param["area_code"]=area_codes;
+	}
+	if(send_mode=="store"){
+		var store_id=$("#sendee_r").attr("data-code");
+		var store_id=store_id.split(",");
+		var store_ids=[];
+		for(var i=0;i<store_id.length;i++){
+		 	var param1={"store_id":store_id[i]};
+            store_ids.push(param1);
+		}
+		param["store_id"]=store_ids;
 		param["user_id"]="";
 		param["area_code"]="";
 	}
+	if(send_mode=="staff"){
+		var user_id=$("#sendee_r").attr("data-code");
+		var phone=$("#sendee_r").attr("data-phone");
+		var user_id=user_id.split(",");
+		var phone=phone.split(",");
+		var user_ids=[];
+		for(var i=0;i<user_id.length;i++){
+		 	var param1={"user_id":user_id[i],"phone":phone[i]};
+            user_ids.push(param1);
+		}
+		param["store_id"]="";
+		param["user_id"]=user_ids;
+		param["area_code"]="";
+	}
+	oc.postRequire("post","/message/add","",param, function(data) {
+		console.log(data);
+	})
 });
 //编辑关闭
 $("#edit_close").click(function(){
