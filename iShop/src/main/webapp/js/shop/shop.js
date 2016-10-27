@@ -1389,7 +1389,7 @@ $("#address_nav a:last-child").click(function () {
             "color":"#333",
             "width":"171px",
             "max-width":"200px",
-            "height":"20px",
+            "height":"20px"
         });
         marker.setLabel(label);
         map.addEventListener("click",function(e){
@@ -1417,7 +1417,14 @@ $("#address_nav a:last-child").click(function () {
                 var marker = new BMap.Marker(point); //创建marker对象
                 map.addOverlay(marker);
                 marker.enableDragging(); //marker可拖拽
-                var label = new BMap.Label("我是文字标注哦",{offset:new BMap.Size(20,-10)});
+                var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+                label.setStyle({
+                    "font-size":"10px",
+                    "color":"#333",
+                    "width":"171px",
+                    "max-width":"200px",
+                    "height":"20px"
+                });
                 marker.setLabel(label);
                 var o_Point_now =  marker.getPosition();
                 var lng = o_Point_now.lng;//获取经度
@@ -1451,7 +1458,14 @@ $("#address_nav a:last-child").click(function () {
         var marker = new BMap.Marker(point); //创建marker对象
         map.addOverlay(marker);
         marker.enableDragging(); //marker可拖拽
-        var label = new BMap.Label("我是文字标注哦",{offset:new BMap.Size(20,-10)});
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
         marker.setLabel(label);
         map.addEventListener("click",function(e){
             console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
@@ -1532,11 +1546,10 @@ $("#address_nav a:last-child").click(function () {
             "color":"#333",
             "width":"171px",
             "max-width":"200px",
-            "height":"20px",
+            "height":"20px"
         });
         marker.setLabel(label);
         map.addEventListener("click",function(e){
-            map.removeOverlay(pp);
             console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
             var now_point =  new BMap.Point(e.point.lng, e.point.lat );
