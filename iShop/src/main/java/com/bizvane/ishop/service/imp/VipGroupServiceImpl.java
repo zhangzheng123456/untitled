@@ -230,9 +230,11 @@ public class VipGroupServiceImpl implements VipGroupService {
         return vipGroup;
     }
 
-    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
+    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,String user_code1, String role_code, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
+        params.put("user_code", user_code1);
+        params.put("role_code", role_code);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);

@@ -420,12 +420,17 @@ public class VipGroupController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             JSONObject result = new JSONObject();
             PageInfo<VipGroup> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "", map);
-            } else {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, corp_code, map);
+                //系统管理员
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "", "", "",map);
+            } else if (role_code.equals(Common.ROLE_GM)){
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size,corp_code,user_code,role_code,map);
+            }else {
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size,corp_code,user_code,"",map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -455,22 +460,29 @@ public class VipGroupController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<VipGroup> list = null;
             if (screen.equals("")) {
-//                if (role_code.equals(Common.ROLE_SYS)) {
-//                    //系统管理员
-//                    list = vipGroupService.getAllVipGroupByPage(1, 30000, "", search_value);
-//                } else {
-//                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code, search_value);
-//                }
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    //系统管理员
+                    list = vipGroupService.getAllVipGroupByPage(1, 30000,"","", "", search_value);
+                } else if (role_code.equals(Common.ROLE_GM)){
+                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,user_code,role_code, search_value);
+                }else {
+                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,user_code,"", search_value);
+                }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", map);
-                } else {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, corp_code, map);
+                    //系统管理员
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", "", "",map);
+                } else if (role_code.equals(Common.ROLE_GM)){
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,user_code,role_code,map);
+                }else {
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,user_code,"",map);
                 }
             }
             List<VipGroup> vipGroups = list.getList();
