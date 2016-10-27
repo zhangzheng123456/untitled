@@ -57,7 +57,7 @@ function checkphone(){
         oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
             if(data.code==0){
                 $("#tel_tip img").attr("src","img/icon_error.png");
-                $("#tel_tip a").html("手机号未被注册");
+                $("#tel_tip a").html("手机号未注册");
                 $("#get_code").unbind("click");
             }else if(data.code==-1){
                 $("#tel_tip img").attr("src","img/icon_right.png");
@@ -169,19 +169,20 @@ $(function(){
         if(regyzm.test(yzm)){
             $("#yzm_tip").hide();
         }
-        if(reg.test(tel)){
-            $("#tel_tip img").attr("src","img/icon_right.png");
-            $("#tel_tip a").html("");
-            $("#tel_tip").show();
-        }
+        //if(reg.test(tel)){
+        //    $("#tel_tip img").attr("src","img/icon_right.png");
+        //    $("#tel_tip a").html("");
+        //    $("#tel_tip").show();
+        //}
         if(tel!="" && yzm!="" && regyzm.test(yzm)){
             param["phone"]=tel;
             retiveve.lasttel=tel;
             oc.postRequire("post", "/user/PhoneExist","", param, function(data) {
                 if(data.code==0){
                     $("#tel_tip img").attr("src","img/icon_error.png");
-                    $("#tel_tip a").html("手机号未被注册");
+                    $("#tel_tip a").html("手机号未注册");
                     $("#get_code").unbind("click");
+                    $("#tel_tip").show();
                 }else if(data.code==-1){
                     $("#tel_tip img").attr("src","img/icon_right.png");
                     $("#tel_tip a").html("");
@@ -199,7 +200,6 @@ $(function(){
                         }
                     });
                 }
-                $("#tel_tip").show();
             });
         }
     });
