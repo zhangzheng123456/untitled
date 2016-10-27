@@ -8081,8 +8081,7 @@ li.select_index>a>label>i{
  }
 .allUser{
   width: 420px;
-  height: 200px;
-  overflow-y: auto;
+  /*height: 200px;*/
   position: absolute;
   left: 125px;
   top: 25px;
@@ -8090,6 +8089,10 @@ li.select_index>a>label>i{
   background: #f5f5f5;
   border-radius: 4px;
   display: none;
+}
+.allUser ul{
+  overflow-y: auto;
+  height: 200px;
 }
 .allUser li{
   width: 100%;

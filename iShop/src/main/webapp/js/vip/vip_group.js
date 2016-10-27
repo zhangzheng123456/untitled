@@ -236,7 +236,9 @@ function superaddition(data,num){//页面加载循环
             + data[i].vip_group_name
             + "</td><td><span>"
             + data[i].corp_name
-            +"</span></td><td><span title="+data[i].remark+">"
+            + "</span></td><td>"
+            + data[i].user_name
+            +"</td><td><span title="+data[i].remark+">"
             +data[i].remark
             +"</span></td><td>"
             +data[i].modified_date

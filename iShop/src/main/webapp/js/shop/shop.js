@@ -1365,7 +1365,7 @@ $("#enter").click(function () {
 })
 //创建地图
 $("#address_nav a:last-child").click(function () {
-    var map = new BMap.Map("show_map");
+    var map = new BMap.Map("show_map", {enableMapClick:false});//构造底图时，关闭底图可点功能
     var location_detail = $("#show_map").attr("data-location");
     var point;
     if(location_detail==undefined || location_detail==""){
