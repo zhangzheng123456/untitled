@@ -103,6 +103,16 @@ function pwd(){
         $("#pwd_tip a").html("");
         $("#pwd_tip").show();
     }
+    if(pwd!="" && pwd!=pwdd){
+        $("#pwdd_tip img").attr("src","img/icon_error.png");
+        $("#pwdd_tip a").html("输入密码不一致");
+        $("#pwdd_tip").show();
+    }
+    if(pwd!="" && pwd==pwdd){
+        $("#pwdd_tip img").attr("src","img/icon_right.png");
+        $("#pwdd_tip a").html("");
+        $("#pwdd_tip").show();
+    }
 }
 //弹框
 function frame(){
@@ -173,6 +183,13 @@ $(function(){
     $("#yzm").focus(function(){
         $("#yzm_tip").hide();
     });
+    $("#pwd").focus(function(){
+        $("#pwd_tip").hide();
+    });
+    $("#pwdd").focus(function(){
+        $("#pwdd_tip").hide();
+    });
+
     $("#next").click(function(){
         var param_exist={};
         var tel=$("#tel").val().trim();
@@ -241,6 +258,7 @@ $(function(){
             $("#pwd_tip img").attr("src","img/icon_error.png");
             $("#pwd_tip a").html("请输入密码");
             $("#pwd_tip").show();
+            return false
         }else{
             $("#pwd_tip img").attr("src","img/icon_right.png");
             $("#pwd_tip a").html("");
