@@ -35,6 +35,13 @@ function getcorplist(a){
 				$(".screen_content_r ul").empty();
 				$(".input_search input").val("");
 				$("#sendee_r").attr("data-type","");
+				$("#sendee_r").val("已选0个");
+				$(".area_num").val("全部");
+				$(".area_num").attr("data-areacode","");
+				$(".brand_num").val("全部");
+				$(".brand_num").attr("data-brandcode","");
+				$("#staff_shop_num").val("全部");
+				$("#staff_shop_num").attr("data-storecode","");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
@@ -78,6 +85,7 @@ $("#drop_down ul").on("click","li",function(){
 	var txt = $(this).text();
 	if(txt=="全体成员"){
 		$("#sendee").hide();
+		$("#sendee_r").attr("data-type","");
 	}
 	if(txt=="指定区域"){
 		$("#sendee").show();
@@ -92,6 +100,12 @@ $("#drop_down ul").on("click","li",function(){
 		$(".screen_content_r ul").empty();
 		$(".input_search input").val("");
 		$("#sendee_r").attr("data-type","");
+		$(".area_num").val("全部");
+		$(".area_num").attr("data-areacode","");
+		$(".brand_num").val("全部");
+		$(".brand_num").attr("data-brandcode","");
+		$("#staff_shop_num").val("全部");
+		$("#staff_shop_num").attr("data-storecode","");
 	}
 	if(txt=="指定店铺"){
 		$("#sendee").show();
@@ -106,7 +120,12 @@ $("#drop_down ul").on("click","li",function(){
 		$(".screen_content_r ul").empty();
 		$(".input_search input").val("");
 		$("#sendee_r").attr("data-type","");
-		
+		$(".area_num").val("全部");
+		$(".area_num").attr("data-areacode","");
+		$(".brand_num").val("全部");
+		$(".brand_num").attr("data-brandcode","");
+		$("#staff_shop_num").val("全部");
+		$("#staff_shop_num").attr("data-storecode","");
 	}
 	if(txt=="指定员工"){
 		$("#sendee").show();
@@ -121,6 +140,12 @@ $("#drop_down ul").on("click","li",function(){
 		$(".screen_content_r ul").empty();
 		$(".input_search input").val("");
 		$("#sendee_r").attr("data-type","");
+		$(".area_num").val("全部");
+		$(".area_num").attr("data-areacode","");
+		$(".brand_num").val("全部");
+		$(".brand_num").attr("data-brandcode","");
+		$("#staff_shop_num").val("全部");
+		$("#staff_shop_num").attr("data-storecode","");
 	}
 	$("#send_mode").val(txt);
 	$("#send_mode").attr("data-type",$(this).attr("data-type"));
@@ -225,6 +250,9 @@ $("#add_sendee").click(function(){
 		$("#screen_staff").css({"left":+left+"px","top":+tp+"px"});
 		$("#screen_staff .screen_content_l").unbind("scroll");
 		getstafflist(staff_num);
+	}
+	if(send_mode=="全体成员"){
+
 	}
 })
 //点击列表显示选中状态
@@ -532,9 +560,9 @@ function getstorelist(a){
 function getstafflist(a){
 	var corp_code = $('#OWN_CORP').val();
 	var searchValue=$('#staff_search').val();
-    var area_code ="";
-    var brand_code="";
-    var store_code="";
+    var area_code =$("#staff_area_num").attr("data-areacode");
+    var brand_code=$("#staff_brand_num").attr("data-brandcode");
+    var store_code=$("#staff_shop_num").attr("data-storecode");
     var pageSize=20;
     var pageNumber=a;
     var _param={};
@@ -574,7 +602,6 @@ function getstafflist(a){
                 staff_next=false;
             }
             $("#screen_staff .screen_content_l ul").append(staff_html);
-            bianse();
             if(!isscroll){
 				$("#screen_staff .screen_content_l").bind("scroll",function () {
 					var nScrollHight = $(this)[0].scrollHeight;
@@ -589,6 +616,10 @@ function getstafflist(a){
 				})
 		    }
 		    isscroll=true;
+		    $("#screen_staff .screen_content_l li:odd").css("backgroundColor","#fff");
+            $("#screen_staff .screen_content_l li:even").css("backgroundColor","#ededed");
+            $("#screen_staff .screen_content_r li:odd").css("backgroundColor","#fff");
+            $("#screen_staff .screen_content_r li:even").css("backgroundColor","#ededed");
 			var li=$("#screen_staff .screen_content_r input[type='checkbox']").parents("li");
 			for(var k=0;k<li.length;k++){
 				$("#screen_staff .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
@@ -626,6 +657,17 @@ $("#screen_que_area").click(function(){
 		$("#screen_shop").show();
 		getstorelist(shop_num);
 	}
+	if($("#send_mode").val()=="指定员工"){
+		isscroll=false;
+		staff_num=1;
+		$("#staff_area_num").attr("data-areacode",area_code);
+		$("#staff_area_num").val("已选"+li.length+"个");
+		$("#screen_staff .screen_content_l ul").empty();
+		$("#screen_staff .screen_content_l").unbind("scroll");
+		$("#screen_area").hide();
+		$("#screen_staff").show();
+		getstafflist(staff_num);
+	}
 	if($("#send_mode").val()=="指定区域"){
 		$("#sendee_r").attr("data-code",area_code);
 		$("#sendee_r").attr("data-name",name);
@@ -651,12 +693,25 @@ $("#screen_que_shop").click(function(){
             name+=h;
         }
 	}
-	$("#sendee_r").attr("data-code",store_code);
-	$("#sendee_r").attr("data-name",name);
-	$("#screen_shop").hide();
-	$("#sendee_r").val("已选"+li.length+"个");
-	$("#sendee_r").attr("data-type","store");
-	whir.loading.remove();//移除遮罩层
+	if($("#send_mode").val()=="指定员工"){
+		isscroll=false;
+		staff_num=1;
+		$("#staff_shop_num").attr("data-storecode",store_code);
+		$("#staff_shop_num").val("已选"+li.length+"个");
+		$("#screen_staff .screen_content_l ul").empty();
+		$("#screen_staff .screen_content_l").unbind("scroll");
+		$("#screen_shop").hide();
+		$("#screen_staff").show();
+		getstafflist(staff_num);
+	}
+	if($("#send_mode").val()=="指定店铺"){
+		$("#sendee_r").attr("data-code",store_code);
+		$("#sendee_r").attr("data-name",name);
+		$("#screen_shop").hide();
+		$("#sendee_r").val("已选"+li.length+"个");
+		$("#sendee_r").attr("data-type","store");
+		whir.loading.remove();//移除遮罩层
+	}
 })
 //点击员工的确定
 $("#screen_que_staff").click(function(){
@@ -686,9 +741,43 @@ $("#screen_que_staff").click(function(){
 	$("#sendee_r").attr("data-type","staff");
 	whir.loading.remove();//移除遮罩层
 })
+//点击品牌的确定
+$("#screen_que_brand").click(function(){
+	var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
+	var brand_code="";
+	for(var i=0;i<li.length;i++){
+		var r=$(li[i]).attr("id");
+		if(i<li.length-1){
+            brand_code+=r+",";
+        }else{
+            brand_code+=r;
+        }
+	}
+	if($("#send_mode").val()=="指定员工"){
+		isscroll=false;
+		staff_num=1;
+		$("#staff_brand_num").attr("data-brandcode",brand_code);
+		$("#staff_brand_num").val("已选"+li.length+"个");
+		$("#screen_staff .screen_content_l ul").empty();
+		$("#screen_staff .screen_content_l").unbind("scroll");
+		$("#screen_brand").hide();
+		$("#screen_staff").show();
+		getstafflist(staff_num);
+	}
+	if($("#send_mode").val()=="指定店铺"){
+		isscroll=false;
+		shop_num=1;
+		$("#brand_num").attr("data-brandcode",brand_code);
+		$("#brand_num").val("已选"+li.length+"个");
+		$("#screen_shop .screen_content_l ul").empty();
+		$("#screen_shop .screen_content_l").unbind("scroll");
+		$("#screen_brand").hide();
+		$("#screen_shop").show();
+		getstafflist(shop_num);
+	}
+})
 //店铺里面的区域点击
 $("#shop_area").click(function(){
-	console.log(12312);
 	isscroll=false;
 	area_num=1;
 	var arr=whir.loading.getPageSize();
@@ -700,6 +789,57 @@ $("#shop_area").click(function(){
 	$("#screen_area").show();
 	$("#screen_shop").hide();
 	getarealist(area_num);
+})
+//店铺里面的品牌点击
+$("#shop_brand").click(function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+63;
+	$("#screen_brand .screen_content_l ul").empty();
+	$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_brand").show();
+	$("#screen_shop").hide();
+	getbrandlist();
+})
+//员工里面的区域点击
+$("#staff_area").click(function(){
+	console.log(123);
+	isscroll=false;
+	area_num=1;
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+63;
+	$("#screen_area .screen_content_l").unbind("scroll");
+	$("#screen_area .screen_content_l ul").empty();
+	$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_area").show();
+	$("#screen_staff").hide();
+	getarealist(area_num);
+})
+//员工里面的店铺点击
+$("#staff_shop").click(function(){
+	isscroll=false;
+	shop_num=1;
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+63;
+	$("#screen_shop .screen_content_l").unbind("scroll");
+	$("#screen_shop .screen_content_l ul").empty();
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_shop").show();
+	$("#screen_staff").hide();
+	getarealist(shop_num);
+})
+//员工里面的品牌点击
+$("#staff_brand").click(function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+63;
+	$("#screen_brand .screen_content_l ul").empty();
+	$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_brand").show();
+	$("#screen_staff").hide();
+	getbrandlist();
 })
 //移到右边
 function removeRight(a,b){
@@ -738,6 +878,10 @@ function removeRight(a,b){
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
 	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
 	bianse();
+	$("#screen_staff .screen_content_l li:odd").css("backgroundColor","#fff");
+    $("#screen_staff .screen_content_l li:even").css("backgroundColor","#ededed");
+    $("#screen_staff .screen_content_r li:odd").css("backgroundColor","#fff");
+    $("#screen_staff .screen_content_r li:even").css("backgroundColor","#ededed");
 }
 //移到左边
 function removeLeft(a,b){
