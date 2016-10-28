@@ -438,16 +438,9 @@ public class VIPController {
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
-//            JSONObject obj = JSON.parseObject(result);
-//            String vipLists = obj.get("all_vip_list").toString();
-//            JSONArray array = JSONArray.parseArray(vipLists);
-//            JSONArray new_array = vipGroupService.findVipsGroup(array);
-//            obj.put("all_vip_list",new_array);
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result);
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

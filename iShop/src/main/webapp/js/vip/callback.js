@@ -205,17 +205,19 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].vip_code
+                        + data[i].vip_id
+                        + "</td><td>"
+                        + data[i].vip_name
                         + "</td><td><span>"
-                        + data[i].user.user_name
+                        + data[i].user_name
                         +"</td><td>"
-                        +data[i].vipRecordType.type_name
+                        +data[i].type_name
                         +"</td><td>"
                         +data[i].corp_name
                         + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
+                        +data[i].created_date
+                        // + "</td><td>"
+                        // +data[i].isactive
                         +"</td></tr>");
   
     }

@@ -129,36 +129,21 @@ public class MessageController {
         id = jsonObj.get("id").toString();
         String message = jsonObj.get("message").toString();
         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
-           String role_code = request.getSession().getAttribute("role_code").toString();
-           String operator= request.getSession().getAttribute("user_id").toString();
-           String corp_code = "";
+          // String role_code = request.getSession().getAttribute("role_code").toString();
+           String operator= request.getSession().getAttribute("user_code").toString();
+
+           String corp_code = jsonObject.get("corp_code").toString();
             String send_mode=jsonObject.get("send_mode").toString();
            String user_id =  jsonObject.get("user_id").toString();
-           String area_code = "";
-           String store_id = "";
-           if (role_code.equals(Common.ROLE_SYS)) {
-               corp_code = jsonObject.get("corp_code").toString();
-
-           } else if (role_code.equals(Common.ROLE_GM)){
-
-           } else if (role_code.equals(Common.ROLE_AM)){
-
-               area_code = request.getSession().getAttribute("area_code").toString();
-               area_code = area_code.replace(Common.SPECIAL_HEAD,"");
-           } else if (role_code.equals(Common.ROLE_SM)){
-
-               String store_code = request.getSession().getAttribute("store_code").toString();
-               store_id = store_code.replace(Common.SPECIAL_HEAD,"");
-           } else if (role_code.equals(Common.ROLE_STAFF)){
-
-           }
+           String area_code = jsonObject.get("area_code").toString();
+           String store_id = jsonObject.get("store_id").toString();
            String title=jsonObject.get("title").toString();
            String message_content=jsonObject.get("message_content").toString();
 
            Data data_operator = new Data("operator", operator, ValueType.PARAM);
            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-           Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+           Data data_store_id = new Data("store_id",store_id , ValueType.PARAM);
            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
            Data data_title = new Data("title", title, ValueType.PARAM);
            Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
@@ -175,15 +160,20 @@ public class MessageController {
            logger.info("-------发送通知" +datalist.toString());
 
         DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
-        logger.info("-------发送通知" + dataBox.data.get("message").value);
-        String result = dataBox.data.get("message").value;
+        logger.info("-------发送通知" + dataBox.status);
+//        String result = dataBox.data.get("message").value;
 
-            logger.info("after------addd----- result" + result);
+//            logger.info("after------addd----- result" + result);
 
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-
+           if (dataBox.status.toString().equals("SUCCESS")) {
+               dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+               dataBean.setId(id);
+               dataBean.setMessage("SUCCESS");
+           }else {
+               dataBean.setId(id);
+               dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+               dataBean.setMessage("fail");
+           }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

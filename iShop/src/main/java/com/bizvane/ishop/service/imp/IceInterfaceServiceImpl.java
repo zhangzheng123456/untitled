@@ -82,13 +82,14 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             String store_code = request.getSession().getAttribute("store_code").toString();
             store_id = store_code.replace(Common.SPECIAL_HEAD,"");
         } else if (role_code.equals(Common.ROLE_STAFF)){
+            String store_code = request.getSession().getAttribute("store_code").toString();
+            store_id = store_code.replace(Common.SPECIAL_HEAD,"");
             user_id = user_code;
         }else if (role_code.equals(Common.ROLE_BM)){
             role_code = Common.ROLE_SM;
             String brand_code = request.getSession().getAttribute("brand_code").toString();
             brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
             List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
-//            String store_code = "";
             for (int i = 0; i < stores.size(); i++) {
                 store_id = store_id + stores.get(i).getStore_code() + ",";
             }
