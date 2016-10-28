@@ -1057,6 +1057,13 @@ public class UserServiceImpl implements UserService {
                     }
                 }
             }
+        }else if (role_code.equals(Common.ROLE_BM)){
+            String brand_code = user.getBrand_code();
+            brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+            String[] codes = brand_code.split(",");
+            for (int i = 0; i < codes.length; i++) {
+                brand_codes.add(codes[i]);
+            }
         }else {
             List<Brand> brands = brandService.getActiveBrand(corp_code,"",null);
             for (int i = 0; i < brands.size(); i++) {
