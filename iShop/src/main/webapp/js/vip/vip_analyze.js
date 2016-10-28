@@ -192,7 +192,16 @@ $(document).on('click',function(e){
         || e.target==$('#select_analyze_shop div b span')[0]
         || e.target==$('#select_analyze_shop div ul')[0]
         || e.target==$('#select_analyze_shop div ul li')[0]
-        || e.target==$('#select_analyze_shop div s')[0]))$('#select_analyze_shop').hide();
+        || e.target==$('#select_analyze_shop div s')[0]))$('#select_analyze_shop').hide()
+    if(!(e.target==$($('#side_analyze_brand>ul')[0]).find('li:nth-child(2)')
+        || e.target==$('#select_analyze_brand')
+        || e.target==$('#select_analyze_brand div')[0]
+        || e.target==$('#select_analyze_brand div b')[0]
+        || e.target==$('#select_analyze_brand div b input')[0]
+        || e.target==$('#select_analyze_brand div b span')[0]
+        || e.target==$('#select_analyze_brand div ul')[0]
+        || e.target==$('#select_analyze_brand div ul li')[0]
+        || e.target==$('#select_analyze_brand div s')[0]))$('#select_analyze_brand').hide();
 });
 //加载更多
 function getMore(e){
@@ -515,7 +524,7 @@ function brithVipGet() {
         }
         whir.loading.remove();//移除加载框
         //调用生成页码
-        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type);
         $('.birthVip .vip_table tbody').html()?'':$('.birthVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
         pageShow($('.birthVip .vip_table tbody'));
     });
