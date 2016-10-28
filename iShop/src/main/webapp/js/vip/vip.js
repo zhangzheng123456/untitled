@@ -261,7 +261,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="chooseUser"){
-            $('.more_down').append("<div id='chooseUser'>选择导购</div>");
+            $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
         }
     }
 }
