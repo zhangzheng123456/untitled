@@ -492,23 +492,6 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 普通用户新增
-//     * 获取公司编号
-//     */
-//    @RequestMapping(value = "/add_code", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String addCode(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String corp_code = request.getSession().getAttribute("corp_code").toString();
-//        System.out.println("add-corp_code" + corp_code);
-//        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//        dataBean.setId(id);
-//        dataBean.setMessage(corp_code);
-//        return dataBean.getJsonStr();
-//    }
-
-
     /***
      * Execl增加用户
      */
@@ -1203,6 +1186,11 @@ public class UserController {
                         dataBean.setId(id);
                         dataBean.setMessage("导购只能属于一家店铺");
                         return dataBean.getJsonStr();
+                    }
+                    store_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
+                        store_code = store_code + codes[i];
                     }
                 }
                 user.setStore_code(store_code);

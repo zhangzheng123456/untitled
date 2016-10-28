@@ -270,14 +270,12 @@ public class VIPController {
             if (jsonObject.containsKey("type")){
                 //获取积分列表
                 if (jsonObject.get("type").equals("1")){
-//                    if (jsonObject.containsKey("time")){}
                     DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
                     logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
                     String points = dataBox_points.data.get("message").value;
                     result_points = JSONObject.parseObject(points);
                 }else if(jsonObject.get("type").equals("2")){
                     //获取衣橱列表
-//                    if (jsonObject.containsKey("time")){}
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipMoneyRecord", datalist);
                     logger.info("-------AnalysisVipMoneyRecord:" + dataBox.data.get("message").value);
                     String result = dataBox.data.get("message").value;
