@@ -138,12 +138,27 @@ public class WeiMobServiceImpl implements WeimobService{
     }
 
     public JSONArray getSearchClassify(String accessToken,String xx) throws Exception {
+        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, 10, false);
+        String data1 = obj.get("data").toString();
+        JSONObject data = JSONObject.parseObject(data1);
 
-
-        JSONObject data = spuFullInfoGet(accessToken, 1, 1, 10, false).getJSONObject("data");
+//        JSONObject data = spuFullInfoGet(accessToken, 1, 1, 10, false).getJSONObject("data");
         int rowCount = Integer.parseInt(data.get("row_count").toString());
-        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).
-                getJSONObject("data").getJSONArray("page_data");
+
+        int circle = rowCount/100;
+        if (rowCount%100 > 0){
+            circle = circle + 1;
+        }
+        JSONArray page_data = new JSONArray();
+        for (int i = 1; i < circle+1; i++) {
+            JSONObject obj1 = spuFullInfoGet(accessToken, 1, i, 100, false);
+            String data2 = obj1.get("data").toString();
+            JSONObject data_obj = JSONObject.parseObject(data2);
+            String page = data_obj.get("page_data").toString();
+            JSONArray page_data1 = JSONArray.parseArray(page);
+            page_data.addAll(page_data1);
+        }
+//        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).getJSONObject("data").getJSONArray("page_data");
 
         JSONArray array = new JSONArray();
         for (int i = 0; i < page_data.size(); i++) {
@@ -175,11 +190,28 @@ public class WeiMobServiceImpl implements WeimobService{
     }
 
     public JSONArray getSearchTitle(String accessToken,String xx) throws Exception{
-        JSONObject data = spuFullInfoGet(accessToken, 1, 1, 10, false).getJSONObject("data");
+        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, 10, false);
+        String data1 = obj.get("data").toString();
+        JSONObject data = JSONObject.parseObject(data1);
+
         int rowCount = Integer.parseInt(data.get("row_count").toString());
 
-        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).
-                getJSONObject("data").getJSONArray("page_data");
+        int circle = rowCount/100;
+        if (rowCount%100 > 0){
+            circle = circle + 1;
+        }
+        JSONArray page_data = new JSONArray();
+        for (int i = 1; i < circle+1; i++) {
+            JSONObject obj1 = spuFullInfoGet(accessToken, 1, i, 100, false);
+            String data2 = obj1.get("data").toString();
+            JSONObject data_obj = JSONObject.parseObject(data2);
+            String page = data_obj.get("page_data").toString();
+            JSONArray page_data1 = JSONArray.parseArray(page);
+            page_data.addAll(page_data1);
+        }
+
+
+//        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).getJSONObject("data").getJSONArray("page_data");
 
         JSONArray array = new JSONArray();
         for (int i = 0; i < page_data.size(); i++) {
@@ -219,7 +251,7 @@ public class WeiMobServiceImpl implements WeimobService{
         String url = spuFullUrlHead+accessToken;
         String context = ishowHttpClient.post(url,param);
         JSONObject spuFull = JSONObject.parseObject(context);
-        System.out.println("getSpuFull"+context);
+//        System.out.println("getSpuFull"+context);
         return spuFull;
     }
 
@@ -243,7 +275,7 @@ public class WeiMobServiceImpl implements WeimobService{
             array.add(getparam);
         }
 
-        System.out.println("goodsclassifyGet"+array.toString());
+//        System.out.println("goodsclassifyGet"+array.toString());
         return array;
     }
 
@@ -267,7 +299,7 @@ public class WeiMobServiceImpl implements WeimobService{
                 getparam.put("name", classify_name);
                 array.add(getparam);
             }
-            System.out.println("goodsclassifyGet"+array.toString());
+//            System.out.println("goodsclassifyGet"+array.toString());
             classifySon.add(array);
         }
         return classifySon;

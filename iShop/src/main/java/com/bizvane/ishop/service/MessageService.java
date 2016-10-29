@@ -20,6 +20,8 @@ public interface MessageService {
 
     List<Message> getMessageDetail(String message_code) throws Exception;
 
+    List<Message> selectMessageByCode(String message_code) throws Exception;
+
     String insert(String message,String user_id) throws Exception;
 
     int delete(int id) throws Exception;

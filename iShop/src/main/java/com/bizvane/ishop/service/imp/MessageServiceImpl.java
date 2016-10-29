@@ -6,6 +6,7 @@ import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.MessageService;
+import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -19,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lixiang on 2016/7/4.
@@ -34,6 +32,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private StoreService storeService;
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
@@ -62,8 +62,69 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<Message> selectMessageByCode(String message_code) throws Exception {
+        return messageMapper.selectMessageByCode(message_code);
+    }
+
+    @Override
     public List<Message> getMessageDetail(String message_code) throws Exception {
-        return messageMapper.selectMessageDetail(message_code);
+        MessageInfo messageInfo = messageMapper.selectMessageInfoByCode(message_code);
+        String receiver_type = messageInfo.getReceiver_type();
+        String corp_code = messageInfo.getCorp_code();
+        int id = messageInfo.getId();
+        List<Message> messages = new ArrayList<Message>();
+        if (receiver_type.equals("staff")){
+            messages = messageMapper.selectMessageDetail(message_code);
+        }else{
+            List<User> userList = new ArrayList<User>();
+            if (receiver_type.equals("store")){
+                List<Message> messageLists = selectMessageByCode(message_code);
+                String store_code = "";
+                for (int i = 0; i < messageLists.size(); i++) {
+                    store_code = messageLists.get(i).getMessage_receiver();
+                    List<User> users = userMapper.selectStoreUser(corp_code,store_code,"","",Common.IS_ACTIVE_Y);
+                    userList.addAll(users);
+                }
+            }else if (receiver_type.equals("area")) {
+                List<Message> messageLists = selectMessageByCode(message_code);
+                String area_code = "";
+//                List<User> userList = new ArrayList<User>();
+                for (int i = 0; i < messageLists.size(); i++) {
+                    String area_code1 = messageLists.get(i).getMessage_receiver();
+                    area_code = area_code + area_code1 + ",";
+                }
+                String[] areas = area_code.split(",");
+                List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null ,Common.IS_ACTIVE_Y);
+                for (int i = 0; i < store.size(); i++) {
+                    List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y);
+                    userList.addAll(users);
+                }
+            }else if (receiver_type.equals("corp")){
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("array", null);
+                params.put("search_value", "");
+                params.put("role_code", "");
+                params.put("corp_code", corp_code);
+                //根据areas拉取区经
+                params.put("areas", null);
+                userList = userMapper.selectUsersByRole(params);
+            }
+            for (int i = 0; i < userList.size(); i++) {
+                String user_code = userList.get(i).getUser_code();
+                String user_name = userList.get(i).getUser_name();
+
+                Message message = new Message();
+                message.setId(i);
+                message.setMessage_receiver(user_name);
+                message.setStatus("N");
+                List<User> users1 = messageMapper.selectMessageStatus(corp_code,user_code,String.valueOf(id));
+                if (users1.size()>0){
+                    message.setStatus("Y");
+                }
+                messages.add(message);
+            }
+        }
+        return messages;
     }
 
     @Override

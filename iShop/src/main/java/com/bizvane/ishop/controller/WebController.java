@@ -416,21 +416,21 @@ public class WebController {
         try {
             String accessToken = weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
             int rowno = Integer.parseInt(request.getParameter("rowno"));
-            JSONArray goodList = weimobService.getList(accessToken, rowno);
+            JSONArray goodList = new JSONArray();
             JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
             JSONArray brandList = weimobService.goodsclassifyGetSon(accessToken);
 
             JSONObject message = new JSONObject();
-
             if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
-                logger.debug("-------------111111111111-------------------");
+                logger.info("-------------111111111111-------------------");
                 goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
-                logger.debug("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
-            }
-            if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
-                logger.debug("-------------22222222222------------------");
+                logger.info("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
+            }else if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
+                logger.info("-------------22222222222------------------");
                 goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"));
-                logger.debug("handleWeimob Key ->" + request.getParameter("key"));
+                logger.info("handleWeimob Key ->" + request.getParameter("key"));
+            }else {
+                goodList = weimobService.getList(accessToken, rowno);
             }
 
             message.put("goodsList", goodList);

@@ -90,28 +90,6 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 发送消息
-     * 获取消息类型
-     */
-   /* @RequestMapping(value = "/type", method = RequestMethod.GET)
-    @ResponseBody
-    public String getMessageType(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            List<MessageType> type = messageService.selectAllMessageType();
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(JSON.toJSONString(type));
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.toString());
-            logger.info("insert message error : " + ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
-*/
 
     /**
      * 发送消息

@@ -21,6 +21,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -366,7 +367,7 @@ public class VIPRecordController {
 
             for (int i = 0; i < ids.length; i++) {
                 DBObject deleteRecord = new BasicDBObject();
-                deleteRecord.put("_id", ids[i]);
+                deleteRecord.put("_id", new ObjectId(ids[i]));
                 cursor.remove(deleteRecord);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
