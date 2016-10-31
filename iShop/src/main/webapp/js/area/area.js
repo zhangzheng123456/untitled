@@ -211,7 +211,7 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    if(data.length==1&&num>1){
+    if(data.length>=1&&num>1&&num==cout){
         pageNumber=num-1;
     }else{
         pageNumber=num;
@@ -464,17 +464,17 @@ $("#delete").click(function(){
             if(value==""&&filtrate==""){
                frame();
                $('.frame').html('删除成功');
-               GET(inx,pageSize);
+               GET(pageNumber,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
                param["pageNumber"]=pageNumber;
-               POST(inx,pageSize);
+               POST(pageNumber,pageSize);
             }else if(filtrate!==""){
                 frame();
                 $('.frame').html('删除成功');
                 _param["pageNumber"]=pageNumber;
-                filtrates(inx,pageSize); 
+                filtrates(pageNumber,pageSize);
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;
