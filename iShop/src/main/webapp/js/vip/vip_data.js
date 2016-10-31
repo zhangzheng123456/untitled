@@ -620,7 +620,7 @@ function addVipAlbum(url){//上传照片到相册
     param_addAblum["image_url"]=url;
     param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vipAlbum/vipAlbumAdd","",param_addAblum,function(data){
-        var AlbumData=data
+        var AlbumData=data;
         if(data.code=="0"){
             frame();
             $('.frame').html('添加成功');

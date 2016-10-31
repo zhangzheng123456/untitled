@@ -348,7 +348,7 @@ function getoselectvalue(){//点击模拟的select 获取值给input
 }
     $("#cancel").click(function(){//关闭删除相册时的提示框,取消删除相册
         $("#tk").hide();
-        $("#delete").attr("data-id","");
+        $("#delete").attr("data-time","");
         return false;
     });
     $("#delete").click(function(){//确认删除相册
