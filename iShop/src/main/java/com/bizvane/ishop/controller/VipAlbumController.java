@@ -1,9 +1,11 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
@@ -68,35 +70,35 @@ public class VipAlbumController {
     /**
      * 列表
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String vipAlbumList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject info = new JSONObject();
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员(官方画面)
-                PageInfo<VipAlbum> vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, "", "");
-                info.put("list", JSON.toJSONString(vipAlbums));
-            } else {
-                //用户画面
-                PageInfo<VipAlbum> vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, corp_code, "");
-                info.put("list", JSON.toJSONString(vipAlbums));
-            }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(info.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String vipAlbumList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject info = new JSONObject();
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员(官方画面)
+//                PageInfo<VipAlbum> vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, "", "");
+//                info.put("list", JSON.toJSONString(vipAlbums));
+//            } else {
+//                //用户画面
+//                PageInfo<VipAlbum> vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, corp_code, "");
+//                info.put("list", JSON.toJSONString(vipAlbums));
+//            }
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(info.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 新增
@@ -206,79 +208,79 @@ public class VipAlbumController {
     /**
      * 页面查找
      */
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    @ResponseBody
-    public String search(HttpServletRequest request) {
-        String role_code = request.getSession().getAttribute("role_code").toString();
-        String corp_code = request.getSession().getAttribute("corp_code").toString();
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String search_value = jsonObject.get("searchValue").toString();
-            PageInfo<VipAlbum> vipAlbums;
-            JSONObject result = new JSONObject();
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员(官方画面)
-                vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, "", search_value);
-            } else {
-                //用户画面
-                vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, corp_code, search_value);
-            }
-            result.put("list", JSON.toJSONString(vipAlbums));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/search", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String search(HttpServletRequest request) {
+//        String role_code = request.getSession().getAttribute("role_code").toString();
+//        String corp_code = request.getSession().getAttribute("corp_code").toString();
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+//            String search_value = jsonObject.get("searchValue").toString();
+//            PageInfo<VipAlbum> vipAlbums;
+//            JSONObject result = new JSONObject();
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员(官方画面)
+//                vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, "", search_value);
+//            } else {
+//                //用户画面
+//                vipAlbums = vipAlbumService.getAllVipAlbum(page_number, page_size, corp_code, search_value);
+//            }
+//            result.put("list", JSON.toJSONString(vipAlbums));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 筛选
      */
-    @RequestMapping(value = "/screen", method = RequestMethod.POST)
-    @ResponseBody
-    public String screen(HttpServletRequest request) {
-        String role_code = request.getSession().getAttribute("role_code").toString();
-        String corp_code = request.getSession().getAttribute("corp_code").toString();
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            Map<String, String> map = WebUtils.Json2Map(jsonObject);
-            JSONObject result = new JSONObject();
-            PageInfo<VipAlbum> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size, "", map);
-            } else {
-                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size, corp_code, map);
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String screen(HttpServletRequest request) {
+//        String role_code = request.getSession().getAttribute("role_code").toString();
+//        String corp_code = request.getSession().getAttribute("corp_code").toString();
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String jsString = request.getParameter("param");
+//            logger.info("json---------------" + jsString);
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+//            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+//            JSONObject result = new JSONObject();
+//            PageInfo<VipAlbum> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size, "", map);
+//            } else {
+//                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size, corp_code, map);
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
 
@@ -294,50 +296,74 @@ public class VipAlbumController {
     @ResponseBody
     public String vipAlbumAdd(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        JSONObject result = new JSONObject();
-        int pages = 0;
         try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String vip_id = jsonObject.get("vip_id").toString();
-
-
-            String vip_code = jsonObject.get("vip_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String card_no = jsonObject.get("cardno").toString();
+            String phone = jsonObject.get("phone").toString();
             String image_url = jsonObject.get("image_url").toString();
 
+            Date now = new Date();
+
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
-            BasicDBObject dbObject=new BasicDBObject();
-            dbObject.put("vip_code",vip_code);
-            dbObject.put("image_url",image_url);
-            BasicDBObject dbObject1=new BasicDBObject();
-            dbObject1.put("albums",dbObject);
-            BasicDBObject dbObject2=new BasicDBObject();
-            dbObject1.put("$addToSet",dbObject1);
-            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
-            BasicDBObject query = new BasicDBObject();
-            // 读取数据
-            if (role_code.equals(Common.ROLE_SYS)) {
-                query.put("vip_id", vip_id);
-            } else {
-                query.put("corp_code", corp_code);
-                query.put("vip_id", vip_id);
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+            Map keyMap = new HashMap();
+            keyMap.put("_id", corp_code+vip_id);
+            BasicDBObject queryCondition = new BasicDBObject();
+            queryCondition.putAll(keyMap);
+            DBCursor dbCursor1 = cursor.find(queryCondition);
+            if (dbCursor1.size()>0){
+                //记录存在，更新
+                DBObject obj = dbCursor1.next();
+                String album = "";
+                if (obj.containsField("album"))
+                    album = obj.get("album").toString();
+                DBObject updateCondition=new BasicDBObject();
+                updateCondition.put("_id", corp_code+vip_id);
+
+                DBObject updatedValue=new BasicDBObject();
+
+                JSONArray array = new JSONArray();
+                JSONObject image = new JSONObject();
+                image.put("image_url",image_url);
+                image.put("time",Common.DATETIME_FORMAT.format(now));
+                array.add(image);
+                if (!album.equals("")){
+                    JSONArray array1 = JSONArray.parseArray(album);
+                    array.addAll(array1);
+                }
+                updatedValue.put("album", array);
+
+                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+            }else {
+                //记录不存在，插入
+                DBObject saveData = new BasicDBObject();
+                saveData.put("_id", corp_code + vip_id);
+                saveData.put("vip_id", vip_id);
+                saveData.put("corp_code", corp_code);
+                saveData.put("card_no", card_no);
+                saveData.put("phone", phone);
+                saveData.put("corp_code", corp_code);
+
+                JSONArray array = new JSONArray();
+                JSONObject image = new JSONObject();
+                image.put("image_url",image_url);
+                image.put("time",Common.DATETIME_FORMAT.format(now));
+                array.add(image);
+                saveData.put("album", array);
+
+                cursor.save(saveData);
             }
-
-            cursor.update(query,dbObject2);
-            DBCursor dbCursor = cursor.find(query);
-
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
-            result.put("list", list);
-            result.put("dbObject",dbObject);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result.toString());
+            dataBean.setMessage("save success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

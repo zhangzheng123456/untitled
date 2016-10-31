@@ -472,14 +472,14 @@ public class VIPController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
             Map keyMap = new HashMap();
-            keyMap.put("_id", corp_code+card_no);
+            keyMap.put("_id", corp_code+vip_id);
             BasicDBObject queryCondition = new BasicDBObject();
             queryCondition.putAll(keyMap);
             DBCursor dbCursor1 = cursor.find(queryCondition);
             if (dbCursor1.size()>0){
                 //记录存在，更新
                 DBObject updateCondition=new BasicDBObject();
-                updateCondition.put("_id", corp_code+card_no);
+                updateCondition.put("_id", corp_code+vip_id);
 
                 DBObject updatedValue=new BasicDBObject();
                 if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
@@ -503,7 +503,7 @@ public class VIPController {
             }else {
                 //记录不存在，插入
                 DBObject saveData = new BasicDBObject();
-                saveData.put("_id", corp_code + card_no);
+                saveData.put("_id", corp_code+vip_id);
                 saveData.put("vip_id", vip_id);
                 saveData.put("corp_code", corp_code);
                 saveData.put("card_no", card_no);
