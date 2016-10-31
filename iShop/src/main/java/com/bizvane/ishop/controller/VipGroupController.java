@@ -52,11 +52,7 @@ public class VipGroupController {
     @Autowired
     private VipGroupService vipGroupService;
     @Autowired
-    private StoreService storeService;
-    @Autowired
     IceInterfaceService iceInterfaceService;
-//    @Autowired
-//    MongoDBClient mongodbClient;
 
     String id;
 

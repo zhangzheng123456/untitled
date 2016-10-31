@@ -43,8 +43,6 @@ public class VipAnalysisController {
     @Autowired
     IceInterfaceService iceInterfaceService;
     @Autowired
-    MongoDBClient mongodbClient;
-    @Autowired
     VipGroupService vipGroupService;
 
     private static final Logger logger = Logger.getLogger(VipAnalysisController.class);
@@ -68,11 +66,6 @@ public class VipAnalysisController {
 //            logger.info("-------vip列表" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
-//            JSONObject obj = JSON.parseObject(result);
-//            String vipLists = obj.get("all_vip_list").toString();
-//            JSONArray array = JSONArray.parseArray(vipLists);
-//            JSONArray new_array = vipGroupService.checkVipsGroup(array,"");
-//            obj.put("all_vip_list",new_array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
