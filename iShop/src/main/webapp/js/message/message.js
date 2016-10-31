@@ -210,6 +210,7 @@ function superaddition(data, num) {//页面加载循环
             // + "</td><td>"
             + data[i].message_type
             + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
+            + data[i].receiver_type
             + data[i].message_title
             + "</td><td><span title='" + data[i].message_content + "'>"
             + data[i].message_content

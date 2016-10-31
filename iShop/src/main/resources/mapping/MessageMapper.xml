@@ -59,6 +59,7 @@
     <select id="selectAllMessageInfo" resultMap="MessageInfo">
         SELECT dum.id,
         dum.message_code,
+        dum.receiver_type,
         dum.message_sender ,
         dum.message_title,
         dum.message_content,
