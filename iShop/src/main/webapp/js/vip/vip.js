@@ -292,8 +292,9 @@ function GET(a,b){
             console.log(message);
             var list=message.all_vip_list;
             cout=message.pages;
+            var pageNum = list.pageNum;
             //var list=list.list;
-            superaddition(list,a);
+            superaddition(list,pageNum);
             jumpBianse();
             filtrate="";
             setPage($("#foot-num")[0],cout,a,b,funcCode);
@@ -467,6 +468,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.all_vip_list;
             cout=message.pages;
+            var pageNum = list.pageNum;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -475,7 +477,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             filtrate="";

@@ -304,7 +304,8 @@ function GET(a,b){
             console.log(message);
             var list=message.list;
             cout=message.pages;
-            superaddition(list,a);
+            var pageNum = list.pageNum;
+            superaddition(list,pageNum);
             jumpBianse();
             $(".table p").remove();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
@@ -425,6 +426,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;
+            var pageNum = list.pageNum;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -432,7 +434,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             var input=$(".inputs input");
@@ -803,6 +805,7 @@ function filtrates(a,b){
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;
+            var pageNum = list.pageNum;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -810,7 +813,7 @@ function filtrates(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,a,b,funcCode);

@@ -211,11 +211,12 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    if(data.length>=1&&num>1&&num==cout){
-        pageNumber=num-1;
-    }else{
-        pageNumber=num;
-    }
+    // if(data.length>=1&&num>1&&num==cout){
+    //     pageNumber=num-1;
+    // }else{
+    //     pageNumber=num;
+    // }
+    pageNumber=num;
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -284,8 +285,9 @@ function GET(a,b){
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 cout=list.pages;
+                var pageNum = list.pageNum;
                 var list=list.list;
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
@@ -407,6 +409,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            var pageNum = list.pageNum;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -416,7 +419,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             var input=$(".inputs input");
