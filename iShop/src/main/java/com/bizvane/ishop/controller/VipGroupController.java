@@ -306,45 +306,45 @@ public class VipGroupController {
 
     }
 
-    /**
-     * 验证会员分组名称唯一性
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipGroupNameExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_group_name = jsonObject.get("vip_group_name").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
-            if (vipGroup != null) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("会员分组名称已被使用");
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("会员分组名称不存在");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-
-
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 验证会员分组名称唯一性
+//     *
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String vipGroupNameExist(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String vip_group_name = jsonObject.get("vip_group_name").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
+//            if (vipGroup != null) {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage("会员分组名称已被使用");
+//            } else {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("会员分组名称不存在");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//            logger.info(ex.getMessage() + ex.toString());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//
+//
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 搜索
