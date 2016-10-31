@@ -615,10 +615,11 @@ function addVipAlbum(url){//上传照片到相册
      var param_addAblum={};
     param_addAblum["vip_code"]=sessionStorage.getItem("id");
     param_addAblum["vip_name"]=$("#vip_name").html();
+    param_addAblum["phone"]=$("#vip_phone").html();
     param_addAblum["cardno"]=$("#vip_card_no").html();
     param_addAblum["image_url"]=url;
     param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
-    oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
+    oc.postRequire("post","/vipAlbum/vipAlbumAdd","",param_addAblum,function(data){
         var AlbumData=JSON.parse(data.message);
         if(data.code=="0"){
             frame();
