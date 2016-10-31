@@ -76,23 +76,49 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
-            List<VipAlbum> vipAlbumList = new ArrayList<VipAlbum>();
+//            List<VipAlbum> vipAlbumList = new ArrayList<VipAlbum>();
             List<VipLabel> vipLabelList = new ArrayList<VipLabel>();
+            String album = "";
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+
             if (jsonObject.containsKey("type")){
                 if (jsonObject.get("type").equals("1")){
                     //相册
-                    vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
+//                    vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
+                    BasicDBObject dbObject=new BasicDBObject();
+                    dbObject.put("vip_id",vip_id);
+                    dbObject.put("corp_code",corp_code);
+                    DBCursor dbCursor= cursor.find(dbObject);
+
+                    while (dbCursor.hasNext()) {
+                        DBObject vip = dbCursor.next();
+                        if (vip.containsField("album")){
+                            album = obj.get("album").toString();
+                        }
+                    }
                 }else if (jsonObject.get("type").equals("2")){
                     //标签
                     vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
                 }
             }else {
                 //相册
-                vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code, vip_id);
+//                vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code, vip_id);
+                BasicDBObject dbObject=new BasicDBObject();
+                dbObject.put("vip_id",vip_id);
+                dbObject.put("corp_code",corp_code);
+                DBCursor dbCursor= cursor.find(dbObject);
+
+                while (dbCursor.hasNext()) {
+                    DBObject vip = dbCursor.next();
+                    if (vip.containsField("album")){
+                        album = obj.get("album").toString();
+                    }
+                }
                 //标签
                 vipLabelList = vipLabelService.selectLabelByVip(corp_code, vip_id);
             }
-            obj.put("Album",JSON.toJSONString(vipAlbumList));
+            obj.put("Album",album);
             obj.put("Label",JSON.toJSONString(vipLabelList));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -157,7 +183,6 @@ public class VIPController {
             }
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
             BasicDBObject dbObject=new BasicDBObject();
             dbObject.put("vip_id",vip_id);
