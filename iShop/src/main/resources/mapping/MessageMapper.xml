@@ -21,6 +21,7 @@
         <result column="message_content" property="message_content"/>
         <result column="message_type" property="message_type"/>
         <result column="message_sender" property="message_sender"/>
+        <result column="receiver_type" property="receiver_type"/>
         <result column="corp_code" property="corp_code"/>
         <result column="corp_name" property="corp_name"/>
         <result column="modified_date" property="modified_date"/>
@@ -58,6 +59,7 @@
     <select id="selectAllMessageInfo" resultMap="MessageInfo">
         SELECT dum.id,
         dum.message_code,
+        dum.receiver_type,
         dum.message_sender ,
         dum.message_title,
         dum.message_content,
@@ -105,6 +107,12 @@
     ORDER BY rum.id DESC
     </select>
 
+    <select id="selectMessageByCode" resultMap="Message">
+        SELECT *
+        FROM rel_user_message
+        WHERE message_code = #{message_code}
+    </select>
+
     <select id="selectByPrimaryKey" resultMap="MessageInfo">
         SELECT dum.*,
         c.corp_name corp_name,
@@ -113,6 +121,14 @@
         WHERE dum.corp_code = c.corp_code
         AND dum.message_type = mt.type_code
         AND dum.id=#{id}
+    </select>
+
+    <select id="selectMessageInfoByCode" resultMap="MessageInfo">
+        SELECT dum.*
+        FROM def_user_message dum,def_corp c,def_message_type mt
+        WHERE dum.corp_code = c.corp_code
+        AND dum.message_type = mt.type_code
+        AND dum.message_code=#{message_code}
     </select>
 
     <delete id="deleteMessageInfo">
@@ -309,4 +325,13 @@
         GROUP By dum.id
         ORDER BY dum.id DESC
     </select>
+
+    <select id="selectMessageStatus" resultType="com.bizvane.ishop.entity.User">
+        SELECT *
+        FROM ref_user_message
+        WHERE corp_code = #{corp_code}
+        AND message_code = #{message_id}
+        AND user_code = #{user_code}
+    </select>
+
 </mapper>

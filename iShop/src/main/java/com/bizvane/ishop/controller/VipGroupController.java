@@ -52,13 +52,7 @@ public class VipGroupController {
     @Autowired
     private VipGroupService vipGroupService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private StoreService storeService;
-    @Autowired
     IceInterfaceService iceInterfaceService;
-//    @Autowired
-//    MongoDBClient mongodbClient;
 
     String id;
 
@@ -86,11 +80,11 @@ public class VipGroupController {
             PageInfo<VipGroup> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size,"","", "", "");
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size,"","", "");
             } else if (role_code.equals(Common.ROLE_GM)){
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code,role_code, "");
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,"", "");
             }else {
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code,"", "");
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code, "");
             }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
@@ -308,45 +302,45 @@ public class VipGroupController {
 
     }
 
-    /**
-     * 验证会员分组名称唯一性
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipGroupNameExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_group_name = jsonObject.get("vip_group_name").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
-            if (vipGroup != null) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("会员分组名称已被使用");
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("会员分组名称不存在");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-
-
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 验证会员分组名称唯一性
+//     *
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String vipGroupNameExist(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String vip_group_name = jsonObject.get("vip_group_name").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
+//            if (vipGroup != null) {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage("会员分组名称已被使用");
+//            } else {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("会员分组名称不存在");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//            logger.info(ex.getMessage() + ex.toString());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//
+//
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 搜索
@@ -376,11 +370,11 @@ public class VipGroupController {
             PageInfo<VipGroup> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size,"","", "", search_value);
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size,"","", search_value);
             } else if (role_code.equals(Common.ROLE_GM)){
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code,role_code, search_value);
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,"",search_value);
             }else {
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code,"", search_value);
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -426,11 +420,11 @@ public class VipGroupController {
             PageInfo<VipGroup> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "", "", "",map);
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "", "",map);
             } else if (role_code.equals(Common.ROLE_GM)){
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size,corp_code,user_code,role_code,map);
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size,corp_code,"",map);
             }else {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size,corp_code,user_code,"",map);
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size,corp_code,user_code,map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -468,21 +462,21 @@ public class VipGroupController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000,"","", "", search_value);
+                    list = vipGroupService.getAllVipGroupByPage(1, 30000,"","", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)){
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,user_code,role_code, search_value);
+                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,"",search_value);
                 }else {
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,user_code,"", search_value);
+                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,user_code,search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", "", "",map);
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", "",map);
                 } else if (role_code.equals(Common.ROLE_GM)){
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,user_code,role_code,map);
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,"",map);
                 }else {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,user_code,"",map);
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,user_code,map);
                 }
             }
             List<VipGroup> vipGroups = list.getList();
@@ -530,9 +524,6 @@ public class VipGroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String page_num = jsonObject.get("pageNumber").toString();
-            String page_size = jsonObject.get("pageSize").toString();
-            String user_code = jsonObject.get("user_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             String vip_group_code = jsonObject.get("vip_group_code").toString();
 
@@ -542,59 +533,17 @@ public class VipGroupController {
                 vip_ids = vipGroup.getVip_ids();
                 vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
             }
-            String role_code = "";
-            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
-            if (users.size()>0) {
-                User user = userService.getUserById(users.get(0).getId());
-                role_code = user.getRole_code();
-            }
-            String user_id = "";
-            String area_code = "";
-            String store_id = "";
-            if (role_code.equals(Common.ROLE_AM)){
-                area_code = users.get(0).getArea_code();
-                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
-            } else if (role_code.equals(Common.ROLE_SM)){
-                String store_code = users.get(0).getStore_code();
-                store_id = store_code.replace(Common.SPECIAL_HEAD,"");
-            } else if (role_code.equals(Common.ROLE_STAFF)){
-                String store_code = users.get(0).getStore_code();
-                store_id = store_code.replace(Common.SPECIAL_HEAD,"");
-                user_id = user_code;
-            }else if (role_code.equals(Common.ROLE_BM)){
-                role_code = Common.ROLE_SM;
-                String brand_code = users.get(0).getBrand_code();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
-                for (int i = 0; i < stores.size(); i++) {
-                    store_id = store_id + stores.get(i).getStore_code() + ",";
-                }
-            }
-            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
-            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
-            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
-            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
-            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
-
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_user_id.key, data_user_id);
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_store_id.key, data_store_id);
-            datalist.put(data_area_code.key, data_area_code);
-            datalist.put(data_role_code.key, data_role_code);
-            datalist.put(data_page_num.key, data_page_num);
-            datalist.put(data_page_size.key, data_page_size);
-
+            //获取会员列表
+            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
-            logger.info("-------vip列表" + dataBox.data.get("message").value);
+//            logger.info("-------vip列表" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
             JSONObject obj = JSON.parseObject(result);
             String vipLists = obj.get("all_vip_list").toString();
             JSONArray array = JSONArray.parseArray(vipLists);
+            //获取会员的分组标识
             JSONArray new_array = vipGroupService.checkVipsGroup(array,vip_ids);
             obj.put("all_vip_list",new_array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -623,29 +572,29 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-//            String corp_code = jsonObject.get("corp_code").toString();
-//            String vip_group_code = jsonObject.get("vip_group_code").toString();
+
             int vips_group_id = Integer.valueOf(jsonObject.get("vip_group_id").toString());
             String vips_choose = jsonObject.get("choose").toString();
             String vips_quit = jsonObject.get("quit").toString();
 
             VipGroup vipGroup = vipGroupService.getVipGroupById(vips_group_id);
-            String vip_ids = vipGroup.getVip_ids();
-            if (vip_ids == null){
-                vip_ids = "";
-            }
+            String vip_ids = "";
+//            String vip_ids = vipGroup.getVip_ids();
+//            if (vip_ids == null){
+//                vip_ids = "";
+//            }
             if (!vips_choose.equals("")){
                 String[] choose = vips_choose.split(",");
                 for (int i = 0; i < choose.length; i++) {
                     vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
                 }
             }
-           if (!vips_quit.equals("")){
-               String[] quit = vips_quit.split(",");
-               for (int i = 0; i < quit.length; i++) {
-                   vip_ids = vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
-               }
-           }
+//           if (!vips_quit.equals("")){
+//               String[] quit = vips_quit.split(",");
+//               for (int i = 0; i < quit.length; i++) {
+//                   vip_ids = vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
+//               }
+//           }
 
             vipGroup.setVip_ids(vip_ids);
             vipGroupService.updateVipGroup(vipGroup);

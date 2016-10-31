@@ -71,6 +71,9 @@ public class StoreController {
     @ResponseBody
     public String selectByAreaCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -78,8 +81,6 @@ public class StoreController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
@@ -95,6 +96,7 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
+                corp_code = jsonObject.get("corp_code").toString();
                 list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
                 // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
             } else {

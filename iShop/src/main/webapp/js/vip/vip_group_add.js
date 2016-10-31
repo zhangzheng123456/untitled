@@ -74,53 +74,53 @@ $(function () {
         getcorplist();
     }
     //分配导购
-    $("#PARAM_NAME").click(function () {
-        if ($("#allUser").css("display") == "none") {
-            $("#allUser").show();
-        } else {
-            $("#allUser").hide();
-        }
-    });
-    $(document).click(function (e) {
-        if($(e.target).is("#search_user")||$(e.target).is("#PARAM_NAME")){
-            return;
-        }else {
-            $("#allUser").hide();
-        }
-    });
+    // $("#PARAM_NAME").click(function () {
+    //     if ($("#allUser").css("display") == "none") {
+    //         $("#allUser").show();
+    //     } else {
+    //         $("#allUser").hide();
+    //     }
+    // });
+    // $(document).click(function (e) {
+    //     if($(e.target).is("#search_user")||$(e.target).is("#PARAM_NAME")){
+    //         return;
+    //     }else {
+    //         $("#allUser").hide();
+    //     }
+    // });
     //搜索导购
-    $("#search_user").keydown(function (e) {
-        user_num = 1;
-        var event=window.event||arguments[0]
-        if(event.keyCode == 13){
-            $("#allUser_list").empty();
-            getuserlist();
-        }
-    })
+    // $("#search_user").keydown(function (e) {
+    //     user_num = 1;
+    //     var event=window.event||arguments[0]
+    //     if(event.keyCode == 13){
+    //         $("#allUser_list").empty();
+    //         getuserlist();
+    //     }
+    // })
     //绑定导购点击事件
-    $("#allUser_list").on("click", "li", function (e) {
-        e.stopPropagation();
-        $("#PARAM_NAME").val($(this).text());
-        $("#PARAM_NAME").attr("data-code", $(this).attr("id"));
-        $("#allUser").hide();
-        $(this).addClass("groupUser_checked");
-        $(this).siblings("li").removeClass("groupUser_checked");
-    })
+    // $("#allUser_list").on("click", "li", function (e) {
+    //     e.stopPropagation();
+    //     $("#PARAM_NAME").val($(this).text());
+    //     $("#PARAM_NAME").attr("data-code", $(this).attr("id"));
+    //     $("#allUser").hide();
+    //     $(this).addClass("groupUser_checked");
+    //     $(this).siblings("li").removeClass("groupUser_checked");
+    // })
     //绑定导购滚动事件
-    $("#allUser_list").scroll(function () {
-        var nScrollHight = $(this)[0].scrollHeight;
-        var nScrollTop = $(this)[0].scrollTop;
-        var nDivHight = $(this).height();
-        if (nScrollTop + nDivHight >= nScrollHight) {
-            if (user_nextpage==false) {
-                return;
-            }else {
-                getuserlist();
-            }
-        }
-    })
+    // $("#allUser_list").scroll(function () {
+    //     var nScrollHight = $(this)[0].scrollHeight;
+    //     var nScrollTop = $(this)[0].scrollTop;
+    //     var nDivHight = $(this).height();
+    //     if (nScrollTop + nDivHight >= nScrollHight) {
+    //         if (user_nextpage==false) {
+    //             return;
+    //         }else {
+    //             getuserlist();
+    //         }
+    //     }
+    // })
     //滚动条样式
-    $("#allUser_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0)",cursoropacitymin:"0",boxzoom:false});
+    // $("#allUser_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0)",cursoropacitymin:"0",boxzoom:false});
 });
 (function (root, factory) {
     root.vip = factory();
@@ -344,13 +344,13 @@ function getcorplist(C) {
                 $("#vip_num").val("");
                 $("#vip_id").attr("data-mark", "");
                 $("#vip_num").attr("data-mark", "");
-                $("#PARAM_NAME").val("");
-                $("#PARAM_NAME").attr("data-code", "");
-                $("#allUser_list").empty();
-                getuserlist();
+                // $("#PARAM_NAME").val("");
+                // $("#PARAM_NAME").attr("data-code", "");
+                // $("#allUser_list").empty();
+                // getuserlist();
                 //console.log($("#OWN_CORP").val())
             });
-            getuserlist();
+            // getuserlist();
         } else if (data.code == "-1") {
             art.dialog({
                 time: 1,
@@ -362,45 +362,45 @@ function getcorplist(C) {
     });
 }
 //获取导购列表
-function getuserlist() {
-    var corp_code = $("#OWN_CORP").val();
-    var area_code = "";
-    var brand_code = "";
-    var store_code = "";
-    var searchValue = $("#search_user").val().trim();
-    var pageSize = 20;
-    var pageNumber = user_num;
-    var _param = {};
-    _param["corp_code"] = corp_code;
-    _param['area_code'] = area_code;
-    _param['brand_code'] = brand_code;
-    _param['store_code'] = store_code;
-    _param['searchValue'] = searchValue;
-    _param['pageNumber'] = pageNumber;
-    _param['pageSize'] = pageSize;
-    oc.postRequire("post", "/user/selectUsersByRole", "", _param, function (data) {
-        if (data.code == "0") {
-            var msg = JSON.parse(data.message);
-                msg = JSON.parse(msg.list);
-            var list = msg.list;
-            if(msg.hasNextPage==true){
-                user_nextpage=true;
-                user_num++;
-            }else {
-                user_nextpage=false;
-            }
-            for (var i = 0; i < list.length; i++) {
-                if(list[i].user_code == $("#PARAM_NAME").attr("data-code")){
-                    $("#allUser_list").append("<li class='groupUser_checked' id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
-                }else {
-                    $("#allUser_list").append("<li id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
-                }
-            }
-        } else if (data.code == "-1") {
-            console.log(data.message);
-        }
-    })
-}
+// function getuserlist() {
+//     var corp_code = $("#OWN_CORP").val();
+//     var area_code = "";
+//     var brand_code = "";
+//     var store_code = "";
+//     var searchValue = $("#search_user").val().trim();
+//     var pageSize = 20;
+//     var pageNumber = user_num;
+//     var _param = {};
+//     _param["corp_code"] = corp_code;
+//     _param['area_code'] = area_code;
+//     _param['brand_code'] = brand_code;
+//     _param['store_code'] = store_code;
+//     _param['searchValue'] = searchValue;
+//     _param['pageNumber'] = pageNumber;
+//     _param['pageSize'] = pageSize;
+//     oc.postRequire("post", "/user/selectUsersByRole", "", _param, function (data) {
+//         if (data.code == "0") {
+//             var msg = JSON.parse(data.message);
+//                 msg = JSON.parse(msg.list);
+//             var list = msg.list;
+//             if(msg.hasNextPage==true){
+//                 user_nextpage=true;
+//                 user_num++;
+//             }else {
+//                 user_nextpage=false;
+//             }
+//             for (var i = 0; i < list.length; i++) {
+//                 if(list[i].user_code == $("#PARAM_NAME").attr("data-code")){
+//                     $("#allUser_list").append("<li class='groupUser_checked' id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
+//                 }else {
+//                     $("#allUser_list").append("<li id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
+//                 }
+//             }
+//         } else if (data.code == "-1") {
+//             console.log(data.message);
+//         }
+//     })
+// }
 //验证编号是不是唯一
 $("#vip_num").blur(function () {
     // var isCode=/^[A]{1}[0-9]{4}$/;
@@ -425,27 +425,27 @@ $("#vip_num").blur(function () {
     }
 });
 //验证名称是否唯一
-$("#vip_id").blur(function () {
-    var corp_code = $("#OWN_CORP").val();
-    var vip_id = $("#vip_id").val();
-    var vip_id1 = $("#vip_id").attr("data-name");
-    var div = $(this).next('.hint').children();
-    if (vip_id !== "" && vip_id !== vip_id1) {
-        var _params = {};
-        _params["vip_group_name"] = vip_id;
-        _params["corp_code"] = corp_code;
-        oc.postRequire("post", "/vipGroup/vipGroupNameExist", "", _params, function (data) {
-            if (data.code == "0") {
-                div.html("");
-                $("#vip_id").attr("data-mark", "Y");
-            } else if (data.code == "-1") {
-                div.html("该名称已经存在！");
-                div.addClass("error_tips");
-                $("#vip_id").attr("data-mark", "N");
-            }
-        })
-    }
-});
+// $("#vip_id").blur(function () {
+//     var corp_code = $("#OWN_CORP").val();
+//     var vip_id = $("#vip_id").val();
+//     var vip_id1 = $("#vip_id").attr("data-name");
+//     var div = $(this).next('.hint').children();
+//     if (vip_id !== "" && vip_id !== vip_id1) {
+//         var _params = {};
+//         _params["vip_group_name"] = vip_id;
+//         _params["corp_code"] = corp_code;
+//         oc.postRequire("post", "/vipGroup/vipGroupNameExist", "", _params, function (data) {
+//             if (data.code == "0") {
+//                 div.html("");
+//                 $("#vip_id").attr("data-mark", "Y");
+//             } else if (data.code == "-1") {
+//                 div.html("该名称已经存在！");
+//                 div.addClass("error_tips");
+//                 $("#vip_id").attr("data-mark", "N");
+//             }
+//         })
+//     }
+// });
 $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function () {
     $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_group.html");
 });
@@ -584,7 +584,7 @@ function GET(a, b, c) {
     param["pageNumber"] = a;
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
-    param["user_code"] = user_code;
+    // param["user_code"] = user_code;
     param["vip_group_code"] =vip_group_code;
     oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
         if (data.code == "0") {

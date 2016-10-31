@@ -90,28 +90,6 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 发送消息
-     * 获取消息类型
-     */
-   /* @RequestMapping(value = "/type", method = RequestMethod.GET)
-    @ResponseBody
-    public String getMessageType(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            List<MessageType> type = messageService.selectAllMessageType();
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(JSON.toJSONString(type));
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.toString());
-            logger.info("insert message error : " + ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
-*/
 
     /**
      * 发送消息
@@ -133,7 +111,7 @@ public class MessageController {
            String operator= request.getSession().getAttribute("user_code").toString();
 
            String corp_code = jsonObject.get("corp_code").toString();
-            String send_mode=jsonObject.get("send_mode").toString();
+            String receiver_type =jsonObject.get("receiver_type").toString();
            String user_id =  jsonObject.get("user_id").toString();
            String area_code = jsonObject.get("area_code").toString();
            String store_id = jsonObject.get("store_id").toString();
@@ -145,6 +123,7 @@ public class MessageController {
            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
            Data data_store_id = new Data("store_id",store_id , ValueType.PARAM);
            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+           Data data_receiver_type = new Data("receiver_type", receiver_type, ValueType.PARAM);
            Data data_title = new Data("title", title, ValueType.PARAM);
            Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
 
@@ -154,6 +133,7 @@ public class MessageController {
            datalist.put(data_corp_code.key, data_corp_code);
            datalist.put(data_store_id.key, data_store_id);
            datalist.put(data_area_code.key, data_area_code);
+           datalist.put(data_receiver_type.key, data_receiver_type);
            datalist.put(data_title.key, data_title);
            datalist.put(data_message_content.key, data_message_content);
 
@@ -164,6 +144,7 @@ public class MessageController {
 //        String result = dataBox.data.get("message").value;
 
 //            logger.info("after------addd----- result" + result);
+
 
            if (dataBox.status.toString().equals("SUCCESS")) {
                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -239,40 +220,7 @@ public class MessageController {
         }
         return dataBean.getJsonStr();
     }
-    /*@RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public String sendMessage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json:" + jsString);
-            System.out.println("json" + jsString);
-            JSONObject jsonObject = new JSONObject(jsString);
-            id = jsonObject.get("id").toString();
-            String message = jsonObject.get("message").toString();
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
 
-            String result = messageService.insert(message, user_id);
-            logger.info("after insert result" + result);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add  success  ");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.toString());
-            logger.info("insert message error : " + ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
-*/
     /**
      * 发送消息
      * 选择

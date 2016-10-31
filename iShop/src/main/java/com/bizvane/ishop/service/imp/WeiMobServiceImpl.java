@@ -102,13 +102,13 @@ public class WeiMobServiceImpl implements WeimobService{
 
         int pagesize = 10;
         int pageno = rowno/pagesize +1;
-        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, pagesize, false);
-        String data = obj.get("data").toString();
-        JSONObject object = JSONObject.parseObject(data);
-        String count = object.get("page_count").toString();
+//        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, pagesize, false);
+//        String data = obj.get("data").toString();
+//        JSONObject object = JSONObject.parseObject(data);
+//        String count = object.get("page_count").toString();
 
         JSONArray array = new JSONArray();
-        if(pageno<=Integer.parseInt(count)){
+//        if(pageno<=Integer.parseInt(count)){
             JSONObject spuFull = spuFullInfoGet(accessToken, 1, pageno, pagesize, false);
             String dataSpuFull = spuFull.get("data").toString();
             JSONObject objectSpuFull = JSONObject.parseObject(dataSpuFull);
@@ -116,56 +116,73 @@ public class WeiMobServiceImpl implements WeimobService{
             JSONArray pageData = JSONArray.parseArray(dataList);
             for (int i = 0; i < pageData.size(); i++) {
                 JSONObject param = new JSONObject();
+                JSONObject obj_spu = pageData.getJSONObject(i).getJSONObject("spu");
                 String code = pageData.getJSONObject(i).getJSONObject("spu").get("spu_id").toString();
-                String image = pageData.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
-                String title = pageData.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
-                String price = pageData.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
+//                String image = pageData.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
+//                String title = pageData.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
+//                String price = pageData.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
                 String url = "http://55757490.m.weimob.com/vshop/Goods/GoodsDetail1/"+code;
                 param.put("id", code);
-                param.put("photo", image);
-                param.put("name", title);
-                param.put("finalPrice", price);
+                param.put("photo", obj_spu.get("default_img").toString());
+                param.put("name", obj_spu.get("spu_name").toString());
+                param.put("finalPrice", obj_spu.get("low_sellprice").toString());
                 param.put("url", url);
                 param.put("shareUrl", url);
                 param.put("isNew", "");
                 param.put("isHot", "");
+                param.put("classifyID", obj_spu.get("classify_ids").toString());
                 //		logger.debug("list ->" + param);
                 array.add(param);
             }
 
-        }
+//        }
         return array;
     }
 
     public JSONArray getSearchClassify(String accessToken,String xx) throws Exception {
+        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, 1, false);
+        String data1 = obj.get("data").toString();
+        JSONObject data = JSONObject.parseObject(data1);
 
-
-        JSONObject data = spuFullInfoGet(accessToken, 1, 1, 10, false).getJSONObject("data");
+//        JSONObject data = spuFullInfoGet(accessToken, 1, 1, 10, false).getJSONObject("data");
         int rowCount = Integer.parseInt(data.get("row_count").toString());
-        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).
-                getJSONObject("data").getJSONArray("page_data");
+
+        int circle = rowCount/180;
+        if (rowCount%180 > 0){
+            circle = circle + 1;
+        }
+        JSONArray page_data = new JSONArray();
+        for (int i = 1; i < circle+1; i++) {
+            JSONObject obj1 = spuFullInfoGet(accessToken, 1, i, 180, false);
+            String data2 = obj1.get("data").toString();
+            JSONObject data_obj = JSONObject.parseObject(data2);
+            String page = data_obj.get("page_data").toString();
+            JSONArray page_data1 = JSONArray.parseArray(page);
+            page_data.addAll(page_data1);
+        }
+//        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).getJSONObject("data").getJSONArray("page_data");
 
         JSONArray array = new JSONArray();
         for (int i = 0; i < page_data.size(); i++) {
-            String classify = page_data.getJSONObject(i).getJSONObject("spu").get("classify_ids").toString();
+            JSONObject obj_spu = page_data.getJSONObject(i).getJSONObject("spu");
+            String classify = obj_spu.get("classify_ids").toString();
             if(classify.contains(xx)){
                 JSONObject param = new JSONObject();
-                String code = page_data.getJSONObject(i).getJSONObject("spu").get("spu_id").toString();
-                String image = page_data.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
-                String title = page_data.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
-                String price = page_data.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
-                String classifyID = page_data.getJSONObject(i).getJSONObject("spu").get("classify_ids").toString();
+                String code = obj_spu.get("spu_id").toString();
+//                String image = obj_spu.get("default_img").toString();
+//                String title = obj_spu.get("spu_name").toString();
+//                String price = obj_spu.get("low_sellprice").toString();
+//                String classifyID = obj_spu.get("classify_ids").toString();
                 String url = "http://55757490.m.weimob.com/vshop/Goods/GoodsDetail1/"+code;
-
                 param.put("id", code);
-                param.put("photo", image);
-                param.put("name", title);
-                param.put("finalPrice", price);
+                param.put("photo", obj_spu.get("default_img").toString());
+                param.put("name", obj_spu.get("spu_name").toString());
+                param.put("finalPrice", obj_spu.get("low_sellprice").toString());
                 param.put("url", url);
                 param.put("shareUrl", url);
                 param.put("isNew", "");
                 param.put("isHot", "");
-                param.put("classifyID", classifyID);
+                param.put("classifyID", obj_spu.get("classify_ids").toString());
 
                 logger.debug("search Classify ->" + param);
                 array.add(param);
@@ -175,32 +192,49 @@ public class WeiMobServiceImpl implements WeimobService{
     }
 
     public JSONArray getSearchTitle(String accessToken,String xx) throws Exception{
-        JSONObject data = spuFullInfoGet(accessToken, 1, 1, 10, false).getJSONObject("data");
+        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, 1, false);
+        String data1 = obj.get("data").toString();
+        JSONObject data = JSONObject.parseObject(data1);
+
         int rowCount = Integer.parseInt(data.get("row_count").toString());
 
-        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).
-                getJSONObject("data").getJSONArray("page_data");
-
+        int circle = rowCount/180;
+        if (rowCount%180 > 0){
+            circle = circle + 1;
+        }
+        JSONArray page_data = new JSONArray();
+        for (int i = 1; i < circle+1; i++) {
+            JSONObject obj1 = spuFullInfoGet(accessToken, 1, i, 180, false);
+            String data2 = obj1.get("data").toString();
+            JSONObject data_obj = JSONObject.parseObject(data2);
+            String page = data_obj.get("page_data").toString();
+            JSONArray page_data1 = JSONArray.parseArray(page);
+            page_data.addAll(page_data1);
+        }
+//        JSONArray page_data = spuFullInfoGet(accessToken, 1, 1, rowCount, false).getJSONObject("data").getJSONArray("page_data");
         JSONArray array = new JSONArray();
         for (int i = 0; i < page_data.size(); i++) {
-            String spu_name = page_data.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
+            JSONObject obj_spu = page_data.getJSONObject(i).getJSONObject("spu");
+
+            String spu_name = obj_spu.get("spu_name").toString();
             if(spu_name.contains(xx)){
                 JSONObject param = new JSONObject();
                 String code = page_data.getJSONObject(i).getJSONObject("spu").get("spu_id").toString();
-                String image = page_data.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
-                String title = page_data.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
-                String price = page_data.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
-                String classifyID = page_data.getJSONObject(i).getJSONObject("spu").get("classify_ids").toString();
+//                String image = page_data.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
+//                String title = page_data.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
+//                String price = page_data.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
+//                String classifyID = page_data.getJSONObject(i).getJSONObject("spu").get("classify_ids").toString();
                 String url = "http://55757490.m.weimob.com/vshop/Goods/GoodsDetail1/"+code;
                 param.put("id", code);
-                param.put("photo", image);
-                param.put("name", title);
-                param.put("finalPrice", price);
-                param.put("isNew", "");
-                param.put("isHot", "");
+                param.put("id", obj_spu.get("spu_id").toString());
+                param.put("photo", obj_spu.get("default_img").toString());
+                param.put("name", obj_spu.get("spu_name").toString());
+                param.put("finalPrice", obj_spu.get("low_sellprice").toString());
                 param.put("url", url);
                 param.put("shareUrl", url);
-                param.put("classifyID", classifyID);
+                param.put("isNew", "");
+                param.put("isHot", "");
+                param.put("classifyID", obj_spu.get("classify_ids").toString());
 
                 logger.debug("search Title ->" + param);
                 array.add(param);
@@ -219,7 +253,7 @@ public class WeiMobServiceImpl implements WeimobService{
         String url = spuFullUrlHead+accessToken;
         String context = ishowHttpClient.post(url,param);
         JSONObject spuFull = JSONObject.parseObject(context);
-        System.out.println("getSpuFull"+context);
+//        System.out.println("getSpuFull"+context);
         return spuFull;
     }
 
@@ -236,40 +270,62 @@ public class WeiMobServiceImpl implements WeimobService{
         JSONArray classifyvalue = classify.getJSONObject("data").getJSONArray("page_data");
         for (int i = 0; i < classifyvalue.size(); i++) {
             JSONObject getparam = new JSONObject();
-            String classify_id = classifyvalue.getJSONObject(i).get("classify_id").toString();
-            String classify_name = classifyvalue.getJSONObject(i).get("classify_name").toString();
+            JSONObject classify_data = classifyvalue.getJSONObject(i);
+            String classify_id = classify_data.get("classify_id").toString();
+            String classify_name = classify_data.get("classify_name").toString();
             getparam.put("code", classify_id);
             getparam.put("name", classify_name);
+
+            JSONArray array1 = new JSONArray();
+            JSONObject param1 = new JSONObject();
+            param1.put("classify_pid", classify_id);
+            param1.put("page_no", 1);
+            param1.put("page_size", 20);
+//            String url = "https://dopen.weimob.com/api/1_0/wangpu/GoodsClassify/Get?accesstoken="+accessToken;
+            JSONObject classify1 = JSONObject.parseObject(ishowHttpClient.post(url,param1));
+            JSONArray classifyvalue1 = classify1.getJSONObject("data").getJSONArray("page_data");
+            for (int j = 0; j < classifyvalue1.size(); j++) {
+                JSONObject getparam1 = new JSONObject();
+                JSONObject classify_data1 = classifyvalue1.getJSONObject(j);
+
+                String classify_id1 = classify_data1.get("classify_id").toString();
+                String classify_name1 = classify_data1.get("classify_name").toString();
+                getparam1.put("code", classify_id1);
+                getparam1.put("name", classify_name1);
+                array1.add(getparam1);
+            }
+            getparam.put("brandLists", array1);
+
             array.add(getparam);
         }
 
-        System.out.println("goodsclassifyGet"+array.toString());
+//        System.out.println("goodsclassifyGet"+array.toString());
         return array;
     }
 
-    public JSONArray goodsclassifyGetSon(String accessToken) throws Exception {
-        JSONArray classifySon = new JSONArray();
-        JSONArray array11 = goodsclassifyGet(accessToken);
-        for (int j = 0; j < array11.size(); j++) {
-            JSONArray array = new JSONArray();
-            JSONObject param = new JSONObject();
-            param.put("classify_pid", array11.getJSONObject(j).get("code").toString());
-            param.put("page_no", 1);
-            param.put("page_size", 20);
-            String url = "https://dopen.weimob.com/api/1_0/wangpu/GoodsClassify/Get?accesstoken="+accessToken;
-            JSONObject classify = JSONObject.parseObject(ishowHttpClient.post(url,param));
-            JSONArray classifyvalue = classify.getJSONObject("data").getJSONArray("page_data");
-            for (int i = 0; i < classifyvalue.size(); i++) {
-                JSONObject getparam = new JSONObject();
-                String classify_id = classifyvalue.getJSONObject(i).get("classify_id").toString();
-                String classify_name = classifyvalue.getJSONObject(i).get("classify_name").toString();
-                getparam.put("code", classify_id);
-                getparam.put("name", classify_name);
-                array.add(getparam);
-            }
-            System.out.println("goodsclassifyGet"+array.toString());
-            classifySon.add(array);
-        }
-        return classifySon;
-    }
+//    public JSONArray goodsclassifyGetSon(String accessToken) throws Exception {
+//        JSONArray classifySon = new JSONArray();
+//        JSONArray array11 = goodsclassifyGet(accessToken);
+//        for (int j = 0; j < array11.size(); j++) {
+//            JSONArray array = new JSONArray();
+//            JSONObject param = new JSONObject();
+//            param.put("classify_pid", array11.getJSONObject(j).get("code").toString());
+//            param.put("page_no", 1);
+//            param.put("page_size", 20);
+//            String url = "https://dopen.weimob.com/api/1_0/wangpu/GoodsClassify/Get?accesstoken="+accessToken;
+//            JSONObject classify = JSONObject.parseObject(ishowHttpClient.post(url,param));
+//            JSONArray classifyvalue = classify.getJSONObject("data").getJSONArray("page_data");
+//            for (int i = 0; i < classifyvalue.size(); i++) {
+//                JSONObject getparam = new JSONObject();
+//                String classify_id = classifyvalue.getJSONObject(i).get("classify_id").toString();
+//                String classify_name = classifyvalue.getJSONObject(i).get("classify_name").toString();
+//                getparam.put("code", classify_id);
+//                getparam.put("name", classify_name);
+//                array.add(getparam);
+//            }
+////            System.out.println("goodsclassifyGet"+array.toString());
+//            classifySon.add(array);
+//        }
+//        return classifySon;
+//    }
 }

@@ -21,6 +21,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -46,12 +47,9 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/VIP")
 public class VIPRecordController {
+
     @Autowired
     VipRecordService vipRecordService;
-    @Autowired
-    CorpService corpService;
-    @Autowired
-    UserService userService;
     @Autowired
     MongoDBClient mongodbClient;
     private static final Logger log = Logger.getLogger(VIPRecordController.class);
@@ -75,34 +73,60 @@ public class VIPRecordController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
-            PageInfo<VipRecord> list;
-            if (screen.equals("")) {
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    list = this.vipRecordService.selectBySearch(1, 30000, "", search_value);
-                } else {
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+            DBCursor dbCursor = null;
 
-                    list = vipRecordService.selectBySearch(1, 30000, corp_code, search_value);
+            if (screen.equals("")) {
+                String[] column_names = new String[]{"vip_id","vip_name","created_date"};
+                BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    DBCursor dbCursor1 = cursor.find(queryCondition);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"created_date",-1);
+
+                } else {
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and", value);
+                    DBCursor dbCursor2 = cursor.find(queryCondition1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2,1, 30000,"created_date",-1);
                 }
             } else {
+
+                JSONArray array = JSONArray.parseArray(screen);
+                BasicDBObject queryCondition = MongoUtils.andOperation(array);
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                if (role_code.contains(Common.ROLE_SYS)) {
-                    list = vipRecordService.selectAllVipRecordScreen(1, 30000, "", map);
+
+                // 读取数据
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    DBCursor dbCursor1 = cursor.find(queryCondition);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"created_date",-1);
                 } else {
-                    list = vipRecordService.selectAllVipRecordScreen(1, 30000, corp_code, map);
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and", value);
+                    DBCursor dbCursor1 = cursor.find(queryCondition1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"created_date",-1);
                 }
             }
-            List<VipRecord> vipRecords = list.getList();
+//            List<VipRecord> vipRecords = list.getList();
+            JSONArray array = vipRecordService.transRecord(dbCursor);
+
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(vipRecords);
-            if (vipRecords.size() >= 29999) {
+            String json = mapper.writeValueAsString(array);
+            if (array.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,vipRecords, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,array, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -147,58 +171,19 @@ public class VIPRecordController {
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find();
-
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else {
                 Map keyMap = new HashMap();
                 keyMap.put("corp_code", corp_code);
                 BasicDBObject ref = new BasicDBObject();
                 ref.putAll(keyMap);
                 DBCursor dbCursor1 = cursor.find(ref);
-
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             }
-            JSONArray array = new JSONArray();
-            while (dbCursor.hasNext()) {
-                DBObject obj = dbCursor.next();
-                JSONObject object = new JSONObject();
-                String corp_code1 = obj.get("corp_code").toString();
-                String user_code = obj.get("user_id").toString();
-                String vip_id = obj.get("vip_id").toString();
-                String vip_name = obj.get("vip_name").toString();
-                String created_date = obj.get("created_date").toString();
-                String action = obj.get("action").toString();
+            JSONArray array = vipRecordService.transRecord(dbCursor);
 
-                object.put("corp_code",corp_code1);
-                object.put("user_code",user_code);
-                object.put("vip_id",vip_id);
-                object.put("vip_name",vip_name);
-                object.put("created_date",created_date);
-                object.put("action",action);
-                if (action.equals("1")){
-                    object.put("type_name","电话");
-                }else if (action.equals("2")){
-                    object.put("type_name","短信");
-                }else if (action.equals("3")){
-                    object.put("type_name","微信");
-                }
-                Corp corp = corpService.selectByCorpId(0,corp_code1,Common.IS_ACTIVE_Y);
-                String corp_name = "";
-                if (corp != null) {
-                    corp_name = corp.getCorp_name();
-                }
-                object.put("corp_name",corp_name);
-
-                List<User> users = userService.userCodeExist(corp_code,user_code,Common.IS_ACTIVE_Y);
-                String user_name = "";
-                if (users.size()>0){
-                    user_name = users.get(0).getUser_name();
-                }
-                object.put("user_name",user_name);
-                array.add(object);
-            }
             result.put("list", array);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -208,43 +193,6 @@ public class VIPRecordController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result1.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 回访记录管理
-     * 编辑前获取数据
-     */
-
-    @RequestMapping(value = "/callback/select", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectCallBack(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //  int VipRecord_id = Integer.parseInt(jsonObject.getString("id"));
-            int VipRecord_id = jsonObject.getInt("id");
-            VipRecord VipRecord = this.vipRecordService.getVipRecord(VipRecord_id);
-            if (VipRecord != null) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(JSON.toJSONString(VipRecord));
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("not found VipRecord error");
-            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -279,13 +227,6 @@ public class VIPRecordController {
             JSONObject result = new JSONObject();
             JSONObject result1 = new JSONObject();
 
-//            PageInfo<VipRecord> list = null;
-//            if (role_code.contains(Common.ROLE_SYS)) {
-//                list = vipRecordService.selectBySearch(page_number, page_size, "", search_value);
-//            } else {
-//                list = vipRecordService.selectBySearch(page_number, page_size, corp_code, search_value);
-//            }
-
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
 
@@ -297,7 +238,7 @@ public class VIPRecordController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
             } else {
                 BasicDBList value = new BasicDBList();
@@ -307,48 +248,10 @@ public class VIPRecordController {
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor2,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
             }
 
-            JSONArray array = new JSONArray();
-            while (dbCursor.hasNext()) {
-                DBObject obj = dbCursor.next();
-                JSONObject object = new JSONObject();
-                String corp_code1 = obj.get("corp_code").toString();
-                String user_code = obj.get("user_id").toString();
-                String vip_id = obj.get("vip_id").toString();
-                String vip_name = obj.get("vip_name").toString();
-                String created_date = obj.get("created_date").toString();
-                String action = obj.get("action").toString();
-
-                object.put("corp_code",corp_code1);
-                object.put("user_code",user_code);
-                object.put("vip_id",vip_id);
-                object.put("vip_name",vip_name);
-                object.put("created_date",created_date);
-                object.put("action",action);
-                if (action.equals("1")){
-                    object.put("type_name","电话");
-                }else if (action.equals("2")){
-                    object.put("type_name","短信");
-                }else if (action.equals("3")){
-                    object.put("type_name","微信");
-                }
-                Corp corp = corpService.selectByCorpId(0,corp_code1,Common.IS_ACTIVE_Y);
-                String corp_name = "";
-                if (corp != null) {
-                    corp_name = corp.getCorp_name();
-                }
-                object.put("corp_name",corp_name);
-
-                List<User> users = userService.userCodeExist(corp_code,user_code,Common.IS_ACTIVE_Y);
-                String user_name = "";
-                if (users.size()>0){
-                    user_name = users.get(0).getUser_name();
-                }
-                object.put("user_name",user_name);
-                array.add(object);
-            }
+            JSONArray array = vipRecordService.transRecord(dbCursor);
             result.put("list", array);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -386,22 +289,12 @@ public class VIPRecordController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String screen = jsonObject.get("screen").toString();
-//            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-//            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             JSONObject result = new JSONObject();
             JSONObject result1 = new JSONObject();
-
-//            PageInfo<VipRecord> list = null;
-//            if (role_code.contains(Common.ROLE_SYS)) {
-//                list = vipRecordService.selectAllVipRecordScreen(page_number, page_size, "", map);
-//            } else {
-//                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//                list = vipRecordService.selectAllVipRecordScreen(page_number, page_size, corp_code, map);
-//            }
 
             String lists = jsonObject.get("list").toString();
 
@@ -417,7 +310,7 @@ public class VIPRecordController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -427,47 +320,11 @@ public class VIPRecordController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             }
-            JSONArray array1 = new JSONArray();
-            while (dbCursor.hasNext()) {
-                DBObject obj = dbCursor.next();
-                JSONObject object = new JSONObject();
-                String corp_code1 = obj.get("corp_code").toString();
-                String user_code = obj.get("user_id").toString();
-                String vip_id = obj.get("vip_id").toString();
-                String vip_name = obj.get("vip_name").toString();
-                String created_date = obj.get("created_date").toString();
-                String action = obj.get("action").toString();
 
-                object.put("corp_code",corp_code1);
-                object.put("user_code",user_code);
-                object.put("vip_id",vip_id);
-                object.put("vip_name",vip_name);
-                object.put("created_date",created_date);
-                object.put("action",action);
-                if (action.equals("1")){
-                    object.put("type_name","电话");
-                }else if (action.equals("2")){
-                    object.put("type_name","短信");
-                }else if (action.equals("3")){
-                    object.put("type_name","微信");
-                }
-                Corp corp = corpService.selectByCorpId(0,corp_code1,Common.IS_ACTIVE_Y);
-                String corp_name = "";
-                if (corp != null) {
-                    corp_name = corp.getCorp_name();
-                }
-                object.put("corp_name",corp_name);
+            JSONArray array1 = vipRecordService.transRecord(dbCursor);
 
-                List<User> users = userService.userCodeExist(corp_code,user_code,Common.IS_ACTIVE_Y);
-                String user_name = "";
-                if (users.size()>0){
-                    user_name = users.get(0).getUser_name();
-                }
-                object.put("user_name",user_name);
-                array1.add(object);
-            }
             result.put("list", array1);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -504,8 +361,14 @@ public class VIPRecordController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String[] ids = jsonObject.get("id").toString().split(",");
-            for (int i = 0; ids != null && i < ids.length; i++) {
-                this.vipRecordService.delete(Integer.parseInt(ids[i]));
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+
+            for (int i = 0; i < ids.length; i++) {
+                DBObject deleteRecord = new BasicDBObject();
+                deleteRecord.put("_id", new ObjectId(ids[i]));
+                cursor.remove(deleteRecord);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

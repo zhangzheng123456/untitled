@@ -67,6 +67,8 @@ public class BrandController {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -112,6 +114,34 @@ public class BrandController {
                 codes = brand_code.split(",");
                 List<Brand> brand = brandService.getActiveBrand(corp_code, search_value,codes);
                 brandList.addAll(brand);
+            }else if (role_code.equals(Common.ROLE_AM)){
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                String[] areas = area_code.split(",");
+                List<Store> stores = storeService.selectByAreaBrand(corp_code,areas, null,Common.IS_ACTIVE_Y);
+                String brand_code1 = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    String brand_code = stores.get(i).getBrand_code();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    if (!brand_code.endsWith(",")){
+                        brand_code = brand_code + ",";
+                    }
+                    brand_code1 = brand_code1 + brand_code;
+                    codes = brand_code1.split(",");
+                    brandList = brandService.getActiveBrand(corp_code, search_value,codes);
+                }
+            }else if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)){
+                List<Store> stores = storeService.selectAll(store_code,corp_code,Common.IS_ACTIVE_Y);
+                String brand_code1 = "";
+                for (int i = 0; i < stores.size(); i++) {
+                    String brand_code = stores.get(i).getBrand_code();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    if (!brand_code.endsWith(",")){
+                        brand_code = brand_code + ",";
+                    }
+                    brand_code1 = brand_code1 + brand_code;
+                }
+                codes = brand_code1.split(",");
+                brandList = brandService.getActiveBrand(corp_code, search_value,codes);
             }
 
             JSONArray array = new JSONArray();

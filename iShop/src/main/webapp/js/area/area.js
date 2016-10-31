@@ -475,17 +475,17 @@ $("#delete").click(function(){
             if(value==""&&filtrate==""){
                frame();
                $('.frame').html('删除成功');
-               GET(inx,pageSize);
+               GET(pageNumber,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
                param["pageNumber"]=pageNumber;
-               POST(inx,pageSize);
+               POST(pageNumber,pageSize);
             }else if(filtrate!==""){
                 frame();
                 $('.frame').html('删除成功');
                 _param["pageNumber"]=pageNumber;
-                filtrates(inx,pageSize); 
+                filtrates(pageNumber,pageSize);
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;

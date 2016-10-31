@@ -24,6 +24,9 @@ public class MessageInfo {
     //企业编号
     private String corp_code;
 
+    //消息发送类型
+    private String receiver_type;
+
     //修改日期
     private String modified_date;
 
@@ -95,6 +98,14 @@ public class MessageInfo {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getReceiver_type() {
+        return receiver_type;
+    }
+
+    public void setReceiver_type(String receiver_type) {
+        this.receiver_type = receiver_type;
     }
 
     public String getModified_date() {

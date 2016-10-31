@@ -60,14 +60,8 @@
         <if test="corp_code != null and corp_code !=''">
             AND dvg.corp_code = #{corp_code}
         </if>
-        <if test="user_code != '' and role_code ==''">
+        <if test="user_code != null and user_code !=''">
             AND dvg.user_code = #{user_code}
-        </if>
-        <if test="user_code != '' and role_code !=''">
-            AND dvg.corp_code = #{corp_code}
-            AND (dvg.user_code = #{user_code}
-            OR dvg.user_code = ''
-            OR dvg.user_code IS NULL)
         </if>
         <if test="search_value != null and search_value !=''">
             AND
@@ -273,14 +267,8 @@
         <if test="corp_code != null and corp_code !=''">
             AND dvg.corp_code = #{corp_code}
         </if>
-        <if test="user_code != '' and role_code ==''">
+        <if test="user_code != null and user_code !=''">
             AND dvg.user_code = #{user_code}
-        </if>
-        <if test="user_code != '' and role_code !=''">
-            AND dvg.corp_code = #{corp_code}
-            AND (dvg.user_code = #{user_code}
-            OR dvg.user_code = ''
-            OR dvg.user_code IS NULL)
         </if>
         <if test="map!=null">
             AND

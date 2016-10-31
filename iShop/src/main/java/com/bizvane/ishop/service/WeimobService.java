@@ -26,7 +26,7 @@ public interface WeimobService {
 
     JSONArray goodsclassifyGet(String accessToken) throws Exception;
 
-    JSONArray goodsclassifyGetSon(String accessToken) throws Exception;
+//    JSONArray goodsclassifyGetSon(String accessToken) throws Exception;
 
     JSONArray getSearchClassify(String accessToken,String xx) throws Exception;
 

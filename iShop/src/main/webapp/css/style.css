@@ -6759,6 +6759,11 @@ body.skin-3 {
   /*border-bottom:1px #ffffff solid;*/
   border:none;
 }
+.wearther_content .w_img img{
+  width: 70px;
+  margin-left: 10px;
+  margin-bottom: 25px;
+}
 .list_titles ul{
   list-style:none;
 }

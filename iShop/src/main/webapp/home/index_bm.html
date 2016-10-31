@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>导购主页</title>
+    <title>品牌管理员主页</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" href="../css/liandong_select.css">
-     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
@@ -19,7 +19,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0);">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -70,9 +70,9 @@
                             </a>
                         </li>
                         <li class="search_box">
-                            <form role="search" class="navbar-form-custom">
+                             <form role="search" class="navbar-form-custom">
                             <div class="form-group">
-                                <input type="text" placeholder="" class="form-control"  id="top-search">
+                                <input type="text" placeholder="" class="form-control" name="top-search" id="top-search">
                                 <i class="icon-ishop_3-05" id="search_icon"></i>
                             </div>
                         </form>
@@ -117,7 +117,6 @@
                                         </a>
                                     </div>
                                 </div>
-                                <!--</div>-->
                             </ul>
                         </div>
                         <div class="logo-element">
@@ -130,64 +129,84 @@
 
             </div>
         </nav>
-
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="wrapper wrapper-content">
                 <div class="row">
                     <div class="col-lg-4 mask">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content_per">
-                                <span class="c_a_shoppe"><i id="corp_name"></i><img src="../img/img_spot_white.png"><i class="area_name"></i>
-                                    <img style="width:8px;height: 4px;" src="../img/img_arrow_down.png" alt="" id="drop_down_m">
-                                    <ul></ul></span>
+                            <span class="c_a_shoppe">
+                               <i id="corp_name"></i>
+                               <img src="../img/img_spot_white.png">
+                               <i class="area_name"></i>
+                               <img style="width:8px;height: 4px;" src="../img/img_arrow_down.png" alt="" id="drop_down_m">
+                               <ul>   
+                               </ul>
+                            </span>
                                 <div class="check_select">
-                                    <div class="select_1 reg_testdate" >
+                                   <div class="select_1 reg_testdate">
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px" id="sm_achv_prev">按日查看</div>
-                                            <ul id="sm_achv" class="select_Date">
+                                            <div class="title" id="achv_type" style="width:70px">按日查看</div>
+                                            <ul id="achv" class="select_Date">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <!--<li>按年查看</li>-->
                                             </ul>
                                         </span>
-                                         <span>
-                                            <input type="text" id="date0" class="icon-text">
+                                        <span>
+                                            <input type="text" id="achAnalysis" class="icon-text">
                                         </span>
                                     </div>
                                 </div>
                                 <div class="performance">
                                     <ul>
                                         <li class="total_num">
-                                            <div class="t_num" id="yeJiTotal"></div>
+                                            <div class="t_num" id="amt_trade"></div>
                                             <div class="ranking">业绩总额（元）</div>
-
                                         </li>
                                         <li class="yield_rate">
-                                            <span class="chart" data-percent="0">
+                                            <span id="area_ranking" class="chart" data-percent="0">
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
-
                                     </ul>
                                 </div>
                                 <div class="item_list_1">
                                     <ul>
                                         <li>
-                                            <p><span >业绩排名</span></p>
-                                            <p class="item" id="yeJiRanking"></p>
+                                            <div><span>销售件数</span></div>
+                                            <div class="item_1" id="num_sales"></div>
                                         </li>
                                         <li>
-                                            <p><span>被赞次数</span></p>
-                                            <p class="item" id="zanTime"></p>
+                                            <div><span>成交笔数</span></div>
+                                            <div class="item_1" id="num_trade"></div>
                                         </li>
                                         <li>
-                                            <p><span>贡献度</span></p>
-                                            <p class="item" id="Contribution_degree"></p>
+                                            <div><span>客单价</span></div>
+                                            <div class="item_1" id="all_price"></div>
                                         </li>
                                         <li>
-                                            <p><span>我的会员</span></p>
-                                            <p class="item" id="My_Vip" ></p>
+                                            <div><span>件单价</span></div>
+                                            <div class="item_1" id="amount_price"></div>
+                                        </li>
+                                    </ul>
+                                     <ul>
+                                        <li>
+                                            <div><span>连带率</span></div>
+                                            <div class="item_1" id="relate_rate"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>平均折扣</span></div>
+                                            <div class="item_1" id="discount"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>新增会员</span></div>
+                                            <div class="item_1" id="num_nvip"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>会销占比</span></div>
+                                            <div class="item_1" id="vip_amt_rate"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -202,23 +221,26 @@
                     <div class="col-lg-7 mask">
                         <div class="customer_add_cart">
                             <div class="cart_tab">
-                               
+                                <!-- <ul>
+                                    <li class="select"><label>业绩趋势</label></li>
+                                    <li><label>能力分析</label></li>
+                                </ul> -->
                             </div>
                             <div class="check_chart">
-                                <div class="select_2 reg_testdate"  >
+                                 <div class="select_2 reg_testdate">
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px" id="chart_prev" date-type="W">按周查看</div>
-                                        <ul  class="select_Date" id="chart">
+                                        <div id="chart_prev" class="title" style="width:70px" date-type="W">按周查看</div>
+                                        <ul id="chart" class="select_Date">
                                             <li date-type="W">按周查看</li>
                                             <li date-type="M">按月查看</li>
                                             <!--<li date-type="Y">按年查看</li>-->
                                         </ul>
                                     </span>
-                                 <span>
-                                     <input type="text" id="date1" class="icon-text">
-                                 </span>
+                                    <span>
+                                        <input type="text" id="date1" class="icon-text">
+                                    </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px" id="yeJiToTal_chart"></label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px" id="yeJiToTal"></label>元</span>
                             </div>
                             <div class="charts_holder">
                                 <canvas id="canvas_circle">
@@ -252,39 +274,47 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>导购总数<label id="daoGouTotal"></label></span>
-                                    <span class="average_per">平均业绩<label id="Average"></label></span>
+                                    <span>导购总数<label id="staff_total"></label></span>
+                                    <span class="average_per">平均业绩<label id="staff_avg"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_3 reg_testdate"  >
+                                    <div class="select_3 reg_testdate" id="staff_list">
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px" id="daoGouRanking_prev">按日查看</div>
-                                            <ul  class="select_Date" id="daoGouRanking">
+                                            <div class="title" id="staff_type" style="width:70px">按日查看</div>
+                                            <ul id="staff" class="select_Date">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
-                                                <!--<li>按年查看</li>-->
                                             </ul>
                                         </span>
-                                   <span>
-                                            <input type="text" id="date2" class="icon-text">
+                                        <span>
+                                            <input type="text" id="staffRanking" class="icon-text">
                                         </span>
                                     </div>
                                 </div>
                             </div>
                             <div class="list_titles_daogou_paihang" id="staff_list">
                                 <table style="width:100%">
-                                    <thead>
-                                    <tr>
-                                       <th>排名</th>
-                                       <th>姓名</th>
-                                       <th>业绩</th>
-                                       <!--<th>目标</th>-->
-                                       <!--<th>完成度</th>-->
-                                       <th>贡献度</th>
-                                    </tr>
+                                    <thead>  
+                                        <tr>
+                                            <th>排名</th>
+                                            <th>姓名</th>
+                                            <th>业绩</th>
+                                            <!-- <th>目标</th> -->
+                                            <!-- <th>完成度</th> -->
+                                            <th>贡献度</th>
+                                        </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        <!-- <tr>
+                                            <td style="width:11%">1</td>
+                                            <td style="width:16%">朱亚晓</td>
+                                            <td style="width:21%"><em>￥</em>165395</td>
+                                            <td style="width:21%"><em>￥</em>165395</td>
+                                            <td style="width:18%"><img src="../img/completion_80.png" style="width:20px;height: 20px"/>81%</td>
+                                            <td style="width:13%"><img src="../img/contribution_30.png" style="width:4px;height: 20px" />32%</td>
+                                        </tr> -->
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -294,59 +324,37 @@
                             </div>
                         </div>
                    </div>
-                    <div class="col-lg-4 mask">
+                    <div class="col-lg-4">
                        <div class="ibox float-e-margins">
                             <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
-                                    <label>会员排行</label>
+                                    <label>商品排行</label>
                                     <span><img src="../img/icon_hp_more.png" alt="更多" /></span>
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
-                                <div class="member_detail" style="margin-top:20px;">
-                                    <ul>
-                                    <li><div><span>会员总数</span></div><div><label id="all_vip_count"></label></div></li>
-                                        <li><div><span>生日会员</span></div><div id="birth_vip_count"></div></li>
-                                        <li><div><span>休眠会员</span></div><div id="dormant_vip_count"></div></li>
-                                        <li><div><span>昨日新增</span></div><div id="new_vip_count"></div></li>
-                                    </ul>
+                                <div class="item_total">
+                                    <span>商品种类<label></label></span>
+                                    <span class="average_per">库存总量<label></label></span>
                                 </div>
-                                <!--<div class="check_chart">-->
-                                    <!--<div class="select_4 reg_testdate"  >-->
-                                        <!--<span class="choose item" style="width:70px">-->
-                                            <!--<div class="title" style="width:70px">按年查看</div>-->
-                                            <!--<ul  class="select_Date">-->
-                                                <!--<li>按年查看</li>-->
-                                            <!--</ul>-->
-                                        <!--</span>-->
-                                      <!--<span>-->
-                                            <!--<input type="text" id="date3" class="laydate-icon icon-text">-->
-                                        <!--</span>-->
-                                    <!--</div>-->
-                                <!--</div>-->
+                                <div class="check_chart">
+                                    <div class="select_4 reg_testdate">
+                                        <span class="choose item" style="width:70px">
+                                            <div class="title" style="width:70px">按周查看</div>
+                                            <!-- <ul>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                                <li>按年查看</li>
+                                            </ul> -->
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="list_titles_daogou_paihang">
                                 <div class="list_titles_daogou_paihang">
-                                <table style="width: 100%" id="vip_list">
-                                    <thead>
-                                    <tr>
-                                        <th>排名</th>
-                                        <th>姓名</th>
-                                        <th>等级</th>
-                                        <th>消费金额</th>
-                                        <th>总次数</th>
-                                        <!--<th>导购</th>-->
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
+                                <table style="width: 100%">
+                                    <td colspan="3" style="padding-top:70px;">暂无功能</td>
                                 </table>
                             </div>
-                            </div>
-                        </div>
-                        <div class="zhezhaocen" id="vip_mask">
-                            <div class="zhe_img">
-                                加载中
                             </div>
                         </div>
                    </div>
@@ -373,31 +381,23 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <script type="text/javascript" src="../js/home/home.js"></script>
     <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
-    <!-- 雷达图 -->
+     <!-- 雷达图 -->
     <script type="text/javascript" src="../js/ability-Chart.js"></script>
-    <!-- 模拟联动 -->
+     <!-- 模拟联动 -->
     <script type="text/javascript" src="../js/liandong_select.js"></script>
 
     <!-- Custom and plugin javascript -->
     <!-- <script src="../js/hplus.js?v=2.2.0"></script> -->
-
     <!-- 汉字转拼音 -->
     <script type="text/javascript" src="../js/onvertToPinyin.js"></script>
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
-    <script type="text/javascript" src="../js/home/home_staff.js"></script>
+    <script type="text/javascript" src="/js/home/home_bm.js"></script>
      <!-- 业绩看板 -->
-    <!--<script type="text/javascript">-->
-        <!--var perArr = [30,34,31,37,35,39,40];//顶点-->
-        <!--window.onresize=function(){-->
-            <!--init(perArr);-->
-        <!--}-->
-        <!--window.onload = init(perArr);-->
-    <!--</script>-->
     <script>
         $(document).ready(function () {
             //调用天气预报数据
@@ -422,23 +422,23 @@
     </script>
     <!-- 达成率 -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
-                easing: 'easeOutElastic',
-                delay: 3000,
-                barColor: '#6cc1c8',
-                trackColor: '#4a5f7c',
-                scaleColor: false,
-                lineWidth: 10,
-                trackWidth: 10,
-                lineCap: 'butt',
-                onStep: function(from, to, percent) {
-                    this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
+            easing: 'easeOutElastic',
+            delay: 3000,
+            barColor: '#6cc1c8',
+            trackColor: '#4a5f7c',
+            scaleColor: false,
+            lineWidth: 10,
+            trackWidth: 10,
+            lineCap: 'butt',
+            onStep: function(from, to, percent) {
+                this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
+            }
         });
+    });
     </script>
-    <script>
+     <script>
         //雷达图
         var radarChartData = {
             labels : ["成交笔数","客单价","新增会员","平均折扣","连带率","销售件数"],
