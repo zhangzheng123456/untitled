@@ -466,13 +466,11 @@ jQuery(document).ready(function(){
 				// 	goods_arr.push(goods_img);
 				// }
 				for(var i=0;i<goods_arr.length;i++){
-					console.log(goods_arr[i].image.indexOf('http'));
 					if(goods_arr[i].image.indexOf('http')==-1)continue;
 					// if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
 					// {
 					//     filename=goods_arr[i].substring(goods_arr[i].lastIndexOf("/")+1,goods_arr[i].length);
 					var check__or='';
-					console.log(goods_arr[i].is_public=='N');
 					if(goods_arr[i].is_public=='N'){
 						check__or='<em style="position: absolute; top: 0px;left: -9px;">'
 							+'<input style="width: 30px;margin:0px" type="checkbox" value="" name="test" class="check">'
