@@ -470,6 +470,7 @@ $("#search").keydown(function() {
             POST(inx,pageSize);
         }else {
             $(".table tbody").sortable('enable');
+            $(".table p").remove();
             GET(inx,pageSize);
         }
     }
@@ -486,6 +487,7 @@ $("#d_search").click(function(){
         POST(inx,pageSize);
     }else {
         $(".table tbody").sortable('enable');
+        $(".table p").remove();
         GET(inx,pageSize);
     }
 })

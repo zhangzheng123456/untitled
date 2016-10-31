@@ -425,27 +425,27 @@ $("#vip_num").blur(function () {
     }
 });
 //验证名称是否唯一
-$("#vip_id").blur(function () {
-    var corp_code = $("#OWN_CORP").val();
-    var vip_id = $("#vip_id").val();
-    var vip_id1 = $("#vip_id").attr("data-name");
-    var div = $(this).next('.hint').children();
-    if (vip_id !== "" && vip_id !== vip_id1) {
-        var _params = {};
-        _params["vip_group_name"] = vip_id;
-        _params["corp_code"] = corp_code;
-        oc.postRequire("post", "/vipGroup/vipGroupNameExist", "", _params, function (data) {
-            if (data.code == "0") {
-                div.html("");
-                $("#vip_id").attr("data-mark", "Y");
-            } else if (data.code == "-1") {
-                div.html("该名称已经存在！");
-                div.addClass("error_tips");
-                $("#vip_id").attr("data-mark", "N");
-            }
-        })
-    }
-});
+// $("#vip_id").blur(function () {
+//     var corp_code = $("#OWN_CORP").val();
+//     var vip_id = $("#vip_id").val();
+//     var vip_id1 = $("#vip_id").attr("data-name");
+//     var div = $(this).next('.hint').children();
+//     if (vip_id !== "" && vip_id !== vip_id1) {
+//         var _params = {};
+//         _params["vip_group_name"] = vip_id;
+//         _params["corp_code"] = corp_code;
+//         oc.postRequire("post", "/vipGroup/vipGroupNameExist", "", _params, function (data) {
+//             if (data.code == "0") {
+//                 div.html("");
+//                 $("#vip_id").attr("data-mark", "Y");
+//             } else if (data.code == "-1") {
+//                 div.html("该名称已经存在！");
+//                 div.addClass("error_tips");
+//                 $("#vip_id").attr("data-mark", "N");
+//             }
+//         })
+//     }
+// });
 $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function () {
     $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_group.html");
 });
