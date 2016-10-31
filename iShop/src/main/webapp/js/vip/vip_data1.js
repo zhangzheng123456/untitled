@@ -351,18 +351,19 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         $("#delete").attr("data-id","");
         return false;
     });
-
     $("#delete").click(function(){//确认删除相册
         $("#tk").hide();
-        var id=$(this).attr("data-id");
-        var url=$("#"+id).prev().attr("src");
+        var time=$(this).attr("data-time");
+        var url=$("#Ablum-all").find("div[data-time='"+time+"']").prev().attr("src");
             url=url.substring(url.indexOf("Album"));
         var param={};
-        param["id"]=id;
-        oc.postRequire("post","/vipAlbum/delete","",param,function(data){
+        param["vip_id"]=sessionStorage.getItem("id");
+        param["corp_code"]=sessionStorage.getItem("corp_code");
+        param["time"]=time;
+        oc.postRequire("post","/vipAlbum/vipAlbumDelete","",param,function(data){
             if(data.message="success"){
                 deleteAblum(url);
-                $("#"+id).parent().remove();
+                $("#Ablum-all").find("div[data-time='"+time+"']").parent().remove();
                 frame();
                 $('.frame').html('删除成功');
             }else{

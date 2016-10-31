@@ -30,7 +30,7 @@ function getConsumCount(){//获取会员信息
                 }
                 Ablum_all_html="<li>"
                     +"<img src='"+album[i].image_url+"'>"
-                    +"<div class='cancel_img' id='"+album[i].id+"'></div>"
+                    +"<div class='cancel_img' data-time='"+album[i].created_date+"'></div>"
                     +"<span class='album_date'>"+date+"</span>"
                     +"</li>";
                 $("#upAlbum").parent().parent().before(Ablum_all_html)
@@ -81,9 +81,9 @@ function img_hover(){
     })
 }
 $("#Ablum-all").on("click",".cancel_img",function(){
-    var id=$(this).attr("id");
+    var time=$(this).attr("data-time");
     $("#tk").show();
-    $("#delete").attr("data-id",id);
+    $("#delete").attr("data-time",time);
 });
 $("#X").click(function(){
     $("#tk").hide();
@@ -613,21 +613,21 @@ function upLoadAlbum(){
 }
 function addVipAlbum(url){//上传照片到相册
      var param_addAblum={};
-    param_addAblum["vip_code"]=sessionStorage.getItem("id");
+    param_addAblum["vip_id"]=sessionStorage.getItem("id");
     param_addAblum["vip_name"]=$("#vip_name").html();
     param_addAblum["phone"]=$("#vip_phone").html();
     param_addAblum["cardno"]=$("#vip_card_no").html();
     param_addAblum["image_url"]=url;
     param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vipAlbum/vipAlbumAdd","",param_addAblum,function(data){
-        var AlbumData=JSON.parse(data.message);
+        var AlbumData=data
         if(data.code=="0"){
             frame();
             $('.frame').html('添加成功');
             $("#upAlbum").parent().parent().before("<li>"
                 +"<img src='"+url+"'>"
-                +"<div class='cancel_img' id='"+AlbumData.id+"'></div>"
-                    +"<span class='album_date'>"+AlbumData.date.substring(0,11)+"</span>"
+                +"<div class='cancel_img' data-time='"+AlbumData.message+"'></div>"
+                    +"<span class='album_date'>"+AlbumData.message.substring(0,11)+"</span>"
                 +"</li>")
         }else{
             frame();
