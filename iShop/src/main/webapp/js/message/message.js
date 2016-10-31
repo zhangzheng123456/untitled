@@ -13,6 +13,7 @@ var filtrate = "";//筛选的定义的值
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
+
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -209,8 +210,11 @@ function superaddition(data, num) {//页面加载循环
             // + data[i].message_receiver
             // + "</td><td>"
             + data[i].message_type
-            + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
+            + "</td><td >"
             + data[i].receiver_type
+            + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
+
+
             + data[i].message_title
             + "</td><td><span title='" + data[i].message_content + "'>"
             + data[i].message_content
