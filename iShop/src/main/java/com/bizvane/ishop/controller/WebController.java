@@ -418,7 +418,7 @@ public class WebController {
             int rowno = Integer.parseInt(request.getParameter("rowno"));
             JSONArray goodList = new JSONArray();
             JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
-            JSONArray brandList = weimobService.goodsclassifyGetSon(accessToken);
+//            JSONArray brandList = weimobService.goodsclassifyGetSon(accessToken);
 
             JSONObject message = new JSONObject();
             if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
@@ -434,7 +434,7 @@ public class WebController {
             }
 
             message.put("goodsList", goodList);
-            message.put("brandLists", brandList);
+//            message.put("brandLists", brandList);
             message.put("classifyList", classifyList);
 
             dataBean.setId("1");

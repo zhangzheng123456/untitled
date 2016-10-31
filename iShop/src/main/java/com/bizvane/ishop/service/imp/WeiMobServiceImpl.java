@@ -272,6 +272,25 @@ public class WeiMobServiceImpl implements WeimobService{
             String classify_name = classifyvalue.getJSONObject(i).get("classify_name").toString();
             getparam.put("code", classify_id);
             getparam.put("name", classify_name);
+
+            JSONArray array1 = new JSONArray();
+            JSONObject param1 = new JSONObject();
+            param1.put("classify_pid", classify_id);
+            param1.put("page_no", 1);
+            param1.put("page_size", 20);
+//            String url = "https://dopen.weimob.com/api/1_0/wangpu/GoodsClassify/Get?accesstoken="+accessToken;
+            JSONObject classify1 = JSONObject.parseObject(ishowHttpClient.post(url,param1));
+            JSONArray classifyvalue1 = classify1.getJSONObject("data").getJSONArray("page_data");
+            for (int j = 0; j < classifyvalue1.size(); j++) {
+                JSONObject getparam1 = new JSONObject();
+                String classify_id1 = classifyvalue1.getJSONObject(j).get("classify_id").toString();
+                String classify_name1 = classifyvalue1.getJSONObject(j).get("classify_name").toString();
+                getparam1.put("code", classify_id1);
+                getparam1.put("name", classify_name1);
+                array1.add(getparam1);
+            }
+            getparam.put("brandLists", array1);
+
             array.add(getparam);
         }
 
@@ -279,29 +298,29 @@ public class WeiMobServiceImpl implements WeimobService{
         return array;
     }
 
-    public JSONArray goodsclassifyGetSon(String accessToken) throws Exception {
-        JSONArray classifySon = new JSONArray();
-        JSONArray array11 = goodsclassifyGet(accessToken);
-        for (int j = 0; j < array11.size(); j++) {
-            JSONArray array = new JSONArray();
-            JSONObject param = new JSONObject();
-            param.put("classify_pid", array11.getJSONObject(j).get("code").toString());
-            param.put("page_no", 1);
-            param.put("page_size", 20);
-            String url = "https://dopen.weimob.com/api/1_0/wangpu/GoodsClassify/Get?accesstoken="+accessToken;
-            JSONObject classify = JSONObject.parseObject(ishowHttpClient.post(url,param));
-            JSONArray classifyvalue = classify.getJSONObject("data").getJSONArray("page_data");
-            for (int i = 0; i < classifyvalue.size(); i++) {
-                JSONObject getparam = new JSONObject();
-                String classify_id = classifyvalue.getJSONObject(i).get("classify_id").toString();
-                String classify_name = classifyvalue.getJSONObject(i).get("classify_name").toString();
-                getparam.put("code", classify_id);
-                getparam.put("name", classify_name);
-                array.add(getparam);
-            }
-//            System.out.println("goodsclassifyGet"+array.toString());
-            classifySon.add(array);
-        }
-        return classifySon;
-    }
+//    public JSONArray goodsclassifyGetSon(String accessToken) throws Exception {
+//        JSONArray classifySon = new JSONArray();
+//        JSONArray array11 = goodsclassifyGet(accessToken);
+//        for (int j = 0; j < array11.size(); j++) {
+//            JSONArray array = new JSONArray();
+//            JSONObject param = new JSONObject();
+//            param.put("classify_pid", array11.getJSONObject(j).get("code").toString());
+//            param.put("page_no", 1);
+//            param.put("page_size", 20);
+//            String url = "https://dopen.weimob.com/api/1_0/wangpu/GoodsClassify/Get?accesstoken="+accessToken;
+//            JSONObject classify = JSONObject.parseObject(ishowHttpClient.post(url,param));
+//            JSONArray classifyvalue = classify.getJSONObject("data").getJSONArray("page_data");
+//            for (int i = 0; i < classifyvalue.size(); i++) {
+//                JSONObject getparam = new JSONObject();
+//                String classify_id = classifyvalue.getJSONObject(i).get("classify_id").toString();
+//                String classify_name = classifyvalue.getJSONObject(i).get("classify_name").toString();
+//                getparam.put("code", classify_id);
+//                getparam.put("name", classify_name);
+//                array.add(getparam);
+//            }
+////            System.out.println("goodsclassifyGet"+array.toString());
+//            classifySon.add(array);
+//        }
+//        return classifySon;
+//    }
 }
