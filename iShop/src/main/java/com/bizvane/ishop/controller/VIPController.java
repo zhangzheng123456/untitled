@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -112,7 +109,7 @@ public class VIPController {
                 while (dbCursor.hasNext()) {
                     DBObject vip = dbCursor.next();
                     if (vip.containsField("album")){
-                        album = obj.get("album").toString();
+                        album = vip.get("album").toString();
                     }
                 }
                 //标签
@@ -295,10 +292,10 @@ public class VIPController {
             if (jsonObject.containsKey("type")){
                 //获取积分列表
                 if (jsonObject.get("type").equals("1")){
-                    DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
-                    logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
-                    String points = dataBox_points.data.get("message").value;
-                    result_points = JSONObject.parseObject(points);
+//                    DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
+//                    logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
+//                    String points = dataBox_points.data.get("message").value;
+//                    result_points = JSONObject.parseObject(points);
                 }else if(jsonObject.get("type").equals("2")){
                     //获取衣橱列表
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipMoneyRecord", datalist);
@@ -308,10 +305,10 @@ public class VIPController {
                 }
             }else {
                 //获取积分和衣橱信息
-                DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
-                logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
-                String points = dataBox_points.data.get("message").value;
-                result_points = JSONObject.parseObject(points);
+//                DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
+//                logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
+//                String points = dataBox_points.data.get("message").value;
+//                result_points = JSONObject.parseObject(points);
 
                 DataBox dataBox_wardrobes = iceInterfaceService.iceInterfaceV2("AnalysisVipMoneyRecord", datalist);
                 logger.info("-------AnalysisVipMoneyRecord:" + dataBox_wardrobes.data.get("message").value);
@@ -475,13 +472,15 @@ public class VIPController {
 
 
     /**
-     * 会员信息(头像，扩展信息，备注)
+     * 会员信息(头像，扩展信息，备注，相册)
      * 保存mongodb
      */
     @RequestMapping(value = "/vipSaveInfo", method = RequestMethod.POST)
     @ResponseBody
     public String vipSaveInfo(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        Date now = new Date();
+
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -508,20 +507,43 @@ public class VIPController {
 
                 DBObject updatedValue=new BasicDBObject();
                 if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
+                    //扩展信息
                     String extend = jsonObject.get("extend").toString();
                     updatedValue.put("extend", extend);
                 }
                 if (jsonObject.containsKey("remark")) {
+                    //备注
                     String remark = jsonObject.get("remark").toString();
                     updatedValue.put("remark", remark);
                 }
                 if (jsonObject.containsKey("avatar") && !jsonObject.get("avatar").toString().equals("")) {
+                    //头像
                     String avatar = jsonObject.get("avatar").toString();
                     updatedValue.put("avatar", avatar);
                 }
                 if (jsonObject.containsKey("vip_group_code") && !jsonObject.get("vip_group_code").toString().equals("")) {
+                    //会员分组
                     String vip_group_code = jsonObject.get("vip_group_code").toString();
                     updatedValue.put("vip_group_code", vip_group_code);
+                }
+                if (jsonObject.containsKey("image_url") && !jsonObject.get("image_url").toString().equals("")){
+                    //相册
+                    DBObject obj = dbCursor1.next();
+                    String album = "";
+                    if (obj.containsField("album"))
+                        album = obj.get("album").toString();
+
+                    String image_url = jsonObject.get("image_url").toString();
+                    JSONArray array = new JSONArray();
+                    JSONObject image = new JSONObject();
+                    image.put("image_url",image_url);
+                    image.put("time",Common.DATETIME_FORMAT.format(now));
+                    array.add(image);
+                    if (!album.equals("")){
+                        JSONArray array1 = JSONArray.parseArray(album);
+                        array.addAll(array1);
+                    }
+                    updatedValue.put("album", array);
                 }
                 DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
                 cursor.update(updateCondition, updateSetValue);
@@ -550,7 +572,16 @@ public class VIPController {
                     String vip_group_code = jsonObject.get("vip_group_code").toString();
                     saveData.put("vip_group_code", vip_group_code);
                 }
-                cursor.save(saveData);
+                if (jsonObject.containsKey("image_url")) {
+                    String image_url = jsonObject.get("image_url").toString();
+                    JSONArray array = new JSONArray();
+                    JSONObject image = new JSONObject();
+                    image.put("image_url",image_url);
+                    image.put("time",Common.DATETIME_FORMAT.format(now));
+                    array.add(image);
+                    saveData.put("album", array);
+                }
+                    cursor.save(saveData);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -621,6 +652,64 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * MongoDB
+     * 会员相册删除
+     */
+    @RequestMapping(value = "/vipAlbumDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipAlbumDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String time = jsonObject.get("time").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+            Map keyMap = new HashMap();
+            keyMap.put("_id", corp_code+vip_id);
+            BasicDBObject queryCondition = new BasicDBObject();
+            queryCondition.putAll(keyMap);
+            DBCursor dbCursor1 = cursor.find(queryCondition);
+            if (dbCursor1.size()>0){
+                DBObject obj = dbCursor1.next();
+                String album = obj.get("album").toString();
+                JSONArray array = JSONArray.parseArray(album);
+                JSONArray new_array = new JSONArray();
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject album_one = array.getJSONObject(i);
+                    String time_one = album_one.get("time").toString();
+                    if (!time_one.equals(time)){
+                        new_array.add(album_one);
+                    }
+                }
+                DBObject updateCondition=new BasicDBObject();
+                updateCondition.put("_id", corp_code+vip_id);
+                DBObject updatedValue=new BasicDBObject();
+                updatedValue.put("album", new_array);
+                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
