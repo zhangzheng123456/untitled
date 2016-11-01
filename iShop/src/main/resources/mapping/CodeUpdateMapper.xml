@@ -17,6 +17,9 @@
             <if test="new_area_code!=null and new_area_code!='' ">
                 area_code=replace(AREA_CODE,#{old_area_code},#{new_area_code}),
             </if>
+            <if test="new_brand_code!=null and new_brand_code!='' ">
+                brand_code=replace(brand_code,#{old_brand_code},#{new_brand_code}),
+            </if>
         </trim>
         WHERE 1=1
         <if test="old_corp_code!=null and old_corp_code!='' ">
@@ -30,6 +33,9 @@
         </if>
         <if test="old_area_code!=null and old_area_code!='' ">
             AND area_code regexp #{old_area_code}
+        </if>
+        <if test="old_brand_code!=null and old_brand_code!='' ">
+            AND brand_code regexp #{old_brand_code}
         </if>
     </update>
 

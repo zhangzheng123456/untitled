@@ -75,13 +75,22 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
 
     @Override
     public String updViplableGroupById(ViplableGroup viplableGroup) throws SQLException {
-        List<ViplableGroup> viplableGroups1= checkCodeOnly(viplableGroup.getCorp_code().trim(), viplableGroup.getLabel_group_code().trim(), Common.IS_ACTIVE_Y);
-        List<ViplableGroup> viplableGroups2 = checkNameOnly(viplableGroup.getCorp_code().trim(), viplableGroup.getLabel_group_name().trim(), Common.IS_ACTIVE_Y);
+        String corp_code = viplableGroup.getCorp_code();
+        String group_code_new = viplableGroup.getLabel_group_code().trim();
+        String group_name_new = viplableGroup.getLabel_group_name().trim();
+        List<ViplableGroup> viplableGroups1= checkCodeOnly(corp_code, group_code_new, Common.IS_ACTIVE_Y);
+        List<ViplableGroup> viplableGroups2 = checkNameOnly(corp_code,group_name_new , Common.IS_ACTIVE_Y);
+
         String result=Common.DATABEAN_CODE_ERROR;
         ViplableGroup viplableGroup1 = selectViplableGroupById(viplableGroup.getId());
-        if((viplableGroups1.size()==0||viplableGroup1.getLabel_group_code().trim().equals(viplableGroup.getLabel_group_code().trim()))
-                && (viplableGroups2.size()==0||viplableGroup1.getLabel_group_name().trim().equals(viplableGroup.getLabel_group_name().trim()))){
-            vipLabelMapper.updViplableBycode(viplableGroup.getLabel_group_code().trim(),viplableGroup.getCorp_code().trim(),viplableGroup1.getLabel_group_code().trim());
+        String group_code_old = viplableGroup1.getLabel_group_code().trim();
+        String group_name_old = viplableGroup1.getLabel_group_name().trim();
+
+        if((viplableGroups1.size()==0||group_code_old.equals(group_code_new))
+                && (viplableGroups2.size()==0||group_name_old.equals(group_name_new))){
+            if (!group_code_old.equals(group_code_new)) {
+                vipLabelMapper.updViplableBycode(group_code_new, corp_code, group_code_old);
+            }
             viplableGroupMapper.updViplableGroupById(viplableGroup);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(viplableGroups1.size()>0){

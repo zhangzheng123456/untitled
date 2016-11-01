@@ -117,16 +117,6 @@ public class GroupController {
             JSONObject jsonObject = new JSONObject(message);
             Group group = new Group();
             Date now = new Date();
-            //为新增群组，计算group_code
-//            String max_code = groupService.selectMaxCode();
-//            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
-//            Integer c = code;
-//            int length = max_code.length() - c.toString().length() - 1;
-//            String group_code = "G";
-//            for (int i = 0; i < length; i++) {
-//                group_code = group_code + "0";
-//            }
-//            group_code = group_code + code;
 
             group.setGroup_code(jsonObject.get("group_code").toString());
             group.setGroup_name(jsonObject.get("group_name").toString());
@@ -140,9 +130,10 @@ public class GroupController {
             group.setIsactive(jsonObject.get("isactive").toString());
             String result = groupService.insertGroup(group);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                Group group1 = groupService.selectByCode(group.getCorp_code(),group.getGroup_code(),group.getIsactive());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(group1.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
