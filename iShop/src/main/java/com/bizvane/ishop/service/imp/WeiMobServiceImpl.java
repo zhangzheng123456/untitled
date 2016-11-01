@@ -118,9 +118,6 @@ public class WeiMobServiceImpl implements WeimobService{
                 JSONObject param = new JSONObject();
                 JSONObject obj_spu = pageData.getJSONObject(i).getJSONObject("spu");
                 String code = pageData.getJSONObject(i).getJSONObject("spu").get("spu_id").toString();
-//                String image = pageData.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
-//                String title = pageData.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
-//                String price = pageData.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
                 String url = "http://55757490.m.weimob.com/vshop/Goods/GoodsDetail1/"+code;
                 param.put("id", code);
                 param.put("photo", obj_spu.get("default_img").toString());
@@ -169,10 +166,6 @@ public class WeiMobServiceImpl implements WeimobService{
             if(classify.contains(xx)){
                 JSONObject param = new JSONObject();
                 String code = obj_spu.get("spu_id").toString();
-//                String image = obj_spu.get("default_img").toString();
-//                String title = obj_spu.get("spu_name").toString();
-//                String price = obj_spu.get("low_sellprice").toString();
-//                String classifyID = obj_spu.get("classify_ids").toString();
                 String url = "http://55757490.m.weimob.com/vshop/Goods/GoodsDetail1/"+code;
                 param.put("id", code);
                 param.put("photo", obj_spu.get("default_img").toString());
@@ -219,14 +212,9 @@ public class WeiMobServiceImpl implements WeimobService{
             String spu_name = obj_spu.get("spu_name").toString();
             if(spu_name.contains(xx)){
                 JSONObject param = new JSONObject();
-                String code = page_data.getJSONObject(i).getJSONObject("spu").get("spu_id").toString();
-//                String image = page_data.getJSONObject(i).getJSONObject("spu").get("default_img").toString();
-//                String title = page_data.getJSONObject(i).getJSONObject("spu").get("spu_name").toString();
-//                String price = page_data.getJSONObject(i).getJSONObject("spu").get("low_sellprice").toString();
-//                String classifyID = page_data.getJSONObject(i).getJSONObject("spu").get("classify_ids").toString();
+                String code = obj_spu.get("spu_id").toString();
                 String url = "http://55757490.m.weimob.com/vshop/Goods/GoodsDetail1/"+code;
                 param.put("id", code);
-                param.put("id", obj_spu.get("spu_id").toString());
                 param.put("photo", obj_spu.get("default_img").toString());
                 param.put("name", obj_spu.get("spu_name").toString());
                 param.put("finalPrice", obj_spu.get("low_sellprice").toString());
