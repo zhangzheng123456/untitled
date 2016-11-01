@@ -278,7 +278,7 @@ function GET(a, b) {
             var list = list.list;
             superaddition(list, pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0], cout, a, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -440,7 +440,7 @@ function POST(a,b) {
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0], cout, a, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
         } else if (data.code == "-1") {
             alert(data.message);
         }
@@ -755,7 +755,7 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
+    var input=$('#sxk .inputs>ul>li');
    inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
@@ -764,16 +764,17 @@ function getInputValue(){
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
-        var screen_value="";
+        var screen_value={};
        if($(input[i]).parent("li").attr("class")=="isActive_select"){
            screen_value=$(input[i]).attr("data-code");
        }else if($(input[i]).attr("class")=="created_date"){
            var start=$('#start').val();
            var end=$('#end').val();
+           screen_key=$(input[i]).attr("id");
            screen_value={"start":start,"end":end};
        }else{
-           screen_value=$(input[i]).val().trim();
+           screen_key=$(input[i]).find("input").attr("id");
+           screen_value=$(input[i]).find('input').val().trim();
        }
         if(screen_value!=""){
             num++;
@@ -812,7 +813,7 @@ function filtrates(a,b) {
                 superaddition(list, pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0], cout, a, b, funcCode);
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
         } else if (data.code == "-1") {
             alert(data.message);
         }
