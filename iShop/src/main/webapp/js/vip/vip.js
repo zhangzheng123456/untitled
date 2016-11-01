@@ -355,6 +355,7 @@ function jumpBianse(){
         return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
         return_jump["list"]=list;//筛选的请求的list;
         return_jump["pageSize"]=pageSize;//每页多少行
+        console.log(return_jump);
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
         sessionStorage.setItem("corp_code",corp_code);
@@ -611,8 +612,16 @@ $("#album_leadingout").click(function () {
         params['vip'] = list;
         oc.postRequire('post','/vip/exportVipAlbums',0,params,function (data) {
             if(data.code == 0){
-                var msg = data.message;
-                console.log(msg.path);
+                var msg = JSON.parse(data.message);
+                var path = msg.path;
+                path=path.substring(1,path.length-1);
+                var l=$(window).width();
+                var h=$(document.body).height();
+                $("#p").css({"width":+l+"px","height":+h+"px"});
+                $("#tk").css({"left":+left+"px","top":+tp+"px"});
+                $("#p").show();
+                $("#tk").show();
+                $("#enter").html("<a style='color: white;' href='/"+path+"'>确认</a>");
             }else {
                 alert("导出相册失败")
             }

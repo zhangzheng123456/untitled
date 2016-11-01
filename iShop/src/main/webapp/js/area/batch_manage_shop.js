@@ -231,6 +231,14 @@ function superaddition(data, num) {
             $("#"+data[j].id).find("input").attr("name", "die");
         }
     }
+    $("tbody tr").click(function () {
+        var input = $(this).find("input")[0];
+        if(input.type=="checkbox"&&input.checked==false){
+            input.checked = true;
+        }else if(input.type=="checkbox"&&input.checked==true){
+            input.checked = false;
+        }
+    })
 };
 //页面加载时list请求
 function GET(a, b) {

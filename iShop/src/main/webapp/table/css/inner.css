@@ -649,6 +649,13 @@ input::-webkit-input-placeholder{
 	border-radius: 5px;
 	margin-left: 20px;
 }
+.tk .btn .album_enter{
+	background-color: #6dc1c8;
+	color: #fff;
+	font-size: 14px;
+	border-radius: 5px;
+	margin-left: 20px;
+}
 .frame{
 	padding-left: 10px;
 	padding-right: 10px;
