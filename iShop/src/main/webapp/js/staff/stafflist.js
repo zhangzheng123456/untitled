@@ -292,14 +292,15 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
     var param={};
     param["searchValue"]=value;
     param["pageNumber"]=pageNumber;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST(param);
+        value=this.value.trim();
+        param["searchValue"]=value;
+        POST();
     }
 });
 //搜索的请求函数

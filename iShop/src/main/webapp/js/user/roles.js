@@ -328,13 +328,14 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
-    param["searchValue"]=value;
+    inx=1;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST();
+        value=this.value.trim();
+        param["searchValue"]=value;
+        POST(inx,pageSize);
     }
 });
 //点击放大镜触发搜索

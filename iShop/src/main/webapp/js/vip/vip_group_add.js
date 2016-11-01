@@ -1588,16 +1588,14 @@ function filtrates(a, b, _param, c) {
 $("#search").keydown(function () {
     var event = window.event || arguments[0];
     value = this.value.replace(/\s+/g, "");
-    if (value !== "") {
+    if (event.keyCode == 13) {
+        value=this.value.trim();
         inx = 1;
-        param["searchValue"] = value;
-        param["pageNumber"] = inx;
-        param["pageSize"] = pageSize;
-        if (event.keyCode == 13) {
-            POST(inx, pageSize, group_code);
-        }
-    } else {
-        if (event.keyCode == 13) {
+        if(value!==""){
+            param["searchValue"] = value;
+            param["pageNumber"] = inx;
+            param["pageSize"] = pageSize;
+        }else{
             GET(inx, pageSize, group_code);
         }
     }

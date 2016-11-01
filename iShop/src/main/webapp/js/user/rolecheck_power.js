@@ -11,7 +11,7 @@ var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
 if(group_corp!==null){
   group_corp=JSON.parse(group_corp);
   role_code=group_corp.role_code;
-  var role_name=group_corp.role_name;
+  var role_names=group_corp.role_name;
   $('#role_id').val(role_code);
   $('#role_name').val(role_name);
   $("#page-wrapper").hide();
@@ -124,13 +124,13 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
-    param["searchValue"]=value;
     param["role_code"]=role_code;
     // param["pageNumber"]=inx;
     // param["pageSize"]=pageSize;
     // param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        value=this.value.trim();
+        param["searchValue"]=value;
         POST();
     }
 });
