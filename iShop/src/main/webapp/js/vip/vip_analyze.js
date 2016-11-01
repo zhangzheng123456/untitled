@@ -145,6 +145,8 @@ function getStore(a){
 function showNameClick(e){
     un_push=1;
     var e= e.target;
+    console.log(e);
+    e.style.background='#6cc1c8';
     var d=$(e).parent().parent().parent();
     if($(d).attr('id')=='select_analyze'){
         var area_code=$(e).attr('data_area');
