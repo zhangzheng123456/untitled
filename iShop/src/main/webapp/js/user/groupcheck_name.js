@@ -60,6 +60,7 @@ function hideLi(){
     $("#liebiao").hide();  
 }
 function setPage(container, count, pageindex,pageSize,group_code,corp_code,value) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;

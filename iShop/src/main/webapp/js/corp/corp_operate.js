@@ -233,16 +233,11 @@ var message = JSON.parse(val.message);
         });
     };
     corpjs.ajaxSubmit = function (_command, _params, opt) {
-        // console.log(JSON.stringify(_params));
-        // _params=JSON.stringify(_params);
-        console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                // if (message.user_type == "admin") {
-                //     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
-                // } else {
-                //     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
-                // }
+                if(_command=="/corp/add"){
+                    
+                }
                 art.dialog({
                     time: 1,
                     lock: true,

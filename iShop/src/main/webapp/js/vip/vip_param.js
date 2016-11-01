@@ -122,6 +122,7 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -325,7 +326,7 @@ function GET(a,b){
             list=list.list;
             superaddition(list,pageNumber);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
             $(".table tbody").sortable({helper:fixHelper,axis: 'y' ,delay: 200,cursor:"move",opacity: 0.6 , update: function(event, ui) {
                 var len=$("#table tbody tr");
                 var params=[];
@@ -518,7 +519,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -848,7 +849,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }

@@ -658,6 +658,7 @@ function superaddition(data, num, c) {
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;

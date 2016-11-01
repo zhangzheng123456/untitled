@@ -37,7 +37,17 @@ var oc = new ObjectControl();
 	};
 	viplabeljs.bindbutton=function(){
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#LABEL_NAME").attr("data-mark");//标签名称是否唯一的标志
 			if(viplabeljs.firstStep()){
+				if(nameMark=="N"){
+					var nameMark=$("#LABEL_NAME").attr("data-mark");//标签名称是否唯一的标志
+					if(nameMark=="N"){
+						var div=$("#LABEL_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+				}
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
 				var label_group=$("#label_group").attr("data-id");
@@ -71,8 +81,17 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
-		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
+		$("#edit_save").click(function(){
+			var nameMark=$("#LABEL_NAME").attr("data-mark");//标签名称是否唯一的标志
 			if(viplabeljs.firstStep()){
+				if(nameMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#LABEL_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+				}
 				var ID=sessionStorage.getItem("id");//编辑时候的id
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
@@ -193,6 +212,7 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+				$("#LABEL_NAME").attr("data-name",msg.label_name);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -233,6 +253,7 @@ jQuery(document).ready(function(){
 		}, 200)
 	})
 });
+
 function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
@@ -318,3 +339,25 @@ function getlabelGroup(){
 		}
 	})
 }
+//验证标签名称是否唯一的标志
+$("#LABEL_NAME").blur(function(){
+    var label_name=$("#LABEL_NAME").val();//标签名称
+    var label_name1=$("#LABEL_NAME").attr("data-name");//编辑的标签名称的一个标志
+    var div=$(this).next('.hint').children();
+    var corp_code=$("#OWN_CORP").val();
+    if(label_name!==""&&label_name!==label_name1){
+	    var _params={};
+	    _params["corp_code"]=corp_code;
+	    _params["tag_name"]=label_name;
+	    oc.postRequire("post","/VIP/label/VipLabelNameExist","", _params, function(data){
+	        if(data.code=="0"){
+	            div.html("");
+	            $("#LABEL_NAME").attr("data-mark","Y");
+	        }else if(data.code=="-1"){
+	            div.html("改名称已经存在！");
+	            div.addClass("error_tips");
+	            $("#LABEL_NAME").attr("data-mark","N");
+	        }
+	    })
+	}
+})

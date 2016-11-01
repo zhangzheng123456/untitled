@@ -9,6 +9,7 @@ var area_name = "";//区域名称
 var corp_code = ""//企业编号
 
 function setPage(container, count, pageindex, pageSize) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;

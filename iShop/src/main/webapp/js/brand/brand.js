@@ -113,6 +113,7 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -289,7 +290,7 @@ function GET(a,b){
                 var list=list.list;
                 superaddition(list,pageNum);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,a,b,funcCode);
+                setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
@@ -429,7 +430,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -808,6 +809,7 @@ function filtrates(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            var pageNum=list.pageNum;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -820,7 +822,7 @@ function filtrates(a,b){
                 superaddition(list,a);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }

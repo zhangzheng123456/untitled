@@ -53,6 +53,7 @@ $("#empty").click(function(){
     }
 })
 function setPage(container, count, pageSize,funcCode,value) {//分页
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageSize = pageSize;

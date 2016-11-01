@@ -381,7 +381,7 @@ input::-webkit-input-placeholder{
 	margin-left: 0;
 }
 .sxk .inputs .tm20{
-	width: 20px;
+	min-width: 20px !important;
 	text-align: center;
 }
 .table tr{
