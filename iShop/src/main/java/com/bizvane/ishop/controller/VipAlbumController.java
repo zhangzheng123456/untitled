@@ -279,151 +279,147 @@ public class VipAlbumController {
 //    }
 
 
-
-
-
-
     /**
      * MongDB
      * 会员相册
      * 新增
      */
-    @RequestMapping(value = "/vipAlbumAdd", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipAlbumAdd(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String param = request.getParameter("param");
-            logger.info("json---------------" + param);
-            JSONObject jsonObj = JSONObject.parseObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_id = jsonObject.get("vip_id").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String card_no = jsonObject.get("cardno").toString();
-            String phone = jsonObject.get("phone").toString();
-            String image_url = jsonObject.get("image_url").toString();
-
-            Date now = new Date();
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-            Map keyMap = new HashMap();
-            keyMap.put("_id", corp_code+vip_id);
-            BasicDBObject queryCondition = new BasicDBObject();
-            queryCondition.putAll(keyMap);
-            DBCursor dbCursor1 = cursor.find(queryCondition);
-            if (dbCursor1.size()>0){
-                //记录存在，更新
-                DBObject obj = dbCursor1.next();
-                String album = "";
-                if (obj.containsField("album"))
-                    album = obj.get("album").toString();
-                DBObject updateCondition=new BasicDBObject();
-                updateCondition.put("_id", corp_code+vip_id);
-
-                DBObject updatedValue=new BasicDBObject();
-
-                JSONArray array = new JSONArray();
-                JSONObject image = new JSONObject();
-                image.put("image_url",image_url);
-                image.put("time",Common.DATETIME_FORMAT.format(now));
-                array.add(image);
-                if (!album.equals("")){
-                    JSONArray array1 = JSONArray.parseArray(album);
-                    array.addAll(array1);
-                }
-                updatedValue.put("album", array);
-
-                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
-                cursor.update(updateCondition, updateSetValue);
-            }else {
-                //记录不存在，插入
-                DBObject saveData = new BasicDBObject();
-                saveData.put("_id", corp_code + vip_id);
-                saveData.put("vip_id", vip_id);
-                saveData.put("corp_code", corp_code);
-                saveData.put("card_no", card_no);
-                saveData.put("phone", phone);
-                saveData.put("corp_code", corp_code);
-
-                JSONArray array = new JSONArray();
-                JSONObject image = new JSONObject();
-                image.put("image_url",image_url);
-                image.put("time",Common.DATETIME_FORMAT.format(now));
-                array.add(image);
-                saveData.put("album", array);
-
-                cursor.save(saveData);
-            }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(Common.DATETIME_FORMAT.format(now));
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/vipAlbumAdd", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String vipAlbumAdd(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String param = request.getParameter("param");
+//            logger.info("json---------------" + param);
+//            JSONObject jsonObj = JSONObject.parseObject(param);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String vip_id = jsonObject.get("vip_id").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            String card_no = jsonObject.get("cardno").toString();
+//            String phone = jsonObject.get("phone").toString();
+//            String image_url = jsonObject.get("image_url").toString();
+//
+//            Date now = new Date();
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//            Map keyMap = new HashMap();
+//            keyMap.put("_id", corp_code+vip_id);
+//            BasicDBObject queryCondition = new BasicDBObject();
+//            queryCondition.putAll(keyMap);
+//            DBCursor dbCursor1 = cursor.find(queryCondition);
+//            if (dbCursor1.size()>0){
+//                //记录存在，更新
+//                DBObject obj = dbCursor1.next();
+//                String album = "";
+//                if (obj.containsField("album"))
+//                    album = obj.get("album").toString();
+//                DBObject updateCondition=new BasicDBObject();
+//                updateCondition.put("_id", corp_code+vip_id);
+//
+//                DBObject updatedValue=new BasicDBObject();
+//
+//                JSONArray array = new JSONArray();
+//                JSONObject image = new JSONObject();
+//                image.put("image_url",image_url);
+//                image.put("time",Common.DATETIME_FORMAT.format(now));
+//                array.add(image);
+//                if (!album.equals("")){
+//                    JSONArray array1 = JSONArray.parseArray(album);
+//                    array.addAll(array1);
+//                }
+//                updatedValue.put("album", array);
+//
+//                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+//                cursor.update(updateCondition, updateSetValue);
+//            }else {
+//                //记录不存在，插入
+//                DBObject saveData = new BasicDBObject();
+//                saveData.put("_id", corp_code + vip_id);
+//                saveData.put("vip_id", vip_id);
+//                saveData.put("corp_code", corp_code);
+//                saveData.put("card_no", card_no);
+//                saveData.put("phone", phone);
+//                saveData.put("corp_code", corp_code);
+//
+//                JSONArray array = new JSONArray();
+//                JSONObject image = new JSONObject();
+//                image.put("image_url",image_url);
+//                image.put("time",Common.DATETIME_FORMAT.format(now));
+//                array.add(image);
+//                saveData.put("album", array);
+//
+//                cursor.save(saveData);
+//            }
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(Common.DATETIME_FORMAT.format(now));
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * MongoDB
      * 会员相册删除
      */
-    @RequestMapping(value = "/vipAlbumDelete", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipAlbumDelete(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String param = request.getParameter("param");
-            logger.info("json---------------" + param);
-            JSONObject jsonObj = JSONObject.parseObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_id = jsonObject.get("vip_id").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String time = jsonObject.get("time").toString();
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-            Map keyMap = new HashMap();
-            keyMap.put("_id", corp_code+vip_id);
-            BasicDBObject queryCondition = new BasicDBObject();
-            queryCondition.putAll(keyMap);
-            DBCursor dbCursor1 = cursor.find(queryCondition);
-            if (dbCursor1.size()>0){
-                DBObject obj = dbCursor1.next();
-                String album = obj.get("album").toString();
-                JSONArray array = JSONArray.parseArray(album);
-                JSONArray new_array = new JSONArray();
-                for (int i = 0; i < array.size(); i++) {
-                    JSONObject album_one = array.getJSONObject(i);
-                    String time_one = album_one.get("time").toString();
-                    if (!time_one.equals(time)){
-                        new_array.add(album_one);
-                    }
-                }
-                DBObject updateCondition=new BasicDBObject();
-                updateCondition.put("_id", corp_code+vip_id);
-                DBObject updatedValue=new BasicDBObject();
-                updatedValue.put("album", new_array);
-                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
-                cursor.update(updateCondition, updateSetValue);
-            }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/vipAlbumDelete", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String vipAlbumDelete(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String param = request.getParameter("param");
+//            logger.info("json---------------" + param);
+//            JSONObject jsonObj = JSONObject.parseObject(param);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String vip_id = jsonObject.get("vip_id").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            String time = jsonObject.get("time").toString();
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//            Map keyMap = new HashMap();
+//            keyMap.put("_id", corp_code+vip_id);
+//            BasicDBObject queryCondition = new BasicDBObject();
+//            queryCondition.putAll(keyMap);
+//            DBCursor dbCursor1 = cursor.find(queryCondition);
+//            if (dbCursor1.size()>0){
+//                DBObject obj = dbCursor1.next();
+//                String album = obj.get("album").toString();
+//                JSONArray array = JSONArray.parseArray(album);
+//                JSONArray new_array = new JSONArray();
+//                for (int i = 0; i < array.size(); i++) {
+//                    JSONObject album_one = array.getJSONObject(i);
+//                    String time_one = album_one.get("time").toString();
+//                    if (!time_one.equals(time)){
+//                        new_array.add(album_one);
+//                    }
+//                }
+//                DBObject updateCondition=new BasicDBObject();
+//                updateCondition.put("_id", corp_code+vip_id);
+//                DBObject updatedValue=new BasicDBObject();
+//                updatedValue.put("album", new_array);
+//                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+//                cursor.update(updateCondition, updateSetValue);
+//            }
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage("success");
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 }
