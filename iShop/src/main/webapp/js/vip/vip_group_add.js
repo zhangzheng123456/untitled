@@ -7,10 +7,13 @@ var _params = {};
 var group_cheked = [];
 var corp_code = '';//企业编号
 var group_code = '';//分组编号
+var group_name='';//分组名称
+var group_remark='';//分组备注
 var group_count = '';
 var user_nextpage = false;//导购拉下一页
 var user_num=1;
 var param = {};//搜索参数
+var choose_this_group='';//当前已选择
 $(function () {
     window.vip.init();
     if ($(".pre_title label").text() == "编辑会员分组") {
@@ -478,6 +481,8 @@ $('#screen_add').on('click', function () {
     var str = $('#screen_add').text().trim();
     str == '分配会员' && ( role = 'eidtor');
     group_code = $("#vip_num").val();
+    group_name = $("#vip_id").val();
+    group_remark = $("#vip_remark").val();
     corp_code = $('#OWN_CORP').val();
     $(this).attr('data_role') ? role = $(this).attr('data_role') : '';
     GET(1, 10, group_code);//第三个参数  分组编号
@@ -502,7 +507,6 @@ $("#save").click(function () {
         get_group_sub.push($(get_groups[i]).find('[data_vip_id]').attr('data_vip_id'));
     }
     //遍历已选择的与现选中的做对比
-    console.log(group_cheked);
     for (var r = 0; r < group_cheked.length; r++) {
         //返回-1  就是没找到要将这个号保存到quit中
         if (get_group_sub.indexOf(group_cheked[r]) == -1) {
@@ -531,16 +535,32 @@ $("#save").click(function () {
     }
     // sessionStorage.setItem('vip_choose',choose);
     // sessionStorage.setItem('vip_quit',quit);
+    //去重
+    console.log(group_cheked);
+    console.log(choose);
+    for(var r=choose.length-1;r>=0;r--){
+        for(var i=0;i<group_cheked.length;i++){
+            choose[r]==group_cheked[i]?choose.splice(r,1):'';
+        }
+    }
+    console.log(choose);
+    console.log(quit);
     param['vip_group_id'] =sessionStorage.getItem("id");
     param['choose'] = choose.toString();
+    param['vip_group_code'] = group_code;//分组编号
+    param['vip_group_name'] = group_name;//分组名称
+    param['vip_group_remark'] = group_remark;//备注
     param['quit'] = quit.toString();
     console.log(param);
     //发起异步请求
     oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
         if (data.code == 0) {
-            console.log(role);
+            var msg=JSON.parse(data.message);
+            $('#vip_num').val(msg.vip_group_code);
+            $('#vip_id').val(msg.vip_group_name);
+            $('#vip_remark').val(msg.vip_group_name);
             if (role == 'eidtor') {
-                window.location.reload()
+                // window.location.reload()
             } else {
                 $('#group_recode').val('共' + group_count + "个会员");
                 $('#page-wrapper')[0].style.display = 'block';
@@ -610,7 +630,6 @@ function jumpBianse() {
     })
 }
 function superaddition(data, num, c) {
-    console.log(data);
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
