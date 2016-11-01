@@ -236,14 +236,18 @@ var message = JSON.parse(val.message);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
                 if(_command=="/corp/add"){
-                    
+                    console.log(data.message);
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/corp/crop_edit.html");
                 }
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content:"保存成功"
-                });
+                if(_command=="/corp/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,

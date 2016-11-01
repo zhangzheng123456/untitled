@@ -231,13 +231,18 @@ var oc = new ObjectControl();
 	staffgoaljs.ajaxSubmit=function(_command,_params,opt){
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content:"保存成功"
-				});
-				// $(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
+				if(_command=="/userAchvGoal/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/achv/staffgoal_edit.html");
+                }
+                if(_command=="/userAchvGoal/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
