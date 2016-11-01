@@ -113,6 +113,7 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode){
+    console.log(pageindex);
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -300,7 +301,7 @@ function GET(a,b){
                 var list=list.list;
                 superaddition(list,pageNum);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,a,b,funcCode);
+                list.length<=0?'': setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
                 alert(data.message);
             }
