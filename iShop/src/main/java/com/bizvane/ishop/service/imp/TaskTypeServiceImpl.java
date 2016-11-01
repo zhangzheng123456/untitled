@@ -47,7 +47,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         return task;
     }
 
-    public String insertTaskType(String message, String user_code) {
+    public String insertTaskType(String message, String user_code) throws Exception{
         JSONObject jsonObject = new JSONObject(message);
         String task_type_code = jsonObject.get("task_type_code").toString().trim();
         String task_type_name = jsonObject.get("task_type_name").toString().trim();
@@ -73,7 +73,9 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         task_type.setIsactive(jsonObject.get("isactive").toString().trim());
         int result = taskTypeMapper.insertTaskType(task_type);
         if (result == 1) {
-            return Common.DATABEAN_CODE_SUCCESS;
+            TaskType taskType1=this.getTaskTypeForId(task_type.getCorp_code(),task_type.getTask_type_code());
+
+            return String.valueOf(taskType1.getId());
         } else {
             return "新增失败，请稍后再试";
         }
@@ -142,5 +144,10 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         }
         PageInfo<TaskType> page = new PageInfo<TaskType>(list);
         return page;
+    }
+
+    @Override
+    public TaskType getTaskTypeForId(String corp_code, String task_type_code) throws Exception {
+        return taskTypeMapper.getTaskTypeForId(corp_code, task_type_code);
     }
 }

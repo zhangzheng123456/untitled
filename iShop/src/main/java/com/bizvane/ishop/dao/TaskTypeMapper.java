@@ -24,6 +24,6 @@ public interface TaskTypeMapper {
     int updateTaskType(TaskType type);
 
     int deleteById(int id);
-
+    TaskType getTaskTypeForId(@Param("corp_code") String corp_code,@Param("task_type_code") String task_type_code);
     List<TaskType> selectAllTaskTypeScreen(Map<String, Object> params);
 }

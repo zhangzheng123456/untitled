@@ -91,14 +91,21 @@ public class TaskTypeController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-
             String result = taskTypeService.insertTaskType(message, user_code);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
-            } else {
+            if (result.equals("任务类型编号已存在")) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else if (result.equals("任务类型名称已存在")) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else if (result.equals("新增失败，请稍后再试")) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             }
@@ -228,8 +235,8 @@ public class TaskTypeController {
                 if (taskType != null) {
                     String task_type_code = taskType.getTask_type_code();
                     String corp_code = taskType.getCorp_code();
-                    List<Task> tasks = taskService.selectTaskByTaskType(corp_code,task_type_code);
-                    if (tasks.size()>0){
+                    List<Task> tasks = taskService.selectTaskByTaskType(corp_code, task_type_code);
+                    if (tasks.size() > 0) {
                         msg = "该任务类型" + task_type_code + "下有任务，请先处理后再删除";
                     }
                 }
@@ -360,6 +367,7 @@ public class TaskTypeController {
 
     /**
      * 导出数据
+     *
      * @param request
      * @param response
      * @return
@@ -386,7 +394,7 @@ public class TaskTypeController {
                 } else {
                     taskTypes = taskTypeService.selectAllTaskType(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     taskTypes = taskTypeService.selectAllTaskTypeScreen(1, 30000, "", map);
@@ -402,8 +410,8 @@ public class TaskTypeController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(list);
-            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -413,7 +421,7 @@ public class TaskTypeController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);

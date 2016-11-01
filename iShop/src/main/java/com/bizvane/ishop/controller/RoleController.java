@@ -111,9 +111,10 @@ public class RoleController {
             role1.setIsactive(jsonObject.get("isactive").toString());
             String result = roleService.insertRole(role1);
             if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                Role role=roleService.getRoleForID(role1.getRole_code());
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(result);
+                dataBean.setMessage(String.valueOf(role.getId()));
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

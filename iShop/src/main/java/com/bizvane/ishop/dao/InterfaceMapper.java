@@ -24,4 +24,5 @@ public interface InterfaceMapper {
     int delInterfaceById(int id) throws SQLException;
 
     Interfacers selInterfaceById(@Param("id") int id) throws SQLException;
+    Interfacers
 }

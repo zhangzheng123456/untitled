@@ -450,5 +450,28 @@
         GROUP BY def_task.id
         ORDER BY def_task.id DESC
     </select>
+    <select id="getTaskForId" resultType="com.bizvane.ishop.entity.Task">
+        SELECT
+        def_task.id,
+        def_task.task_code,
+        def_task.task_title,
+        def_task_type.task_type_name,
+        def_task.task_description,
+        def_task.corp_code,
+        def_corp.corp_name,
+        def_task.target_start_time,
+        def_task.target_end_time,
+        def_task.modifier,
+        def_task.ISACTIVE
+        FROM def_task,def_corp,def_task_type
+        WHERE def_task.corp_code = def_corp.corp_code
+        AND def_task.task_type_code =def_task_type.task_type_code
+        AND def_corp.corp_code = def_task_type.corp_code
+        AND def_task.corp_code = #{corp_code}
+        AND def_task.task_type_code = #{task_type_code}
+        <if test="isactive !=''">
+            AND def_task.isactive = #{isactive}
+        </if>
+    </select>
 
 </mapper>
