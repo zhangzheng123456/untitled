@@ -562,16 +562,18 @@ $("#save").click(function () {
     oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
         if (data.code == 0) {
             var msg=JSON.parse(data.message);
+            console.log(msg);
             $('#vip_num').val(msg.vip_group_code);
             $('#vip_id').val(msg.vip_group_name);
             $('#vip_remark').val(msg.vip_group_name);
-            if (role == 'eidtor') {
-                // window.location.reload()
-            } else {
-                $('#group_recode').val('共' + group_count + "个会员");
-                $('#page-wrapper')[0].style.display = 'block';
-                $('.content')[0].style.display = 'none';
-            }
+            $('#group_recode').val('共' +msg.vip_count+ "个会员");
+            // if (role == 'eidtor') {
+            //     // window.location.reload()
+            // } else {
+            //     $('#group_recode').val('共' + group_count + "个会员");
+            //     $('#page-wrapper')[0].style.display = 'block';
+            //     $('.content')[0].style.display = 'none';
+            // }
         } else if (data.code == -1) {
             alert(data.message);
         }
