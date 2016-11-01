@@ -83,7 +83,10 @@ public class MessageServiceImpl implements MessageService {
                 for (int i = 0; i < messageLists.size(); i++) {
                     store_code = messageLists.get(i).getMessage_receiver();
                     List<User> users = userMapper.selectStoreUser(corp_code,store_code,"","",Common.IS_ACTIVE_Y);
-                    userList.addAll(users);
+
+                    if(!userList.contains(users)){
+                        userList.addAll(users);
+                    }
                 }
             }else if (receiver_type.equals("area")) {
                 List<Message> messageLists = selectMessageByCode(message_code);
@@ -97,7 +100,10 @@ public class MessageServiceImpl implements MessageService {
                 List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null ,Common.IS_ACTIVE_Y);
                 for (int i = 0; i < store.size(); i++) {
                     List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y);
-                    userList.addAll(users);
+                    if(!userList.contains(users)){
+                        userList.addAll(users);
+                    }
+
                 }
             }else if (receiver_type.equals("corp")){
                 Map<String, Object> params = new HashMap<String, Object>();
@@ -196,7 +202,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception {
-        Map<String, Object> params = new HashMap<String, Object>();
+
+     Map<String, Object> params = new HashMap<String, Object>();
+        com.alibaba.fastjson.JSONObject date = com.alibaba.fastjson.JSONObject.parseObject(map.get("created_date"));
+
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString());
+        params.put("corp_code", corp_code);
+        map.remove("modified_date");
         params.put("corp_code", corp_code);
         params.put("user_code", user_code);
         params.put("map", map);

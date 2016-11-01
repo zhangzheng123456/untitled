@@ -303,6 +303,12 @@
         <if test="user_code!=null and user_code!=''">
             AND dum.message_sender=#{user_code}
         </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  dum.modified_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  dum.modified_date &lt;= #{created_date_end}
+        </if>
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
