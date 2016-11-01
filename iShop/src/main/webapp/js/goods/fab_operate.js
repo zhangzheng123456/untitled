@@ -1,5 +1,4 @@
 var oc = new ObjectControl();
-var role='';
 (function(root,factory){
 	root.fab = factory();
 }(this,function(){
@@ -53,7 +52,6 @@ var role='';
 	};
 	fabjs.bindbutton=function(){
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
-			role='add';
 			function getContent() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getContent());
@@ -193,7 +191,6 @@ var role='';
 			}
 		});
 		$("#edit_save").click(function(){
-			role='edit';
 			// $('#close_match_goods').trigger("click");
 			var delete_image=[];//需要删除的数据
 			console.log(sessionStorage.getItem('goods_description'));
@@ -363,17 +360,24 @@ var role='';
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content:"保存成功"
-				});
-				if(role=='add'){
-					$(".fabadd_oper_btn ul li:nth-of-type(2)").trigger('click');
-				}else if(role=='edit'){
-					window.location.reload();
-				}
+				if(_command=="/goods/fab/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_edit.html");
+                }
+                if(_command=="/goods/fab/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                    window.location.reload();
+                }
+				// if(role=='add'){
+				// 	$(".fabadd_oper_btn ul li:nth-of-type(2)").trigger('click');
+				// }else if(role=='edit'){
+				// 	
+				// }
 				// $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 			}else if(data.code=="-1"){
 				art.dialog({
