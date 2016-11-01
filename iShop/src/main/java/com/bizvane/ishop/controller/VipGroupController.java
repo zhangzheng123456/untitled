@@ -578,8 +578,11 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
 
             int vips_group_id = Integer.valueOf(jsonObject.get("vip_group_id").toString());
+            String vip_group_code = jsonObject.get("vip_group_code").toString();
+            String vip_group_name = jsonObject.get("vip_group_name").toString();
+            String vip_group_remark = jsonObject.get("vip_group_remark").toString();
             String vips_choose = jsonObject.get("choose").toString();
-            String vips_quit = jsonObject.get("quit").toString();
+//            String vips_quit = jsonObject.get("quit").toString();
 
             VipGroup vipGroup = vipGroupService.getVipGroupById(vips_group_id);
             String vip_ids = "";
@@ -599,12 +602,15 @@ public class VipGroupController {
 //                   vip_ids = vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
 //               }
 //           }
-
+            JSONObject obj = new JSONObject();
+            obj.put("vip_group_code",vip_group_code);
+            obj.put("vip_group_name",vip_group_name);
+            obj.put("vip_group_remark",vip_group_remark);
             vipGroup.setVip_ids(vip_ids);
             vipGroupService.updateVipGroup(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("save success");
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

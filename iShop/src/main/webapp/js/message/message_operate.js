@@ -306,6 +306,8 @@ $("#staff_search").keydown(function(){
 	var event=window.event||arguments[0];
 	staff_num=1;
 	if(event.keyCode==13){
+		isscroll=false;
+	    $("#screen_staff .screen_content_l").unbind("scroll");
 		$("#screen_staff .screen_content_l ul").empty();
 		getstafflist(staff_num);
 	}

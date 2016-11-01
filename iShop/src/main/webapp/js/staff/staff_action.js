@@ -1,4 +1,3 @@
-
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值

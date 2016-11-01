@@ -124,12 +124,12 @@ public class VipGroupServiceImpl implements VipGroupService {
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
-        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
+//        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
         if (vipGroup1 != null) {
             result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null) {
-            result = "该会员分组名称已存在";
+//        } else if (vipGroup2 != null) {
+//            result = "该会员分组名称已存在";
         } else {
             Date now = new Date();
             VipGroup vipGroup = new VipGroup();
@@ -168,12 +168,12 @@ public class VipGroupServiceImpl implements VipGroupService {
 //        String[] quit = vips_quit.split(",");
 
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
-        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
+//        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
         if (vipGroup1 != null && vipGroup1.getId() != id) {
             result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null && vipGroup2.getId() != id) {
-            result = "该会员分组名称已存在";
+//        } else if (vipGroup2 != null && vipGroup2.getId() != id) {
+//            result = "该会员分组名称已存在";
         } else {
             VipGroup vipGroup  = new VipGroup();
             Date now = new Date();

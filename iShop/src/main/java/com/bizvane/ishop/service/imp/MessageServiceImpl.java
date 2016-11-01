@@ -226,7 +226,7 @@ public class MessageServiceImpl implements MessageService {
        JSONObject date = JSONObject.parseObject(map.get("modified_date"));
 
         params.put("created_date_start", date.get("start").toString());
-        params.put("created_date_end", date.get("end").toString());
+        params.put("created_date_end", date.get("end").toString()+"24:00:00");
         params.put("corp_code", corp_code);
         map.remove("modified_date");
         params.put("user_code", user_code);

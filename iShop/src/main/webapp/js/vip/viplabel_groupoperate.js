@@ -133,12 +133,18 @@ var oc = new ObjectControl();
         whir.loading.add("", 0.5);
         oc.postRequire("post", _command,"", _params, function(data){
             if(data.code=="0"){
-                art.dialog({
-                    time: 1,
-                    lock:true,
-                    cancel: false,
-                    content:"保存成功"
-                });
+                if(_command=="/viplablegroup/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/vip/viplabel_groupedit.html");
+                }
+                if(_command=="/viplablegroup/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
                 // $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_group.html");
             }else if(data.code=="-1"){
                 art.dialog({

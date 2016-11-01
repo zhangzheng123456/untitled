@@ -903,7 +903,7 @@ public class StoreServiceImpl implements StoreService {
         //更新员工
         String new_store_code1 = Common.SPECIAL_HEAD + new_store_code + ",";
         String old_store_code1 = Common.SPECIAL_HEAD + old_store_code + ",";
-        codeUpdateMapper.updateUser("", corp_code, "", "", new_store_code1, old_store_code1, "", "");
+        codeUpdateMapper.updateUser("", corp_code, "", "", new_store_code1, old_store_code1, "", "","","");
         //更新员工详细信息
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code1, old_store_code1);
         //删除二维码

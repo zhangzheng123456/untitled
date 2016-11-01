@@ -654,6 +654,92 @@ $("#add_save").click(function () {
             }
         }
     })
+	var corp_code = $('#OWN_CORP').val();//公司编号
+	var task_type_code = $('#task_type_code').val();//公司类型
+	var task_title=$('#task_title').val();//任务名称
+	var task_description=$("#task_describe").val();//任务描述
+	var target_end_time=$("#target_end_time").val();//截止时间
+	var target_start_time=$("#target_start_time").val();//开始时间
+	var isactive = "";//是否可用
+	var input = $("#is_active")[0];
+	if(task_type_code==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"任务类型不能为空"
+		});
+		return;
+	}
+	if(task_title==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"任务名称不能为空"
+		});
+		return;
+	}
+	if(task_description==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"任务描述不能为空"
+		});
+		return;
+	}
+	if(user_codes==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"员工不能为空"
+		});
+		return;
+	}
+	if(target_end_time==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"截止时间不能为空"
+		});
+		return;
+	}
+	if(target_start_time==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"开始时间不能为空"
+		});
+		return;
+	}
+	if (input.checked == true) {
+		isactive = "Y";
+	} else if (input.checked == false) {
+		isactive = "N";
+	}
+	_param["user_codes"]=user_codes;
+	_param["phone"]=phone;
+	_param["corp_code"]=corp_code;
+	_param["task_type_code"]=task_type_code;
+	_param["task_title"]=task_title;
+	_param["task_description"]=task_description;
+	_param["target_end_time"]=target_end_time;
+	_param["target_start_time"]=target_start_time;
+	_param["isactive"]=isactive;
+	whir.loading.add("",0.5);//加载等待框
+	oc.postRequire("post","/task/addTask","", _param, function(data) {
+		if(data.code=="0"){
+			if(data.message=="新增成功"){
+				sessionStorage.setItem("id",data.message);
+				$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+				whir.loading.remove();//移除加载框
+			}
+		}
+	})
 })
 if ($(".pre_title label").text() == "新增任务") {
     getcorplist(a, b);

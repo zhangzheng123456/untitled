@@ -117,15 +117,20 @@ var oc = new ObjectControl();
         });
     };
     paramjs.ajaxSubmit = function (_command, _params, opt) {
-        console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                art.dialog({
-                	time: 1,
-                	lock:true,
-                	cancel: false,
-                	content: "保存成功"
-                });
+                if(_command=="/corpParam/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src","/system/corp_param_edit.html");
+                }
+                if(_command=="/corpParam/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
                 // $(window.parent.document).find('#iframepage').attr("src", "/system/corp_param.html");
             } else if (data.code == "-1") {
                 art.dialog({
