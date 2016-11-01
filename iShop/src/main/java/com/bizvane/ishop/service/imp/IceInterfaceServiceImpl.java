@@ -154,6 +154,8 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             }
         } else if (role_code.equals(Common.ROLE_STAFF)){
             user_id = user_code;
+            store_id = request.getSession().getAttribute("store_code").toString();
+            store_id = store_id.replace(Common.SPECIAL_HEAD,"");
             if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
                 store_id = jsonObject.get("store_code").toString();
             }

@@ -304,7 +304,7 @@ function GET(a,b){
             console.log(message);
             var list=message.all_vip_list;
             cout=message.pages;
-            var pageNum = list.pageNum;
+            var pageNum = message.pageNum;
             //var list=list.list;
             superaddition(list,pageNum);
             jumpBianse();
@@ -480,7 +480,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.all_vip_list;
             cout=message.pages;
-            var pageNum = list.pageNum;
+            var pageNum = message.pageNum;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -601,8 +601,8 @@ $("#album_leadingout").click(function () {
         var list=[];
         for(var i=0;i<tr.length;i++){
             var param = {};
-            var vip_id = $(tr[i]).find("td").eq(3).text();
-            var vip_name = $(tr[i]).find("td").eq(4).text();
+            var vip_id = $(tr[i]).find("td").eq(2).text();
+            var vip_name = $(tr[i]).find("td").eq(3).text();
             var corp_code =$(tr[i]).attr("id");
             param['vip_id'] = vip_id;
             param['vip_name'] = vip_name;

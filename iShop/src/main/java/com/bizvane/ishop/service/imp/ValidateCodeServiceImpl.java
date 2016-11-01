@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.ValidateCodeMapper;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.ValidateCodeService;
@@ -23,7 +24,14 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     private ValidateCodeMapper validateCodeMapper;
 
     public int insertValidateCode(ValidateCode code) throws Exception{
-        return validateCodeMapper.insertValidateCode(code);
+        String phone = code.getPhone();
+        ValidateCode validateCode = selectValidateCode(0,phone, Common.IS_ACTIVE_Y);
+        if (validateCode == null){
+            validateCodeMapper.insertValidateCode(code);
+            return 0;
+        }else {
+            return 1;
+        }
     }
 
     @Override

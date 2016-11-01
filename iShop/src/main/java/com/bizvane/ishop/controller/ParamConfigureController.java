@@ -39,11 +39,9 @@ public class ParamConfigureController {
     String id;
     @Autowired
     private CorpParamService corpParamService;
-
     @Autowired
     ParamConfigureService paramConfigureService;
-    @Autowired
-    private FunctionService functionService;
+
     private static final Logger logger = Logger.getLogger(ParamConfigureController.class);
 
 
@@ -90,9 +88,14 @@ public class ParamConfigureController {
             String user_id = request.getSession().getAttribute("user_code").toString();
             String result = paramConfigureService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                JSONObject jsonObject = new JSONObject(message);
+                String param_name = jsonObject.get("param_name").toString();
+                String isactive = jsonObject.get("isactive").toString();
+                ParamConfigure paramConfigure = paramConfigureService.getParamByKey(param_name,Common.IS_ACTIVE_Y);
+
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(paramConfigure.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
