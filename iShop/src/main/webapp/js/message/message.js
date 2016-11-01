@@ -174,6 +174,7 @@ function dian(a, b) {//点击分页的时候调什么接口
     }
 }
 function superaddition(data, num) {//页面加载循环
+    console.log(data);
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -191,6 +192,13 @@ function superaddition(data, num) {//页面加载循环
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
+        var receiver_type='';
+        switch (data[i].receiver_type){
+            case 'staff': receiver_type='员工'; break;
+            case 'area': receiver_type='区域'; break;
+            case 'corp': receiver_type='企业'; break;
+            case 'store': receiver_type='店铺'; break;
+        }
         if (num >= 2) {
             var a = i + 1 + (num - 1) * pageSize;
         } else {
@@ -210,7 +218,7 @@ function superaddition(data, num) {//页面加载循环
             // + "</td><td>"
             + data[i].message_type
             + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
-            + data[i].receiver_type
+            + receiver_type
             + data[i].message_title
             + "</td><td><span title='" + data[i].message_content + "'>"
             + data[i].message_content
