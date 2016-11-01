@@ -450,7 +450,10 @@ jQuery(document).ready(function () {
         }
     });
     function callback(data) {
-        var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
+        //测试
+        var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx722fb7eaa40020e9&pre_auth_code=" + data + "&redirect_uri=http://wechat.dev.bizvane.com/app/wechat/callback";
+        //正式
+        // var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
         $('#power').html('<a href="' + a + '" target="_parent">打开授权二维码</a>');
     }
     $("#power").click(function(){

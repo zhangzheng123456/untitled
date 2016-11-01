@@ -274,8 +274,10 @@
     background: #E8E8E8;
     border: 1px solid #e8e8e8;
     color: #888888;
+    width: 95%;
 }
 #select_analyze_brand{
+    width: 95%;
     position: absolute;
     display:none;
     left: 2%;
@@ -290,7 +292,7 @@
     background: #f5f5f5;
 }
 #select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div{
-    width: 349px;
+    width: 100%;
     left: 132px;
     top:130px;
     padding-top: 10px;
