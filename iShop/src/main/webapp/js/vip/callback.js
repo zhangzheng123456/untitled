@@ -75,6 +75,7 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;

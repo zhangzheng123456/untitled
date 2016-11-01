@@ -101,6 +101,8 @@ $("#empty").click(function(){
     }
 })
 function setPage(container, count, pageindex,pageSize,funcCode,value) {
+    console.log('调用');
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -310,11 +312,11 @@ function GET(inx,pageSize){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
-                superaddition(list,inx);
+                superaddition(list,inx); 
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
-                // alert(data.message);
+                alert(data.message);
             }
     });
 }
