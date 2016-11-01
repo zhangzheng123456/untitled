@@ -655,6 +655,14 @@ function superaddition(data, num, c) {
             group_cheked.push(tr_vip_id);
         }
     }
+    $("tbody tr").click(function () {
+        var input = $(this).find("input")[0];
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            input.checked = false;
+        }
+    })
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {

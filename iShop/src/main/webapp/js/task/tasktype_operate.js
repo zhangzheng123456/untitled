@@ -281,12 +281,14 @@ jQuery(document).ready(function(){
 	            	div.html("");
 	            	$("#task_type").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！")
+	            	div.html("该名称已经存在！");
 	            	div.addClass("error_tips");
 	            	$("#task_type").attr("data-mark","N");
 	            }
 	    	})
-	    }
+	    }else if(task_type==task_type1){
+			$("#task_type").attr("data-mark","Y");
+		}
     });
 	$(".areaadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/task/tasktype.html");

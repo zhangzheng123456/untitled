@@ -61,22 +61,22 @@ function getarealist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#area_more").show();
 				}
-				var check_input = $('#area_code ul input');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-areaname"));
-							$('#area_input').val(checknow_namedata.toString());
-							$('#area_input').attr('data-areacode', checknow_data.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-areaname"));
-							checknow_data.remove($(this).val());
-							$('#area_input').val(checknow_namedata.toString());
-							$('#area_input').attr('data-areacode', checknow_data.toString());
-						}
+				$("#area_code ul").on("click", "li", function () {
+					var input = $(this).find("input")[0];
+					if (input.type == "checkbox" && input.checked == false) {
+						input.checked = true;
+						checknow_data.push($(this).find("input").val());
+						checknow_namedata.push($(this).find("input").attr("data-areaname"));
+						$('#area_input').val(checknow_namedata.toString());
+						$('#area_input').attr('data-areacode', checknow_data.toString());
+					} else if (input.type == "checkbox" && input.checked == true) {
+						input.checked = false;
+						checknow_namedata.remove($(this).find("input").attr("data-areaname"));
+						checknow_data.remove($(this).find("input").val());
+						$('#area_input').val(checknow_namedata.toString());
+						$('#area_input').attr('data-areacode', checknow_data.toString());
 					}
-				}
+				})
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
@@ -153,22 +153,22 @@ function getstorelist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#store_more").show();
 				}
-				var check_input = $('#store_code ul input');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-storename"));
-							$('#store_input').val(checknow_namedata.toString());
-							$('#store_input').attr('data-storecode', checknow_data.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-storename"));
-							checknow_data.remove($(this).val());
-							$('#store_input').val(checknow_namedata.toString());
-							$('#store_input').attr('data-storecode', checknow_data.toString());
-						}
+				$("#store_code ul").on("click", "li", function () {
+					var input = $(this).find("input")[0];
+					if (input.type == "checkbox" && input.checked == false) {
+						input.checked = true;
+						checknow_data.push($(this).find("input").val());
+						checknow_namedata.push($(this).find("input").attr("data-storename"));
+						$('#store_input').val(checknow_namedata.toString());
+						$('#store_input').attr('data-storecode', checknow_data.toString());
+					} else if (input.type == "checkbox" && input.checked == true) {
+						input.checked = false;
+						checknow_namedata.remove($(this).find("input").attr("data-storename"));
+						checknow_data.remove($(this).find("input").val());
+						$('#store_input').val(checknow_namedata.toString());
+						$('#store_input').attr('data-storecode', checknow_data.toString());
 					}
-				}
+				})
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
@@ -244,26 +244,26 @@ function getstafflist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#staff_more").show();
 				}
-				var check_input = $('#staff_code ul input');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-username"));
-							checknow_phone.push($(this).attr("name"));
-							$('#staff_input').val(checknow_namedata.toString());
-							$('#staff_input').attr('data-usercode', checknow_data.toString());
-							$('#staff_input').attr('data-userphone', checknow_phone.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-username"));
-							checknow_data.remove($(this).val());
-							checknow_phone.remove($(this).attr("name"));
-							$('#staff_input').val(checknow_namedata.toString());
-							$('#staff_input').attr('data-usercode', checknow_data.toString());
-							$('#staff_input').attr('data-userphone', checknow_phone.toString());
-						}
+				$("#staff_code ul").on("click", "li", function () {
+					var input = $(this).find("input")[0];
+					if (input.type == "checkbox" && input.checked == false) {
+						input.checked = true;
+						checknow_data.push($(this).find("input").val());
+						checknow_namedata.push($(this).find("input").attr("data-username"));
+						checknow_phone.push($(this).find("input").attr("name"));
+						$('#staff_input').val(checknow_namedata.toString());
+						$('#staff_input').attr('data-usercode', checknow_data.toString());
+						$('#staff_input').attr('data-userphone', checknow_phone.toString());
+					} else if (input.type == "checkbox" && input.checked == true) {
+						input.checked = false;
+						checknow_namedata.remove($(this).find("input").attr("data-username"));
+						checknow_data.remove($(this).find("input").val());
+						checknow_phone.remove($(this).find("input").attr("name"));
+						$('#staff_input').val(checknow_namedata.toString());
+						$('#staff_input').attr('data-usercode', checknow_data.toString());
+						$('#staff_input').attr('data-userphone', checknow_phone.toString());
 					}
-				}
+				})
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
