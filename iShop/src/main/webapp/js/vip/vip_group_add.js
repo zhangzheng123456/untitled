@@ -265,12 +265,18 @@ $(function () {
         whir.loading.add("", 0.5);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "保存成功"
-                });
+               if(_command=="/vipGroup/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_group_edit.html");
+                }
+                if(_command=="/vipGroup/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
                 // $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
             } else if (data.code == "-1") {
                 art.dialog({
