@@ -411,13 +411,13 @@ public class WebController {
      */
     @RequestMapping(value = "/api/weimob/goods", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String handleWeimob(HttpServletRequest request) {
+    public String handleWeimobGoods(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String accessToken = weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
             int rowno = Integer.parseInt(request.getParameter("rowno"));
             JSONArray goodList = new JSONArray();
-            JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
+//            JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
 //            JSONArray brandList = weimobService.goodsclassifyGetSon(accessToken);
 
             JSONObject message = new JSONObject();
@@ -435,8 +435,33 @@ public class WebController {
 
             message.put("goodsList", goodList);
 //            message.put("brandLists", brandList);
-            message.put("classifyList", classifyList);
+//            message.put("classifyList", classifyList);
 
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(message.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+
+    /**
+     * app获取商品列表（微盟桃花季）
+     */
+    @RequestMapping(value = "/api/weimob/classify", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String handleWeimobClassify(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject message = new JSONObject();
+        try {
+            String accessToken = weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
+            JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
+            message.put("classifyList", classifyList);
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(message.toString());

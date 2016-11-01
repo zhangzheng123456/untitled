@@ -15,7 +15,7 @@ public interface CorpParamMapper {
 
     List<CorpParam> selectAllParam(@Param("search_value") String search_value) throws SQLException;
 
-    List<CorpParam> selectByCorpParam(@Param("corp_code") String corp_code,@Param("param_id") String param_id) throws SQLException;
+    List<CorpParam> selectByCorpParam(@Param("corp_code") String corp_code,@Param("param_id") String param_id,@Param("isactive") String isactive) throws SQLException;
 
     int insert(CorpParam record) throws SQLException;
 
