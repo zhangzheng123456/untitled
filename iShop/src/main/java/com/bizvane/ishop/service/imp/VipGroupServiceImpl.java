@@ -120,12 +120,6 @@ public class VipGroupServiceImpl implements VipGroupService {
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
         String user_code = user_id;
-//        String vips_choose = jsonObject.get("choose").toString();
-//        String vip_ids = "";
-//        String[] vips = vips_choose.split(",");
-//        for (int i = 0; i < vips.length; i++) {
-//            vip_ids = vip_ids + Common.SPECIAL_HEAD + vips[i] + ",";
-//        }
 
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();

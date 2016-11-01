@@ -34,7 +34,11 @@ public class VipParamServiceImpl implements VipParamService {
 
     @Override
     public List<VipParam> checkParamName(String corp_code, String param_name) throws Exception {
-        return vipParamMapper.checkParamName(corp_code,param_name);
+        return vipParamMapper.checkParamName(corp_code,param_name,Common.IS_ACTIVE_Y);
+    }
+    @Override
+    public List<VipParam> selectByParamName(String corp_code, String param_name,String isactive) throws Exception {
+        return vipParamMapper.checkParamName(corp_code,param_name,isactive);
     }
 
     @Override

@@ -1,6 +1,3 @@
-/**
- * Created by Bizvane on 2016/10/13.
- */
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
@@ -378,16 +375,16 @@ function jumpBianse(){
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
-//鼠标按下时触发的收索
+//搜索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
     inx=1;
-    param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        value=this.value.trim();
+        param["searchValue"]=value;
         POST(inx,pageSize);
     }
 });

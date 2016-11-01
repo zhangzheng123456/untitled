@@ -51,5 +51,5 @@ public interface VipLabelMapper {
 
     int delRelViplabel(@Param("rid")String rid);
 
-    List<VipLabel> findViplabelID(@Param("corp_code")String corp_code,@Param("label_name")String label_name);
+    List<VipLabel> findViplabelID(@Param("corp_code")String corp_code,@Param("label_name")String label_name,@Param("isactive")String isactive);
 }

@@ -90,5 +90,5 @@ public interface VipLabelService {
 
     List<VipLabel> findViplabelID(String corp_code,String label_name)throws Exception;
 
-
+    List<VipLabel> selectViplabelByName(String corp_code, String label_name,String isactive) throws Exception;
 }

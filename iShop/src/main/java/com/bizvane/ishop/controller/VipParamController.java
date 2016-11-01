@@ -134,7 +134,6 @@ public class VipParamController {
         return dataBean.getJsonStr();
     }
 
-
     /**
      * 删除(用了事务)
      */
@@ -190,6 +189,9 @@ public class VipParamController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipParam vipParam = WebUtils.JSON2Bean(jsonObject, VipParam.class);
+            String corp_code = jsonObject.getString("corp_code");
+            String param_name = jsonObject.getString("param_name");
+
             //------------操作日期-------------
             Date date = new Date();
             vipParam.setCreated_date(Common.DATETIME_FORMAT.format(date));
@@ -198,9 +200,10 @@ public class VipParamController {
             vipParam.setModifier(user_id);
             String result = vipParamService.insert(vipParam);
             if(result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                List<VipParam> vipParam1 = vipParamService.selectByParamName(corp_code,param_name,vipParam.getIsactive());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(vipParam1.get(0).getId()));
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
