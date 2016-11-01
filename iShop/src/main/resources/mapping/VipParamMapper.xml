@@ -67,7 +67,9 @@
         FROM def_vip_param
         WHERE corp_code = #{corp_code}
         AND  param_name=#{param_name}
-        AND isactive = 'Y'
+        <if test="isactive != null and isactive !=''">
+          AND isactive = #{isactive}
+        </if>
     </select>
 
 
