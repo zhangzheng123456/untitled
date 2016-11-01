@@ -106,6 +106,8 @@ $(function(){
                 window.location.href = "home/index_staff.html";
             } else if(user_type == "sm"){
                 window.location.href="home/index_sm.html";
+            } else if(user_type == "bm"){
+                window.location.href="home/index_bm.html";
             }
     }
     $("#logo").click(function(){

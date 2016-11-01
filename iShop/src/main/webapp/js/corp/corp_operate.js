@@ -236,14 +236,18 @@ var message = JSON.parse(val.message);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
                 if(_command=="/corp/add"){
-                    
+                    console.log(data.message);
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/corp/crop_edit.html");
                 }
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content:"保存成功"
-                });
+                if(_command=="/corp/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -446,7 +450,10 @@ jQuery(document).ready(function () {
         }
     });
     function callback(data) {
-        var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
+        //测试
+        var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx722fb7eaa40020e9&pre_auth_code=" + data + "&redirect_uri=http://wechat.dev.bizvane.com/app/wechat/callback";
+        //正式
+        // var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
         $('#power').html('<a href="' + a + '" target="_parent">打开授权二维码</a>');
     }
     $("#power").click(function(){
