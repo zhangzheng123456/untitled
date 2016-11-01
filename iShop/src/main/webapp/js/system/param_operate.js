@@ -136,12 +136,18 @@ var oc = new ObjectControl();
         console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                art.dialog({
-                	time: 1,
-                	lock:true,
-                	cancel: false,
-                	content:"保存成功"
-                });
+                if(_command=="/param/edit/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/system/param_edit.html");
+                }
+                if(_command=="/param/edit/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
                 // $(window.parent.document).find('#iframepage').attr("src", "/system/param.html");
             } else if (data.code == "-1") {
                 art.dialog({
