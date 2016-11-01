@@ -11,6 +11,19 @@ $("#store_code").val(store_code);
 $("#store_name").val(store_corp.store_name);
 function superaddition(data){
     console.log(data);
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>")
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>")
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
+
+
     console.log(data.length);
 if(data.length!=0) {
     for (var i = 0; i < data.length; i++) {

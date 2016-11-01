@@ -611,6 +611,17 @@ function jumpBianse() {
 }
 function superaddition(data, num, c) {
     console.log(data);
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
     group_cheked = [];
     var judge = '';
     for (var i = 0; i < data.length; i++) {
