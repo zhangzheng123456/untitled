@@ -309,7 +309,7 @@ function GET(a,b){
             superaddition(list,pageNum);
             jumpBianse();
             filtrate="";
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -492,13 +492,12 @@ function POST(a,b){
                 jumpBianse();
             }
             filtrate="";
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
     })
 }
-//console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -590,6 +589,36 @@ function clearAll(name){
         }
     }
 };
+//导出会员相册
+$("#album_leadingout").click(function () {
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    if(tr.length == 0){
+        frame();
+        $('.frame').html('请先选择会员');
+    }else {
+        var params = {};
+        var list=[];
+        for(var i=0;i<tr.length;i++){
+            var param = {};
+            var vip_id = $(tr[i]).find("td").eq(3).text();
+            var vip_name = $(tr[i]).find("td").eq(4).text();
+            var corp_code =$(tr[i]).attr("id");
+            param['vip_id'] = vip_id;
+            param['vip_name'] = vip_name;
+            param['corp_code'] = corp_code;
+            list.push(param);
+        }
+        params['vip'] = list;
+        oc.postRequire('post','/vip/exportVipAlbums',0,params,function (data) {
+            if(data.code == 0){
+                var msg = data.message;
+                console.log(msg.path);
+            }else {
+                alert("导出相册失败")
+            }
+        })
+    }
+})
 //导出拉出list
 $("#leading_out").click(function(){
     var l=$(window).width();

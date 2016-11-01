@@ -236,8 +236,8 @@ jQuery(function(){
 	function doAppWebRefresh(param){
 		var param=JSON.stringify(param);
 		var osType = getWebOSType();
-		if(osType=="iOS" && typeof (NSJumpToWebViewForWeb) == 'function'){
-			NSJumpToWebViewForWeb('http://www.baidu.com');
+		if(osType=="iOS"){
+			NSJumpToWebViewForWeb(param);
 		}else if(osType == "Android"){
 			iShop.jumpToWebViewForWeb(param);
 		}

@@ -179,25 +179,41 @@ function getarealist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#area_more").show();
 				}
-				var check_input = $('#area_code ul li');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
+				// var check_input = $('#area_code ul li');
+				// for (var c = 0; c < check_input.length; c++) {
+					$("#area_code ul").on("click","li",function () {
 						var input =$(this).find("input")[0];
 						if(input.type=="checkbox"&&input.checked==false){
-							input.checked == true;
+							input.checked = true;
 							checknow_data.push($(this).find("input").val());
 							checknow_namedata.push($(this).find("input").attr("data-areaname"));
 							$('#area_input').val(checknow_namedata.toString());
 							$('#area_input').attr('data-areacode', checknow_data.toString());
 						}else if(input.type=="checkbox"&&input.checked==true){
-							input.checked == false;
+							input.checked = false;
 							checknow_namedata.remove($(this).find("input").attr("data-areaname"));
 							checknow_data.remove($(this).find("input").val());
 							$('#area_input').val(checknow_namedata.toString());
 							$('#area_input').attr('data-areacode', checknow_data.toString());
 						}
-					}
-				}
+					})
+					// check_input[c].onclick = function() {
+					// 	var input =$(this).find("input")[0];
+					// 	if(input.type=="checkbox"&&input.checked==false){
+					// 		input.checked == true;
+					// 		checknow_data.push($(this).find("input").val());
+					// 		checknow_namedata.push($(this).find("input").attr("data-areaname"));
+					// 		$('#area_input').val(checknow_namedata.toString());
+					// 		$('#area_input').attr('data-areacode', checknow_data.toString());
+					// 	}else if(input.type=="checkbox"&&input.checked==true){
+					// 		input.checked == false;
+					// 		checknow_namedata.remove($(this).find("input").attr("data-areaname"));
+					// 		checknow_data.remove($(this).find("input").val());
+					// 		$('#area_input').val(checknow_namedata.toString());
+					// 		$('#area_input').attr('data-areacode', checknow_data.toString());
+					// 	}
+					// }
+				// }
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
@@ -279,13 +295,13 @@ function getstorelist(a){
 					check_input[c].onclick = function() {
 						var input =$(this).find("input")[0];
 						if (input.type=="checkbox"&&input.checked==false) {
-							input.checked == true;
+							input.checked = true;
 							checknow_data.push($(this).find("input").val());
 							checknow_namedata.push($(this).find("input").attr("data-storename"));
 							$('#store_input').val(checknow_namedata.toString());
 							$('#store_input').attr('data-storecode', checknow_data.toString());
 						} else if (input.type=="checkbox"&&input.checked==true) {
-							input.checked == false;
+							input.checked = false;
 							checknow_namedata.remove($(this).find("input").attr("data-storename"));
 							checknow_data.remove($(this).find("input").val());
 							$('#store_input').val(checknow_namedata.toString());
@@ -373,7 +389,7 @@ function getstafflist(a){
 					check_input[c].onclick = function() {
 						var input =$(this).find("input")[0];
 						if (input.type=="checkbox"&&input.checked==false) {
-							input.checked == true;
+							input.checked = true;
 							checknow_data.push($(this).find("input").val());
 							checknow_namedata.push($(this).find("input").attr("data-username"));
 							checknow_phone.push($(this).find("input").attr("name"));
@@ -381,7 +397,7 @@ function getstafflist(a){
 							$('#staff_input').attr('data-usercode', checknow_data.toString());
 							$('#staff_input').attr('data-userphone', checknow_phone.toString());
 						} else if (input.type=="checkbox"&&input.checked==true) {
-							input.checked == false;
+							input.checked = false;
 							checknow_namedata.remove($(this).find("input").attr("data-username"));
 							checknow_data.remove($(this).find("input").val());
 							checknow_phone.remove($(this).find("input").attr("name"));
