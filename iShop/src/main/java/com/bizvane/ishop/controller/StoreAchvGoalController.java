@@ -87,14 +87,14 @@ public class StoreAchvGoalController {
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", "");
-            }else if (role_code.equals(Common.ROLE_BM)) {
+            } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
-                    store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "");
             } else if (role_code.equals(Common.ROLE_GM)) {
@@ -164,13 +164,15 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
             String result = storeAchvGoalService.insert(storeAchvGoal1);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                StoreAchvGoal storeAchvGoal = storeAchvGoalService.getStoreAchvForID(storeAchvGoal1.getCorp_code(),storeAchvGoal1.getStore_code());
+                dataBean.setMessage(String.valueOf(storeAchvGoal.getId()));
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("edit success");
+
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("店铺"  +storeAchvGoal1.getStore_code()+ "业绩目标已经设定");
+                dataBean.setMessage("店铺" + storeAchvGoal1.getStore_code() + "业绩目标已经设定");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -265,7 +267,7 @@ public class StoreAchvGoalController {
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("店铺" + storeAchvGoal.getStore_code()+ "的业绩目标已经设定");
+                dataBean.setMessage("店铺" + storeAchvGoal.getStore_code() + "的业绩目标已经设定");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -341,14 +343,14 @@ public class StoreAchvGoalController {
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
-                    store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, search_value);
-            }else if (role_code.equals(Common.ROLE_AM)) {
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, area_code, "", search_value);
             } else {
@@ -369,7 +371,6 @@ public class StoreAchvGoalController {
     }
 
 
-
     /***
      * 导出数据
      */
@@ -377,7 +378,7 @@ public class StoreAchvGoalController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -388,7 +389,7 @@ public class StoreAchvGoalController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<StoreAchvGoal> list = null;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.contains(Common.ROLE_SYS)) {
                     list = storeAchvGoalService.selectBySearch(1, 30000, "", "", "", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)) {
@@ -396,21 +397,21 @@ public class StoreAchvGoalController {
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
                     list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value);
-                }else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, area_code, "", search_value);
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, "", "", "", map);
@@ -419,11 +420,11 @@ public class StoreAchvGoalController {
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
                     list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map);
                 } else if (role_code.equals(Common.ROLE_AM)) {
@@ -435,23 +436,23 @@ public class StoreAchvGoalController {
                 }
             }
             List<StoreAchvGoal> storeAchvGoals = list.getList();
-            if(storeAchvGoals.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (storeAchvGoals.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(storeAchvGoals);
-            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,storeAchvGoals, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, storeAchvGoals, map, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -466,7 +467,7 @@ public class StoreAchvGoalController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -476,9 +477,9 @@ public class StoreAchvGoalController {
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
         String result = "";
-        Workbook rwb=null;
+        Workbook rwb = null;
         try {
-          rwb= Workbook.getWorkbook(targetFile);
+            rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = 6;//得到所有的列
             int rows = rs.getRows();//得到所有的行
@@ -491,19 +492,19 @@ public class StoreAchvGoalController {
 //                }
 //                int i = 5 / 0;
 //            }
-            if(rows<4){
-                result="：请从模板第4行开始插入正确数据";
-                int i=5/0;
+            if (rows < 4) {
+                result = "：请从模板第4行开始插入正确数据";
+                int i = 5 / 0;
             }
-            if(rows>9999){
-                result="：数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "：数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)) {
+            if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
+                    if (column3[i].getContents().toString().trim().equals("")) {
                         continue;
                     }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
@@ -519,28 +520,28 @@ public class StoreAchvGoalController {
                     }
                 }
             }
-                for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")) {
-                        continue;
-                    }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
-
+            for (int i = 3; i < column3.length; i++) {
+                if (column3[i].getContents().toString().trim().equals("")) {
+                    continue;
                 }
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                if (corp == null) {
+                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
+            }
 
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
-                if(column2[i].getContents().toString().trim().equals("")){
+                if (column2[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), column2[i].getContents().toString().trim(), "");
@@ -553,7 +554,7 @@ public class StoreAchvGoalController {
             Cell[] column1 = rs.getColumn(2);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
+                if (column1[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Matcher matcher = pattern2.matcher(column1[i].getContents().toString().trim());
@@ -565,7 +566,7 @@ public class StoreAchvGoalController {
             }
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
-                if(column[i].getContents().toString().trim().equals("")){
+                if (column[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 if (!column[i].getContents().toString().trim().equals("D") && !column[i].getContents().toString().trim().equals("W") && !column[i].getContents().toString().trim().equals("M") && !column[i].getContents().toString().trim().equals("Y")) {
@@ -574,7 +575,7 @@ public class StoreAchvGoalController {
                     break;
                 }
             }
-            ArrayList<StoreAchvGoal> storeAchvGoals=new ArrayList<StoreAchvGoal>();
+            ArrayList<StoreAchvGoal> storeAchvGoals = new ArrayList<StoreAchvGoal>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
@@ -582,33 +583,33 @@ public class StoreAchvGoalController {
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String target_amount = rs.getCell(j++, i).getContents().toString().trim();
                     String target_type = rs.getCell(j++, i).getContents().toString().trim();
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i), target_type);
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("") &&store_code.equals("") && target_amount.equals("") && target_type.equals("") && cellTypeForDate.equals("")){
-                       continue;
+                    if (cellCorp.equals("") && store_code.equals("") && target_amount.equals("") && target_type.equals("") && cellTypeForDate.equals("")) {
+                        continue;
                     }
-                    if(cellCorp.equals("") ||store_code.equals("") || target_amount.equals("") || target_type.equals("") || cellTypeForDate.equals("")){
-                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
-                        int a=5/0;
+                    if (cellCorp.equals("") || store_code.equals("") || target_amount.equals("") || target_type.equals("") || cellTypeForDate.equals("")) {
+                        result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
+                        int a = 5 / 0;
                     }
-                    if(!role_code.equals(Common.ROLE_SYS)){
+                    if (!role_code.equals(Common.ROLE_SYS)) {
                         storeAchvGoal.setCorp_code(corp_code);
-                    }else{
+                    } else {
                         storeAchvGoal.setCorp_code(cellCorp);
                     }
                     storeAchvGoal.setStore_code(store_code);
                     storeAchvGoal.setTarget_amount(target_amount);
                     storeAchvGoal.setTime_type(target_type);
                     if (target_type.equals(Common.TIME_TYPE_WEEK)) {
-                        String week="";
-                        if(cellTypeForDate.equals("格式错误")){
+                        String week = "";
+                        if (cellTypeForDate.equals("格式错误")) {
                             storeAchvGoal.setTarget_time(week);
-                        }else {
+                        } else {
                             week = TimeUtils.getWeek(cellTypeForDate);
                             storeAchvGoal.setTarget_time(week);
                         }
-                    //    String week = TimeUtils.getWeek(cellTypeForDate);
-                     //   storeAchvGoal.setTarget_time(week);
+                        //    String week = TimeUtils.getWeek(cellTypeForDate);
+                        //   storeAchvGoal.setTarget_time(week);
                     } else {
                         storeAchvGoal.setTarget_time(cellTypeForDate);
                     }
@@ -630,10 +631,10 @@ public class StoreAchvGoalController {
 //                    }
                 }
             }
-            for (int i=0;i<storeAchvGoals.size();i++){
+            for (int i = 0; i < storeAchvGoals.size(); i++) {
                 result = String.valueOf(storeAchvGoalService.insert(storeAchvGoals.get(i)));
-                if (result.equals("店铺业绩重复")){
-                    result = "：第"+(i+1)+ "条店铺业绩目标已经设定";
+                if (result.equals("店铺业绩重复")) {
+                    result = "：第" + (i + 1) + "条店铺业绩目标已经设定";
                     int b = 5 / 0;
                 }
             }
@@ -645,8 +646,8 @@ public class StoreAchvGoalController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
+        } finally {
+            if (rwb != null) {
                 rwb.close();
             }
             System.gc();
@@ -684,14 +685,14 @@ public class StoreAchvGoalController {
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
-                    store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
                 list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", store_code, map);
-            }else if (role_code.equals(Common.ROLE_AM)) {
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, area_code, "", map);
             } else {

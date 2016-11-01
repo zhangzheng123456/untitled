@@ -17,6 +17,7 @@ public interface SmsTemplateMapper {
     SmsTemplate selectByPrimaryKey(Integer id) throws SQLException;
 
     int updateByPrimaryKey(SmsTemplate smsTemplate) throws SQLException;
+    SmsTemplate getSmsTemplateForId(@Param("corp_code") String corp_code, @Param("template_code") String template_code) throws SQLException;
 
     List<SmsTemplate> selectBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 

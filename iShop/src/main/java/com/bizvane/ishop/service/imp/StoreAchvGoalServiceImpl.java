@@ -114,6 +114,11 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
+    public StoreAchvGoal getStoreAchvForID(String corp_code, String store_code) throws Exception {
+        return this.storeAchvGoalMapper.selectByCorpAndUserCode(corp_code, store_code);
+    }
+
+    @Override
     public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) throws Exception{
         String[] area_codes = null;
         String[] store_codes = null;

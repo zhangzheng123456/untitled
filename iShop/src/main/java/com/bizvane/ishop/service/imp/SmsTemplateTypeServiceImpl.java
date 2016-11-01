@@ -82,7 +82,9 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
             smsTemplateType.setModifier(user_id);
             smsTemplateType.setIsactive(jsonObject.get("isactive").toString().trim());
             smsTemplateTypeMapper.insertSmsTemplateType(smsTemplateType);
-            result = Common.DATABEAN_CODE_SUCCESS;
+            SmsTemplateType smsTemplateType3=this.getSmsTemplateTypeByCode(smsTemplateType.getCorp_code(),smsTemplateType.getTemplate_type_code(),smsTemplateType.getIsactive());
+
+            result = String.valueOf(smsTemplateType3.getId());
         }
         return result;
 
