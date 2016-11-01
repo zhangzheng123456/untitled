@@ -1,21 +1,24 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.CorpParamMapper;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.VipParamMapper;
-import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.VipParam;
-import com.bizvane.ishop.entity.ViplableGroup;
 import com.bizvane.ishop.service.VipParamService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,9 @@ import java.util.Map;
 public class VipParamServiceImpl implements VipParamService {
     @Autowired
     VipParamMapper vipParamMapper;
+    @Autowired
+    MongoDBClient mongodbClient;
+
     @Override
     public VipParam selectById(int id) throws Exception {
         return vipParamMapper.selectById(id);
@@ -72,10 +78,51 @@ public class VipParamServiceImpl implements VipParamService {
     @Override
     @Transactional
     public String update(VipParam vipParam) throws Exception {
-        List<VipParam> vipParams= checkParamName(vipParam.getCorp_code().trim(), vipParam.getParam_name().trim());
+        String corp_code = vipParam.getCorp_code().trim();
+        String param_name_new = vipParam.getParam_name().trim();
+
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+
+        List<VipParam> vipParams= checkParamName(corp_code, param_name_new);
         String result=Common.DATABEAN_CODE_ERROR;
         VipParam vipParam1 = selectById(vipParam.getId());
-        if(vipParams.size()==0||vipParam1.getParam_name().trim().equals(vipParam.getParam_name().trim())){
+        String param_name_old = vipParam1.getParam_name();
+
+        if(vipParams.size()==0||vipParam1.getParam_name().equals(param_name_new)){
+            if (!vipParam1.getParam_name().equals(param_name_new)){
+
+                Map keyMap = new HashMap();
+                keyMap.put("corp_code", corp_code);
+                BasicDBObject queryCondition = new BasicDBObject();
+                queryCondition.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                while (dbCursor1.hasNext()){
+                    DBObject obj = dbCursor1.next();
+
+                    String extend = "";
+                    if (obj.containsField("extend"))
+                        extend = obj.get("extend").toString();
+                    if (!extend.equals("")){
+                        JSONObject obj_extend = JSONObject.parseObject(extend);
+                        if (obj_extend.containsKey(param_name_old)){
+                            String _id = obj.get("_id").toString();
+
+                            DBObject updateCondition=new BasicDBObject();
+                            DBObject updatedValue=new BasicDBObject();
+                            updateCondition.put("_id", _id);
+
+                            String value = obj_extend.get(param_name_old).toString();
+                            obj_extend.remove(param_name_old);
+                            obj_extend.put(param_name_new,value);
+                            extend = obj_extend.toString();
+                            updatedValue.put("extend", extend);
+                            DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+                            cursor.update(updateCondition, updateSetValue);
+                        }
+                    }
+                }
+            }
             vipParamMapper.update(vipParam);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(vipParams.size()>0){

@@ -201,7 +201,7 @@ public class CorpServiceImpl implements CorpService {
         codeUpdateMapper.updateStaffMoveLog(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateStore(new_corp_code, old_corp_code, "", "", "", "");
         codeUpdateMapper.updateStoreAchvGoal(new_corp_code, old_corp_code, "", "");
-        codeUpdateMapper.updateUser(new_corp_code, old_corp_code, "", "", "", "", "", "");
+        codeUpdateMapper.updateUser(new_corp_code, old_corp_code, "", "", "", "", "", "","","");
         codeUpdateMapper.updateUserAchvGoal(new_corp_code, old_corp_code, "", "", "", "");
         codeUpdateMapper.updateUserMessage(new_corp_code, old_corp_code);
         codeUpdateMapper.updateVipAlbum(new_corp_code, old_corp_code, "", "");
