@@ -16,7 +16,7 @@ public interface VipParamMapper {
 
     List<VipParam> selectAllParam(@Param("corp_code")String corp_code,@Param("search_value") String search_value,@Param("isactive") String isactive) throws SQLException;
 
-    List<VipParam> checkParamName(@Param("corp_code") String corp_code,@Param("param_name") String param_name) throws SQLException;
+    List<VipParam> checkParamName(@Param("corp_code") String corp_code,@Param("param_name") String param_name,@Param("isactive") String isactive) throws SQLException;
 
     int insert(VipParam record) throws SQLException;
 

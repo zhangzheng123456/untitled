@@ -214,9 +214,10 @@ public class ViplableGroupController {
             viplableGroup.setModifier(user_id);
             String result = viplableGroupService.addViplableGroup(viplableGroup);
             if(result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(viplableGroup.getCorp_code(),viplableGroup.getLabel_group_code(),viplableGroup.getIsactive());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(viplableGroups.get(0).getId()));
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -387,7 +388,6 @@ public class ViplableGroupController {
         }
         return dataBean.getJsonStr();
     }
-
 
     /***
      * 导出数据

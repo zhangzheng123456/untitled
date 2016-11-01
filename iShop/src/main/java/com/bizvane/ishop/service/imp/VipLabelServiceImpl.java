@@ -235,6 +235,11 @@ public class VipLabelServiceImpl implements VipLabelService {
 
     @Override
     public List<VipLabel> findViplabelID(String corp_code, String label_name) throws Exception {
-        return vipLabelMapper.findViplabelID(corp_code,label_name);
+        return vipLabelMapper.findViplabelID(corp_code,label_name,Common.IS_ACTIVE_Y);
+    }
+
+    @Override
+    public List<VipLabel> selectViplabelByName(String corp_code, String label_name,String isactive) throws Exception {
+        return vipLabelMapper.findViplabelID(corp_code,label_name,isactive);
     }
 }

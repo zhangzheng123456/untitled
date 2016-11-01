@@ -81,7 +81,7 @@ public class VIPController {
 
 //            List<VipAlbum> vipAlbumList = new ArrayList<VipAlbum>();
             List<VipLabel> vipLabelList = new ArrayList<VipLabel>();
-            String album = "";
+            String album = "[]";
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
 
@@ -824,5 +824,5 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
-    
+
 }

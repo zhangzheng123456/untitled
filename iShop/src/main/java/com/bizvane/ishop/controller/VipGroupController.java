@@ -168,9 +168,13 @@ public class VipGroupController {
             String user_id = request.getSession().getAttribute("user_code").toString();
             String result = vipGroupService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                JSONObject jsonObject = JSONObject.parseObject(message);
+                String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
+                String corp_code = jsonObject.get("corp_code").toString().trim();
+                VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,jsonObject.get("isactive").toString());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(vipGroup.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
