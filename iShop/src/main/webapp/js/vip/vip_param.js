@@ -9,6 +9,7 @@ var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
 var cout="";
+var del_len="";//删除列表选中tr个数
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -219,11 +220,6 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    if(data.length==1&&num>1){
-        pageNumber=num-1;
-    }else{
-        pageNumber=num;
-    }
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -325,8 +321,9 @@ function GET(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            pageNumber = list.pageNum;
             list=list.list;
-            superaddition(list,a);
+            superaddition(list,pageNumber);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
             $(".table tbody").sortable({helper:fixHelper,axis: 'y' ,delay: 200,cursor:"move",opacity: 0.6 , update: function(event, ui) {
@@ -459,14 +456,14 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
     inx=1;
-    param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         if(value!==""){
+            value=this.value.trim();
+            param["searchValue"]=value;
             POST(inx,pageSize);
         }else {
             $(".table tbody").sortable('enable');
@@ -503,6 +500,7 @@ function POST(a,b){
             cout=list.pages;
             var list=list.list;
             var actions=message.actions;
+            var pageNum = list.pageNum;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -510,7 +508,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             var input=$(".inputs input");
@@ -541,6 +539,7 @@ $("#delete").click(function(){
     $("#p").hide();
     $("#tk").hide();
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    del_len = tr.length;
     for(var i=tr.length-1,ID="";i>=0;i--){
         var r=$(tr[i]).attr("id");
         if(i>0){
@@ -838,6 +837,7 @@ function filtrates(a,b){
             cout=list.pages;
             var list=list.list;
             var actions=message.actions;
+            var pageNum = list.pageNum;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -845,7 +845,7 @@ function filtrates(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,a,b,funcCode);

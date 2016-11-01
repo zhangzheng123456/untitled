@@ -73,19 +73,24 @@ public class MessageServiceImpl implements MessageService {
         String corp_code = messageInfo.getCorp_code();
         int id = messageInfo.getId();
         List<Message> messages = new ArrayList<Message>();
-        if (receiver_type.equals("staff")){
+        if (receiver_type.equals("staff")) {
             messages = messageMapper.selectMessageDetail(message_code);
-        }else{
+        } else {
             List<User> userList = new ArrayList<User>();
-            if (receiver_type.equals("store")){
+            if (receiver_type.equals("store")) {
                 List<Message> messageLists = selectMessageByCode(message_code);
                 String store_code = "";
                 for (int i = 0; i < messageLists.size(); i++) {
                     store_code = messageLists.get(i).getMessage_receiver();
-                    List<User> users = userMapper.selectStoreUser(corp_code,store_code,"","",Common.IS_ACTIVE_Y);
-                    userList.addAll(users);
+                    List<User> users = userMapper.selectStoreUser(corp_code, store_code, "", "", Common.IS_ACTIVE_Y);
+
+                    if (userList.contains(users)) {
+
+                    } else {
+                        userList.addAll(users);
+                    }
                 }
-            }else if (receiver_type.equals("area")) {
+            } else if (receiver_type.equals("area")) {
                 List<Message> messageLists = selectMessageByCode(message_code);
                 String area_code = "";
 //                List<User> userList = new ArrayList<User>();
@@ -94,12 +99,17 @@ public class MessageServiceImpl implements MessageService {
                     area_code = area_code + area_code1 + ",";
                 }
                 String[] areas = area_code.split(",");
-                List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null ,Common.IS_ACTIVE_Y);
+                List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null, Common.IS_ACTIVE_Y);
                 for (int i = 0; i < store.size(); i++) {
                     List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y);
-                    userList.addAll(users);
+                    if (userList.contains(users)) {
+
+                    } else {
+                        userList.addAll(users);
+                    }
+
                 }
-            }else if (receiver_type.equals("corp")){
+            } else if (receiver_type.equals("corp")) {
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("array", null);
                 params.put("search_value", "");
@@ -117,8 +127,8 @@ public class MessageServiceImpl implements MessageService {
                 message.setId(i);
                 message.setMessage_receiver(user_name);
                 message.setStatus("N");
-                List<User> users1 = messageMapper.selectMessageStatus(corp_code,user_code,String.valueOf(id));
-                if (users1.size()>0){
+                List<User> users1 = messageMapper.selectMessageStatus(corp_code, user_code, String.valueOf(id));
+                if ( users1.size() > 0) {
                     message.setStatus("Y");
                 }
                 messages.add(message);
@@ -144,7 +154,7 @@ public class MessageServiceImpl implements MessageService {
 
         if (receiver_type.equals("group")) {
             data_group_code = new Data("group_code", message_receiver, ValueType.PARAM);
-        }else {
+        } else {
             String phone = json.get("phone").toString();
             data_phone = new Data("phone", phone, ValueType.PARAM);
         }
@@ -196,7 +206,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception {
+
         Map<String, Object> params = new HashMap<String, Object>();
+        com.alibaba.fastjson.JSONObject date = com.alibaba.fastjson.JSONObject.parseObject(map.get("created_date"));
+
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString());
+        params.put("corp_code", corp_code);
+        map.remove("modified_date");
         params.put("corp_code", corp_code);
         params.put("user_code", user_code);
         params.put("map", map);

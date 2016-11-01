@@ -303,8 +303,9 @@ function GET(a,b){
             console.log(message);
             var list=message.all_vip_list;
             cout=message.pages;
+            var pageNum = list.pageNum;
             //var list=list.list;
-            superaddition(list,a);
+            superaddition(list,pageNum);
             jumpBianse();
             filtrate="";
             setPage($("#foot-num")[0],cout,a,b,funcCode);
@@ -439,18 +440,17 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
-    if(value!==""){
-        inx=1;
-        param["searchValue"]=value;
-        param["pageNumber"]=inx;
-        param["pageSize"]=pageSize;
-        param["funcCode"]=funcCode;
-        if(event.keyCode == 13){
+    if(event.keyCode==13){
+        value=this.value.trim();
+        console.log(value);
+        if(value!==""){
+            inx=1;
+            param["searchValue"]=value;
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
             POST(inx,pageSize);
-        }
-    }else{
-        if(event.keyCode == 13){
+        }else if(value==""){
             GET(inx,pageSize);
         }
     }
@@ -478,6 +478,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.all_vip_list;
             cout=message.pages;
+            var pageNum = list.pageNum;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -486,7 +487,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             filtrate="";

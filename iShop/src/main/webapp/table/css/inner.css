@@ -1417,7 +1417,7 @@ input::-webkit-input-placeholder{
 .screen_tip{
 	margin-left: 10px;
 	line-height: 30px;
-	font-size: 10px;
+	font-size: 13px;
 	color: #888;
 }
 .address_container{

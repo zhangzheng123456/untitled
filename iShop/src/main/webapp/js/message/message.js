@@ -13,6 +13,7 @@ var filtrate = "";//筛选的定义的值
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
+
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -219,6 +220,9 @@ function superaddition(data, num) {//页面加载循环
             + data[i].message_type
             + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
             + receiver_type
+            + "</td><td >"
+            + data[i].receiver_type
+            + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
             + data[i].message_title
             + "</td><td><span title='" + data[i].message_content + "'>"
             + data[i].message_content
@@ -272,8 +276,9 @@ function GET(a, b) {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             cout = list.pages;
+            var pageNum = list.pageNum;
             var list = list.list;
-            superaddition(list, a);
+            superaddition(list, pageNum);
             jumpBianse();
             setPage($("#foot-num")[0], cout, a, b, funcCode);
         } else if (data.code == "-1") {
@@ -416,6 +421,7 @@ function POST(a,b) {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             cout = list.pages;
+            var pageNum = list.pageNum;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -425,7 +431,7 @@ function POST(a,b) {
                 whir.loading.remove();//移除加载框
             } else if (list.length > 0) {
                 $(".table p").remove();
-                superaddition(list, a);
+                superaddition(list, pageNum);
                 jumpBianse();
             }
             var input=$(".inputs input");
@@ -687,11 +693,7 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                if(filter[i].show_name=="发送时间"){
-                    li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "' class='laydate-icon' onclick='laydate({istime: true, format: \"YYYY-MM-DD hh:mm:ss\"})' ></li>";
-                }else {
-                    li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>";
-                }
+                li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
                 console.log(msg);
@@ -701,6 +703,16 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
                 }
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }else if(filter[i].type=="date"){
+                li+="<li class='created_date' id='"
+                    +filter[i].col_name
+                    +"'><label>"
+                    +filter[i].show_name
+                    +"</label>"
+                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<label class='tm20'>至</label>"
+                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"</li>";
             }
 
         }
@@ -757,6 +769,10 @@ function getInputValue(){
         var screen_value="";
        if($(input[i]).parent("li").attr("class")=="isActive_select"){
            screen_value=$(input[i]).attr("data-code");
+       }else if($(input[i]).attr("class")=="created_date"){
+           var start=$('#start').val();
+           var end=$('#end').val();
+           screen_value={"start":start,"end":end};
        }else{
            screen_value=$(input[i]).val().trim();
        }
@@ -784,6 +800,7 @@ function filtrates(a,b) {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             cout = list.pages;
+            var pageNum = list.pageNum;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -793,7 +810,7 @@ function filtrates(a,b) {
                 whir.loading.remove();//移除加载框
             } else if (list.length > 0) {
                 $(".table p").remove();
-                superaddition(list, a);
+                superaddition(list, pageNum);
                 jumpBianse();
             }
             setPage($("#foot-num")[0], cout, a, b, funcCode);

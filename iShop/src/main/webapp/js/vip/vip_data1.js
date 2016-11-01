@@ -360,7 +360,7 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         param["vip_id"]=sessionStorage.getItem("id");
         param["corp_code"]=sessionStorage.getItem("corp_code");
         param["time"]=time;
-        oc.postRequire("post","/vipAlbum/vipAlbumDelete","",param,function(data){
+        oc.postRequire("post","/vip/vipAlbumDelete","",param,function(data){
             if(data.message="success"){
                 deleteAblum(url);
                 $("#Ablum-all").find("div[data-time='"+time+"']").parent().remove();

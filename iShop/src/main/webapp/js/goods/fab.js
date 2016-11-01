@@ -317,8 +317,9 @@ function GET(a, b) {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             cout = list.pages;
+            var pageNum = list.pageNum;
             var list = list.list;
-            superaddition(list, a);
+            superaddition(list, pageNum);
             jumpBianse();
             setPage($("#foot-num")[0], cout, a, b, funcCode);
         } else if (data.code == "-1") {
@@ -413,13 +414,13 @@ function jumpBianse() {
 //鼠标按下时触发的收索
 $("#search").keydown(function () {
     var event = window.event || arguments[0];
-    value = this.value.replace(/\s+/g, "");
     inx = 1;
-    param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
     param["funcCode"] = funcCode;
     if (event.keyCode == 13) {
+        value = this.value.trim();
+        param["searchValue"] = value;
         POST(inx, pageSize);
     }
 });
@@ -441,6 +442,7 @@ function POST(a, b) {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             cout = list.pages;
+            var pageNum = list.pageNum;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -450,7 +452,7 @@ function POST(a, b) {
                 whir.loading.remove();//移除加载框
             } else if (list.length > 0) {
                 $(".table p").remove();
-                superaddition(list, a);
+                superaddition(list, pageNum);
                 jumpBianse();
             }
             var input = $(".inputs input");
@@ -829,6 +831,7 @@ function filtrates(a, b) {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             cout = list.pages;
+            var pageNum = list.pageNum;
             var list = list.list;
             var actions = message.actions;
             $(".table tbody").empty();
@@ -838,7 +841,7 @@ function filtrates(a, b) {
                 whir.loading.remove();//移除加载框
             } else if (list.length > 0) {
                 $(".table p").remove();
-                superaddition(list, a);
+                superaddition(list, pageNum);
                 jumpBianse();
             }
             setPage($("#foot-num")[0], cout, a, b, funcCode);
