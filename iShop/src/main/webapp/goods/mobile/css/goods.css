@@ -28,7 +28,8 @@ a {
   .header .swiper-wrapper .swiper-slide {
     width: 100%;
     height: 100%;
-    text-align: center; }
+    text-align: center;
+    overflow: hidden; }
     .header .swiper-wrapper .swiper-slide .item {
       height: 100%;
       display: inline-block;
