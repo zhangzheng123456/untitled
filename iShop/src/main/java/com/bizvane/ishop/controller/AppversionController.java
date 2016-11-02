@@ -163,9 +163,10 @@ public class AppversionController {
             appversion.setCreated_date(Common.DATETIME_FORMAT.format(date));
             appversion.setModified_date(Common.DATETIME_FORMAT.format(date));
             appversionService.addAppversion(appversion);
+            Appversion appversion1=appversionService.selAppversionForId(appversion.getCorp_code(),appversion.getVersion_id());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("add success");
+            dataBean.setMessage(String.valueOf(appversion1.getId()));
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
