@@ -752,6 +752,8 @@ public class VIPController {
                 String vip_id = vip_obj.get("vip_id").toString();
                 String vip_name = vip_obj.get("vip_name").toString();
                 String corp_code = vip_obj.get("corp_code").toString();
+                String card_no = vip_obj.get("card_no").toString();
+                String phone = vip_obj.get("phone").toString();
 
                 Map keyMap = new HashMap();
                 keyMap.put("_id", corp_code+vip_id);
@@ -760,8 +762,8 @@ public class VIPController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 if (dbCursor1.hasNext()){
                     DBObject obj = dbCursor1.next();
-                    String phone = obj.get("phone").toString();
-                    String card_no = obj.get("card_no").toString();
+//                    String phone = obj.get("phone").toString();
+//                    String card_no = obj.get("card_no").toString();
                     String album = "";
                     if (obj.containsField("album"))
                         album = obj.get("album").toString();
@@ -789,6 +791,15 @@ public class VIPController {
                         obj_album.put("time","");
                         array_album.add(obj_album);
                     }
+                }else {
+                    JSONObject obj_album = new JSONObject();
+                    obj_album.put("vip_id",vip_id);
+                    obj_album.put("vip_name",vip_name);
+                    obj_album.put("card_no",card_no);
+                    obj_album.put("phone",phone);
+                    obj_album.put("image_url","");
+                    obj_album.put("time","");
+                    array_album.add(obj_album);
                 }
             }
             ObjectMapper mapper = new ObjectMapper();
