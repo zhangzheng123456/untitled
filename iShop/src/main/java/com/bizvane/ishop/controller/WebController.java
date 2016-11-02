@@ -390,7 +390,7 @@ public class WebController {
             logger.info("--------brand_code:"+brand_code+"----------- ");
 
             List<Goods> list = goodsService.selectCorpPublicImgs(corp_code,brand_code,search_value);
-            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
+//            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
 
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
@@ -423,11 +423,11 @@ public class WebController {
             JSONObject message = new JSONObject();
             if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
                 logger.info("-------------111111111111-------------------");
-                goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
+                goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"),rowno);
                 logger.info("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
             }else if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
                 logger.info("-------------22222222222------------------");
-                goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"));
+                goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"),rowno);
                 logger.info("handleWeimob Key ->" + request.getParameter("key"));
             }else {
                 goodList = weimobService.getList(accessToken, rowno);

@@ -40,8 +40,8 @@ public class VipRecordServiceImpl implements VipRecordService {
             String corp_code1 = obj.get("corp_code").toString();
             object.put("corp_code",corp_code1);
             String corp_name = "";
-            if (obj.containsField("corp_name")) {
-                corp_name = obj.get("corp_name").toString();
+            if (obj.containsField("company_name")) {
+                corp_name = obj.get("company_name").toString();
             }else {
                 Corp corp = corpService.selectByCorpId(0,corp_code1, Common.IS_ACTIVE_Y);
                 if (corp != null) {
