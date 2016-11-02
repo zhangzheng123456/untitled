@@ -82,8 +82,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
-    var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    var a = [];//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
@@ -958,6 +957,7 @@ $("#edit_close").click(function(){
     $("#page-wrapper").hide();
     $("#content").show();
     $("#details").hide();
+    sessionStorage.removeItem("state");
     if(value==""&&filtrate==""){
         GET(inx,pageSize);
     }else if(value!==""){
