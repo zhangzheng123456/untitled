@@ -152,6 +152,12 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         return  userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive(),userAchvGoal.getStore_code());
 
     }
+
+    @Override
+    public UserAchvGoal getUserAchvForId(String corp_code, String user_code) throws Exception {
+        return userAchvGoalMapper.getUserAchvForId(corp_code, user_code);
+    }
+
     @Override
     public String insert(UserAchvGoal userAchvGoal) throws Exception {
         int count = -1;

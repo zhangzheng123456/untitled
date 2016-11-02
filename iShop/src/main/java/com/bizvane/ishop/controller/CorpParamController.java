@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpParam;
+import com.bizvane.ishop.entity.VipParam;
 import com.bizvane.ishop.service.CorpParamService;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
@@ -35,10 +36,7 @@ public class CorpParamController {
     String id;
     @Autowired
     private CorpParamService corpParamService;
-    @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private CorpService corpService;
+
     private static final Logger logger = Logger.getLogger(CorpParamController.class);
 
     /**
@@ -88,7 +86,7 @@ public class CorpParamController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String param_id = jsonObject.get("param_id").toString();
-            List<CorpParam> list = corpParamService.selectByCorpParam(corp_code, param_id);
+            List<CorpParam> list = corpParamService.selectByCorpParam(corp_code, param_id,Common.IS_ACTIVE_Y);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -125,9 +123,14 @@ public class CorpParamController {
             String message = jsonObj.get("message").toString();
             String result = corpParamService.insert(message, user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                JSONObject jsonObject = new JSONObject(message);
+                String corp_code = jsonObject.get("corp_code").toString();
+                String param_id = jsonObject.get("param_id").toString();
+                String isactive = jsonObject.get("isactive").toString();
+                List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code,param_id,isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add corpParam success");
+                dataBean.setMessage(String.valueOf(corpParams.get(0).getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);

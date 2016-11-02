@@ -163,4 +163,10 @@
     <select id="selAppversionById" resultType="com.bizvane.ishop.entity.Appversion">
         SELECT * FROM def_app_version WHERE ID=#{id};
     </select>
+
+    <select id="selAppversionForId" resultType="com.bizvane.ishop.entity.Appversion">
+        SELECT * FROM def_app_version
+        WHERE corp_code=#{corp_code}
+        AND version_id=#{version_id};
+    </select>
 </mapper>

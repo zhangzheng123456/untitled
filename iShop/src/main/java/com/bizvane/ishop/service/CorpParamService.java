@@ -16,7 +16,7 @@ public interface CorpParamService {
 
     List<CorpParam> selectByParamId(String param_id) throws Exception;
 
-    List<CorpParam> selectByCorpParam(String corp_code, String param_id) throws Exception;
+    List<CorpParam> selectByCorpParam(String corp_code, String param_id,String isactive) throws Exception;
 
     PageInfo<CorpParam> selectAllParam(int page_number, int page_size, String search_value) throws Exception;
 

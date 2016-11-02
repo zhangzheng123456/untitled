@@ -18,13 +18,15 @@ public interface RoleService {
 
     String updateByRoleId(Role record) throws Exception;
 
-    int deleteByRoleId(int id,String role_code) throws Exception;
+    int deleteByRoleId(int id, String role_code) throws Exception;
 
     PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws Exception;
 
     List<Role> selectAll(String search_value) throws Exception;
 
     List<Role> selectCorpRole(String role_code) throws Exception;
+
+    Role getRoleForID(String role_code) throws Exception;
 
     String roleCodeExist(String role_code) throws Exception;
 

@@ -73,4 +73,9 @@ public class InterfaceServiceImpl implements InterfaceService{
     public int addInterface(Interfacers interfacers) throws Exception {
         return interfaceMapper.addInterface(interfacers);
     }
+
+    @Override
+    public Interfacers selectForId(String corp_code, String version) throws Exception {
+        return interfaceMapper.selectForId(corp_code,version);
+    }
 }

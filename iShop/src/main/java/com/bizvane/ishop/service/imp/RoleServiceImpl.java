@@ -95,4 +95,9 @@ public class RoleServiceImpl implements RoleService {
         List<Role> roles = roleMapper.selectUserRole(role_code);
         return roles;
     }
+
+    @Override
+    public Role getRoleForID(String role_code) throws Exception {
+        return roleMapper.getRoleForID(role_code);
+    }
 }

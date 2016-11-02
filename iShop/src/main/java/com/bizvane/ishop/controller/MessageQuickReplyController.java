@@ -41,6 +41,7 @@ public class MessageQuickReplyController {
 
     /**
      * 消息快捷回复列表
+     *
      * @param request
      * @return
      */
@@ -82,6 +83,7 @@ public class MessageQuickReplyController {
 
     /**
      * 根据id查询
+     *
      * @param request
      * @return
      */
@@ -113,6 +115,7 @@ public class MessageQuickReplyController {
 
     /**
      * 消息快捷回复管理-新增
+     *
      * @param request
      * @return
      */
@@ -129,12 +132,13 @@ public class MessageQuickReplyController {
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
             String result = messageQuickReplyService.insert(message, user_id);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
-            } else {
+            if (result.equals("该消息快捷回复模板已存在")) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             }
@@ -149,6 +153,7 @@ public class MessageQuickReplyController {
 
     /**
      * 消息快捷回复管理-编辑
+     *
      * @param request
      * @return
      */
@@ -184,6 +189,7 @@ public class MessageQuickReplyController {
 
     /**
      * 消息快捷回复管理-删除
+     *
      * @param request
      * @return
      */
@@ -223,6 +229,7 @@ public class MessageQuickReplyController {
     /**
      * 消息快捷回复管理
      * 验证回复内容的唯一性
+     *
      * @param request
      * @return
      */
@@ -259,6 +266,7 @@ public class MessageQuickReplyController {
 
     /**
      * 消息快捷回复管理-搜索
+     *
      * @param request
      * @return
      */
@@ -303,6 +311,7 @@ public class MessageQuickReplyController {
     /**
      * 消息快捷回复管理
      * 筛选
+     *
      * @param request
      * @return
      */
@@ -346,6 +355,7 @@ public class MessageQuickReplyController {
     /**
      * 消息快捷回复管理
      * 导出数据
+     *
      * @param request
      * @param response
      * @return

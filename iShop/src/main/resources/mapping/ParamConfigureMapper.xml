@@ -162,7 +162,9 @@ GROUP BY def_corp_cfg.id
     <select id="selectParamByKey" resultMap="ParamConfigure">
         SELECT * FROM def_corp_cfg
         WHERE param_name=#{param_name}
-        AND def_corp_cfg.isactive="Y"
+        <if test="isactive != null">
+        AND isactive=#{isactive}
+        </if>
 
     </select>
 

@@ -78,7 +78,9 @@ public class MessageQuickReplyServiceImpl implements MessageQuickReplyService {
             messageQuickReply.setModifier(user_id);
             messageQuickReply.setIsactive(jsonObject.get("isactive").toString());
             messageQuickReplyMapper.insertMessageQuickReply(messageQuickReply);
-            result = Common.DATABEAN_CODE_SUCCESS;
+            MessageQuickReply messageQuickReply2=this.getQuickReplyByCode(messageQuickReply.getCorp_code(),messageQuickReply.getContent(),messageQuickReply.getIsactive());
+
+            result = String.valueOf(messageQuickReply2.getId());
         }
         return result;
     }

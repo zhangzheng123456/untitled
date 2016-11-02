@@ -100,6 +100,11 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
+    public SmsTemplate getSmsTemplateForId(String corp_code, String template_code) throws Exception {
+        return  this.smsTemplateMapper.getSmsTemplateForId(corp_code, template_code);
+    }
+
+    @Override
     public String SmsTemplateNameExist(String corp_code, String tem_name) throws Exception {
         //SmsTemplateNameExist
         List<SmsTemplate> list = this.smsTemplateMapper.selectByName(tem_name, corp_code);

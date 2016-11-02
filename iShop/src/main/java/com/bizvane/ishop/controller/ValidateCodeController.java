@@ -44,10 +44,7 @@ import java.util.*;
 public class ValidateCodeController {
     @Autowired
     private ValidateCodeService validateCodeService;
-    @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private TableManagerService managerService;
+
     String id;
 
     private static final Logger logger = Logger.getLogger(ValidateCodeController.class);
@@ -181,10 +178,17 @@ public class ValidateCodeController {
             validateCode.setCreater(user_id);
             validateCode.setModified_date(Common.DATETIME_FORMAT.format(date));
             validateCode.setModifier(user_id);
-            validateCodeService.insertValidateCode(validateCode);
+            int i = validateCodeService.insertValidateCode(validateCode);
+            if (i==1){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该手机号已存在");
+                return dataBean.getJsonStr();
+            }
+            ValidateCode validateCode1 = validateCodeService.selectValidateCode(0,validateCode.getPhone(),validateCode.getIsactive());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("add success");
+            dataBean.setMessage(String.valueOf(validateCode1.getId()));
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

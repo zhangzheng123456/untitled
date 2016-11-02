@@ -32,6 +32,13 @@
         GROUP By ID
         ORDER BY ID DESC
     </select>
+    <select id="selectForId" resultType="com.bizvane.ishop.entity.Interfacers">
+    SELECT *
+    FROM def_interface
+    WHERE corp_code = #{corp_code}
+    AND version=#{version}
+
+    </select>
     <insert id="addInterface" parameterType="com.bizvane.ishop.entity.Interfacers">
         INSERT INTO  def_interface
         <trim prefix="(" suffix=")" suffixOverrides=",">

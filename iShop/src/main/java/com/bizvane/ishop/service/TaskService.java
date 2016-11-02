@@ -25,7 +25,7 @@ public interface TaskService {
     String updTask(Task task,String[] user_codes,String user_code)throws Exception;
 
     Task selectTaskById(String id)throws Exception;
-
+    Task getTaskForId(String corp_code,String task_type_code,String isactive)throws Exception;
     TaskAllocation selTaskAllocationById(String id)throws Exception;
 
     List<TaskAllocation> selTaskAllocation(String corp_code,String task_code)throws Exception;
@@ -34,5 +34,5 @@ public interface TaskService {
 
     List<TaskType> selectAllTaskType(String corp_code)throws Exception;
 
-    List<Task> selectTaskByTaskType(String corp_code,String task_type_code);
+    List<Task> selectTaskByTaskType(String corp_code,String task_type_code)throws Exception;
 }

@@ -28,5 +28,5 @@ public interface TaskTypeService {
 
     PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map)throws Exception;
 
-
+    TaskType getTaskTypeForId(String corp_code,String task_type_code)throws Exception;
 }

@@ -15,7 +15,7 @@ public interface AppversionMapper {
 
     List<Appversion> selectAllAppversion(@Param("search_value") String search_value) throws SQLException;
 
-    List<Appversion> selectAllScreen(Map<String,Object> params) throws SQLException;
+    List<Appversion> selectAllScreen(Map<String, Object> params) throws SQLException;
 
     int addAppversion(Appversion appversion) throws SQLException;
 
@@ -24,4 +24,6 @@ public interface AppversionMapper {
     int delAppversionById(int id) throws SQLException;
 
     Appversion selAppversionById(@Param("id") int id) throws SQLException;
+
+    Appversion selAppversionForId(@Param("corp_code") String corp_code, @Param("version_id") String version_id) throws SQLException;
 }

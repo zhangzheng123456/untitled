@@ -429,12 +429,13 @@ function getarealist(a){
 		if (data.code == "0") {
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout=list.pages;
             var list=list.list;
 			var area_html_left ='';
 			var area_html_right='';
 			if (list.length == 0) {
-				area_next=true;
+
 			} else {
 				if(list.length>0){
 					for (var i = 0; i < list.length; i++) {
@@ -449,8 +450,13 @@ function getarealist(a){
 	                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
 					}
 				}
+			}
+			if(hasNextPage==true){
 				area_num++;
 				area_next=false;
+			}
+			if(hasNextPage==false){
+				area_next=true;
 			}
 			$("#screen_area .screen_content_l ul").append(area_html_left);
 			if(!isscroll){
@@ -505,11 +511,12 @@ function getstorelist(a){
 	if (data.code == "0") {
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout=list.pages;
             var list=list.list;
 			var store_html = '';
 			if (list.length == 0){
-				shop_next=true;
+				
 			} else {
 				if(list.length>0){
 					for (var i = 0; i < list.length; i++) {
@@ -524,8 +531,13 @@ function getstorelist(a){
                         + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
 					}
 				}
+			}
+			if(hasNextPage==true){
 				shop_num++;
 				shop_next=false;
+			}
+			if(hasNextPage==false){
+				shop_next=true;
 			}
 			$("#screen_shop .screen_content_l ul").append(store_html);
 			if(!isscroll){
@@ -581,11 +593,12 @@ function getstafflist(a){
         if (data.code == "0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout=list.pages;
             var list=list.list;
             var staff_html = '';
             if (list.length == 0){
-                staff_next=true;
+                
             } else {
                 if(list.length>0){
                     for (var i = 0; i < list.length; i++) {
@@ -600,9 +613,14 @@ function getstafflist(a){
                         + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
                     }
                 }
-                staff_num++;
-                staff_next=false;
             }
+            if(hasNextPage==true){
+				staff_num++;
+                staff_next=false;
+			}
+			if(hasNextPage==false){
+				staff_next=true;
+			}
             $("#screen_staff .screen_content_l ul").append(staff_html);
             if(!isscroll){
 				$("#screen_staff .screen_content_l").bind("scroll",function () {

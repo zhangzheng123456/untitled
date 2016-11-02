@@ -141,12 +141,18 @@ var oc = new ObjectControl();
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: "保存成功"
-				});
+				if(_command=="/message/mobile/template/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/message/template_edit.html");
+                }
+                if(_command=="/message/mobile/template/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 				// $(window.parent.document).find('#iframepage').attr("src","/message/template.html");
 			}else if(data.code=="-1"){
 				art.dialog({
