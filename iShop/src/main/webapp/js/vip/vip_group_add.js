@@ -624,6 +624,7 @@ function GET(a, b, c) {
             superaddition(list, a, c);
             jumpBianse();
             filtrate = "";
+            $(".table p").remove();
             setPage($("#foot-num")[0], cout, a, b, c);
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
@@ -1598,6 +1599,7 @@ $("#search").keydown(function () {
             param["searchValue"] = value;
             param["pageNumber"] = inx;
             param["pageSize"] = pageSize;
+            POST(inx, pageSize, group_code);
         }else{
             GET(inx, pageSize, group_code);
         }
