@@ -863,5 +863,9 @@ function public_click(a) {
 		$(a).prev().attr('checked','true')
 	}
 }
-//
+//商品图片放大
+$(".good_imgs").on("click","div img",function () {
+	var src=$(this).attr("src");
+	whir.loading.add("",0.5,src);
+})
 
