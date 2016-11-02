@@ -166,6 +166,7 @@ public class StoreAchvGoalController {
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 StoreAchvGoal storeAchvGoal = storeAchvGoalService.getStoreAchvForID(storeAchvGoal1.getCorp_code(),storeAchvGoal1.getStore_code(),storeAchvGoal1.getTarget_time());
                 dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(storeAchvGoal.getId()));
 
             } else {
