@@ -269,7 +269,7 @@ public class TaskController {
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                Task task1=taskService.getTaskForId(task.getCorp_code(),task.getTask_type_code(),task.getIsactive());
+                Task task1=taskService.getTaskForId(task.getCorp_code(),task.getTask_type_code(),task.getTask_code());
                 JSONObject obj=new JSONObject();
                 obj.put("taskId",task1.getId());
                 obj.put("taskCode",task1.getTask_code());
