@@ -603,10 +603,14 @@ $("#album_leadingout").click(function () {
             var param = {};
             var vip_id = $(tr[i]).find("td").eq(2).text();
             var vip_name = $(tr[i]).find("td").eq(3).text();
+            var phone = $(tr[i]).find("td").eq(5).text();
+            var card_no = $(tr[i]).find("td").eq(7).text();
             var corp_code =$(tr[i]).attr("id");
             param['vip_id'] = vip_id;
             param['vip_name'] = vip_name;
             param['corp_code'] = corp_code;
+            param['phone'] = phone;
+            param['card_no'] = card_no;
             list.push(param);
         }
         params['vip'] = list;
@@ -623,7 +627,11 @@ $("#album_leadingout").click(function () {
                 $("#p").show();
                 $("#tk").show();
                 $("#enter").html("<a style='color: white;' href='/"+path+"'>确认</a>");
-                whir.loading.remove();//移除加载框3
+                whir.loading.remove();//移除加载框
+                $("#enter").click(function () {
+                    $("#p").hide();
+                    $("#tk").hide();
+                })
             }else {
                 alert("导出相册失败");
                 whir.loading.remove();//移除加载框
