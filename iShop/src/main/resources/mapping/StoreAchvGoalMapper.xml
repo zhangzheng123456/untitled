@@ -203,7 +203,7 @@
 
     <select id="selectByCorpAndUserCode">
         SELECT * FROM def_store_achv_goal
-        WHERE  corp_code=#{corp_code} AND store_code=#{store_code}
+        WHERE  def_store_achv_goal.corp_code=#{corp_code} AND def_store_achv_goal.store_code=#{store_code}
     </select>
 
     <select id="selectAllStoreAchvScreen" resultMap="storeAchvGoals">
