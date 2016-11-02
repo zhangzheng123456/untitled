@@ -313,6 +313,10 @@
         AND ua.user_code = u.user_code
         AND ua.corp_code=#{corp_code}
         AND ua.user_code=#{user_code}
+        AND ua.user_target=#{user_target}
+        AND ua.target_type=#{target_type}
+        AND ua.target_time=#{target_time}
+
     </select>
 
     <delete id="deleteStoreUserAchv">

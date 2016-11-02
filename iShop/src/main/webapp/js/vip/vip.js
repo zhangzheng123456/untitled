@@ -610,6 +610,7 @@ $("#album_leadingout").click(function () {
             list.push(param);
         }
         params['vip'] = list;
+        whir.loading.add("",0.5);//加载等待框
         oc.postRequire('post','/vip/exportVipAlbums',0,params,function (data) {
             if(data.code == 0){
                 var msg = JSON.parse(data.message);
@@ -622,8 +623,10 @@ $("#album_leadingout").click(function () {
                 $("#p").show();
                 $("#tk").show();
                 $("#enter").html("<a style='color: white;' href='/"+path+"'>确认</a>");
+                whir.loading.remove();//移除加载框3
             }else {
-                alert("导出相册失败")
+                alert("导出相册失败");
+                whir.loading.remove();//移除加载框
             }
         })
     }

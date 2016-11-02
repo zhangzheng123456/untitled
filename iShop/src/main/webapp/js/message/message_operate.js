@@ -682,6 +682,8 @@ $("#screen_que_area").click(function(){
 		staff_num=1;
 		$("#staff_area_num").attr("data-areacode",area_code);
 		$("#staff_area_num").val("已选"+li.length+"个");
+		$("#area_num").attr("data-areacode",area_code);
+		$("#area_num").val("已选"+li.length+"个");
 		$("#screen_staff .screen_content_l ul").empty();
 		$("#screen_staff .screen_content_l").unbind("scroll");
 		$("#screen_area").hide();
@@ -778,6 +780,8 @@ $("#screen_que_brand").click(function(){
 		staff_num=1;
 		$("#staff_brand_num").attr("data-brandcode",brand_code);
 		$("#staff_brand_num").val("已选"+li.length+"个");
+		$("#brand_num").attr("data-brandcode",brand_code);
+		$("#brand_num").val("已选"+li.length+"个");
 		$("#screen_staff .screen_content_l ul").empty();
 		$("#screen_staff .screen_content_l").unbind("scroll");
 		$("#screen_brand").hide();
@@ -793,7 +797,7 @@ $("#screen_que_brand").click(function(){
 		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_brand").hide();
 		$("#screen_shop").show();
-		getstafflist(shop_num);
+		getstorelist(shop_num);
 	}
 })
 //店铺里面的区域点击
@@ -848,7 +852,7 @@ $("#staff_shop").click(function(){
 	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
 	$("#screen_shop").show();
 	$("#screen_staff").hide();
-	getarealist(shop_num);
+	getstorelist(shop_num);
 })
 //员工里面的品牌点击
 $("#staff_brand").click(function(){

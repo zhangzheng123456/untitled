@@ -41,17 +41,17 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value);
-        for (UserAchvGoal userAchvGoal:userAchvGoals) {
+        for (UserAchvGoal userAchvGoal : userAchvGoals) {
             userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
-            if(userAchvGoal.getTarget_type()==null||userAchvGoal.getTarget_type().equals("")){
+            if (userAchvGoal.getTarget_type() == null || userAchvGoal.getTarget_type().equals("")) {
                 userAchvGoal.setTarget_type("未设定");
-            }else if(userAchvGoal.getTarget_type().equals("D")){
+            } else if (userAchvGoal.getTarget_type().equals("D")) {
                 userAchvGoal.setTarget_type("日");
-            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("W")){
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("W")) {
                 userAchvGoal.setTarget_type("周");
-            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("M")){
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("M")) {
                 userAchvGoal.setTarget_type("月");
-            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("Y")){
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("Y")) {
                 userAchvGoal.setTarget_type("年");
             }
         }
@@ -69,15 +69,15 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         String[] stores = null;
         if (!store_code.equals("")) {
             if (store_code.contains(Common.SPECIAL_HEAD))
-                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                store_code = store_code.replace(Common.SPECIAL_HEAD, "");
             stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
             if (area_code.contains(Common.SPECIAL_HEAD))
-                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                area_code = area_code.replace(Common.SPECIAL_HEAD, "");
 
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, "");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -92,17 +92,17 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
         PageHelper.startPage(page_number, page_size);
         List<UserAchvGoal> users = userAchvGoalMapper.selectPartUserAchvGoalBySearch(params);
-        for (UserAchvGoal userAchvGoal:users) {
+        for (UserAchvGoal userAchvGoal : users) {
             userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
-            if(userAchvGoal.getTarget_type()==null||userAchvGoal.getTarget_type().equals("")){
+            if (userAchvGoal.getTarget_type() == null || userAchvGoal.getTarget_type().equals("")) {
                 userAchvGoal.setTarget_type("未设定");
-            }else if(userAchvGoal.getTarget_type().equals("D")){
+            } else if (userAchvGoal.getTarget_type().equals("D")) {
                 userAchvGoal.setTarget_type("日");
-            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("W")){
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("W")) {
                 userAchvGoal.setTarget_type("周");
-            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("M")){
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("M")) {
                 userAchvGoal.setTarget_type("月");
-            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("Y")){
+            } else if (userAchvGoal.getTarget_type().equalsIgnoreCase("Y")) {
                 userAchvGoal.setTarget_type("年");
             }
         }
@@ -135,7 +135,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             userAchvGoalMapper.update(userAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
         } else {
-            count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive(),userAchvGoal.getStore_code());
+            count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(), userAchvGoal.getIsactive(), userAchvGoal.getStore_code());
             if (count > 0) {
                 return Common.DATABEAN_CODE_ERROR;
             }
@@ -148,20 +148,22 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     public int deleteUserAchvGoalById(String id) throws Exception {
         return this.userAchvGoalMapper.delete(Integer.parseInt(id));
     }
-    public int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws Exception{
-        return  userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive(),userAchvGoal.getStore_code());
+
+    public int checkUserAchvGoal(UserAchvGoal userAchvGoal) throws Exception {
+        return userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(), userAchvGoal.getIsactive(), userAchvGoal.getStore_code());
 
     }
 
     @Override
-    public UserAchvGoal getUserAchvForId(String corp_code, String user_code) throws Exception {
-        return userAchvGoalMapper.getUserAchvForId(corp_code, user_code);
+    public UserAchvGoal getUserAchvForId(String corp_code, String user_code, String user_target, String target_type, String target_time) throws Exception {
+        return userAchvGoalMapper.getUserAchvForId(corp_code, user_code, user_target,target_type, target_time);
     }
+
 
     @Override
     public String insert(UserAchvGoal userAchvGoal) throws Exception {
         int count = -1;
-        count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive(),userAchvGoal.getStore_code());
+        count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(), userAchvGoal.getIsactive(), userAchvGoal.getStore_code());
         if (count > 0) {
             return "用户业绩重复";
         } else {
@@ -176,7 +178,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
     @Override
     public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String
-            area_code, String store_code, String role_code, Map<String, String> map)  throws Exception{
+            area_code, String store_code, String role_code, Map<String, String> map) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
@@ -189,7 +191,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, "");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -205,17 +207,17 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         List<UserAchvGoal> userAchvGoals;
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = userAchvGoalMapper.selectAllUserAchvScreen(params);
-        for (UserAchvGoal userAchvGoal:userAchvGoals) {
+        for (UserAchvGoal userAchvGoal : userAchvGoals) {
             userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
-            if(userAchvGoal.getTarget_type()==null||userAchvGoal.getTarget_type().equals("")){
+            if (userAchvGoal.getTarget_type() == null || userAchvGoal.getTarget_type().equals("")) {
                 userAchvGoal.setTarget_type("未设定");
-            }else if(userAchvGoal.getTarget_type().equals("D")){
+            } else if (userAchvGoal.getTarget_type().equals("D")) {
                 userAchvGoal.setTarget_type("日");
-            }else if(userAchvGoal.getTarget_type().equals("W")){
+            } else if (userAchvGoal.getTarget_type().equals("W")) {
                 userAchvGoal.setTarget_type("周");
-            }else if(userAchvGoal.getTarget_type().equals("M")){
+            } else if (userAchvGoal.getTarget_type().equals("M")) {
                 userAchvGoal.setTarget_type("月");
-            }else if(userAchvGoal.getTarget_type().equals("Y")){
+            } else if (userAchvGoal.getTarget_type().equals("Y")) {
                 userAchvGoal.setTarget_type("年");
             }
         }

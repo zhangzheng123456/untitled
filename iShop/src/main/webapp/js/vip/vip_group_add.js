@@ -659,7 +659,7 @@ function superaddition(data, num, c) {
             judge = '';
         }
         if (num >= 2) {
-            var a = i + num * pageSize;
+            var a = i + 1 + (num - 1) * pageSize;
         } else {
             var a = i + 1;
         }
@@ -702,6 +702,7 @@ function superaddition(data, num, c) {
             input.checked = false;
         }
     })
+    $(".th th:last-child input").removeAttr("checked");
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {

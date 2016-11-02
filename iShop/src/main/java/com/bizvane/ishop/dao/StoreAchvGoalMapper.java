@@ -63,6 +63,7 @@ public interface StoreAchvGoalMapper {
      * @return
      */
     StoreAchvGoal selectByCorpAndUserCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
+    StoreAchvGoal selectForId(@Param("corp_code") String corp_code, @Param("store_code") String store_code,@Param("target_time") String target_time) throws SQLException;
 
 
     List<StoreAchvGoal> selectAllStoreAchvScreen(Map<String, Object> params) throws SQLException;

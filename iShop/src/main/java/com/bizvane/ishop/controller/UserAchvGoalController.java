@@ -261,7 +261,7 @@ public class UserAchvGoalController {
             if (result.equalsIgnoreCase(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                UserAchvGoal userAchvGoal1 = userAchvGoalService.getUserAchvForId(userAchvGoal.getCorp_code(),userAchvGoal.getUser_code());
+                UserAchvGoal userAchvGoal1 = userAchvGoalService.getUserAchvForId(userAchvGoal.getCorp_code(),userAchvGoal.getUser_code(),userAchvGoal.getUser_target(),userAchvGoal.getTarget_type(),userAchvGoal.getTarget_time());
                 dataBean.setMessage(String.valueOf(userAchvGoal1.getId()));
             } else {
                 dataBean.setId(id);

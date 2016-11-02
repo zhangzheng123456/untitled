@@ -74,7 +74,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    UserAchvGoal getUserAchvForId(String corp_code, String user_code)throws  Exception;
+    UserAchvGoal getUserAchvForId(String corp_code, String user_code,String user_target,String target_type,String target_time )throws  Exception;
     List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws Exception;
 
     PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) throws Exception;

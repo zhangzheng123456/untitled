@@ -128,8 +128,11 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         String area_code = "";
         String store_id = "";
         if (role_code.equals(Common.ROLE_SYS)) {
+            area_code = jsonObject.get("area_code").toString();
+            store_id = jsonObject.get("store_code").toString();
             corp_code = jsonObject.get("corp_code").toString();
         } else if (role_code.equals(Common.ROLE_GM)){
+            store_id = jsonObject.get("store_code").toString();
             if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
                 area_code = jsonObject.get("area_code").toString();
             }
