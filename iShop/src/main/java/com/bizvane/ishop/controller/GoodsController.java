@@ -848,7 +848,7 @@ public class GoodsController {
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Goods> list = goodsService.matchGoodsList(page_number, page_size,corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list.getList()));
+            result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

@@ -5,6 +5,22 @@ var num = 1;//区域默认第一页
 var dnum = 1;//店铺默认第一页
 var ynum = 1;//员工默认第一页
 //获取企业类型的下拉框
+var param={};
+var state=JSON.parse(sessionStorage.getItem("state"));
+if(state!==null){
+    whir.loading.add("", 0.5);//加载等待框
+    $("#page-wrapper").show();
+    $("#content").hide();
+    $("#details").hide();
+    var id = state.id;
+    var corp_code = state.corp_code;
+    var task_code = state.task_code;
+    param["corp_code"] = corp_code;//公司编号
+    param["task_code"] = task_code;//任务编号
+    param["id"] = id;//公司id
+    $('#task_id').val(id);
+    nssignment();
+}
 var start = {
     elem: '#target_start_time',
     format: 'YYYY-MM-DD',
@@ -158,14 +174,8 @@ function getarealist(a) {
                 $("#area_more").hide();
             } else {
                 for (var i = 0; i < list.length; i++) {
-                    area_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].area_code + "' data-areaname='" + list[i].area_name + "' name='test'  class='check'  id='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
+                    area_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].area_code + "' data-areaname='" + list[i].area_name + "' name='test'  class='check'"
+                        + "'/><label for='"
                         + "'></label></div><span class='p16'>" + list[i].area_name + "</span></li>"
                 }
                 if (pageNumber == 1) {
@@ -179,7 +189,7 @@ function getarealist(a) {
                 if (cout > 1 && pageNumber < cout) {
                     $("#area_more").show();
                 }
-                $("#area_code ul").on("click", "li", function () {
+                $("#area_code ul li").click(function () {
                     var input = $(this).find("input")[0];
                     if (input.type == "checkbox" && input.checked == false) {
                         input.checked = true;
@@ -250,14 +260,8 @@ function getstorelist(a) {
                 $("#store_more").hide();
             } else {
                 for (var i = 0; i < list.length; i++) {
-                    store_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].store_code + "' data-storename='" + list[i].store_name + "' name='test'  class='check'  id='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
+                    store_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].store_code + "' data-storename='" + list[i].store_name + "' name='test'  class='check'"
+                        + "'/><label for='"
                         + "'></label></div><span class='p16'>" + list[i].store_name + "</span></li>"
                 }
                 if (pageNumber == 1) {
@@ -271,7 +275,7 @@ function getstorelist(a) {
                 if (cout > 1 && pageNumber < cout) {
                     $("#store_more").show();
                 }
-                $("#store_code ul").on("click", "li", function () {
+                $("#store_code ul li").click(function () {
                     var input = $(this).find("input")[0];
                     if (input.type == "checkbox" && input.checked == false) {
                         input.checked = true;
@@ -343,12 +347,8 @@ function getstafflist(a) {
                 $("#staff_more").hide();
             } else {
                 for (var i = 0; i < list.length; i++) {
-                    staff_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].user_code + "' data-username='" + list[i].user_name + "' name='" + list[i].phone + "'  class='check'  id='checkboxThreeInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxThreeInput"
-                        + i
-                        + 1
+                    staff_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].user_code + "' data-username='" + list[i].user_name + "' name='" + list[i].phone + "'  class='check'"
+                        + "'/><label for=''"
                         + "'></label></div><span class='p16'>" + list[i].user_name + "(" + list[i].phone + ")</span></li>"
                 }
                 if (pageNumber == 1) {
@@ -362,7 +362,7 @@ function getstafflist(a) {
                 if (cout > 1 && pageNumber < cout) {
                     $("#staff_more").show();
                 }
-                $("#staff_code ul").on("click", "li", function () {
+                $("#staff_code ul li").click(function () {
                     var input = $(this).find("input")[0];
                     if (input.type == "checkbox" && input.checked == false) {
                         input.checked = true;
@@ -565,63 +565,63 @@ $("#add_save").click(function () {
     }
     var corp_code = $('#OWN_CORP').val();//公司编号
     var task_type_code = $('#task_type_code').val();//公司类型
-    var task_title = $('#task_title').val();//任务名称
-    var task_description = $("#task_describe").val();//任务描述
-    var target_end_time = $("#target_end_time").val();//截止时间
-    var target_start_time = $("#target_start_time").val();//开始时间
+    var task_title=$('#task_title').val();//任务名称
+    var task_description=$("#task_describe").val();//任务描述
+    var target_end_time=$("#target_end_time").val();//截止时间
+    var target_start_time=$("#target_start_time").val();//开始时间
     var isactive = "";//是否可用
     var input = $("#is_active")[0];
-    if (task_type_code == "") {
+    if(task_type_code==""){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "任务类型不能为空"
+            content:"任务类型不能为空"
         });
         return;
     }
-    if (task_title == "") {
+    if(task_title==""){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "任务名称不能为空"
+            content:"任务名称不能为空"
         });
         return;
     }
-    if (task_description == "") {
+    if(task_description==""){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "任务描述不能为空"
+            content:"任务描述不能为空"
         });
         return;
     }
-    if (user_codes == "") {
+    if(user_codes==""){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "员工不能为空"
+            content:"员工不能为空"
         });
         return;
     }
-    if (target_end_time == "") {
+    if(target_end_time==""){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "截止时间不能为空"
+            content:"截止时间不能为空"
         });
         return;
     }
-    if (target_start_time == "") {
+    if(target_start_time==""){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "开始时间不能为空"
+            content:"开始时间不能为空"
         });
         return;
     }
@@ -630,121 +630,32 @@ $("#add_save").click(function () {
     } else if (input.checked == false) {
         isactive = "N";
     }
-    _param["user_codes"] = user_codes;
-    _param["phone"] = phone;
-    _param["corp_code"] = corp_code;
-    _param["task_type_code"] = task_type_code;
-    _param["task_title"] = task_title;
-    _param["task_description"] = task_description;
-    _param["target_end_time"] = target_end_time;
-    _param["target_start_time"] = target_start_time;
-    _param["isactive"] = isactive;
-    whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("post", "/task/addTask", "", _param, function (data) {
-        if (data.code == "0") {
-            if (data.message == "新增成功") {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "保存成功"
-                });
-                // $(window.parent.document).find('#iframepage').attr("src","/task/task.html");
-                whir.loading.remove();//移除加载框
-            }
+    _param["user_codes"]=user_codes;
+    _param["phone"]=phone;
+    _param["corp_code"]=corp_code;
+    _param["task_type_code"]=task_type_code;
+    _param["task_title"]=task_title;
+    _param["task_description"]=task_description;
+    _param["target_end_time"]=target_end_time;
+    _param["target_start_time"]=target_start_time;
+    _param["isactive"]=isactive;
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/task/addTask","", _param, function(data) {
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var state={};
+            state["corp_code"]=corp_code;
+            state["task_code"]=message.taskCode;
+            state["id"]=message.taskId;
+            sessionStorage.setItem("state", JSON.stringify(state));
+            $(window.parent.document).find('#iframepage').attr("src", "/task/task.html");
+            whir.loading.remove();//移除加载框
         }
     })
-	var corp_code = $('#OWN_CORP').val();//公司编号
-	var task_type_code = $('#task_type_code').val();//公司类型
-	var task_title=$('#task_title').val();//任务名称
-	var task_description=$("#task_describe").val();//任务描述
-	var target_end_time=$("#target_end_time").val();//截止时间
-	var target_start_time=$("#target_start_time").val();//开始时间
-	var isactive = "";//是否可用
-	var input = $("#is_active")[0];
-	if(task_type_code==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"任务类型不能为空"
-		});
-		return;
-	}
-	if(task_title==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"任务名称不能为空"
-		});
-		return;
-	}
-	if(task_description==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"任务描述不能为空"
-		});
-		return;
-	}
-	if(user_codes==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"员工不能为空"
-		});
-		return;
-	}
-	if(target_end_time==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"截止时间不能为空"
-		});
-		return;
-	}
-	if(target_start_time==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"开始时间不能为空"
-		});
-		return;
-	}
-	if (input.checked == true) {
-		isactive = "Y";
-	} else if (input.checked == false) {
-		isactive = "N";
-	}
-	_param["user_codes"]=user_codes;
-	_param["phone"]=phone;
-	_param["corp_code"]=corp_code;
-	_param["task_type_code"]=task_type_code;
-	_param["task_title"]=task_title;
-	_param["task_description"]=task_description;
-	_param["target_end_time"]=target_end_time;
-	_param["target_start_time"]=target_start_time;
-	_param["isactive"]=isactive;
-	whir.loading.add("",0.5);//加载等待框
-	oc.postRequire("post","/task/addTask","", _param, function(data) {
-		if(data.code=="0"){
-			if(data.message=="新增成功"){
-				sessionStorage.setItem("id",data.message);
-				$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
-				whir.loading.remove();//移除加载框
-			}
-		}
-	})
 })
 if ($(".pre_title label").text() == "新增任务") {
     getcorplist(a, b);
 }
-var param = {};
 function nssignment() {//加载list的文件
     oc.postRequire("post", "/task/selectTaskById", "0", param, function (data) {
         var msg = data.message;
@@ -795,7 +706,6 @@ function editAssignment(a) {
     nssignment();
 }
 //编辑进入界面
-
 function editAssignmentb(a) {
     var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
     if (tr.length > 1 || tr.length == '0') {
@@ -816,6 +726,7 @@ function deleteName(a) {
 }
 //新增关闭
 $("#add_close").click(function () {
+    sessionStorage.removeItem("state");
     $(window.parent.document).find('#iframepage').attr("src", "/task/task.html");
 });
 $("#back_task").click(function () {

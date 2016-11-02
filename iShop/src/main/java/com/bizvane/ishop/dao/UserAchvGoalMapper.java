@@ -29,7 +29,7 @@ public interface UserAchvGoalMapper {
     List<UserAchvGoal> selectPartUserAchvGoalBySearch(Map<String, Object> params) throws SQLException;
 
     List<UserAchvGoal> selectUserAchvCount(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
-    UserAchvGoal getUserAchvForId(@Param("corp_code") String corp_code, @Param("user_code") String user_code)throws Exception;
+    UserAchvGoal getUserAchvForId(@Param("corp_code") String corp_code, @Param("user_code") String user_code,@Param("user_target") String user_target,@Param("target_type") String target_type,@Param("target_time") String target_time)throws Exception;
     int deleteStoreUserAchv(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("user_code") String user_code) throws SQLException;
 
     List<UserAchvGoal> selectAllUserAchvScreen(Map<String, Object> params) throws SQLException;
