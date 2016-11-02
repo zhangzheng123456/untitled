@@ -529,10 +529,12 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
 
             String corp_code = jsonObject.get("corp_code").toString();
-            String vip_group_code = jsonObject.get("vip_group_code").toString();
+            String vip_group_id = jsonObject.get("vip_group_id").toString();
 
             String vip_ids = "";
-            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(vip_group_id));
+
+//            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
             if (vipGroup != null && vipGroup.getVip_ids() != null && !vipGroup.getVip_ids().equals("")){
                 vip_ids = vipGroup.getVip_ids();
                 vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
