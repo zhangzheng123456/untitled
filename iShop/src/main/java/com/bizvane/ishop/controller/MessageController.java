@@ -117,6 +117,7 @@ public class MessageController {
            String store_id = jsonObject.get("store_id").toString();
            String title=jsonObject.get("title").toString();
            String message_content=jsonObject.get("message_content").toString();
+           String message_type="text";
 
            Data data_operator = new Data("operator", operator, ValueType.PARAM);
            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
@@ -126,6 +127,7 @@ public class MessageController {
            Data data_receiver_type = new Data("receiver_type", receiver_type, ValueType.PARAM);
            Data data_title = new Data("title", title, ValueType.PARAM);
            Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
+           Data data_message_type = new Data("message_type", message_type, ValueType.PARAM);
 
            Map datalist = new HashMap<String, Data>();
            datalist.put(data_user_id.key, data_user_id);
@@ -135,7 +137,8 @@ public class MessageController {
            datalist.put(data_area_code.key, data_area_code);
            datalist.put(data_receiver_type.key, data_receiver_type);
            datalist.put(data_title.key, data_title);
-           datalist.put(data_message_content.key, data_message_content);
+           datalist.put(data_title.key, data_title);
+           datalist.put(data_message_type.key, data_message_type);
 
            logger.info("-------发送通知" +datalist.toString());
 
