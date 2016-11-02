@@ -256,8 +256,9 @@ public class SmsTemplateController {
                 dataBean.setMessage("消息模板名称已经存在");
             } else {
                 this.smsTemplateService.insert(SmsTemplate);
+                SmsTemplate smsTemplate = smsTemplateService.getSmsTemplateForId(SmsTemplate.getCorp_code(),SmsTemplate.getTemplate_code());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("add succcess");
+                dataBean.setMessage(String.valueOf(smsTemplate.getId()));
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -329,7 +330,6 @@ public class SmsTemplateController {
     }
 
 
-
     /***
      * 导出数据
      */
@@ -373,7 +373,7 @@ public class SmsTemplateController {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(smsTemplates);
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json,smsTemplates, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, smsTemplates, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

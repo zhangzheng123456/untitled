@@ -206,6 +206,12 @@
         AND corp_code=#{corp_code}
         AND isactive = 'Y'
     </select>
+    <select id="getSmsTemplateForId" resultType="com.bizvane.ishop.entity.SmsTemplate">
+        SELECT *
+        FROM def_sms_template
+        WHERE template_code=#{template_code}
+        AND corp_code=#{corp_code}
+    </select>
 
     <select id="selectAllSmsTemplateScreen" resultMap="MessageTemplates">
         SELECT

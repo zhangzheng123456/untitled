@@ -133,7 +133,9 @@
     <select id="countRoleCode" resultType="java.lang.Integer">
         SELECT count(*) FROM def_role WHERE role_code=#{role_code}
     </select>
-
+    <select id="getRoleForID" resultType="com.bizvane.ishop.entity.Role">
+        SELECT * FROM def_role WHERE role_code=#{role_code}
+    </select>
     <select id="countRoleName" resultType="java.lang.Integer">
         SELECT count(*) FROM def_role WHERE role_name=#{role_name}
     </select>

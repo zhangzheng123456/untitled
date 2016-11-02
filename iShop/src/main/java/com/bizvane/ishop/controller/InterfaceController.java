@@ -159,8 +159,9 @@ public class InterfaceController {
             interfacers.setModifier(user_id);
             interfaceService.addInterface(interfacers);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            Interfacers interfacers1=interfaceService.selectForId(interfacers.getCorp_code(),interfacers.getVersion());
             dataBean.setId(id);
-            dataBean.setMessage("add success");
+            dataBean.setMessage(String.valueOf(interfacers1.getId()));
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

@@ -759,17 +759,13 @@ jQuery(document).ready(function () {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=JSON.parse(msg.list);
+                var hasNextPage=list.hasNextPage;
                 var list=list.list;
                 var area_html = '';
                 if (list.length == 0) {
-                    if(a==1){
-                        for(var h=0;h<9;h++){
-                            area_html+="<li></li>";
-                        }
-                    }
-                    area_next=true;
+                   
                 } else {
-                    if(list.length<9&&a==1){
+                   if(list.length>0){
                         for (var i = 0; i < list.length; i++) {
                             area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
                                 + i
@@ -779,27 +775,16 @@ jQuery(document).ready(function () {
                                 + i
                                 + a
                                 + 1
-                                + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
-                        }
-                        for(var j=0;j<9-list.length;j++){
-                            area_html+="<li></li>"
-                        }
-                    }else if(list.length>=9||list.length<9&&a>1){
-                        for (var i = 0; i < list.length; i++) {
-                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'/><label for='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
+                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
                         }
                     }
+                }
+                if(hasNextPage==true){
                     area_num++;
                     area_next=false;
-
+                }
+                if(hasNextPage==false){
+                    area_next=true;
                 }
                 $("#screen_area .screen_content_l ul").append(area_html);
                 bianse();

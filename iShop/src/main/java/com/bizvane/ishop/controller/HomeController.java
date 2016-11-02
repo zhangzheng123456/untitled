@@ -112,9 +112,7 @@ public class HomeController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
-        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        dataBean.setId(id);
-        dataBean.setMessage("非系统管理员");
+
         return dataBean.getJsonStr();
     }
 

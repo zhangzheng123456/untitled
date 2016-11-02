@@ -763,18 +763,19 @@ function getmatchgoodsList(a) {
 	param["goods_code"]=goods_code;
 	param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
-	param["searchValue"]=searchValue;whir.loading.add("",0.5);//加载等待框
-	
+	param["searchValue"]=searchValue;
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
+			console.log(data);
 			var msg=JSON.parse(data.message);
 			var list=JSON.parse(msg.list);
+			var hasNextPage=list.hasNextPage;
+			var list=list.list;
+			console.log(list);
 			if(list.length<=0){
-				jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>")
-				next=true;
+				jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>");
 			}else{
-				num++;
-				a++;
 				for(var i=0;i<list.length;i++){
 					jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -783,10 +784,15 @@ function getmatchgoodsList(a) {
 						+ list[i].goods_name + '</span><span class="goods_add">'
 						+'+</span><i class="icon-ishop_6-12"></i></li>');
 				}
+			}
+			if(hasNextPage==true){
+				num++;
+				a++;
 				next=false;
 			}
-
-
+			if(hasNextPage==false){
+				next=true;
+			}
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,

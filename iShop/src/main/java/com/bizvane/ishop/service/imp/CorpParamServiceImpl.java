@@ -42,8 +42,8 @@ public class CorpParamServiceImpl implements CorpParamService {
         return corpParamMapper.selectById(id);
     }
 
-    public List<CorpParam> selectByCorpParam(String corp_code, String param_id) throws Exception {
-        return corpParamMapper.selectByCorpParam(corp_code, param_id);
+    public List<CorpParam> selectByCorpParam(String corp_code, String param_id,String isactive) throws Exception {
+        return corpParamMapper.selectByCorpParam(corp_code, param_id,isactive);
     }
 
     public List<CorpParam> selectByParamId(String param_id) throws Exception {
@@ -73,7 +73,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String corp_code = jsonObject.get("corp_code").toString();
         String param_id = jsonObject.get("param_id").toString();
         String param_value = jsonObject.get("param_value").toString();
-        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
+        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id,Common.IS_ACTIVE_Y);
         if (corpParams.size() > 0) {
             result = "该企业参数配置已存在";
         } else {
@@ -105,7 +105,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String param_id = jsonObject.get("param_id").toString();
 
         String param_value = jsonObject.get("param_value").toString();
-        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
+        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id,Common.IS_ACTIVE_Y);
 
         if (corpParams.size() == 0 || corpParams.get(0).getId() == id) {
             CorpParam corpParam = new CorpParam();

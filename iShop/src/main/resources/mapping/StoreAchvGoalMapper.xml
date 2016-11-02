@@ -200,10 +200,17 @@
         DELETE  FROM def_store_achv_goal
         WHERE id=#{id}
     </delete>
-
-    <select id="selectByCorpAndUserCode">
+    <select id="selectByCorpAndUserCode" resultMap="storeAchvGoals">
         SELECT * FROM def_store_achv_goal
-        WHERE  corp_code=#{corp_code} AND store_code=#{store_code}
+        WHERE  def_store_achv_goal.corp_code=#{corp_code}
+        AND def_store_achv_goal.store_code=#{store_code}
+    </select>
+    <select id="selectForId" resultMap="storeAchvGoals">
+        SELECT * FROM def_store_achv_goal
+        WHERE  def_store_achv_goal.corp_code=#{corp_code}
+        AND def_store_achv_goal.store_code=#{store_code}
+         AND def_store_achv_goal.target_time=#{target_time}
+
     </select>
 
     <select id="selectAllStoreAchvScreen" resultMap="storeAchvGoals">

@@ -132,12 +132,16 @@ public class SmsTemplateTypeController {
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
             String result = smsTemplateTypeService.insert(message, user_id);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
-            } else {
+            if (result.equals("该消息模板分组编号已存在")){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else  if(result.equals("该消息模板分组名称已存在")){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             }
@@ -210,12 +214,12 @@ public class SmsTemplateTypeController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
                 SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeById(Integer.valueOf(ids[i]));
-                if (smsTemplateType != null){
+                if (smsTemplateType != null) {
                     String template_type_code = smsTemplateType.getTemplate_type_code();
                     String corp_code = smsTemplateType.getCorp_code();
-                    List<SmsTemplate> smsTemplates = smsTemplateTypeService.selectByTemplateType(corp_code,template_type_code);
-                    if (smsTemplates.size()>0){
-                        msg = "消息模板分类"+template_type_code+"下有消息模板，请处理后再删除";
+                    List<SmsTemplate> smsTemplates = smsTemplateTypeService.selectByTemplateType(corp_code, template_type_code);
+                    if (smsTemplates.size() > 0) {
+                        msg = "消息模板分类" + template_type_code + "下有消息模板，请处理后再删除";
                         break;
                     }
                 }
@@ -411,7 +415,6 @@ public class SmsTemplateTypeController {
     }
 
     /**
-     *
      * @param request
      * @return
      */
@@ -435,7 +438,7 @@ public class SmsTemplateTypeController {
                 SmsTemplateType smsTemplateType = list.get(i);
                 String template_type_name = smsTemplateType.getTemplate_type_name();
                 int smsTemplateTypeId = smsTemplateType.getId();
-               String template_type_code = smsTemplateType.getTemplate_type_code();
+                String template_type_code = smsTemplateType.getTemplate_type_code();
 
                 JSONObject obj = new JSONObject();
                 obj.put("template_type_name", template_type_name);

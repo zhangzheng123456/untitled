@@ -582,32 +582,36 @@ public class VipGroupController {
             String vip_group_name = jsonObject.get("vip_group_name").toString();
             String vip_group_remark = jsonObject.get("vip_group_remark").toString();
             String vips_choose = jsonObject.get("choose").toString();
-//            String vips_quit = jsonObject.get("quit").toString();
+            String vips_quit = jsonObject.get("quit").toString();
 
             VipGroup vipGroup = vipGroupService.getVipGroupById(vips_group_id);
-            String vip_ids = "";
-//            String vip_ids = vipGroup.getVip_ids();
-//            if (vip_ids == null){
-//                vip_ids = "";
-//            }
+//            String vip_ids = "";
+            String vip_ids = vipGroup.getVip_ids();
+            if (vip_ids == null){
+                vip_ids = "";
+            }
             if (!vips_choose.equals("")){
                 String[] choose = vips_choose.split(",");
                 for (int i = 0; i < choose.length; i++) {
                     vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
                 }
             }
-//           if (!vips_quit.equals("")){
-//               String[] quit = vips_quit.split(",");
-//               for (int i = 0; i < quit.length; i++) {
-//                   vip_ids = vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
-//               }
-//           }
+           if (!vips_quit.equals("")){
+               String[] quit = vips_quit.split(",");
+               for (int i = 0; i < quit.length; i++) {
+                   vip_ids = vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
+               }
+           }
+
+            vipGroup.setVip_ids(vip_ids);
+            vipGroupService.updateVipGroup(vipGroup);
+            vipGroup = vipGroupService.getVipGroupById(vips_group_id);
+
             JSONObject obj = new JSONObject();
             obj.put("vip_group_code",vip_group_code);
             obj.put("vip_group_name",vip_group_name);
             obj.put("vip_group_remark",vip_group_remark);
-            vipGroup.setVip_ids(vip_ids);
-            vipGroupService.updateVipGroup(vipGroup);
+            obj.put("vip_count",vipGroup.getVip_count());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(obj.toString());

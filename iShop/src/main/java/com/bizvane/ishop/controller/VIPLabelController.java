@@ -347,7 +347,7 @@ public class VIPLabelController {
             }
             String existInfo = vipLabelService.insert(vipLabel);
             if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
-                List<VipLabel> vipLabels = vipLabelService.selectViplabelByName(corp_code,vipLabel.getLabel_name(),vipLabel.getIsactive());
+                List<VipLabel> vipLabels = vipLabelService.selectViplabelByName(vipLabel.getCorp_code(),vipLabel.getLabel_name(),vipLabel.getIsactive());
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(vipLabels.get(0).getId()));

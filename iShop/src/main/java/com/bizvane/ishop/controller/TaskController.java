@@ -269,7 +269,12 @@ public class TaskController {
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("新增成功");
+                Task task1=taskService.getTaskForId(task.getCorp_code(),task.getTask_type_code(),task.getTask_code());
+                JSONObject obj=new JSONObject();
+                obj.put("taskId",task1.getId());
+                obj.put("taskCode",task1.getTask_code());
+                dataBean.setMessage(String.valueOf(task1.getId()));
+                dataBean.setMessage(obj.toString());
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("-1");

@@ -15,7 +15,7 @@ import java.util.Map;
 public interface InterfaceMapper {
     List<Interfacers> selectAllInterface(@Param("search_value") String search_value) throws SQLException;
 
-    List<Interfacers> selectAllScreen(Map<String,Object> params) throws SQLException;
+    List<Interfacers> selectAllScreen(Map<String, Object> params) throws SQLException;
 
     int addInterface(Interfacers interfacers) throws SQLException;
 
@@ -24,4 +24,6 @@ public interface InterfaceMapper {
     int delInterfaceById(int id) throws SQLException;
 
     Interfacers selInterfaceById(@Param("id") int id) throws SQLException;
+
+    Interfacers selectForId(@Param("corp_code") String corp_code,@Param("version") String version) throws SQLException;
 }

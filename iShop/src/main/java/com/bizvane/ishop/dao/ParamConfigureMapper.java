@@ -18,7 +18,9 @@ public interface ParamConfigureMapper {
     int updateParam(ParamConfigure paramConfigure) throws SQLException;
 
     int deleteByParamId(int id) throws SQLException;
-    ParamConfigure selectParamByKey(@Param("param_name") String param_name) throws SQLException;
+
+    ParamConfigure selectParamByKey(@Param("param_name") String param_name,@Param("isactive") String isactive) throws SQLException;
+
     ParamConfigure selectParamByName(@Param("param_desc") String param_desc) throws SQLException;
 
     List<ParamConfigure> selectParamScreen(Map<String, Object> params) throws SQLException;
