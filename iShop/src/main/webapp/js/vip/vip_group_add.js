@@ -613,7 +613,7 @@ function GET(a, b, c) {
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
     // param["user_code"] = user_code;
-    param["vip_group_code"] =vip_group_code;
+    param["vip_group_id"] =sessionStorage.getItem("id");;
     oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
@@ -1642,6 +1642,7 @@ $("#search").keydown(function () {
             param["searchValue"] = value;
             param["pageNumber"] = inx;
             param["pageSize"] = pageSize;
+            POST(inx, pageSize, group_code);
         }else{
             GET(inx, pageSize, group_code);
         }
