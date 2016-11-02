@@ -768,14 +768,14 @@ public class VIPController {
                     if (!album.equals("")){
                         JSONArray array1 = JSONArray.parseArray(album);
                         for (int j = 0; j < array1.size(); j++) {
-                            String img_url = array1.getJSONObject(j).getString("img_url");
+                            String image_url = array1.getJSONObject(j).getString("image_url");
                             String time = array1.getJSONObject(j).getString("time");
                             JSONObject obj_album = new JSONObject();
                             obj_album.put("vip_id",vip_id);
                             obj_album.put("vip_name",vip_name);
                             obj_album.put("card_no",card_no);
                             obj_album.put("phone",phone);
-                            obj_album.put("img_url",img_url);
+                            obj_album.put("image_url",image_url);
                             obj_album.put("time",time);
                             array_album.add(obj_album);
                         }
@@ -785,7 +785,7 @@ public class VIPController {
                         obj_album.put("vip_name",vip_name);
                         obj_album.put("card_no",card_no);
                         obj_album.put("phone",phone);
-                        obj_album.put("img_url","");
+                        obj_album.put("image_url","");
                         obj_album.put("time","");
                         array_album.add(obj_album);
                     }
@@ -804,7 +804,7 @@ public class VIPController {
             map.put("vip_name", "会员名称");
             map.put("card_no", "会员卡号");
             map.put("phone", "手机号");
-            map.put("img_url", "相册图片地址");
+            map.put("image_url", "相册图片地址");
             map.put("time", "图片上传时间");
 
             String pathname = OutExeclHelper.OutExecl(json, array_album, map, response, request);
