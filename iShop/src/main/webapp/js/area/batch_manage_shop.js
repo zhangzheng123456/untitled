@@ -239,6 +239,7 @@ function superaddition(data, num) {
             input.checked = false;
         }
     })
+    $(".th th:last-child input").removeAttr("checked");
 };
 //页面加载时list请求
 function GET(a, b) {

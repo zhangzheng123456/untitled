@@ -701,6 +701,7 @@ function superaddition(data, num, c) {
             input.checked = false;
         }
     })
+    $(".th th:last-child input").removeAttr("checked");
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {
