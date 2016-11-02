@@ -348,7 +348,7 @@ function getstafflist(a) {
             } else {
                 for (var i = 0; i < list.length; i++) {
                     staff_html += "<li><div class='checkbox_isactive'><input  type='checkbox' value='" + list[i].user_code + "' data-username='" + list[i].user_name + "' name='" + list[i].phone + "'  class='check'"
-                        + "'/><label"
+                        + "'/><label for=''"
                         + "'></label></div><span class='p16'>" + list[i].user_name + "(" + list[i].phone + ")</span></li>"
                 }
                 if (pageNumber == 1) {
