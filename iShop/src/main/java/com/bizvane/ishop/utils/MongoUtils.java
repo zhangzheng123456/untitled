@@ -85,8 +85,8 @@ public class MongoUtils {
         return dbCursor;
     }
 
-
-    public static void findAndUpdate(String key,String value,DBCollection collection,String update_key,String update_value) {
+    //根据条件查找并更新
+    public static void findAndUpdate(String key,String value,DBCollection collection,String update_key,Object update_value) {
         Map keyMap = new HashMap();
         keyMap.put(key, value);
         BasicDBObject queryCondition = new BasicDBObject();
