@@ -582,7 +582,7 @@ public class VIPController {
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("save success");
+            dataBean.setMessage(Common.DATETIME_FORMAT.format(now));
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -615,20 +615,6 @@ public class VIPController {
             String user_code = jsonObject.get("user_code").toString();
             String store_code = jsonObject.get("store_code").toString();
 
-//            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
-//            if (users.size()>0){
-//                String user_store_code = users.get(0).getStore_code();
-//                String[] user_stores = user_store_code.replace(Common.SPECIAL_HEAD,"").split(",");
-//                String[] store_codes = store_code.split(",");
-//                for (int i = 0; i < store_codes.length; i++) {
-//                    for (int j = 0; j < user_stores.length; j++) {
-//                        if (store_codes[i].equals(user_stores[j])){
-//                            store_code = store_codes[i];
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);

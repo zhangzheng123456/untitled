@@ -59,7 +59,7 @@ public interface StoreMapper {
 
     List<StoreQrcode> selectByStoreCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
 
-    StoreQrcode selectByStoreApp(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("app_id") String app_id) throws SQLException;
+    List<StoreQrcode> selectByStoreApp(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("app_id") String app_id) throws SQLException;
 
     int insertStoreQrcode(StoreQrcode record);
 

@@ -32,6 +32,7 @@
             <!--<result column="brand_name" property="brand_name"/>-->
         <!--</association>-->
     </resultMap>
+
     <select id="selectAllGoods" resultMap="GoodsInfo">
         SELECT g.id,
         g.goods_code,
