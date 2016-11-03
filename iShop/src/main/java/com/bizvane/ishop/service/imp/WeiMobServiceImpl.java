@@ -100,7 +100,7 @@ public class WeiMobServiceImpl implements WeimobService{
 
     public JSONArray getList(String accessToken, int rowno) throws Exception{
 
-        int pagesize = 10;
+        int pagesize = 20;
         int pageno = rowno/pagesize +1;
 //        JSONObject obj = spuFullInfoGet(accessToken, 1, 1, pagesize, false);
 //        String data = obj.get("data").toString();
@@ -136,7 +136,7 @@ public class WeiMobServiceImpl implements WeimobService{
         return array;
     }
 
-    public JSONArray getSearchClassify(String accessToken,String xx) throws Exception {
+    public JSONArray getSearchClassify(String accessToken,String xx,int rowno) throws Exception {
         JSONObject obj = spuFullInfoGet(accessToken, 1, 1, 1, false);
         String data1 = obj.get("data").toString();
         JSONObject data = JSONObject.parseObject(data1);
@@ -181,10 +181,14 @@ public class WeiMobServiceImpl implements WeimobService{
                 array.add(param);
             }
         }
+        int count = array.size();
+        if (rowno >= count){
+            array = new JSONArray();
+        }
         return array;
     }
 
-    public JSONArray getSearchTitle(String accessToken,String xx) throws Exception{
+    public JSONArray getSearchTitle(String accessToken,String xx,int rowno) throws Exception{
         JSONObject obj = spuFullInfoGet(accessToken, 1, 1, 1, false);
         String data1 = obj.get("data").toString();
         JSONObject data = JSONObject.parseObject(data1);
@@ -227,6 +231,10 @@ public class WeiMobServiceImpl implements WeimobService{
                 logger.debug("search Title ->" + param);
                 array.add(param);
             }
+        }
+        int count = array.size();
+        if (rowno >= count){
+            array = new JSONArray();
         }
         return array;
     }

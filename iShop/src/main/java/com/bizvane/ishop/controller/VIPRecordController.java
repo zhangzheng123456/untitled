@@ -74,15 +74,15 @@ public class VIPRecordController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
             DBCursor dbCursor = null;
 
             if (screen.equals("")) {
-                String[] column_names = new String[]{"vip_id","vip_name","created_date"};
+                String[] column_names = new String[]{"vip_id","vip_name","message_date"};
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     DBCursor dbCursor1 = cursor.find(queryCondition);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"created_date",-1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"message_date",-1);
 
                 } else {
                     BasicDBList value = new BasicDBList();
@@ -91,7 +91,7 @@ public class VIPRecordController {
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2,1, 30000,"created_date",-1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2,1, 30000,"message_date",-1);
                 }
             } else {
 
@@ -102,7 +102,7 @@ public class VIPRecordController {
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
                     DBCursor dbCursor1 = cursor.find(queryCondition);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"created_date",-1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"message_date",-1);
                 } else {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
@@ -110,10 +110,9 @@ public class VIPRecordController {
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
                     DBCursor dbCursor1 = cursor.find(queryCondition1);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"created_date",-1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"message_date",-1);
                 }
             }
-//            List<VipRecord> vipRecords = list.getList();
             JSONArray array = vipRecordService.transRecord(dbCursor);
 
             ObjectMapper mapper = new ObjectMapper();
@@ -165,22 +164,25 @@ public class VIPRecordController {
             JSONObject result1 = new JSONObject();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
 
             DBCursor dbCursor = null;
+            Map keyMap = new HashMap();
+            keyMap.put("message_type", "returnVisit");
+            BasicDBObject ref = new BasicDBObject();
+
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
-                DBCursor dbCursor1 = cursor.find();
-                pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
-            } else {
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code", corp_code);
-                BasicDBObject ref = new BasicDBObject();
                 ref.putAll(keyMap);
                 DBCursor dbCursor1 = cursor.find(ref);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
+            } else {
+                keyMap.put("corp_code", corp_code);
+                ref.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(ref);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
             }
             JSONArray array = vipRecordService.transRecord(dbCursor);
 
@@ -228,27 +230,31 @@ public class VIPRecordController {
             JSONObject result1 = new JSONObject();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
 
-            String[] column_names = new String[]{"vip_id","vip_name","created_date"};
+            String[] column_names = new String[]{"vip_id","vip_name","user_name","message_date"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
 
             DBCursor dbCursor = null;
+            BasicDBObject queryCondition1 = new BasicDBObject();
+
+            BasicDBList value = new BasicDBList();
+            value.add(new BasicDBObject("message_type", "returnVisit"));
+            value.add(queryCondition);
+
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
-                DBCursor dbCursor1 = cursor.find(queryCondition);
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
 
             } else {
-                BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
-                value.add(queryCondition);
-                BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor2,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"message_date",-1);
             }
 
             JSONArray array = vipRecordService.transRecord(dbCursor);
@@ -302,29 +308,29 @@ public class VIPRecordController {
             BasicDBObject queryCondition = MongoUtils.andOperation(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
 
             DBCursor dbCursor = null;
+            BasicDBObject queryCondition1 = new BasicDBObject();
+
+            BasicDBList value = new BasicDBList();
+            value.add(new BasicDBObject("message_type", "returnVisit"));
+            value.add(queryCondition);
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
-                DBCursor dbCursor1 = cursor.find(queryCondition);
-
-                pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
-            } else {
-                BasicDBList value = new BasicDBList();
-                value.add(new BasicDBObject("corp_code", corp_code));
-                value.add(queryCondition);
-                BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
-
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
+            } else {
+                value.add(new BasicDBObject("corp_code", corp_code));
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
             }
 
             JSONArray array1 = vipRecordService.transRecord(dbCursor);
-
             result.put("list", array1);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -363,7 +369,7 @@ public class VIPRecordController {
             String[] ids = jsonObject.get("id").toString().split(",");
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_back_record);
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
 
             for (int i = 0; i < ids.length; i++) {
                 DBObject deleteRecord = new BasicDBObject();

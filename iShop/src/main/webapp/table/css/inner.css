@@ -517,6 +517,11 @@ input::-webkit-input-placeholder{
 	font-size: 30px;
 	vertical-align: middle;
 	cursor: pointer;
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 }
 .foot-num li span.icon-ishop_4-01,.foot-num li span.icon-ishop_4-02{
 	display: block;

@@ -28,9 +28,9 @@ public interface WeimobService {
 
 //    JSONArray goodsclassifyGetSon(String accessToken) throws Exception;
 
-    JSONArray getSearchClassify(String accessToken,String xx) throws Exception;
+    JSONArray getSearchClassify(String accessToken,String xx,int rowno) throws Exception;
 
-    JSONArray getSearchTitle(String accessToken,String xx) throws Exception;
+    JSONArray getSearchTitle(String accessToken,String xx,int rowno) throws Exception;
 
     JSONObject spuFullInfoGet(String accessToken, int isOnsale, int pageNo, int pageSize, boolean includeDescription) throws Exception;
 

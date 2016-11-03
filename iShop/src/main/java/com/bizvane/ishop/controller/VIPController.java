@@ -167,7 +167,6 @@ public class VIPController {
             String extend_info = "";
             String remark = "";
             String avatar = "";
-            String vip_group_code = "";
             String vip_group_name = "";
 
             JSONArray extend = new JSONArray();
@@ -200,16 +199,8 @@ public class VIPController {
                     remark = obj.get("remark").toString();
                 if (obj.containsField("avatar"))
                     avatar = obj.get("avatar").toString();
-                if (obj.containsField("vip_group_code"))
-                    vip_group_code = obj.get("vip_group_code").toString();
             }
 
-            if (!vip_group_code.equals("")){
-                VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
-                if (vipGroup != null){
-                    vip_group_name = vipGroup.getVip_group_name();
-                }
-            }
             vip.put("vip_avatar",avatar);
             vip.put("vip_group_name",vip_group_name);
 
@@ -535,20 +526,17 @@ public class VIPController {
                 if (jsonObject.containsKey("image_url") && !jsonObject.get("image_url").toString().equals("")){
                     //相册
                     DBObject obj = dbCursor1.next();
-                    String album = "";
-                    if (obj.containsField("album"))
-                        album = obj.get("album").toString();
-
-                    String image_url = jsonObject.get("image_url").toString();
                     JSONArray array = new JSONArray();
+                    if (obj.containsField("album")){
+                        String album = obj.get("album").toString();
+                        array = JSON.parseArray(album);
+                    }
+                    String image_url = jsonObject.get("image_url").toString();
                     JSONObject image = new JSONObject();
                     image.put("image_url",image_url);
                     image.put("time",Common.DATETIME_FORMAT.format(now));
                     array.add(image);
-                    if (!album.equals("")){
-                        JSONArray array1 = JSONArray.parseArray(album);
-                        array.addAll(array1);
-                    }
+
                     updatedValue.put("album", array);
                 }
                 DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
@@ -562,36 +550,39 @@ public class VIPController {
                 saveData.put("card_no", card_no);
                 saveData.put("phone", phone);
                 saveData.put("corp_code", corp_code);
+                String extend = "";
+                String remark = "";
+                String avatar = "";
+                JSONArray array = new JSONArray();
                 if (jsonObject.containsKey("extend")) {
-                    String extend = jsonObject.get("extend").toString();
-                    saveData.put("extend", extend);
+                    extend = jsonObject.get("extend").toString();
+//                    saveData.put("extend", extend);
                 }
                 if (jsonObject.containsKey("remark")) {
-                    String remark = jsonObject.get("remark").toString();
-                    saveData.put("remark", remark);
+                    remark = jsonObject.get("remark").toString();
+//                    saveData.put("remark", remark);
                 }
                 if (jsonObject.containsKey("avatar")) {
-                    String avatar = jsonObject.get("avatar").toString();
-                    saveData.put("avatar", avatar);
-                }
-                if (jsonObject.containsKey("vip_group_code")) {
-                    String vip_group_code = jsonObject.get("vip_group_code").toString();
-                    saveData.put("vip_group_code", vip_group_code);
+                    avatar = jsonObject.get("avatar").toString();
+//                    saveData.put("avatar", avatar);
                 }
                 if (jsonObject.containsKey("image_url")) {
                     String image_url = jsonObject.get("image_url").toString();
-                    JSONArray array = new JSONArray();
                     JSONObject image = new JSONObject();
                     image.put("image_url",image_url);
                     image.put("time",Common.DATETIME_FORMAT.format(now));
                     array.add(image);
-                    saveData.put("album", array);
+//                    saveData.put("album", array);
                 }
-                    cursor.save(saveData);
+                saveData.put("extend", extend);
+                saveData.put("remark", remark);
+                saveData.put("avatar", avatar);
+                saveData.put("album", array);
+                cursor.save(saveData);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("save success");
+            dataBean.setMessage(Common.DATETIME_FORMAT.format(now));
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -624,20 +615,6 @@ public class VIPController {
             String user_code = jsonObject.get("user_code").toString();
             String store_code = jsonObject.get("store_code").toString();
 
-//            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
-//            if (users.size()>0){
-//                String user_store_code = users.get(0).getStore_code();
-//                String[] user_stores = user_store_code.replace(Common.SPECIAL_HEAD,"").split(",");
-//                String[] store_codes = store_code.split(",");
-//                for (int i = 0; i < store_codes.length; i++) {
-//                    for (int j = 0; j < user_stores.length; j++) {
-//                        if (store_codes[i].equals(user_stores[j])){
-//                            store_code = store_codes[i];
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
@@ -752,6 +729,8 @@ public class VIPController {
                 String vip_id = vip_obj.get("vip_id").toString();
                 String vip_name = vip_obj.get("vip_name").toString();
                 String corp_code = vip_obj.get("corp_code").toString();
+                String card_no = vip_obj.get("card_no").toString();
+                String phone = vip_obj.get("phone").toString();
 
                 Map keyMap = new HashMap();
                 keyMap.put("_id", corp_code+vip_id);
@@ -760,8 +739,8 @@ public class VIPController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 if (dbCursor1.hasNext()){
                     DBObject obj = dbCursor1.next();
-                    String phone = obj.get("phone").toString();
-                    String card_no = obj.get("card_no").toString();
+//                    String phone = obj.get("phone").toString();
+//                    String card_no = obj.get("card_no").toString();
                     String album = "";
                     if (obj.containsField("album"))
                         album = obj.get("album").toString();
@@ -789,6 +768,15 @@ public class VIPController {
                         obj_album.put("time","");
                         array_album.add(obj_album);
                     }
+                }else {
+                    JSONObject obj_album = new JSONObject();
+                    obj_album.put("vip_id",vip_id);
+                    obj_album.put("vip_name",vip_name);
+                    obj_album.put("card_no",card_no);
+                    obj_album.put("phone",phone);
+                    obj_album.put("image_url","");
+                    obj_album.put("time","");
+                    array_album.add(obj_album);
                 }
             }
             ObjectMapper mapper = new ObjectMapper();

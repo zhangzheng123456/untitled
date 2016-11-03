@@ -40,15 +40,7 @@ function getarealist(a){
 				$("#area_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    area_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+				    area_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'><label></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
 				}
 				if(pageNumber==1){
 					$("#area_code ul").html(area_html);
@@ -61,7 +53,7 @@ function getarealist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#area_more").show();
 				}
-				$("#area_code ul").on("click", "li", function () {
+				$("#area_code ul li").click(function () {
 					var input = $(this).find("input")[0];
 					if (input.type == "checkbox" && input.checked == false) {
 						input.checked = true;
@@ -132,15 +124,7 @@ function getstorelist(a){
 				$("#store_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    store_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+				    store_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check' ><label></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
 				}
 				if(pageNumber==1){
 					$("#store_code ul").html(store_html);
@@ -153,7 +137,7 @@ function getstorelist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#store_more").show();
 				}
-				$("#store_code ul").on("click", "li", function () {
+				$("#store_code ul li").click(function () {
 					var input = $(this).find("input")[0];
 					if (input.type == "checkbox" && input.checked == false) {
 						input.checked = true;
@@ -225,13 +209,7 @@ function getstafflist(a){
 				$("#staff_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='"+list[i].phone+"'  class='check'  id='checkboxThreeInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxThreeInput"
-                        + i
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"("+list[i].phone+")</span></li>"
+				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='"+list[i].phone+"'  class='check'><label></label></div><span class='p16'>"+list[i].user_name+"("+list[i].phone+")</span></li>"
 				}
 				if(pageNumber==1){
 					$("#staff_code ul").html(staff_html);
@@ -244,7 +222,7 @@ function getstafflist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#staff_more").show();
 				}
-				$("#staff_code ul").on("click", "li", function () {
+				$("#staff_code ul li").click(function () {
 					var input = $(this).find("input")[0];
 					if (input.type == "checkbox" && input.checked == false) {
 						input.checked = true;

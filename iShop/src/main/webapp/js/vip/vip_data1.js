@@ -311,6 +311,14 @@ function gotovipallmessage(){
     $(".all_list").children().eq(0).siblings().hide();
     $("#remark").animate({left:0},0.1);
 }
+Array.prototype.removeByValue = function(val) {
+    for(var i=0; i<this.length; i++) {
+        if(this[i] == val) {
+            this.splice(i, 1);
+            break;
+        }
+    }
+}
 function showOption(){
     $(".drop_down input").click(function (){
         var ul=$(this).next(".expand_selection");
@@ -355,6 +363,7 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         $("#tk").hide();
         var time=$(this).attr("data-time");
         var url=$("#Ablum-all").find("div[data-time='"+time+"']").prev().attr("src");
+        var src = url;
             url=url.substring(url.indexOf("Album"));
         var param={};
         param["vip_id"]=sessionStorage.getItem("id");
@@ -366,6 +375,8 @@ function getoselectvalue(){//点击模拟的select 获取值给input
                 $("#Ablum-all").find("div[data-time='"+time+"']").parent().remove();
                 frame();
                 $('.frame').html('删除成功');
+                swip_image.removeByValue(src);
+                console.log(src);
             }else{
                 frame();
                 $('.frame').html('删除失败');

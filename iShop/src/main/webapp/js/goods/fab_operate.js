@@ -1,4 +1,5 @@
 var oc = new ObjectControl();
+var swip_image = [];
 (function(root,factory){
 	root.fab = factory();
 }(this,function(){
@@ -478,6 +479,7 @@ jQuery(document).ready(function(){
 				// 	goods_arr.push(goods_img);
 				// }
 				for(var i=0;i<goods_arr.length;i++){
+					swip_image.push(goods_arr[i].image);
 					if(goods_arr[i].image.indexOf('http')==-1)continue;
 					// if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
 					// {
@@ -756,7 +758,17 @@ function getvarbrandlist(c,d){
 	})
 // }
 //删除图片
+Array.prototype.removeByValue = function(val) {
+	for(var i=0; i<this.length; i++) {
+		if(this[i] == val) {
+			this.splice(i, 1);
+			break;
+		}
+	}
+}
 $(".good_imgs").on("click",".diyCancel",function(){
+	var src = $(this).parent().children().find("img").attr("src");
+	swip_image.removeByValue(src);
 	$(this).parent().remove();
 })
 function getmatchgoodsList(a) {
@@ -871,5 +883,9 @@ function public_click(a) {
 		$(a).prev().attr('checked','true')
 	}
 }
-//
+//商品图片放大
+$(".good_imgs").on("click","div img",function () {
+	var src=$(this).attr("src");
+	whir.loading.add("",0.5,src);
+})
 

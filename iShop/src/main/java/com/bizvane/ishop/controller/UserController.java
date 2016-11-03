@@ -727,9 +727,9 @@ public class UserController {
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String user_code = rs.getCell(j++, i).getContents().toString().trim();
                     String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
-                    if (user_id2.equals("")) {
-                        user_id2 = user_code;
-                    }
+//                    if (user_id2.equals("")) {
+//                        user_id2 = user_code;
+//                    }
                     String user_name = rs.getCell(j++, i).getContents().toString().trim();
                     String phone = rs.getCell(j++, i).getContents().toString().trim();
                     String email = rs.getCell(j++, i).getContents().toString().trim();
@@ -946,11 +946,7 @@ public class UserController {
             String phone = jsonObject.get("phone").toString().trim();
             User user = new User();
             user.setUser_code(user_code);
-            if (user_id.equals("")) {
-                user.setUser_id(user_code);
-            } else {
-                user.setUser_id(user_id);
-            }
+            user.setUser_id(user_id);
             user.setUser_name(jsonObject.get("username").toString().trim());
             user.setAvatar(jsonObject.get("avatar").toString().trim());
             user.setPosition(jsonObject.get("position").toString().trim());
@@ -1104,11 +1100,7 @@ public class UserController {
             User user = new User();
             user.setId(Integer.parseInt(jsonObject.get("id").toString().trim()));
             user.setUser_code(user_code1);
-            if (user_id.equals("")) {
-                user.setUser_id(user_code1);
-            } else {
-                user.setUser_id(user_id);
-            }
+            user.setUser_id(user_id);
             user.setUser_name(jsonObject.get("username").toString().trim());
             user.setPosition(jsonObject.get("position").toString().trim());
             user.setAvatar(jsonObject.get("avatar").toString().trim());

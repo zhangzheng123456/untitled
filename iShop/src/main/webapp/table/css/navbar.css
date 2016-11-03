@@ -185,11 +185,6 @@ body{
 	z-index: 2;
 	box-shadow: 0px 2px 3px #3a3f51 inset;
 	overflow-y:auto;
-    -moz-user-select: none; 
-    -webkit-user-select: none; 
-    -ms-user-select: none; 
-    -khtml-user-select: none; 
-    user-select: none; 
 }
 .sidebar ul{
 	margin-top:81px;
@@ -205,12 +200,22 @@ body{
 	cursor: pointer;
 }
 .h1{
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 	background-color:#3a4054 !important;
 }
 .sidebar dl{
 	display: none;
 }
 .sidebar dd{
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 	height: 50px;
 	text-align: center;
 	color: #fff;
@@ -266,6 +271,11 @@ body{
 	vertical-align: middle;
 }
 .sidebar .menu_t {
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 	width: 200px;
 	height: 50px;
 	line-height:50px;
