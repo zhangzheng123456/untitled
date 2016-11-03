@@ -563,9 +563,9 @@ $("#save").click(function () {
         if (data.code == 0) {
             var msg=JSON.parse(data.message);
             console.log(msg);
-            $('#vip_num').val(msg.vip_group_code);
-            $('#vip_id').val(msg.vip_group_name);
-            $('#vip_remark').val(msg.vip_group_name);
+            $('#vip_num').val(group_code);
+            $('#vip_id').val(group_name);
+            $('#vip_remark').val(group_remark);
             $('#group_recode').val('共' +msg.vip_count+ "个会员");
             // if (role == 'eidtor') {
             //     // window.location.reload()

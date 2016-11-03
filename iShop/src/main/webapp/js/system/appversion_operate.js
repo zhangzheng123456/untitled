@@ -30,8 +30,9 @@ var oc = new ObjectControl();
 	};
 	appjs.firstStep = function(){
 		var inputText = jQuery(".conpany_msg").find(":text");
-		console.log(inputText);
+
 		for(var i=0,length=inputText.length;i<length;i++){
+			if($(inputText[i]).val()=='Web')return true;
 			if(!bindFun(inputText[i]))return false;
 		}
 		return true;
