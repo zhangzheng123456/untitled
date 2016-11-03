@@ -42,7 +42,6 @@ jQuery(function () {
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
         var goods_image=JSON.parse(list.goods_image);
-        console.log(goods_image);
         // if(list.goods_image.indexOf("http")!==-1){
         //     var goodsImage = list.goods_image.split(",");
         //     for (var i = 0; i < goodsImage.length; i++){
@@ -69,8 +68,11 @@ jQuery(function () {
                 + list[i].goods_code
                 + '</p></li></a>');
         }
+        var width=$(".swiper-slide").width();
         var height=$(".swiper-slide").height();
-        $(".swiper-slide").css({"height":+height+"px"});
+        console.log(width);
+        console.log(height);
+        $(".swiper-slide").css({"height":+width+"px"});
         $('#swipe').swiper({
             pagination: '#swipe .swiper-pagination',
             slidesPerView: 'auto',

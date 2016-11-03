@@ -146,31 +146,29 @@ jQuery(function(){
 	}
 	getList(rowno);
 	//input输入框里面
-	// $('#input').bind('input propertychange', function() {
-	//     var thatFun=arguments.callee;
- //        var that=this;
- //        $(this).unbind("input propertychange",thatFun);
-	// 	value=$('#input').val().replace(/\s+/g,"");
-	// 	$(".screen_content .list li").attr("class","");
-	// 	param["search_value"]=value;
-	// 	param["brand_code"]="";
-	// 	param["goods_quarter"]="";
-	// 	param["goods_wave"]="";
-	// 	jQuery('.allShops').empty();
-	// 	getSearchList(rowno);
-	// 	setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
-	// });
+	$('#input').bind('input propertychange', function() {
+	    var thatFun=arguments.callee;
+        var that=this;
+        $(this).unbind("input propertychange",thatFun);
+		value=$('#input').val().replace(/\s+/g,"");
+		if(value==""){
+			getList(rowno);
+		}
+		setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
+	});
 	$("#input").keydown(function() {
 	    var event=window.event||arguments[0];
 	    if(event.keyCode == 13){
-	        value=$('#input').val().trim();
-			$(".screen_content .list li").attr("class","");
-			param["search_value"]=value;
-			param["brand_code"]="";
-			param["goods_quarter"]="";
-			param["goods_wave"]="";
-			jQuery('.allShops').empty();
-			getSearchList(rowno);
+	    	value=$('#input').val().trim();
+	    	if(value!==""){
+	    		$(".screen_content .list li").attr("class","");
+				param["search_value"]=value;
+				param["brand_code"]="";
+				param["goods_quarter"]="";
+				param["goods_wave"]="";
+				jQuery('.allShops').empty();
+				getSearchList(rowno);
+	    	}
 	    }
     });
 	//搜索加载list
