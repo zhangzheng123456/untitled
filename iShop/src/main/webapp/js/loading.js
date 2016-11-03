@@ -6,6 +6,7 @@ whir.loading ={
         var width = parseInt(arr[2]);  
         var height = parseInt(arr[3]);
         var R=this.remove1;
+        var L=this.prev;
         //var loadingImage = _basepath + "Admin/Scripts/jquery-easyui-1.4/themes/default/images/loading.gif";  
         var loadingImage = "http://img.lanrentuku.com/img/allimg/1212/5-121204193943.gif";  
   
@@ -71,7 +72,18 @@ whir.loading ={
             document.body.appendChild(div);
             mask.addEventListener('click', function () {R()}, false); //点击事件
             div.addEventListener('click', function () {R()}, false); //点击事件
-
+            var left = document.createElement("span");
+            left.id = 'left';
+            left.style.width="50px";
+            left.style.height="50px";
+            left.style.display = "block";
+            left.style.position="absolute";
+            left.style.left = "20%";
+            left.style.top = "50%";
+            left.style.background="#fff";
+            left.style.zIndex = "100001";
+            document.body.appendChild(left);
+            left.addEventListener('click', function () {L()}, false); //点击事件
         }
 
     },  
@@ -86,6 +98,19 @@ whir.loading ={
         element.parentNode.removeChild(element);
         element = document.getElementById("div");
         element.parentNode.removeChild(element);
+        element = document.getElementById("left");
+        element.parentNode.removeChild(element);
+    },
+    prev: function () {
+        var element = document.getElementById("div");
+        var src = element.getAttribute('src');
+        console.log(swip_image);
+        var i = swip_image.indexOf(src);
+        if(i>0){
+            i = i-1;
+            src = swip_image[i];
+        }
+        element.setAttribute('src',src);
     },
     getPageSize: function () {  
         var xScroll, yScroll;  
