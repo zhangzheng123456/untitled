@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -84,6 +86,22 @@ public class MongoUtils {
     }
 
 
+    public static void findAndUpdate(String key,String value,DBCollection collection,String update_key,String update_value) {
+        Map keyMap = new HashMap();
+        keyMap.put(key, value);
+        BasicDBObject queryCondition = new BasicDBObject();
+        queryCondition.putAll(keyMap);
+        DBCursor dbCursor1 = collection.find(queryCondition);
+        if (dbCursor1.size() > 0) {
+            //记录存在，更新
+            DBObject updateCondition = new BasicDBObject();
+            updateCondition.put(key, value);
+            DBObject updatedValue = new BasicDBObject();
+            updatedValue.put(update_key, update_value);
+            DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+            collection.update(updateCondition, updateSetValue);
+        }
+    }
 //mongodb插入、删除模板
 
     //save方式插入数据(id相同会覆盖)
@@ -138,20 +156,5 @@ public class MongoUtils {
     }
 
 
-    //DBCursor排序分页（优化版本）
-    //sort_type（1：正序，-1：倒序）
-//    public static DBCursor sortAndPageNew(DBCursor dbCursor,int page_num,int page_size,String sort_key,int sort_type){
-//        DBObject sort_obj = new BasicDBObject(sort_key, sort_type);
-//        if (page_num>1){
-//            DBCursor dbCursor1 = dbCursor.sort(sort_obj).limit(page_num * page_size);
-//            DBObject latestDB = dbCursor1.next();
-//            String value = latestDB.get(sort_key).toString();
-//
-//        }else {\
-//            dbCursor = dbCursor.sort(sort_obj).limit(page_size);
-//        }
-//        dbCursor = dbCursor.sort(sort_obj).skip((page_num - 1) * page_size).limit(page_size);
-//        return dbCursor;
-//    }
 
 }
