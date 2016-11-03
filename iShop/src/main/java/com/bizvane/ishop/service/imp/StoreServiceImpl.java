@@ -408,11 +408,7 @@ public class StoreServiceImpl implements StoreService {
         if (store == null && store1 == null) {
             Store shop = new Store();
             shop.setStore_code(store_code);
-            if (store_id.equals("")){
-                shop.setStore_id(store_code);
-            }else {
-                shop.setStore_id(store_id);
-            }
+            shop.setStore_id(store_id);
             shop.setStore_name(store_name);
             String area_code = jsonObject.get("area_code").toString().trim();
             String[] codes1 = area_code.split(",");
@@ -610,11 +606,7 @@ public class StoreServiceImpl implements StoreService {
                 }
                 store = new Store();
                 store.setId(store_id);
-                if (store_id1.equals("")) {
-                    store.setStore_id(store_code);
-                }else {
-                    store.setStore_id(store_id1);
-                }
+                store.setStore_id(store_id1);
                 store.setStore_code(store_code);
                 store.setStore_name(store_name);
 
