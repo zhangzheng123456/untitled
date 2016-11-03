@@ -489,6 +489,7 @@ function brithVipGet() {
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
     console.log(param);
     oc.postRequire("post","/vipAnalysis/vipBirth","",param,function(data) {
         if(data.code=="0"){
@@ -567,6 +568,7 @@ function newVipGet(){
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
     oc.postRequire("post","/vipAnalysis/vipNew","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -642,6 +644,7 @@ function sleepVipGet() {
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
     oc.postRequire("post","/vipAnalysis/vipSleep","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -732,6 +735,7 @@ function consumeVipGet() {
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -803,6 +807,7 @@ function consumeVipGetre() {
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -875,6 +880,7 @@ function consumeVipGetam() {
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
