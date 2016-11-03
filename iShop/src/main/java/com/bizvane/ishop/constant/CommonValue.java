@@ -29,5 +29,7 @@ public class CommonValue {
     public final static String table_vip_info = "vip_info";
     //会员回访记录
     public final static String table_vip_back_record = "vip_back_record";
+    //会员回访记录(new)
+    public final static String table_vip_message_content = "vip_message_content";
 
 }

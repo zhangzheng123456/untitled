@@ -30,7 +30,6 @@ public class VipRecordServiceImpl implements VipRecordService {
 
     public JSONArray transRecord(DBCursor dbCursor) throws Exception{
         JSONArray array = new JSONArray();
-
         while (dbCursor.hasNext()) {
 
             DBObject obj = dbCursor.next();
@@ -49,8 +48,8 @@ public class VipRecordServiceImpl implements VipRecordService {
                 }
             }
             object.put("corp_name",corp_name);
-            if (obj.containsField("user_id")){
-                String user_code = obj.get("user_id").toString();
+            if (obj.containsField("user_code")){
+                String user_code = obj.get("user_code").toString();
                 object.put("user_code",user_code);
                 String user_name = "";
                 if (obj.containsField("user_name")){
@@ -71,9 +70,9 @@ public class VipRecordServiceImpl implements VipRecordService {
                 String vip_name = obj.get("vip_name").toString();
                 object.put("vip_name",vip_name);
             }
-            if (obj.containsField("created_date")){
-                String created_date = obj.get("created_date").toString();
-                object.put("created_date",created_date);
+            if (obj.containsField("message_date")){
+                String created_date = obj.get("message_date").toString();
+                object.put("message_date",created_date);
             }
             if (obj.containsField("action")){
                 String action = obj.get("action").toString();
