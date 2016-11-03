@@ -29,8 +29,9 @@ var oc = new ObjectControl();
 		else hint.html(content);
 	};
 	appjs.firstStep = function(){
-		var inputText = jQuery(".conpany_msg").find(":text");
 
+		var inputText = jQuery(".conpany_msg").find(":text");
+		console.log((inputText[0]));
 		for(var i=0,length=inputText.length;i<length;i++){
 			if($(inputText[i]).val()=='Web')return true;
 			if(!bindFun(inputText[i]))return false;
@@ -217,9 +218,9 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				if ($('#platform').val() == 'Web') {
-					$('.conpany_msg').children(':not(".version_web")').hide()
-				} else {
+				if($('#platform').val()=='Web'){
+					$('.conpany_msg').children(':not(".version_web")').hide();
+				}else{
 					$('.conpany_msg').children(':not(".version_web")').show();
 				}
 			}else if(data.code=="-1"){
