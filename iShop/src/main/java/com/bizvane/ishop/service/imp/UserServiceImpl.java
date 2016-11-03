@@ -882,7 +882,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUserCode(corp_code, user_code);
     }
 
-    public UserQrcode selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception {
+    public List<UserQrcode> selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception {
         return userMapper.selectByUserApp(corp_code, user_code, app_id);
 
     }
@@ -900,9 +900,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public String creatUserQrcode(String corp_code, String user_code, String auth_appid, String user_id) throws Exception {
-        UserQrcode userQrcode = selectQrcodeByUserApp(corp_code, user_code, auth_appid);
+        List<UserQrcode> userQrcodes = selectQrcodeByUserApp(corp_code, user_code, auth_appid);
         String picture = "";
-        if (userQrcode == null) {
+        if (userQrcodes.size() != 1) {
+            deleteUserQrcodeOne(corp_code,user_code,auth_appid);
             String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);
@@ -916,7 +917,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 picture = obj.get("picture").toString();
                 String qrcode_url = obj.get("url").toString();
-                userQrcode = new UserQrcode();
+                UserQrcode userQrcode = new UserQrcode();
                 userQrcode.setApp_id(auth_appid);
                 userQrcode.setCorp_code(corp_code);
                 userQrcode.setUser_code(user_code);
@@ -931,7 +932,7 @@ public class UserServiceImpl implements UserService {
                 userMapper.insertUserQrcode(userQrcode);
             }
         } else {
-            picture = userQrcode.getQrcode();
+            picture = userQrcodes.get(0).getQrcode();
         }
         return picture;
     }

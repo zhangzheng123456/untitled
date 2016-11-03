@@ -1368,9 +1368,9 @@ public class StoreController {
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_id = rs.getCell(j++, i).getContents().toString().trim();
                     System.out.println("-----------------------store_id----------------------:"+store_id);
-                    if(store_id.equals("")){
-                        store_id=store_code;
-                    }
+//                    if(store_id.equals("")){
+//                        store_id=store_code;
+//                    }
                     String store_name = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();

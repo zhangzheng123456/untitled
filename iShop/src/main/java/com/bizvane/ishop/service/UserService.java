@@ -73,7 +73,7 @@ public interface UserService {
 
     List<UserQrcode> selectQrcodeByUser(String corp_code, String user_code) throws Exception;
 
-    UserQrcode selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception;
+    List<UserQrcode> selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception;
 
     int insertUserQrcode(UserQrcode userQrcode) throws Exception;
 

@@ -39,16 +39,11 @@ import java.util.*;
 public class MessageController {
 
     private static Logger logger = LoggerFactory.getLogger((MessageController.class));
-    @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private SmsTemplateService smsTemplateService;
+
     @Autowired
     private MessageService messageService;
     @Autowired
     StoreService storeService;
-    @Autowired
-    private TableManagerService managerService;
     @Autowired
     IceInterfaceService iceInterfaceService;
     String id;
@@ -137,17 +132,12 @@ public class MessageController {
            datalist.put(data_area_code.key, data_area_code);
            datalist.put(data_receiver_type.key, data_receiver_type);
            datalist.put(data_title.key, data_title);
-           datalist.put(data_title.key, data_title);
+           datalist.put(data_message_content.key, data_message_content);
            datalist.put(data_message_type.key, data_message_type);
 
            logger.info("-------发送通知" +datalist.toString());
-
-        DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
-        logger.info("-------发送通知" + dataBox.status);
-//        String result = dataBox.data.get("message").value;
-
-//            logger.info("after------addd----- result" + result);
-
+           DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
+           logger.info("-------发送通知" + dataBox.status);
 
            if (dataBox.status.toString().equals("SUCCESS")) {
                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
