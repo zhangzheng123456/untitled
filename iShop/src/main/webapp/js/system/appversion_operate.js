@@ -217,6 +217,11 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				if ($('#platform').val() == 'Web') {
+					$('.conpany_msg').children(':not(".version_web")').hide()
+				} else {
+					$('.conpany_msg').children(':not(".version_web")').show();
+				}
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
