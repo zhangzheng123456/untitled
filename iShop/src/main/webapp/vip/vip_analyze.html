@@ -12,8 +12,8 @@
             color: #fff;
             /*border-radius: 10px;*/
             cursor: pointer;
-            width:302px;
-            margin-left: 6.7%;
+            width:100%;
+            /*margin-left: 6.7%;*/
         }
     </style>
 </head>
@@ -51,7 +51,7 @@
                         <input >
                         <span class="icon-ishop_3-05 ishop"></span>
                     </b>
-                    <ul>
+                    <ul class="scroll_bar">
                     </ul>
                     <!--<s class="select_analyze_brand">...加载更多...</s>-->
                 </div>
@@ -63,7 +63,7 @@
                         <input >
                         <span class="icon-ishop_3-05 ishop"></span>
                     </b>
-                    <ul>
+                    <ul class="scroll_bar">
                     </ul>
                     <!--<s class="select_analyze">...加载更多...</s>-->
                 </div>
@@ -75,7 +75,7 @@
                         <input >
                         <span class="icon-ishop_3-05"></span>
                     </b>
-                    <ul>
+                    <ul class="scroll_bar">
                     </ul>
                     <!--<s class="select_analyze_shop">...加载更多...</s>-->
                 </div>
@@ -517,6 +517,7 @@
     </div>
 </body>
 <script src="../js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="../js/dist/echarts.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/loading.js"></script>
@@ -524,5 +525,15 @@
 <script src="../js/vip/vip_analyze.js"></script>
 <script>
 //    $('input').on('focus',function(){$(this)[0].style.outline='none';console.log('OK')});
+    console.log($(".scroll_bar"));
+    $(".scroll_bar").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:"#999",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorwidth:"5px",
+        cursorborder:"0",
+        cursorborderradius:"0px"
+    });
 </script>
 </html>

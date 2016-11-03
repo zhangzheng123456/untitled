@@ -24,6 +24,7 @@ function getBrand(){
     oc.postRequire("post","/brand/findBrandByCorpCode", "",param, function(data){
     //     oc.postRequire("post","/shop/brands", "",param, function(data){
             console.log(data);
+        if(data.code==0){
         var message=JSON.parse(data.message)
         var brands=message.brands;//数组
         console.log(brands.length);
@@ -44,6 +45,10 @@ function getBrand(){
             $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
         }
         $('#select_analyze_brand ul').append(ul);
+            GetArea();
+        }else if(data.code==-1){
+            alert(data.message);
+        }
     });
 }
 getBrand();
@@ -275,7 +280,6 @@ function searchValue(e){
       }
 }
 //页面加载前加载区域
-GetArea();
 //绑定事件下拉事件
 $('#side_analyze>ul:nth-child(1) li').click(function(){
         var event=window.event||arguments[0];
