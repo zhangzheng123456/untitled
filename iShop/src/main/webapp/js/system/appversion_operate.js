@@ -30,6 +30,7 @@ var oc = new ObjectControl();
 	};
 	appjs.firstStep = function(){
 		var inputText = jQuery(".conpany_msg").find(":text");
+		console.log(inputText);
 		for(var i=0,length=inputText.length;i<length;i++){
 			if(!bindFun(inputText[i]))return false;
 		}
@@ -37,6 +38,7 @@ var oc = new ObjectControl();
 	};
 	appjs.bindbutton=function(){
 		$(".appadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			console.log('调用');
 			if(appjs.firstStep()){
 				var platform=$('#platform').val();//运行平台
 				var download_addr=$("#download_addr").val();//下载地址

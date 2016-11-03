@@ -63,13 +63,16 @@ var oc = new ObjectControl();
 				return arr.join("\n");
 			}
 			var reg = /<img[^>]*>/gi;;
-			sessionStorage.setItem('register','');
-			var  i=0;
+			function imge_change() {
+				var  i=0;
+				return function img_change(){
+					i++;
+					return i;
+				}
+			}
+			var img_c=imge_change();
 			var nr= getContent().replace(reg,function () {
-				console.log(arguments[1]);
-				arguments[1]==sessionStorage.getItem('register')?'':i++;
-				sessionStorage.setItem('register',arguments[1]);
-				console.log(i);
+				var i=img_c();
 				return getPlainTxt().match(reg)[i-1];
 			});
 			console.log(nr);
@@ -195,7 +198,7 @@ var oc = new ObjectControl();
 			var delete_image=[];//需要删除的数据
 			console.log(sessionStorage.getItem('goods_description'));
 			console.log(getContent()==sessionStorage.getItem('goods_description'))
-			console.log('抓取图片')
+			console.log('抓取图片');
 			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
 			var save_image=getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
 			// console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
@@ -223,12 +226,17 @@ var oc = new ObjectControl();
 			}
 			var reg = /<img[^>]*>/gi;;
 			// var nr= getContent().replace(reg,getPlainTxt().match(reg));
-			sessionStorage.setItem('register','');
-			var  i=0;
+
+			function imge_change() {
+				var  i=0;
+				return function img_change(){
+					i++;
+					return i;
+				}
+			}
+			var img_c=imge_change();
 			var nr= getContent().replace(reg,function () {
-				console.log(arguments[1]);
-				arguments[1]==sessionStorage.getItem('register')?'':i++;
-				sessionStorage.setItem('register',arguments[1]);
+				var i=img_c();
 				return getPlainTxt().match(reg)[i-1];
 			});
 			console.log(nr);
