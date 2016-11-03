@@ -1033,18 +1033,20 @@ public class UserController {
             if (role_code.equals(Common.ROLE_BM)){
                 user.setGroup_code(jsonObject.get("group_code").toString().trim());
                 String brand_code = jsonObject.get("brand_code").toString().trim();
-                String[] codes = brand_code.split(",");
-                if (WebUtils.checkRepeat(codes)) {
-                    brand_code = "";
-                    for (int i = 0; i < codes.length; i++) {
-                        codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
-                        brand_code = brand_code + codes[i];
+                if (!brand_code.equals("")) {
+                    String[] codes = brand_code.split(",");
+                    if (WebUtils.checkRepeat(codes)) {
+                        brand_code = "";
+                        for (int i = 0; i < codes.length; i++) {
+                            codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
+                            brand_code = brand_code + codes[i];
+                        }
+                    } else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("请勿选择重复的品牌");
+                        return dataBean.getJsonStr();
                     }
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage("请勿选择重复的品牌");
-                    return dataBean.getJsonStr();
                 }
                 user.setBrand_code(brand_code);
             }
@@ -1190,19 +1192,22 @@ public class UserController {
             if (role_code.equals(Common.ROLE_BM)){
                 user.setGroup_code(jsonObject.get("group_code").toString().trim());
                 String brand_code = jsonObject.get("brand_code").toString().trim();
-                String[] codes = brand_code.split(",");
-                if (WebUtils.checkRepeat(codes)) {
-                    brand_code = "";
-                    for (int i = 0; i < codes.length; i++) {
-                        codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
-                        brand_code = brand_code + codes[i];
+                if (!brand_code.equals("")){
+                    String[] codes = brand_code.split(",");
+                    if (WebUtils.checkRepeat(codes)) {
+                        brand_code = "";
+                        for (int i = 0; i < codes.length; i++) {
+                         codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
+                          brand_code = brand_code + codes[i];
+                        }
+                    } else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("请勿选择重复的品牌");
+                        return dataBean.getJsonStr();
                     }
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage("请勿选择重复的品牌");
-                    return dataBean.getJsonStr();
                 }
+
                 user.setBrand_code(brand_code);
             }
 

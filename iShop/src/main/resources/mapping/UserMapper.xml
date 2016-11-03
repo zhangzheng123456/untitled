@@ -353,6 +353,7 @@
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_user.CORP_CODE = #{corp_code}
         </if>

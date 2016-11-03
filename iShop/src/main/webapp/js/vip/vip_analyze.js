@@ -46,13 +46,13 @@ function getBrand(){
             $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
         }
         $('#select_analyze_brand ul').append(ul);
-            GetArea();
         }else if(data.code==-1){
             alert(data.message);
         }
     });
 }
 getBrand();
+GetArea();
 //获取区域
 function GetArea(){
     var search_param=arguments.length;
@@ -161,14 +161,16 @@ function showNameClick(e){
         $('#select_analyze_shop ul').html('');
         getStore(area_code);
         $('#select_analyze').toggle();
-        $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
+        $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click');
     }else if($(d).attr('id')=='select_analyze_brand'){
+        console.log('OK');
         var brand_code=$(e).attr('brand_cord');
         $('#side_analyze ul li:nth-child(1) s').html($(e).html());
         $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
         //清除内容店铺下拉列表
         $('#select_analyze_shop ul').html('');
         getStore($('#side_analyze ul li:nth-child(2) s').attr('data_area'));
+        $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click');
         $('#select_analyze_brand').toggle();
     }else{
         var store_code=$(e).attr('data_store');
