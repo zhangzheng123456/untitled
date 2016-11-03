@@ -139,6 +139,10 @@
         DELETE  FROM  rel_user_message WHERE message_code=#{message_code}
     </delete>
 
+    <delete id="deleteMessageStatus">
+        DELETE  FROM  ref_user_message WHERE message_code=#{id}
+    </delete>
+
     <insert id="insertMessageInfo" parameterType="com.bizvane.ishop.entity.MessageInfo">
         INSERT INTO def_user_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
