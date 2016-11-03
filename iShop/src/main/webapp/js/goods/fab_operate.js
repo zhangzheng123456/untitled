@@ -1,4 +1,5 @@
 var oc = new ObjectControl();
+var swip_image = [];
 (function(root,factory){
 	root.fab = factory();
 }(this,function(){
@@ -470,6 +471,7 @@ jQuery(document).ready(function(){
 				// 	goods_arr.push(goods_img);
 				// }
 				for(var i=0;i<goods_arr.length;i++){
+					swip_image.push(goods_arr[i].image);
 					if(goods_arr[i].image.indexOf('http')==-1)continue;
 					// if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
 					// {
