@@ -21,6 +21,7 @@ function getBrand(){
     var ul='';
     // param["corp_code"]= localStorage.getItem('corp_code');
     param["corp_code"]= "C10000";
+    param["searchValue"]=$("#select_analyze_brand input").val();
     oc.postRequire("post","/brand/findBrandByCorpCode", "",param, function(data){
     //     oc.postRequire("post","/shop/brands", "",param, function(data){
             console.log(data);
