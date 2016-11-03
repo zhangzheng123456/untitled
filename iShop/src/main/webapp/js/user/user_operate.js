@@ -160,13 +160,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			        }     
 			    }
 				//如果角色是导购，店长，区经的时候
-				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
 						art.dialog({
 							time: 1,
 							lock:true,
 							cancel: false,
-							content:"所属店铺或所属区域不能为空"
+							content:"所属店铺或所属区域或所属品牌不能为空"
 						});
 						return;
 					}
@@ -319,13 +319,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			    }
 				// var PSW=$("#init_password").val();
 				//如果角色是导购，店长，区经的时候
-				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
 						art.dialog({
 							time: 1,
 							lock:true,
 							cancel: false,
-							content:"所属店铺或所属区域不能为空"
+							content:"所属店铺或所属区域或所属品牌不能为空"
 						});
 						return;
 					}
