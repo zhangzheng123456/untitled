@@ -211,6 +211,7 @@ public class MessageServiceImpl implements MessageService {
             String message_code = message.getMessage_code();
             messageMapper.deleteMessage(message_code);
         }
+        messageMapper.deleteMessageStatus(id);
         return messageMapper.deleteMessageInfo(id);
     }
 

@@ -22,6 +22,7 @@ public interface MessageMapper {
 
     int deleteMessage(@Param("message_code") String message_code) throws SQLException;
 
+    int deleteMessageStatus(@Param("id") Integer id) throws SQLException;
 //    int insertMessageInfo(MessageInfo record) throws SQLException;
 //
 //    int insertMessage(Message record) throws SQLException;
