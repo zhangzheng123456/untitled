@@ -115,7 +115,7 @@ public class SignServiceImpl implements SignService {
 
         JSONObject date = JSONObject.parseObject(map.get("sign_time"));
         params.put("created_date_start", date.get("start").toString());
-        params.put("created_date_end", date.get("end").toString());
+        params.put("created_date_end", date.get("end").toString()+"24:00:00");
         map.remove("sign_time");
 
         params.put("array", stores);
