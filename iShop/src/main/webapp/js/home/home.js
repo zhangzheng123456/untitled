@@ -14,6 +14,14 @@ $(function(){
             }else if(reg.test(message.avatar)==false){
                 $('.nav-header .img-circle').attr("src","../img/head.png");
             }
+            if(message.user_type !== ""){
+                $(".update_tip").show();
+            }else {
+                $(".update_tip").hide();
+            }
+            if(message.version_describe !== ""){
+                $(".tip_list ul").html(message.version_describe);
+            }
             $('.nav-header .font-bold').html(message.user_name);
             $('#corp_name').html(message.corp_name);
             for(index in message.menu){
@@ -62,6 +70,13 @@ $(function(){
             }
         });
     });
+    //关闭提示
+    $("#tip_enter").click(function () {
+        $(".update_tip").hide();
+    });
+    $("#tip_close").click(function () {
+        $(".update_tip").hide();
+    })
 });
 //退出登录
 // $("#return").click(function(){
