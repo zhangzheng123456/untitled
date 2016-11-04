@@ -74,12 +74,16 @@ public class MessageServiceImpl implements MessageService {
         String corp_code = messageInfo.getCorp_code();
         int id = messageInfo.getId();
         List<Message> messages = new ArrayList<Message>();
+        List<Map<String,String>> userList = new ArrayList<Map<String,String>>();
         if (receiver_type.equals("staff")) {
-            messages = messageMapper.selectMessageDetail(message_code);
-        } else {
-            List<Map<String,String>> userList = new ArrayList<Map<String,String>>();
-//            List<User> userList = new ArrayList<User>();
-            if (receiver_type.equals("store")) {
+            List<Message> messageLists = messageMapper.selectMessageDetail(message_code);
+            for (int i = 0; i < messageLists.size(); i++) {
+                Map<String,String> user = new HashMap<String, String>();
+                user.put("user_name",messageLists.get(i).getUser_name());
+                user.put("user_code",messageLists.get(i).getUser_code());
+                userList.add(user);
+            }
+        } else if (receiver_type.equals("store")) {
                 List<Message> messageLists = selectMessageByCode(message_code);
                 String store_code = "";
                 for (int i = 0; i < messageLists.size(); i++) {
@@ -147,7 +151,7 @@ public class MessageServiceImpl implements MessageService {
                 }
                 messages.add(message);
             }
-        }
+
         return messages;
     }
 

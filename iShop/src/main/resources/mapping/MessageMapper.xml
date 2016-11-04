@@ -5,6 +5,8 @@
     <resultMap type="com.bizvane.ishop.entity.Message" id="Message">
         <id column="id" property="id"/>
         <result column="message_receiver" property="message_receiver" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="receiver_type" property="receiver_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="status" property="status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -93,7 +95,8 @@
 
     <select id="selectMessageDetail" resultMap="Message">
     SELECT rum.id,
-    u1.user_name message_receiver,
+    rum.message_receiver user_code,
+    u1.user_name,
     rum.receiver_type,
     rum.status,
     c.corp_name
