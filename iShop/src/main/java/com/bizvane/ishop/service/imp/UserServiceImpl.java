@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
@@ -57,7 +58,8 @@ public class UserServiceImpl implements UserService {
     private PrivilegeMapper privilegeMapper;
     @Autowired
     private BrandService brandService;
-
+    @Autowired
+    AppversionService appversionService;
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     /**
@@ -422,7 +424,7 @@ public class UserServiceImpl implements UserService {
         logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
 
-        List<User> users = userMapper.selectByPhone(phone);
+        List<User> users = userMapper.selectByLogin(phone);
         if (users.size()>1 || users.size()<1 || users.get(0).getCan_login().equals("N")){
             user_info.put("error", "账号异常");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
@@ -465,9 +467,7 @@ public class UserServiceImpl implements UserService {
                 request.getSession().setAttribute("store_code", "");
                 request.getSession().setAttribute("brand_code", "");
 
-                Date now = new Date();
-                login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
-                userMapper.updateByUserId(login_user);
+
                 String user_type;
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
@@ -501,6 +501,10 @@ public class UserServiceImpl implements UserService {
                 user_info.put("user_id", user_id);
                 user_info.put("role_code", role_code);
                 user_info.put("status", Common.DATABEAN_CODE_SUCCESS);
+
+                Date now = new Date();
+                login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
+                userMapper.updateByUserId(login_user);
             }
         }
         return user_info;
@@ -904,7 +908,7 @@ public class UserServiceImpl implements UserService {
         String picture = "";
         if (userQrcodes.size() != 1) {
             deleteUserQrcodeOne(corp_code,user_code,auth_appid);
-            String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
+            String url = CommonValue.wechat_url+"/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);
             if (!result.startsWith("{")) {

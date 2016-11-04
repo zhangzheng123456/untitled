@@ -163,7 +163,7 @@ public class AppversionController {
             appversion.setCreated_date(Common.DATETIME_FORMAT.format(date));
             appversion.setModified_date(Common.DATETIME_FORMAT.format(date));
             appversionService.addAppversion(appversion);
-            Appversion appversion1=appversionService.selAppversionForId(appversion.getCorp_code(),appversion.getVersion_id());
+            Appversion appversion1=appversionService.selAppversionForId(appversion.getCorp_code(),appversion.getVersion_id(),appversion.getPlatform());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(String.valueOf(appversion1.getId()));
@@ -282,8 +282,6 @@ public class AppversionController {
         logger.info("info--------" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
     }
-
-
 
 
     /***

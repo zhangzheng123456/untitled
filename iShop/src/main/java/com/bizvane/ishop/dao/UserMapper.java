@@ -18,6 +18,8 @@ public interface UserMapper {
 
     List<User> selectByPhone(String phone) throws SQLException;
 
+    List<User> selectByLogin(String phone) throws SQLException;
+
     List<User> selectLogin(String phone, String password) throws SQLException;
 
     List<User> userEmailExist(@Param("email") String email) throws SQLException;

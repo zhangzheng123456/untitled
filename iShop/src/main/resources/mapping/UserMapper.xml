@@ -23,6 +23,7 @@
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="can_login" property="can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="version_id" property="version_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <!--地域-->
         <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -240,6 +241,14 @@
         SELECT *
         FROM def_user
         WHERE phone = #{phone}
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectByLogin" resultMap="BaseMap">
+        SELECT *
+        FROM def_user
+        WHERE (phone = #{phone}
+        or email = #{phone})
         AND isactive = 'Y'
     </select>
 
@@ -596,6 +605,9 @@
             </if>
             <if test="brand_code != null">
                 brand_code = #{brand_code},
+            </if>
+            <if test="version_id != null">
+                version_id = #{version_id},
             </if>
         </trim>
         WHERE ID = #{id};

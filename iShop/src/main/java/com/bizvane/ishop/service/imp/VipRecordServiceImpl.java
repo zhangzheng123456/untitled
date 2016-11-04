@@ -39,7 +39,7 @@ public class VipRecordServiceImpl implements VipRecordService {
             String corp_code1 = obj.get("corp_code").toString();
             object.put("corp_code",corp_code1);
             String corp_name = "";
-            if (obj.containsField("company_name")) {
+            if (obj.containsField("company_name") && obj.get("company_name") != null) {
                 corp_name = obj.get("company_name").toString();
             }else {
                 Corp corp = corpService.selectByCorpId(0,corp_code1, Common.IS_ACTIVE_Y);
@@ -48,11 +48,11 @@ public class VipRecordServiceImpl implements VipRecordService {
                 }
             }
             object.put("corp_name",corp_name);
-            if (obj.containsField("user_code")){
+            if (obj.containsField("user_code") && obj.get("user_code") != null){
                 String user_code = obj.get("user_code").toString();
                 object.put("user_code",user_code);
                 String user_name = "";
-                if (obj.containsField("user_name")){
+                if (obj.containsField("user_name") && obj.get("user_name") != null){
                     user_name = obj.get("user_name").toString();
                 }else {
                     List<User> users = userService.userCodeExist(user_code,corp_code1,Common.IS_ACTIVE_Y);
@@ -66,9 +66,11 @@ public class VipRecordServiceImpl implements VipRecordService {
                 String vip_id = obj.get("vip_id").toString();
                 object.put("vip_id",vip_id);
             }
-            if (obj.containsField("vip_name")){
+            if (obj.containsField("vip_name") && obj.get("vip_name") != null){
                 String vip_name = obj.get("vip_name").toString();
                 object.put("vip_name",vip_name);
+            }else {
+                object.put("vip_name","");
             }
             if (obj.containsField("message_date")){
                 String created_date = obj.get("message_date").toString();
