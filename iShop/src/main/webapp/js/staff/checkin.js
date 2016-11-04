@@ -693,9 +693,9 @@ function getInputValue(){
    var screen_value={};
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_key=$(input[i]).attr("id")
-           screen_value=$(input[i]).attr("data-code");
+       if($(input[i]).attr("class")=="isActive_select"){
+           screen_key=$(input[i]).find("input").attr("id")
+           screen_value=$(input[i]).find("input").attr("data-code");
        }else if($(input[i]).attr("class")=="created_date"){
            var start=$('#start').val();
            var end=$('#end').val();
