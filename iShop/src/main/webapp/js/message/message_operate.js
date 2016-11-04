@@ -43,6 +43,7 @@ function getcorplist(a){
 				$("#staff_shop_num").val("全部");
 				$("#staff_shop_num").attr("data-storecode","");
 			})
+			
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,

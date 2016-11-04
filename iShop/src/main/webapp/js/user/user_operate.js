@@ -162,13 +162,33 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
-						art.dialog({
-							time: 2,
-							lock:true,
-							cancel: false,
-							content:"所属店铺或所属区域或所属品牌不能为空"
-						});
+						if(r_code=="R2000"||r_code=="R3000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属店铺不能为空"
+							});
 						return;
+						}
+						if(r_code=="R4000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属区域不能为空"
+							});
+							return;
+						}
+						if(r_code=="R4800"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属品牌不能为空"
+							});
+							return;
+						}
 					}
 				}
 				var _command="/user/add";//接口名
@@ -321,13 +341,33 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
-						art.dialog({
-							time: 2,
-							lock:true,
-							cancel: false,
-							content:"所属店铺或所属区域或所属品牌不能为空"
-						});
+						if(r_code=="R2000"||r_code=="R3000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属店铺不能为空"
+							});
 						return;
+						}
+						if(r_code=="R4000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属区域不能为空"
+							});
+							return;
+						}
+						if(r_code=="R4800"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属品牌不能为空"
+							});
+							return;
+						}
 					}
 				}
 				// if(PSW==""){
@@ -570,11 +610,11 @@ function role_data(c){//
             $(this_).parent().parent().children(".input_select").attr('data-myjcode',j_code);//角色编号
             $(this_).addClass('rel').siblings().removeClass('rel');
             if(j_code=="R2000"||j_code=="R3000"){
-            	$('.task_allot').html("所属店铺");
+            	$('.task_allot').html("所属店铺*");
             	$('.task_allot').parent().show();
             	$('.xingming').empty();
             }else if(j_code=="R4000"){
-            	$('.task_allot').html("所属区域");
+            	$('.task_allot').html("所属区域*");
             	$('.task_allot').parent().show();
             	$('.xingming').empty();
             }
@@ -583,7 +623,7 @@ function role_data(c){//
             }else if(j_code=="R6000"){
             	$('.task_allot').parent().hide();
             }else if(j_code=="R4800"){
-            	$('.task_allot').html("所属品牌");
+            	$('.task_allot').html("所属品牌*");
             	$('.task_allot').parent().show();
             	$('.xingming').empty();
             }
@@ -782,7 +822,7 @@ jQuery(document).ready(function(){
 				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
 				if(j_code=="R2000"||j_code=="R3000"){
-					$('.task_allot').html("所属店铺");
+					$('.task_allot').html("所属店铺*");
 					if(msg.store_name!==""){
 			            var store_lists=msg.store_name.split(",");
 						var storecode_list=msg.store_code.split(",");
@@ -791,7 +831,7 @@ jQuery(document).ready(function(){
 						}
 					}
             	}else if(j_code=="R4000"){
-	            	$('.task_allot').html("所属区域");
+	            	$('.task_allot').html("所属区域*");
 	            	if(msg.area_name!==""){
 		            	var area_lists=msg.area_name.split(",");
 						var areacode_list=msg.area_code.split(",");
@@ -802,7 +842,7 @@ jQuery(document).ready(function(){
             	}else if(j_code=="R5000"||j_code=="R6000"){
             		$('.task_allot').parent().hide();
             	}else if(j_code="R4800"){
-            		$('.task_allot').html("所属品牌");
+            		$('.task_allot').html("所属品牌*");
 	            	if(msg.brand_name!==""){
 		            	var brand_lists=msg.brand_name.split(",");
 						var brandcode_list=msg.brand_code.split(",");
