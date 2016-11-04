@@ -303,9 +303,9 @@ public class AreaServiceImpl implements AreaService {
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selAreaByCorpCode(params);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
-        }
+//        for (Area area : areas) {
+//            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+//        }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }

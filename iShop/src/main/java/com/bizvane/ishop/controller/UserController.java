@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
@@ -67,6 +68,9 @@ public class UserController {
     private SignService signService;
     @Autowired
     private BrandService brandService;
+    @Autowired
+    WeimobService weimobService;
+
     String id;
 
     /***
@@ -1980,26 +1984,27 @@ public class UserController {
             }else {
                 corpWechats = corpService.getWAuthByCorp(corp_code);
             }
-
+            String count = "0";
                 for (int j = 0; j < corpWechats.size(); j++) {
                     String auth_appid = corpWechats.get(j).getApp_id();
+                    String app_name = corpWechats.get(j).getApp_name();
                     String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_code);
                     if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                        dataBean.setId(id);
-                        dataBean.setMessage("生成二维码失败");
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        return dataBean.getJsonStr();
+                        count = app_name;
                     } else if (result.equals("48001")) {
-                        dataBean.setId(id);
-                        dataBean.setMessage("该功能未授权");
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        return dataBean.getJsonStr();
+                        count = app_name;
                     }
                 }
-
-            dataBean.setId(id);
-            dataBean.setMessage("生成完成");
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            if (count.equals("0")){
+                dataBean.setId(id);
+                dataBean.setMessage("生成完成");
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            }else {
+                dataBean.setId(id);
+                dataBean.setMessage(count+"生成二维码失败");
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            }
+//            weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
