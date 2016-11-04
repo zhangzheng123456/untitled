@@ -619,6 +619,7 @@ function GET(a, b, c) {
             $(".table tbody").empty();
             var message = JSON.parse(data.message);
             var list = message.all_vip_list;
+            console.log(list);
             cout = message.pages;
             //var list=list.list;
             superaddition(list, a, c);
@@ -674,7 +675,10 @@ function superaddition(data, num, c) {
             + gender
             + "</td><td>"
             + data[i].vip_phone
-            + "</td><td data_cardno='" + data[i].cardno + "'>"
+            // + "</td><td data_cardno='" + data[i].cardno + "'>"
+            + "</td><td>"
+            + data[i].cardno
+            + "</td><td>"
             + data[i].vip_card_type
             // + "</td><td>"
             // + data[i].vip_group_name

@@ -163,7 +163,7 @@ function showNameClick(e){
         $('#select_analyze').toggle();
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click');
     }else if($(d).attr('id')=='select_analyze_brand'){
-        console.log('OK');
+        $('#select_analyze_brand').toggle();
         var brand_code=$(e).attr('brand_cord');
         $('#side_analyze ul li:nth-child(1) s').html($(e).html());
         $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
@@ -171,7 +171,7 @@ function showNameClick(e){
         $('#select_analyze_shop ul').html('');
         getStore($('#side_analyze ul li:nth-child(2) s').attr('data_area'));
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click');
-        $('#select_analyze_brand').toggle();
+
     }else{
         var store_code=$(e).attr('data_store');
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
