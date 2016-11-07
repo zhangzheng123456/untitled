@@ -14,7 +14,7 @@ $(function(){
             }else if(reg.test(message.avatar)==false){
                 $('.nav-header .img-circle').attr("src","../img/head.png");
             }
-            if(message.user_type !== ""){
+            if(message.version_describe !== ""){
                 $(".update_tip").show();
             }else {
                 $(".update_tip").hide();

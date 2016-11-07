@@ -8135,7 +8135,7 @@ li.select_index>a>label>i{
    display: none;
    top:30%;
    left:40%;
-   z-index: 1000;
+   z-index: 10000;
    width:280px;
    min-height: 240px;
    border-radius: 5px;
