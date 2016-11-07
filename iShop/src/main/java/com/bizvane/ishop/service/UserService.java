@@ -1,6 +1,5 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.entity.UserQrcode;
@@ -8,7 +7,6 @@ import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 

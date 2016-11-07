@@ -210,6 +210,7 @@
         store_code,
         can_login,
         def_user.group_code,
+        def_user.version_id,
         def_user.area_code,
         def_user.brand_code,
         def_user.corp_code,

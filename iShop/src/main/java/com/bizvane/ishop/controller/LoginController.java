@@ -315,7 +315,7 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
-            User user = userService.getUserById(Integer.parseInt(user_id));
+            User user = userService.selectUserById(Integer.parseInt(user_id));
             menu = functionService.selectAllFunctions(corp_code,user_code, group_code, role_code);
             menus.put("menu", menu);
             menus.put("user_type", user_type);
@@ -331,7 +331,9 @@ public class LoginController {
             menus.put("version_describe", "");
             List<Appversion> appversion = appversionService.selLatestVersion();
             if (appversion.size() > 0 && !version_id.equals(appversion.get(0).getVersion_id())){
-                menus.put("version_describe", appversion.get(0).getVersion_describe());
+                String describe = appversion.get(0).getVersion_describe();
+                menus.put("version_describe", describe);
+                version_id = appversion.get(0).getVersion_id();
             }
             user.setVersion_id(version_id);
             userService.updateUser(user);
