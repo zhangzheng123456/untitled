@@ -249,6 +249,10 @@ $("#area_search_f").click(function(){
 	$("#screen_area .screen_content_l ul").empty();
 	getarealist(area_num);
 })
+$("#brand_search_f").click(function(){
+	$("#screen_brand .screen_content_l ul").empty();
+    getbrandlist();
+})
 //区域关闭
 $("#screen_close_area").click(function(){
 	$("#screen_area").hide();

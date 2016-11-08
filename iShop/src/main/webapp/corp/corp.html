@@ -56,7 +56,7 @@
                             <!--<span class="icon-ishop_6-06"></span>-->
                             <!--配置-->
                         <!--</li>-->
-                        <li class="bg">
+                        <li class="bg" id="reload">
                             <span class="icon-ishop_6-07"></span>
                             刷新
                         </li>
@@ -240,20 +240,8 @@
 </body>
     <script type="text/javascript" src="/js/insidePostRequire.js"></script>
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-    <script src="/js/corp/corp.js"></script>
     <script src="/js/silide.js"></script>
-    <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript">
-    $("#file_list").niceScroll({
-        cursorcolor:"#999",
-        cursoropacitymax:1,
-        touchbehavior:false,
-        cursorwidth:"5px",
-        cursorborder:"0",
-        cursorborderradius:"5px"
-    });
-    $(".icon-ishop_6-07").parent().click(function () {
-        window.location.reload();
-    })
-</script>
+    <script type="text/javascript">
+        $("body").append("<script src='/js/corp/corp.js?'"+new Date().getTime()+"'><\/script>");
+    </script>
 </html>

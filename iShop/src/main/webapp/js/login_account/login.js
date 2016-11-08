@@ -18,9 +18,9 @@ function createCode() { //随机生成验证码
 createCode();
 
 function login(){
-	var phone = $('#login').val();
-	var password = $('#password1').val();
-	var verifyCode = $('#verifyCode').val();
+	var phone = $('#login').val().trim();
+	var password = $('#password1').val().trim();
+	var verifyCode = $('#verifyCode').val().trim();
 	var param = {};
 	param["phone"] = phone;
 	param["password"] = md5(password);
