@@ -314,7 +314,7 @@ jQuery(document).ready(function () {
         param['corp_code']=corp_code;
         param['param_name']=param_name;
         if(param_name!==""&&param_name!==param_name_l){
-            oc.postRequire('post','/vipparam/checkNameOnly',0,'param',function (data) {
+            oc.postRequire('post','/vipparam/checkNameOnly',0,param,function (data) {
                 if(data.code=="0"){
                     div.html("");
                     $("#PARAM_NAME").attr("data-mark","Y");

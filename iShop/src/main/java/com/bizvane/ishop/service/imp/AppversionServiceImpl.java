@@ -73,7 +73,12 @@ public class AppversionServiceImpl implements AppversionService {
     }
 
     @Override
-    public Appversion selAppversionForId(String corp_code, String version_id) throws Exception {
-        return appversionMapper.selAppversionForId(corp_code, version_id);
+    public Appversion selAppversionForId(String corp_code, String version_id,String paltform) throws Exception {
+        return appversionMapper.selAppversionForId(corp_code, version_id,paltform);
+    }
+
+    @Override
+    public List<Appversion> selLatestVersion() throws Exception {
+        return appversionMapper.selLatestVersion();
     }
 }

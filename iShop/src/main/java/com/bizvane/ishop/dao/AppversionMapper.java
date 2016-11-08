@@ -25,5 +25,7 @@ public interface AppversionMapper {
 
     Appversion selAppversionById(@Param("id") int id) throws SQLException;
 
-    Appversion selAppversionForId(@Param("corp_code") String corp_code, @Param("version_id") String version_id) throws SQLException;
+    Appversion selAppversionForId(@Param("corp_code") String corp_code, @Param("version_id") String version_id, @Param("paltform") String paltform) throws SQLException;
+
+    List<Appversion> selLatestVersion() throws SQLException;
 }
