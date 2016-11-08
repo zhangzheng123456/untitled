@@ -137,7 +137,6 @@ var message = JSON.parse(val.message);
         $(".corpedit_oper_btn ul li:nth-of-type(1)").click(function () {
             var nameMark = $("#CORPNAME").attr("data-mark");
             var codeMark = $("#OWN_CORP").attr("data-mark");
-            console.log(nameMark);
             if (corpjs.firstStep()) {
                 if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
@@ -236,7 +235,6 @@ var message = JSON.parse(val.message);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
                 if(_command=="/corp/add"){
-                    console.log(data.message);
                     sessionStorage.setItem("id",data.message);
                     $(window.parent.document).find('#iframepage').attr("src", "/corp/crop_edit.html");
                 }
@@ -314,7 +312,6 @@ jQuery(document).ready(function () {
         var _command = "/corp/select";
         whir.loading.add("", 0.5);
         oc.postRequire("post", _command, "", _params, function (data) {
-            console.log(data);
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=msg.cus_user;
@@ -351,7 +348,6 @@ jQuery(document).ready(function () {
                 $("#modifier").val(msg.modifier);
                 $("#CORPNAME").attr("data-name", msg.corp_name);
                 var wechat=msg.wechats;
-                console.log(wechat);
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
                     for (var i = 0; i < wechat.length; i++) {
@@ -399,7 +395,6 @@ jQuery(document).ready(function () {
         var corp_code1 = $(this).attr("data-name");
         var div = $(this).next('.hint').children();
         if (corp_code !== "" && corp_code !== corp_code1 && isCode.test(corp_code) == true) {
-            console.log(corp_code);
             _params["corp_code"] = corp_code;
             oc.postRequire("post", "/corp/corpCodeExist", "", _params, function (data) {
                 if (data.code == "0") {
@@ -445,7 +440,6 @@ jQuery(document).ready(function () {
             }
         },
         error: function (data) {
-            console.log(data);
 
         }
     });
@@ -502,7 +496,6 @@ jQuery(document).ready(function () {
             data: {param: JSON.stringify(_params)},
             async:false,
             success: function (data) {
-                console.log(data.code);
                 if(data.code=="0"){
                     a=true;
                 }else if(data.code=="-1"){
@@ -511,7 +504,6 @@ jQuery(document).ready(function () {
                 }
             },
             error: function (data) {
-                console.log(data);
 
             }
         });

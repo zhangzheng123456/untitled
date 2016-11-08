@@ -70,7 +70,9 @@
     <!-- Custom and plugin javascript -->
     <!-- <script src="../js/hplus.js?v=2.2.0"></script> -->
     <script type="text/javascript" src="/js/insidePostRequire.js"></script>
-    <script src="/js/corp/corp_user.js"></script>
+    <script type="text/javascript">
+        $("body").append("<script src='/js/corp/corp_user.js?'"+new Date().getTime()+"'><\/script>");
+    </script>
 </body>
 
 </html>

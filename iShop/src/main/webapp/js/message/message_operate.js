@@ -622,7 +622,7 @@ function getstafflist(a){
                         + i
                         + a
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"\("+list[i].user_code+"\)</span></li>"
                     }
                 }
             }

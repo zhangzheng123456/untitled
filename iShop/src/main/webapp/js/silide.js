@@ -16,7 +16,15 @@ $(function() {
         $('html,body').animate({
             'scrollTop': btm
         }, 500);
-    })
+    });
+    $("#file_list").niceScroll({
+        cursorcolor:"#999",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorwidth:"5px",
+        cursorborder:"0",
+        cursorborderradius:"5px"
+    });
 });
 //左移和右移
 $(function(){   
@@ -35,7 +43,7 @@ $(function(){
                input[i].checked=false;
                $(li[i]).appendTo('#file_list_r ul'); 
             }
-            bianse();
+            bianse1();
         }   
     });
     //移到左边
@@ -52,7 +60,7 @@ $(function(){
                 input[i].checked=false;
                 $(li[i]).appendTo('#file_list_l ul'); 
             }
-            bianse();
+            bianse1();
         }
     });
     //全部移到右边
@@ -64,7 +72,7 @@ $(function(){
             input[i].checked = false;
             $(li[i]).appendTo('#file_list_r ul');
         }
-        bianse();
+       bianse1();
     });
     //全部移到左边
     $('#right_shift_all').click(function(){
@@ -74,10 +82,10 @@ $(function(){
             input[i].checked=false;
             $(li[i]).appendTo('#file_list_l ul'); 
         }
-        bianse();
+        bianse1();
     });
 });
-function bianse(){
+function bianse1(){
     $("#file_list_l li:odd").css("backgroundColor","#fff");
     $("#file_list_l li:even").css("backgroundColor","#ededed");
     $("#file_list_r li:odd").css("backgroundColor","#fff");
@@ -91,4 +99,7 @@ $("#file_list").on("click","li",function(){
     }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
         input.checked = false;
     }
+})
+$("#reload").click(function(){
+    window.location.reload();
 })

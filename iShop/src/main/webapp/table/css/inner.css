@@ -662,17 +662,17 @@ input::-webkit-input-placeholder{
 	margin-left: 20px;
 }
 .frame{
-	padding-left: 10px;
-	padding-right: 10px;
-	min-width: 130px;
-	min-height: 50px;
-	background:rgba(0,0,0,0.5);
+	margin-left: -10%;
+	min-width: 370px;
+	min-height: 80px;
+	background:rgba(74,95,124,0.8);
 	position: absolute;
 	z-index: 10003;
 	border-radius: 5px;
 	color:#fff;
 	text-align: center;
-	line-height: 50px;
+	line-height: 80px;
+	box-shadow: 0px 3px 13px rgba(51, 56, 72,0.53);
 }
 /**回到顶部按钮 回到底部按钮**/
 #side_bar{
