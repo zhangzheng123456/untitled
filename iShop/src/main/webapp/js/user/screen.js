@@ -292,6 +292,7 @@ $("#screen_close_area").click(function(){
 })
 //店铺关闭
 $("#screen_close_shop").click(function(){
+	$("#screen_area").attr("type","");
 	$("#screen_shop").hide();
 	whir.loading.remove();//移除遮罩层
 	$("#screen_shop .screen_content_l").unbind("scroll");
@@ -321,7 +322,7 @@ $("#screen_que_area").click(function(){
         }else{
             area_codes+=r;
         }
-        if(r_code=="R4000"){
+        if(r_code=="R4000"&&type!="1"){
         	for(var j=0;j<a.length;j++){
 				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
 					$(a[j]).parent("p").remove();
@@ -330,11 +331,12 @@ $("#screen_que_area").click(function(){
 			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
 		}
 	}
-	if(r_code=="R2000"||r_code=="R3000"){
+	if(r_code=="R2000"||r_code=="R3000"||(r_code=="R4000"&&type=="1")){
 		$("#area_num").attr("data-areacode",area_codes);
 		var arr=whir.loading.getPageSize();
 		var left=(arr[0]-$("#screen_shop").width())/2;
 		var tp=(arr[1]-$("#screen_shop").height())/2+80;
+		$("#screen_area").attr("type","");
 		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
 		$("#screen_area").hide();
 		$("#screen_shop").show();

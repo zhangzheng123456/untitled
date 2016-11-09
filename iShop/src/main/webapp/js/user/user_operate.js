@@ -622,7 +622,7 @@ jQuery(document).ready(function(){
 				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
 				if(j_code=="R2000"||j_code=="R3000"){
-					$('.task_allot').html("所属店铺*");
+					$('#all_type .task_allot').html("所属店铺*");
 					if(msg.store_name!==""){
 			            var store_lists=msg.store_name.split(",");
 						var storecode_list=msg.store_code.split(",");
@@ -631,18 +631,26 @@ jQuery(document).ready(function(){
 						}
 					}
             	}else if(j_code=="R4000"){
-	            	$('.task_allot').html("所属区域*");
+	            	$('#all_type .task_allot').html("所属区域*");
+	            	$('#shop').show();
 	            	if(msg.area_name!==""){
 		            	var area_lists=msg.area_name.split(",");
 						var areacode_list=msg.area_code.split(",");
 						for(var i=0;i<area_lists.length;i++){
-							$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+							$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+						}
+					}
+					if(msg.store_name!==""){
+						var store_lists=msg.store_name.split(",");
+						var storecode_list=msg.store_code.split(",");
+						for(var i=0;i<store_lists.length;i++){
+							$('#shop .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+storecode_list[i]+"'  value='"+store_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
 						}
 					}
             	}else if(j_code=="R5000"||j_code=="R6000"){
-            		$('.task_allot').parent().hide();
+            		$('#all_type .task_allot').parent().hide();
             	}else if(j_code="R4800"){
-            		$('.task_allot').html("所属品牌*");
+            		$('#all_type .task_allot').html("所属品牌*");
 	            	if(msg.brand_name!==""){
 		            	var brand_lists=msg.brand_name.split(",");
 						var brandcode_list=msg.brand_code.split(",");
@@ -889,7 +897,7 @@ function getcorplist(a){
 					$("#OWN_STORE").attr("data-myscode","");
 					$('.xingming').empty();
 					$('#all_type .task_allot').html("所属店铺");
-					$("#ownshop_list .per_type").nextAll().remove();
+					$("#shop").hide();
 				}
 			})
 			$('.searchable-select-item').click(function(){
@@ -908,7 +916,7 @@ function getcorplist(a){
 					$("#OWN_STORE").attr("data-myscode","");
 					$('.xingming').empty();
 					$('#all_type .task_allot').html("所属店铺");
-					$("#ownshop_list .per_type").nextAll().remove();
+					$("#shop").hide();
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
