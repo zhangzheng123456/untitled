@@ -260,7 +260,7 @@ function GET(a,b){
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 cout=list.pages;
-                var pageNum = list.pageNum;
+                var pageNum = list.page_number;
                 var list=list.list;
                 superaddition(list,pageNum);
                 jumpBianse();
@@ -347,7 +347,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
-            var pageNum = list.pageNum;
+            var pageNum = list.page_number;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -667,7 +667,7 @@ function filtrates(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
-            var pageNum = list.pageNum;
+            var pageNum = list.page_number;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
