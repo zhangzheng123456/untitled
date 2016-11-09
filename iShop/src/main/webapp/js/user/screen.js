@@ -75,7 +75,34 @@ $("#screen_add").click(function(){
 		getbrandlist();
 
 	}
-})
+});
+//群组为区域的时候点击店铺
+$("#shop_add").click(function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	whir.loading.add("",0.5);
+	$("#loading").remove();
+	$("#screen_shop").show();
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_area").hide();
+	shop_num=1;
+	isscroll=false;
+	$("#screen_shop .screen_content_l").unbind("scroll");
+	$("#screen_shop .screen_content_l ul").empty();
+	$("#screen_shop .screen_content_r ul").empty();
+	$("#screen_area .screen_content_l ul").empty();
+	$("#screen_area .screen_content_r ul").empty();
+	$("#screen_brand .screen_content_l ul").empty();
+	$("#screen_brand .screen_content_r ul").empty();
+	$("#area_num").val("全部");
+	$("#area_num").attr("data-areacode","");
+	$("#brand_num").val("全部");
+	$(".s_pitch span").html("0");
+	$("#brand_num").attr("data-brandcode","");
+	getstorelist(shop_num);
+	bianse();
+});
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){
     var input=$(this).find("input")[0];
@@ -88,6 +115,7 @@ $(".screen_content").on("click","li",function(){
 })
 //点击店铺的区域
 $("#shop_area").click(function(){
+	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
 	var tp=(arr[1]-$("#screen_shop").height())/2+80;
@@ -96,9 +124,10 @@ $("#shop_area").click(function(){
 	$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
 	area_num=1;
 	$("#screen_area .screen_content_l ul").empty();
-	// $("#screen_area .screen_content_r ul").empty();
-	// $("#screen_area .s_pitch span").html("0");
 	$("#area_search").val("");
+	if(r_code=="R4000"){
+		$("#screen_area").attr("type","1");
+	}
 	isscroll=false;
 	$("#screen_area .screen_content_l").unbind("scroll");
 	getarealist(area_num);
@@ -278,37 +307,14 @@ function bianse(){
     $(".screen_content_r li:odd").css("backgroundColor","#fff");
     $(".screen_content_r li:even").css("backgroundColor","#ededed");
 }
-//区域滚动事件
-// $("#screen_area .screen_content_l").bind("scroll",function () {
-// 	var nScrollHight = $(this)[0].scrollHeight;
-//     var nScrollTop = $(this)[0].scrollTop;
-//     var nDivHight=$(this).height();
-//     if(nScrollTop + nDivHight >= nScrollHight){
-//     	if(area_next){
-//     		return;
-//     	}
-//     	getarealist(area_num);
-//     };
-// })
-//店铺滚动事件
-// $("#screen_shop .screen_content_l").bind("scroll",function () {
-// 	var nScrollHight = $(this)[0].scrollHeight;
-//     var nScrollTop = $(this)[0].scrollTop;
-//     var nDivHight=$(this).height();
-//     if(nScrollTop + nDivHight >= nScrollHight){
-//     	if(shop_next){
-//     		return;
-//     	}
-//     	getstorelist(shop_num);
-//     };
-// })
 //点击区域确定追加节点
 $("#screen_que_area").click(function(){
 	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
+	var type=$("#screen_area").attr("type");
 	var area_codes="";
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	for(var i=0;i<li.length;i++){
-		var a=$('.xingming input');
+		var a=$('#all_type .xingming input');
 		var r=$(li[i]).attr("id");
         if(i<li.length-1){
             area_codes+=r+",";
@@ -321,7 +327,7 @@ $("#screen_que_area").click(function(){
 					$(a[j]).parent("p").remove();
 				}
 		    }
-			$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
+			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
 		}
 	}
 	if(r_code=="R2000"||r_code=="R3000"){
@@ -350,27 +356,32 @@ $("#screen_que_area").click(function(){
 $("#screen_que_shop").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
-	if(r_code=="R2000"&&li.length>1){
-		art.dialog({
-			zIndex:10003,
-			time: 1,
-			lock: true,
-			cancel: false,
-			content: "导购只能选着一个"
-		});
-		return;
-	}
-	if(r_code=="R2000"&&li.length==1){
-		$('.xingming').empty();
-	}
+	// if(r_code=="R2000"&&li.length>1){
+	// 	art.dialog({
+	// 		zIndex:10003,
+	// 		time: 1,
+	// 		lock: true,
+	// 		cancel: false,
+	// 		content: "导购只能选着一个"
+	// 	});
+	// 	return;
+	// }
+	// if(r_code=="R2000"&&li.length==1){
+	// 	$('.xingming').empty();
+	// }
 	for(var i=0;i<li.length;i++){
-		var a=$('.xingming input');
+		var a=$('#all_type .xingming input');
 		for(var j=0;j<a.length;j++){
 			if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
 				$(a[j]).parent("p").remove();
 			}
 		}
-		$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
+		if(r_code!=="R4000"){
+			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
+		};
+		if(r_code=="R4000"){
+			$('#shop .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
+		};
 	}
 	$("#screen_shop").hide();
 	whir.loading.remove();//移除遮罩层
@@ -381,13 +392,13 @@ $("#screen_que_brand").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	if(r_code=="R4800"){
 		for(var i=0;i<li.length;i++){
-			var a=$('.xingming input');
+			var a=$('#all_type .xingming input');
 			for(var j=0;j<a.length;j++){
 				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
 					$(a[j]).parent("p").remove();
 				}
 			}
-			$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
+			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
 	    }
 	    $("#screen_brand").hide();
 	    whir.loading.remove();//移除遮罩层
