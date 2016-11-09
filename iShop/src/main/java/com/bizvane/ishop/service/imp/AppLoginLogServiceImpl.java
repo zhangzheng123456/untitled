@@ -2,15 +2,22 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AppLoginLogMapper;
+import com.bizvane.ishop.dao.BrandMapper;
+import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.AppLoginLog;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AppLoginLogService;
+import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +29,27 @@ import java.util.Map;
 public class AppLoginLogServiceImpl implements AppLoginLogService {
     @Autowired
     private AppLoginLogMapper loginLogMapper;
+    @Autowired
+    private StoreMapper storeMapper;
+    @Autowired
+    private StoreService storeService;
     @Override
-    public PageInfo<AppLoginLog> selectAllAppLoginLog(int page_number, int page_size,String corp_code, String search_value) {
+    public PageInfo<AppLoginLog> selectAllAppLoginLog(int page_number, int page_size,String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<AppLoginLog> appLoginLogs = loginLogMapper.selectAllAppLoginLog(corp_code, search_value);
         for (AppLoginLog appLoginLog:appLoginLogs) {
             appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
+            Store store = storeMapper.selectByStoreName(appLoginLog.getCorp_code(), appLoginLog.getStore_name(), Common.IS_ACTIVE_Y);
+            Store storeById = storeService.getStoreById(store.getId());
+            if(store!=null) {
+                if (storeById.getBrand_name() != null) {
+                    appLoginLog.setBrand_name(storeById.getBrand_name());
+                } else {
+                    appLoginLog.setBrand_name("");
+                }
+            }else{
+                appLoginLog.setBrand_name("");
+            }
         }
         PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(appLoginLogs);
         return page;
@@ -73,6 +95,17 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
         List<AppLoginLog> list = loginLogMapper.selectAllScreen(params);
         for (AppLoginLog appLoginLog:list) {
             appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
+            Store store = storeMapper.selectByStoreName(appLoginLog.getCorp_code(), appLoginLog.getStore_name(), Common.IS_ACTIVE_Y);
+            if(store!=null) {
+                Store storeById = storeService.getStoreById(store.getId());
+                if (storeById.getBrand_name() != null) {
+                    appLoginLog.setBrand_name(storeById.getBrand_name());
+                } else {
+                    appLoginLog.setBrand_name("");
+                }
+            }else{
+                appLoginLog.setBrand_name("");
+            }
         }
         PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(list);
         return page;
