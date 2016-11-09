@@ -385,7 +385,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -479,16 +478,10 @@ $("#delete").click(function(){
             if(value==""&&filtrate==""){
                 frame();
                 $('.frame').html('删除成功');
-                var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-                var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-                $(".frame").css({"left":+left+"px","top":+tp+"px"});
                 GET(pageNumber,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
-               var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-               var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-               $(".frame").css({"left":+left+"px","top":+tp+"px"});
                param["pageNumber"]=pageNumber;
                POST(pageNumber,pageSize);
             }else if(filtrate!==""){
@@ -502,25 +495,21 @@ $("#delete").click(function(){
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
-            var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-            var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-            $(".frame").css({"left":+left+"px","top":+tp+"px"});
         }
     })
 })
 //删除弹框
  function frame(){
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
-    $('.content').append('<div class="frame"></div>');
-    var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-    $(".frame").css({"left":+left+"px","top":+tp+"px"});
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-     setTimeout(function(){
-         $(".frame").hide();
-     },2000);
-} 
+    setTimeout(function(){
+        $(".frame").hide(); 
+    },1500);
+}  
 //全选
 function checkAll(name){
     var el=$("tbody input");

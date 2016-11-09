@@ -183,7 +183,7 @@ artDialog.fn = artDialog.prototype = {
 				width = wrap.offsetWidth - width;
 				height = wrap.offsetHeight - height;
 				left = left - width / 2;
-				top = top - height / 2;
+				top = top - height / 2+50;
 				wrap.style.left = Math.max(left, 0) + 'px';
 				wrap.style.top = Math.max(top, 0) + 'px';
 			};
@@ -801,7 +801,7 @@ artDialog.fn = artDialog.prototype = {
 				var left = parseInt($elem.css('left')),
 					top = parseInt($elem.css('top')),
 					sLeft = _$document.scrollLeft(),
-					sTop = _$document.scrollTop(),
+					sTop = _$document.scrollTop()+1000,
 					txt = '(document.documentElement)';
 				
 				this._setAbsolute();

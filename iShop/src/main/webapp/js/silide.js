@@ -17,14 +17,14 @@ $(function() {
             'scrollTop': btm
         }, 500);
     });
-    $("#file_list").niceScroll({
-        cursorcolor:"#999",
-        cursoropacitymax:1,
-        touchbehavior:false,
-        cursorwidth:"5px",
-        cursorborder:"0",
-        cursorborderradius:"5px"
-    });
+    // $("#file_list").niceScroll({
+    //     cursorcolor:"#999",
+    //     cursoropacitymax:1,
+    //     touchbehavior:false,
+    //     cursorwidth:"5px",
+    //     cursorborder:"0",
+    //     cursorborderradius:"5px"
+    // });
 });
 //左移和右移
 $(function(){   
