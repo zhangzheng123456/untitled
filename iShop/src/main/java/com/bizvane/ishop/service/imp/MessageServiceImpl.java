@@ -108,7 +108,7 @@ public class MessageServiceImpl implements MessageService {
                     area_code = area_code + area_code1 + ",";
                 }
                 String[] areas = area_code.split(",");
-                List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null, Common.IS_ACTIVE_Y);
+                List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, null, Common.IS_ACTIVE_Y);
                 for (int i = 0; i < store.size(); i++) {
                     List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y);
                     for (int j = 0; j <users.size() ; j++) {

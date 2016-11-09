@@ -104,7 +104,7 @@
         ORDER BY def_store.id DESC
     </select>
 
-    <select id="selectStores" resultType="com.bizvane.ishop.entity.Store">
+    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
         select
         def_store.store_code,
         def_store.store_name
@@ -135,10 +135,17 @@
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
         <if test="area_code != null">
-            AND
+            AND (
             <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
                 def_store.area_code REGEXP #{item}
             </foreach>
+            <if test="store_codes != null and store_codes !=''">
+                OR def_store.store_code IN
+                <foreach collection="store_codes" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
         </if>
         <if test="brand_code != null">
             AND
@@ -175,10 +182,17 @@
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
         <if test="area_code != null and area_code !=''">
-            AND
+            AND (
             <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
                 def_store.area_code regexp #{item}
             </foreach>
+            <if test="store_codes != null and store_codes !=''">
+                OR def_store.store_code IN
+                <foreach collection="store_codes" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
         </if>
         <if test="brand_code != null and brand_code !=''">
             AND

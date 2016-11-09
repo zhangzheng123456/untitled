@@ -34,8 +34,6 @@ public interface StoreService {
 
     int deleteStoreUser(String user_id, String store_code) throws Exception;
 
-    Store getStoreDetailById(int id) throws Exception;
-
     Store getStoreById(int id) throws Exception;
 
     Store getById(int id) throws Exception;
@@ -66,19 +64,17 @@ public interface StoreService {
 
     int selectCount(String created_date) throws Exception;
 
-    PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code, String[] brand_code, String search_value) throws Exception;
+    PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code,String[] store_codes, String[] brand_code, String search_value) throws Exception;
 
-    PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception;
+    PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception;
 
-    List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value) throws Exception ;
+    List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception ;
 
-    List<Store> selectByAreaBrand(String corp_code, String[] area_code, String[] brand_code, String isactive) throws Exception;
+    List<Store> selectByAreaBrand(String corp_code, String[] area_code,String[] store_codes, String[] brand_code, String isactive) throws Exception;
 
     List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception;
 
     List<Store> selectStoreCountByBrand(String corp_code, String brand_code,String search_value, String isactive) throws Exception;
-
-    PageInfo<Store> selectStoreByBrand(int page_number, int page_size,String corp_code, String brand_code,String search_value, String isactive) throws Exception;
 
     String insertExecl(Store store) throws Exception;
 

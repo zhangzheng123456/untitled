@@ -59,15 +59,19 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value)
+    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value,String area_store_code)
             throws Exception {
         String[] area_codes = null;
         String[] store_codes = null;
-
+        String[] area_store_codes = null;
         if (!area_code.equals("")) {
             if (area_code.contains(Common.SPECIAL_HEAD))
                 area_code = area_code.replace(Common.SPECIAL_HEAD, "");
             area_codes = area_code.split(",");
+        }
+        if (!area_store_code.equals("")){
+            area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+            area_store_codes = area_store_code.split(",");
         }
         if (!store_code.equals("")) {
             if (store_code.contains(Common.SPECIAL_HEAD))
@@ -77,6 +81,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", area_codes);
+        params.put("area_store_codes",area_store_codes);
         params.put("store_codes", store_codes);
         params.put("search_value", search_value);
         List<StoreAchvGoal> storeAchvGoals;
@@ -120,15 +125,23 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 
 
     @Override
-    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) throws Exception {
+    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map,String area_store_code) throws Exception {
         String[] area_codes = null;
         String[] store_codes = null;
+        String[] area_store_codes = null;
+
         if (!area_code.equals("")) {
             area_codes = area_code.split(",");
             for (int i = 0; area_codes != null && area_codes.length > i; i++) {
                 area_codes[i] = area_codes[i].substring(1, area_codes.length);
             }
         }
+
+        if (!area_store_code.equals("")){
+            area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+            area_store_codes = area_store_code.split(",");
+        }
+
         if (!store_code.equals("")) {
             store_codes = store_code.split(",");
             for (int i = 0; store_codes != null && i < area_codes.length; i++) {
@@ -138,6 +151,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", area_codes);
+        params.put("area_store_codes",area_store_codes);
         params.put("store_codes", store_codes);
         params.put("map", map);
         List<StoreAchvGoal> storeAchvGoals;

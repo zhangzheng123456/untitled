@@ -178,6 +178,21 @@ public class AreaController {
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
+                    List<Area> areas = new ArrayList<Area>();
+                    Area area = new Area();
+                    area.setArea_code("");
+                    area.setArea_name("全部");
+                    area.setCorp_code("");
+                    area.setCorp_name("");
+                    area.setCreated_date("");
+                    area.setCreater("");
+                    area.setId(0);
+                    area.setIsactive("");
+                    area.setModified_date("");
+                    area.setModifier("");
+                    areas.add(0,area);
+                    areas.addAll(list.getList());
+                    list.setList(areas);
                 }else{
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);

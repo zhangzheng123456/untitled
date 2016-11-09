@@ -117,10 +117,15 @@ public class BrandController {
             }else if (role_code.equals(Common.ROLE_AM)){
                 area_code = area_code.replace(Common.SPECIAL_HEAD,"");
                 String[] areas = area_code.split(",");
-                List<Store> stores = storeService.selectByAreaBrand(corp_code,areas, null,Common.IS_ACTIVE_Y);
+                String[] stores = null;
+                if (!store_code.equals("")){
+                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                    stores = store_code.split(",");
+                }
+                List<Store> storeList = storeService.selectByAreaBrand(corp_code,areas,stores, null,Common.IS_ACTIVE_Y);
                 String brand_code1 = "";
-                for (int i = 0; i < stores.size(); i++) {
-                    String brand_code = stores.get(i).getBrand_code();
+                for (int i = 0; i < storeList.size(); i++) {
+                    String brand_code = storeList.get(i).getBrand_code();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                     if (!brand_code.endsWith(",")){
                         brand_code = brand_code + ",";
