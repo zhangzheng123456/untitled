@@ -8142,10 +8142,16 @@ li.select_index>a>label>i{
    background: #fff;
  }
  .tip_list{
-   width:100%;
-   line-height:25px;
-   padding:50px 30px 0 30px;
-   text-align: left;
+   /*width:100%;*/
+   /*line-height:25px;*/
+   /*padding:50px 30px 0 30px;*/
+   /*text-align: left;*/
+   min-height: 150px;
+   width: 100%;
+   padding-top: 50px;
+   text-align: center;
+   padding-left: 30px;
+   padding-right: 30px;
  }
  .tip_enter{
    width:140px;
