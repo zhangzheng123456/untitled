@@ -4,18 +4,6 @@ var area_next=false;
 var shop_num=1;
 var shop_next=false;
 var isscroll=false;
-//提示弹框
-function frame(){
-    var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-    $('.frame').remove();
-    $('body').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;position:fixed;"></div>');
-    $(".frame").animate({opacity:"1"},1000);
-    $(".frame").animate({opacity:"0"},1000);
-    setTimeout(function(){
-        $(".frame").hide();
-    },2000);
-} 
 //点击新增的时候弹出不同的框
 $("#screen_add").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
@@ -23,8 +11,13 @@ $("#screen_add").click(function(){
 	var left=(arr[0]-$("#screen_shop").width())/2;
 	var tp=(arr[1]-$("#screen_shop").height())/2+80;
 	if(r_code==undefined||r_code==""){
-		frame();
-		$(".frame").html("请先选择所属群组");
+		art.dialog({
+			zIndex:10003,
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择所属群组"
+		});
 		return;
 	}
 	if(r_code=="R2000"||r_code=="R3000"){
@@ -132,8 +125,13 @@ function removeRight(a,b){
 		li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
 	}
 	if(li.length=="0"){
-		frame();
-		$('.frame').html("请先选择");
+		art.dialog({
+			zIndex:10003,
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择"
+		});
 		return;
 	}
 	if(li.length>0){
@@ -165,8 +163,13 @@ function removeLeft(a,b){
 		li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
 	}
 	if(li.length=="0"){
-		frame();
-		$('.frame').html("请先选择");
+		art.dialog({
+			zIndex:10003,
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择"
+		});
 		return;
 	}
 	if(li.length>0){
@@ -348,8 +351,13 @@ $("#screen_que_shop").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
 	if(r_code=="R2000"&&li.length>1){
-		frame();
-		$('.frame').html("导购只能选一个店铺");
+		art.dialog({
+			zIndex:10003,
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "导购只能选着一个"
+		});
 		return;
 	}
 	if(r_code=="R2000"&&li.length==1){
