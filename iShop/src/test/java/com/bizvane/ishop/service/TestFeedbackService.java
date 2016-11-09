@@ -1,10 +1,14 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +63,44 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            String date="2008-02-30";
-            String checkDate = LuploadHelper.checkDate(date);
-            System.out.println(checkDate);
+            String user_id = "ABC123";
+            String corp_code = "C10141";
+            String pageNumber = "4";
+            String vip_id = "";
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_id = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_number = new Data("row_num", pageNumber, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_id.key, data_corp_id);
+            datalist.put(data_number.key, data_number);
+            datalist.put(data_vip_id.key, data_vip_id);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("ChatView", datalist);
+            String result = dataBox.data.get("message").value;
+            System.out.println(result);
+//            HashMap<String, Data> paramList=new HashMap<String, Data>();
+//            paramList.put("start",new Data("start","1", ValueType.PARAM));
+//            paramList.put("limit",new Data("limit","10", ValueType.PARAM));
+//            paramList.put("open_id",new Data("open_id","", ValueType.PARAM));
+//            paramList.put("corp_code",new Data("corp_code",corp_code, ValueType.PARAM));
+//            Data data_corp_id = new Data("corp_code", "C10000", ValueType.PARAM);
+//            Data data_open_id = new Data("open_id", "omKEMw4xgBRa82oUMidp8LldZ95c", ValueType.PARAM);
+//            Data data_app_id = new Data("app_id", "", ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_corp_id.key, data_corp_id);
+//            datalist.put(data_open_id.key, data_open_id);
+//            datalist.put(data_app_id.key, data_app_id);
+//
+//            DataBox dataBox = iceInterfaceService.iceInterfaceV3("QueryUserCodeByOpenID", datalist);
+//            String result = dataBox.data.get("message").value;
+//            System.out.println(result);
+//            String date="2008-02-30";
+//            String checkDate = LuploadHelper.checkDate(date);
+//            System.out.println(checkDate);
 //            String str="{\"type\":\"between\",\"value\":{\"start\":\"2\",\"end\":\"12\"}}";
 //            boolean b = CheckUtils.checkJson(str);
 //            System.out.println(b);
@@ -263,7 +302,7 @@ public class TestFeedbackService {
 //            System.out.println(result+"--");
 ////
 //            String ss="§SHBS0001,";
-//        String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
+//            String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
 //            Data data_user_id = new Data("user_id", "AZ0007841", ValueType.PARAM);
 //            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
 //            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
@@ -282,6 +321,25 @@ public class TestFeedbackService {
 //            System.out.println(result);
 
 
+//
+//            String user_id = "ABC123";
+//            String corp_code = "C10141";
+//            String pageNumber = "1";
+//            String vip_id = "oStyzuDUUI3PztcguF-6TjAvu5Bk";
+//
+//            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+//            Data data_corp_id = new Data("corp_code", corp_code, ValueType.PARAM);
+//            Data data_number = new Data("row_num", pageNumber, ValueType.PARAM);
+//            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_id.key, data_corp_id);
+//            datalist.put(data_number.key, data_number);
+//            datalist.put(data_vip_id.key, data_vip_id);
+//            DataBox dataBox = iceInterfaceService.iceInterface("ChatView", datalist);
+//            String result = dataBox.data.get("message").value;
+//            System.out.println(result);
 //======================================活跃会员===================================================
 
 //            String ss="§SHBS0001,";
