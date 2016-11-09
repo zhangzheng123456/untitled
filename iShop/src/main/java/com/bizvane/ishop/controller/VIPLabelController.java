@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  * Created by zhouying on 2016-04-20.
  */
 @Controller
-@RequestMapping("/VIP")
+@RequestMapping("/VIP/label")
 public class VIPLabelController {
 
     @Autowired
@@ -69,7 +69,7 @@ public class VIPLabelController {
      * 会员标签管理
      * 列表
      */
-    @RequestMapping(value = "/label/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String VIPLabelManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -106,7 +106,7 @@ public class VIPLabelController {
     /***
      * 导出数据
      */
-    @RequestMapping(value = "/label/exportExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
@@ -167,7 +167,7 @@ public class VIPLabelController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/label/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -317,7 +317,7 @@ public class VIPLabelController {
      * 会员标签管理
      * 新增
      */
-    @RequestMapping(value = "/label/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
     public String addVIPLabel(HttpServletRequest request) {
@@ -340,16 +340,17 @@ public class VIPLabelController {
             vipLabel.setCreater(user_id);
             if (Common.ROLE_SYS.equals(role_code) && corp_code.equals(vipLabel.getCorp_code())) {
                 vipLabel.setLabel_type("sys");
-            } else if(role_code.equals(Common.ROLE_GM)){
+            } else if(role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)){
                 vipLabel.setLabel_type("org");
             }else {
                 vipLabel.setLabel_type("user");
             }
             String existInfo = vipLabelService.insert(vipLabel);
             if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                List<VipLabel> vipLabels = vipLabelService.selectViplabelByName(vipLabel.getCorp_code(),vipLabel.getLabel_name(),vipLabel.getIsactive());
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("标签名称未被使用");
+                dataBean.setMessage(String.valueOf(vipLabels.get(0).getId()));
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -369,7 +370,7 @@ public class VIPLabelController {
      * 会员标签管理
      * 编辑
      */
-    @RequestMapping(value = "/label/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -418,7 +419,7 @@ public class VIPLabelController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/label/select", method = RequestMethod.POST)
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String findVipLabelById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -445,52 +446,11 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-
-    /**
-     * 会员标签管理
-     * 查找
-     */
-    @RequestMapping(value = "/label/find", method = RequestMethod.GET)
-    @ResponseBody
-    public String findVIPLabel(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.getString("id");
-            String message = jsonObj.getString("message");
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_Number = jsonObject.getInt("pageNumber");
-            int page_Size = jsonObject.getInt("pageSize");
-            String search_value = jsonObject.getString("search_value").toString();
-            String role_code = jsonObject.getString("role_code");
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<VipLabel> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.vipLabelService.selectBySearch(page_Number, page_Size, "", search_value);
-            } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.vipLabelService.selectBySearch(page_Number, page_Size, corp_code, search_value);
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
     /**
      * 会员标签类型管理
      * 删除
      */
-    @RequestMapping(value = "/label/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
     public String findVIPLabelDelete(HttpServletRequest request) {
@@ -523,19 +483,19 @@ public class VIPLabelController {
      * 会员标签管理
      * 判断企业内标签名称是否唯一
      */
-    @RequestMapping(value = "/label/VipLabelNameExist")
+    @RequestMapping(value = "/VipLabelNameExist")
     @ResponseBody
     public String VipLabelNameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            JSONObject jsonObject1 = JSONObject.parseObject(jsString);
             String message = jsonObject1.get("message").toString();
-            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
-            String tag_name = jsonObject2.getString("tag_name");
+            JSONObject jsonObject2 = JSONObject.parseObject(message);
+            String label_name = jsonObject2.getString("label_name");
             String corp_code = jsonObject2.getString("corp_code");
-            List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(corp_code, tag_name);
+            List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(corp_code, label_name);
 
             if (existInfo.size() == 0) {
                 dataBean.setId(id);
@@ -555,12 +515,11 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-
     /**
      * 会员标签管理
      * 查找
      */
-    @RequestMapping(value = "/label/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public String findVIPLabelFind(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -599,7 +558,7 @@ public class VIPLabelController {
      * 会员标签管理
      * 筛选
      */
-    @RequestMapping(value = "/label/screen", method = RequestMethod.POST)
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String selectAllVipScreen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -636,125 +595,9 @@ public class VIPLabelController {
         }
         return dataBean.getJsonStr();
     }
-    /**
-     * MongDB
-     * 会员标签
-     * 新增
-     */
-    @RequestMapping(value = "/label/labelAdd", method = RequestMethod.POST)
-    @ResponseBody
-    public String labelAdd(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        JSONObject result = new JSONObject();
-        int pages = 0;
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String label_id = jsonObject.get("label_id").toString();
-            String vip_id = jsonObject.get("vip_id").toString();
-            String vip_code = jsonObject.get("vip_code").toString();
 
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
-            BasicDBObject dbObject=new BasicDBObject();
-            dbObject.put("vip_code",vip_code);
-            dbObject.put("label_id",label_id);
-
-            BasicDBObject dbObject1=new BasicDBObject();
-            dbObject1.put("labels",dbObject);
-            BasicDBObject dbObject2=new BasicDBObject();
-            dbObject1.put("$addToSet",dbObject1);
-            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
-            BasicDBObject query = new BasicDBObject();
-            // 读取数据
-            if (role_code.equals(Common.ROLE_SYS)) {
-                query.put("vip_id", vip_id);
-            } else {
-                query.put("corp_code", corp_code);
-                query.put("vip_id", vip_id);
-            }
-
-            cursor.update(query,dbObject2);
-            DBCursor dbCursor = cursor.find(query);
-
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
-            result.put("list", list);
-           // result.put("dbObject",dbObject);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * MongoDB
-     * 会员相册删除
-     */
-    @RequestMapping(value = "/label/labelDelete", method = RequestMethod.POST)
-    @ResponseBody
-    public String labelDelete(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        JSONObject result = new JSONObject();
-        int pages = 0;
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String vip_id = jsonObject.get("vip_id").toString();
-            String label_id = jsonObject.get("label_id").toString();
-            String vip_code = jsonObject.get("vip_code").toString();
-
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
-            BasicDBObject dbObject=new BasicDBObject();
-            dbObject.put("vip_code",vip_code);
-            dbObject.put("label_id",label_id);
-            BasicDBObject dbObject1=new BasicDBObject();
-            dbObject1.put("labels",dbObject);
-            BasicDBObject dbObject2=new BasicDBObject();
-            dbObject1.put("$pull",dbObject1);
-            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
-            BasicDBObject query = new BasicDBObject();
-            // 读取数据
-            if (role_code.equals(Common.ROLE_SYS)) {
-                query.put("vip_id", vip_id);
-            } else {
-                query.put("corp_code", corp_code);
-                query.put("vip_id", vip_id);
-            }
-
-            cursor.update(query,dbObject2);
-            DBCursor dbCursor = cursor.find(query);
-
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
-            result.put("list", list);
-            //result.put("dbObject",dbObject);
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
     //热门标签
-    @RequestMapping(value = "/label/findHotViplabel", method = RequestMethod.POST)
+    @RequestMapping(value = "/findHotViplabel", method = RequestMethod.POST)
     @ResponseBody
     public String findHotViplabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -794,7 +637,7 @@ public class VIPLabelController {
     }
 
 
-    @RequestMapping(value = "/label/findViplabelByType", method = RequestMethod.POST)
+    @RequestMapping(value = "/findViplabelByType", method = RequestMethod.POST)
     @ResponseBody
     public String findViplabelByType(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -855,7 +698,7 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/label/addRelViplabel", method = RequestMethod.POST)
+    @RequestMapping(value = "/addRelViplabel", method = RequestMethod.POST)
     @ResponseBody
     public String checkRelViplablel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -978,7 +821,7 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/label/delRelViplabel", method = RequestMethod.POST)
+    @RequestMapping(value = "/delRelViplabel", method = RequestMethod.POST)
     @ResponseBody
     public String delRelViplabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -1009,66 +852,4 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-
-//    @RequestMapping(value = "/label/addViplabel", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String addViplabel(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.getString("id");
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            String user_id = request.getSession().getAttribute("user_code").toString();
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
-//            Date now = new Date();
-//            vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
-//            vipLabel.setModifier(user_id);
-//            vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//            vipLabel.setCreater(user_id);
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            if (Common.ROLE_SYS.equals(role_code)) {
-//                vipLabel.setLabel_type("sys");
-//            } else {
-//                vipLabel.setLabel_type("org");
-//            }
-//            String existInfo = vipLabelService.insert(vipLabel);
-//            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
-//                String label_name = vipLabel.getLabel_name();
-//                String corp_code = vipLabel.getCorp_code();
-//                List<VipLabel> viplabelID = vipLabelService.findViplabelID(corp_code, label_name);
-//                String label_id=viplabelID.get(0).getId()+"";
-//                RelViplabel relViplabel = WebUtils.JSON2Bean(jsonObject, RelViplabel.class);
-//                relViplabel.setLabel_id(label_id);
-//                Date date = new Date();
-//                relViplabel.setCreated_date(Common.DATETIME_FORMAT.format(date));
-//                relViplabel.setCreater(user_id);
-//                relViplabel.setModified_date(Common.DATETIME_FORMAT.format(date));
-//                relViplabel.setModifier(user_id);
-//                int i = vipLabelService.addRelViplabel(relViplabel);
-//                int id1 =0;
-//                if(i>0){
-//                    String vip_code = relViplabel.getVip_code();
-//                    List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code,vip_code,label_id);
-//                    id1 = relViplabels.get(0).getId();
-//                }
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setMessage(id1+"");
-//            } else {
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage("标签名称已被使用");
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 }

@@ -137,7 +137,6 @@ var message = JSON.parse(val.message);
         $(".corpedit_oper_btn ul li:nth-of-type(1)").click(function () {
             var nameMark = $("#CORPNAME").attr("data-mark");
             var codeMark = $("#OWN_CORP").attr("data-mark");
-            console.log(nameMark);
             if (corpjs.firstStep()) {
                 if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
@@ -233,22 +232,20 @@ var message = JSON.parse(val.message);
         });
     };
     corpjs.ajaxSubmit = function (_command, _params, opt) {
-        // console.log(JSON.stringify(_params));
-        // _params=JSON.stringify(_params);
-        console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                // if (message.user_type == "admin") {
-                //     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
-                // } else {
-                //     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
-                // }
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content:"保存成功"
-                });
+                if(_command=="/corp/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/corp/crop_edit.html");
+                }
+                if(_command=="/corp/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -315,7 +312,6 @@ jQuery(document).ready(function () {
         var _command = "/corp/select";
         whir.loading.add("", 0.5);
         oc.postRequire("post", _command, "", _params, function (data) {
-            console.log(data);
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=msg.cus_user;
@@ -352,7 +348,6 @@ jQuery(document).ready(function () {
                 $("#modifier").val(msg.modifier);
                 $("#CORPNAME").attr("data-name", msg.corp_name);
                 var wechat=msg.wechats;
-                console.log(wechat);
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
                     for (var i = 0; i < wechat.length; i++) {
@@ -400,7 +395,6 @@ jQuery(document).ready(function () {
         var corp_code1 = $(this).attr("data-name");
         var div = $(this).next('.hint').children();
         if (corp_code !== "" && corp_code !== corp_code1 && isCode.test(corp_code) == true) {
-            console.log(corp_code);
             _params["corp_code"] = corp_code;
             oc.postRequire("post", "/corp/corpCodeExist", "", _params, function (data) {
                 if (data.code == "0") {
@@ -446,12 +440,14 @@ jQuery(document).ready(function () {
             }
         },
         error: function (data) {
-            console.log(data);
 
         }
     });
     function callback(data) {
-        var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
+        //测试
+        var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx722fb7eaa40020e9&pre_auth_code=" + data + "&redirect_uri=http://wechat.dev.bizvane.com/app/wechat/callback";
+        //正式
+        // var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
         $('#power').html('<a href="' + a + '" target="_parent">打开授权二维码</a>');
     }
     $("#power").click(function(){
@@ -500,7 +496,6 @@ jQuery(document).ready(function () {
             data: {param: JSON.stringify(_params)},
             async:false,
             success: function (data) {
-                console.log(data.code);
                 if(data.code=="0"){
                     a=true;
                 }else if(data.code=="-1"){
@@ -509,7 +504,6 @@ jQuery(document).ready(function () {
                 }
             },
             error: function (data) {
-                console.log(data);
 
             }
         });

@@ -32,6 +32,7 @@
             <!--<result column="brand_name" property="brand_name"/>-->
         <!--</association>-->
     </resultMap>
+
     <select id="selectAllGoods" resultMap="GoodsInfo">
         SELECT g.id,
         g.goods_code,
@@ -70,7 +71,6 @@
             OR g.goods_time LIKE concat('%',#{search_value},'%')
             OR g.goods_quarter LIKE concat('%',#{search_value},'%')
             OR g.goods_wave LIKE concat('%',#{search_value},'%')
-            OR g.goods_description LIKE concat('%',#{search_value},'%')
             OR cp.corp_name LIKE concat('%',#{search_value},'%')
             OR db.brand_name like concat('%',#{search_value},'%')
             )
@@ -183,7 +183,6 @@
             OR g.goods_time LIKE concat('%',#{search_value},'%')
             OR g.goods_quarter LIKE concat('%',#{search_value},'%')
             OR g.goods_wave LIKE concat('%',#{search_value},'%')
-            OR g.goods_description LIKE concat('%',#{search_value},'%')
             OR cp.corp_name LIKE concat('%',#{search_value},'%')
             OR db.brand_name like concat('%',#{search_value},'%')
             )

@@ -270,16 +270,6 @@
                 #{item}
             </foreach>
         </if>
-        <if test="store_code != null and store_code !=''">
-            AND da.area_code IN
-            (SELECT area_code from def_store
-            WHERE corp_code = #{corp_code} AND
-            STORE_CODE IN
-            <foreach collection="store_code" index="index" item="item" separator="," open="(" close=")">
-                #{item}
-            </foreach>
-            AND isactive ='Y')
-        </if>
         <if test="search_value != null and search_value !=''">
             AND da.area_name LIKE concat('%',#{search_value},'%')
         </if>

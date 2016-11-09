@@ -602,7 +602,6 @@ public class GoodsController {
             String match_goods = jsonObject.get("match_goods").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
-            //goods.setGoods_time(sdf.parse);
             String goods_description = goods.getGoods_description();
             //String goods_description = "<p><img src=\"/image/upload/20160923/1474624297069083036.jpg\" title=\"1474624297069083036.jpg\" alt=\"lovely.jpg\"/></p><p><img src=\"/image/upload/20160923/1474624387054042981.jpg\" title=\"1474624387054042981.jpg\"/></p><p>这是一段文本</p>";
 
@@ -610,15 +609,12 @@ public class GoodsController {
             OssUtils ossUtils=new OssUtils();
             String bucketName="products-image";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-             path =   request.getSession().getServletContext().getRealPath("/");
-
+             path = request.getSession().getServletContext().getRealPath("/");
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
                 if(!htmlImageSrcList.get(k).contains("image/upload")){
                     continue;
                 }
-//                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
-//                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
                 goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
                 LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
@@ -638,8 +634,9 @@ public class GoodsController {
                 dataBean.setMessage("商品编号已存在");
             } else {
                 this.goodsService.insertGoods(goods,match_goods);
+                Goods goods1 = goodsService.getGoodsByCode(corp_code,goods.getGoods_code(),goods.getIsactive());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("success");
+                dataBean.setMessage(String.valueOf(goods1.getId()));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -851,7 +848,7 @@ public class GoodsController {
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Goods> list = goodsService.matchGoodsList(page_number, page_size,corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list.getList()));
+            result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

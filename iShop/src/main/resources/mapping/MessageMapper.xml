@@ -4,30 +4,33 @@
 
     <resultMap type="com.bizvane.ishop.entity.Message" id="Message">
         <id column="id" property="id"/>
-        <result column="message_receiver" property="message_receiver"/>
-        <result column="receiver_type" property="receiver_type"/>
-        <result column="status" property="status"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="creater" property="creater"/>
-        <result column="created_date" property="created_date"/>
-        <result column="isactive" property="isactive"/>
+        <result column="message_receiver" property="message_receiver" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="receiver_type" property="receiver_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="status" property="status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <resultMap type="com.bizvane.ishop.entity.MessageInfo" id="MessageInfo">
         <id column="id" property="id"/>
         <result column="message_code" property="message_code"/>
-        <result column="message_title" property="message_title"/>
-        <result column="message_content" property="message_content"/>
-        <result column="message_type" property="message_type"/>
-        <result column="message_sender" property="message_sender"/>
-        <result column="corp_code" property="corp_code"/>
-        <result column="corp_name" property="corp_name"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="creater" property="creater"/>
-        <result column="created_date" property="created_date"/>
-        <result column="isactive" property="isactive"/>
+        <result column="message_title" property="message_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="message_content" property="message_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="message_type" property="message_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="message_sender" property="message_sender" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="receiver_type" property="receiver_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <!--<select id="selectByPrimaryKey" resultMap="Message">-->
@@ -58,6 +61,7 @@
     <select id="selectAllMessageInfo" resultMap="MessageInfo">
         SELECT dum.id,
         dum.message_code,
+        dum.receiver_type,
         dum.message_sender ,
         dum.message_title,
         dum.message_content,
@@ -91,7 +95,8 @@
 
     <select id="selectMessageDetail" resultMap="Message">
     SELECT rum.id,
-    u1.user_name message_receiver,
+    rum.message_receiver user_code,
+    u1.user_name,
     rum.receiver_type,
     rum.status,
     c.corp_name
@@ -105,6 +110,12 @@
     ORDER BY rum.id DESC
     </select>
 
+    <select id="selectMessageByCode" resultMap="Message">
+        SELECT *
+        FROM rel_user_message
+        WHERE message_code = #{message_code}
+    </select>
+
     <select id="selectByPrimaryKey" resultMap="MessageInfo">
         SELECT dum.*,
         c.corp_name corp_name,
@@ -115,12 +126,24 @@
         AND dum.id=#{id}
     </select>
 
+    <select id="selectMessageInfoByCode" resultMap="MessageInfo">
+        SELECT dum.*
+        FROM def_user_message dum,def_corp c,def_message_type mt
+        WHERE dum.corp_code = c.corp_code
+        AND dum.message_type = mt.type_code
+        AND dum.message_code=#{message_code}
+    </select>
+
     <delete id="deleteMessageInfo">
         DELETE  FROM  def_user_message WHERE id=#{id}
     </delete>
 
     <delete id="deleteMessage">
         DELETE  FROM  rel_user_message WHERE message_code=#{message_code}
+    </delete>
+
+    <delete id="deleteMessageStatus">
+        DELETE  FROM  ref_user_message WHERE message_code=#{id}
     </delete>
 
     <insert id="insertMessageInfo" parameterType="com.bizvane.ishop.entity.MessageInfo">
@@ -287,6 +310,12 @@
         <if test="user_code!=null and user_code!=''">
             AND dum.message_sender=#{user_code}
         </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  dum.modified_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  dum.modified_date &lt;= #{created_date_end}
+        </if>
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
@@ -309,4 +338,13 @@
         GROUP By dum.id
         ORDER BY dum.id DESC
     </select>
+
+    <select id="selectMessageStatus" resultType="com.bizvane.ishop.entity.User">
+        SELECT *
+        FROM ref_user_message
+        WHERE corp_code = #{corp_code}
+        AND message_code = #{message_id}
+        AND user_code = #{user_code}
+    </select>
+
 </mapper>

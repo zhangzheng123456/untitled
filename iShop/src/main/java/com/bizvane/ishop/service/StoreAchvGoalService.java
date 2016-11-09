@@ -20,7 +20,7 @@ public interface StoreAchvGoalService {
      * @param storeAchvGoal
      * @return
      */
-    String update(StoreAchvGoal storeAchvGoal)throws Exception;
+    String update(StoreAchvGoal storeAchvGoal) throws Exception;
 
     /**
      * 删除短噗业绩目标，通过ID
@@ -28,7 +28,7 @@ public interface StoreAchvGoalService {
      * @param id
      * @return
      */
-    int deleteById(int id)throws Exception;
+    int deleteById(int id) throws Exception;
 
     /**
      * 插入商品业绩目标
@@ -36,7 +36,7 @@ public interface StoreAchvGoalService {
      * @param storeAchvGoal
      * @return
      */
-    String  insert(StoreAchvGoal storeAchvGoal)throws Exception;
+    String insert(StoreAchvGoal storeAchvGoal) throws Exception;
 
     /**
      * 获取商品业绩目标，通过ID
@@ -44,7 +44,7 @@ public interface StoreAchvGoalService {
      * @param id
      * @return
      */
-    StoreAchvGoal selectlById(int id)throws Exception;
+    StoreAchvGoal selectlById(int id) throws Exception;
 
     /**
      * 获取某公司的短噗业绩目标列表： 通过查询字段匹配
@@ -53,7 +53,7 @@ public interface StoreAchvGoalService {
      * @param search_value ： 查询字段
      * @return
      */
-    List<StoreAchvGoal> selectUsersBySearch(String corp_code, String search_value)throws Exception;
+    List<StoreAchvGoal> selectUsersBySearch(String corp_code, String search_value) throws Exception;
 
     /**
      * 分页获取商品业绩列表
@@ -65,7 +65,7 @@ public interface StoreAchvGoalService {
      * @return
      * @throws SQLException
      */
-    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String user_id, String search_value)
+    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String user_id, String search_value,String area_store_code)
             throws Exception;
 
     /**
@@ -75,7 +75,9 @@ public interface StoreAchvGoalService {
      * @param store_code ： 店铺编号
      * @return
      */
-    String storeAchvExist(String corp_code, String store_code)throws Exception;
+    String storeAchvExist(String corp_code, String store_code) throws Exception;
 
-     PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map)throws Exception;
+    StoreAchvGoal getStoreAchvForID(String corp_code, String store_code,String target_time) throws Exception;
+
+    PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map,String area_store_code) throws Exception;
 }

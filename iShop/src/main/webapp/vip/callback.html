@@ -23,7 +23,7 @@
 
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="会员编号/回访员工/回访类型/所属企业">
+                            <input type="text" class="input" id="search" placeholder="会员编号/会员名称/回访员工">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -84,7 +84,7 @@
                     <div class="empty" id="empty">
                         <i class="icon-ishop_6-16"></i>清空筛选
                     </div>
-                    <span class="screen_tip">支持多个条件精确查找,以逗号分隔.</span>
+                    <!--<span class="screen_tip">支持多个条件精确查找,以逗号分隔.</span>-->
                     <div class="r_btn">
                         <div class="pack_up" id="pack_up">
                             <i class="icon-ishop_6-18"></i>
@@ -108,26 +108,27 @@
                  			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                  			<th style="text-align: left;">序号</th>
                  			<th>会员编号</th>
+                            <th>会员名称</th>
                  			<th>回访员工</th>
 							<th>回访类型</th>
                             <th>所属企业</th>
-                            <th>修改时间</th>
-							<th width="50px;">可用</th>
+                            <th>时间</th>
+							<!--<th width="50px;">可用</th>-->
                  		</tr>
                  	</thead>
                     <tbody>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">1</td>
-                    		<td>吴徐敏</td>
-                    		<td>张某</td>
-                            <td>电话回访</td>
-                            <td>一些事情的回答</td>
-                            <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
-                    	</tr>                             													
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">1</td>-->
+                    		<!--<td>吴徐敏</td>-->
+                    		<!--<td>张某</td>-->
+                            <!--<td>电话回访</td>-->
+                            <!--<td>一些事情的回答</td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                    		<!--<td width="50px">是</td>-->
+                    	<!--</tr>                             													-->
                     </tbody>
     			</table>
     		</div>
@@ -135,20 +136,15 @@
     			<ul>
     				<li class="foot-jum">
     					<span>跳转至</span>
-    					<input class="input-txt" value="0" id="input-txt">
+    					<input class="input-txt" value="" id="input-txt">
     					<em>页</em>
     				</li>
     				<li class="foot-num" >
     					<ul id="foot-num">
-    						<li class="icon-ishop_4-01" style="color: #afafaf">
-    							
-    						</li>
-    						<li>
-                                <span class="p-bg">1</span>
-    						</li>
-    						<li class="icon-ishop_4-02">
-    							
-    						</li>
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
     					</ul>
     				</li>
     				<li class="foot-sum">

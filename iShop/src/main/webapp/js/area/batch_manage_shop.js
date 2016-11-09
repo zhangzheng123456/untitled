@@ -9,6 +9,7 @@ var area_name = "";//区域名称
 var corp_code = ""//企业编号
 
 function setPage(container, count, pageindex, pageSize) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -186,6 +187,19 @@ function jumpBianse() {
     })
 }
 function superaddition(data, num) {
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>")
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>")
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
+
+
     for (var i = 0; i < data.length; i++) {
         if (num >= 2) {
             var a = i + (num-1) * pageSize;
@@ -217,6 +231,15 @@ function superaddition(data, num) {
             $("#"+data[j].id).find("input").attr("name", "die");
         }
     }
+    $("tbody tr").click(function () {
+        var input = $(this).find("input")[0];
+        if(input.type=="checkbox"&&input.checked==false){
+            input.checked = true;
+        }else if(input.type=="checkbox"&&input.checked==true){
+            input.checked = false;
+        }
+    })
+    $(".th th:last-child input").removeAttr("checked");
 };
 //页面加载时list请求
 function GET(a, b) {

@@ -60,28 +60,29 @@ public class SignController {
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = signService.selectSignByInp(page_number, page_size, "", "","", "", role_code);
+                list = signService.selectSignByInp(page_number, page_size, "", "","", "", role_code,"");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list = signService.selectSignByInp(page_number, page_size, corp_code, "","", "", role_code);
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "","", "", role_code,"");
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
                     store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
-                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code);
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code,"");
             }else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code);
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code,"");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = signService.selectSignByInp(page_number, page_size, corp_code, "", "", area_code, role_code);
+                String store_code = request.getSession().getAttribute("store_code").toString();
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "", "", area_code, role_code,store_code);
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 list = signService.selectByUser(page_number, page_size, corp_code, user_code, "");
             }
@@ -120,30 +121,31 @@ public class SignController {
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list =signService.selectSignByInp(page_number, page_size, "", search_value, "", "", role_code);
+                list =signService.selectSignByInp(page_number, page_size, "", search_value, "", "", role_code,"");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
                     //企业管理员
-                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", "", role_code);
+                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
-                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, store_code, "", role_code);
+                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, store_code, "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, store_code, "", role_code);
+                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, store_code, "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
-                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", area_code, role_code);
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", area_code, role_code,store_code);
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     list = signService.selectByUser(page_number, page_size, corp_code, user_code, search_value);
                 }
@@ -216,28 +218,29 @@ public class SignController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = signService.selectSignByInp(1, 30000, "", search_value, "", "", role_code);
+                    list = signService.selectSignByInp(1, 30000, "", search_value, "", "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     //系统管理员
-                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", "", role_code);
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
-                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, store_code, "", role_code);
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, store_code, "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, store_code, "", role_code);
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, store_code, "", role_code,"");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
-                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", area_code, role_code);
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", area_code, role_code,store_code);
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     list = signService.selectByUser(1, 30000, corp_code, user_code, search_value);
                 }
@@ -245,25 +248,26 @@ public class SignController {
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = signService.selectSignAllScreen(1, 30000, "", "", "", "", map);
+                    list = signService.selectSignAllScreen(1, 30000, "", "", "", "", map,"");
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", "", "", map);
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", "", "", map,"");
                 }  else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
-                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", store_code, role_code, map);
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", store_code, role_code, map,"");
                 }else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = signService.selectSignAllScreen(1, 30000, corp_code, area_code, "", role_code, map);
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, area_code, "", role_code, map,store_code);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", store_code, role_code, map);
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", store_code, role_code, map,"");
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     list = signService.selectSignAllScreenByUser(1, 30000, corp_code, user_code, map);
                 }
@@ -328,25 +332,26 @@ public class SignController {
             JSONObject result = new JSONObject();
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", role_code, map,"");
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", role_code, map,"");
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
                     store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map,"");
             }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", role_code, map,store_code);
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map,"");
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 list = signService.selectSignAllScreenByUser(page_number, page_size, corp_code, user_code, map);
             }

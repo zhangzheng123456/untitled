@@ -157,13 +157,18 @@ var oc = new ObjectControl();
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: "保存成功"
-				});
-				// $(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
+				if(_command=="/brand/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/brand/brand_edit.html");
+                }
+                if(_command=="/brand/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -236,13 +241,14 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				var list=msg.cus_user;
+				var corp_code=msg.corp.corp_code;//公司编号
 				console.log(list);
 				$("#BRAND_ID").val(msg.brand_code);
 				$("#BRAND_ID").attr("data-name",msg.brand_code);
 				$("#BRAND_NAME").val(msg.brand_name);
 				$("#BRAND_NAME").attr("data-name",msg.brand_name);
-				$("#OWN_CORP option").val(msg.corp.corp_code);
-				$("#OWN_CORP option").text(msg.corp.corp_name);
+				// $("#OWN_CORP option").val(msg.corp.corp_code);
+				// $("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -270,7 +276,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
+				getcorplist(corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -428,7 +434,7 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
 });
-function getcorplist(){
+function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -442,6 +448,9 @@ function getcorplist(){
 				corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];

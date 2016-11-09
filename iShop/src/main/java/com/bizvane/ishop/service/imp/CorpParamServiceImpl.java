@@ -1,15 +1,13 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.AreaMapper;
-import com.bizvane.ishop.dao.CodeUpdateMapper;
-import com.bizvane.ishop.dao.CorpParamMapper;
-import com.bizvane.ishop.dao.StoreMapper;
+import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.bizvane.ishop.service.CorpParamService;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,18 +30,27 @@ import java.util.Map;
 public class CorpParamServiceImpl implements CorpParamService {
     @Autowired
     CorpParamMapper corpParamMapper;
-
+    @Autowired
+    CorpMapper corpMapper;
     /**
      * 根据区域id
      * 获取某区域信息
      */
     @Override
     public CorpParam selectById(int id) throws Exception {
-        return corpParamMapper.selectById(id);
+        CorpParam corpParam = corpParamMapper.selectById(id);
+        String corp_code = corpParam.getCorp_code();
+        if (corp_code.equals("all")){
+            corpParam.setCorp_name("全部");
+        }else {
+            String corp_name = corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y).getCorp_name();
+            corpParam.setCorp_name(corp_name);
+        }
+        return corpParam;
     }
 
-    public List<CorpParam> selectByCorpParam(String corp_code, String param_id) throws Exception {
-        return corpParamMapper.selectByCorpParam(corp_code, param_id);
+    public List<CorpParam> selectByCorpParam(String corp_code, String param_id,String isactive) throws Exception {
+        return corpParamMapper.selectByCorpParam(corp_code, param_id,isactive);
     }
 
     public List<CorpParam> selectByParamId(String param_id) throws Exception {
@@ -58,6 +65,13 @@ public class CorpParamServiceImpl implements CorpParamService {
         PageHelper.startPage(page_number, page_size);
         List<CorpParam> list = corpParamMapper.selectAllParam(search_value);
         for (CorpParam corpParam:list) {
+            String corp_code = corpParam.getCorp_code();
+            if (corp_code.equals("all")){
+                corpParam.setCorp_name("全部");
+            }else {
+                String corp_name = corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y).getCorp_name();
+                corpParam.setCorp_name(corp_name);
+            }
             corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
         }
         PageInfo<CorpParam> page = new PageInfo<CorpParam>(list);
@@ -73,7 +87,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String corp_code = jsonObject.get("corp_code").toString();
         String param_id = jsonObject.get("param_id").toString();
         String param_value = jsonObject.get("param_value").toString();
-        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
+        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id,Common.IS_ACTIVE_Y);
         if (corpParams.size() > 0) {
             result = "该企业参数配置已存在";
         } else {
@@ -105,7 +119,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String param_id = jsonObject.get("param_id").toString();
 
         String param_value = jsonObject.get("param_value").toString();
-        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
+        List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id,Common.IS_ACTIVE_Y);
 
         if (corpParams.size() == 0 || corpParams.get(0).getId() == id) {
             CorpParam corpParam = new CorpParam();
@@ -141,6 +155,13 @@ public class CorpParamServiceImpl implements CorpParamService {
         params.put("map", map);
         corpParams = corpParamMapper.selectAllParamScreen(params);
         for (CorpParam corpParam:corpParams) {
+            String corp_code1 = corpParam.getCorp_code();
+            if (corp_code1.equals("all")){
+                corpParam.setCorp_name("全部");
+            }else {
+                String corp_name = corpMapper.selectByCorpId(0,corp_code1,Common.IS_ACTIVE_Y).getCorp_name();
+                corpParam.setCorp_name(corp_name);
+            }
             corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
         }
         PageInfo<CorpParam> page = new PageInfo<CorpParam>(corpParams);

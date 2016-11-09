@@ -16,9 +16,12 @@ public interface ParamConfigureService {
 
     ParamConfigure getParamById(int id) throws SQLException;
 
-    ParamConfigure getParamByKey(String param_key) throws Exception;
+    ParamConfigure getParamByKey(String param_key,String isactive) throws Exception;
+
     ParamConfigure getParamByName(String param_name) throws Exception;
+
     PageInfo<ParamConfigure> getAllParamByPage(int page_number, int page_size, String search_value) throws Exception;
+
     List<ParamConfigure> getAllParams() throws Exception;
 
     String insert(String message, String user_id) throws Exception;

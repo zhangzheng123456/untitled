@@ -39,6 +39,12 @@ $(function(){
 	});
 	$(".item_2 ul li").click(function(){
 		var txt = $(this).text();
+		if(txt=="全体成员"){
+			$("#sendee").hide();
+		}else if(txt=="指定区域"||txt=="指定店铺"||txt=="指定员工"){
+			$("#sendee").show();
+		}
+		if(txt=='Web'){$('.conpany_msg').children(':not(".version_web")').hide()}else{$('.conpany_msg').children(':not(".version_web")').show();}
 		$(".item_2 .input_select").val(txt);
 		var value = $(this).attr("rel");
 		$(".item_2 ul").hide();

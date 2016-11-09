@@ -112,9 +112,7 @@ public class HomeController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
-        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        dataBean.setId(id);
-        dataBean.setMessage("非系统管理员");
+
         return dataBean.getJsonStr();
     }
 
@@ -265,7 +263,7 @@ public class HomeController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
                 store_id = list.get(0).getStore_code();
             }
             Map datalist = new HashMap<String, Data>();
@@ -340,7 +338,7 @@ public class HomeController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
                 store_code = list.get(0).getStore_code();
             }
             if (jsonObject.has("area_code")) {
@@ -429,7 +427,7 @@ public class HomeController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
                 store_code = list.get(0).getStore_code();
             }
 

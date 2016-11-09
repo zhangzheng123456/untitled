@@ -5,14 +5,12 @@
     <select id="selectById" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
-        dc.corp_name,
         dcc.param_type,
         dcc.param_name,
         dcc.param_values,
         dcc.param_desc
-        FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
-        WHERE rcc.corp_code = dc.corp_code
-        AND rcc.param_id=dcc.id
+        FROM rel_corp_cfg rcc,def_corp_cfg dcc
+        WHERE rcc.param_id=dcc.id
         AND  rcc.id=#{id}
     </select>
 
@@ -20,16 +18,12 @@
         SELECT
         rcc.*,
         dcc.param_name,
-        dcc.param_desc,
-        dc.corp_name
-        FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
-        WHERE rcc.corp_code = dc.corp_code
-        AND rcc.param_id=dcc.id
+        dcc.param_desc
+        FROM rel_corp_cfg rcc,def_corp_cfg dcc
+        WHERE rcc.param_id=dcc.id
         <if test="search_value != null and search_value !=''">
             AND
-            (rcc.corp_code like concat('%',#{search_value},'%')
-            OR dc.corp_name like concat('%',#{search_value},'%')
-            OR rcc.param_value like concat('%',#{search_value},'%')
+            (rcc.param_value like concat('%',#{search_value},'%')
             OR dcc.param_desc like concat('%',#{search_value},'%')
             OR rcc.remark like concat('%',#{search_value},'%')
             )
@@ -43,7 +37,9 @@
         FROM rel_corp_cfg
         WHERE corp_code = #{corp_code}
         AND  param_id=#{param_id}
-        AND isactive = 'Y'
+        <if test="isactive != null and isactive !=''">
+        AND isactive = #{isactive}
+        </if>
     </select>
 
     <select id="selectByParamId" resultType="com.bizvane.ishop.entity.CorpParam">
@@ -160,20 +156,24 @@
     <select id="selectAllParamScreen" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
-        dc.corp_name,
         dcc.param_desc,
         dcc.param_name
         FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
-        WHERE rcc.corp_code = dc.corp_code
-        AND dcc.id=rcc.param_id
+        WHERE dcc.id=rcc.param_id
         <if test="corp_code!=null and corp_code!=''">
             AND dc.corp_code=#{corp_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryValue!='' and entryKey=='corp_name'">
-                    dc.${entryKey} REGEXP ${entryValue}
+                <when test="entryKey=='corp_name' and entryValue!=''">
+                    <if test="entryValue == '全部'">
+                        rcc.corp_code = 'all'
+                    </if>
+                    <if test="entryValue != '全部'">
+                        rcc.corp_code = dc.corp_code
+                        AND dc.${entryKey} REGEXP ${entryValue}
+                    </if>
                 </when>
                 <when test="entryValue!='' and entryKey=='param_name'">
                     dcc.${entryKey} REGEXP ${entryValue}

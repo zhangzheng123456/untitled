@@ -16,7 +16,7 @@ public interface StoreMapper {
 
     List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
-    List<Store> selectStores(@Param("corp_code") String corp_code) throws SQLException;
+    List<Store> selectByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
     List<Store> selectByAreaBrand(Map<String, Object> params) throws SQLException;
 
@@ -59,7 +59,7 @@ public interface StoreMapper {
 
     List<StoreQrcode> selectByStoreCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
 
-    StoreQrcode selectByStoreApp(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("app_id") String app_id) throws SQLException;
+    List<StoreQrcode> selectByStoreApp(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("app_id") String app_id) throws SQLException;
 
     int insertStoreQrcode(StoreQrcode record);
 

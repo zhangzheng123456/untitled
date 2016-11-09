@@ -23,6 +23,7 @@
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="can_login" property="can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="version_id" property="version_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <!--地域-->
         <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -209,6 +210,7 @@
         store_code,
         can_login,
         def_user.group_code,
+        def_user.version_id,
         def_user.area_code,
         def_user.brand_code,
         def_user.corp_code,
@@ -240,6 +242,14 @@
         SELECT *
         FROM def_user
         WHERE phone = #{phone}
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectByLogin" resultMap="BaseMap">
+        SELECT *
+        FROM def_user
+        WHERE (phone = #{phone}
+        or email = #{phone})
         AND isactive = 'Y'
     </select>
 
@@ -353,6 +363,7 @@
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_user.CORP_CODE = #{corp_code}
         </if>
@@ -595,6 +606,9 @@
             </if>
             <if test="brand_code != null">
                 brand_code = #{brand_code},
+            </if>
+            <if test="version_id != null">
+                version_id = #{version_id},
             </if>
         </trim>
         WHERE ID = #{id};

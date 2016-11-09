@@ -127,12 +127,18 @@ var oc = new ObjectControl();
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content:"保存成功"
-				});
+				if(_command=="/user/group/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+                }
+                if(_command=="/user/group/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 				// $(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -211,8 +217,8 @@ jQuery(document).ready(function(){
 				$("#GROUP_ID").attr("data-name",mg.group_code);
 				$("#GROUP_NAME").val(mg.group_name);
 				$("#GROUP_NAME").attr("data-name",mg.group_name);//给群组名称一个标志
-				$("#OWN_CORP option").val(mg.corp.corp_code);
-				$("#OWN_CORP option").text(mg.corp.corp_name);
+				// $("#OWN_CORP option").val(mg.corp.corp_code);
+				// $("#OWN_CORP option").text(mg.corp.corp_name);
 				$("#OWN_ROLE").val(mg.role.role_name);
 				$("#OWN_ROLE").attr("data-mygcode",mg.role.role_code);
 				$("#REMARK").val(mg.remark);
@@ -229,7 +235,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
+				getcorplist(mg.corp.corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -338,7 +344,7 @@ jQuery(document).ready(function(){
 	});
 
 });
-function getcorplist(){
+function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -354,6 +360,9 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];

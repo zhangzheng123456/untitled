@@ -1,25 +1,29 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.VIPInfo;
-import com.bizvane.ishop.entity.VipLabel;
-import com.bizvane.ishop.entity.VipRecord;
+import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.*;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -43,9 +47,11 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/VIP")
 public class VIPRecordController {
-    @Autowired
-    private VipRecordService vipRecordService;
 
+    @Autowired
+    VipRecordService vipRecordService;
+    @Autowired
+    MongoDBClient mongodbClient;
     private static final Logger log = Logger.getLogger(VIPRecordController.class);
 
     String id;
@@ -67,34 +73,59 @@ public class VIPRecordController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
-            PageInfo<VipRecord> list;
-            if (screen.equals("")) {
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    list = this.vipRecordService.selectBySearch(1, 30000, "", search_value);
-                } else {
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+            DBCursor dbCursor = null;
 
-                    list = vipRecordService.selectBySearch(1, 30000, corp_code, search_value);
+            if (screen.equals("")) {
+                String[] column_names = new String[]{"vip_id","vip_name","message_date"};
+                BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    DBCursor dbCursor1 = cursor.find(queryCondition);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"message_date",-1);
+
+                } else {
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and", value);
+                    DBCursor dbCursor2 = cursor.find(queryCondition1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2,1, 30000,"message_date",-1);
                 }
             } else {
+
+                JSONArray array = JSONArray.parseArray(screen);
+                BasicDBObject queryCondition = MongoUtils.andOperation(array);
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                if (role_code.contains(Common.ROLE_SYS)) {
-                    list = vipRecordService.selectAllVipRecordScreen(1, 30000, "", map);
+
+                // 读取数据
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    DBCursor dbCursor1 = cursor.find(queryCondition);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"message_date",-1);
                 } else {
-                    list = vipRecordService.selectAllVipRecordScreen(1, 30000, corp_code, map);
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and", value);
+                    DBCursor dbCursor1 = cursor.find(queryCondition1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,1, 30000,"message_date",-1);
                 }
             }
-            List<VipRecord> vipRecords = list.getList();
+            JSONArray array = vipRecordService.transRecord(dbCursor);
+
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(vipRecords);
-            if (vipRecords.size() >= 29999) {
+            String json = mapper.writeValueAsString(array);
+            if (array.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,vipRecords, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,array, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -121,6 +152,7 @@ public class VIPRecordController {
     public String callBackManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
+        int pages = 0;
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -128,18 +160,41 @@ public class VIPRecordController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<VipRecord> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.vipRecordService.selectBySearch(page_number, page_size, "", "");
-            } else {
+            JSONObject result = new JSONObject();
+            JSONObject result1 = new JSONObject();
 
-                list = vipRecordService.selectBySearch(page_number, page_size, corp_code, "");
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+
+            DBCursor dbCursor = null;
+            Map keyMap = new HashMap();
+            keyMap.put("message_type", "returnVisit");
+            BasicDBObject ref = new BasicDBObject();
+
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                ref.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(ref);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
+            } else {
+                keyMap.put("corp_code", corp_code);
+                ref.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(ref);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
             }
-            result.put("list", JSON.toJSONString(list));
+            JSONArray array = vipRecordService.transRecord(dbCursor);
+
+            result.put("list", array);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
+
+            result1.put("list", result.toJSONString());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result.toString());
+            dataBean.setMessage(result1.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -148,110 +203,6 @@ public class VIPRecordController {
         }
         return dataBean.getJsonStr();
     }
-
-//    /**
-//     * 回访记录管理
-//     * 新增
-//     */
-//    @RequestMapping(value = "/callback/add", method = RequestMethod.POST)
-//    @ResponseBody
-//    @Transactional
-//    public String addCallBack(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String user_id = request.getSession(false).getAttribute("user_code").toString();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            VipRecord VipRecord = WebUtils.JSON2Bean(jsonObject, VipRecord.class);
-//            Date now = new Date();
-//            VipRecord.setModified_date(Common.DATETIME_FORMAT.format(now));
-//            VipRecord.setModifier(user_id);
-//            this.vipRecordService.insert(VipRecord);
-//            dataBean.setId(id);
-//            dataBean.setMessage("add successs");
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-
-    /**
-     * 回访记录管理
-     * 编辑前获取数据
-     */
-
-    @RequestMapping(value = "/callback/select", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectCallBack(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //  int VipRecord_id = Integer.parseInt(jsonObject.getString("id"));
-            int VipRecord_id = jsonObject.getInt("id");
-            VipRecord VipRecord = this.vipRecordService.getVipRecord(VipRecord_id);
-            if (VipRecord != null) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(JSON.toJSONString(VipRecord));
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("not found VipRecord error");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-//
-//    /**
-//     * 回访记录管理
-//     * 编辑
-//     */
-//    @RequestMapping(value = "/callback/edit", method = RequestMethod.POST)
-//    @ResponseBody
-//    @Transactional
-//    public String editCallBack(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String user_id = request.getSession(false).getAttribute("user_code").toString();
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            VipRecord VipRecord = WebUtils.JSON2Bean(jsonObject, VipRecord.class);
-//            VipRecord.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
-//            VipRecord.setModifier(user_id);
-//            this.vipRecordService.update(VipRecord);
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage("edit success!!!s");
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 回访记录管理
@@ -262,6 +213,7 @@ public class VIPRecordController {
     public String findCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
+        int pages = 0;
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonobj = new org.json.JSONObject(jsString);
@@ -270,19 +222,53 @@ public class VIPRecordController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
+
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+
             JSONObject result = new JSONObject();
-            PageInfo<VipRecord> list = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = vipRecordService.selectBySearch(page_number, page_size, "", search_value);
+            JSONObject result1 = new JSONObject();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+
+            String[] column_names = new String[]{"vip_id","vip_name","user_name","message_date"};
+            BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
+
+            DBCursor dbCursor = null;
+            BasicDBObject queryCondition1 = new BasicDBObject();
+
+            BasicDBList value = new BasicDBList();
+            value.add(new BasicDBObject("message_type", "returnVisit"));
+            value.add(queryCondition);
+
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
+
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = vipRecordService.selectBySearch(page_number, page_size, corp_code, search_value);
+                value.add(new BasicDBObject("corp_code", corp_code));
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor2,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"message_date",-1);
             }
-            result.put("list", JSON.toJSONString(list));
+
+            JSONArray array = vipRecordService.transRecord(dbCursor);
+            result.put("list", array);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
+
+            result1.put("list", result.toJSONString());
+
+//            result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
+            dataBean.setMessage(result1.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -301,6 +287,7 @@ public class VIPRecordController {
     public String findCallBackScreen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
+        int pages = 0;
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonobj = new org.json.JSONObject(jsString);
@@ -308,22 +295,52 @@ public class VIPRecordController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String screen = jsonObject.get("screen").toString();
-//            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+
             JSONObject result = new JSONObject();
-            PageInfo<VipRecord> list = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = vipRecordService.selectAllVipRecordScreen(page_number, page_size, "", map);
+            JSONObject result1 = new JSONObject();
+
+            String lists = jsonObject.get("list").toString();
+
+            JSONArray array = JSONArray.parseArray(lists);
+            BasicDBObject queryCondition = MongoUtils.andOperation(array);
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+
+            DBCursor dbCursor = null;
+            BasicDBObject queryCondition1 = new BasicDBObject();
+
+            BasicDBList value = new BasicDBList();
+            value.add(new BasicDBObject("message_type", "returnVisit"));
+            value.add(queryCondition);
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = vipRecordService.selectAllVipRecordScreen(page_number, page_size, corp_code, map);
+                value.add(new BasicDBObject("corp_code", corp_code));
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"message_date",-1);
             }
-            result.put("list", JSON.toJSONString(list));
+
+            JSONArray array1 = vipRecordService.transRecord(dbCursor);
+            result.put("list", array1);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
+
+            result1.put("list", result.toJSONString());
+
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
+            dataBean.setMessage(result1.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -350,8 +367,14 @@ public class VIPRecordController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String[] ids = jsonObject.get("id").toString().split(",");
-            for (int i = 0; ids != null && i < ids.length; i++) {
-                this.vipRecordService.delete(Integer.parseInt(ids[i]));
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+
+            for (int i = 0; i < ids.length; i++) {
+                DBObject deleteRecord = new BasicDBObject();
+                deleteRecord.put("_id", new ObjectId(ids[i]));
+                cursor.remove(deleteRecord);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

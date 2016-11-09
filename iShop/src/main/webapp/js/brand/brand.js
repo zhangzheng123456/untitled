@@ -113,6 +113,7 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -211,10 +212,22 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    if(data.length==1&&num>1){
-        pageNumber=num-1;
-    }else{
-        pageNumber=num;
+    // if(data.length>=1&&num>1&&num==cout){
+    //     pageNumber=num-1;
+    // }else{
+    //     pageNumber=num;
+    // }
+    pageNumber=num;
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
@@ -284,10 +297,11 @@ function GET(a,b){
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 cout=list.pages;
+                var pageNum = list.pageNum;
                 var list=list.list;
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,a,b,funcCode);
+                setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
@@ -371,7 +385,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -379,13 +392,13 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
     inx=1;
-    param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        value=this.value.trim();
+        param["searchValue"]=value;
         POST(inx,pageSize);
     }
 });
@@ -407,6 +420,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            var pageNum = list.pageNum;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -416,7 +430,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             var input=$(".inputs input");
@@ -426,7 +440,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -464,16 +478,10 @@ $("#delete").click(function(){
             if(value==""&&filtrate==""){
                 frame();
                 $('.frame').html('删除成功');
-                var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-                var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-                $(".frame").css({"left":+left+"px","top":+tp+"px"});
                 GET(pageNumber,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
-               var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-               var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-               $(".frame").css({"left":+left+"px","top":+tp+"px"});
                param["pageNumber"]=pageNumber;
                POST(pageNumber,pageSize);
             }else if(filtrate!==""){
@@ -487,25 +495,21 @@ $("#delete").click(function(){
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
-            var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-            var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-            $(".frame").css({"left":+left+"px","top":+tp+"px"});
         }
     })
 })
 //删除弹框
  function frame(){
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
-    $('.content').append('<div class="frame"></div>');
-    var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-    $(".frame").css({"left":+left+"px","top":+tp+"px"});
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-     setTimeout(function(){
-         $(".frame").hide();
-     },2000);
-} 
+    setTimeout(function(){
+        $(".frame").hide(); 
+    },1500);
+}  
 //全选
 function checkAll(name){
     var el=$("tbody input");
@@ -805,6 +809,7 @@ function filtrates(a,b){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
+            var pageNum=list.pageNum;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -817,7 +822,7 @@ function filtrates(a,b){
                 superaddition(list,a);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }

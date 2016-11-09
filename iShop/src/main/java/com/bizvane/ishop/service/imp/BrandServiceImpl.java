@@ -337,5 +337,9 @@ public class BrandServiceImpl implements BrandService {
 
         //店铺列表级联修改
         codeUpdateMapper.updateStore("", corp_code, Common.SPECIAL_HEAD+new_brand_code+",", Common.SPECIAL_HEAD+old_brand_code+",", "", "");
+
+        //员工
+        codeUpdateMapper.updateUser("", corp_code, "","","","","","",Common.SPECIAL_HEAD+new_brand_code+",", Common.SPECIAL_HEAD+old_brand_code+",");
+
     }
 }

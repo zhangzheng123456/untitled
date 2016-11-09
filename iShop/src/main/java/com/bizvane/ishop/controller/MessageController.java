@@ -8,6 +8,9 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -24,10 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -39,15 +39,13 @@ import java.util.Map;
 public class MessageController {
 
     private static Logger logger = LoggerFactory.getLogger((MessageController.class));
-    @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private SmsTemplateService smsTemplateService;
+
     @Autowired
     private MessageService messageService;
     @Autowired
-    private TableManagerService managerService;
-
+    StoreService storeService;
+    @Autowired
+    IceInterfaceService iceInterfaceService;
     String id;
 
     /**
@@ -87,27 +85,6 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 发送消息
-     * 获取消息类型
-     */
-    @RequestMapping(value = "/type", method = RequestMethod.GET)
-    @ResponseBody
-    public String getMessageType(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            List<MessageType> type = messageService.selectAllMessageType();
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(JSON.toJSONString(type));
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.toString());
-            logger.info("insert message error : " + ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
 
     /**
      * 发送消息
@@ -118,31 +95,121 @@ public class MessageController {
     public String sendMessage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json:" + jsString);
-            System.out.println("json" + jsString);
-            JSONObject jsonObject = new JSONObject(jsString);
-            id = jsonObject.get("id").toString();
-            String message = jsonObject.get("message").toString();
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
+       try{
+        String param = request.getParameter("param");
+        logger.info("json---------------" + param);
+        com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(param);
+        id = jsonObj.get("id").toString();
+        String message = jsonObj.get("message").toString();
+        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+          // String role_code = request.getSession().getAttribute("role_code").toString();
+           String operator= request.getSession().getAttribute("user_code").toString();
 
-            String result = messageService.insert(message, user_id);
-            logger.info("after insert result" + result);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add  success  ");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-            }
+           String corp_code = jsonObject.get("corp_code").toString();
+            String receiver_type =jsonObject.get("receiver_type").toString();
+           String user_id =  jsonObject.get("user_id").toString();
+           String area_code = jsonObject.get("area_code").toString();
+           String store_id = jsonObject.get("store_id").toString();
+           String title=jsonObject.get("title").toString();
+           String message_content=jsonObject.get("message_content").toString();
+           String message_type="text";
+
+           Data data_operator = new Data("operator", operator, ValueType.PARAM);
+           Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+           Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+           Data data_store_id = new Data("store_id",store_id , ValueType.PARAM);
+           Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+           Data data_receiver_type = new Data("receiver_type", receiver_type, ValueType.PARAM);
+           Data data_title = new Data("title", title, ValueType.PARAM);
+           Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
+           Data data_message_type = new Data("message_type", message_type, ValueType.PARAM);
+
+           Map datalist = new HashMap<String, Data>();
+           datalist.put(data_user_id.key, data_user_id);
+           datalist.put(data_operator.key, data_operator);
+           datalist.put(data_corp_code.key, data_corp_code);
+           datalist.put(data_store_id.key, data_store_id);
+           datalist.put(data_area_code.key, data_area_code);
+           datalist.put(data_receiver_type.key, data_receiver_type);
+           datalist.put(data_title.key, data_title);
+           datalist.put(data_message_content.key, data_message_content);
+           datalist.put(data_message_type.key, data_message_type);
+
+           logger.info("-------发送通知" +datalist.toString());
+           DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
+           logger.info("-------发送通知" + dataBox.status);
+
+           if (dataBox.status.toString().equals("SUCCESS")) {
+               dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+               dataBean.setId(id);
+               dataBean.setMessage("SUCCESS");
+           }else {
+               dataBean.setId(id);
+               dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+               dataBean.setMessage("fail");
+           }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.toString());
-            logger.info("insert message error : " + ex.getMessage() + ex.toString());
+            logger.info("send notice  error : " + ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+    /**
+     * 发送消息
+     * 新增
+     * /message/pullSendScope
+     */
+    @RequestMapping(value = "/pullSendScope", method = RequestMethod.POST)
+    @ResponseBody
+    public String pullSendScope(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try{
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONArray scope=new JSONArray();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                scope.add("全体成员");
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_GM)){
+                scope.add("全体成员");
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_AM)){
+
+                scope.add("指定区域");
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_SM)){
+
+                scope.add("指定店铺");
+                scope.add("指定员工");
+            } else if (role_code.equals(Common.ROLE_STAFF)){
+
+                scope.add("指定员工");
+            }
+             com.alibaba.fastjson.JSONObject obj=new com.alibaba.fastjson.JSONObject();
+            obj.put("send_scope",scope);
+
+
+            String result = obj.toString();
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

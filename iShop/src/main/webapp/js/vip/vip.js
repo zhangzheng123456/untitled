@@ -93,6 +93,7 @@ function hideLi(){
     $("#liebiao").hide();
 }
 function setPage(container, count, pageindex,pageSize,funcCode){
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -192,6 +193,17 @@ function dian(a,b){//点击分页的时候调什么接口
 }
 function superaddition(data,num){//页面加载循环
     $(".table p").remove();
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -261,7 +273,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="chooseUser"){
-            $('.more_down').append("<div id='chooseUser'>选择导购</div>");
+            $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
         }
     }
 }
@@ -292,11 +304,12 @@ function GET(a,b){
             console.log(message);
             var list=message.all_vip_list;
             cout=message.pages;
+            var pageNum = message.pageNum;
             //var list=list.list;
-            superaddition(list,a);
+            superaddition(list,pageNum);
             jumpBianse();
             filtrate="";
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -342,6 +355,7 @@ function jumpBianse(){
         return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
         return_jump["list"]=list;//筛选的请求的list;
         return_jump["pageSize"]=pageSize;//每页多少行
+        console.log(return_jump);
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
         sessionStorage.setItem("corp_code",corp_code);
@@ -428,18 +442,17 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
-    if(value!==""){
-        inx=1;
-        param["searchValue"]=value;
-        param["pageNumber"]=inx;
-        param["pageSize"]=pageSize;
-        param["funcCode"]=funcCode;
-        if(event.keyCode == 13){
+    if(event.keyCode==13){
+        value=this.value.trim();
+        console.log(value);
+        if(value!==""){
+            inx=1;
+            param["searchValue"]=value;
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
             POST(inx,pageSize);
-        }
-    }else{
-        if(event.keyCode == 13){
+        }else if(value==""){
             GET(inx,pageSize);
         }
     }
@@ -467,6 +480,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.all_vip_list;
             cout=message.pages;
+            var pageNum = message.pageNum;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -475,17 +489,16 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,a);
+                superaddition(list,pageNum);
                 jumpBianse();
             }
             filtrate="";
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
     })
 }
-//console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -577,6 +590,55 @@ function clearAll(name){
         }
     }
 };
+//导出会员相册
+$("#album_leadingout").click(function () {
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    if(tr.length == 0){
+        frame();
+        $('.frame').html('请先选择会员');
+    }else {
+        var params = {};
+        var list=[];
+        for(var i=0;i<tr.length;i++){
+            var param = {};
+            var vip_id = $(tr[i]).find("td").eq(2).text();
+            var vip_name = $(tr[i]).find("td").eq(3).text();
+            var phone = $(tr[i]).find("td").eq(5).text();
+            var card_no = $(tr[i]).find("td").eq(7).text();
+            var corp_code =$(tr[i]).attr("id");
+            param['vip_id'] = vip_id;
+            param['vip_name'] = vip_name;
+            param['corp_code'] = corp_code;
+            param['phone'] = phone;
+            param['card_no'] = card_no;
+            list.push(param);
+        }
+        params['vip'] = list;
+        whir.loading.add("",0.5);//加载等待框
+        oc.postRequire('post','/vip/exportVipAlbums',0,params,function (data) {
+            if(data.code == 0){
+                var msg = JSON.parse(data.message);
+                var path = msg.path;
+                path=path.substring(1,path.length-1);
+                var l=$(window).width();
+                var h=$(document.body).height();
+                $("#p").css({"width":+l+"px","height":+h+"px"});
+                $("#tk").css({"left":+left+"px","top":+tp+"px"});
+                $("#p").show();
+                $("#tk").show();
+                $("#enter").html("<a style='color: white;' href='/"+path+"'>确认</a>");
+                whir.loading.remove();//移除加载框
+                $("#enter").click(function () {
+                    $("#p").hide();
+                    $("#tk").hide();
+                })
+            }else {
+                alert("导出相册失败");
+                whir.loading.remove();//移除加载框
+            }
+        })
+    }
+})
 //导出拉出list
 $("#leading_out").click(function(){
     var l=$(window).width();
@@ -1597,34 +1659,14 @@ function getarealist(a,b){
         if (data.code == "0") {
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout=list.pages;
             var list=list.list;
             var area_html_left = '';
-            var area_html_right='';
             if (list.length == 0) {
-                if(a==1){
-                    for(var h=0;h<9;h++){
-                        area_html_left+="<li></li>";
-                    }
-                }
-                area_next=true;
+
             } else {
-                if(list.length<9&&a==1){
-                    for (var i = 0; i < list.length; i++) {
-                        area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxOneInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
-                    }
-                    for(var j=0;j<9-list.length;j++){
-                        area_html_left+="<li></li>"
-                    }
-                }else if(list.length>=9||list.length<9&&a>1){
+                if(list.length>0){
                     for (var i = 0; i < list.length; i++) {
                         area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
                             + i
@@ -1637,8 +1679,13 @@ function getarealist(a,b){
                             + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 area_num++;
                 area_next=false;
+            }
+            if(hasNextPage==false){
+                area_next=true;
             }
             $("#screen_area .screen_content_l ul").append(area_html_left);
             $("#choose_area .screen_content_l ul").append(area_html_left);
@@ -1692,33 +1739,13 @@ function getstorelist(a,b,c){
             if (data.code == "0") {
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout=list.pages;
             var list=list.list;
             var store_html = '';
             if (list.length == 0){
-                if(a==1){
-                    for(var h=0;h<9;h++){
-                        store_html+="<li></li>";
-                    }
-                }
-                shop_next=true;
             } else {
-                if(list.length<9&&a==1){
-                    for (var i = 0; i < list.length; i++) {
-                    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
-                    }
-                    for(var j=0;j<9-list.length;j++){
-                        store_html+="<li></li>"
-                    }
-                }else if(list.length>=9||list.length<9&&a>1){
+                if(list.length>0){
                     for (var i = 0; i < list.length; i++) {
                     store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
                         + i
@@ -1731,8 +1758,13 @@ function getstorelist(a,b,c){
                         + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 shop_num++;
                 shop_next=false;
+            }
+            if(hasNextPage==false){
+                shop_next=true;
             }
             $("#screen_shop .screen_content_l ul").append(store_html);
             $("#choose_shop .screen_content_l ul").append(store_html);
@@ -1835,20 +1867,16 @@ function getstafflist(a,b){
         if (data.code == "0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout=list.pages;
             var list=list.list;
             var staff_html = '';
             if (list.length == 0){
-                if(a==1){
-                    for(var h=0;h<9;h++){
-                        staff_html+="<li></li>";
-                    }
-                }
-                staff_next=true;
+
             } else {
-                if(list.length<9&&a==1){
+               if(list.length>0){
                     for (var i = 0; i < list.length; i++) {
-                    staff_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].user_code+"' data-storename='"+list[i].user_name+"' name='test'  class='check'  id='checkboxFourInput"
+                    staff_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].user_code+"' data-phone='"+list[i].phone+"' data-storename='"+list[i].user_name+"' name='test'  class='check'  id='checkboxFourInput"
                         + i
                         + a
                         + 1
@@ -1856,26 +1884,16 @@ function getstafflist(a,b){
                         + i
                         + a
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
-                    }
-                    for(var j=0;j<9-list.length;j++){
-                        staff_html+="<li></li>"
-                    }
-                }else if(list.length>=9||list.length<9&&a>1){
-                    for (var i = 0; i < list.length; i++) {
-                    staff_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].user_code+"' data-storename='"+list[i].user_name+"' name='test'  class='check'  id='checkboxFourInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxFourInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"\("+list[i].user_code+"\)</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 staff_num++;
                 staff_next=false;
+            }
+            if(hasNextPage==false){
+                staff_next=true;
             }
             $("#screen_staff .screen_content_l ul").append(staff_html);
             $("#choose_staff .screen_content_l ul").append(staff_html);

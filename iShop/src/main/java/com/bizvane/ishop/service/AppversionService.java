@@ -26,4 +26,8 @@ public interface AppversionService {
     int updAppversionById(Appversion appversion)throws Exception;
     //增加
     int addAppversion(Appversion appversion)throws Exception;
+    //新增查询获取新增对象的id
+    Appversion selAppversionForId(String corp_code,String version_id,String paltform)throws  Exception;
+
+    List<Appversion> selLatestVersion() throws Exception;
 }

@@ -11,7 +11,7 @@ var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
 if(group_corp!==null){
   group_corp=JSON.parse(group_corp);
   role_code=group_corp.role_code;
-  var role_name=group_corp.role_name;
+  var role_names=group_corp.role_name;
   $('#role_id').val(role_code);
   $('#role_name').val(role_name);
   $("#page-wrapper").hide();
@@ -65,6 +65,19 @@ $("#empty").click(function(){
     }
 })
 function superaddition(data,num,live){
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>")
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>")
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
+
+
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
@@ -124,13 +137,13 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
-    param["searchValue"]=value;
     param["role_code"]=role_code;
     // param["pageNumber"]=inx;
     // param["pageSize"]=pageSize;
     // param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        value=this.value.trim();
+        param["searchValue"]=value;
         POST();
     }
 });

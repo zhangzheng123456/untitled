@@ -201,10 +201,10 @@
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="task_code!=null">
-               #{task_code},
+                #{task_code},
             </if>
             <if test="task_title!=null">
-               #{task_title},
+                #{task_title},
             </if>
             <if test="task_type_code!=null">
                 #{task_type_code},
@@ -332,13 +332,13 @@
     </insert>
     <!--编辑任务-->
     <update id="updTask" parameterType="com.bizvane.ishop.entity.Task">
-        UPDATE  def_task
+        UPDATE def_task
         <trim prefix="SET" suffixOverrides=",">
             <if test="task_code!=null and task_code!=''">
                 task_code = #{task_code},
             </if>
             <if test="task_title!=null and task_title!=''">
-                task_title =  #{task_title},
+                task_title = #{task_title},
             </if>
             <if test="task_type_code!=null and task_type_code != ''">
                 task_type_code= #{task_type_code},
@@ -356,7 +356,7 @@
                 corp_code = #{corp_code},
             </if>
             <if test="modifier!=null and modifier!=''">
-                modifier =  #{modifier},
+                modifier = #{modifier},
             </if>
             <if test="modified_date!=null and modified_date!=''">
                 modified_date = #{modified_date},
@@ -365,7 +365,7 @@
                 creater = #{creater},
             </if>
             <if test="created_date!=null and created_date!=''">
-                created_date =  #{created_date},
+                created_date = #{created_date},
             </if>
             <if test="isactive!=null and isactive!=''">
                 isactive= #{isactive},
@@ -381,7 +381,7 @@
                 task_code= #{task_code},
             </if>
             <if test="corp_code!=null and corp_code!=''">
-                corp_code=  #{corp_code},
+                corp_code= #{corp_code},
             </if>
             <if test="user_code!=null and user_code!=''">
                 user_code= #{user_code},
@@ -390,13 +390,13 @@
                 task_status = #{task_status},
             </if>
             <if test="real_start_time!=null and real_start_time!=''">
-                real_start_time =  #{real_start_time},
+                real_start_time = #{real_start_time},
             </if>
             <if test="real_end_time!=null and real_end_time!=''">
                 real_end_time = #{real_end_time},
             </if>
             <if test="task_proof_image!=null and task_proof_image!=''">
-                task_proof_image =  #{task_proof_image},
+                task_proof_image = #{task_proof_image},
             </if>
             <if test="task_proof_text!=null and task_proof_text!=''">
                 task_proof_text =#{task_proof_text},
@@ -405,7 +405,7 @@
                 task_proof_mark = #{task_proof_mark},
             </if>
             <if test="modifier!=null and modifier!=''">
-                modifier =  #{modifier},
+                modifier = #{modifier},
             </if>
             <if test="modified_date!=null and modified_date!=''">
                 modified_date = #{modified_date},
@@ -414,12 +414,12 @@
                 creater = #{creater},
             </if>
             <if test="created_date!=null and created_date!=''">
-                created_date =  #{created_date},
+                created_date = #{created_date},
             </if>
             <if test="isactive!=null and isactive!=''">
                 isactive= #{isactive},
             </if>
-      </trim>
+        </trim>
         WHERE id=#{id}
     </update>
 
@@ -449,6 +449,27 @@
         AND def_task.task_type_code = #{task_type_code}
         GROUP BY def_task.id
         ORDER BY def_task.id DESC
+    </select>
+    <select id="getTaskForId" resultType="com.bizvane.ishop.entity.Task">
+        SELECT
+        def_task.id,
+        def_task.task_code,
+        def_task.task_title,
+        def_task_type.task_type_name,
+        def_task.task_description,
+        def_task.corp_code,
+        def_corp.corp_name,
+        def_task.target_start_time,
+        def_task.target_end_time,
+        def_task.modifier,
+        def_task.ISACTIVE
+        FROM def_task,def_corp,def_task_type
+        WHERE def_task.corp_code = def_corp.corp_code
+        AND def_task.task_type_code =def_task_type.task_type_code
+        AND def_corp.corp_code = def_task_type.corp_code
+        AND def_task.corp_code = #{corp_code}
+       AND def_task.task_code = #{task_code}
+        AND def_task.task_type_code = #{task_type_code}
     </select>
 
 </mapper>

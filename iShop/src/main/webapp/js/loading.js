@@ -6,6 +6,8 @@ whir.loading ={
         var width = parseInt(arr[2]);  
         var height = parseInt(arr[3]);
         var R=this.remove1;
+        var L=this.prev;
+        var r=this.next;
         //var loadingImage = _basepath + "Admin/Scripts/jquery-easyui-1.4/themes/default/images/loading.gif";  
         var loadingImage = "http://img.lanrentuku.com/img/allimg/1212/5-121204193943.gif";  
   
@@ -53,25 +55,87 @@ whir.loading ={
             document.body.appendChild(loading);
         }else {
             //显示图片
+            var imgBox = document.createElement("div");
             var div = document.createElement("img");
             div.id = 'div';
-            div.style.maxHeight="600px";
-            div.style.maxWidth="800px";
-            div.style.position = 'absolute';
-            div.style.left = "50%";
-            div.style.top = "50%";
-            div.style.display = "inline-block";
-            div.style.zIndex = "100001";
-            div.style.transform="translate(-50%,-50%)";
-            div.style.msTransform="translate(-50%,-50%)";
-            div.style.mozTransform="translate(-50%,-50%)";
-            div.style.otransform="translate(-50%,-50%)";
-            div.style.webkitTransform="translate(-50%,-50%)";
+            imgBox.id = "imgBox"
+            div.style.maxWidth = "600px";
+            div.style.maxHeight = "800px"
+            imgBox.style.maxHeight="800px";
+            imgBox.style.maxWidth="600px";
+            imgBox.style.width = "auto";
+            imgBox.style.position = 'absolute';
+            imgBox.style.left = "55%";
+            imgBox.style.top = "65%";
+            imgBox.style.display = "inline-block";
+            imgBox.style.zIndex = "100001";
+            div.style.transform="translate(-50%,-40%)";
+            div.style.msTransform="translate(-50%,-40%)";
+            div.style.mozTransform="translate(-50%,-40%)";
+            div.style.otransform="translate(-50%,-40%)";
+            div.style.webkitTransform="translate(-50%,-40%)";
             div.setAttribute('src',src);
-            document.body.appendChild(div);
+            document.body.appendChild(imgBox);
+            imgBox.appendChild(div);
             mask.addEventListener('click', function () {R()}, false); //点击事件
-            div.addEventListener('click', function () {R()}, false); //点击事件
-
+            imgBox.addEventListener('click', function () {R()}, false); //点击事件
+            var left = document.createElement("span");
+            left.id = 'left';
+            left.className = "icon-ishop_8-02";
+            left.style.transform="rotate(90deg)";
+            left.style.webkitTransform="rotate(90deg)";
+            left.style.mozTransform="rotate(90deg)";
+            left.style.width="50px";
+            left.style.height="50px";
+            left.style.color = "#fff";
+            left.style.cursor = "pointer";
+            left.style.lineHeight = "50px";
+            left.style.textAlign = "center";
+            left.style.display = "block";
+            left.style.fontSize = "35px";
+            left.style.borderRadius = "30px";
+            left.style.position="absolute";
+            left.style.left = "20%";
+            left.style.top = "65%";
+            left.style.background="rgba(255,255,255,0.15)";
+            left.style.zIndex = "100001";
+            left.onmouseover = function () {
+                left.style.background = "rgba(255,255,255,0.8)";
+                left.style.color = "#6dc1c8";
+            };
+            left.onmouseout = function () {
+                left.style.background="rgba(255,255,255,0.15)";
+                left.style.color = "#fff";
+            };
+            document.body.appendChild(left);
+            left.addEventListener('click', function () {L()}, false); //点击事件
+            var right = document.createElement("span");
+            right.id = 'right';
+            right.className = "icon-ishop_8-03 ";
+            right.style.width="50px";
+            right.style.height="50px";
+            right.style.color = "#fff";
+            right.style.cursor = "pointer";
+            right.style.lineHeight = "50px";
+            right.style.fontSize = "35px";
+            right.style.textAlign = "center";
+            right.style.borderRadius = "30px";
+            right.style.display = "block";
+            right.style.position="absolute";
+            right.style.right = "10%";
+            right.style.top = "65%";
+            right.style.background="rgba(255,255,255,0.15)";
+            right.style.zIndex = "100001";
+            document.body.appendChild(right);
+            right.onmouseover = function () {
+                right.style.background = "rgba(255,255,255,0.8)";
+                right.style.color = "#6dc1c8";
+            };
+            right.onmouseout = function () {
+                right.style.background="rgba(255,255,255,0.15)";
+                right.style.color = "#fff";
+            };
+            right.addEventListener('click', function () {r()}, false); //点击事件
         }
 
     },  
@@ -86,6 +150,32 @@ whir.loading ={
         element.parentNode.removeChild(element);
         element = document.getElementById("div");
         element.parentNode.removeChild(element);
+        element = document.getElementById("imgBox");
+        element.parentNode.removeChild(element);
+        element = document.getElementById("left");
+        element.parentNode.removeChild(element);
+        element = document.getElementById("right");
+        element.parentNode.removeChild(element);
+    },
+    prev: function () {
+        var element = document.getElementById("div");
+        var src = element.getAttribute('src');
+        var i = swip_image.indexOf(src);
+        if(i>0){
+            i = i-1;
+            src = swip_image[i];
+        }
+        element.setAttribute('src',src);
+    },
+    next: function() {
+        var element = document.getElementById("div");
+        var src = element.getAttribute('src');
+        var i = swip_image.indexOf(src);
+        if(i<swip_image.length-1){
+            i = i+1;
+            src = swip_image[i];
+        }
+        element.setAttribute('src',src);
     },
     getPageSize: function () {  
         var xScroll, yScroll;  

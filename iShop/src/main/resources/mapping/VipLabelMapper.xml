@@ -161,9 +161,8 @@
         vt.created_date,
         vt.creater,
         vt.isactive,
-        cc.corp_name
-        ,vt.label_group_code
---         ,dvg.label_group_name
+        cc.corp_name,
+        vt.label_group_code
         FROM
         def_vip_label vt,DEF_CORP cc
         ,def_vip_label_group dvg
@@ -171,11 +170,6 @@
         vt.corp_code=cc.corp_code
         AND vt.corp_code=dvg.corp_code
         AND cc.corp_code=dvg.corp_code
-
-
---         AND
---         vt.label_group_code=dvg.label_group_code AND
---         cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND vt.corp_code=#{corp_code}
         </if>
@@ -260,8 +254,10 @@
     </select>
 
     <update id="updViplableBycode" parameterType="com.bizvane.ishop.entity.VipLabel">
-        UPDATE def_vip_label  SET label_group_code =#{label_group_code_old}
-        WHERE CORP_CODE =#{corp_code} AND label_group_code =#{label_group_code_new}
+        UPDATE def_vip_label
+        SET label_group_code =#{label_group_code_old}
+        WHERE CORP_CODE =#{corp_code}
+        AND label_group_code =#{label_group_code_new}
     </update>
 
     <select id="selectLabelByVip" resultMap="VipLabels">
@@ -330,6 +326,7 @@
         AND LABEL_TYPE is not null
         AND ISACTIVE ='Y'
     </select>
+
     <select id="checkRelViplablel" resultType="com.bizvane.ishop.entity.RelViplabel">
         SELECT * FROM rel_vip_label
         WHERE CORP_CODE=#{corp_code}
@@ -337,6 +334,7 @@
         AND LABEL_ID=#{label_id}
         AND ISACTIVE ='Y'
     </select>
+
     <insert id="addRelViplabel" parameterType="com.bizvane.ishop.entity.RelViplabel">
         INSERT INTO rel_vip_label
         <trim prefix="(" suffixOverrides="," suffix=")">
@@ -399,6 +397,7 @@
             </if>
         </trim>
     </insert>
+
     <delete id="delRelViplabel">
         delete from rel_vip_label
         WHERE id=#{rid}
@@ -409,6 +408,9 @@
         SELECT id FROM def_vip_label
         WHERE corp_code=#{corp_code}
         AND label_name=#{label_name}
-        AND isactive='Y'
+        <if test="isactive !=null and isactive!=''">
+          AND isactive=#{isactive}
+        </if>
     </select>
+
 </mapper>

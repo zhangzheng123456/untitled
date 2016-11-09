@@ -39,8 +39,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
     }
 
     @Override
-    public ParamConfigure getParamByKey(String param_name) throws Exception {
-        ParamConfigure paramConfigure = this.paramConfigureMapper.selectParamByKey(param_name);
+    public ParamConfigure getParamByKey(String param_name,String isactive) throws Exception {
+        ParamConfigure paramConfigure = this.paramConfigureMapper.selectParamByKey(param_name,isactive);
         return paramConfigure;
     }
 
@@ -108,7 +108,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
         } else {
             param_values = jsonObject.get("param_values").toString();
         }
-        ParamConfigure paramConfigure = getParamByKey(param_name);
+        ParamConfigure paramConfigure = getParamByKey(param_name,Common.IS_ACTIVE_Y);
         if (paramConfigure != null) {
             result = "参数名已存在";
 
@@ -152,7 +152,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 
-        ParamConfigure paramByKey = getParamByKey(param_name);
+        ParamConfigure paramByKey = getParamByKey(param_name,Common.IS_ACTIVE_Y);
 
         if (paramByKey != null && paramByKey.getId() != param_id) {
             result = "参数已存在";

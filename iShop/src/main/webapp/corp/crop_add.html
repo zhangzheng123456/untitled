@@ -24,22 +24,22 @@
             <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
                 <form class="conpany_msg">
                     <div>
-                        <span><label>企业编号</label><input type="text" id="OWN_CORP" verify="Code"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
+                        <span><label style="color:#c26655">企业编号*</label><input type="text" id="OWN_CORP" verify="Code"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>企业名称</label><input type="text" id="CORPNAME" verify="Empty"/>
+                        <span><label style="color:#c26655">企业名称*</label><input type="text" id="CORPNAME" verify="Empty"/>
                             <div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span><label>企业地址</label><input type="text" id="CORPADDRESS" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业地址不能为空！"></div></div>
+                        <span><label style="color:#c26655">企业地址*</label><input type="text" id="CORPADDRESS" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业地址不能为空！"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span><label>联系人</label><input type="text" id="CONTACTS" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系人不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">联系人*</label><input type="text" id="CONTACTS" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系人不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>联系电话</label><input type="text" id="PHONE" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">联系电话*</label><input type="text" id="PHONE" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
                     </div>
                     <div class="code_style"style="height:50px;display:inline-flex;margin-bottom: 0px;margin-top: 0px;color:#888888;position: relative">
                         <p class="p">公众号授权</p>
@@ -76,10 +76,10 @@
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js"></script>
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/corp/corp_operate.js"></script>
     <script>
          function add(){
               is_authorize='未授权';
@@ -88,10 +88,11 @@
               + '<input type="text" class="AppName" value=' + ''+ '>'
               + '<input type="text" disabled="true" value="'+is_authorize+'" ><p class="icon-ishop_6-12"onclick="removeselect(this)"></p>'
               + '</span>')
-}
+        }
         function removeselect(obj){//区域  删除
             $(obj).parent().remove();
         }
+        $("body").append("<script src='/js/corp/corp_operate.js?'"+new Date().getTime()+"'><\/script>");
     </script>
 </body>
 </html>

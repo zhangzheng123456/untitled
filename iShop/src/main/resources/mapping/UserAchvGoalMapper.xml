@@ -289,6 +289,35 @@
         AND ua.corp_code=#{corp_code}
         AND ua.user_code=#{user_code}
     </select>
+    <select id="getUserAchvForId" resultMap="userAchvGoals">
+        SELECT ua.id,
+        ua.user_code,
+        u.user_name,
+        ua.store_code,
+        ua.corp_code,
+        ua.user_target,
+        ua.target_type,
+        ua.target_time,
+        ua.modified_date,
+        ua.modifier,
+        ua.created_date,
+        ua.creater,
+        ua.isactive,
+        s.store_name,
+        c.corp_name
+        FROM
+        def_user_achv_goal ua,def_store s,def_corp c,def_user u
+        WHERE ua.store_code=s.store_code
+        AND ua.corp_code = c.corp_code
+        AND c.corp_code = s.corp_code
+        AND ua.user_code = u.user_code
+        AND ua.corp_code=#{corp_code}
+        AND ua.user_code=#{user_code}
+        AND ua.user_target=#{user_target}
+        AND ua.target_type=#{target_type}
+        AND ua.target_time=#{target_time}
+
+    </select>
 
     <delete id="deleteStoreUserAchv">
         DELETE FROM def_user_achv_goal

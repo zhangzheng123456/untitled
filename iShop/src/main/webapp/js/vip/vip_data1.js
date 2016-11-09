@@ -115,7 +115,7 @@ function getVipPoints(code,type){
         if(type=='1'){
             var pointsData=Data.result_points;//积分
             var listData=JSON.parse(pointsData.list);//积分list
-            jifenContent(listData,pointsData);
+            //jifenContent(listData,pointsData);
         }
         if(type=='2'){
             var consumnData=Data.result_consumn;//消费
@@ -127,41 +127,41 @@ function getVipPoints(code,type){
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
             var listData=pointsData.date_current_score;//积分list
-            jifenContent(listData,pointsData);
+            //jifenContent(listData,pointsData);
             xiaofeiContent(consumnData,consumnlistData);
         }
     });
 }
-function jifenContent(listData,pointsData){
-    $("#points_total").html(pointsData.score);
-    $("#vip_card").html(pointsData.vip_info["card_type_id"]);
-    $("#vip_card_num").html(pointsData.vip_info["card_no_vip"]);
-    $("#vip_name1").html(pointsData.vip_info["name_vip"]);
-    var listHtml="";
-    var listHtmlAll="";
-    for(var i=0;i<listData.length;i++){
-        var a=i+1;
-        if(i<10){
-            listHtml+='<tr>'
-                +'<td>'+listData[i].current_score+'</td>'
-                +'<td>'+listData[i].date+'<i class="icon-ishop_8-03 style"></i></td>'
-                +'</tr>'
-        }
-        listHtmlAll+='<tr>'
-            +'<td>'
-            +a+'</td>'
-            +'<td>'+listData[i].current_score+'</td>'
-            +'<td>'+listData[i].date+'</td>'
-            +'</tr>'
-    }
-    if(listHtml.length!==0){
-        $("#points tbody").html(listHtml);
-    }else {
-        listHtml='<span>暂无数据</span>';
-        $("#points tbody").html(listHtml);
-    }
-    $("#points_all tbody").html(listHtmlAll)
-}
+//function jifenContent(listData,pointsData){
+//    $("#points_total").html(pointsData.score);
+//    $("#vip_card").html(pointsData.vip_info["card_type_id"]);
+//    $("#vip_card_num").html(pointsData.vip_info["card_no_vip"]);
+//    $("#vip_name1").html(pointsData.vip_info["name_vip"]);
+//    var listHtml="";
+//    var listHtmlAll="";
+//    for(var i=0;i<listData.length;i++){
+//        var a=i+1;
+//        if(i<10){
+//            listHtml+='<tr>'
+//                +'<td>'+listData[i].current_score+'</td>'
+//                +'<td>'+listData[i].date+'<i class="icon-ishop_8-03 style"></i></td>'
+//                +'</tr>'
+//        }
+//        listHtmlAll+='<tr>'
+//            +'<td>'
+//            +a+'</td>'
+//            +'<td>'+listData[i].current_score+'</td>'
+//            +'<td>'+listData[i].date+'</td>'
+//            +'</tr>'
+//    }
+//    if(listHtml.length!==0){
+//        $("#points tbody").html(listHtml);
+//    }else {
+//        listHtml='<span>暂无数据</span>';
+//        $("#points tbody").html(listHtml);
+//    }
+//    $("#points_all tbody").html(listHtmlAll)
+//}
 function xiaofeiContent(consumnData,consumnlistData){
     var consumnHtml="";
     var consumnHtmlall="";
@@ -311,6 +311,14 @@ function gotovipallmessage(){
     $(".all_list").children().eq(0).siblings().hide();
     $("#remark").animate({left:0},0.1);
 }
+Array.prototype.removeByValue = function(val) {
+    for(var i=0; i<this.length; i++) {
+        if(this[i] == val) {
+            this.splice(i, 1);
+            break;
+        }
+    }
+}
 function showOption(){
     $(".drop_down input").click(function (){
         var ul=$(this).next(".expand_selection");
@@ -348,23 +356,27 @@ function getoselectvalue(){//点击模拟的select 获取值给input
 }
     $("#cancel").click(function(){//关闭删除相册时的提示框,取消删除相册
         $("#tk").hide();
-        $("#delete").attr("data-id","");
+        $("#delete").attr("data-time","");
         return false;
     });
-
     $("#delete").click(function(){//确认删除相册
         $("#tk").hide();
-        var id=$(this).attr("data-id");
-        var url=$("#"+id).prev().attr("src");
+        var time=$(this).attr("data-time");
+        var url=$("#Ablum-all").find("div[data-time='"+time+"']").prev().attr("src");
+        var src = url;
             url=url.substring(url.indexOf("Album"));
         var param={};
-        param["id"]=id;
-        oc.postRequire("post","/vipAlbum/delete","",param,function(data){
+        param["vip_id"]=sessionStorage.getItem("id");
+        param["corp_code"]=sessionStorage.getItem("corp_code");
+        param["time"]=time;
+        oc.postRequire("post","/vip/vipAlbumDelete","",param,function(data){
             if(data.message="success"){
                 deleteAblum(url);
-                $("#"+id).parent().remove();
+                $("#Ablum-all").find("div[data-time='"+time+"']").parent().remove();
                 frame();
                 $('.frame').html('删除成功');
+                swip_image.removeByValue(src);
+                console.log(src);
             }else{
                 frame();
                 $('.frame').html('删除失败');

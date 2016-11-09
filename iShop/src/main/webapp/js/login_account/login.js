@@ -18,9 +18,9 @@ function createCode() { //随机生成验证码
 createCode();
 
 function login(){
-	var phone = $('#login').val();
-	var password = $('#password1').val();
-	var verifyCode = $('#verifyCode').val();
+	var phone = $('#login').val().trim();
+	var password = $('#password1').val().trim();
+	var verifyCode = $('#verifyCode').val().trim();
 	var param = {};
 	param["phone"] = phone;
 	param["password"] = md5(password);
@@ -66,6 +66,8 @@ function login(){
 				window.location.href = "home/index_staff.html";
 			} else if(user_type == "sm"){
 				window.location.href="home/index_sm.html";
+			} else if(user_type == "bm"){
+				window.location.href="home/index_bm.html";
 			}
 		} else if (data.code == "-1") {
 			$(".portlet-msg-error").html("手机号或密码错误");

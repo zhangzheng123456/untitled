@@ -6,23 +6,22 @@ import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.MessageService;
+import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lixiang on 2016/7/4.
@@ -34,6 +33,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private StoreService storeService;
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
@@ -62,15 +63,104 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<Message> selectMessageByCode(String message_code) throws Exception {
+        return messageMapper.selectMessageByCode(message_code);
+    }
+
+    @Override
     public List<Message> getMessageDetail(String message_code) throws Exception {
-        return messageMapper.selectMessageDetail(message_code);
+        MessageInfo messageInfo = messageMapper.selectMessageInfoByCode(message_code);
+        String receiver_type = messageInfo.getReceiver_type();
+        String corp_code = messageInfo.getCorp_code();
+        int id = messageInfo.getId();
+        List<Message> messages = new ArrayList<Message>();
+        List<Map<String,String>> userList = new ArrayList<Map<String,String>>();
+        if (receiver_type.equals("staff")) {
+            List<Message> messageLists = messageMapper.selectMessageDetail(message_code);
+            for (int i = 0; i < messageLists.size(); i++) {
+                Map<String,String> user = new HashMap<String, String>();
+                user.put("user_name",messageLists.get(i).getUser_name());
+                user.put("user_code",messageLists.get(i).getUser_code());
+                userList.add(user);
+            }
+        } else if (receiver_type.equals("store")) {
+                List<Message> messageLists = selectMessageByCode(message_code);
+                String store_code = "";
+                for (int i = 0; i < messageLists.size(); i++) {
+                    store_code = messageLists.get(i).getMessage_receiver();
+                    List<User> users = userMapper.selectStoreUser(corp_code, store_code, "", "", Common.IS_ACTIVE_Y);
+                    //去重
+                    for (int j = 0; j <users.size() ; j++) {
+                        Map<String,String> user = new HashMap<String, String>();
+                        user.put("user_name",users.get(j).getUser_name());
+                        user.put("user_code",users.get(j).getUser_code());
+                        if (!userList.contains(user)){
+                            userList.add(user);
+                        }
+                    }
+                }
+            } else if (receiver_type.equals("area")) {
+                List<Message> messageLists = selectMessageByCode(message_code);
+                String area_code = "";
+//                List<User> userList = new ArrayList<User>();
+                for (int i = 0; i < messageLists.size(); i++) {
+                    String area_code1 = messageLists.get(i).getMessage_receiver();
+                    area_code = area_code + area_code1 + ",";
+                }
+                String[] areas = area_code.split(",");
+                List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, null, Common.IS_ACTIVE_Y);
+                for (int i = 0; i < store.size(); i++) {
+                    List<User> users = userMapper.selectStoreUser(corp_code, store.get(i).getStore_code(), "", "", Common.IS_ACTIVE_Y);
+                    for (int j = 0; j <users.size() ; j++) {
+                        Map<String,String> user = new HashMap<String, String>();
+                        user.put("user_name",users.get(j).getUser_name());
+                        user.put("user_code",users.get(j).getUser_code());
+                        if (!userList.contains(user)){
+                            userList.add(user);
+                        }
+                    }
+
+                }
+            } else if (receiver_type.equals("corp")) {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("array", null);
+                params.put("search_value", "");
+                params.put("role_code", "");
+                params.put("corp_code", corp_code);
+                //根据areas拉取区经
+                params.put("areas", null);
+                List<User> users = userMapper.selectUsersByRole(params);
+                for (int j = 0; j <users.size() ; j++) {
+                    Map<String,String> user = new HashMap<String, String>();
+                    user.put("user_name",users.get(j).getUser_name());
+                    user.put("user_code",users.get(j).getUser_code());
+                    userList.add(user);
+                }
+            }
+            for (int i = 0; i < userList.size(); i++) {
+                String user_code = userList.get(i).get("user_code");
+                String user_name = userList.get(i).get("user_name");
+
+                Message message = new Message();
+                message.setId(i);
+                message.setMessage_receiver(user_name);
+                message.setStatus("N");
+                List<User> users1 = messageMapper.selectMessageStatus(corp_code, user_code, String.valueOf(id));
+                if ( users1.size() > 0) {
+                    message.setStatus("Y");
+                }
+                messages.add(message);
+            }
+
+        return messages;
     }
 
     @Override
     @Transactional
     public String insert(String message, String user_id) throws Exception {
         String result = "";
-        JSONObject json = new JSONObject(message);
+        JSONObject json = new JSONObject();
+        json.put("message",message);
         String corp_code = json.get("corp_code").toString();
         String receiver_type = json.get("receiver_type").toString();
         String message_receiver = json.get("message_receiver").toString();
@@ -83,7 +173,7 @@ public class MessageServiceImpl implements MessageService {
 
         if (receiver_type.equals("group")) {
             data_group_code = new Data("group_code", message_receiver, ValueType.PARAM);
-        }else {
+        } else {
             String phone = json.get("phone").toString();
             data_phone = new Data("phone", phone, ValueType.PARAM);
         }
@@ -125,6 +215,7 @@ public class MessageServiceImpl implements MessageService {
             String message_code = message.getMessage_code();
             messageMapper.deleteMessage(message_code);
         }
+        messageMapper.deleteMessageStatus(id);
         return messageMapper.deleteMessageInfo(id);
     }
 
@@ -135,8 +226,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception {
+
         Map<String, Object> params = new HashMap<String, Object>();
+       JSONObject date = JSONObject.parseObject(map.get("modified_date"));
+
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString()+"24:00:00");
         params.put("corp_code", corp_code);
+        map.remove("modified_date");
         params.put("user_code", user_code);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);

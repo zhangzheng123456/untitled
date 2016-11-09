@@ -60,7 +60,9 @@ public class VipGroupServiceImpl implements VipGroupService {
                 vipGroup.setUser_name("");
             }
             //分组所拥有的会员个数
-            vip_count = vip_id.split(",").length;
+            if (vip_id != null && !vip_id.equals("")) {
+                vip_count = vip_id.split(",").length;
+            }
             vipGroup.setVip_count(vip_count);
         }
         return vipGroup;
@@ -78,10 +80,10 @@ public class VipGroupServiceImpl implements VipGroupService {
      * @throws Exception
      */
     @Override
-    public PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
+    public PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String user_code1,String search_value) throws Exception {
         List<VipGroup> vipGroups;
         PageHelper.startPage(page_number, page_size);
-        vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
+        vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, user_code1 ,search_value);
         for (VipGroup vipGroup : vipGroups) {
             String corp_code1 = vipGroup.getCorp_code();
             String user_code = vipGroup.getUser_code();
@@ -117,23 +119,17 @@ public class VipGroupServiceImpl implements VipGroupService {
         JSONObject jsonObject = new JSONObject(message);
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
-        String user_code = jsonObject.get("user_code").toString().trim();
-//        String vips_choose = jsonObject.get("choose").toString();
-//        String vip_ids = "";
-//        String[] vips = vips_choose.split(",");
-//        for (int i = 0; i < vips.length; i++) {
-//            vip_ids = vip_ids + Common.SPECIAL_HEAD + vips[i] + ",";
-//        }
+        String user_code = user_id;
 
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
-        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
+//        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
         if (vipGroup1 != null) {
             result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null) {
-            result = "该会员分组名称已存在";
+//        } else if (vipGroup2 != null) {
+//            result = "该会员分组名称已存在";
         } else {
             Date now = new Date();
             VipGroup vipGroup = new VipGroup();
@@ -163,7 +159,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         int id = Integer.parseInt(vipGroup_id);
         String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
         String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
-        String user_code = jsonObject.get("user_code").toString().trim();
+//        String user_code = user_id;
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString().trim();
 //        String vips_choose = jsonObject.get("choose").toString();
@@ -172,30 +168,20 @@ public class VipGroupServiceImpl implements VipGroupService {
 //        String[] quit = vips_quit.split(",");
 
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
-        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
+//        VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
         if (vipGroup1 != null && vipGroup1.getId() != id) {
             result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null && vipGroup2.getId() != id) {
-            result = "该会员分组名称已存在";
+//        } else if (vipGroup2 != null && vipGroup2.getId() != id) {
+//            result = "该会员分组名称已存在";
         } else {
-            VipGroup vipGroup = getVipGroupById(id);
-//            String vip_ids = vipGroup.getVip_ids();
-//            if (vip_ids != null && !vip_ids.equals("")){
-//                for (int i = 0; i < choose.length; i++) {
-//                    vip_ids = vip_ids + Common.SPECIAL_HEAD + choose[i] + ",";
-//                }
-//                for (int i = 0; i < quit.length; i++) {
-//                    vip_ids.replace(Common.SPECIAL_HEAD+quit[i]+",","");
-//                }
-//            }
-            vipGroup = new VipGroup();
+            VipGroup vipGroup  = new VipGroup();
             Date now = new Date();
             vipGroup.setId(id);
             vipGroup.setRemark(remark);
             vipGroup.setVip_group_code(vip_group_code);
             vipGroup.setVip_group_name(vip_group_name);
-            vipGroup.setUser_code(user_code);
+//            vipGroup.setUser_code(user_code);
             vipGroup.setCorp_code(corp_code);
             vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setModifier(user_id);
@@ -228,9 +214,10 @@ public class VipGroupServiceImpl implements VipGroupService {
         return vipGroup;
     }
 
-    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
+    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,String user_code1, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
+        params.put("user_code", user_code1);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);

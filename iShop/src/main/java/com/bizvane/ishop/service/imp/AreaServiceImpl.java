@@ -177,7 +177,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     private void updateAreaCode(String corp_code, String new_area_code, String old_area_code) throws Exception {
-        codeUpdateMapper.updateUser("", corp_code, "", "", "", "", Common.SPECIAL_HEAD+new_area_code+",", Common.SPECIAL_HEAD+old_area_code+",");
+        codeUpdateMapper.updateUser("", corp_code, "", "", "", "", Common.SPECIAL_HEAD+new_area_code+",", Common.SPECIAL_HEAD+old_area_code+",","","");
         codeUpdateMapper.updateStore("", corp_code, "", "", Common.SPECIAL_HEAD+new_area_code+",", Common.SPECIAL_HEAD+old_area_code+",");
     }
 
@@ -277,20 +277,35 @@ public class AreaServiceImpl implements AreaService {
         }
 
         String[] storeArray = null;
+        String area_code1 = "";
         if (null != store_code && !store_code.isEmpty()) {
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             storeArray = store_code.split(",");
+            Map<String, Object> params1 = new HashMap<String, Object>();
+            params1.put("store_codes", storeArray);
+            params1.put("corp_code", corp_code);
+            params1.put("search_value", "");
+            params1.put("isactive", "Y");
+            List<Store> stores = storeMapper.selectByUserId(params1);
+            for (int i = 0; i < stores.size(); i++) {
+                String area_code = stores.get(i).getArea_code();
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                if (!area_code.endsWith(","))
+                    area_code = area_code + ",";
+                area_code1 = area_code1 + area_code;
+            }
+            areaArray = area_code1.split(",");
         }
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", areaArray);
-        params.put("store_code", storeArray);
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selAreaByCorpCode(params);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
-        }
+//        for (Area area : areas) {
+//            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+//        }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }
@@ -304,14 +319,28 @@ public class AreaServiceImpl implements AreaService {
         }
 
         String[] storeArray = null;
+        String area_code1 = "";
         if (null != store_code && !store_code.isEmpty()) {
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             storeArray = store_code.split(",");
+            Map<String, Object> params1 = new HashMap<String, Object>();
+            params1.put("store_codes", storeArray);
+            params1.put("corp_code", corp_code);
+            params1.put("search_value", "");
+            params1.put("isactive", "Y");
+            List<Store> stores = storeMapper.selectByUserId(params1);
+            for (int i = 0; i < stores.size(); i++) {
+                String area_code = stores.get(i).getArea_code();
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                if (!area_code.endsWith(","))
+                    area_code = area_code + ",";
+                area_code1 = area_code1 + area_code;
+            }
+            areaArray = area_code1.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", areaArray);
-        params.put("store_code", storeArray);
         params.put("search_value", "");
         List<Area> areas = areaMapper.selAreaByCorpCode(params);
 

@@ -21,6 +21,6 @@ public interface RoleMapper {
     int deleteByRoleId(Integer id) throws SQLException;
 
     int countRoleCode(@Param("role_code") String role_code) throws SQLException;
-
+    Role getRoleForID(@Param("role_code") String role_code) throws SQLException;
     int countRoleName(@Param("role_name") String role_name) throws SQLException;
 }

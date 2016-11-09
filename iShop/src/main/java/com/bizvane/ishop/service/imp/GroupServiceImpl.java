@@ -149,7 +149,7 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     void updateCauseCodeChange(String corp_code, String new_group_code, String old_group_code) throws Exception {
         //若修改群组编号，对应修改员工信息中关联的群组编号
-        codeUpdateMapper.updateUser("", corp_code, new_group_code, old_group_code, "", "", "", "");
+        codeUpdateMapper.updateUser("", corp_code, new_group_code, old_group_code, "", "", "", "","","");
 
         //若修改群组编号，对应修改权限中关联的群组编号
         codeUpdateMapper.updatePrivilege(corp_code + new_group_code, corp_code + old_group_code);

@@ -1,19 +1,19 @@
 package com.bizvane.ishop.service.imp;
 
-import com.bizvane.ishop.dao.VipRecordMapper;
-import com.bizvane.ishop.entity.VipLabel;
-import com.bizvane.ishop.entity.VipRecord;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.VipRecordService;
-import com.bizvane.ishop.utils.CheckUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/13.
@@ -24,53 +24,71 @@ import java.util.Map;
 public class VipRecordServiceImpl implements VipRecordService {
 
     @Autowired
-    private VipRecordMapper VipRecordMapper;
+    CorpService corpService;
+    @Autowired
+    UserService userService;
 
+    public JSONArray transRecord(DBCursor dbCursor) throws Exception{
+        JSONArray array = new JSONArray();
+        while (dbCursor.hasNext()) {
 
-    @Override
-    public PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("map", map);
-        params.put("corp_code",corp_code);
-        List<VipRecord> records;
-        PageHelper.startPage(page_number, page_size);
-        records = this.VipRecordMapper.selectAllVipRecordScreen(params);
-        for (VipRecord vipRecord:records) {
-            vipRecord.setIsactive(CheckUtils.CheckIsactive(vipRecord.getIsactive()));
+            DBObject obj = dbCursor.next();
+            JSONObject object = new JSONObject();
+            String id = obj.get("_id").toString();
+            object.put("id",id);
+            String corp_code1 = obj.get("corp_code").toString();
+            object.put("corp_code",corp_code1);
+            String corp_name = "";
+            if (obj.containsField("company_name") && obj.get("company_name") != null) {
+                corp_name = obj.get("company_name").toString();
+            }else {
+                Corp corp = corpService.selectByCorpId(0,corp_code1, Common.IS_ACTIVE_Y);
+                if (corp != null) {
+                    corp_name = corp.getCorp_name();
+                }
+            }
+            object.put("corp_name",corp_name);
+            if (obj.containsField("user_code") && obj.get("user_code") != null){
+                String user_code = obj.get("user_code").toString();
+                object.put("user_code",user_code);
+                String user_name = "";
+                if (obj.containsField("user_name") && obj.get("user_name") != null){
+                    user_name = obj.get("user_name").toString();
+                }else {
+                    List<User> users = userService.userCodeExist(user_code,corp_code1,Common.IS_ACTIVE_Y);
+                    if (users.size()>0){
+                        user_name = users.get(0).getUser_name();
+                    }
+                }
+                object.put("user_name",user_name);
+            }
+            if (obj.containsField("vip_id")){
+                String vip_id = obj.get("vip_id").toString();
+                object.put("vip_id",vip_id);
+            }
+            if (obj.containsField("vip_name") && obj.get("vip_name") != null){
+                String vip_name = obj.get("vip_name").toString();
+                object.put("vip_name",vip_name);
+            }else {
+                object.put("vip_name","");
+            }
+            if (obj.containsField("message_date")){
+                String created_date = obj.get("message_date").toString();
+                object.put("message_date",created_date);
+            }
+            if (obj.containsField("action")){
+                String action = obj.get("action").toString();
+                object.put("action",action);
+                if (action.equals("1")){
+                    object.put("type_name","电话");
+                }else if (action.equals("2")){
+                    object.put("type_name","短信");
+                }else if (action.equals("3")){
+                    object.put("type_name","微信");
+                }
+            }
+            array.add(object);
         }
-        PageInfo<VipRecord> page = new PageInfo<VipRecord>(records);
-        return page;
-    }
-
-    @Override
-    public VipRecord getVipRecord(int id) throws Exception {
-        return this.VipRecordMapper.selecctById(id);
-    }
-
-    @Override
-    public int insert(VipRecord VipRecord) throws Exception {
-        return this.VipRecordMapper.insert(VipRecord);
-    }
-
-    @Override
-    public int update(VipRecord VipRecord) throws Exception {
-        return this.VipRecordMapper.updateByPrimaryKey(VipRecord);
-    }
-
-    @Override
-    public int delete(int id) throws Exception {
-        return this.VipRecordMapper.deleteByPrimary(id);
-    }
-
-
-    @Override
-    public PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
-        PageHelper.startPage(page_number, page_size);
-        List<VipRecord> list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, search_value);
-        for (VipRecord vipRecord:list) {
-            vipRecord.setIsactive(CheckUtils.CheckIsactive(vipRecord.getIsactive()));
-        }
-        PageInfo<VipRecord> page = new PageInfo<VipRecord>(list);
-        return page;
+        return array;
     }
 }

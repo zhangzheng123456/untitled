@@ -60,6 +60,9 @@
         <if test="corp_code != null and corp_code !=''">
             AND dvg.corp_code = #{corp_code}
         </if>
+        <if test="user_code != null and user_code !=''">
+            AND dvg.user_code = #{user_code}
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (dvg.vip_group_code LIKE concat('%',#{search_value},'%')
@@ -261,10 +264,12 @@
         FROM def_vip_group dvg,def_corp dc,def_user du
         WHERE dvg.corp_code=dc.corp_code
         AND dvg.corp_code = du.corp_code
-        <if test="corp_code!=null and corp_code!=''">
-            AND dvg.corp_code=#{corp_code}
+        <if test="corp_code != null and corp_code !=''">
+            AND dvg.corp_code = #{corp_code}
         </if>
-
+        <if test="user_code != null and user_code !=''">
+            AND dvg.user_code = #{user_code}
+        </if>
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">

@@ -357,7 +357,7 @@ input::-webkit-input-placeholder{
  /*}*/
 .sxk .inputs label{
 	display: inline-block;
-	width:56px;
+	min-width:56px;
 	color: #888;
 	text-align: right;
 }
@@ -381,7 +381,7 @@ input::-webkit-input-placeholder{
 	margin-left: 0;
 }
 .sxk .inputs .tm20{
-	width: 20px;
+	min-width: 20px !important;
 	text-align: center;
 }
 .table tr{
@@ -478,6 +478,7 @@ input::-webkit-input-placeholder{
 .foot .input-txt{
 	width: 40px;
 	height: 30px;
+	line-height: 30px;
 	text-align: center;
 	border-radius: 5px;
 	outline: none;
@@ -516,6 +517,11 @@ input::-webkit-input-placeholder{
 	font-size: 30px;
 	vertical-align: middle;
 	cursor: pointer;
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 }
 .foot-num li span.icon-ishop_4-01,.foot-num li span.icon-ishop_4-02{
 	display: block;
@@ -539,6 +545,7 @@ input::-webkit-input-placeholder{
 .foot-sum .page_row{
 	width: 90px;
 	height:30px;
+	line-height: 30px;
 	outline: none;
 	border:none;
  	padding-left: 10px;
@@ -647,18 +654,25 @@ input::-webkit-input-placeholder{
 	border-radius: 5px;
 	margin-left: 20px;
 }
+.tk .btn .album_enter{
+	background-color: #6dc1c8;
+	color: #fff;
+	font-size: 14px;
+	border-radius: 5px;
+	margin-left: 20px;
+}
 .frame{
-	padding-left: 10px;
-	padding-right: 10px;
-	min-width: 130px;
-	min-height: 50px;
-	background:rgba(0,0,0,0.5);
+	margin-left: -10%;
+	min-width: 370px;
+	min-height: 80px;
+	background:rgba(74,95,124,0.8);
 	position: absolute;
 	z-index: 10003;
 	border-radius: 5px;
 	color:#fff;
 	text-align: center;
-	line-height: 50px;
+	line-height: 80px;
+	box-shadow: 0px 3px 13px rgba(51, 56, 72,0.53);
 }
 /**回到顶部按钮 回到底部按钮**/
 #side_bar{
@@ -1415,7 +1429,7 @@ input::-webkit-input-placeholder{
 .screen_tip{
 	margin-left: 10px;
 	line-height: 30px;
-	font-size: 10px;
+	font-size: 13px;
 	color: #888;
 }
 .address_container{

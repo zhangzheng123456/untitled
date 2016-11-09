@@ -38,7 +38,14 @@ var oc = new ObjectControl();
     };
     paramjs.bindbutton = function () {
         $(".operadd_btn ul li:nth-of-type(1)").click(function () {
+            var nameMark=$("#PARAM_NAME").attr("data-mark");//名称是否唯一的标志
             if (paramjs.firstStep()) {
+                if(nameMark == "N"){
+                    var div=$("#PARAM_NAME").next('.hint').children();
+                    div.html("该名称已经存在！");
+                    div.addClass("error_tips");
+                    return;
+                }
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_DESC = $("#PARAM_DESC").val();
@@ -101,7 +108,14 @@ var oc = new ObjectControl();
             }
         });
         $(".operedit_btn ul li:nth-of-type(1)").click(function () {
+            var nameMark=$("#PARAM_NAME").attr("data-mark");//名称是否唯一的标志
             if (paramjs.firstStep()) {
+                if(nameMark == "N"){
+                    var div=$("#PARAM_NAME").next('.hint').children();
+                    div.html("该名称已经存在！");
+                    div.addClass("error_tips");
+                    return;
+                }
                 var id = sessionStorage.getItem("id");
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_DESC = $("#PARAM_DESC").val();
@@ -166,12 +180,18 @@ var oc = new ObjectControl();
         console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                art.dialog({
-                	time: 1,
-                	lock:true,
-                	cancel: false,
-                	content:"保存成功"
-                });
+                if(_command=="/vipparam/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_paramedit.html");
+                }
+                if(_command=="/vipparam/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
                 // $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
             } else if (data.code == "-1") {
                 art.dialog({
@@ -232,6 +252,7 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 var corp_code=msg.corp_code;//公司编号
                 $("#PARAM_NAME").val(msg.param_name);
+                $("#PARAM_NAME").attr("data-name", msg.param_name);
                 $("#PARAM_DESC").val(msg.param_desc);
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(msg.isactive=="Y"){
@@ -283,7 +304,30 @@ jQuery(document).ready(function () {
     } else {
         getcorplist();
     }
-
+    //验证参数名称唯一性
+    $("#PARAM_NAME").blur(function () {
+        var corp_code = $("#OWN_CORP").val();
+        var param_name = $("#PARAM_NAME").val();
+        var param_name_l = $(this).attr("data-name");
+        var div=$(this).next('.hint').children();
+        var param={};
+        param['corp_code']=corp_code;
+        param['param_name']=param_name;
+        if(param_name!==""&&param_name!==param_name_l){
+            oc.postRequire('post','/vipparam/checkNameOnly',0,param,function (data) {
+                if(data.code=="0"){
+                    div.html("");
+                    $("#PARAM_NAME").attr("data-mark","Y");
+                }else if(data.code=="-1"){
+                    div.html("该名称已经存在！");
+                    div.addClass("error_tips");
+                    $("#PARAM_NAME").attr("data-mark","N");
+                }
+            })
+        }else if(param_name==param_name_l){
+            $("#PARAM_NAME").attr("data-mark","Y");
+        }
+    })
 
     $(".operadd_btn ul li:nth-of-type(2)").click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");

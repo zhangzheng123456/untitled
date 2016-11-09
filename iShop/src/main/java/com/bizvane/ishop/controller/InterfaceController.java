@@ -159,8 +159,9 @@ public class InterfaceController {
             interfacers.setModifier(user_id);
             interfaceService.addInterface(interfacers);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            Interfacers interfacers1=interfaceService.selectForId(interfacers.getCorp_code(),interfacers.getVersion());
             dataBean.setId(id);
-            dataBean.setMessage("add success");
+            dataBean.setMessage(String.valueOf(interfacers1.getId()));
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -266,81 +267,81 @@ public class InterfaceController {
         logger.info("info--------" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
     }
-    /***
-     * 查出要导出的列
-     */
-    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
-    @ResponseBody
-    public String selAllByCode(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String function_code = jsonObject.get("function_code").toString();
-            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
-            JSONObject result = new JSONObject();
-            result.put("tableManagers", JSON.toJSONString(tableManagers));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
-        return dataBean.getJsonStr();
-    }
-    /***
-     * 导出数据
-     */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
-    @ResponseBody
-    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean = new DataBean();
-        String errormessage = "数据异常，导出失败";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //系统管理员(官方画面)
-            String search_value = jsonObject.get("searchValue").toString();
-            String screen = jsonObject.get("list").toString();
-            PageInfo<Interfacers> corpInfo = null;
-            if (screen.equals("")) {
-                corpInfo= interfaceService.selectAllInterface(1, 30000, search_value);
-            } else {
-                Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                corpInfo = interfaceService.selectAllScreen(1, 30000, map);
-            }
-            List<Interfacers> feedbacks = corpInfo.getList();
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(feedbacks);
-            if (feedbacks.size() >= 29999) {
-                errormessage = "导出数据过大";
-                int i = 9 / 0;
-            }
-            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            // String column_name1 = "corp_code,corp_name";
-            // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,feedbacks, map, response, request);
-            JSONObject result = new JSONObject();
-            if (pathname == null || pathname.equals("")) {
-                errormessage = "数据异常，导出失败";
-                int a = 8 / 0;
-            }
-            result.put("path", JSON.toJSONString("lupload/" + pathname));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("-1");
-            dataBean.setMessage(errormessage);
-        }
-        return dataBean.getJsonStr();
-    }
+//    /***
+//     * 查出要导出的列
+//     */
+//    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String selAllByCode(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            String function_code = jsonObject.get("function_code").toString();
+//            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+//            JSONObject result = new JSONObject();
+//            result.put("tableManagers", JSON.toJSONString(tableManagers));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//        }
+//        return dataBean.getJsonStr();
+//    }
+//    /***
+//     * 导出数据
+//     */
+//    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+//        DataBean dataBean = new DataBean();
+//        String errormessage = "数据异常，导出失败";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            //系统管理员(官方画面)
+//            String search_value = jsonObject.get("searchValue").toString();
+//            String screen = jsonObject.get("list").toString();
+//            PageInfo<Interfacers> corpInfo = null;
+//            if (screen.equals("")) {
+//                corpInfo= interfaceService.selectAllInterface(1, 30000, search_value);
+//            } else {
+//                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+//                corpInfo = interfaceService.selectAllScreen(1, 30000, map);
+//            }
+//            List<Interfacers> feedbacks = corpInfo.getList();
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//            String json = mapper.writeValueAsString(feedbacks);
+//            if (feedbacks.size() >= 29999) {
+//                errormessage = "导出数据过大";
+//                int i = 9 / 0;
+//            }
+//            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
+//            // String column_name1 = "corp_code,corp_name";
+//            // String[] cols = column_name.split(",");//前台传过来的字段
+//            String pathname = OutExeclHelper.OutExecl(json,feedbacks, map, response, request);
+//            JSONObject result = new JSONObject();
+//            if (pathname == null || pathname.equals("")) {
+//                errormessage = "数据异常，导出失败";
+//                int a = 8 / 0;
+//            }
+//            result.put("path", JSON.toJSONString("lupload/" + pathname));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("-1");
+//            dataBean.setMessage(errormessage);
+//        }
+//        return dataBean.getJsonStr();
+//    }
 }

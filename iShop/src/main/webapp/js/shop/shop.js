@@ -341,13 +341,18 @@ var isscroll=false;
         whir.loading.add("", 0.5);//加载等待框
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "保存成功"
-                });
-                // $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
+                if(_command=="/shop/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/shop/shop_edit.html");
+                }
+                if(_command=="/shop/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -449,8 +454,8 @@ jQuery(document).ready(function () {
                 for(var i=0;i<checknow_namedata.length;i++){
                     $('#OWN_BRAND_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+checknow_data[i]+"'  value='"+checknow_namedata[i]+"'><span class='power remove_app_id'>删除</span></p>");
                 }
-                $("#OWN_CORP option").val(msg.corp.corp_code);
-                $("#OWN_CORP option").text(msg.corp.corp_name);
+                // $("#OWN_CORP option").val(msg.corp.corp_code);
+                // $("#OWN_CORP option").text(msg.corp.corp_name);
                 //$("#OWN_BRAND").val(msg.brand_name);
                 //$("#OWN_BRAND").attr("data-mybcode", msg.brand_code);
                 $("#STORE_NAME").val(msg.store_name);
@@ -516,7 +521,7 @@ jQuery(document).ready(function () {
                         $(this).parents(".kuang").hide();
                     })
                 }
-                getcorplist();
+                getcorplist(msg.corp.corp_code);
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -623,8 +628,8 @@ jQuery(document).ready(function () {
         $("#screen_area .screen_content_r ul").empty();
         $("#screen_area").show();
         var left=(arr[0]-$("#screen_area").width())/2;
-        var tp=(arr[1]-$("#screen_area").height())/2+40;
-        $("#screen_area").css({"left":left+"px","top":tp+"px"});
+        var tp=(arr[3]-$("#screen_area").height())/2+40;
+        $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
         getArea(area_num);
         isscroll=false;
         console.log(1);
@@ -638,8 +643,8 @@ jQuery(document).ready(function () {
         $("#screen_brand .screen_content_r ul").empty();
         $("#screen_brand").show();
         var left=(arr[0]-$("#screen_brand").width())/2;
-        var tp=(arr[1]-$("#screen_brand").height())/2+40;
-        $("#screen_brand").css({"left":left+"px","top":tp+"px"});
+        var tp=(arr[3]-$("#screen_brand").height())/2+40;
+        $("#screen_brand").css({"left":left+"px","top":tp+"px","position":"fixed"});
         //getArea(area_num);
         getBrand(area_num);
         isscroll=false;
@@ -754,17 +759,13 @@ jQuery(document).ready(function () {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=JSON.parse(msg.list);
+                var hasNextPage=list.hasNextPage;
                 var list=list.list;
                 var area_html = '';
                 if (list.length == 0) {
-                    if(a==1){
-                        for(var h=0;h<9;h++){
-                            area_html+="<li></li>";
-                        }
-                    }
-                    area_next=true;
+                   
                 } else {
-                    if(list.length<9&&a==1){
+                   if(list.length>0){
                         for (var i = 0; i < list.length; i++) {
                             area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
                                 + i
@@ -774,27 +775,16 @@ jQuery(document).ready(function () {
                                 + i
                                 + a
                                 + 1
-                                + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
-                        }
-                        for(var j=0;j<9-list.length;j++){
-                            area_html+="<li></li>"
-                        }
-                    }else if(list.length>=9||list.length<9&&a>1){
-                        for (var i = 0; i < list.length; i++) {
-                            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'/><label for='checkboxOneInput"
-                                + i
-                                + a
-                                + 1
-                                + "'></label></div><span class='p16' title='"+list[i].area_name+"'>"+list[i].area_name+"</span></li>"
+                                + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
                         }
                     }
+                }
+                if(hasNextPage==true){
                     area_num++;
                     area_next=false;
-
+                }
+                if(hasNextPage==false){
+                    area_next=true;
                 }
                 $("#screen_area .screen_content_l ul").append(area_html);
                 bianse();
@@ -1070,10 +1060,17 @@ $("#screen_que_area").click(function(){
         }else {
             $(".address_container").hide();
         }
-    })
+    });
+    $("#STORE_address").click(function () {
+        if($(".address_container").css("display")=="none"){
+            $(".address_container").show();
+        }else {
+            $(".address_container").hide();
+        }
+    });
     getProvince();
 });
-function getcorplist() {
+function getcorplist(a) {
     //获取所属企业列表
     var corp_command = "/user/getCorpByUser";
     oc.postRequire("post", corp_command, "", "", function (data) {
@@ -1088,6 +1085,9 @@ function getcorplist() {
                 corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
             }
             $("#OWN_CORP").append(corp_html);
+            if(a!==""){
+                $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+            }
             $('.corp_select select').searchableSelect();
             $('.corp_select .searchable-select-input').keydown(function(event){
                 var event=window.event||arguments[0];
@@ -1358,7 +1358,7 @@ $("#enter").click(function () {
 })
 //创建地图
 $("#address_nav a:last-child").click(function () {
-    var map = new BMap.Map("show_map");
+    var map = new BMap.Map("show_map", {enableMapClick:false});//构造底图时，关闭底图可点功能
     var location_detail = $("#show_map").attr("data-location");
     var point;
     if(location_detail==undefined || location_detail==""){
@@ -1373,6 +1373,15 @@ $("#address_nav a:last-child").click(function () {
         var marker = new BMap.Marker(point); //创建marker对象
         map.addOverlay(marker);
         marker.enableDragging(); //marker可拖拽
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
+        marker.setLabel(label);
         map.addEventListener("click",function(e){
             console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
@@ -1398,6 +1407,15 @@ $("#address_nav a:last-child").click(function () {
                 var marker = new BMap.Marker(point); //创建marker对象
                 map.addOverlay(marker);
                 marker.enableDragging(); //marker可拖拽
+                var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+                label.setStyle({
+                    "font-size":"10px",
+                    "color":"#333",
+                    "width":"171px",
+                    "max-width":"200px",
+                    "height":"20px"
+                });
+                marker.setLabel(label);
                 var o_Point_now =  marker.getPosition();
                 var lng = o_Point_now.lng;//获取经度
                 var lat = o_Point_now.lat;//获取纬度
@@ -1430,6 +1448,15 @@ $("#address_nav a:last-child").click(function () {
         var marker = new BMap.Marker(point); //创建marker对象
         map.addOverlay(marker);
         marker.enableDragging(); //marker可拖拽
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
+        marker.setLabel(label);
         map.addEventListener("click",function(e){
             console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
             map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
@@ -1487,8 +1514,9 @@ $("#address_nav a:last-child").click(function () {
 
     function setPlace(){
         map.clearOverlays();    //清除地图上所有覆盖物
+        var pp;
         function myFun(){
-            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
             var location = marker.getPosition();
                 location = location.lat+","+location.lng;
             $("#show_map").attr("data-location",location);
@@ -1499,5 +1527,33 @@ $("#address_nav a:last-child").click(function () {
             onSearchComplete: myFun
         });
         local.search(myValue);
+        var marker = new BMap.Marker(point); //创建marker对象
+        map.addOverlay(marker);
+        marker.enableDragging(); //marker可拖拽
+        var label = new BMap.Label("该坐标将用于员工签到距离计算",{offset:new BMap.Size(20,-10)});
+        label.setStyle({
+            "font-size":"10px",
+            "color":"#333",
+            "width":"171px",
+            "max-width":"200px",
+            "height":"20px"
+        });
+        marker.setLabel(label);
+        map.addEventListener("click",function(e){
+            console.log(e.point.lng+","+e.point.lat);// 单击地图获取坐标点；
+            map.panTo(new BMap.Point(e.point.lng,e.point.lat));// map.panTo方法，把点击的点设置为地图中心点
+            var now_point =  new BMap.Point(e.point.lng, e.point.lat );
+            var location =e.point.lat+","+e.point.lng;
+            marker.setPosition(now_point);//设置覆盖物位置
+            $("#show_map").attr("data-location",location);
+        });
+        marker.addEventListener("dragend", function(){
+            var o_Point_now =  marker.getPosition();
+            var lng = o_Point_now.lng;//获取经度
+            var lat = o_Point_now.lat;//获取纬度
+            var location = lat+","+lng;
+            map.panTo(new BMap.Point(lng,lat));// map.panTo方法，把点击的点设置为地图中心点
+            $("#show_map").attr("data-location",location);
+        })
     }
 })

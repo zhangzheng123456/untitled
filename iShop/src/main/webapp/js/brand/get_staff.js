@@ -40,15 +40,7 @@ function getarealist(a){
 				$("#area_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    area_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+				    area_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'><label></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
 				}
 				if(pageNumber==1){
 					$("#area_code ul").html(area_html);
@@ -61,22 +53,22 @@ function getarealist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#area_more").show();
 				}
-				var check_input = $('#area_code ul input');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-areaname"));
-							$('#area_input').val(checknow_namedata.toString());
-							$('#area_input').attr('data-areacode', checknow_data.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-areaname"));
-							checknow_data.remove($(this).val());
-							$('#area_input').val(checknow_namedata.toString());
-							$('#area_input').attr('data-areacode', checknow_data.toString());
-						}
+				$("#area_code ul li").click(function () {
+					var input = $(this).find("input")[0];
+					if (input.type == "checkbox" && input.checked == false) {
+						input.checked = true;
+						checknow_data.push($(this).find("input").val());
+						checknow_namedata.push($(this).find("input").attr("data-areaname"));
+						$('#area_input').val(checknow_namedata.toString());
+						$('#area_input').attr('data-areacode', checknow_data.toString());
+					} else if (input.type == "checkbox" && input.checked == true) {
+						input.checked = false;
+						checknow_namedata.remove($(this).find("input").attr("data-areaname"));
+						checknow_data.remove($(this).find("input").val());
+						$('#area_input').val(checknow_namedata.toString());
+						$('#area_input').attr('data-areacode', checknow_data.toString());
 					}
-				}
+				})
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
@@ -132,15 +124,7 @@ function getstorelist(a){
 				$("#store_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    store_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxTowInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+				    store_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check' ><label></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
 				}
 				if(pageNumber==1){
 					$("#store_code ul").html(store_html);
@@ -153,22 +137,22 @@ function getstorelist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#store_more").show();
 				}
-				var check_input = $('#store_code ul input');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-storename"));
-							$('#store_input').val(checknow_namedata.toString());
-							$('#store_input').attr('data-storecode', checknow_data.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-storename"));
-							checknow_data.remove($(this).val());
-							$('#store_input').val(checknow_namedata.toString());
-							$('#store_input').attr('data-storecode', checknow_data.toString());
-						}
+				$("#store_code ul li").click(function () {
+					var input = $(this).find("input")[0];
+					if (input.type == "checkbox" && input.checked == false) {
+						input.checked = true;
+						checknow_data.push($(this).find("input").val());
+						checknow_namedata.push($(this).find("input").attr("data-storename"));
+						$('#store_input').val(checknow_namedata.toString());
+						$('#store_input').attr('data-storecode', checknow_data.toString());
+					} else if (input.type == "checkbox" && input.checked == true) {
+						input.checked = false;
+						checknow_namedata.remove($(this).find("input").attr("data-storename"));
+						checknow_data.remove($(this).find("input").val());
+						$('#store_input').val(checknow_namedata.toString());
+						$('#store_input').attr('data-storecode', checknow_data.toString());
 					}
-				}
+				})
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
@@ -225,13 +209,7 @@ function getstafflist(a){
 				$("#staff_more").hide();
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='"+list[i].phone+"'  class='check'  id='checkboxThreeInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxThreeInput"
-                        + i
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"("+list[i].phone+")</span></li>"
+				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='"+list[i].phone+"'  class='check'><label></label></div><span class='p16'>"+list[i].user_name+"("+list[i].phone+")</span></li>"
 				}
 				if(pageNumber==1){
 					$("#staff_code ul").html(staff_html);
@@ -244,26 +222,26 @@ function getstafflist(a){
 				if(cout>1&&pageNumber<cout){
 					$("#staff_more").show();
 				}
-				var check_input = $('#staff_code ul input');
-				for (var c = 0; c < check_input.length; c++) {
-					check_input[c].onclick = function() {
-						if (this.checked == true) {
-							checknow_data.push($(this).val());
-							checknow_namedata.push($(this).attr("data-username"));
-							checknow_phone.push($(this).attr("name"));
-							$('#staff_input').val(checknow_namedata.toString());
-							$('#staff_input').attr('data-usercode', checknow_data.toString());
-							$('#staff_input').attr('data-userphone', checknow_phone.toString());
-						} else if (this.checked == false) {
-							checknow_namedata.remove($(this).attr("data-username"));
-							checknow_data.remove($(this).val());
-							checknow_phone.remove($(this).attr("name"));
-							$('#staff_input').val(checknow_namedata.toString());
-							$('#staff_input').attr('data-usercode', checknow_data.toString());
-							$('#staff_input').attr('data-userphone', checknow_phone.toString());
-						}
+				$("#staff_code ul li").click(function () {
+					var input = $(this).find("input")[0];
+					if (input.type == "checkbox" && input.checked == false) {
+						input.checked = true;
+						checknow_data.push($(this).find("input").val());
+						checknow_namedata.push($(this).find("input").attr("data-username"));
+						checknow_phone.push($(this).find("input").attr("name"));
+						$('#staff_input').val(checknow_namedata.toString());
+						$('#staff_input').attr('data-usercode', checknow_data.toString());
+						$('#staff_input').attr('data-userphone', checknow_phone.toString());
+					} else if (input.type == "checkbox" && input.checked == true) {
+						input.checked = false;
+						checknow_namedata.remove($(this).find("input").attr("data-username"));
+						checknow_data.remove($(this).find("input").val());
+						checknow_phone.remove($(this).find("input").attr("name"));
+						$('#staff_input').val(checknow_namedata.toString());
+						$('#staff_input').attr('data-usercode', checknow_data.toString());
+						$('#staff_input').attr('data-userphone', checknow_phone.toString());
 					}
-				}
+				})
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {

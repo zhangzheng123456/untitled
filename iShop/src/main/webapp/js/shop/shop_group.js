@@ -1,6 +1,3 @@
-/**
- * Created by Bizvane on 2016/10/13.
- */
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
@@ -116,6 +113,7 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode){
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -214,6 +212,19 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>")
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>")
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
+
+
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -378,16 +389,16 @@ function jumpBianse(){
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
-//鼠标按下时触发的收索
+//搜索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
     inx=1;
-    param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        value=this.value.trim();
+        param["searchValue"]=value;
         POST(inx,pageSize);
     }
 });

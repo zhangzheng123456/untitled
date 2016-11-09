@@ -38,6 +38,12 @@
         WHERE CORP_CODE = #{corp_code}
         AND task_type_code = #{task_type_code}
     </select>
+    <select id="getTaskTypeForId" resultType="com.bizvane.ishop.entity.TaskType">
+        SELECT *
+        FROM def_task_type
+        WHERE CORP_CODE = #{corp_code}
+        AND task_type_code = #{task_type_code}
+    </select>
 
     <select id="selectByName" resultType="com.bizvane.ishop.entity.TaskType">
         SELECT *

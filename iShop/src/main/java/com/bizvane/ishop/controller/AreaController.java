@@ -178,6 +178,21 @@ public class AreaController {
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
+                    List<Area> areas = new ArrayList<Area>();
+                    Area area = new Area();
+                    area.setArea_code("");
+                    area.setArea_name("全部");
+                    area.setCorp_code("");
+                    area.setCorp_name("");
+                    area.setCreated_date("");
+                    area.setCreater("");
+                    area.setId(0);
+                    area.setIsactive("");
+                    area.setModified_date("");
+                    area.setModifier("");
+                    areas.add(0,area);
+                    areas.addAll(list.getList());
+                    list.setList(areas);
                 }else{
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
@@ -286,9 +301,15 @@ public class AreaController {
 
             String result = areaService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                JSONObject jsonObject = new JSONObject(message);
+
+                String area_code = jsonObject.get("area_code").toString().trim();
+                String corp_code = jsonObject.get("corp_code").toString().trim();
+                String isactive = jsonObject.get("isactive").toString();
+                Area area = areaService.getAreaByCode(corp_code,area_code,isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(String.valueOf(area.getId()));
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -478,7 +499,7 @@ public class AreaController {
     }
 
 
-    @RequestMapping(value = "Area_codeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/areaCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String areaCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -508,7 +529,7 @@ public class AreaController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "Area_nameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/areaNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String Area_nameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

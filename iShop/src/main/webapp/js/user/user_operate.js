@@ -123,7 +123,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				var input=$("#is_active")[0];//是否可用
 				if(OWN_RIGHT==""){//群组
 					art.dialog({
-							time: 1,
+							time: 2,
 							lock:true,
 							cancel: false,
 							content:"所属群组不能为空"
@@ -160,15 +160,35 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			        }     
 			    }
 				//如果角色是导购，店长，区经的时候
-				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
-						art.dialog({
-							time: 1,
-							lock:true,
-							cancel: false,
-							content:"所属店铺或所属区域不能为空"
-						});
+						if(r_code=="R2000"||r_code=="R3000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属店铺不能为空"
+							});
 						return;
+						}
+						if(r_code=="R4000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属区域不能为空"
+							});
+							return;
+						}
+						if(r_code=="R4800"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属品牌不能为空"
+							});
+							return;
+						}
 					}
 				}
 				var _command="/user/add";//接口名
@@ -279,7 +299,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				}
 				if(OWN_RIGHT==""){//群组
 					art.dialog({
-						time: 1,
+						time: 2,
 						lock:true,
 						cancel: false,
 						content:"所属群组不能为空"
@@ -319,15 +339,35 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			    }
 				// var PSW=$("#init_password").val();
 				//如果角色是导购，店长，区经的时候
-				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
-						art.dialog({
-							time: 1,
-							lock:true,
-							cancel: false,
-							content:"所属店铺或所属区域不能为空"
-						});
+						if(r_code=="R2000"||r_code=="R3000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属店铺不能为空"
+							});
 						return;
+						}
+						if(r_code=="R4000"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属区域不能为空"
+							});
+							return;
+						}
+						if(r_code=="R4800"){
+							art.dialog({
+								time: 2,
+								lock:true,
+								cancel: false,
+								content:"所属品牌不能为空"
+							});
+							return;
+						}
 					}
 				}
 				// if(PSW==""){
@@ -398,13 +438,18 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: "保存成功"
-				});
-				// $(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+				if(_command=="/user/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/user/user_edit.html");
+                }
+                if(_command=="/user/edit"){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -547,7 +592,7 @@ function role_data(c){//
 			}
 		}else{
 			art.dialog({
-				time: 1,
+				time: 2,
 				lock:true,
 				cancel: false,
 				content:"该企业目前没有群组，请先定义群组"
@@ -565,11 +610,11 @@ function role_data(c){//
             $(this_).parent().parent().children(".input_select").attr('data-myjcode',j_code);//角色编号
             $(this_).addClass('rel').siblings().removeClass('rel');
             if(j_code=="R2000"||j_code=="R3000"){
-            	$('.task_allot').html("所属店铺");
+            	$('.task_allot').html("所属店铺*");
             	$('.task_allot').parent().show();
             	$('.xingming').empty();
             }else if(j_code=="R4000"){
-            	$('.task_allot').html("所属区域");
+            	$('.task_allot').html("所属区域*");
             	$('.task_allot').parent().show();
             	$('.xingming').empty();
             }
@@ -578,140 +623,140 @@ function role_data(c){//
             }else if(j_code=="R6000"){
             	$('.task_allot').parent().hide();
             }else if(j_code=="R4800"){
-            	$('.task_allot').html("所属品牌");
+            	$('.task_allot').html("所属品牌*");
             	$('.task_allot').parent().show();
             	$('.xingming').empty();
             }
         });
 	});
 }
-function store_li_list(p){//店铺
-	var c_code=$('#OWN_CORP').val();
-	// var corp_code1=$('#OWN_CORP').attr("corp_code");
-	// if(c_code==corp_code1){
-	// 		return;
-	// }
-	$('#OWN_CORP').attr("corp_code",c_code);
-	store_data(p,c_code);
-}
-function area_li_list(p) {//区域
-	var c_code=$('#OWN_CORP').val();
-	// var corp_code1=$('#OWN_CORP').attr("corp_code");
-	// if(c_code==corp_code1){
-	// 		return;
-	// }
-	$('#OWN_CORP').attr("corp_code",c_code);
-	area_data(p,c_code);
-}
-function store_data(p,c){//店铺
-	// var _params={"group_code":r,"corp_code":c};
-	var _params={"corp_code":c};	
-	var _command="/user/store";
-	whir.loading.add("",0.5);//加载等待框
-	oc.postRequire("post", _command,"", _params, function(data){
-		var msg=JSON.parse(data.message);
-		var msg_stores=JSON.parse(msg.stores);
-		var index=0;
-		var html="";
-		if(msg_stores.length!==0){
-			for(index in msg_stores){
-				html +='<li data-storecode="'+msg_stores[index].store_code+'">'+msg_stores[index].store_name+'</li>';
-			}
-		}else{
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content:"该企业目前没有店铺，请先定义店铺"
-			});
-		}
-		whir.loading.remove();//移除加载框
-		$(p).siblings('.store_list_kuang').find("ul").html(html);
-		$(p).siblings('.store_list_kuang').find("li").click(function(){
-			var event=window.event||arguments[0];
-        	if(event.stopPropagation){
-            	event.stopPropagation();
-        	}else{
-            	event.cancelBubble=true;
-        	}
-            var this_=this;
-            var txt = $(this_).text();
-            var s_code=$(this_).data("storecode");
-            $(this_).parent().parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
-            $(this_).addClass('rel').siblings().removeClass('rel');
-            $(this_).parent().parent().hide();
-        });
-	});//追加店铺
-}
-function area_data(p,c){//区域
-	var _params={"corp_code":c};	
-	var _command="/shop/area";
-	whir.loading.add("",0.5);//加载等待框
-	oc.postRequire("post", _command,"", _params, function(data){
-		var msg=JSON.parse(data.message);
-		var msg_areas=msg.areas;
-		var index=0;
-		var html="";
-		if(msg_areas.length!==0){
-			for(index in msg_areas){
-				html +='<li data-storecode="'+msg_areas[index].area_code+'">'+msg_areas[index].area_name+'</li>';
-			}
-		}else{
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content:"该企业目前没有区域，请先定义区域"
-			});
-		}
-		whir.loading.remove();//移除加载框
-		$(p).siblings('.store_list_kuang').find("ul").html(html);
-		$(p).siblings('.store_list_kuang').find("li").click(function(){
-			var event=window.event||arguments[0];
-        	if(event.stopPropagation){
-            	event.stopPropagation();
-        	}else{
-            	event.cancelBubble=true;
-        	}
-            var this_=this;
-            var txt = $(this_).text();
-            var s_code=$(this_).data("storecode");
-            $(this_).parent().parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
-            $(this_).addClass('rel').siblings().removeClass('rel');
-            $(this_).parent().parent().hide();
-        });
-	});//追加店铺
-}
-function addshopselect(){//店铺
-		var k=$("#select_ownshop .shop_list div").length;
-		$(".shop_list").append('<div id="per_type">'
-            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
-                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode="" onclick="selectownshop(this)"/>'
-                +'<div class="store_list_kuang">'
-                +'<input class="search" type="text" placeholder="请输入搜索内容">'
-                +'<ul style="margin-left:0px" id="store_list">'
-                +'</ul>'
-                +'</div>'
-            +'</span>'
-            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
-        +'</div>');
-}
-function addareaselect(){//区域
-		var k=$("#select_ownshop .shop_list div").length;
-		$(".shop_list").append('<div id="per_type">'
-            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
-                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode="" onclick="selectownarea(this)"/>'
-                +'<div class="store_list_kuang">'
-                +'<input class="search" type="text" placeholder="请输入搜索内容">'
-                +'<ul style="margin-left:0px" id="store_list">'
-                +'</ul>'
-                +'</div>'
-            +'</span>'
-            +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
-        +'</div>');
-}
+// function store_li_list(p){//店铺
+// 	var c_code=$('#OWN_CORP').val();
+// 	// var corp_code1=$('#OWN_CORP').attr("corp_code");
+// 	// if(c_code==corp_code1){
+// 	// 		return;
+// 	// }
+// 	$('#OWN_CORP').attr("corp_code",c_code);
+// 	store_data(p,c_code);
+// }
+// function area_li_list(p) {//区域
+// 	var c_code=$('#OWN_CORP').val();
+// 	// var corp_code1=$('#OWN_CORP').attr("corp_code");
+// 	// if(c_code==corp_code1){
+// 	// 		return;
+// 	// }
+// 	$('#OWN_CORP').attr("corp_code",c_code);
+// 	area_data(p,c_code);
+// }
+// function store_data(p,c){//店铺
+// 	// var _params={"group_code":r,"corp_code":c};
+// 	var _params={"corp_code":c};	
+// 	var _command="/user/store";
+// 	whir.loading.add("",0.5);//加载等待框
+// 	oc.postRequire("post", _command,"", _params, function(data){
+// 		var msg=JSON.parse(data.message);
+// 		var msg_stores=JSON.parse(msg.stores);
+// 		var index=0;
+// 		var html="";
+// 		if(msg_stores.length!==0){
+// 			for(index in msg_stores){
+// 				html +='<li data-storecode="'+msg_stores[index].store_code+'">'+msg_stores[index].store_name+'</li>';
+// 			}
+// 		}else{
+// 			art.dialog({
+// 				time: 1,
+// 				lock:true,
+// 				cancel: false,
+// 				content:"该企业目前没有店铺，请先定义店铺"
+// 			});
+// 		}
+// 		whir.loading.remove();//移除加载框
+// 		$(p).siblings('.store_list_kuang').find("ul").html(html);
+// 		$(p).siblings('.store_list_kuang').find("li").click(function(){
+// 			var event=window.event||arguments[0];
+//         	if(event.stopPropagation){
+//             	event.stopPropagation();
+//         	}else{
+//             	event.cancelBubble=true;
+//         	}
+//             var this_=this;
+//             var txt = $(this_).text();
+//             var s_code=$(this_).data("storecode");
+//             $(this_).parent().parent().parent().children(".input_select").val(txt);
+//             $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
+//             $(this_).addClass('rel').siblings().removeClass('rel');
+//             $(this_).parent().parent().hide();
+//         });
+// 	});//追加店铺
+// }
+// function area_data(p,c){//区域
+// 	var _params={"corp_code":c};	
+// 	var _command="/shop/area";
+// 	whir.loading.add("",0.5);//加载等待框
+// 	oc.postRequire("post", _command,"", _params, function(data){
+// 		var msg=JSON.parse(data.message);
+// 		var msg_areas=msg.areas;
+// 		var index=0;
+// 		var html="";
+// 		if(msg_areas.length!==0){
+// 			for(index in msg_areas){
+// 				html +='<li data-storecode="'+msg_areas[index].area_code+'">'+msg_areas[index].area_name+'</li>';
+// 			}
+// 		}else{
+// 			art.dialog({
+// 				time: 1,
+// 				lock:true,
+// 				cancel: false,
+// 				content:"该企业目前没有区域，请先定义区域"
+// 			});
+// 		}
+// 		whir.loading.remove();//移除加载框
+// 		$(p).siblings('.store_list_kuang').find("ul").html(html);
+// 		$(p).siblings('.store_list_kuang').find("li").click(function(){
+// 			var event=window.event||arguments[0];
+//         	if(event.stopPropagation){
+//             	event.stopPropagation();
+//         	}else{
+//             	event.cancelBubble=true;
+//         	}
+//             var this_=this;
+//             var txt = $(this_).text();
+//             var s_code=$(this_).data("storecode");
+//             $(this_).parent().parent().parent().children(".input_select").val(txt);
+//             $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
+//             $(this_).addClass('rel').siblings().removeClass('rel');
+//             $(this_).parent().parent().hide();
+//         });
+// 	});//追加店铺
+// }
+// function addshopselect(){//店铺
+// 		var k=$("#select_ownshop .shop_list div").length;
+// 		$(".shop_list").append('<div id="per_type">'
+//             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
+//                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode="" onclick="selectownshop(this)"/>'
+//                 +'<div class="store_list_kuang">'
+//                 +'<input class="search" type="text" placeholder="请输入搜索内容">'
+//                 +'<ul style="margin-left:0px" id="store_list">'
+//                 +'</ul>'
+//                 +'</div>'
+//             +'</span>'
+//             +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
+//         +'</div>');
+// }
+// function addareaselect(){//区域
+// 		var k=$("#select_ownshop .shop_list div").length;
+// 		$(".shop_list").append('<div id="per_type">'
+//             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
+//                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode="" onclick="selectownarea(this)"/>'
+//                 +'<div class="store_list_kuang">'
+//                 +'<input class="search" type="text" placeholder="请输入搜索内容">'
+//                 +'<ul style="margin-left:0px" id="store_list">'
+//                 +'</ul>'
+//                 +'</div>'
+//             +'</span>'
+//             +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
+//         +'</div>');
+// }
 function minusareaselect(obj){//区域  删除
 	$(obj).parent().remove();
 }
@@ -773,13 +818,11 @@ jQuery(document).ready(function(){
 					$("#kuang").show();
     				$('#kuang img').attr("src",msg.qrcode);
 				}
-				$("#OWN_CORP option").val(msg.corp.corp_code);
-				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_RIGHT").val(msg.group.group_name);
 				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
 				if(j_code=="R2000"||j_code=="R3000"){
-					$('.task_allot').html("所属店铺");
+					$('.task_allot').html("所属店铺*");
 					if(msg.store_name!==""){
 			            var store_lists=msg.store_name.split(",");
 						var storecode_list=msg.store_code.split(",");
@@ -788,7 +831,7 @@ jQuery(document).ready(function(){
 						}
 					}
             	}else if(j_code=="R4000"){
-	            	$('.task_allot').html("所属区域");
+	            	$('.task_allot').html("所属区域*");
 	            	if(msg.area_name!==""){
 		            	var area_lists=msg.area_name.split(",");
 						var areacode_list=msg.area_code.split(",");
@@ -799,7 +842,7 @@ jQuery(document).ready(function(){
             	}else if(j_code=="R5000"||j_code=="R6000"){
             		$('.task_allot').parent().hide();
             	}else if(j_code="R4800"){
-            		$('.task_allot').html("所属品牌");
+            		$('.task_allot').html("所属品牌*");
 	            	if(msg.brand_name!==""){
 		            	var brand_lists=msg.brand_name.split(",");
 						var brandcode_list=msg.brand_code.split(",");
@@ -846,10 +889,10 @@ jQuery(document).ready(function(){
 					}
 					$(".kuang").show();
 				}
-				getcorplist();
+				getcorplist(msg.corp.corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
-					time: 1,
+					time: 2,
 					lock:true,
 					cancel: false,
 					content: data.message
@@ -991,7 +1034,7 @@ jQuery(document).ready(function(){
 		oc.postRequire("post",pwd_creat,"",_params,function (data) {
 			if(data.code=="0"){
 				art.dialog({
-					time: 1,
+					time: 2,
 					lock:true,
 					cancel: false,
 					content: data.message
@@ -1000,7 +1043,7 @@ jQuery(document).ready(function(){
 				$("#chongzhi_box").css('display','none');
 			}else if(data=="-1"){
 				art.dialog({
-					time: 1,
+					time: 2,
 					lock:true,
 					cancel: false,
 					content: "失败"
@@ -1010,7 +1053,7 @@ jQuery(document).ready(function(){
 		})
 	})
 });
-function getcorplist(){
+function getcorplist(a){
 	//获取企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -1024,6 +1067,9 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
 			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];
@@ -1066,7 +1112,7 @@ function getcorplist(){
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
-				time: 1,
+				time: 2,
 				lock:true,
 				cancel: false,
 				content: data.message
@@ -1100,7 +1146,7 @@ function getAppName(a){
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
-				time: 1,
+				time: 2,
 				lock:true,
 				cancel: false,
 				content: data.message

@@ -134,12 +134,18 @@ var oc = new ObjectControl();
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content:"保存成功"
-				});
+				if(_command=="/task_type/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/task/tasktype_edit.html");
+                }
+                if(_command=="/task_type/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 				// $(window.parent.document).find('#iframepage').attr("src","/task/tasktype.html");
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -281,12 +287,14 @@ jQuery(document).ready(function(){
 	            	div.html("");
 	            	$("#task_type").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！")
+	            	div.html("该名称已经存在！");
 	            	div.addClass("error_tips");
 	            	$("#task_type").attr("data-mark","N");
 	            }
 	    	})
-	    }
+	    }else if(task_type==task_type1){
+			$("#task_type").attr("data-mark","Y");
+		}
     });
 	$(".areaadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/task/tasktype.html");

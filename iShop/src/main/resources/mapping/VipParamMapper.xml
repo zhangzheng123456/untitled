@@ -67,7 +67,9 @@
         FROM def_vip_param
         WHERE corp_code = #{corp_code}
         AND  param_name=#{param_name}
-        AND isactive = 'Y'
+        <if test="isactive != null and isactive !=''">
+          AND isactive = #{isactive}
+        </if>
     </select>
 
 
@@ -244,6 +246,9 @@
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     dc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!='' and entryKey=='param_type'">
+                    dvp.${entryKey} = ${entryValue}
                 </when>
                 <when test="entryValue!=''">
                     dvp.${entryKey} REGEXP ${entryValue}

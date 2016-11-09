@@ -219,6 +219,11 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public Task getTaskForId(String corp_code, String task_type_code, String task_code) throws Exception {
+        return taskMapper.getTaskForId(corp_code,task_type_code,task_code);
+    }
+
+    @Override
     public List<TaskAllocation> selTaskAllocation(String corp_code, String task_code) {
         List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(corp_code, task_code);
             for (TaskAllocation allocation:taskAllocations) {

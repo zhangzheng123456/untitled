@@ -183,7 +183,7 @@ artDialog.fn = artDialog.prototype = {
 				width = wrap.offsetWidth - width;
 				height = wrap.offsetHeight - height;
 				left = left - width / 2;
-				top = top - height / 2;
+				top = top - height / 2+50;
 				wrap.style.left = Math.max(left, 0) + 'px';
 				wrap.style.top = Math.max(top, 0) + 'px';
 			};
@@ -801,7 +801,7 @@ artDialog.fn = artDialog.prototype = {
 				var left = parseInt($elem.css('left')),
 					top = parseInt($elem.css('top')),
 					sLeft = _$document.scrollLeft(),
-					sTop = _$document.scrollTop(),
+					sTop = _$document.scrollTop()+1000,
 					txt = '(document.documentElement)';
 				
 				this._setAbsolute();
@@ -1086,7 +1086,7 @@ artDialog.defaults = {
 	path: '/html/nds/oto/js/artDialog4',				// artDialog路径
 	lock: false,				// 是否锁屏
 	background: '#000',			// 遮罩颜色
-	opacity: .2,				// 遮罩透明度
+	opacity: 0,				// 遮罩透明度
 	duration: 300,				// 遮罩透明度渐变动画速度
 	fixed: false,				// 是否静止定位
 	left: '50%',				// X轴坐标

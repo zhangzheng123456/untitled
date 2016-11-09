@@ -21,7 +21,7 @@
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title"><span>系统管理</span><i class="icon-ishop_8-03"></i><span id="back_appVersion">APP版本控制</span><i class="icon-ishop_8-03"></i><label>编辑版本信息</label></div>
+            <div class="col-lg-12 pre_title"><span>系统管理</span><i class="icon-ishop_8-03"></i><span id="back_appVersion">版本控制</span><i class="icon-ishop_8-03"></i><label>编辑版本信息</label></div>
             <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
                <!--  <div class="operation_conpany">
                     <ul>
@@ -29,11 +29,12 @@
                     </ul>
                 </div> -->
                 <form class="conpany_msg">
-                    <div class="drop_down item_2">
-                        <span><label style="color:#c26555;">运行平台*</label><input id="platform" class="input_select" type="text" value="Android" placeholder="请选择"  readonly/>
+                    <div class="drop_down item_2 version_web">
+                        <span><label style="color:#c26555;">运行平台*</label><input id="platform" class="input_select" type="text" value="" placeholder="请选择"  readonly/>
                             <ul>
                                 <li>Android</li>
                                 <li>iOS</li>
+                                <li>Web</li>
                             </ul>
                         </span>
                     </div>
@@ -43,7 +44,7 @@
                             <div style="padding-left:122px" class="hint"><div  hintinfo="地址不能为空！"></div></div>
                         </span>
                     </div>
-                    <div>
+                    <div class="version_web">
                         <span>
                             <label style="color:#c26555;">版本*</label><input id="version_id" type="text" verify="Empty"/>
                             <div style="padding-left:122px" class="hint"><div  hintinfo="版本不能为空！"></div></div>
@@ -66,10 +67,12 @@
                             </ul>
                         </span>
                     </div>
-                    <span style="display: inline-flex;width:100%">
+                    </div>
+                    <div class="version_web">
+                             <span style="display: inline-flex;width:100%">
                         <label style="height:120px;">版本说明</label>
-                        <span class="tempalte_area" style="height: 120px">
-                            <textarea style="height: 100px" id="version_describe"></textarea>
+                        <span class="tempalte_area" style="height: 260px">
+                            <textarea style="height: 260px" id="version_describe"></textarea>
                         </span>
                     </span>
                     </div>
@@ -115,6 +118,7 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <script type="text/javascript" src="../js/system/appversion_operate.js"></script>
+
 </body>
 
 </html>

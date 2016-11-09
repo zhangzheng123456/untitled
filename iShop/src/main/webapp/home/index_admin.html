@@ -122,7 +122,6 @@
 
             </div>
         </nav>
-
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="wrapper wrapper-content">
                 <div class="row">
@@ -205,6 +204,16 @@
                 </div>
             </div>
         </div>
+        <div class="update_tip">
+            <span class="icon-ishop_6-12 tip_close" id="tip_close"></span>
+             <div class="tip_list">
+                 <ul>
+                 </ul>
+             </div>
+            <div class="tip_enter" id="tip_enter">
+                我知道啦
+            </div>
+        </div>
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
@@ -232,9 +241,11 @@
                         data: "",
                         success: function(msg){
                             var w_type=JSON.parse(msg)["data"]["forecast"];
+                            console.log(w_type);
                             var w_date=["今天","明天","后天"];
                             for(var i=0;i<w_type.length-2;i++){
-                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="http://php.weather.sina.com.cn/images/yb3/78_78/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+                                  $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="weather_img/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+//                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="http://php.weather.sina.com.cn/images/yb3/78_78/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
                             }
                         }
                     });

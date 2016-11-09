@@ -28,6 +28,7 @@ $(function(){
     keyVal=JSON.parse(keyVal);//把本地的属性转成json
     var url=keyVal.url;//url的参数
     sessionStorage.removeItem("return_jump");
+    sessionStorage.removeItem("state");
     $('#iframepage').attr("src",url);//给获取的src赋值
     oc.postRequire("get","/menu","0","",function(data){//左侧导航栏的循环操作
         var str = JSON.stringify(data);
@@ -62,6 +63,7 @@ $(function(){
         	var func_code=$(this).attr("data-code");
         	$('#iframepage').attr("src",src);
             sessionStorage.removeItem("return_jump");
+            sessionStorage.removeItem("state");
             var key_val={"url":src,"func_code":func_code};
             sessionStorage.setItem("key_val",JSON.stringify(key_val));
             $(this).find("span").addClass("icon-ishop_8-01");
@@ -77,6 +79,7 @@ $(function(){
             if(src!=="undefined"){
             	$('#iframepage').attr("src",src);
                 sessionStorage.removeItem("return_jump");
+                sessionStorage.removeItem("state");
                 $(this).find("h1").parents().siblings("li").find("dl").slideUp(300);
                 $(this).find("h1 span").parents().siblings("li").find("h1 span").removeClass("icon-ishop_8-02");
             }
@@ -106,6 +109,8 @@ $(function(){
                 window.location.href = "home/index_staff.html";
             } else if(user_type == "sm"){
                 window.location.href="home/index_sm.html";
+            } else if(user_type == "bm"){
+                window.location.href="home/index_bm.html";
             }
     }
     $("#logo").click(function(){

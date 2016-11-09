@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import org.apache.log4j.Logger;
@@ -40,7 +41,10 @@ public class LoginController {
     TableManagerService tableManagerService;
     @Autowired
     LocationService locationService;
-
+    @Autowired
+    WeimobService weimobService;
+    @Autowired
+    AppversionService appversionService;
     private static final Logger log = Logger.getLogger(LoginController.class);
 
     String id;
@@ -258,6 +262,8 @@ public class LoginController {
             log.info("phone:" + phone + " password:" + password);
             log.info("------------start search" + new Date());
             JSONObject user_info = userService.login(request, phone, password);
+//            weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
+
             if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -265,17 +271,19 @@ public class LoginController {
             } else {
                 System.out.println(user_info);
                 //插入登录日志
-                Date now = new Date();
-                LoginLog log = new LoginLog();
-                log.setPlatform("WEB");
-                log.setPhone(phone);
-                log.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                log.setModified_date(Common.DATETIME_FORMAT.format(now));
-                log.setModifier("root");
-                log.setCreater("root");
-                log.setIsactive(Common.IS_ACTIVE_Y);
+//                Date now = new Date();
+//                LoginLog log = new LoginLog();
+//                log.setPlatform("WEB");
+//                log.setPhone(phone);
+//                log.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//                log.setModified_date(Common.DATETIME_FORMAT.format(now));
+//                log.setModifier("root");
+//                log.setCreater("root");
+//                log.setIsactive(Common.IS_ACTIVE_Y);
+//
+//                loginLogService.insertLoginLog(log);
 
-                loginLogService.insertLoginLog(log);
+
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(user_info.toString());
@@ -307,7 +315,7 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
-            User user = userService.getUserById(Integer.parseInt(user_id));
+            User user = userService.selectUserById(Integer.parseInt(user_id));
             menu = functionService.selectAllFunctions(corp_code,user_code, group_code, role_code);
             menus.put("menu", menu);
             menus.put("user_type", user_type);
@@ -315,6 +323,20 @@ public class LoginController {
             menus.put("avatar", user.getAvatar());
             menus.put("user_name", user.getUser_name());
             menus.put("corp_name", user.getCorp_name());
+            String version_id = "";
+            if (user.getVersion_id() != null)
+                version_id = user.getVersion_id();
+
+            menus.put("version_id", version_id);
+            menus.put("version_describe", "");
+            List<Appversion> appversion = appversionService.selLatestVersion();
+            if (appversion.size() > 0 && !version_id.equals(appversion.get(0).getVersion_id())){
+                String describe = appversion.get(0).getVersion_describe();
+                menus.put("version_describe", describe);
+                version_id = appversion.get(0).getVersion_id();
+            }
+            user.setVersion_id(version_id);
+            userService.updateUser(user);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

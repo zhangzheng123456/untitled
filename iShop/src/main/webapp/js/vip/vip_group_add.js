@@ -7,10 +7,13 @@ var _params = {};
 var group_cheked = [];
 var corp_code = '';//企业编号
 var group_code = '';//分组编号
+var group_name='';//分组名称
+var group_remark='';//分组备注
 var group_count = '';
 var user_nextpage = false;//导购拉下一页
 var user_num=1;
 var param = {};//搜索参数
+var choose_this_group='';//当前已选择
 $(function () {
     window.vip.init();
     if ($(".pre_title label").text() == "编辑会员分组") {
@@ -74,48 +77,53 @@ $(function () {
         getcorplist();
     }
     //分配导购
-    $("#PARAM_NAME").click(function () {
-        if ($("#allUser").css("display") == "none") {
-            $("#allUser").show();
-        } else {
-            $("#allUser").hide();
-        }
-    });
-    $(document).click(function (e) {
-        if($(e.target).is("#search_param")||$(e.target).is("#allUser_list li")||$(e.target).is("#PARAM_NAME")||$(e.target).is("#allUser")){
-            return;
-        }else {
-            $("#allUser").hide();
-        }
-    });
+    // $("#PARAM_NAME").click(function () {
+    //     if ($("#allUser").css("display") == "none") {
+    //         $("#allUser").show();
+    //     } else {
+    //         $("#allUser").hide();
+    //     }
+    // });
+    // $(document).click(function (e) {
+    //     if($(e.target).is("#search_user")||$(e.target).is("#PARAM_NAME")){
+    //         return;
+    //     }else {
+    //         $("#allUser").hide();
+    //     }
+    // });
     //搜索导购
-    $("#search_param").keydown(function (e) {
-        user_num = 1;
-        var event=window.event||arguments[0]
-        if(event.keyCode == 13){
-            $("#allUser_list").empty();
-            getuserlist();
-        }
-    })
+    // $("#search_user").keydown(function (e) {
+    //     user_num = 1;
+    //     var event=window.event||arguments[0]
+    //     if(event.keyCode == 13){
+    //         $("#allUser_list").empty();
+    //         getuserlist();
+    //     }
+    // })
     //绑定导购点击事件
-    $("#allUser_list").on("click", "li", function (e) {
-        e.stopPropagation();
-        $("#PARAM_NAME").val($(this).text());
-        $("#PARAM_NAME").attr("data-code", $(this).attr("id"));
-    })
+    // $("#allUser_list").on("click", "li", function (e) {
+    //     e.stopPropagation();
+    //     $("#PARAM_NAME").val($(this).text());
+    //     $("#PARAM_NAME").attr("data-code", $(this).attr("id"));
+    //     $("#allUser").hide();
+    //     $(this).addClass("groupUser_checked");
+    //     $(this).siblings("li").removeClass("groupUser_checked");
+    // })
     //绑定导购滚动事件
-    $("#allUser").scroll(function () {
-        var nScrollHight = $(this)[0].scrollHeight;
-        var nScrollTop = $(this)[0].scrollTop;
-        var nDivHight = $(this).height();
-        if (nScrollTop + nDivHight >= nScrollHight) {
-            if (user_nextpage==false) {
-                return;
-            }else {
-                getuserlist();
-            }
-        }
-    })
+    // $("#allUser_list").scroll(function () {
+    //     var nScrollHight = $(this)[0].scrollHeight;
+    //     var nScrollTop = $(this)[0].scrollTop;
+    //     var nDivHight = $(this).height();
+    //     if (nScrollTop + nDivHight >= nScrollHight) {
+    //         if (user_nextpage==false) {
+    //             return;
+    //         }else {
+    //             getuserlist();
+    //         }
+    //     }
+    // })
+    //滚动条样式
+    // $("#allUser_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0)",cursoropacitymin:"0",boxzoom:false});
 });
 (function (root, factory) {
     root.vip = factory();
@@ -246,8 +254,8 @@ $(function () {
                     "corp_code": OWN_CORP,
                     "user_code": user_code,
                     "remark": vip_remark,
-                    'choose':sessionStorage.getItem('vip_choose'),
-                    'quit':sessionStorage.getItem('vip_quit'),
+                    // 'choose':sessionStorage.getItem('vip_choose'),
+                    // 'quit':sessionStorage.getItem('vip_quit'),
                     "isactive": ISACTIVE
                 };
                 vipjs.ajaxSubmit(_command, _params, opt);
@@ -260,12 +268,18 @@ $(function () {
         whir.loading.add("", 0.5);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "保存成功"
-                });
+               if(_command=="/vipGroup/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_group_edit.html");
+                }
+                if(_command=="/vipGroup/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
                 // $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group.html");
             } else if (data.code == "-1") {
                 art.dialog({
@@ -339,13 +353,13 @@ function getcorplist(C) {
                 $("#vip_num").val("");
                 $("#vip_id").attr("data-mark", "");
                 $("#vip_num").attr("data-mark", "");
-                $("#PARAM_NAME").val("");
-                $("#PARAM_NAME").attr("data-code", "");
-                $("#allUser_list").empty();
-                getuserlist();
+                // $("#PARAM_NAME").val("");
+                // $("#PARAM_NAME").attr("data-code", "");
+                // $("#allUser_list").empty();
+                // getuserlist();
                 //console.log($("#OWN_CORP").val())
             });
-            getuserlist();
+            // getuserlist();
         } else if (data.code == "-1") {
             art.dialog({
                 time: 1,
@@ -357,41 +371,45 @@ function getcorplist(C) {
     });
 }
 //获取导购列表
-function getuserlist() {
-    var corp_code = $("#OWN_CORP").val();
-    var area_code = "";
-    var brand_code = "";
-    var store_code = "";
-    var searchValue = $("#search_param").val().trim();
-    var pageSize = 20;
-    var pageNumber = user_num;
-    var _param = {};
-    _param["corp_code"] = corp_code;
-    _param['area_code'] = area_code;
-    _param['brand_code'] = brand_code;
-    _param['store_code'] = store_code;
-    _param['searchValue'] = searchValue;
-    _param['pageNumber'] = pageNumber;
-    _param['pageSize'] = pageSize;
-    oc.postRequire("post", "/user/selectUsersByRole", "", _param, function (data) {
-        if (data.code == "0") {
-            var msg = JSON.parse(data.message);
-                msg = JSON.parse(msg.list);
-            var list = msg.list;
-            if(msg.hasNextPage==true){
-                user_nextpage=true;
-                user_num++;
-            }else {
-                user_nextpage=false;
-            }
-            for (var i = 0; i < list.length; i++) {
-                $("#allUser_list").append("<li id='" + list[i].user_code + "'>" + list[i].user_name + "</li>")
-            }
-        } else if (data.code == "-1") {
-            console.log(data.message);
-        }
-    })
-}
+// function getuserlist() {
+//     var corp_code = $("#OWN_CORP").val();
+//     var area_code = "";
+//     var brand_code = "";
+//     var store_code = "";
+//     var searchValue = $("#search_user").val().trim();
+//     var pageSize = 20;
+//     var pageNumber = user_num;
+//     var _param = {};
+//     _param["corp_code"] = corp_code;
+//     _param['area_code'] = area_code;
+//     _param['brand_code'] = brand_code;
+//     _param['store_code'] = store_code;
+//     _param['searchValue'] = searchValue;
+//     _param['pageNumber'] = pageNumber;
+//     _param['pageSize'] = pageSize;
+//     oc.postRequire("post", "/user/selectUsersByRole", "", _param, function (data) {
+//         if (data.code == "0") {
+//             var msg = JSON.parse(data.message);
+//                 msg = JSON.parse(msg.list);
+//             var list = msg.list;
+//             if(msg.hasNextPage==true){
+//                 user_nextpage=true;
+//                 user_num++;
+//             }else {
+//                 user_nextpage=false;
+//             }
+//             for (var i = 0; i < list.length; i++) {
+//                 if(list[i].user_code == $("#PARAM_NAME").attr("data-code")){
+//                     $("#allUser_list").append("<li class='groupUser_checked' id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
+//                 }else {
+//                     $("#allUser_list").append("<li id='" + list[i].user_code + "'>" + list[i].user_name + "</li>");
+//                 }
+//             }
+//         } else if (data.code == "-1") {
+//             console.log(data.message);
+//         }
+//     })
+// }
 //验证编号是不是唯一
 $("#vip_num").blur(function () {
     // var isCode=/^[A]{1}[0-9]{4}$/;
@@ -416,27 +434,27 @@ $("#vip_num").blur(function () {
     }
 });
 //验证名称是否唯一
-$("#vip_id").blur(function () {
-    var corp_code = $("#OWN_CORP").val();
-    var vip_id = $("#vip_id").val();
-    var vip_id1 = $("#vip_id").attr("data-name");
-    var div = $(this).next('.hint').children();
-    if (vip_id !== "" && vip_id !== vip_id1) {
-        var _params = {};
-        _params["vip_group_name"] = vip_id;
-        _params["corp_code"] = corp_code;
-        oc.postRequire("post", "/vipGroup/vipGroupNameExist", "", _params, function (data) {
-            if (data.code == "0") {
-                div.html("");
-                $("#vip_id").attr("data-mark", "Y");
-            } else if (data.code == "-1") {
-                div.html("该名称已经存在！");
-                div.addClass("error_tips");
-                $("#vip_id").attr("data-mark", "N");
-            }
-        })
-    }
-});
+// $("#vip_id").blur(function () {
+//     var corp_code = $("#OWN_CORP").val();
+//     var vip_id = $("#vip_id").val();
+//     var vip_id1 = $("#vip_id").attr("data-name");
+//     var div = $(this).next('.hint').children();
+//     if (vip_id !== "" && vip_id !== vip_id1) {
+//         var _params = {};
+//         _params["vip_group_name"] = vip_id;
+//         _params["corp_code"] = corp_code;
+//         oc.postRequire("post", "/vipGroup/vipGroupNameExist", "", _params, function (data) {
+//             if (data.code == "0") {
+//                 div.html("");
+//                 $("#vip_id").attr("data-mark", "Y");
+//             } else if (data.code == "-1") {
+//                 div.html("该名称已经存在！");
+//                 div.addClass("error_tips");
+//                 $("#vip_id").attr("data-mark", "N");
+//             }
+//         })
+//     }
+// });
 $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function () {
     $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_group.html");
 });
@@ -454,6 +472,8 @@ $("#back_vip_group_1").click(function () {
 //绑定单击事件
 //新增
 $('#screen_add').on('click', function () {
+    //如果是新增就退出，不调用接口
+    if($(this).hasClass('vip_group_add'))return;
     var a = $('#vip_num').val();
     var b = $('#vip_id').val();
     if ($('#vip_num').val() == '') {
@@ -467,6 +487,8 @@ $('#screen_add').on('click', function () {
     var str = $('#screen_add').text().trim();
     str == '分配会员' && ( role = 'eidtor');
     group_code = $("#vip_num").val();
+    group_name = $("#vip_id").val();
+    group_remark = $("#vip_remark").val();
     corp_code = $('#OWN_CORP').val();
     $(this).attr('data_role') ? role = $(this).attr('data_role') : '';
     GET(1, 10, group_code);//第三个参数  分组编号
@@ -491,7 +513,6 @@ $("#save").click(function () {
         get_group_sub.push($(get_groups[i]).find('[data_vip_id]').attr('data_vip_id'));
     }
     //遍历已选择的与现选中的做对比
-    console.log(group_cheked);
     for (var r = 0; r < group_cheked.length; r++) {
         //返回-1  就是没找到要将这个号保存到quit中
         if (get_group_sub.indexOf(group_cheked[r]) == -1) {
@@ -518,25 +539,45 @@ $("#save").click(function () {
         // choose.push(choose_sub);
         choose.push($(get_groups[i]).find('[data_vip_id]').attr('data_vip_id'));
     }
-    sessionStorage.setItem('vip_choose',choose);
-    sessionStorage.setItem('vip_quit',quit)
-    param['vip_group_code'] = group_code;
-    param['choose'] = choose;
-    param['quit'] = quit;
+    // sessionStorage.setItem('vip_choose',choose);
+    // sessionStorage.setItem('vip_quit',quit);
+    //去重
+    console.log(group_cheked);
+    console.log(choose);
+    for(var r=choose.length-1;r>=0;r--){
+        for(var i=0;i<group_cheked.length;i++){
+            choose[r]==group_cheked[i]?choose.splice(r,1):'';
+        }
+    }
+    console.log(choose);
+    console.log(quit);
+    param['vip_group_id'] =sessionStorage.getItem("id");
+    param['choose'] = choose.toString();
+    param['vip_group_code'] = group_code;//分组编号
+    param['vip_group_name'] = group_name;//分组名称
+    param['vip_group_remark'] = group_remark;//备注
+    param['quit'] = quit.toString();
+    console.log(param);
     //发起异步请求
-    // oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
-    //     if (data.code == 0) {
-    //         if (role == 'eidtor') {
-    //             window.location.reload()
-    //         } else {
-    //             $('#group_recode').val('共' + group_count + "个会员");
-    //             $('#page-wrapper')[0].style.display = 'block';
-    //             $('.content')[0].style.display = 'none';
-    //         }
-    //     } else if (data.code == -1) {
-    //         alert(data.message);
-    //     }
-    // });
+    oc.postRequire("post", '/vipGroup/saveVips', "", param, function (data) {
+        if (data.code == 0) {
+            var msg=JSON.parse(data.message);
+            console.log(msg);
+            $('#vip_num').val(group_code);
+            $('#vip_id').val(group_name);
+            $('#vip_remark').val(group_remark);
+            $('#group_recode').val('共' +msg.vip_count+ "个会员");
+            // if (role == 'eidtor') {
+            //     // window.location.reload()
+            // } else {
+            //     $('#group_recode').val('共' + group_count + "个会员");
+            //     $('#page-wrapper')[0].style.display = 'block';
+            //     $('.content')[0].style.display = 'none';
+            // }
+        } else if (data.code == -1) {
+            alert(data.message);
+        }
+    });
     //关闭当前页面
     $('#page-wrapper')[0].style.display = 'block';
     $('.content')[0].style.display = 'none';
@@ -571,18 +612,20 @@ function GET(a, b, c) {
     param["pageNumber"] = a;
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
-    param["user_code"] = user_code;
-    param["vip_group_code"] =vip_group_code;
+    // param["user_code"] = user_code;
+    param["vip_group_id"] =sessionStorage.getItem("id");;
     oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
             var message = JSON.parse(data.message);
             var list = message.all_vip_list;
+            console.log(list);
             cout = message.pages;
             //var list=list.list;
             superaddition(list, a, c);
             jumpBianse();
             filtrate = "";
+            $(".table p").remove();
             setPage($("#foot-num")[0], cout, a, b, c);
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
@@ -597,7 +640,17 @@ function jumpBianse() {
     })
 }
 function superaddition(data, num, c) {
-    console.log(data);
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
     group_cheked = [];
     var judge = '';
     for (var i = 0; i < data.length; i++) {
@@ -607,7 +660,7 @@ function superaddition(data, num, c) {
             judge = '';
         }
         if (num >= 2) {
-            var a = i + num * pageSize;
+            var a = i + 1 + (num - 1) * pageSize;
         } else {
             var a = i + 1;
         }
@@ -622,7 +675,10 @@ function superaddition(data, num, c) {
             + gender
             + "</td><td>"
             + data[i].vip_phone
-            + "</td><td data_cardno='" + data[i].cardno + "'>"
+            // + "</td><td data_cardno='" + data[i].cardno + "'>"
+            + "</td><td>"
+            + data[i].cardno
+            + "</td><td>"
             + data[i].vip_card_type
             // + "</td><td>"
             // + data[i].vip_group_name
@@ -642,9 +698,19 @@ function superaddition(data, num, c) {
             group_cheked.push(tr_vip_id);
         }
     }
+    $("tbody tr").click(function () {
+        var input = $(this).find("input")[0];
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            input.checked = false;
+        }
+    })
+    $(".th th:last-child input").removeAttr("checked");
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {
+    count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -1260,19 +1326,14 @@ function getarealist(a) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout = list.pages;
             var list = list.list;
             var area_html_left = '';
             var area_html_right = '';
             if (list.length == 0) {
-                if (a == 1) {
-                    for (var h = 0; h < 9; h++) {
-                        area_html_left += "<li></li>";
-                    }
-                }
-                area_next = true;
             } else {
-                if (list.length < 9 && a == 1) {
+                if (list.length>0) {
                     for (var i = 0; i < list.length; i++) {
                         area_html_left += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].area_code + "' data-areaname='" + list[i].area_name + "' name='test'  class='check'  id='checkboxOneInput"
                             + i
@@ -1283,25 +1344,15 @@ function getarealist(a) {
                             + a
                             + 1
                             + "'></label></div><span class='p16'>" + list[i].area_name + "</span></li>"
-                    }
-                    for (var j = 0; j < 9 - list.length; j++) {
-                        area_html_left += "<li></li>"
-                    }
-                } else if (list.length >= 9 || list.length < 9 && a > 1) {
-                    for (var i = 0; i < list.length; i++) {
-                        area_html_left += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].area_code + "' data-areaname='" + list[i].area_name + "' name='test'  class='check'  id='checkboxOneInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxOneInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>" + list[i].area_name + "</span></li>"
-                    }
+                    }    
                 }
+            }
+            if(hasNextPage==true){
                 area_num++;
-                area_next = false;
+                area_next=false;
+            }
+            if(hasNextPage==false){
+                area_next=true;
             }
             $("#screen_area .screen_content_l ul").append(area_html_left);
             bianse();
@@ -1341,33 +1392,13 @@ function getstorelist(a) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout = list.pages;
             var list = list.list;
             var store_html = '';
             if (list.length == 0) {
-                if (a == 1) {
-                    for (var h = 0; h < 9; h++) {
-                        store_html += "<li></li>";
-                    }
-                }
-                shop_next = true;
             } else {
-                if (list.length < 9 && a == 1) {
-                    for (var i = 0; i < list.length; i++) {
-                        store_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].store_code + "' data-storename='" + list[i].store_name + "' name='test'  class='check'  id='checkboxTowInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxTowInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>" + list[i].store_name + "</span></li>"
-                    }
-                    for (var j = 0; j < 9 - list.length; j++) {
-                        store_html += "<li></li>"
-                    }
-                } else if (list.length >= 9 || list.length < 9 && a > 1) {
+                if (list.length>0){
                     for (var i = 0; i < list.length; i++) {
                         store_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].store_code + "' data-storename='" + list[i].store_name + "' name='test'  class='check'  id='checkboxTowInput"
                             + i
@@ -1380,8 +1411,13 @@ function getstorelist(a) {
                             + "'></label></div><span class='p16'>" + list[i].store_name + "</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 shop_num++;
                 shop_next = false;
+            }
+            if(hasNextPage==false){
+                shop_next=true;
             }
             $("#screen_shop .screen_content_l ul").append(store_html);
             bianse();
@@ -1468,33 +1504,14 @@ function getstafflist(a) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout = list.pages;
             var list = list.list;
             var staff_html = '';
             if (list.length == 0) {
-                if (a == 1) {
-                    for (var h = 0; h < 9; h++) {
-                        staff_html += "<li></li>";
-                    }
-                }
-                staff_next = true;
+
             } else {
-                if (list.length < 9 && a == 1) {
-                    for (var i = 0; i < list.length; i++) {
-                        staff_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].user_code + "' data-storename='" + list[i].user_name + "' name='test'  class='check'  id='checkboxFourInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxFourInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>" + list[i].user_name + "</span></li>"
-                    }
-                    for (var j = 0; j < 9 - list.length; j++) {
-                        staff_html += "<li></li>"
-                    }
-                } else if (list.length >= 9 || list.length < 9 && a > 1) {
+                if (list.length>0) {
                     for (var i = 0; i < list.length; i++) {
                         staff_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].user_code + "' data-storename='" + list[i].user_name + "' name='test'  class='check'  id='checkboxFourInput"
                             + i
@@ -1507,8 +1524,13 @@ function getstafflist(a) {
                             + "'></label></div><span class='p16'>" + list[i].user_name + "</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 staff_num++;
                 staff_next = false;
+            }
+            if(hasNextPage==false){
+                staff_next=true;
             }
             $("#screen_staff .screen_content_l ul").append(staff_html);
             bianse();
@@ -1575,16 +1597,15 @@ function filtrates(a, b, _param, c) {
 $("#search").keydown(function () {
     var event = window.event || arguments[0];
     value = this.value.replace(/\s+/g, "");
-    if (value !== "") {
+    if (event.keyCode == 13) {
+        value=this.value.trim();
         inx = 1;
-        param["searchValue"] = value;
-        param["pageNumber"] = inx;
-        param["pageSize"] = pageSize;
-        if (event.keyCode == 13) {
+        if(value!==""){
+            param["searchValue"] = value;
+            param["pageNumber"] = inx;
+            param["pageSize"] = pageSize;
             POST(inx, pageSize, group_code);
-        }
-    } else {
-        if (event.keyCode == 13) {
+        }else{
             GET(inx, pageSize, group_code);
         }
     }

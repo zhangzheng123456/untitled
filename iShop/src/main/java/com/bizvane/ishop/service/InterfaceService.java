@@ -19,16 +19,23 @@ import java.util.Map;
 public interface InterfaceService {
     //查询全部
     List<Interfacers> selectAllInterface() throws Exception;
+
     //分页查询
     PageInfo<Interfacers> selectAllInterface(int page_number, int page_size, String search_value) throws Exception;
 
-    PageInfo<Interfacers> selectAllScreen(int page_number, int page_size, Map<String,String> map) throws Exception;
+    PageInfo<Interfacers> selectAllScreen(int page_number, int page_size, Map<String, String> map) throws Exception;
+
     //根据ID查询
-    Interfacers selInterfaceById(int id)throws Exception;
+    Interfacers selInterfaceById(int id) throws Exception;
+
     //根据ID删除
-    int delInterfaceById(int id)throws Exception;
+    int delInterfaceById(int id) throws Exception;
+
     //修改
-    int updInterfaceById(Interfacers interfacers)throws Exception;
+    int updInterfaceById(Interfacers interfacers) throws Exception;
+
     //增加
-    int addInterface(Interfacers interfacers)throws Exception;
+    int addInterface(Interfacers interfacers) throws Exception;
+
+    Interfacers selectForId(String corp_code, String version) throws Exception;
 }

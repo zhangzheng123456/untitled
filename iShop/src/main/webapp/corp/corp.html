@@ -56,7 +56,7 @@
                             <!--<span class="icon-ishop_6-06"></span>-->
                             <!--配置-->
                         <!--</li>-->
-                        <li class="bg">
+                        <li class="bg" id="reload">
                             <span class="icon-ishop_6-07"></span>
                             刷新
                         </li>
@@ -121,7 +121,7 @@
                     <div class="empty" id="empty">
                         <i class="icon-ishop_6-16"></i>清空筛选
                     </div>
-                    <span class="screen_tip">支持多个条件精确查找,以逗号分隔.</span>
+                    <span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
                     <div class="r_btn">
                         <div class="pack_up" id="pack_up">
                             <i class="icon-ishop_6-18"></i>
@@ -172,19 +172,19 @@
                  		</tr>
                  	</thead>
                     <tbody>
-                        <tr>
-                            <td width="50px" style="text-align: left;">
-                                <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                            </td>
-                            <td style="text-align: left;">10</td>
-                            <td>商帆</td>
-                            <td>南京市雨花台区软件大道180号</td>
-                            <td>李某某</td>
-                            <td>13274862577</td>
-                            <td>张某某</td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td width="50px">可用</td>
-                        </tr>                                                                                             					
+                        <!--<tr>-->
+                            <!--<td width="50px" style="text-align: left;">-->
+                                <!--<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>-->
+                            <!--</td>-->
+                            <!--<td style="text-align: left;">10</td>-->
+                            <!--<td>商帆</td>-->
+                            <!--<td>南京市雨花台区软件大道180号</td>-->
+                            <!--<td>李某某</td>-->
+                            <!--<td>13274862577</td>-->
+                            <!--<td>张某某</td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td width="50px">可用</td>-->
+                        <!--</tr>                                                                                             					-->
                     </tbody>
     			</table>
     		</div>
@@ -192,32 +192,15 @@
     			<ul>
     				<li class="foot-jum">
     					<span>跳转至</span>
-    					<input class="input-txt" value="36" id="input-txt">
+    					<input class="input-txt" value="" id="input-txt">
     					<em>页</em>
     				</li>
     				<li class="foot-num" >
     					<ul id="foot-num">
-    						<li class="icon-ishop_4-01" style="color: #afafaf">
-    							
-    						</li>
-    						<li>
-                                <span class="p-bg">1</span>
-    						</li>
-    						<li>
-    							<span>2</span>
-    						</li>
-    						<li>
-    							<span>3</span>
-    						</li>
-    						<li>
-    							<span>4</span>
-    						</li>
-    						<li>
-    							<span>5</span>
-    						</li>
-    						<li class="icon-ishop_4-02">
-    							
-    						</li>
+                            <li class="icon-ishop_4-01" style="color: #afafaf">
+                            </li>
+                            <li class="icon-ishop_4-02">
+                            </li>
     					</ul>
     				</li>
     				<li class="foot-sum">
@@ -231,7 +214,7 @@
                             </ul>
 						    <span class="icon-ishop_8-02 icon"></span>
     					</div>
-						<span class="zy">共 75 页</span>
+						<span class="zy">共 0 页</span>
     				</li>
     			</ul>
     		</div>
@@ -257,20 +240,8 @@
 </body>
     <script type="text/javascript" src="/js/insidePostRequire.js"></script>
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-    <script src="/js/corp/corp.js"></script>
     <script src="/js/silide.js"></script>
-    <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript">
-    $("#file_list").niceScroll({
-        cursorcolor:"#999",
-        cursoropacitymax:1,
-        touchbehavior:false,
-        cursorwidth:"5px",
-        cursorborder:"0",
-        cursorborderradius:"5px"
-    });
-    $(".icon-ishop_6-07").parent().click(function () {
-        window.location.reload();
-    })
-</script>
+    <script type="text/javascript">
+        $("body").append("<script src='/js/corp/corp.js?'"+new Date().getTime()+"'><\/script>");
+    </script>
 </html>

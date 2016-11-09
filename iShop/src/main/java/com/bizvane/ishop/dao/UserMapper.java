@@ -18,6 +18,8 @@ public interface UserMapper {
 
     List<User> selectByPhone(String phone) throws SQLException;
 
+    List<User> selectByLogin(String phone) throws SQLException;
+
     List<User> selectLogin(String phone, String password) throws SQLException;
 
     List<User> userEmailExist(@Param("email") String email) throws SQLException;
@@ -47,18 +49,19 @@ public interface UserMapper {
 
     List<User> selectAllUserScreen(Map<String, Object> params) throws SQLException;
 
+    List<User> selectUsersByRole(Map<String, Object> params) throws SQLException;
+
+    //------------------------UserQrcodeMapper.xml----------
+
     List<UserQrcode> selectByUserCode(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
 
-    UserQrcode selectByUserApp(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
+    List<UserQrcode> selectByUserApp(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
 
     int insertUserQrcode(UserQrcode record);
 
     int deleteUserQrcode(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
 
-    int deleteQrcode(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
-
     int deleteUserQrcodeOne(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
 
-    List<User> selectUsersByRole(Map<String, Object> params) throws SQLException;
 
 }

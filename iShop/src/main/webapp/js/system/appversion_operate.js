@@ -29,14 +29,18 @@ var oc = new ObjectControl();
 		else hint.html(content);
 	};
 	appjs.firstStep = function(){
+
 		var inputText = jQuery(".conpany_msg").find(":text");
+		console.log((inputText[0]));
 		for(var i=0,length=inputText.length;i<length;i++){
+			if($(inputText[i]).val()=='Web')return true;
 			if(!bindFun(inputText[i]))return false;
 		}
 		return true;
 	};
 	appjs.bindbutton=function(){
 		$(".appadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			console.log('调用');
 			if(appjs.firstStep()){
 				var platform=$('#platform').val();//运行平台
 				var download_addr=$("#download_addr").val();//下载地址
@@ -125,12 +129,18 @@ var oc = new ObjectControl();
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: "保存成功"
-				});
+				if(_command=="/appversion/add"){
+                    sessionStorage.setItem("id",data.message);
+                    $(window.parent.document).find('#iframepage').attr("src","/system/appversion_edit.html");
+                }
+                if(_command=="/appversion/edit"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"保存成功"
+                    });
+                }
 				// $(window.parent.document).find('#iframepage').attr("src","/system/appversion.html");
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -207,6 +217,11 @@ jQuery(document).ready(function(){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
+				}
+				if($('#platform').val()=='Web'){
+					$('.conpany_msg').children(':not(".version_web")').hide();
+				}else{
+					$('.conpany_msg').children(':not(".version_web")').show();
 				}
 			}else if(data.code=="-1"){
 				art.dialog({

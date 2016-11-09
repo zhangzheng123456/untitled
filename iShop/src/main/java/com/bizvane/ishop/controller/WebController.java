@@ -54,8 +54,8 @@ public class WebController {
     StoreService storeService;
     @Autowired
     BrandService brandService;
-
-    WeiMobServiceImpl weiMobService = new WeiMobServiceImpl();
+    @Autowired
+    WeimobService weimobService;
 
     /**
      *
@@ -99,23 +99,19 @@ public class WebController {
 
                         if (role_code.equals(Common.ROLE_AM)) {
                             String area_code = user.getArea_code();
+                            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
                             String[] areaCodes = area_code.split(",");
-                            if (areaCodes[0].contains(Common.SPECIAL_HEAD)) {
-                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
-                            }
                             String[] ids = new String[]{areaCodes[0]};
-                            List<Store> list = storeService.selectByAreaBrand(corp_code, ids, null,Common.IS_ACTIVE_Y);
+                            List<Store> list = storeService.selectByAreaBrand(corp_code, ids,null, null,Common.IS_ACTIVE_Y);
                             array.add(list.get(0).getStore_code());
                         } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                             String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
                             array.add(store_code);
                         } else {
                             String store_code = user.getStore_code();
+                            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                             String[] ids = store_code.split(",");
                             for (int i = 0; i < ids.length; i++) {
-                                if (ids[i].startsWith(Common.SPECIAL_HEAD)) {
-                                    ids[i] = ids[i].substring(1, ids[i].length());
-                                }
                                 array.add(i, ids[i]);
                             }
                         }
@@ -348,9 +344,9 @@ public class WebController {
     }
 
     /**
-     * app获取FAB列表接口
+     * app获取FAB公开图片接口
      */
-    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/api/fab/publicImg", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String fabPublicImg(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
@@ -390,7 +386,7 @@ public class WebController {
             logger.info("--------brand_code:"+brand_code+"----------- ");
 
             List<Goods> list = goodsService.selectCorpPublicImgs(corp_code,brand_code,search_value);
-            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
+//            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
 
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
@@ -409,33 +405,33 @@ public class WebController {
     /**
      * app获取商品列表（微盟桃花季）
      */
-    @RequestMapping(value = "/api/weimob/goods", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/weimob/goods", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String handleWeimob(HttpServletRequest request) {
+    public String handleWeimobGoods(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String accessToken = generateToken(CommonValue.appID, CommonValue.appSecert);
+            String accessToken = weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
             int rowno = Integer.parseInt(request.getParameter("rowno"));
-            JSONArray goodList = weiMobService.getList(accessToken, rowno);
-            JSONArray classifyList = weiMobService.getClassify(accessToken);
-            JSONArray brandList = weiMobService.getClassifySon(accessToken);
+            JSONArray goodList = new JSONArray();
+//            JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
+//            JSONArray brandList = weimobService.goodsclassifyGetSon(accessToken);
 
             JSONObject message = new JSONObject();
-
             if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
-                logger.debug("-------------111111111111-------------------");
-                goodList = weiMobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
-                logger.debug("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
-            }
-            if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
-                logger.debug("-------------22222222222------------------");
-                goodList = weiMobService.getSearchTitle(accessToken, request.getParameter("key"));
-                logger.debug("handleWeimob Key ->" + request.getParameter("key"));
+                logger.info("-------------111111111111-------------------");
+                goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"),rowno);
+                logger.info("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
+            }else if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
+                logger.info("-------------22222222222------------------");
+                goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"),rowno);
+                logger.info("handleWeimob Key ->" + request.getParameter("key"));
+            }else {
+                goodList = weimobService.getList(accessToken, rowno);
             }
 
             message.put("goodsList", goodList);
-            message.put("brandLists", brandList);
-            message.put("classifyList", classifyList);
+//            message.put("brandLists", brandList);
+//            message.put("classifyList", classifyList);
 
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -446,21 +442,55 @@ public class WebController {
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
-
     }
 
-    public String generateToken(String appID, String appSecert) throws Exception {
-        String accessToken = weiMobService.accessToken;
-        if (accessToken.equals("")) {
-            accessToken = weiMobService.getAccessToken(appID, appSecert);
+
+
+    /**
+     * app获取商品列表（微盟桃花季）
+     */
+    @RequestMapping(value = "/api/weimob/classify", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String handleWeimobClassify(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject message = new JSONObject();
+        try {
+            String accessToken = weimobService.generateToken(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
+            JSONArray classifyList = weimobService.goodsclassifyGet(accessToken);
+            message.put("classifyList", classifyList);
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(message.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
         }
-        Date startTime = weiMobService.startTime;
-        Date nowtime = new Date();
-        long timediff = (nowtime.getTime() - startTime.getTime());
-        if (timediff > 120000) {
-            accessToken = weiMobService.getAccessToken(appID, appSecert);
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * app获取商品列表（微盟桃花季）
+     */
+    @RequestMapping(value = "/api/weimob/auth", method = RequestMethod.GET)
+    @ResponseBody
+    public String weimobAuth(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String code = request.getParameter("code");
+            Weimob weimob = weimobService.selectByCorpId("C10116");
+            weimob.setCode(code);
+            weimobService.update(weimob);
+            weimobService.getAccessTokenByCode(CommonValue.CLIENT_ID, CommonValue.CLIENT_SECRET);
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("3Q");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
         }
-        return accessToken;
+        return dataBean.getJsonStr();
     }
 
 }
