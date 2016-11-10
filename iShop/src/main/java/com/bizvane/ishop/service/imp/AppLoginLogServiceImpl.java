@@ -29,10 +29,6 @@ import java.util.Map;
 public class AppLoginLogServiceImpl implements AppLoginLogService {
     @Autowired
     private AppLoginLogMapper loginLogMapper;
-    @Autowired
-    private StoreMapper storeMapper;
-    @Autowired
-    private StoreService storeService;
 
     @Override
     public PageInfo<AppLoginLog> selectAllAppLoginLog(int page_number, int page_size, String corp_code, String search_value) throws Exception {
@@ -40,19 +36,6 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
         List<AppLoginLog> appLoginLogs = loginLogMapper.selectAllAppLoginLog(corp_code, search_value);
         for (AppLoginLog appLoginLog : appLoginLogs) {
             appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
-            Store store = storeMapper.selectByStoreName(appLoginLog.getCorp_code(), appLoginLog.getStore_name(), Common.IS_ACTIVE_Y);
-            if (store != null) {
-                Store storeById = storeService.getStoreById(store.getId());
-                if (storeById.getBrand_name() != null) {
-                    appLoginLog.setBrand_name(storeById.getBrand_name());
-                } else {
-                    appLoginLog.setBrand_name("");
-                }
-            } else {
-              //  System.out.println("------------------------------");
-                appLoginLog.setBrand_name("");
-
-            }
         }
         PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(appLoginLogs);
         return page;
@@ -98,39 +81,10 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
         List<AppLoginLog> list = loginLogMapper.selectAllScreen(params);
         for (AppLoginLog appLoginLog : list) {
             appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
-            Store store = storeMapper.selectByStoreName(appLoginLog.getCorp_code(), appLoginLog.getStore_name(), Common.IS_ACTIVE_Y);
-            if (store != null) {
-                Store storeById = storeService.getStoreById(store.getId());
-                if (storeById.getBrand_name() != null) {
-                    appLoginLog.setBrand_name(storeById.getBrand_name());
-                } else {
-                    appLoginLog.setBrand_name("");
-                }
-            } else {
-                appLoginLog.setBrand_name("");
-            }
         }
         PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(list);
         return page;
     }
-
-//@Override
-//public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
-//    Map<String, Object> params = new HashMap<String, Object>();
-//    JSONObject date = JSONObject.parseObject(map.get("time_bucket"));
-//    params.put("created_date_start", date.get("start").toString());
-//    params.put("created_date_end", date.get("end").toString());
-//    params.put("corp_code", corp_code);
-//    map.remove("time_bucket");
-//    params.put("map", map);
-//    PageHelper.startPage(page_number, page_size);
-//    List<AppLoginLog> list = loginLogMapper.selectAllScreen(params);
-//    for (AppLoginLog appLoginLog:list) {
-//        appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
-//    }
-//    PageInfo<AppLoginLog> page = new PageInfo<AppLoginLog>(list);
-//    return page;
-//}
 
 
     @Override

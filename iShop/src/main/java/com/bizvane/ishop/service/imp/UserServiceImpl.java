@@ -830,8 +830,8 @@ public class UserServiceImpl implements UserService {
             String area = user.getArea_code();
             String role_code = user.getRole_code();
             if (role_code != null && (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null) {
-                if (store.contains(Common.SPECIAL_HEAD)) {
-                    String store_code1 = store.replace(Common.SPECIAL_HEAD, "");
+                String store_code1 = store.replace(Common.SPECIAL_HEAD, "");
+                if (store_code1.endsWith(",")) {
                     store = store_code1.substring(0, store_code1.length() - 1);
                 }
                 user.setStore_code(store);
@@ -839,11 +839,16 @@ public class UserServiceImpl implements UserService {
                 user.setStore_code("");
             }
             if (role_code != null && role_code.equals(Common.ROLE_AM) && area != null) {
-                if (area.contains(Common.SPECIAL_HEAD)) {
-                    String area_code1 = area.replace(Common.SPECIAL_HEAD, "");
+                String area_code1 = area.replace(Common.SPECIAL_HEAD, "");
+                String store_code1 = store.replace(Common.SPECIAL_HEAD, "");
+                if (area_code1.endsWith(",")) {
                     area = area_code1.substring(0, area_code1.length() - 1);
                 }
                 user.setArea_code(area);
+                if (store_code1.endsWith(",")) {
+                    store = store_code1.substring(0, store_code1.length() - 1);
+                }
+                user.setStore_code(store);
             } else {
                 user.setArea_code("");
             }

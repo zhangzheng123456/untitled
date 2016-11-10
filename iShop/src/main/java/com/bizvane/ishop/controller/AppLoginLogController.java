@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -228,6 +229,7 @@ public class AppLoginLogController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
+            List<AppLoginLog> appLoginLogs1 = new ArrayList<AppLoginLog>();
             for (AppLoginLog appLoginLog:appLoginLogs) {
                 appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
                 appLoginLog.setBrand_name("");
@@ -241,26 +243,27 @@ public class AppLoginLogController {
                             String[] ids = brand_code.split(",");
                             String brand_name = "";
                             for (int i = 0; i < ids.length; i++) {
-                                Brand brand = brandService.getBrandByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
+                                Brand brand = brandService.getBrandByCode(appLoginLog.getCorp_code(), ids[i], Common.IS_ACTIVE_Y);
                                 if (brand != null) {
                                     String brand_name1 = brand.getBrand_name();
-                                    brand_name = brand_name + brand_name1 + ",";
+                                    brand_name = brand_name + brand_name1 + "、";
                                 }
                             }
-                            if (brand_name.endsWith(","))
+                            if (brand_name.endsWith("、"))
                                 brand_name = brand_name.substring(0, brand_name.length() - 1);
                             appLoginLog.setBrand_name(brand_name);
                         }
                     }
                 }
+                appLoginLogs1.add(appLoginLog);
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(appLoginLogs);
+            String json = mapper.writeValueAsString(appLoginLogs1);
 
 
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json,appLoginLogs, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,appLoginLogs1, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
