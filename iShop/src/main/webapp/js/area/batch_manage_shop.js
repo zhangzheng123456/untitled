@@ -202,10 +202,11 @@ function superaddition(data, num) {
 
     for (var i = 0; i < data.length; i++) {
         if (num >= 2) {
-            var a = i + (num-1) * pageSize;
+            var a = i+1 + (num-1) * pageSize;
         } else {
             var a = i + 1;
         }
+        console.log(num);
         $(".table tbody").append("<tr data-action='" + data[i].action_code + "' data-function='" + data[i].function_code + "'>"
             + "<td style='text-align:left;padding-left:22px'>"
             + a
@@ -290,6 +291,7 @@ $("#d_search").click(function () {
 })
 //点击搜索按钮
 $('.r_filrate').click(function () {
+    inx=1;
     value =$('#area_code').val();
     param["searchValue"] = value;
     param["pageNumber"] = inx;
