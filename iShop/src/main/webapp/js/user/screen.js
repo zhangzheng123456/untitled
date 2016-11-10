@@ -38,8 +38,10 @@ $("#screen_add").click(function(){
 		$("#area_num").val("全部");
 		$("#area_num").attr("data-areacode","");
 		$("#brand_num").val("全部");
-		$(".s_pitch span").html("0");
 		$("#brand_num").attr("data-brandcode","");
+		$("#city_num").val("全部");
+		$("#city_num").attr("data-citycode","");
+		$(".s_pitch span").html("0");
 		getstorelist(shop_num);
 		bianse();
 	}
@@ -146,6 +148,13 @@ $("#shop_brand").click(function(){
 })
 //点击店铺的城市
 $("#shop_city").click(function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	$("#screen_shop").hide();
+	$("#screen_city").show();
+	$("#screen_city").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_city .screen_content_l ul").empty();
 	getcitylist();
 })
 //移到右边
@@ -269,6 +278,14 @@ $("#brand_search").keydown(function(){
 		getbrandlist();
 	}
 })
+//城市搜索
+$("#city_search").keydown(function(){
+	var event=window.event||arguments[0];
+	if(event.keyCode==13){
+		$("#screen_city .screen_content_l ul").empty();
+		getcitylist();
+	}
+})
 //店铺放大镜搜索
 $("#store_search_f").click(function(){
 	shop_num=1;
@@ -285,9 +302,15 @@ $("#area_search_f").click(function(){
 	$("#screen_area .screen_content_l ul").empty();
 	getarealist(area_num);
 })
+//品牌放大镜搜索
 $("#brand_search_f").click(function(){
 	$("#screen_brand .screen_content_l ul").empty();
     getbrandlist();
+})
+//城市放大镜搜索
+$("#city_search_f").click(function(){
+	$("#screen_city .screen_content_l ul").empty();
+	getcitylist();
 })
 //区域关闭
 $("#screen_close_area").click(function(){
@@ -304,6 +327,11 @@ $("#screen_close_shop").click(function(){
 //品牌关闭
 $("#screen_close_brand").click(function(){
 	$("#screen_brand").hide();
+	whir.loading.remove();//移除遮罩层
+})
+//城市关闭
+$("#screen_close_city").click(function(){
+	$("#screen_city").hide();
 	whir.loading.remove();//移除遮罩层
 })
 function bianse(){
@@ -420,12 +448,36 @@ $("#screen_que_brand").click(function(){
 	$("#screen_brand").hide();
 	$("#screen_shop").show();
 	var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
-	var shop_num=1;
 	$("#brand_num").val("已选"+num+"个");
+	var shop_num=1;
 	isscroll=false;
 	$("#screen_shop .screen_content_l").unbind("scroll");
 	$("#screen_shop .screen_content_l ul").empty();
 	// $("#screen_shop .screen_content_r ul").empty();
+	getstorelist(shop_num);
+	whir.loading.remove();//移除遮罩层
+})
+//点击区域的城市的确定追加节点
+$("#screen_que_city").click(function(){
+	var li=$("#screen_city .screen_content_r input[type='checkbox']").parents("li");
+	var city_codes="";
+	for(var i=0;i<li.length;i++){
+		var r=$(li[i]).attr("id");
+        if(i<li.length-1){
+            city_codes+=r+",";
+        }else{
+            city_codes+=r;
+        }
+	}
+	$("#city_num").attr("data-citycode",city_codes);
+	var num=$("#screen_city .screen_content_r input[type='checkbox']").parents("li").length;
+	$("#city_num").val("已选"+num+"个");
+	$("#screen_city").hide();
+	$("#screen_shop").show();
+	var shop_num=1;
+	isscroll=false;
+	$("#screen_shop .screen_content_l").unbind("scroll");
+	$("#screen_shop .screen_content_l ul").empty();
 	getstorelist(shop_num);
 	whir.loading.remove();//移除遮罩层
 })
@@ -513,8 +565,9 @@ function getarealist(a){
 //获取店铺列表
 function getstorelist(a){
 	var corp_code = $('#OWN_CORP').val();
-	var area_code =$('#area_num').attr("data-areacode");//
-	var brand_code=$('#brand_num').attr("data-brandcode");
+	var area_code =$('#area_num').attr("data-areacode");//区域编号
+	var brand_code=$('#brand_num').attr("data-brandcode");//品牌编号
+	var city=$('#city_num').attr("data-citycode");//城市编号
 	var searchValue=$("#store_search").val();
 	var pageSize=20;
 	var pageNumber=a;
@@ -522,6 +575,7 @@ function getstorelist(a){
 	_param['corp_code']=corp_code;
 	_param['area_code']=area_code;
 	_param['brand_code']=brand_code;
+	_param['city']=city;
 	_param['searchValue']=searchValue;
 	_param['pageNumber']=pageNumber;
 	_param['pageSize']=pageSize;
@@ -665,11 +719,25 @@ function getcitylist(){
 	var searchValue=$("#brand_search").val();
 	var _param={};
 	_param["corp_code"]=corp_code;
-	_param["searchValue"]=searchValue;
+	_param["search_value"]=searchValue;
 	whir.loading.add("",0.5);//加载等待框
 	$("#mask").css("z-index","10002");
 	oc.postRequire("post","/shop/getCorpCity", "",_param, function(data){
-		console.log(data);
+		var message=JSON.parse(data.message);
+		var list=JSON.parse(message.list);
+		var html="";
+		for(var i=0;i<list.length;i++){
+			html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].city+"' name='test'  class='check'"
+	            + "'/><label"
+	            + "></label></div><span class='p16'>"+list[i].city+"</span></li>"
+		}
+		$("#screen_city .screen_content_l ul").append(html);
+		var li=$("#screen_city .screen_content_r input[type='checkbox']").parents("li");
+		for(var k=0;k<li.length;k++){
+			$("#screen_city .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
+		}
+		bianse();
+		whir.loading.remove();
 	})
 }
 //刷新列表
