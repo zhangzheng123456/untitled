@@ -324,7 +324,7 @@ var oc = new ObjectControl();
                 }else if(input1.checked==false){
                 	can_login="N";
                 }
-				var a=$('.xingming input');
+				var a=$('#all_type .xingming input');
 				var STORE_CODE="";
 				for(var i=0;i<a.length;i++){
 			        var u=$(a[i]).attr("data-code");

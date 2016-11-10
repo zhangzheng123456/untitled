@@ -358,30 +358,23 @@ $("#screen_que_area").click(function(){
 $("#screen_que_shop").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
-	// if(r_code=="R2000"&&li.length>1){
-	// 	art.dialog({
-	// 		zIndex:10003,
-	// 		time: 1,
-	// 		lock: true,
-	// 		cancel: false,
-	// 		content: "导购只能选着一个"
-	// 	});
-	// 	return;
-	// }
-	// if(r_code=="R2000"&&li.length==1){
-	// 	$('.xingming').empty();
-	// }
 	for(var i=0;i<li.length;i++){
 		var a=$('#all_type .xingming input');
-		for(var j=0;j<a.length;j++){
-			if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
-				$(a[j]).parent("p").remove();
-			}
-		}
+		var b=$("#shop .xingming input");
 		if(r_code!=="R4000"){
+			for(var j=0;j<a.length;j++){
+				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+					$(a[j]).parent("p").remove();
+				}
+		    }
 			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
 		};
 		if(r_code=="R4000"){
+			for(var c=0;c<b.length;c++){
+				if($(b[c]).attr("data-code")==$(li[i]).attr("id")){
+					$(b[c]).parent("p").remove();
+				}
+			}
 			$('#shop .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
 		};
 	}
