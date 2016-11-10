@@ -54,6 +54,7 @@ public interface StoreMapper {
 
     List<Store> selectStoreCountByBrand(Map<String, Object> params) throws SQLException;
 
+    List<Store> selectStoreCity(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
     //------------------------StoreQrcodeMapper.xml----------
 

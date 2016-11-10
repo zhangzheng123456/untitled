@@ -38,9 +38,14 @@ public class AppLoginLogController {
     @Autowired
     private TableManagerService managerService;
     String id;
+
+    /**
+     * 列表
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    //列表
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -50,6 +55,7 @@ public class AppLoginLogController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             PageInfo<AppLoginLog> list=new PageInfo<AppLoginLog>();
+            //系统管理员，不传企业编号
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = loginLogService.selectAllAppLoginLog(page_number, page_size, "", "");
             }else {
@@ -80,7 +86,6 @@ public class AppLoginLogController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            //-------------------------------------------------------
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -105,7 +110,11 @@ public class AppLoginLogController {
     }
 
 
-
+    /**
+     * 筛选
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String selectByScreen(HttpServletRequest request) {
