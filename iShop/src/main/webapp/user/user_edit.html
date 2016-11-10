@@ -356,7 +356,7 @@
         </div>
         <div class="screen_que" id="screen_que_area">确定</div>
     </div>
-    <!-- 拉取店铺 -->
+     <!-- 拉取店铺 -->
     <div id="screen_shop" class="screen_area" >
         <div class="screen_title">
             <h4>筛选店铺</h4>
@@ -369,13 +369,17 @@
                     <label>已选品牌</label><input type="text" value="" id="brand_num" data-brandcode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
+                <div class="xuanzhong_p">
+                    <label>已选城市</label><input type="text" value="" id="city_num" data-citycode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_city"></span>
+                </div>
             </div>
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索店铺" id="store_search">
+                <input type="text" placeholder="搜索" id="store_search">
                 <span class="icon-ishop_3-05" id="store_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -439,6 +443,42 @@
             </div>
         </div>
         <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取城市 -->
+    <div id="screen_city" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选城市</h4>
+            <div class="screen_close" id="screen_close_city"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="city_search">
+                <span class="icon-ishop_3-05" id="city_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>   
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+                   
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_city">确定</div>
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
