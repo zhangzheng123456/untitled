@@ -56,7 +56,7 @@ public interface StoreService {
 
     int delete(int id) throws Exception;
 
-    Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception;
+    List<Store> getStoreByName(String corp_code, String store_name,String isactive) throws Exception;
 
     Store storeIdExist(String corp_code, String store_id) throws Exception;
 

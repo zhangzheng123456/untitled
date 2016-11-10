@@ -14,8 +14,5 @@ public interface TableManagerService {
 
     List<TableManager> selByCode(String function_code)throws Exception;
 
-    int updateTable(String table_code,String id);
-
-    List<TableManager> selTableList();
     int insert(TablePrivilege tablePrivilege);
 }

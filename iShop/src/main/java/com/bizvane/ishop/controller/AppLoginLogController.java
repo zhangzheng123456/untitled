@@ -5,9 +5,10 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.AppLoginLog;
 import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.service.AppLoginLogService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.entity.Brand;
+import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,7 +37,10 @@ public class AppLoginLogController {
     @Autowired
     private AppLoginLogService loginLogService;
     @Autowired
-    private TableManagerService managerService;
+    private StoreService storeService;
+    @Autowired
+    private BrandService brandService;
+
     String id;
 
     /**
@@ -72,6 +76,7 @@ public class AppLoginLogController {
         }
         return dataBean.getJsonStr();
     }
+
     //条件查询
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
@@ -217,13 +222,41 @@ public class AppLoginLogController {
                 }
             }
             List<AppLoginLog> appLoginLogs = pageInfo.getList();
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(appLoginLogs);
             if (appLoginLogs.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
+            for (AppLoginLog appLoginLog:appLoginLogs) {
+                appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
+                appLoginLog.setBrand_name("");
+                if (appLoginLog.getStore_name() != null && !appLoginLog.getStore_name().equals("") && appLoginLog.getCorp_code() != null
+                        && !appLoginLog.getCorp_code().equals("")) {
+                    List<Store> stores = storeService.getStoreByName(appLoginLog.getCorp_code(), appLoginLog.getStore_name(), Common.IS_ACTIVE_Y);
+                    if (stores.size() > 0) {
+                        String brand_code = stores.get(0).getBrand_code();
+                        if (brand_code != null && !brand_code.equals("")) {
+                            brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                            String[] ids = brand_code.split(",");
+                            String brand_name = "";
+                            for (int i = 0; i < ids.length; i++) {
+                                Brand brand = brandService.getBrandByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
+                                if (brand != null) {
+                                    String brand_name1 = brand.getBrand_name();
+                                    brand_name = brand_name + brand_name1 + ",";
+                                }
+                            }
+                            if (brand_name.endsWith(","))
+                                brand_name = brand_name.substring(0, brand_name.length() - 1);
+                            appLoginLog.setBrand_name(brand_name);
+                        }
+                    }
+                }
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(appLoginLogs);
+
+
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             String pathname = OutExeclHelper.OutExecl(json,appLoginLogs, map, response, request);
             JSONObject result = new JSONObject();

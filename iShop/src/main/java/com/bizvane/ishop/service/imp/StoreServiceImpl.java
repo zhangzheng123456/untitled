@@ -304,8 +304,8 @@ public class StoreServiceImpl implements StoreService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String store_name = jsonObject.get("store_name").toString().trim();
         Store store = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
-        Store store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
-        if (store == null && store1 == null) {
+        List<Store> store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
+        if (store == null && store1.size()<1) {
             Store shop = new Store();
             shop.setStore_code(store_code);
             shop.setStore_id(store_id);
@@ -469,11 +469,11 @@ public class StoreServiceImpl implements StoreService {
 
         Store store = getById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
-        Store store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
+        List<Store> store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
         if (store.getCorp_code().trim().equalsIgnoreCase(corp_code)) {
             if (store1 != null && store_id != store1.getId()){
                 result = "店铺编号已存在";
-            }else if (store2 != null && store_id != store2.getId()) {
+            }else if (store2.size()>0 && store_id != store2.get(0).getId()) {
                 result = "店铺名称已存在";
             }else {
                 if (!store.getStore_code().trim().equalsIgnoreCase(store_code)) {
@@ -576,8 +576,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception {
-        Store store = this.storeMapper.selectByStoreName(corp_code, store_name,isactive);
+    public List<Store> getStoreByName(String corp_code, String store_name,String isactive) throws Exception {
+        List<Store> store = this.storeMapper.selectByStoreName(corp_code, store_name,isactive);
         return store;
     }
 

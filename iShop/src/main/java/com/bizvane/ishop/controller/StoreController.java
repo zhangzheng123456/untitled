@@ -987,9 +987,9 @@ public class StoreController {
             String store_name = jsonObject.get("store_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
 
-            if (store != null) {
+            if (store.size() > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("店铺名称已被使用");
@@ -1385,8 +1385,8 @@ public class StoreController {
                 if(column1[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Store store = storeService.getStoreByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
-                if (store != null) {
+                List<Store> store = storeService.getStoreByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                if (store.size() > 0) {
                     result = "：第" + (i + 1) + "行店铺名称已存在";
                     int b = 5 / 0;
                     break;
