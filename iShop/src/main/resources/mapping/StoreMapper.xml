@@ -200,7 +200,12 @@
                 def_store.brand_code regexp #{item}
             </foreach>
         </if>
-
+        <if test="city != null and city !=''">
+        AND def_store.city IN
+          <foreach collection="city" index="index" item="item" separator="," open="(" close=")">
+              #{item}
+          </foreach>
+        </if>
         <if test="search_value != null and search_value !=''">
             and def_store.store_name like concat('%',#{search_value},'%')
         </if>
@@ -729,4 +734,15 @@
         ORDER BY ds.id DESC
     </select>
 
+    <select id="selectStoreCity" resultType="com.bizvane.ishop.entity.Store">
+        SELECT city
+        FROM def_store
+        WHERE isactive= 'Y'
+        AND corp_code = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND def_store.city LIKE concat('%',#{search_value},'%')
+        </if>
+        GROUP BY city
+        ORDER BY city;
+    </select>
 </mapper>

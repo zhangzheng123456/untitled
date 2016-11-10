@@ -68,6 +68,8 @@ public interface StoreService {
 
     PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception;
 
+    PageInfo<Store> selStoreByAreaBrandCity(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value,String area_store_code,String city) throws Exception ;
+
     List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception ;
 
     List<Store> selectByAreaBrand(String corp_code, String[] area_code,String[] store_codes, String[] brand_code, String isactive) throws Exception;
@@ -79,6 +81,8 @@ public interface StoreService {
     String insertExecl(Store store) throws Exception;
 
     PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map) throws Exception;
+
+    List<Store> selectStoreCity(String corp_code,String search_value) throws Exception;
 
     int deleteStoreQrcode(String corp_code,String store_code) throws Exception;
 
