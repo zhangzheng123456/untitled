@@ -144,6 +144,10 @@ $("#shop_brand").click(function(){
 	// $("#screen_brand .screen_content_r ul").empty();
 	getbrandlist();
 })
+//点击店铺的城市
+$("#shop_city").click(function(){
+	getcitylist();
+})
 //移到右边
 function removeRight(a,b){
 	var li="";
@@ -655,6 +659,19 @@ function getbrandlist(){
 		}
 	})
 };
+//获取城市列表
+function getcitylist(){
+	var corp_code = $('#OWN_CORP').val();
+	var searchValue=$("#brand_search").val();
+	var _param={};
+	_param["corp_code"]=corp_code;
+	_param["searchValue"]=searchValue;
+	whir.loading.add("",0.5);//加载等待框
+	$("#mask").css("z-index","10002");
+	oc.postRequire("post","/shop/getCorpCity", "",_param, function(data){
+		console.log(data);
+	})
+}
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
 	window.location.reload();
