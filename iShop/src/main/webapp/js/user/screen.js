@@ -144,6 +144,10 @@ $("#shop_brand").click(function(){
 	// $("#screen_brand .screen_content_r ul").empty();
 	getbrandlist();
 })
+//点击店铺的城市
+$("#shop_city").click(function(){
+	getcitylist();
+})
 //移到右边
 function removeRight(a,b){
 	var li="";
@@ -292,6 +296,7 @@ $("#screen_close_area").click(function(){
 })
 //店铺关闭
 $("#screen_close_shop").click(function(){
+	$("#screen_area").attr("type","");
 	$("#screen_shop").hide();
 	whir.loading.remove();//移除遮罩层
 	$("#screen_shop .screen_content_l").unbind("scroll");
@@ -321,7 +326,7 @@ $("#screen_que_area").click(function(){
         }else{
             area_codes+=r;
         }
-        if(r_code=="R4000"){
+        if(r_code=="R4000"&&type!="1"){
         	for(var j=0;j<a.length;j++){
 				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
 					$(a[j]).parent("p").remove();
@@ -330,11 +335,12 @@ $("#screen_que_area").click(function(){
 			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
 		}
 	}
-	if(r_code=="R2000"||r_code=="R3000"){
+	if(r_code=="R2000"||r_code=="R3000"||(r_code=="R4000"&&type=="1")){
 		$("#area_num").attr("data-areacode",area_codes);
 		var arr=whir.loading.getPageSize();
 		var left=(arr[0]-$("#screen_shop").width())/2;
 		var tp=(arr[1]-$("#screen_shop").height())/2+80;
+		$("#screen_area").attr("type","");
 		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
 		$("#screen_area").hide();
 		$("#screen_shop").show();
@@ -356,30 +362,23 @@ $("#screen_que_area").click(function(){
 $("#screen_que_shop").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
-	// if(r_code=="R2000"&&li.length>1){
-	// 	art.dialog({
-	// 		zIndex:10003,
-	// 		time: 1,
-	// 		lock: true,
-	// 		cancel: false,
-	// 		content: "导购只能选着一个"
-	// 	});
-	// 	return;
-	// }
-	// if(r_code=="R2000"&&li.length==1){
-	// 	$('.xingming').empty();
-	// }
 	for(var i=0;i<li.length;i++){
 		var a=$('#all_type .xingming input');
-		for(var j=0;j<a.length;j++){
-			if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
-				$(a[j]).parent("p").remove();
-			}
-		}
+		var b=$("#shop .xingming input");
 		if(r_code!=="R4000"){
+			for(var j=0;j<a.length;j++){
+				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+					$(a[j]).parent("p").remove();
+				}
+		    }
 			$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
 		};
 		if(r_code=="R4000"){
+			for(var c=0;c<b.length;c++){
+				if($(b[c]).attr("data-code")==$(li[i]).attr("id")){
+					$(b[c]).parent("p").remove();
+				}
+			}
 			$('#shop .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
 		};
 	}
@@ -660,6 +659,19 @@ function getbrandlist(){
 		}
 	})
 };
+//获取城市列表
+function getcitylist(){
+	var corp_code = $('#OWN_CORP').val();
+	var searchValue=$("#brand_search").val();
+	var _param={};
+	_param["corp_code"]=corp_code;
+	_param["searchValue"]=searchValue;
+	whir.loading.add("",0.5);//加载等待框
+	$("#mask").css("z-index","10002");
+	oc.postRequire("post","/shop/getCorpCity", "",_param, function(data){
+		console.log(data);
+	})
+}
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
 	window.location.reload();

@@ -34,15 +34,6 @@ public class TableManagerServiceImpl implements TableManagerService {
         return managerMapper.selByCode(function_code);
     }
 
-    @Override
-    public int updateTable(String table_code, String id) {
-        return managerMapper.updateTable(table_code,id);
-    }
-
-    @Override
-    public List<TableManager> selTableList() {
-        return managerMapper.selTableList();
-    }
 
     @Override
     public int insert(TablePrivilege tablePrivilege) {

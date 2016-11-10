@@ -304,8 +304,8 @@ public class StoreServiceImpl implements StoreService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String store_name = jsonObject.get("store_name").toString().trim();
         Store store = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
-        Store store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
-        if (store == null && store1 == null) {
+        List<Store> store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
+        if (store == null && store1.size()<1) {
             Store shop = new Store();
             shop.setStore_code(store_code);
             shop.setStore_id(store_id);
@@ -469,11 +469,11 @@ public class StoreServiceImpl implements StoreService {
 
         Store store = getById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
-        Store store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
+        List<Store> store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
         if (store.getCorp_code().trim().equalsIgnoreCase(corp_code)) {
             if (store1 != null && store_id != store1.getId()){
                 result = "店铺编号已存在";
-            }else if (store2 != null && store_id != store2.getId()) {
+            }else if (store2.size()>0 && store_id != store2.get(0).getId()) {
                 result = "店铺名称已存在";
             }else {
                 if (!store.getStore_code().trim().equalsIgnoreCase(store_code)) {
@@ -576,8 +576,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception {
-        Store store = this.storeMapper.selectByStoreName(corp_code, store_name,isactive);
+    public List<Store> getStoreByName(String corp_code, String store_name,String isactive) throws Exception {
+        List<Store> store = this.storeMapper.selectByStoreName(corp_code, store_name,isactive);
         return store;
     }
 
@@ -593,7 +593,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code,String[] store_codes, String[] brand_code, String search_value) throws Exception{
+    public PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code,String[] store_codes,
+                                             String[] brand_code, String search_value) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
@@ -635,8 +636,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception {
-
+    public PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code,
+                                                   String search_value,String area_store_code) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", "");
@@ -670,7 +671,44 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception {
+    public PageInfo<Store> selStoreByAreaBrandCity(int page_number, int page_size, String corp_code, String area_code, String brand_code,
+                                                   String search_value,String area_store_code,String city) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_code", "");
+        params.put("store_codes", "");
+        params.put("brand_code", "");
+        params.put("city", city);
+        if (!area_store_code.equals("")){
+            area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+            String[] store_codes = area_store_code.split(",");
+            params.put("store_codes", store_codes);
+        }
+        if (!area_code.equals("")){
+            String[] areaCodes = area_code.split(",");
+            for (int i = 0; i < areaCodes.length; i++) {
+                areaCodes[i] = Common.SPECIAL_HEAD +areaCodes[i]+",";
+            }
+            params.put("area_code", areaCodes);
+        }
+        if (!brand_code.equals("")){
+            String[] brandCodes = brand_code.split(",");
+            for (int i = 0; i < brandCodes.length; i++) {
+                brandCodes[i] = Common.SPECIAL_HEAD +brandCodes[i]+",";
+            }
+            params.put("brand_code", brandCodes);
+        }
+        params.put("search_value", search_value);
+        params.put("isactive", "Y");
+        PageHelper.startPage(page_number, page_size);
+        List<Store> stores = storeMapper.selStoreByAreaBrand(params);
+        PageInfo<Store> page = new PageInfo<Store>(stores);
+        return page;
+    }
+
+    @Override
+    public List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code,
+                                               String search_value,String area_store_code) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", "");
@@ -745,6 +783,9 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.selectCount(created_date);
     }
 
+    public List<Store> selectStoreCity(String corp_code,String search_value) throws Exception{
+        return storeMapper.selectStoreCity(corp_code,search_value);
+    }
     /**
      * 更改店铺编号时
      * 级联更改关联此编号的员工，员工业绩目标，店铺业绩目标，签到列表
@@ -829,8 +870,7 @@ public class StoreServiceImpl implements StoreService {
     public List<Store> selectStore(String corp_code, String store_codes) throws SQLException {
         String[] storeArray = null;
         if (null != store_codes && !store_codes.isEmpty()) {
-            if (store_codes.contains(Common.SPECIAL_HEAD))
-                store_codes = store_codes.replace(Common.SPECIAL_HEAD, "");
+            store_codes = store_codes.replace(Common.SPECIAL_HEAD, "");
             storeArray = store_codes.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
