@@ -70,6 +70,7 @@ public class AppLoginLogController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -105,6 +106,7 @@ public class AppLoginLogController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -269,6 +271,7 @@ public class AppLoginLogController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);

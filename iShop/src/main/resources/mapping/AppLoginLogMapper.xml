@@ -6,6 +6,7 @@
         <id column="id" property="id"/>
         <result column="platform" property="platform" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="time" property="time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -25,6 +26,7 @@
         acc_app_login_log.store_name,
         acc_app_login_log.position,
         acc_app_login_log.phone,
+        acc_app_login_log.corp_code,
       def_corp.corp_name,
       acc_app_login_log.time,
       acc_app_login_log.created_date
@@ -54,6 +56,7 @@
         acc_app_login_log.store_name,
         acc_app_login_log.position,
         acc_app_login_log.phone,
+        acc_app_login_log.corp_code,
         def_corp.corp_name,
         acc_app_login_log.time,
         acc_app_login_log.created_date
