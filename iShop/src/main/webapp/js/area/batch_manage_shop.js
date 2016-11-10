@@ -243,6 +243,7 @@ function superaddition(data, num) {
 };
 //页面加载时list请求
 function GET(a, b) {
+    whir.loading.add("",0.5);
     corp_code = $("#OWN_CORP").val();
     param["pageNumber"] = a;
     param["pageSize"] = b;
@@ -267,6 +268,7 @@ function GET(a, b) {
         } else if (data.code == "-1") {
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     });
 }
 //鼠标按下时触发的收索
@@ -286,8 +288,17 @@ $("#d_search").click(function () {
     param["pageSize"] = pageSize;
     POST(inx,pageSize);
 })
+//点击搜索按钮
+$('.r_filrate').click(function () {
+    value =$('#area_code').val();
+    param["searchValue"] = value;
+    param["pageNumber"] = inx;
+    param["pageSize"] = pageSize;
+    POST(inx,pageSize);
+});
 //搜索的请求函数
 function POST(a,b) {
+    whir.loading.add("",0.5);
     corp_code = $("#OWN_CORP").val();
     param["pageNumber"] = a;
     param["pageSize"] = b;
@@ -315,6 +326,7 @@ function POST(a,b) {
         } else if (data.code == "-1") {
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 }
 //弹框

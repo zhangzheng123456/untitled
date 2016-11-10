@@ -47,7 +47,6 @@ var oc = new ObjectControl();
 				var download_addr='';
 				var corp_code='';
 				var is_force_update='';
-				var ISACTIVE='';
 			}else {
 				var platform = $('#platform').val();//运行平台
 				var download_addr = $("#download_addr").val();//下载地址
@@ -55,6 +54,7 @@ var oc = new ObjectControl();
 				var corp_code = $("#corp_code").val();//企业编号
 				var force_update = $("#is_force_update").val();//是否强制升级
 				var version_describe = $("#version_describe").val();//版本说明
+			}
 				var ISACTIVE = "";
 				var input = $("#is_active")[0];
 				if (input.checked == true) {
@@ -68,7 +68,6 @@ var oc = new ObjectControl();
 				} else if (force_update == "否") {
 					is_force_update = "N";
 				}
-			}
 				var _command = "/appversion/add";//接口名
 				var opt = {//返回成功后的操作
 					success: function () {
@@ -99,8 +98,6 @@ var oc = new ObjectControl();
 					var download_addr='';
 					var corp_code='';
 					var is_force_update='';
-					var ISACTIVE='';
-					var ID = sessionStorage.getItem("id");
 				}else {
 					var platform = $('#platform').val();//运行平台
 					var download_addr = $("#download_addr").val();//下载地址
@@ -108,6 +105,7 @@ var oc = new ObjectControl();
 					var corp_code = $("#corp_code").val();//企业编号
 					var force_update = $("#is_force_update").val();//是否强制升级
 					var version_describe = $("#version_describe").val();//版本说明
+				}
 					var ISACTIVE = "";
 					var input = $("#is_active")[0];
 					var ID = sessionStorage.getItem("id");
@@ -122,7 +120,6 @@ var oc = new ObjectControl();
 					} else if (force_update == "否") {
 						is_force_update = "N";
 					}
-				}
 				var _command="/appversion/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){

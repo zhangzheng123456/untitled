@@ -8135,7 +8135,7 @@ li.select_index>a>label>i{
    display: none;
    top:30%;
    left:40%;
-   z-index: 10000;
+   z-index: 20000;
    width:280px;
    min-height: 240px;
    border-radius: 5px;
@@ -8149,7 +8149,6 @@ li.select_index>a>label>i{
    min-height: 150px;
    width: 100%;
    padding-top: 50px;
-   text-align: center;
    padding-left: 30px;
    padding-right: 30px;
  }
