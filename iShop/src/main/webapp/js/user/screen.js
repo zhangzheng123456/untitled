@@ -35,6 +35,7 @@ $("#screen_add").click(function(){
 		$("#screen_area .screen_content_r ul").empty();
 		$("#screen_brand .screen_content_l ul").empty();
 		$("#screen_brand .screen_content_r ul").empty();
+		$("#screen_city .screen_content_r ul").empty();
 		$("#area_num").val("全部");
 		$("#area_num").attr("data-areacode","");
 		$("#brand_num").val("全部");
@@ -60,6 +61,7 @@ $("#screen_add").click(function(){
 		$("#screen_shop .screen_content_r ul").empty();
 		$("#screen_brand .screen_content_l ul").empty();
 		$("#screen_brand .screen_content_r ul").empty();
+		$("#screen_city .screen_content_r ul").empty();
 		$(".s_pitch span").html("0");
 		getarealist(area_num);
 		bianse();
