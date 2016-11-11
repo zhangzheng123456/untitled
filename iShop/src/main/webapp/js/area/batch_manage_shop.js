@@ -292,11 +292,43 @@ $("#d_search").click(function () {
 //点击搜索按钮
 $('.r_filrate').click(function () {
     inx=1;
-    value =$('#area_code').val();
+    if($(this).next().text().trim()=='显示当前区域店铺'){
+        $(this).next().html('显示全部店铺');
+        $(this).attr('style','color:#50a3aa');
+        value =$('#area_code').val();
+    }else{
+        $(this).next().html('显示当前区域店铺');
+        $(this).attr('style','color:#fff');
+        value ='';
+    }
     param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
     POST(inx,pageSize);
+});
+//点击搜索按钮提示与否
+$('.r_filrate').hover(function () {
+    $(this).next().show();
+},function () {
+    $(this).next().hide();
+});
+$("#filtrate").click(function(){//点击筛选框弹出下拉框
+    $(".sxk").slideToggle();
+})
+$("#pack_up").click(function(){//点击收回 取消下拉框
+    $(".sxk").slideUp();
+})
+//点击清空  清空input的value值
+$("#empty").click(function(){
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+})
+$('#find').click(function () {
+    var input=$(".inputs input");
+    
 });
 //搜索的请求函数
 function POST(a,b) {
