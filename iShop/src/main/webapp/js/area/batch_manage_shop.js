@@ -214,11 +214,11 @@ function superaddition(data, num) {
             + data[i].store_code
             + "</td><td>"
             + data[i].store_name
-            + "</td><td>"
+            + "</td><td><span title='"+data[i].area_name+"'>"
             + data[i].area_name
-            + "</td><td>"
+            + "</span></td><td><span title='"+data[i].brand_name+"'>"
             + data[i].brand_name
-            + "</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='" + data[i].id + "'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            + "</span></td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='" + data[i].id + "'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -276,15 +276,35 @@ function GET(a, b) {
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function () {
+    param={};
     var event = window.event || arguments[0];
     value = this.value.replace(/\s+/g, "");
     param["searchValue"] = value;
     if (event.keyCode == 13) {
+        //显示样式
+        $('.r_filrate').next().html('显示当前区域店铺');
+        $('.r_filrate').attr('style','color:#fff');
+        var input=$(".inputs input");
+        for(var i=0;i<input.length;i++){
+            input[i].value="";
+            $(input[i]).attr("data-code","");
+        }
+        $(".sxk").slideUp();
         POST(inx,pageSize);
     }
 });
 //点击放大镜触发搜索
 $("#d_search").click(function () {
+    //显示样式
+    $('.r_filrate').next().html('显示当前区域店铺');
+    $('.r_filrate').attr('style','color:#fff');
+    param={};
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+    $(".sxk").slideUp();
     value = $("#search").val().replace(/\s+/g, "");
     param["searchValue"] = value;
     param["pageNumber"] = inx;
@@ -293,16 +313,28 @@ $("#d_search").click(function () {
 })
 //点击搜索按钮
 $('.r_filrate').click(function () {
+    param={};
     inx=1;
+    var searchAreaCode='';
+    //清空搜索内容
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+    $(".sxk").slideUp();
+    $("#search").val('');
     if($(this).next().text().trim()=='显示当前区域店铺'){
         $(this).next().html('显示全部店铺');
         $(this).attr('style','color:#50a3aa');
-        value =$('#area_code').val();
+        value ='';
+        searchAreaCode=$('#area_code').val();
     }else{
         $(this).next().html('显示当前区域店铺');
         $(this).attr('style','color:#fff');
         value ='';
     }
+    param['searchAreaCode']=searchAreaCode;
     param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
@@ -327,10 +359,37 @@ $("#empty").click(function(){
         input[i].value="";
         $(input[i]).attr("data-code","");
     }
-})
+    $('#find').trigger('click');
+});
+$(".inputs input").keydown(function () {
+    var event = window.event || arguments[0];
+    value = this.value.replace(/\s+/g, "");
+    param["searchValue"] = value;
+    if (event.keyCode == 13) {
+        $('#find').trigger('click');
+    }
+});
 $('#find').click(function () {
+    //显示样式
+    $('.r_filrate').next().html('显示当前区域店铺');
+    $('.r_filrate').attr('style','color:#fff');
+    $("#search").val('');
+    param={};
+    value=''
     var input=$(".inputs input");
-    
+        inx=1;
+      var  list=[];//定义一个list
+    console.log(list);
+        for(var i=0;i<input.length;i++){
+            var screen_key=$(input[i]).attr("id");
+            var screen_value=$(input[i]).val().trim();
+            var param1={"screen_key":screen_key,"screen_value":screen_value};
+            list.push(param1);
+        }
+    param["list"]=list;
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    POST(inx,pageSize);
 });
 //搜索的请求函数
 function POST(a,b) {
