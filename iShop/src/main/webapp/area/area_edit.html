@@ -27,6 +27,12 @@
             color: #fff;
             font-size: 18px;
         }
+        .r_filrate_hint{
+            margin-left: 10px;
+            font-size: 12px;
+            color: #888;
+            display:none;
+        }
     </style>
 </head>
 
@@ -114,6 +120,9 @@
                        <li class="r_filrate">
                            <i class="icon-ishop_6-05"></i>
                        </li>
+                       <li class="r_filrate_hint">
+                           显示当前区域店铺
+                       </li>
                    </ul>
                </div>
                <div class="list_r">
@@ -164,21 +173,22 @@
                        </li>
                    </ul>
                </div>
-               <!-- <div class="action_r">
+                <div class="action_r">
                    <ul>
                        <li id="filtrate">
                            <span class="icon-ishop_6-05"></span>
+                           筛选
                        </li>
-                       <li class="bg">
-                           <span class="icon-ishop_6-07"></span>
-                           刷新
-                       </li>
-                       <li>
-                           <span class="icon-ishop_6-08"></span>
-                           更多
-                       </li>
+                       <!--<li class="bg">-->
+                           <!--<span class="icon-ishop_6-07"></span>-->
+                           <!--刷新-->
+                       <!--</li>-->
+                       <!--<li>-->
+                           <!--<span class="icon-ishop_6-08"></span>-->
+                           <!--更多-->
+                       <!--</li>-->
                    </ul>
-               </div> -->
+               </div>
            </div>
            <div class="sxk" id="sxk">
                <div class="sbtn">
@@ -198,19 +208,19 @@
                </div>
                <div class="inputs">
                    <li>
-                       <label>公司名称</label>
+                       <label>店铺编号</label>
                        <input type="text" id="p1">
                    </li>
                    <li>
-                       <label>联系人</label>
+                       <label>店铺名称</label>
                        <input type="text" id="p2">
                    </li>
                    <li>
-                       <label>修改人</label>
+                       <label>所属区域</label>
                        <input type="text" id="p3">
                    </li>
                    <li>
-                       <label>联系电话</label>
+                       <label>所属品牌</label>
                        <input type="text" id="p4">
                    </li>
                </div>
@@ -222,7 +232,8 @@
                        <th style="text-align: left; padding-left: 22px;">序号</th>
                        <th>店铺编号</th>
                        <th>店铺名称</th>
-                       <th>区域编号</th>
+                       <th>所属区域</th>
+                       <th>所属品牌</th>
                        <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                    </tr>
                    </thead>

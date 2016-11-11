@@ -99,6 +99,12 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        <if test="search_area_code != null and search_area_code !=''">
+            AND def_store.area_code LIKE concat('%',#{search_area_code},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND def_store.isactive = #{isactive}
+        </if>
         AND def_corp.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
@@ -152,6 +158,9 @@
             <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
                 def_store.brand_code REGEXP #{item}
             </foreach>
+        </if>
+        <if test="search_area_code != null and search_area_code !=''">
+            AND def_store.area_code LIKE concat('%',#{search_area_code},'%')
         </if>
         <if test="search_value != null and search_value !=''">
             AND
@@ -520,10 +529,17 @@
             AND ds.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null and area_codes!=''">
-            AND
+            AND (
             <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
                 ds.area_code REGEXP #{item}
             </foreach>
+            <if test="area_store_codes != null and area_store_codes !=''">
+                OR def_store.store_code IN
+                <foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
         </if>
         <if test="brand_codes != null and brand_codes!=''">
             AND
@@ -561,6 +577,9 @@
                 </choose>
             </foreach>
         </if>
+        <if test="isactive != null and isactive!=''">
+            ds.isactive = #{isactive}
+        </if>
         AND dc.isactive = 'Y'
         AND da.isactive = 'Y'
         AND db.isactive = 'Y'
@@ -588,10 +607,17 @@
             AND ds.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null and area_codes!=''">
-            AND
+            AND (
             <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
                 ds.area_code REGEXP #{item}
             </foreach>
+            <if test="store_codes != null and store_codes !=''">
+                OR def_store.store_code IN
+                <foreach collection="store_codes" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
         </if>
         <if test="brand_codes != null and brand_codes!=''">
             AND
@@ -621,74 +647,12 @@
                 </choose>
             </foreach>
         </if>
+        <if test="isactive != null and isactive!=''">
+            ds.isactive = #{isactive}
+        </if>
         AND dc.isactive = 'Y'
         GROUP BY ds.id
         ORDER BY ds.id DESC
-    </select>
-
-    <select id="selectAllStoresByCorpCode" resultType="com.bizvane.ishop.entity.Store">
-        SELECT
-        def_store.id,
-        store_code,
-        store_name,
-        def_store.area_code,
-        def_store.corp_code,
-        def_corp.corp_name
-        FROM def_store,def_corp
-        WHERE def_store.corp_code = def_corp.corp_code
-            AND def_store.corp_code = #{corp_code}
-        <if test="search_value != null and search_value !=''">
-            AND
-            (def_store.store_code LIKE concat('%',#{search_value},'%')
-            OR def_store.store_name LIKE concat('%',#{search_value},'%')
-            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
-            OR def_store.area_code LIKE concat('%',#{search_value},'%')
-            )
-        </if>
-        AND def_corp.isactive = 'Y'
-        AND def_store.isactive = 'Y'
-        ORDER BY def_store.id DESC
-    </select>
-
-    <!--搜索支持搜area_code-->
-    <select id="selectAllStoresByAreaBrand" resultType="com.bizvane.ishop.entity.Store">
-        select
-        def_store.id,
-        store_code,
-        store_name,
-        def_store.area_code,
-        def_store.corp_code,
-        def_corp.corp_name
-        from def_store,def_corp
-        WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = #{corp_code}
-        <if test="area_code != null and area_code !=''">
-            AND
-            <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
-                def_store.area_code regexp #{item}
-            </foreach>
-        </if>
-        <if test="brand_code != null and brand_code !=''">
-            AND
-            <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
-                def_store.brand_code regexp #{item}
-            </foreach>
-        </if>
-
-        <if test="search_value != null and search_value !=''">
-            AND
-            (def_store.store_code LIKE concat('%',#{search_value},'%')
-            OR def_store.store_name LIKE concat('%',#{search_value},'%')
-            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
-            OR def_store.area_code LIKE concat('%',#{search_value},'%')
-            )
-        </if>
-        <if test="isactive != null and isactive !=''">
-            AND def_store.isactive = #{isactive}
-        </if>
-        AND def_corp.isactive = 'Y'
-        GROUP BY def_store.id
-        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectStoreCountByArea" resultType="com.bizvane.ishop.entity.Store">
@@ -739,6 +703,8 @@
         FROM def_store
         WHERE isactive= 'Y'
         AND corp_code = #{corp_code}
+        AND city IS NOT NULL
+        AND city != ""
         <if test="search_value != null and search_value !=''">
             AND def_store.city LIKE concat('%',#{search_value},'%')
         </if>

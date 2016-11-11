@@ -139,10 +139,12 @@ public class StoreServiceImpl implements StoreService {
 
 
     //分页显示所有店铺
-    public PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception{
+    public PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value,String isactive,String search_area_code) throws Exception{
         List<Store> shops;
         PageHelper.startPage(page_number, page_size);
-        shops = storeMapper.selectAllStore(corp_code, search_value);
+        if (!search_area_code.equals(""))
+            search_area_code = Common.SPECIAL_HEAD+search_area_code+",";
+        shops = storeMapper.selectAllStore(corp_code, search_value,isactive,search_area_code);
 
         for (int i=0;i<shops.size();i++) {
             Store store = getStoreById(shops.get(i).getId());
@@ -376,17 +378,23 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map) throws Exception{
+    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes
+            ,String store_codes, Map<String, String> map,String area_store_codes,String isactive) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         String[] areas = null;
         String[] brands = null;
         String[] stores = null;
+        String[] area_stores = null;
         if (!area_codes.equals("")) {
             area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
             areas = area_codes.split(",");
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = Common.SPECIAL_HEAD+areas[i]+",";
             }
+        }
+        if (!area_store_codes.equals("")){
+            area_store_codes = area_store_codes.replace(Common.SPECIAL_HEAD,"");
+            area_stores = area_store_codes.split(",");
         }
         if (!brand_codes.equals("")) {
             brand_codes = brand_codes.replace(Common.SPECIAL_HEAD,"");
@@ -396,10 +404,8 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         if (!store_codes.equals("")) {
+            store_codes = store_codes.replace(Common.SPECIAL_HEAD,"");
             stores = store_codes.split(",");
-            for (int i = 0; stores != null && i < stores.length; i++) {
-                stores[i] = stores[i].substring(1, stores[i].length());
-            }
         }
         int flg = 0;
         for (int i = 0; i < map.size(); i++) {
@@ -414,7 +420,9 @@ public class StoreServiceImpl implements StoreService {
         params.put("area_codes", areas);
         params.put("brand_codes", brands);
         params.put("store_codes", stores);
+        params.put("area_store_codes", area_stores);
         params.put("map", map);
+        params.put("isactive", isactive);
         List<Store> shops;
         if (flg == 1) {
             PageHelper.startPage(page_number, page_size);
@@ -594,14 +602,17 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code,String[] store_codes,
-                                             String[] brand_code, String search_value) throws Exception{
+                                             String[] brand_code, String search_value,String isactive,String search_area_code) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
+        if (!search_area_code.equals(""))
+            search_area_code = Common.SPECIAL_HEAD+search_area_code+",";
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
         params.put("store_codes", store_codes);
         params.put("brand_code", brand_code);
         params.put("search_value", search_value);
-        params.put("isactive", "");
+        params.put("isactive", isactive);
+        params.put("search_area_code", search_area_code);
         PageHelper.startPage(page_number, page_size);
         List<Store> shops = storeMapper.selectByAreaBrand(params);
 
@@ -678,7 +689,11 @@ public class StoreServiceImpl implements StoreService {
         params.put("area_code", "");
         params.put("store_codes", "");
         params.put("brand_code", "");
-        params.put("city", city);
+        params.put("city", "");
+        if(!city.equals("")){
+            String[] citys = city.split(",");
+            params.put("city", citys);
+        }
         if (!area_store_code.equals("")){
             area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
             String[] store_codes = area_store_code.split(",");

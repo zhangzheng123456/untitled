@@ -318,35 +318,4 @@ public class AreaNewServiceImpl implements AreaNewService{
         return areas;
     }
 
-    @Override
-    public PageInfo<Store> getAllStoresByCorpCode(int page_number, int page_size, String corp_code, String search_value, String area_code) throws Exception {
-
-        PageHelper.startPage(page_number, page_size);
-        List<Store> stores = storeMapper.selectAllStoresByCorpCode(corp_code, search_value);
-        PageInfo<Store> page = new PageInfo<Store>(stores);
-        List<Store> stores1 = page.getList();
-        for (int i = 0; i < stores1.size(); i++) {
-            Store store = stores1.get(i);
-            if (store.getArea_code() != null) {
-                String area = store.getArea_code();
-                if (area.contains(Common.SPECIAL_HEAD+area_code+",")){
-                    store.setIs_this_area("Y");
-                }
-                area = area.replace(Common.SPECIAL_HEAD,"");
-                if (area.endsWith(","))
-                    area = area.substring(0,area.length()-1);
-                store.setArea_code(area);
-            } else {
-                if (store.getArea_code() == null) {
-                    store.setArea_code("");
-                }
-                store.setIs_this_area("N");
-            }
-        }
-        page.setList(stores1);
-        return page;
-
-
-    }
-
 }
