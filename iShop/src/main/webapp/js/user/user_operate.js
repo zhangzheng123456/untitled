@@ -117,7 +117,7 @@ var oc = new ObjectControl();
 				var input=$("#is_active")[0];//是否可用
 				if(OWN_RIGHT==""){//群组
 					art.dialog({
-							time: 2,
+							time: 1,
 							lock:true,
 							cancel: false,
 							content:"所属群组不能为空"
@@ -168,7 +168,7 @@ var oc = new ObjectControl();
 					if(STORE_CODE==""){
 						if(r_code=="R2000"||r_code=="R3000"){
 							art.dialog({
-								time: 2,
+								time: 1,
 								lock:true,
 								cancel: false,
 								content:"所属店铺不能为空"
@@ -177,7 +177,7 @@ var oc = new ObjectControl();
 						}
 						if(r_code=="R4000"){
 							art.dialog({
-								time: 2,
+								time: 1,
 								lock:true,
 								cancel: false,
 								content:"所属区域不能为空"
@@ -186,7 +186,7 @@ var oc = new ObjectControl();
 						}
 						if(r_code=="R4800"){
 							art.dialog({
-								time: 2,
+								time: 1,
 								lock:true,
 								cancel: false,
 								content:"所属品牌不能为空"
@@ -303,7 +303,7 @@ var oc = new ObjectControl();
 				}
 				if(OWN_RIGHT==""){//群组
 					art.dialog({
-						time: 2,
+						time: 1,
 						lock:true,
 						cancel: false,
 						content:"所属群组不能为空"
@@ -349,7 +349,7 @@ var oc = new ObjectControl();
 					if(STORE_CODE==""){
 						if(r_code=="R2000"||r_code=="R3000"){
 							art.dialog({
-								time: 2,
+								time: 1,
 								lock:true,
 								cancel: false,
 								content:"所属店铺不能为空"
@@ -358,7 +358,7 @@ var oc = new ObjectControl();
 						}
 						if(r_code=="R4000"){
 							art.dialog({
-								time: 2,
+								time: 1,
 								lock:true,
 								cancel: false,
 								content:"所属区域不能为空"
@@ -367,7 +367,7 @@ var oc = new ObjectControl();
 						}
 						if(r_code=="R4800"){
 							art.dialog({
-								time: 2,
+								time: 1,
 								lock:true,
 								cancel: false,
 								content:"所属品牌不能为空"
@@ -441,7 +441,7 @@ var oc = new ObjectControl();
                 }
                 if(_command=="/user/edit"){
                     art.dialog({
-                        time: 2,
+                        time: 1,
                         lock: true,
                         cancel: false,
                         content:"保存成功"
@@ -527,7 +527,7 @@ function role_data(c){//
 			}
 		}else{
 			art.dialog({
-				time: 2,
+				time: 1,
 				lock:true,
 				cancel: false,
 				content:"该企业目前没有群组，请先定义群组"
@@ -700,7 +700,7 @@ jQuery(document).ready(function(){
 				getcorplist(msg.corp.corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
-					time: 2,
+					time: 1,
 					lock:true,
 					cancel: false,
 					content: data.message
@@ -842,7 +842,7 @@ jQuery(document).ready(function(){
 		oc.postRequire("post",pwd_creat,"",_params,function (data) {
 			if(data.code=="0"){
 				art.dialog({
-					time: 2,
+					time: 1,
 					lock:true,
 					cancel: false,
 					content: data.message
@@ -851,7 +851,7 @@ jQuery(document).ready(function(){
 				$("#chongzhi_box").css('display','none');
 			}else if(data=="-1"){
 				art.dialog({
-					time: 2,
+					time: 1,
 					lock:true,
 					cancel: false,
 					content: "失败"
@@ -920,7 +920,7 @@ function getcorplist(a){
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
-				time: 2,
+				time: 1,
 				lock:true,
 				cancel: false,
 				content: data.message
@@ -954,7 +954,7 @@ function getAppName(a){
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
-				time: 2,
+				time: 1,
 				lock:true,
 				cancel: false,
 				content: data.message

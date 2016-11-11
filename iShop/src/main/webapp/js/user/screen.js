@@ -99,11 +99,14 @@ $("#shop_add").click(function(){
 	$("#screen_area .screen_content_r ul").empty();
 	$("#screen_brand .screen_content_l ul").empty();
 	$("#screen_brand .screen_content_r ul").empty();
+	$("#screen_city .screen_content_r ul").empty();
 	$("#area_num").val("全部");
 	$("#area_num").attr("data-areacode","");
 	$("#brand_num").val("全部");
-	$(".s_pitch span").html("0");
 	$("#brand_num").attr("data-brandcode","");
+	$("#city_num").val("全部");
+	$("#city_num").attr("data-citycode","");
+	$(".s_pitch span").html("0");
 	getstorelist(shop_num);
 	bianse();
 });
