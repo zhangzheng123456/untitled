@@ -215,7 +215,9 @@ function superaddition(data, num) {
             + "</td><td>"
             + data[i].store_name
             + "</td><td>"
-            + data[i].area_code
+            + data[i].area_name
+            + "</td><td>"
+            + data[i].brand_name
             + "</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='" + data[i].id + "'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1

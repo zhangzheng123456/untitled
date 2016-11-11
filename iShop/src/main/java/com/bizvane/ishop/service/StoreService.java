@@ -38,7 +38,7 @@ public interface StoreService {
 
     Store getById(int id) throws Exception;
 
-    PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception;
+    PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value,String isactive,String search_area_code) throws Exception;
 
     List<Store> getCorpStore(String corp_code) throws Exception;
 
@@ -64,7 +64,7 @@ public interface StoreService {
 
     int selectCount(String created_date) throws Exception;
 
-    PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code,String[] store_codes, String[] brand_code, String search_value) throws Exception;
+    PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code,String[] store_codes, String[] brand_code, String search_value,String isactive,String search_area_code) throws Exception;
 
     PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value,String area_store_code) throws Exception;
 
@@ -80,7 +80,7 @@ public interface StoreService {
 
     String insertExecl(Store store) throws Exception;
 
-    PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map) throws Exception;
+    PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map,String area_store_codes,String isactive) throws Exception;
 
     List<Store> selectStoreCity(String corp_code,String search_value) throws Exception;
 

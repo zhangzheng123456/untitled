@@ -39,10 +39,6 @@ public interface AreaService {
 
     List<Area> selAreaByCorpCode(String corp_code, String area_codes,String store_code) throws Exception;
 
-    PageInfo<Store> getAllStoresByCorpCode(int page_number, int page_size, String corp_code, String search_value) throws Exception;
-
-    PageInfo<Store> selectAllStoresByAreaBrand(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception;
-
     List<Area> selectArea(String corp_code, String area_codes) throws SQLException;
 
     void trans(PageInfo<Store> page,String area_code);
