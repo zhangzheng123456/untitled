@@ -32,8 +32,7 @@
 </head>
 <body>
 	<div class="down_load_file">
-		<label>上传图片</label>
-		<input type="file" id="file" onchange="UpladFile()">
+		<div onclick="getAppUserInfo();">测试</div>
 	</div>
 </body>
 <script>
@@ -52,16 +51,14 @@ function getWebOSType(){
 	}
 	//获取iShop用户信息
 	function getAppUserInfo(){
-		try{
-			for (var i = 0; i <= 1000; i++) {
-					var osType = getWebOSType();
-				var userInfo = null;
-				if(osType=="iOS"){
-					userInfo = NSReturnUserInfo();
-				}else if(osType == "Android"){
-					userInfo = iShop.ReturnUserInfo();
-				}
-			}
+		var osType = getWebOSType();
+		var userInfo = null;
+		if(osType=="iOS"){
+			userInfo = NSReturnUserInfo();
+			alert(userInfo);
+		}else if(osType == "Android"){
+			userInfo = iShop.ReturnUserInfo();
+			alert(userInfo);
 		}
 	
 	}

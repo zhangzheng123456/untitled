@@ -385,14 +385,14 @@ input::-webkit-input-placeholder{
 	text-align: center;
 }
 .table tr{
-	height: 50px;
+	min-height: 50px;
 	line-height: 50px;
 	color: #434960;
 	font-weight: normal;
 	font-size: 14px;
 	text-align: center;
 }
-.table tr th{
+.table tr th,.power_table tr th{
 	font-weight: normal;
 	text-align: center;
 }
@@ -468,7 +468,7 @@ input::-webkit-input-placeholder{
 }
 .th{
 	background-color: #fff;
-	min-width: 50px;
+	height: 50px;
 }
 .foot{
 	height: 50px;
@@ -801,6 +801,7 @@ input::-webkit-input-placeholder{
 	margin-right: 15.7%;
 	background:url("../../img/bjs.png");
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 #file_list_r{
 	width: 42%;
@@ -808,6 +809,7 @@ input::-webkit-input-placeholder{
 	float: left;
 	background:url("../../img/bjs.png");
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 #file_list_z{
 	width: 15.7%;
@@ -1538,4 +1540,8 @@ input::-webkit-input-placeholder{
 	width: 420px;
 	height: 300px;
 	margin: -10px -20px;
+}
+/**编辑权限的样式**/
+.power_table tr{
+ min-height: 70px;
 }
