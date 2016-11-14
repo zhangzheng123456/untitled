@@ -789,7 +789,6 @@ input::-webkit-input-placeholder{
     float: right;
 }
 #file_list{
-	overflow-y: auto;
 	padding-left: 20px;
 	padding-right: 20px;
 	height:200px;
@@ -801,12 +800,14 @@ input::-webkit-input-placeholder{
 	float: left;
 	margin-right: 15.7%;
 	background:url("../../img/bjs.png");
+	overflow-y: auto;
 }
 #file_list_r{
 	width: 42%;
 	height: 200px;
 	float: left;
 	background:url("../../img/bjs.png");
+	overflow-y: auto;
 }
 #file_list_z{
 	width: 15.7%;
@@ -830,6 +831,11 @@ input::-webkit-input-placeholder{
 	margin: 0 auto;
 	margin-top: 10px;
 	cursor: pointer;
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 }
 .shift:active{
 	background-color: #6dc1c8;
