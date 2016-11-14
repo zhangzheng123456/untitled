@@ -72,40 +72,28 @@
                             </ul></span><span class="add_per_icon" id="add_power"><i class="icon-ishop_8-03"></i>编辑权限</span>
                             <div style="padding-left:125px" class="hint"><div id="group"></div></div>
                     </div>
-                    <!-- <div id="select_ownshop">
-                        <ul id="ownshop_list">
-                            <li id="sidename"><label>所属店铺</label></li>
-                            <li class="shop_list">
-                                <div id="per_type" class="per_type">
-                                    <span style="display:inline-block;" id="sidedown" id="store_lists_0" data-i="1">
-                                        <input class="input_select" id="OWN_STORE" type="text" placeholder="请选择所属店铺" readonly data-myscode=""/ onclick="selectownshop(this)">
-                                        <div class="store_list_kuang">
-                                            <input class="search" type="text" placeholder="请输入搜索内容">
-                                            <ul style="margin-left:0px">
-                                            </ul>
-                                        </div>
-                                    </span>
-                                    <span class="add_per_icon" id="add_per_icon" onclick="addshopselect()"><i class="icon-ishop_6-01"></i>新增店铺</span>
-                                </div>
-                            <li>
-                        </ul>
-                        <div style="padding-left:125px" class="hint"><div id="shop_t"></div></div>
-                    </div> -->
-                    <div>
+                    <div id="all_type">
                         <div class="task_allot"style="color:#c26555; margin-right:14px;display: inline-block; vertical-align:top;">所属店铺*</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
                             <div class="xingming">
-                                <!--<p>-->
-                                <!--<input type='text'readonly='readonly'style='width: 348px;margin-right: 10px'>-->
-                                <!--<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>-->
-                                <!--</p>-->
                             </div>
-                            <div id="test">
-                                <div class="add_app_id" id="screen_add" style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px">
+                            <div>
+                                <div class="add_app_id" id="screen_add" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
                                     新增 <span>+</span>
                                 </div>
                             </div>
-
+                        </div>
+                    </div>
+                    <div id="shop" style="display:none">
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">所属店铺</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming">
+                            </div>
+                            <div>
+                                <div class="add_app_id" id="shop_add" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -130,159 +118,6 @@
                 </form>
             </div>
     </div>
-    <div class="content" style="display: none;">
-        <div class="con_table" id="con_table">
-            <div class="title">
-                <span>员工管理</span>
-                <span class="icon-ishop_8-03"></span>
-                <span>编辑员工信息</span>
-                <span class="icon-ishop_8-03"></span>
-                <span>编辑权限</span>
-            </div>
-            <div class="list">
-                <div class="list_l">
-                    <ul>
-                        <li>
-                            <label>群主编号</label>
-                            <input type="text" disabled="true">
-                        </li>
-                        <li class="r">
-                            <label>群主名称</label>
-                            <input type="text" disabled="true">
-                        </li>
-                    </ul>            
-                </div>
-                <div class="list_r">
-                    <div class="save" id="save">
-                        <i class="icon-ishop_6-04"></i>
-                        保存
-                    </div>
-                    <div class="turnoff" id="turnoff">
-                        <i class="icon-ishop_6-12"></i>
-                        关闭
-                    </div>
-                </div>
-            </div>
-            <div class="action">
-                <div class="action_l">
-                    <ul>
-                        <li>
-                            <a href="/user/groupcheck_power_edit.html">
-                                <span class="icon-ishop_6-01"></span>
-                                新增
-                            </a>
-                        </li>
-                        <li class="bg" id="remove">
-                            <span class="icon-ishop_6-02"></span>
-                            删除
-                        </li>
-                        <li>
-                            <a href="/user/groupcheck_power_edit.html">
-                                <span class="icon-ishop_6-03"></span>
-                                编辑
-                            </a>
-                        </li>
-                        <li class="bg">
-                            <span class="icon-ishop_6-04"></span>
-                            保存
-                        </li>
-                        <li class="field_input">
-                            <input type="text" value="选着字段" class="field" readonly="">
-                            <span></span>
-                            <i class="icon-ishop_8-02"></i>
-                            <input type="text" class="f_input" placeholder="输入搜索的内容">
-                        </li>
-                    </ul> 
-                </div>
-                <div class="action_r">
-                    <ul>
-                        <li id="filtrate">
-                            <span class="icon-ishop_6-05"></span>
-                            筛选
-                        </li>
-                        <li class="bg">
-                            <span class="icon-ishop_6-07"></span>
-                            刷新
-                        </li>
-                        <li>
-                            <span class="icon-ishop_6-08"></span>
-                            更多
-                        </li>
-                    </ul>
-                </div>
-            </div>
-             <div class="sxk" id="sxk">
-                <div class="btn">
-                    <div class="empty" id="empty">
-                        <i class="icon-ishop_6-16"></i>清空筛选
-                    </div>
-                    <div class="r_btn">
-                        <div class="pack_up" id="pack_up">
-                            <i class="icon-ishop_6-18"></i>
-                            收起
-                        </div>
-                        <div class="find" id="find">
-                            <i class="icon-ishop_6-19"></i>
-                            查找
-                        </div>
-                    </div>
-                </div>
-                <div class="inputs">
-                    <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
-                    </li>
-                    <li>
-                        <label>联系人</label>
-                        <input type="text" id="p2">
-                    </li>
-                    <li>
-                        <label>修改人</label>
-                        <input type="text" id="p3">
-                    </li>
-                    <li>
-                        <label>联系电话</label>
-                        <input type="text" id="p4">
-                    </li>
-                </div>
-            </div>
-            <div class="table">
-                <table id="table" cellpadding="0" cellspacing="0" width="100%">
-                    <thead>
-                        <tr class="th">
-                            <th style="text-align: left; padding-left: 22px;">序号</th>
-                            <th>模块名称</th>
-                            <th>功能名称</th>
-                            <th>动作名称</th>
-                            <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>   
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </div>
-            <div class="foot">
-                <ul>
-                    <li class="foot-jum">
-                        <span>跳转至</span>
-                        <input class="input-txt" value="1" id="input-txt" disabled="true">
-                        <em>页</em>
-                    </li>
-                    <li class="foot-num" >
-                        <ul id="foot-num">
-                            <li><span class="icon-ishop_4-01 unclick"></span></li>
-                            <li><span class="p-bg">1</span></li>
-                            <li><span class="icon-ishop_4-02 unclick"></span></li>
-                        </ul>
-                    </li>
-                    <li class="foot-sum">
-                        <span class="zy">共 1 页</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
     <!-- 拉取区域 -->
     <div id="screen_area" class="screen_area">
         <div class="screen_title">
@@ -292,7 +127,7 @@
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索区域" id="area_search">
+                <input type="text" placeholder="搜索" id="area_search">
                 <span class="icon-ishop_3-05" id="area_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -332,13 +167,17 @@
                     <label>已选品牌</label><input type="text" value="" id="brand_num" data-brandcode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
+                <div class="xuanzhong_p">
+                    <label>已选城市</label><input type="text" value="" id="city_num" data-citycode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_city"></span>
+                </div>
             </div>
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索店铺" id="store_search">
+                <input type="text" placeholder="搜索" id="store_search">
                 <span class="icon-ishop_3-05" id="store_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -375,7 +214,7 @@
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索品牌" id="brand_search">
+                <input type="text" placeholder="搜索" id="brand_search">
                 <span class="icon-ishop_3-05" id="brand_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -402,6 +241,42 @@
             </div>
         </div>
         <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取城市 -->
+    <div id="screen_city" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选城市</h4>
+            <div class="screen_close" id="screen_close_city"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="city_search">
+                <span class="icon-ishop_3-05" id="city_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>   
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+                   
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_city">确定</div>
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>

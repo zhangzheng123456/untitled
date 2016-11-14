@@ -202,10 +202,11 @@ function superaddition(data, num) {
 
     for (var i = 0; i < data.length; i++) {
         if (num >= 2) {
-            var a = i + (num-1) * pageSize;
+            var a = i+1 + (num-1) * pageSize;
         } else {
             var a = i + 1;
         }
+        console.log(num);
         $(".table tbody").append("<tr data-action='" + data[i].action_code + "' data-function='" + data[i].function_code + "'>"
             + "<td style='text-align:left;padding-left:22px'>"
             + a
@@ -213,9 +214,11 @@ function superaddition(data, num) {
             + data[i].store_code
             + "</td><td>"
             + data[i].store_name
-            + "</td><td>"
-            + data[i].area_code
-            + "</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='" + data[i].id + "'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            + "</td><td><span title='"+data[i].area_name+"'>"
+            + data[i].area_name
+            + "</span></td><td><span title='"+data[i].brand_name+"'>"
+            + data[i].brand_name
+            + "</span></td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='" + data[i].id + "'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -243,6 +246,7 @@ function superaddition(data, num) {
 };
 //页面加载时list请求
 function GET(a, b) {
+    whir.loading.add("",0.5);
     corp_code = $("#OWN_CORP").val();
     param["pageNumber"] = a;
     param["pageSize"] = b;
@@ -267,27 +271,129 @@ function GET(a, b) {
         } else if (data.code == "-1") {
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     });
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function () {
+    param={};
     var event = window.event || arguments[0];
     value = this.value.replace(/\s+/g, "");
     param["searchValue"] = value;
     if (event.keyCode == 13) {
+        //显示样式
+        $('.r_filrate').next().html('显示当前区域店铺');
+        $('.r_filrate').attr('style','color:#fff');
+        var input=$(".inputs input");
+        for(var i=0;i<input.length;i++){
+            input[i].value="";
+            $(input[i]).attr("data-code","");
+        }
+        $(".sxk").slideUp();
         POST(inx,pageSize);
     }
 });
 //点击放大镜触发搜索
 $("#d_search").click(function () {
+    //显示样式
+    $('.r_filrate').next().html('显示当前区域店铺');
+    $('.r_filrate').attr('style','color:#fff');
+    param={};
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+    $(".sxk").slideUp();
     value = $("#search").val().replace(/\s+/g, "");
     param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
     POST(inx,pageSize);
 })
+//点击搜索按钮
+$('.r_filrate').click(function () {
+    param={};
+    inx=1;
+    var searchAreaCode='';
+    //清空搜索内容
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+    $(".sxk").slideUp();
+    $("#search").val('');
+    if($(this).next().text().trim()=='显示当前区域店铺'){
+        $(this).next().html('显示全部店铺');
+        $(this).attr('style','color:#50a3aa');
+        value ='';
+        searchAreaCode=$('#area_code').val();
+    }else{
+        $(this).next().html('显示当前区域店铺');
+        $(this).attr('style','color:#fff');
+        value ='';
+    }
+    param['searchAreaCode']=searchAreaCode;
+    param["searchValue"] = value;
+    param["pageNumber"] = inx;
+    param["pageSize"] = pageSize;
+    POST(inx,pageSize);
+});
+//点击搜索按钮提示与否
+$('.r_filrate').hover(function () {
+    $(this).next().show();
+},function () {
+    $(this).next().hide();
+});
+$("#filtrate").click(function(){//点击筛选框弹出下拉框
+    $(".sxk").slideToggle();
+})
+$("#pack_up").click(function(){//点击收回 取消下拉框
+    $(".sxk").slideUp();
+})
+//点击清空  清空input的value值
+$("#empty").click(function(){
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+    $('#find').trigger('click');
+});
+$(".inputs input").keydown(function () {
+    var event = window.event || arguments[0];
+    value = this.value.replace(/\s+/g, "");
+    param["searchValue"] = value;
+    if (event.keyCode == 13) {
+        $('#find').trigger('click');
+    }
+});
+$('#find').click(function () {
+    //显示样式
+    $('.r_filrate').next().html('显示当前区域店铺');
+    $('.r_filrate').attr('style','color:#fff');
+    $("#search").val('');
+    param={};
+    value=''
+    var input=$(".inputs input");
+        inx=1;
+      var  list=[];//定义一个list
+    console.log(list);
+        for(var i=0;i<input.length;i++){
+            var screen_key=$(input[i]).attr("id");
+            var screen_value=$(input[i]).val().trim();
+            var param1={"screen_key":screen_key,"screen_value":screen_value};
+            list.push(param1);
+        }
+    param["list"]=list;
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    POST(inx,pageSize);
+});
 //搜索的请求函数
 function POST(a,b) {
+    whir.loading.add("",0.5);
     corp_code = $("#OWN_CORP").val();
     param["pageNumber"] = a;
     param["pageSize"] = b;
@@ -315,6 +421,7 @@ function POST(a,b) {
         } else if (data.code == "-1") {
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 }
 //弹框

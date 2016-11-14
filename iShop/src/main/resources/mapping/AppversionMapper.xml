@@ -10,14 +10,9 @@
             AND
             (
             platform LIKE concat('%', #{search_value},'%')
-            OR download_addr LIKE concat('%', #{search_value},'%')
             OR version_id LIKE concat('%', #{search_value},'%')
-            OR is_force_update LIKE concat('%',#{search_value},'%')
             OR version_describe LIKE concat('%', #{search_value},'%')
             OR corp_code LIKE concat('%', #{search_value},'%')
-            OR modified_date LIKE concat('%', #{search_value},'%')
-            OR modifier LIKE concat('%', #{search_value},'%')
-            OR isactive LIKE concat('%', #{search_value},'%')
             )
         </if>
         GROUP BY ID

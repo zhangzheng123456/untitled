@@ -109,7 +109,7 @@ input::-webkit-input-placeholder{
 	background-color:#6cc1c8;
 }
 .list .list_l li input{
-	width: 195px;
+	width: 150px;
 	height: 30px;
 	border:none;
 	outline: none;
@@ -1030,7 +1030,7 @@ input::-webkit-input-placeholder{
 	width:260px;
 	height:35px;
 	margin:0;
-	line-height: 30px;
+	line-height: 35px;
 	text-indent: 10px;
 	color:#807a62;
 }

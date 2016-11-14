@@ -14,9 +14,9 @@ public interface StoreMapper {
 
     Store selStoreByStroeId(@Param("corp_code") String corp_code, @Param("store_id") String store_id, @Param("isactive") String isactive) throws SQLException;
 
-    List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive, @Param("search_area_code") String search_area_code) throws SQLException;
 
-    List<Store> selectStores(@Param("corp_code") String corp_code) throws SQLException;
+    List<Store> selectByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
     List<Store> selectByAreaBrand(Map<String, Object> params) throws SQLException;
 
@@ -36,7 +36,7 @@ public interface StoreMapper {
 
     int deleteStoreUser(@Param("user_id") String user_id, @Param("store_code") String store_code) throws SQLException;
 
-    Store selectByStoreName(@Param("corp_code") String corp_code, @Param("store_name") String store_name, @Param("isactive") String isactive) throws SQLException;
+    List<Store> selectByStoreName(@Param("corp_code") String corp_code, @Param("store_name") String store_name, @Param("isactive") String isactive) throws SQLException;
 
     int selectCount(@Param("created_date") String created_date) throws SQLException;
 
@@ -46,14 +46,11 @@ public interface StoreMapper {
 
     List<Store> selectAllStoreScreenEasy(Map<String, Object> params) throws SQLException;
 
-    List<Store> selectAllStoresByCorpCode(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
-
-    List<Store> selectAllStoresByAreaBrand(Map<String, Object> params) throws SQLException;
-
     List<Store> selectStoreCountByArea(Map<String, Object> params) throws SQLException;
 
     List<Store> selectStoreCountByBrand(Map<String, Object> params) throws SQLException;
 
+    List<Store> selectStoreCity(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
     //------------------------StoreQrcodeMapper.xml----------
 

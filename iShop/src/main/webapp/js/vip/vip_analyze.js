@@ -46,13 +46,13 @@ function getBrand(){
             $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
         }
         $('#select_analyze_brand ul').append(ul);
+            GetArea();
         }else if(data.code==-1){
             alert(data.message);
         }
     });
 }
 getBrand();
-GetArea();
 //获取区域
 function GetArea(){
     var search_param=arguments.length;
@@ -547,7 +547,7 @@ function brithVipGet() {
         whir.loading.remove();//移除加载框
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type);
-        pageShow($('.birthVip .vip_table tbody'));
+        // pageShow($('.birthVip .vip_table tbody'));
     });
 }
 function birthVipGet_sub(ali) {
@@ -624,7 +624,7 @@ function newVipGet(){
         whir.loading.remove();//移除加载框
         //如果页面没有数据
         // $('.newVip .vip_table tbody').html()?page_show=1:$('.newVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>'),page_show=0;
-        pageShow($('.newVip .vip_table tbody'));
+        // pageShow($('.newVip .vip_table tbody'));
     });
 }
 function newVipGet_sub(ali) {
@@ -712,7 +712,7 @@ function sleepVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         // $('.activeVip .vip_table tbody').html()?'':$('.activeVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
-        pageShow($('.activeVip .vip_table tbody'));
+        // pageShow($('.activeVip .vip_table tbody'));
     });
     // whir.loading.remove();//移除加载框
 }
@@ -795,7 +795,7 @@ function consumeVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         // $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
-        pageShow($('.rank .vip_table tbody'));
+        // pageShow($('.rank .vip_table tbody'));
         whir.loading.remove();//移除加载框
     });
 }
@@ -868,7 +868,7 @@ function consumeVipGetre() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         // $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
-        pageShow($('.rank .vip_table tbody'));
+        // pageShow($('.rank .vip_table tbody'));
         whir.loading.remove();//移除加载框
     });
 }
@@ -937,7 +937,7 @@ function consumeVipGetam() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         // $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
-        pageShow($('.rank .vip_table tbody'));
+        // pageShow($('.rank .vip_table tbody'));
         whir.loading.remove();//移除加载框
     });
 }
@@ -962,6 +962,7 @@ $('.rank .month_btn li').click(function () {
 /*******************共用方法***************************/
 //生成分页
 function setPage(container, count, pageindex,pageSize,type,query_type) {
+    count==0?count=1:'';
     var type=type;
     var query_type=query_type;
     var container = container;//节点
@@ -1152,17 +1153,17 @@ $("#input-txt").keydown(function() {
         };
 })
 //页码显示或隐藏
-function pageShow(table) {
-    if( $(table).text()=='暂无数据'){
-        $($('#table_analyze .foot .foot-jum')[0]).hide();
-        $($('#table_analyze .foot .foot-num')[0]).hide();
-        $($('#table_analyze .foot .foot-sum')[0]).hide();
-    }else{
-        $($('#table_analyze .foot .foot-jum')[0]).show();
-        $($('#table_analyze .foot .foot-num')[0]).show();
-        $($('#table_analyze .foot .foot-sum')[0]).show();
-    }
-}
+// function pageShow(table) {
+//     if( $(table).text()=='暂无数据'){
+//         $($('#table_analyze .foot .foot-jum')[0]).hide();
+//         $($('#table_analyze .foot .foot-num')[0]).hide();
+//         $($('#table_analyze .foot .foot-sum')[0]).hide();
+//     }else{
+//         $($('#table_analyze .foot .foot-jum')[0]).show();
+//         $($('#table_analyze .foot .foot-num')[0]).show();
+//         $($('#table_analyze .foot .foot-sum')[0]).show();
+//     }
+// }
 /***************************图表分析数据***************************************/
 //图表
 require.config({

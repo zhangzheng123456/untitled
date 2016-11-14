@@ -183,7 +183,7 @@ artDialog.fn = artDialog.prototype = {
 				width = wrap.offsetWidth - width;
 				height = wrap.offsetHeight - height;
 				left = left - width / 2;
-				top = top - height / 2;
+				top = top - height / 2+50;
 				wrap.style.left = Math.max(left, 0) + 'px';
 				wrap.style.top = Math.max(top, 0) + 'px';
 			};
@@ -772,13 +772,10 @@ artDialog.fn = artDialog.prototype = {
 			fun.call(this);
 		};
 	},
-	
 	// 自动切换定位类型
 	_autoPositionType: function () {
 		this[this.config.fixed ? '_setFixed' : '_setAbsolute']();/////////////
 	},
-	
-	
 	// 设置静止定位
 	// IE6 Fixed @see: http://www.planeart.cn/?p=877
 	_setFixed: (function () {
@@ -923,12 +920,8 @@ $.fn.dialog = $.fn.artDialog = function () {
 	});
 	return this;
 };
-
-
-
 /** 最顶层的对话框API */
 artDialog.focus = null;
-
 
 /** 获取某对话框API */
 artDialog.get = function (id) {
@@ -938,9 +931,6 @@ artDialog.get = function (id) {
 };
 
 artDialog.list = {};
-
-
-
 // 全局快捷键
 _$document.bind('keydown', function (event) {
 	var target = event.target,
@@ -953,9 +943,6 @@ _$document.bind('keydown', function (event) {
 		
 	keyCode === 27 && api._click(api.config.cancelVal);
 });
-
-
-
 // 获取artDialog路径
 _path = window['_artDialog_path'] || (function (script, i, me) {
 	for (i in script) {
@@ -967,9 +954,6 @@ _path = window['_artDialog_path'] || (function (script, i, me) {
 	me = _thisScript.src.replace(/\\/g, '/');
 	return me.lastIndexOf('/') < 0 ? '.' : me.substring(0, me.lastIndexOf('/'));
 }(document.getElementsByTagName('script')));
-
-
-
 // 无阻塞载入CSS (如"artDialog.js?skin=aero")
 _skin = _thisScript.src.split('skin=')[1];
 if (_skin) {
@@ -1054,14 +1038,11 @@ artDialog._templates =
 +		'</tbody>'
 +	'</table>'
 +'</div>';
-
-
-
 /**
  * 默认配置
  */
 artDialog.defaults = {
-								// 消息内容
+	// 消息内容
 	content: '<div class="aui_loading"><span>loading..</span></div>',
 	title: '\u6d88\u606f',		// 标题. 默认'消息'
 	button: null,				// 自定义按钮

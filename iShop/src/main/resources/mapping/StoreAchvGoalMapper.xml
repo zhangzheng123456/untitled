@@ -58,10 +58,17 @@
             AND c.corp_code=#{corp_code}
         </if>
         <if test="area_codes !=null and area_codes!=''">
-            AND st.AREA_CODE IN
-            <foreach item="item" index="index" collection="area_codes" open="(" separator="," close=")">
-                #{item}
+            AND (
+            <foreach item="item" index="index" collection="area_codes" open="(" separator="or" close=")">
+                st.area_code REGEXP #{item}
             </foreach>
+            <if test="area_store_codes != null and area_store_codes !=''">
+                OR st.store_code IN
+                <foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
         </if>
         <if test="store_codes !=null and store_codes !=''">
             AND sa.store_code IN
@@ -200,11 +207,13 @@
         DELETE  FROM def_store_achv_goal
         WHERE id=#{id}
     </delete>
+
     <select id="selectByCorpAndUserCode" resultMap="storeAchvGoals">
         SELECT * FROM def_store_achv_goal
         WHERE  def_store_achv_goal.corp_code=#{corp_code}
         AND def_store_achv_goal.store_code=#{store_code}
     </select>
+
     <select id="selectForId" resultMap="storeAchvGoals">
         SELECT * FROM def_store_achv_goal
         WHERE  def_store_achv_goal.corp_code=#{corp_code}
@@ -239,10 +248,17 @@
             AND dc.corp_code=#{corp_code}
         </if>
         <if test="area_codes !=null and area_codes!=''">
-            AND ds.AREA_CODE IN
-            <foreach item="item" index="index" collection="area_codes" open="(" separator="," close=")">
-                #{item}
+            AND (
+            <foreach item="item" index="index" collection="area_codes" open="(" separator="or" close=")">
+                ds.area_code REGEXP #{item}
             </foreach>
+            <if test="area_store_codes != null and area_store_codes !=''">
+                OR sa.store_code IN
+                <foreach collection="area_store_codes" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
         </if>
         <if test="store_codes !=null and store_codes !=''">
             AND sa.STORE_CODE IN

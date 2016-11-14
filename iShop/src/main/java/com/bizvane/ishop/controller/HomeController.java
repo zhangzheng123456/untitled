@@ -263,7 +263,7 @@ public class HomeController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
                 store_id = list.get(0).getStore_code();
             }
             Map datalist = new HashMap<String, Data>();
@@ -338,7 +338,7 @@ public class HomeController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
                 store_code = list.get(0).getStore_code();
             }
             if (jsonObject.has("area_code")) {
@@ -427,7 +427,7 @@ public class HomeController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                List<Store> list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
                 store_code = list.get(0).getStore_code();
             }
 

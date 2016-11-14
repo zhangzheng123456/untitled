@@ -16,6 +16,8 @@ $(function(){
             }
             if(message.version_describe !== ""){
                 $(".update_tip").show();
+                whir.loading.add("",0.5);
+                $("#loading").remove();
             }else {
                 $(".update_tip").hide();
             }
@@ -73,9 +75,11 @@ $(function(){
     //关闭提示
     $("#tip_enter").click(function () {
         $(".update_tip").hide();
+        whir.loading.remove();//移除加载框
     });
     $("#tip_close").click(function () {
         $(".update_tip").hide();
+        whir.loading.remove();//移除加载框
     })
 });
 //退出登录

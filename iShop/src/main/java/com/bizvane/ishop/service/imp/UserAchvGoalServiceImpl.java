@@ -65,7 +65,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
     public PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code,
-                                                     String area_code, String role_code) throws Exception {
+                                                     String area_code, String area_store_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             if (store_code.contains(Common.SPECIAL_HEAD))
@@ -73,11 +73,13 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
-            if (area_code.contains(Common.SPECIAL_HEAD))
-                area_code = area_code.replace(Common.SPECIAL_HEAD, "");
-
+            area_code = area_code.replace(Common.SPECIAL_HEAD, "");
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null, "");
+            String[] storeCodes = null;
+            if (!area_store_code.equals("")){
+                storeCodes = area_store_code.replace(Common.SPECIAL_HEAD,"").split(",");
+            }
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes,null, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -178,20 +180,20 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
     @Override
     public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String
-            area_code, String store_code, String role_code, Map<String, String> map) throws Exception {
+            area_code, String store_code, String role_code, Map<String, String> map,String area_store_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                stores[i] = stores[i].substring(1, stores[i].length());
-            }
         }
         if (!area_code.equals("")) {
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            for (int i = 0; i < areas.length; i++) {
-                areas[i] = areas[i].substring(1, areas[i].length());
+            String[] storeCodes = null;
+            if (!area_store_code.equals("")){
+                storeCodes = area_store_code.replace(Common.SPECIAL_HEAD,"").split(",");
             }
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null, "");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes,null, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";

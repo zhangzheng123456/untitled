@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -87,33 +88,39 @@ public class StoreController {
 
             String area_code = "";
             String brand_code = "";
+            String city = "";
             if (jsonObject.has("area_code")){
                 area_code = jsonObject.get("area_code").toString();
             }
             if (jsonObject.has("brand_code")){
                 brand_code = jsonObject.get("brand_code").toString();
             }
+            if (jsonObject.has("city")){
+                city = jsonObject.get("city").toString();
+            }
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 corp_code = jsonObject.get("corp_code").toString();
-                list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code,brand_code, searchValue,"",city);
                 // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                    list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code,brand_code, searchValue,"",city);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     if (brand_code.equals("")){
                         brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                     }
-                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code,searchValue);
+                    list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code,brand_code,searchValue,"",city);
                 } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_store_code = "";
                     if (area_code.equals("")){
                         area_code = request.getSession().getAttribute("area_code").toString();
                         area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                        area_store_code = request.getSession().getAttribute("store_code").toString();
                     }
-                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code,searchValue);
+                    list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code,brand_code,searchValue,area_store_code,city);
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     list = storeService.selStoreByStoreCodes(page_number, page_size, store_code, corp_code, searchValue);
@@ -163,7 +170,7 @@ public class StoreController {
                 String area_code = jsonObject.get("area_code").toString();
                 if (jsonObject.has("corp_code"))
                     corp_code = jsonObject.get("corp_code").toString();
-                list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue,"");
                 List<Store> stores = new ArrayList<Store>();
                 Store store = new Store();
                 store.setStore_code("");
@@ -180,7 +187,7 @@ public class StoreController {
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
                     String area_code = jsonObject.get("area_code").toString();
-                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue,"");
                     List<Store> stores = new ArrayList<Store>();
                     Store store = new Store();
                     store.setStore_code("");
@@ -195,7 +202,13 @@ public class StoreController {
                     list.setList(stores);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = jsonObject.get("area_code").toString();
-                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                    String area_store_code = "";
+                    if (area_code.equals("")){
+                        area_code = request.getSession().getAttribute("area_code").toString();
+                        area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                        area_store_code = request.getSession().getAttribute("store_code").toString();
+                    }
+                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue,area_store_code);
                     List<Store> stores = new ArrayList<Store>();
                     Store store = new Store();
                     store.setStore_code("");
@@ -212,7 +225,7 @@ public class StoreController {
                     brand_code = jsonObject.get("brand_code").toString();
                     String area_code = jsonObject.get("area_code").toString();
 
-                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code, brand_code, searchValue);
+                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code, brand_code, searchValue,"");
                     List<Store> stores = new ArrayList<Store>();
                     Store store = new Store();
                     store.setStore_code("");
@@ -257,13 +270,13 @@ public class StoreController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             List<Store> list = new ArrayList<Store>();
-            if (role_code.equals(Common.ROLE_SM)) {
+            if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
                 list = storeService.selectStore(corp_code, store_code);
             }else if (role_code.equals(Common.ROLE_BM)){
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                list = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -276,6 +289,38 @@ public class StoreController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 获取企业下城市
+     */
+    @RequestMapping(value = "/getCorpCity", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpCity(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = jsonObject.get("search_value").toString();
+
+            List<Store> list = storeService.selectStoreCity(corp_code,search_value);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
     /**
      * 店铺管理
      */
@@ -294,10 +339,10 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(request, page_number, page_size, "", "");
+                list = storeService.getAllStore(request, page_number, page_size, "", "","","");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(request, page_number, page_size, corp_code, "");
+                    list = storeService.getAllStore(request, page_number, page_size, corp_code, "","","");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     if (brand_code == null || brand_code.equals("")) {
@@ -312,10 +357,11 @@ public class StoreController {
                         for (int i = 0; i < brandCodes.length; i++) {
                             brandCodes[i] = Common.SPECIAL_HEAD+brandCodes[i]+",";
                         }
-                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null, brandCodes, "");
+                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null,null, brandCodes, "","","");
                     }
                 }else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     if (area_code == null || area_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -325,10 +371,15 @@ public class StoreController {
                         //加上特殊字符，进行查询
                         area_code = area_code.replace(Common.SPECIAL_HEAD,"");
                         String[] areaCodes = area_code.split(",");
+                        String[] storeCodes = null;
                         for (int i = 0; i < areaCodes.length; i++) {
                             areaCodes[i] = Common.SPECIAL_HEAD+areaCodes[i]+",";
                         }
-                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes,null, "");
+                        if (!store_code.equals("")){
+                            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                            storeCodes = store_code.split(",");
+                        }
+                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes,storeCodes,null, "","","");
                     }
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
@@ -558,29 +609,59 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(request, page_number, page_size, "", search_value);
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value);
-            }else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                String[] brandCodes = brand_code.split(",");
-                for (int i = 0; i < brandCodes.length; i++) {
-                    brandCodes[i] = Common.SPECIAL_HEAD+brandCodes[i]+",";
-                }
-                list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null, brandCodes, search_value);
-            } else if (role_code.equals(Common.ROLE_AM)) {
-                String area_code = request.getSession().getAttribute("area_code").toString();
-                if (area_code.contains(Common.SPECIAL_HEAD))
-                    area_code = area_code.replace(Common.SPECIAL_HEAD, "");
-                String[] areaCodes = area_code.split(",");
-                for (int i = 0; i < areaCodes.length; i++) {
-                    areaCodes[i] = Common.SPECIAL_HEAD+areaCodes[i]+",";
-                }
-                list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes,null, search_value);
+                list = storeService.getAllStore(request, page_number, page_size, "", search_value,"","");
             } else {
-                String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, search_value);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value,"","");
+                } else if (role_code.equals(Common.ROLE_BM)) {
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    if (brand_code == null || brand_code.equals("")) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId("1");
+                        dataBean.setMessage("您还没有所属品牌");
+                        return dataBean.getJsonStr();
+                    } else {
+                        //加上特殊字符，进行查询
+                        brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                        String[] brandCodes = brand_code.split(",");
+                        for (int i = 0; i < brandCodes.length; i++) {
+                            brandCodes[i] = Common.SPECIAL_HEAD+brandCodes[i]+",";
+                        }
+                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null,null, brandCodes, search_value,"","");
+                    }
+                }else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    if (area_code == null || area_code.equals("")) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId("1");
+                        dataBean.setMessage("您还没有所属区域");
+                        return dataBean.getJsonStr();
+                    } else {
+                        //加上特殊字符，进行查询
+                        area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                        String[] areaCodes = area_code.split(",");
+                        String[] storeCodes = null;
+                        for (int i = 0; i < areaCodes.length; i++) {
+                            areaCodes[i] = Common.SPECIAL_HEAD+areaCodes[i]+",";
+                        }
+                        if (!store_code.equals("")){
+                            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                            storeCodes = store_code.split(",");
+                        }
+                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes,storeCodes,null, search_value,"","");
+                    }
+                } else {
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    if (store_code == null || store_code.equals("")) {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId("1");
+                        dataBean.setMessage("您还没有所属店铺");
+                        return dataBean.getJsonStr();
+                    } else {
+                        list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, search_value);
+                    }
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -633,11 +714,16 @@ public class StoreController {
                 brand = brandService.getActiveBrand(corp_code, search_value,codes);
             }else if (role_code.equals(Common.ROLE_AM)){
                 area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                 String[] areas = area_code.split(",");
-                List<Store> stores = storeService.selectByAreaBrand(corp_code,areas, null,Common.IS_ACTIVE_Y);
+                String[] stores = null;
+                if (!store_code.equals("")){
+                    stores = store_code.split(",");
+                }
+                List<Store> storeLists = storeService.selectByAreaBrand(corp_code,areas,stores, null,Common.IS_ACTIVE_Y);
                 String brand_code1 = "";
-                for (int i = 0; i < stores.size(); i++) {
-                    String brand_code = stores.get(i).getBrand_code();
+                for (int i = 0; i < storeLists.size(); i++) {
+                    String brand_code = storeLists.get(i).getBrand_code();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                     if (!brand_code.endsWith(",")){
                         brand_code = brand_code + ",";
@@ -902,9 +988,9 @@ public class StoreController {
             String store_name = jsonObject.get("store_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
 
-            if (store != null) {
+            if (store.size() > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("店铺名称已被使用");
@@ -1095,10 +1181,10 @@ public class StoreController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = storeService.getAllStore(request, 1, 30000, "", search_value);
+                    list = storeService.getAllStore(request, 1, 30000, "", search_value,"","");
                 } else {
                     if (role_code.equals(Common.ROLE_GM)) {
-                        list = storeService.getAllStore(request, 1, 30000, corp_code, search_value);
+                        list = storeService.getAllStore(request, 1, 30000, corp_code, search_value,"","");
                     } else if (role_code.equals(Common.ROLE_BM)) {
                         String brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
@@ -1106,13 +1192,20 @@ public class StoreController {
                         for (int i = 0; i < brandCodes.length; i++) {
                             brandCodes[i] = Common.SPECIAL_HEAD + brandCodes[i] + ",";
                         }
-                        list = storeService.selectByAreaBrand(1, 30000, corp_code, null, brandCodes, search_value);
+                        list = storeService.selectByAreaBrand(1, 30000, corp_code, null, null,brandCodes, search_value,"","");
                     }else if (role_code.equals(Common.ROLE_AM)) {
                         String area_code = request.getSession().getAttribute("area_code").toString();
-                        area_code = area_code.replace(Common.SPECIAL_HEAD,"");
-                        String[] areaCodes = area_code.split(",");
+                        String store_code = request.getSession().getAttribute("store_code").toString();
 
-                        list = storeService.selectByAreaBrand(1, 30000, corp_code, areaCodes,null, search_value);
+                        area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+
+                        String[] areaCodes = area_code.split(",");
+                        String[] storeCode = null;
+                        if (!store_code.equals("")){
+                            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                            storeCode = store_code.split(",");
+                        }
+                        list = storeService.selectByAreaBrand(1, 30000, corp_code, areaCodes,storeCode,null, search_value,"","");
                     } else {
                         String store_code = request.getSession().getAttribute("store_code").toString();
                         list = storeService.selectByUserId(1, 30000, store_code, corp_code, search_value);
@@ -1121,18 +1214,19 @@ public class StoreController {
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = storeService.getAllStoreScreen(1, 30000, "", "", "","", map);
+                    list = storeService.getAllStoreScreen(1, 30000, "", "", "","", map,"","");
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "","", "", map);
+                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "","", "", map,"","");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    list = storeService.getAllStoreScreen(1,30000,corp_code,"",brand_code,"",map);
+                    list = storeService.getAllStoreScreen(1,30000,corp_code,"",brand_code,"",map,"","");
                 }else if (role_code.equals(Common.ROLE_AM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, area_codes,"", "", map);
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = storeService.getAllStoreScreen(1, 30000, corp_code, area_codes,"", "", map,store_code,"");
                 } else {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "","", store_code, map);
+                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "","", store_code, map,"","");
                 }
             }
             List<Store> stores = list.getList();
@@ -1287,8 +1381,8 @@ public class StoreController {
                 if(column1[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Store store = storeService.getStoreByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
-                if (store != null) {
+                List<Store> store = storeService.getStoreByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                if (store.size() > 0) {
                     result = "：第" + (i + 1) + "行店铺名称已存在";
                     int b = 5 / 0;
                     break;
@@ -1464,18 +1558,19 @@ public class StoreController {
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = storeService.getAllStoreScreen(page_number, page_size, "", "","", "", map);
+                list = storeService.getAllStoreScreen(page_number, page_size, "", "","", "", map,"","");
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "","", "", map);
+                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "","", "", map,"","");
             }else if (role_code.equals(Common.ROLE_BM)) {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                list = storeService.getAllStoreScreen(page_number,page_size,corp_code,"",brand_code,"",map);
+                list = storeService.getAllStoreScreen(page_number,page_size,corp_code,"",brand_code,"",map,"","");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_codes = request.getSession(false).getAttribute("area_code").toString();
-                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, area_codes,"", "", map);
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, area_codes,"", "", map,store_code,"");
             } else {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "","", store_code, map);
+                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "","", store_code, map,"","");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

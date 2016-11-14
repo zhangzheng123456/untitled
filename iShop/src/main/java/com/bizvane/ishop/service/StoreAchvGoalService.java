@@ -65,7 +65,7 @@ public interface StoreAchvGoalService {
      * @return
      * @throws SQLException
      */
-    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String user_id, String search_value)
+    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String user_id, String search_value,String area_store_code)
             throws Exception;
 
     /**
@@ -79,5 +79,5 @@ public interface StoreAchvGoalService {
 
     StoreAchvGoal getStoreAchvForID(String corp_code, String store_code,String target_time) throws Exception;
 
-    PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) throws Exception;
+    PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map,String area_store_code) throws Exception;
 }

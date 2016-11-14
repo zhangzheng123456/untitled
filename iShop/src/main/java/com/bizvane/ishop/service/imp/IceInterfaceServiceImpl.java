@@ -76,8 +76,16 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         } else if (role_code.equals(Common.ROLE_GM)){
 
         } else if (role_code.equals(Common.ROLE_AM)){
-            area_code = request.getSession().getAttribute("area_code").toString();
-            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            role_code = Common.ROLE_SM;
+            String brand_code = request.getSession().getAttribute("brand_code").toString();
+            String area_code1 = request.getSession().getAttribute("area_code").toString();
+            String area_store_code = request.getSession().getAttribute("store_code").toString();
+            area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
+            brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+            List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code1,brand_code,"",area_store_code);
+            for (int i = 0; i < stores.size(); i++) {
+                store_id = store_id + stores.get(i).getStore_code() + ",";
+            }
         } else if (role_code.equals(Common.ROLE_SM)){
             String store_code = request.getSession().getAttribute("store_code").toString();
             store_id = store_code.replace(Common.SPECIAL_HEAD,"");
@@ -89,7 +97,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             role_code = Common.ROLE_SM;
             String brand_code = request.getSession().getAttribute("brand_code").toString();
             brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-            List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+            List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
             for (int i = 0; i < stores.size(); i++) {
                 store_id = store_id + stores.get(i).getStore_code() + ",";
             }
@@ -133,7 +141,24 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             if (store_id.equals("")) {
                 area_code = jsonObject.get("area_code").toString().trim();
                 String brand_code = jsonObject.get("brand_code").toString().trim();
-                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "");
+                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "","");
+                for (int i = 0; i < storeList.size(); i++) {
+                    store_id = store_id + storeList.get(i).getStore_code() + ",";
+                }
+            }
+        }else if (role_code.equals(Common.ROLE_AM)){
+            store_id = jsonObject.get("store_code").toString().trim();
+            area_code = jsonObject.get("area_code").toString().trim();
+            String brand_code = jsonObject.get("brand_code").toString().trim();
+            String area_store_code = "";
+            if (store_id.equals("")){
+                if (area_code.equals("")){
+                    area_code = request.getSession().getAttribute("area_code").toString();
+                    area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                    area_store_code = request.getSession().getAttribute("store_code").toString();
+                    area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+                }
+                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "",area_store_code);
                 for (int i = 0; i < storeList.size(); i++) {
                     store_id = store_id + storeList.get(i).getStore_code() + ",";
                 }
@@ -143,7 +168,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             if (store_id.equals("")) {
                 area_code = jsonObject.get("area_code").toString().trim();
                 String brand_code = jsonObject.get("brand_code").toString().trim();
-                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "");
+                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "","");
                 for (int i = 0; i < storeList.size(); i++) {
                     store_id = store_id + storeList.get(i).getStore_code() + ",";
                 }

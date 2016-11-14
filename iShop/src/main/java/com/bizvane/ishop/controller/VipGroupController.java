@@ -528,7 +528,7 @@ public class VipGroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String corp_code = jsonObject.get("corp_code").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
             String vip_group_id = jsonObject.get("vip_group_id").toString();
 
             String vip_ids = "";
