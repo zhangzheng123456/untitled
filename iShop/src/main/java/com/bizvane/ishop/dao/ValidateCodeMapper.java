@@ -12,7 +12,7 @@ public interface ValidateCodeMapper {
 
     int insertValidateCode(ValidateCode record) throws SQLException;
 
-    ValidateCode selectByCodeId(@Param("code_id")int code_id,@Param("phone") String phone,@Param("isactive") String isactive) throws SQLException;
+    ValidateCode selectPhoneExist(@Param("platform")String platform,@Param("phone") String phone,@Param("isactive") String isactive) throws SQLException;
 
     int updateByCodeId(ValidateCode record) throws SQLException;
 

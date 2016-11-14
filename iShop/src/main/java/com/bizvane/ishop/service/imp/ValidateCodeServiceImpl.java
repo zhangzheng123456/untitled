@@ -25,7 +25,8 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
 
     public int insertValidateCode(ValidateCode code) throws Exception{
         String phone = code.getPhone();
-        ValidateCode validateCode = selectValidateCode(0,phone, Common.IS_ACTIVE_Y);
+        String platform = code.getPlatform();
+        ValidateCode validateCode = selectPhoneExist(platform,phone, Common.IS_ACTIVE_Y);
         if (validateCode == null){
             validateCodeMapper.insertValidateCode(code);
             return 0;
@@ -61,8 +62,8 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         return page;
     }
 
-    public ValidateCode selectValidateCode(int code_id, String phone, String isactive) throws Exception{
-        return validateCodeMapper.selectByCodeId(code_id, phone,isactive);
+    public ValidateCode selectPhoneExist(String platform, String phone, String isactive) throws Exception{
+        return validateCodeMapper.selectPhoneExist(platform, phone,isactive);
     }
 
     public int updateValidateCode(ValidateCode code) throws Exception{

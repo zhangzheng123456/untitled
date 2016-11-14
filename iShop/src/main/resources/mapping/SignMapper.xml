@@ -13,6 +13,7 @@
         <result column="location" property="location" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_name" property="store_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="phone" property="phone" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -23,9 +24,12 @@
     </resultMap>
     <select id="selectSignByInp"  resultMap="Sign">
         SELECT acc_sign.*,
-        def_corp.corp_name
-        FROM acc_sign,def_corp
+        def_corp.corp_name,
+        def_store.store_name
+        FROM acc_sign,def_corp,def_store
         WHERE acc_sign.corp_code=def_corp.corp_code
+        AND def_corp.corp_code = def_store.corp_code
+        AND acc_sign.store_code = def_store.store_code
         AND acc_sign.status !='1'
         <if test="corp_code!=null and corp_code!=''">
             AND acc_sign.corp_code = #{corp_code}
@@ -58,6 +62,7 @@
             acc_sign.user_code LIKE concat('%', #{search_value},'%')
             OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
             OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
+            OR def_store.store_name LIKE concat('%', #{search_value},'%')
             OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
             )
         </if>
@@ -66,8 +71,13 @@
     </select>
 
     <select id="selectByUser"  resultType="com.bizvane.ishop.entity.Sign">
-        SELECT * FROM acc_sign,def_corp
+        SELECT acc_sign.*,
+        def_corp.corp_name,
+        def_store.store_name
+        FROM acc_sign,def_corp,def_store
         WHERE acc_sign.corp_code=def_corp.corp_code
+        AND def_corp.corp_code = def_store.corp_code
+        AND acc_sign.store_code = def_store.store_code
         AND acc_sign.status !='1'
         AND
         acc_sign.user_code=#{user_code} AND  acc_sign.corp_code=#{corp_code}
@@ -77,8 +87,8 @@
             acc_sign.user_code LIKE concat('%', #{search_value},'%')
             OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
             OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
+            OR def_store.store_name LIKE concat('%', #{search_value},'%')
             OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
-            OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
         GROUP BY acc_sign.ID
@@ -98,9 +108,12 @@
 
     <select id="selectSignAllScreen"  resultMap="Sign">
         SELECT acc_sign.*,
-        def_corp.corp_name
-        FROM acc_sign,def_corp
+        def_corp.corp_name,
+        def_store.store_name
+        FROM acc_sign,def_corp,def_store
         WHERE acc_sign.corp_code=def_corp.corp_code
+        AND def_corp.corp_code = def_store.corp_code
+        AND acc_sign.store_code = def_store.store_code
         AND acc_sign.status !='1'
         <if test="corp_code!=null and corp_code!=''">
             AND acc_sign.corp_code = #{corp_code}
@@ -139,6 +152,9 @@
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     def_corp.${entryKey} REGEXP ${entryValue}
                 </when>
+                <when test="entryValue!='' and entryKey=='store_name'">
+                    def_store.${entryKey} REGEXP ${entryValue}
+                </when>
                 <when test="entryValue!=''">
                     acc_sign.${entryKey} REGEXP ${entryValue}
                 </when>
@@ -152,8 +168,13 @@
     </select>
 
     <select id="selectSignAllScreenUser" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT * FROM acc_sign,def_corp
+        SELECT acc_sign.*,
+        def_corp.corp_name,
+        def_store.store_name
+        FROM acc_sign,def_corp,def_store
         WHERE acc_sign.corp_code=def_corp.corp_code
+        AND def_corp.corp_code = def_store.corp_code
+        AND acc_sign.store_code = def_store.store_code
         AND acc_sign.status !='1'
         AND
         acc_sign.user_code=#{user_code} AND  acc_sign.corp_code=#{corp_code}
@@ -168,6 +189,9 @@
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryValue!='' and entryKey=='store_name'">
+                    def_store.${entryKey} REGEXP ${entryValue}
                 </when>
                 <when test="entryValue!=''">
                     acc_sign.${entryKey} LIKE concat('%',#{entryValue},'%')

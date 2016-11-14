@@ -41,15 +41,15 @@
         WHERE ID=#{id}
     </select>
 
-    <select id="selectByCodeId" resultType="com.bizvane.ishop.entity.ValidateCode">
+    <select id="selectPhoneExist" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT *
         FROM def_validate_code
         WHERE
-        <if test="code_id != 0">
-            ID = #{code_id}
+        <if test="platform != null and platform !=''">
+            platform = #{platform}
         </if>
         <if test="phone != null and phone !=''">
-            phone = #{phone}
+            AND phone = #{phone}
         </if>
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}

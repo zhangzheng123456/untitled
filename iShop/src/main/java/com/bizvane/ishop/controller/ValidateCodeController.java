@@ -185,7 +185,7 @@ public class ValidateCodeController {
                 dataBean.setMessage("该手机号已存在");
                 return dataBean.getJsonStr();
             }
-            ValidateCode validateCode1 = validateCodeService.selectValidateCode(0,validateCode.getPhone(),validateCode.getIsactive());
+            ValidateCode validateCode1 = validateCodeService.selectPhoneExist(validateCode.getPlatform(),validateCode.getPhone(),validateCode.getIsactive());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(String.valueOf(validateCode1.getId()));

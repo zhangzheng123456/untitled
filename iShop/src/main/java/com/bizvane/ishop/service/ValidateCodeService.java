@@ -16,7 +16,7 @@ import java.util.Map;
 public interface ValidateCodeService {
     int insertValidateCode(ValidateCode code)throws Exception;
 
-    ValidateCode selectValidateCode(int code_id,String phone,String isactive)throws Exception;
+    ValidateCode selectPhoneExist(String platform,String phone,String isactive)throws Exception;
 
     int updateValidateCode(ValidateCode code)throws Exception;
 

@@ -572,7 +572,7 @@ public class UserServiceImpl implements UserService {
             List<User> u = this.userMapper.selectByPhone(phone);
             if (u.size() == 0) {
 
-                ValidateCode code = validateCodeService.selectValidateCode(0, phone, Common.IS_ACTIVE_Y);
+                ValidateCode code = validateCodeService.selectPhoneExist("web", phone, Common.IS_ACTIVE_Y);
                 Date now = new Date();
                 String modified_date = code.getModified_date();
                 Date time = Common.DATETIME_FORMAT.parse(modified_date);
@@ -678,7 +678,7 @@ public class UserServiceImpl implements UserService {
 //        JSONObject obj = new JSONObject(msg);
         if (dataBox.status.toString().equals("SUCCESS")) {
             //验证码存表
-            ValidateCode code = validateCodeService.selectValidateCode(0, phone, "");
+            ValidateCode code = validateCodeService.selectPhoneExist("web", phone, "");
             Date now = new Date();
             if (code == null) {
                 code = new ValidateCode();

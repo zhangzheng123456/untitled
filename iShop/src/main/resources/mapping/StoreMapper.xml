@@ -578,7 +578,7 @@
             </foreach>
         </if>
         <if test="isactive != null and isactive!=''">
-            ds.isactive = #{isactive}
+            AND ds.isactive = #{isactive}
         </if>
         AND dc.isactive = 'Y'
         AND da.isactive = 'Y'
@@ -648,7 +648,7 @@
             </foreach>
         </if>
         <if test="isactive != null and isactive!=''">
-            ds.isactive = #{isactive}
+            AND ds.isactive = #{isactive}
         </if>
         AND dc.isactive = 'Y'
         GROUP BY ds.id

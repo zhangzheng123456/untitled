@@ -63,7 +63,7 @@ public class VipAnalysisController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
-//            logger.info("-------vip列表" + dataBox.data.get("message").value);
+            logger.info("------AnalysisAllVip-vip列表" + dataBox.status.toString());
             String result = dataBox.data.get("message").value;
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
