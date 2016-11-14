@@ -7147,7 +7147,9 @@ body.skin-3 {
 .change_logo i{
   color:#ffffff;
   font-size:20px;
-  margin:0px 5px;
+  margin:-4px 5px 0 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 .conpany_msg label{
   width:105px;
@@ -7381,6 +7383,7 @@ body.skin-3 {
 }
 .editor_line{
   border-top:2px #e0e0e0 solid;
+  margin-top: 15px;
   /*margin:30px 20px 0px 20px;*/
 }
 .oper_btn{

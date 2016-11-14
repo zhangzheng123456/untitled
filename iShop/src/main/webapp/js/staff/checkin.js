@@ -250,6 +250,8 @@ function superaddition(data,num){//页面加载循环
                         + data[i].user_name
                         + "</td><td><span>"
                         + data[i].corp_name
+                        + "</span></td><td><span title="+data[i].store_name+">"
+                        + data[i].store_name
                         + "</span></td><td onmouseover='mapInit(this)' onmouseleave='mapHide(this)'><span>"
                         + data[i].location
                         + "</span></td><td>"
@@ -258,9 +260,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].sign_time
                         + "</td><td>"
                         + data[i].status
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 900px;'></td></tr>");
+                        +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 1000px;'></td></tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -774,13 +774,13 @@ $("#input-txt").keydown(function() {
 })
 //签到位置在地图显示
 function mapInit(obj) {
-    var val=$(obj).parents("tr").children("td:nth-child(6)").children('span').html();
+    var val=$(obj).parents("tr").children("td:nth-child(7)").children('span').html();
     if(val!==""){
         $(obj).parents("tr").children("td:last-child").show();
     }
     for(var j=0;j<$(".table tbody tr").length;j++){
         var map = new BMap.Map('ghy'+j);          // 创建地图实例
-        var location=$($(".table tbody tr")[j]).children("td:nth-child(6)").children("span").html();
+        var location=$($(".table tbody tr")[j]).children("td:nth-child(7)").children("span").html();
         if(location!==""){
             location=location.split(",");
             var x=location[0];
