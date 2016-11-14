@@ -252,7 +252,7 @@ function superaddition(data,num){//页面加载循环
             data[i].user_code+
             "</td><td>"
             + data[i].position
-            + "</td><td><span>"
+            + "</td><td><span title="+data[i].store_name+">"
             + data[i].store_name
             + "</span></td><td><span>"
             + data[i].corp_name
