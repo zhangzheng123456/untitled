@@ -433,10 +433,12 @@
 .vip_table_lg .vip_table tbody tr:nth-child(even){
     background: #fff;
     line-height: 45px;
+    height:45px;
 }
 .vip_table_lg .vip_table tbody tr:nth-child(odd){
     background: #e8e8e8;
     line-height: 45px;
+    height:45px;
 }
 .vip_table_lg .vip_table thead tr{
     background: #fff;

@@ -514,7 +514,7 @@ function brithVipGet() {
                         $($(".birthVip tbody tr")[i]).append("<td></td>");
                     }
                 }
-                $(".birthVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:30px;font-size: 15px;color:#999'>暂无数据</span>");
+                $(".birthVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
             if(msg.length>0) {
                 for (var i = 0; i < msg.length; i++) {
@@ -613,7 +613,7 @@ function newVipGet(){
                         $($(".newVip tbody tr")[i]).append("<td></td>");
                     }
                 }
-                $(".newVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:30px;font-size: 15px;color:#999'>暂无数据</span>");
+                $(".newVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
             console.log(data.message);
@@ -702,7 +702,7 @@ function sleepVipGet() {
                         $($(".activeVip tbody tr")[i]).append("<td></td>");
                     }
                 }
-                $(".activeVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:30px;font-size: 15px;color:#999'>暂无数据</span>");
+                $(".activeVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
             console.log(data.message);
@@ -786,7 +786,7 @@ function consumeVipGet() {
                         $($(".rank tbody tr")[i]).append("<td></td>");
                     }
                 }
-                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:30px;font-size: 15px;color:#999'>暂无数据</span>");
+                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
             console.log(data.message);
@@ -859,7 +859,7 @@ function consumeVipGetre() {
                         $($(".rank tbody tr")[i]).append("<td></td>");
                     }
                 }
-                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:30px;font-size: 15px;color:#999'>暂无数据</span>");
+                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
             console.log(data.message);
@@ -928,7 +928,7 @@ function consumeVipGetam() {
                         $($(".rank tbody tr")[i]).append("<td></td>");
                     }
                 }
-                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:30px;font-size: 15px;color:#999'>暂无数据</span>");
+                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
             console.log(data.message);
