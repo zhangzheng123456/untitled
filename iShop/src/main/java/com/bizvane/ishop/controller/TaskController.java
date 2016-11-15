@@ -208,14 +208,16 @@ public class TaskController {
                 Task task = taskService.selectTaskById(id);
                 if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
                     del= taskService.delTask(id, corp_code, task_code);
+                    count = Integer.parseInt(del);
                 }else{
                     if(!user_code.equals(task.getCreater())){
                         del="无法删除他人创建的任务";
                     }else{
                         del= taskService.delTask(id, corp_code, task_code);
+                        count = Integer.parseInt(del);
                     }
                 }
-                count = Integer.parseInt(del);
+
             }
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
