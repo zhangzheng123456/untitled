@@ -19,12 +19,14 @@
         WHERE def_task.corp_code = def_corp.corp_code
         AND def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
         AND def_corp.corp_code = def_task_type.corp_code
+
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
         <if test="role_ident !=null and role_ident!=''">
-            and def_task.task_code in(select rel_task_allocation.task_code from rel_task_allocation
-            where rel_task_allocation.corp_code =#{corp_code} and rel_task_allocation.user_code=#{user_code} )
+            and def_task.task_code in(SELECT rel_task_allocation.task_code FROM rel_task_allocation
+            WHERE rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.user_code=#{user_code}
+            OR rel_task_allocation.creater = #{user_code})
         </if>
         <if test="search_value != null and search_value !=''">
             AND

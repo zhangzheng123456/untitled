@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>创建活动</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <style>
+        body{
+            margin-top:81px;
+        }
+        .editor_line{
+            margin-top: 0;
+            border-top:none;
+        }
+        .hr{
+            float: left;
+            width:35%;
+            margin: 20px 60px 5px 20px;
+            height: 2px;
+            background-color: #e0e0e0;
+        }
+        .hr_s{
+            width: 543px;
+            height: 2px;
+            background-color: #e0e0e0;
+        }
+        .operedit_btn li{
+            width: 160px;
+            height: 30px;
+            display: inline-block;
+            list-style: none;
+            float: left;
+            margin-left: 20px;
+            color: #ffffff;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 14px;
+            letter-spacing: 10px;
+            cursor: pointer;
+        }
+        .activity_date input{
+            width: 185px;
+        }
+        .activity_date #start{
+            margin-left: -5px;
+        }
+        .activity_date span{
+            margin: 0 15px;
+        }
+        .abstract textarea{
+            width: 420px;
+            height: 80px;
+            outline: none;
+            padding: 8px;
+        }
+        .create_src{
+            display: inline-block;
+            width:100px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor:pointer ;
+            background: #6dc1c8;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .conpany_msg .src_input{
+            width: 310px;
+            margin-right: 8px;
+        }
+        .arrow_right{
+            position: absolute;
+            right: 0;
+            top:-5px;
+            width:30px;
+            height: 30px;
+            border-radius: 0 5px 5px 0;
+            color: #fff;
+            line-height: 30px;
+            text-align: center;
+            background: #6dc1c8;
+        }
+        .execution{
+            width: 420px;
+            position: absolute;
+            left: 123px;
+            top: 30px;
+            z-index: 100;
+            border: 1px solid #a9c9e2;
+            background: #f5f5f5;
+            display: none;
+        }
+        .execution li{
+            cursor: pointer;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 5px;
+        }
+        .execution li:hover{
+            background: #4a5f7c;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>创建活动</label></div>
+    <div class="col-lg-12">
+        <hr class="hr" />
+        <div class="operedit_btn">
+            <ul>
+                <li style="background: #d1d1d1"><i class="icon-ishop_6-12"></i>执行</li>
+                <li style="background: #6dc1c8"><i class="icon-ishop_6-04"></i>保存</li>
+                <li style="background: #4a5f7c"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+    </div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <input class="PARAM_NAME" readonly/>
+                </ul>
+            </div>
+            <div>
+                <span><label style="color:#c26555;">活动主题*</label><input type="text"/></span>
+            </div>
+            <div>
+                <ul style="display:inline-flex;position: relative">
+                    <li><label style="color:#c26555;">执行方式*</label></li>
+                    <input  class="PARAM_NAME" id="execution_input" value="微信公众号推送" readonly/>
+                    <ul class="execution" id="execution">
+                        <li>(任务)电话通知顾客</li>
+                        <li>(任务)短信通知顾客</li>
+                        <li>系统短信通知顾客</li>
+                        <li>微信公众号推送</li>
+                    </ul>
+                </ul>
+            </div>
+            <div>
+                <span class="activity_date">
+                    <label>活动时间</label>
+                    <input type="text" id="start" readonly="true" placeholder="请输入日期" class="laydate-icon"/>
+                    <span>~</span>
+                    <input type="text" id="end" readonly="true" placeholder="请输入日期" class="laydate-icon"/>
+                </span>
+            </div>
+            <div>
+                <span style="position: relative">
+                    <label>目标会员</label><input type="text"/>
+                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
+                </span>
+            </div>
+            <div>
+                <span style="position: relative">
+                    <label>执行人</label><input type="text"/>
+                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
+                </span>
+            </div>
+            <hr class="hr_s"/>
+            <div>
+                <span><label>推送标题</label><input type="text" placeholder="请输入活动主题"/></span>
+            </div>
+            <div>
+                <span><label>任务标题</label><input type="text" placeholder="未选择"/></span>
+            </div>
+            <div>
+                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+            </div>
+            <div>
+                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+            </div>
+            <div>
+                <span><label>外部链接</label><input type="text"/></span>
+            </div>
+            <div>
+                <span>
+                    <label></label><input type="text" class="src_input"/>
+                    <span class="create_src">生成链接</span>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail_em col-lg-4  animated fadeInRight">
+        <form class="msg_detail">
+            <div>
+                <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+            </div>
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../js/insidePostRequire.js"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js"></script>
+<script src="../js/loading.js"></script>
+<script src="../js/artDialog/plugins/iframeTools.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<script type="text/javascript" src="../js/moni_select.js"></script>
+<script>
+    $("#start").click(laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'}));
+    $("#end").click(laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'}));
+    $("#execution li").click(function () {
+        //执行方式下拉选择
+        $("#execution_input").val($(this).html());
+    });
+    $("#execution_input").click(function () {
+        $("#execution").toggle();
+    });
+    $(document).click(function (e) {
+        if($(e.target).is("#execution_input")){
+
+        }else {
+            $("#execution").hide();
+        }
+    })
+</script>
+</body>
+</html>
