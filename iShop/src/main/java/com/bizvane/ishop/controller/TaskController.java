@@ -294,6 +294,7 @@ public class TaskController {
         DataBean dataBean = new DataBean();
         int count = 0;
         try {
+            String role_code = request.getSession().getAttribute("role_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -315,16 +316,37 @@ public class TaskController {
             task.setIsactive(jsonObject.get("isactive").toString());
             String user_codes = jsonObject.get("user_codes").toString();
             String[] split = user_codes.split(",");
-            String add = taskService.updTask(task, split,user_code);
-            count=Integer.parseInt(add);
-            if(count>0){
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("编辑成功");
+            if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
+                String add = taskService.updTask(task, split,user_code);
+                count=Integer.parseInt(add);
+                if(count>0){
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("编辑成功");
+                }else{
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("-1");
+                    dataBean.setMessage("编辑失败");
+                }
             }else{
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId("-1");
-                dataBean.setMessage("编辑失败");
+                Task task_user = taskService.selectTaskById(jsonObject.get("id").toString());
+                if(!user_code.equals(task_user.getCreater())){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("-1");
+                    dataBean.setMessage("无法编辑他人创建的任务");
+                }else{
+                    String add = taskService.updTask(task, split,user_code);
+                    count=Integer.parseInt(add);
+                    if(count>0){
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId(id);
+                        dataBean.setMessage("编辑成功");
+                    }else{
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId("-1");
+                        dataBean.setMessage("编辑失败");
+                    }
+                }
             }
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

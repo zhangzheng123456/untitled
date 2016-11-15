@@ -884,7 +884,7 @@ public class UserController {
                         }
                         user.setStore_code(store_code);
                     }
-                    if(role.equals(Common.ROLE_GM)||role.equals(Common.ROLE_AM)){
+                    if(role.equals(Common.ROLE_GM)){
                         user.setStore_code("");
                     }
 
