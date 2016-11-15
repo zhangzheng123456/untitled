@@ -1,12 +1,8 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
