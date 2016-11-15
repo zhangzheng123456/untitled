@@ -165,7 +165,7 @@
                                             <div class="ranking">业绩总额（元）</div>
                                         </li>
                                         <li class="yield_rate">
-                                            <span id="area_ranking" class="chart" data-percent="0">
+                                            <span id="area_ranking" class="chart" data-percent="300">
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
@@ -438,8 +438,7 @@
         });
     </script>
     <!-- 达成率 -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  <!--   <script>
         var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
             easing: 'easeOutElastic',
             delay: 3000,
@@ -453,8 +452,7 @@
                 this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
             }
         });
-    });
-    </script>
+    </script> -->
     <script>
         //雷达图
         var radarChartData = {

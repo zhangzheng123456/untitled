@@ -287,11 +287,17 @@ function jurisdiction(actions){
 function qjia(){
     var param={};
     param["funcCode"]=funcCode;
+    whir.loading.add("",0.5);
     oc.postRequire("post","/list/action","0",param,function(data){
-        var message=JSON.parse(data.message);
-        var actions=message.actions;
-        jurisdiction(actions);
-        jumpBianse();
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var actions=message.actions;
+            jurisdiction(actions);
+            jumpBianse();
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();
     })
 }
 qjia();
@@ -313,6 +319,7 @@ function GET(a,b){
                 setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
             }else if(data.code=="-1"){
                 alert(data.message);
+                whir.loading.remove();
             }
     });
 }
@@ -454,6 +461,7 @@ function POST(a,b){
             setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();
         }
     })
 }
@@ -483,7 +491,6 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(param);
     oc.postRequire("post","/userAchvGoal/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
@@ -753,6 +760,8 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 getInputValue();
             }
         })
+    }else if(data.code=="-1"){
+        alert(data.message);
     }
 });
 function filtrateDown(){
