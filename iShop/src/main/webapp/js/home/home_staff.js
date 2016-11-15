@@ -222,22 +222,22 @@ function superadditionAchv(c){
    //$("#Contribution_degree").attr("title",c.staff.contribute);
    $("#My_Vip").html(c.staff.vip_count);
    //$("#My_Vip").attr("title",c.staff.vip_count);
-   $("#area_ranking").attr("data-percent",c.staff.achieve_rate);
+   // $("#area_ranking").attr("data-percent",c.staff.achieve_rate);
    $("#achv_mask").hide();
-   $(".yield_rate canvas").remove();
-   var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
-        easing: 'easeOutElastic',
-        delay: 3000,
-        barColor: '#6cc1c8',
-        trackColor: '#4a5f7c',
-        scaleColor: false,
-        lineWidth: 10,
-        trackWidth: 10,
-        lineCap: 'butt',
-        onStep: function(from, to, percent) {
-            this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
-        }
-    });
+   // $(".yield_rate canvas").remove();
+   // var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
+   //      easing: 'easeOutElastic',
+   //      delay: 3000,
+   //      barColor: '#6cc1c8',
+   //      trackColor: '#4a5f7c',
+   //      scaleColor: false,
+   //      lineWidth: 10,
+   //      trackWidth: 10,
+   //      lineCap: 'butt',
+   //      onStep: function(from, to, percent) {
+   //          this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
+   //      }
+   //  });
 }
 //点击店铺
 $(".c_a_shoppe").click(function(){
