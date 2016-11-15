@@ -131,7 +131,7 @@ public class StoreAchvGoalController {
     public String addStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
-        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
         String id = "";
         try {

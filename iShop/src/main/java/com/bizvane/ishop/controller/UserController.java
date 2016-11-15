@@ -997,7 +997,7 @@ public class UserController {
                                 if (stores.get(j).getStore_code().equals(codes[i])){
                                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                                     dataBean.setId(id);
-                                    dataBean.setMessage("请勿选择重复的店铺");
+                                    dataBean.setMessage("请勿选择重复的店铺:"+stores.get(j).getStore_name());
                                     return dataBean.getJsonStr();
                                 }
                             }
@@ -1146,7 +1146,7 @@ public class UserController {
                                 if (stores.get(j).getStore_code().equals(codes[i])){
                                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                                     dataBean.setId(id);
-                                    dataBean.setMessage("请勿选择重复的店铺");
+                                    dataBean.setMessage("请勿选择重复的店铺:"+stores.get(j).getStore_name());
                                     return dataBean.getJsonStr();
                                 }
                             }
