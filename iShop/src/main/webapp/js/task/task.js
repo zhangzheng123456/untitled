@@ -949,6 +949,14 @@ $("#edit_save").click(function(){
                 content:"保存成功"
             });
             whir.loading.remove();//移除加载框
+        }else if(data.code=="-1"){
+           art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content:data.message
+            });
+            whir.loading.remove();//移除加载框 
         }
     })
 })
