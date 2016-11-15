@@ -256,7 +256,7 @@ jQuery(document).ready(function(){
 				$("#Accounts").val(msg.app_name);
 				$("#Accounts").attr("data-appid",msg.app_id);
 				if (msg.app_id!= "") {
-                    if (msg.brand_code.indexOf(',') !== -1) {
+                    if (msg.brand_code.indexOf(',')== -1) {
                         checknow_data = msg.app_id.split(",");
                         checknow_namedata = msg.app_name.split(",");
                     } else {

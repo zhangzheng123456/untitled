@@ -282,13 +282,17 @@ function jurisdiction(actions){
 }
 //页面加载调权限接口
 function qjia(){
+    whir.loading.add("",0.5);//加载等待框
     var param={};
     param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
-        var message=JSON.parse(data.message);
-        var actions=message.actions;
-        jurisdiction(actions);
-        jumpBianse();
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var actions=message.actions;
+            jurisdiction(actions);
+            jumpBianse();
+        }
+        whir.loading.remove();//移除加载框
     })
 }
 qjia();

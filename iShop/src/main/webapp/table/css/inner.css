@@ -1571,7 +1571,6 @@ input::-webkit-input-placeholder{
     box-sizing: border-box;
 }
 .power_table tbody tr .action_name ul li,.power_table tbody tr .modify_options ul li{
-	float: left;
 	min-width:50px;
 	float: left;
 	height: 30px;
@@ -1583,6 +1582,7 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 	border-radius: 5px;
 	background-color: #fff;
+	border: 1px solid #ddd;
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -1594,7 +1594,7 @@ input::-webkit-input-placeholder{
     user-select: none; 
 }
 .power_table tbody tr .action_name ul li.active,.power_table tbody tr .modify_options ul li.active{
-	border:none;
+	border:1px solid #6CC1C8;
 	color: #fff;
 	background-color: #6CC1C8;
 }

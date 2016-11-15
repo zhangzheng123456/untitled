@@ -439,25 +439,7 @@
             });
         });
     </script>
-    <!-- 达成率 -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
-            easing: 'easeOutElastic',
-            delay: 3000,
-            barColor: '#6cc1c8',
-            trackColor: '#4a5f7c',
-            scaleColor: false,
-            lineWidth: 10,
-            trackWidth: 10,
-            lineCap: 'butt',
-            onStep: function(from, to, percent) {
-                this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
-            }
-        });
-    });
-    </script>
-     <script>
         //雷达图
         var radarChartData = {
             labels : ["成交笔数","客单价","新增会员","平均折扣","连带率","销售件数"],

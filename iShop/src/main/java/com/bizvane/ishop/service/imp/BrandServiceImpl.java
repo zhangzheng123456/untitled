@@ -215,7 +215,7 @@ public class BrandServiceImpl implements BrandService {
         String brand_name = jsonObject.get("brand_name").toString().trim();
 
         Brand brand = getBrandById(brand_id);
-
+        String app_id1 = brand.getApp_id();
         Brand brand1 = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
         Brand brand2 = getBrandByCode(corp_code, brand_name,Common.IS_ACTIVE_Y);
         if (brand.getCorp_code().trim().equals(corp_code)) {
@@ -232,6 +232,18 @@ public class BrandServiceImpl implements BrandService {
                 brand.setCorp_code(corp_code);
                 if (jsonObject.containsKey("cus_user_code")){
                     brand.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
+                }
+                if (app_id1 != null && !app_id1.equals("")){
+                    String[] app_ids = app_id1.split(",");
+                    for (int i = 0; i < app_ids.length; i++) {
+                        CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
+                        String brand_codes = corpWechat.getBrand_code();
+                        brand_codes = brand_codes.replace(Common.SPECIAL_HEAD+brand_code+",","");
+                        corpWechat.setBrand_code(brand_codes);
+                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setModifier(user_code);
+                        corpMapper.updateCorpWechat(corpWechat);
+                    }
                 }
                 if (jsonObject.containsKey("app_id")){
                     String app_id = jsonObject.get("app_id").toString().trim();
