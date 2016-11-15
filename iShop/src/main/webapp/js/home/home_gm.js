@@ -339,8 +339,22 @@ function superadditionAchv(c){
 	$("#num_nvip").html(c.am.num_nvip);
 	$("#vip_amt_rate").html(c.am.vip_amt_rate);
 	$("#amt_trade").html(c.am.amt_trade);
-	$("#area_ranking").attr("data-percent",c.am.area_ranking);
+	$("#area_ranking").attr("data-percent",c.am.achieve_rate);
 	$("#achv_mask").hide();
+	$(".yield_rate canvas").remove();
+	var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
+        easing: 'easeOutElastic',
+        delay: 3000,
+        barColor: '#6cc1c8',
+        trackColor: '#4a5f7c',
+        scaleColor: false,
+        lineWidth: 10,
+        trackWidth: 10,
+        lineCap: 'butt',
+        onStep: function(from, to, percent) {
+            this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
+        }
+    });
 }
 //业绩加载
 function achAnalysis(a){
