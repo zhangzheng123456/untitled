@@ -22,10 +22,6 @@ import java.util.List;
 @Service
 public class WebServiceImpl implements WebService {
 
-//    @Override
-//    public Achv getAchvById(int id) throws SQLException {
-//        return null;
-//    }
 
     @Autowired
     VIPRelationMapper vipRelationMapper;
