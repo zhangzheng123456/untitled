@@ -109,6 +109,73 @@
             background: #4a5f7c;
             color: #fff;
         }
+        .tk{
+            display: none;
+            width: 280px;
+            height: 180px;
+            border-radius: 5px;
+            background: #fff;
+            position: absolute;
+            top:300px;
+            left: 30%;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+        }
+        .tk span{
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .tk .tip{
+            padding: 50px 20px;
+            height: 140px;
+            text-align: center;
+            font-size: 14px;
+            color: #888888;
+        }
+        .tk .btn{
+            padding: 0;
+            margin-left: 30px;
+        }
+        .tk em{
+            float: left;
+            display: inline-block;
+            font-style: normal;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .tk .cancel{
+            background-color: #e8e8e8;
+            color: #888;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .tk .enter{
+            background-color: #cd706e;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+        .box_shadow{
+            display: none;
+            width: 100%;
+            height: 1200px;
+            position: absolute;
+            top: 45%;
+            left: 0;
+            z-index: 100;
+        }
+        .performance{
+            background: #d1d1d1;
+        }
+        #performance{
+            background: #8f9ad2;
+        }
     </style>
 </head>
 <body>
@@ -118,8 +185,8 @@
         <hr class="hr" />
         <div class="operedit_btn">
             <ul>
-                <li style="background: #d1d1d1"><i class="icon-ishop_6-12"></i>执行</li>
-                <li style="background: #6dc1c8"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="performance"><i class="icon-ishop_6-20 "></i>执行</li>
+                <li style="background: #6dc1c8" id="save"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="background: #4a5f7c"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
@@ -138,11 +205,12 @@
             <div>
                 <ul style="display:inline-flex;position: relative">
                     <li><label style="color:#c26555;">执行方式*</label></li>
-                    <input  class="PARAM_NAME" id="execution_input" value="微信公众号推送" readonly/>
+                    <input  class="PARAM_NAME" id="execution_input" value="(任务)电话通知顾客" readonly/>
                     <ul class="execution" id="execution">
                         <li>(任务)电话通知顾客</li>
                         <li>(任务)短信通知顾客</li>
                         <li>系统短信通知顾客</li>
+                        <li>(任务)分享链接到社交平台</li>
                         <li>微信公众号推送</li>
                     </ul>
                 </ul>
@@ -161,24 +229,27 @@
                     <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
-            <div>
+            <div class="executor">
                 <span style="position: relative">
                     <label>执行人</label><input type="text"/>
                     <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
             <hr class="hr_s"/>
-            <div>
+            <div class="send_title" style="display: none">
                 <span><label>推送标题</label><input type="text" placeholder="请输入活动主题"/></span>
             </div>
-            <div>
+            <div class="summary" style="display: none">
+                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+            </div>
+            <div class="task_title">
                 <span><label>任务标题</label><input type="text" placeholder="未选择"/></span>
             </div>
-            <div>
-                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+            <div class="task_dec">
+                <span style="display: inline-flex;width:100%"><label>任务描述</label><span class="abstract" ><textarea  placeholder="未选择"></textarea></span></span>
             </div>
-            <div>
-                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+            <div class="short_msg" style="display: none">
+                <span style="display: inline-flex;width:100%"><label>短信正文</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
             </div>
             <div>
                 <span><label>外部链接</label><input type="text"/></span>
@@ -210,6 +281,15 @@
             </div>
         </form>
     </div>
+    <div class="tk" id="tk">
+        <span class="icon-ishop_6-12" id="X"></span>
+        <div class="tip">分配执行后,任务将不可更改或删除。确认执行该任务?</div>
+        <div class="btn">
+            <em class="cancel" id="cancel">取消</em>
+            <em class="enter">确认执行</em>
+        </div>
+    </div>
+    <div class="box_shadow"></div>
 </div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
@@ -224,11 +304,44 @@
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <script type="text/javascript" src="../js/moni_select.js"></script>
 <script>
+    //保存按钮
+    $("#save").click(function () {
+        $(".performance").attr("id","performance");
+        //点击执行
+        $("#performance").click(function () {
+            $(".box_shadow").show();
+            $(".tk").show();
+        });
+    });
+    //日期插件调用
     $("#start").click(laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'}));
     $("#end").click(laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'}));
+    //执行方式下拉选择
     $("#execution li").click(function () {
-        //执行方式下拉选择
-        $("#execution_input").val($(this).html());
+        var val = $(this).html();
+        $("#execution_input").val(val);
+        if(val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台"){
+            $(".executor").show();
+            $(".task_dec").show();
+            $(".task_title").show();
+            $(".send_title").hide();
+            $(".summary").hide();
+            $(".short_msg").hide();
+        }else if(val == "系统短信通知顾客"){
+            $(".executor").show();
+            $(".task_dec").hide();
+            $(".task_title").hide();
+            $(".send_title").hide();
+            $(".summary").hide();
+            $(".short_msg").show();
+        }else if(val == "微信公众号推送"){
+            $(".executor").hide();
+            $(".task_dec").hide();
+            $(".task_title").hide();
+            $(".send_title").show();
+            $(".summary").show();
+            $(".short_msg").hide();
+        }
     });
     $("#execution_input").click(function () {
         $("#execution").toggle();
@@ -239,7 +352,15 @@
         }else {
             $("#execution").hide();
         }
-    })
+    });
+    //关闭弹出层
+    $("#cancel").click(close_float);
+    $("#X").click(close_float);
+    function close_float() {
+        $(".box_shadow").hide();
+        $(".tk").hide();
+    }
+
 </script>
 </body>
 </html>
