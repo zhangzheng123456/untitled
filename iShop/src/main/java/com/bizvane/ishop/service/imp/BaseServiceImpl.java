@@ -1,18 +1,25 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.BaseMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.BaseService;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +35,8 @@ public class BaseServiceImpl implements BaseService{
     StoreMapper storeMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    MongoDBClient mongodbClient;
 
     @Override
     public PageInfo<HashMap<String, Object>> queryMetaList(int page_number, int page_size, Map<String, Object> params) throws SQLException {
@@ -96,6 +105,33 @@ public class BaseServiceImpl implements BaseService{
         if (user.size()>0)
             user_id = user.get(0).getUser_id();
         return user_id;
+    }
+
+    /**
+     * mongodb插入用户操作记录
+     * @param operation_corp_code 操作者corp_code
+     * @param operation_user_code 操作者user_code
+     * @param function 功能
+     * @param action 动作
+     * @param corp_code 被操作corp_code
+     * @param code 被操作code
+     * @param name 被操作name
+     * @throws Exception
+     */
+    public void insertUserOperation(String operation_corp_code,String operation_user_code,String function,String action,String corp_code, String code,String name)throws Exception{
+        Date now = new Date();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection collection = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
+        DBObject saveData=new BasicDBObject();
+        saveData.put("function", function);
+        saveData.put("action", action);
+        saveData.put("corp_code", corp_code);
+        saveData.put("code", code);
+        saveData.put("name", name);
+        saveData.put("operation_corp_code", operation_corp_code);
+        saveData.put("operation_user_code", operation_user_code);
+        saveData.put("operation_time", Common.DATETIME_FORMAT.format(now));
+        collection.insert(saveData);
     }
 
 }
