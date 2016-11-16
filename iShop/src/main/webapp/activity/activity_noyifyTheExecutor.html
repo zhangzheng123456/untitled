@@ -43,10 +43,17 @@
             padding: 10px;;
             outline: none;
         }
-      /*右侧箭头*/
-        #selectPeople{
-            background: url("../img/btn_select.jpg")no-repeat right;
-            background-color: white;
+        /*添加执行人*/
+        #sendee_r{
+            width: 390px !important;
+        }
+        #add_sendee{
+            text-align: center;
+            width: 30px;
+        }
+        /*修改箭头位置*/
+        #add_sendee .icon-ishop_8-03{
+
         }
     </style>
 </head>
@@ -54,13 +61,11 @@
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="activity.html">活动列表</a><i class="icon-ishop_8-03"></i><a href="activity_details.html">活动详情</a><i class="icon-ishop_8-03"></i><lable>通知执行人</lable></div>
     <div class="editor_1 col-lg-7 ">
+
         <form class="conpany_msg">
-            <div>
-                <ul style="display:inline-flex;">
-                    <li><label>通知执行人*</label></li>
-                    <input type="text" id="selectPeople" verify="Empty" readonly="readonly"/>
-                </ul>
-            </div>
+            <div class="check_per" id="sendee">
+                <span><label>添加执行人*</label><input type="text" id="sendee_r" value="已选0个" data-code="" data-name="" data-phone="" readonly=""><span class="check_icon" id="add_sendee"><i class="icon-ishop_8-03"></i></span></span>
+            </div>  <!--添加执行人-->
             <div>
                 <span><label >通知标题*</label><input type="text" id="callitile" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
             </div>
@@ -83,11 +88,7 @@
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<!-- Custom and plugin javascript -->
 <script src="../js/loading.js"></script>
-<!-- <script src="../js/plugins/pace/pace.min.js"></script> -->
-<!-- Dialog -->
-<script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="../js/multiple_choice.js"></script>
@@ -95,18 +96,24 @@
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <!-- error tips -->
 <script>
+    cache = {
+        "selectPeopleNum": '',
+    };
     //选择执行人
     $('#selectPeople').click(function(){
         var num = 32;
+        cache.selectPeopleNum = num;
         $('#selectPeople').val('已选择'+num+'人')
     });
     //发送
     function send(){
-        var selectPeople =[];
         var callitile = $('#callitile').val();
         console.log('通知标题:'+callitile);
         var callMain = $('#callMain').val();
         console.log('通知正文:'+callMain);
+        if(callitile==''||callMain==''){
+            alert('通知标题或者正文不能为空！');
+        }else if(callitile.length){}
     }
     //关闭
     function closePage(){
