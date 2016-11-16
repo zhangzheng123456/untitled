@@ -34,7 +34,7 @@
             color: #d4512e;
         }
         /*活动描述input*/
-        #describeActivities{
+        #callMain{
             width: 420px;
             height: 110px;
             float: left;
@@ -62,11 +62,11 @@
                 </ul>
             </div>
             <div>
-                <span><label >通知标题*</label><input type="text" id="activityState" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
+                <span><label >通知标题*</label><input type="text" id="callitile" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
             </div>
             <div>
                 <span style="float: left"><label>通知正文*</label><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-                <textarea type="text" id="describeActivities" verify="Phone"/></textarea>
+                <textarea type="text" id="callMain"/></textarea>
             </div>
         </form>
     </div>
@@ -102,9 +102,14 @@
     });
     //发送
     function send(){
+        var selectPeople ='';
+        var callitile = $('#callitile').val();
+        console.log('通知标题:'+callitile);
+        var callMain = $('#callMain').val();
+        console.log('通知正文:'+callMain);
 
     }
-    //关闭 == 返回哪里？
+    //关闭
     function closePage(){
         window.location.href="activity_details.html";    ///未获得具体地址
     }
