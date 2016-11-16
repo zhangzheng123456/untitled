@@ -69,25 +69,25 @@ public class ActivityServiceImpl implements ActivityService{
         String wechat_title = jsonObject.get("wechat_title").toString().trim();
         String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-        String activity_content = jsonObject.get("activity_content").toString().trim();
+       // String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
         String path="";
         Activity activity = WebUtils.JSON2Bean(jsonObject, Activity.class);
-//        String activity_content = activity.getActivity_content();
-//        List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
-//        OssUtils ossUtils=new OssUtils();
-//        String bucketName="products-image";
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-//        path = request.getSession().getServletContext().getRealPath("/");
-//        for (int k = 0; k < htmlImageSrcList.size(); k++) {
-//            String time="Activity/"+corp_code+"/"+activity.getId()+"_"+sdf.format(new Date())+".jpg";
-//            if(!htmlImageSrcList.get(k).contains("image/upload")){
-//                continue;
-//            }
-//            ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
-//            activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
-//            LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
-//        }
+        String activity_content = activity.getActivity_content();
+        List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
+        OssUtils ossUtils=new OssUtils();
+        String bucketName="products-image";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        path = request.getSession().getServletContext().getRealPath("/");
+        for (int k = 0; k < htmlImageSrcList.size(); k++) {
+            String time="Activity/Vip/"+corp_code+"/"+activity.getId()+"_"+sdf.format(new Date())+".jpg";
+            if(!htmlImageSrcList.get(k).contains("image/upload")){
+                continue;
+            }
+            ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
+            activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
+            LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
+        }
         Date now = new Date();
         activity.setCorp_code(corp_code);
         activity.setActivity_theme(activity_theme);
