@@ -52,7 +52,7 @@
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="#">活动列表</a><i class="icon-ishop_8-03"></i><a href="activity_details.html">活动详情</a><i class="icon-ishop_8-03"></i><lable>通知执行人</lable></div>
+    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="activity.html">活动列表</a><i class="icon-ishop_8-03"></i><a href="activity_details.html">活动详情</a><i class="icon-ishop_8-03"></i><lable>通知执行人</lable></div>
     <div class="editor_1 col-lg-7 ">
         <form class="conpany_msg">
             <div>
@@ -102,12 +102,11 @@
     });
     //发送
     function send(){
-        var selectPeople ='';
+        var selectPeople =[];
         var callitile = $('#callitile').val();
         console.log('通知标题:'+callitile);
         var callMain = $('#callMain').val();
         console.log('通知正文:'+callMain);
-
     }
     //关闭
     function closePage(){
