@@ -386,7 +386,8 @@
         def_activity.modifier,
         def_activity.creater,
         def_activity.isactive
-        FROM def_activity
-        WHERE  id =#{id}
+        FROM def_activity,def_corp
+         WHERE def_activity.corp_code=def_corp.corp_code
+        AND def_activity.id =#{id}
     </select>
 </mapper>
