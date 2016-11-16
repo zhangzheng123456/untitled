@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link href="../table/css/inner.css" rel="stylesheet">
     <style>
         body{
             margin-top:81px;
@@ -49,7 +50,7 @@
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="#">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
+    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="activity.html">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
     <div class="editor_1 col-lg-7 " id="details">
         <div class="operation_conpany">
         <ul>
@@ -118,73 +119,13 @@
 <script src="../js/loading.js"></script>
 <!-- <script src="../js/plugins/pace/pace.min.js"></script> -->
 <!-- Dialog -->
-<script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="../js/multiple_choice.js"></script>
 <!-- ajax -->
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <!-- error tips -->
-<script>
-    function removeselect(obj){//区域  删除
-        $(obj).parent().remove();
-    }
-    $("body").append("<script src='/js/corp/corp_operate.js?'"+new Date().getTime()+"'><\/script>");
-    //禁用所有input
-    $(":input").attr("disabled",true);
-    //刷新
-    function reload(){
-        window.location.reload();
-    }
-    //删除
-    function remove(){
-        confirm('确认删除？');
-    }
-    //页面加载请求数据
-    function pageVal(){
-        var activityTheme = '华东区域门店换季促销';
-        var activityState = '执行中';
-        var activityBeginTime = '2016-09-12';
-        var activityEndTime = '2016-12-12';
-        var activityWay = '电话通知';
-        var activityExecutorNum = '32';
-        var theVipNum = '325656';
-        var describeActivities = '测试';
-        var setTime = '2016-03-03 12:39:22';
-        var setPeople = '韦海鸥';
-        var changeTime = '2016-03-02 16:55:37';
-        var changePeople = '陈磊'
-        replaceInput(activityTheme,activityState,activityBeginTime,activityEndTime,activityWay,activityExecutorNum,theVipNum,describeActivities,setTime,setPeople,changeTime,changePeople)
-    }
-    //动态加载input内容
-    function replaceInput(activityTheme,activityState,activityBeginTime,activityEndTime,activityWay,activityExecutorNum,theVipNum,describeActivities,setTime,setPeople,changeTime,changePeople){
-        $('#activityTheme').val(activityTheme);
-        $('#activityState').val(activityState);
-        $('#activityBeginTime').val(activityBeginTime);
-        $('#activityEndTime').val(activityEndTime);
-        $('#activityWay').val(activityWay);
-        $('#activityExecutor').val('已选择'+ activityExecutorNum +'人');
-        $('#theVip').val('已选择'+ theVipNum +'人');
-        $('#describeActivities').val(describeActivities);
-        $('#setTime').val(setTime);
-        $('#setPeople').val(setPeople);
-        $('#changeTime').val(changeTime);
-        $('#changePeople').val(changePeople);
-    }
-    //通知执行人
-    function notice(){
-        window.location.href="activity_noyifyTheExecutor.html";    ///未获得具体地址
-    }
-    //关闭 == 返回哪里？
-    function closePage(){
-        alert('关了这页去哪？！');
-    }
-    //页面加载
-    window.onload = function(){
-        pageVal();
-    }
-
-
-</script>
+<!--匹配js文件-->
+<script type="text/javascript" src="../js/activity/activity_details.js"></script>
 </body>
 </html>
