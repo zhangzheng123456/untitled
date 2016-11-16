@@ -120,7 +120,7 @@ function jumpBianse(){
             input.checked = false;
             $(this).removeClass("tr");
         }
-    })
+    });
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
