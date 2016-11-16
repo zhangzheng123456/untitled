@@ -89,7 +89,7 @@
         <div class="corpadd_oper_btn">
             <ul>
                 <li style="letter-spacing: 1px;" onclick="notice()">通知执行人</li>
-                <li style="letter-spacing: 2px;" onclick="close()"><i class="icon-ishop_6-12"></i>关闭</li>
+                <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
         <form class="msg_detail">
@@ -173,12 +173,13 @@
     }
     //通知执行人
     function notice(){
-       
+        window.location.href="activity_noyifyTheExecutor.html";    ///未获得具体地址
     }
     //关闭 == 返回哪里？
-    function close(){
-
+    function closePage(){
+        alert('关了这页去哪？！');
     }
+    //页面加载
     window.onload = function(){
         pageVal();
     }
