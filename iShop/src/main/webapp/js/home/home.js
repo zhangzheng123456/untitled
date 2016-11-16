@@ -33,8 +33,8 @@ $(function(){
                     html +='<li>'
                     +'<a>'
                         +'<i class="'+p.icon+'"></i>'
-                        +'<span class="nav-label">'+p.mod_name+'</span>'
-                        +'<i class="icon-ishop_8-02 per" style="font-size:14px;position:absolute;right:24px;top:21px;"></i>'
+                        +'<div class="nav-label">'+p.mod_name+'<span class="icon-ishop_8-02 per"></span></div>'
+                        // +'<i class="icon-ishop_8-02 per" style="font-size:14px;position:absolute;right:24px;top:21px;"></i>'
                     +'</a>'
                     +'<ul class="nav nav-second-level">';
                     for(index_li in p.functions){
@@ -45,7 +45,7 @@ $(function(){
                     html +='<li>'
                     +'<a href="../../navigation_bar.html?url='+p.url+'&func_code='+p.func_code+'">'
                         +'<i class="'+p.icon+'"></i>'
-                        +'<span class="nav-label">'+p.mod_name+'</span>'
+                        +'<div class="nav-label">'+p.mod_name+'</div>'
                     +'</a>'
                     +'<ul class="nav nav-second-level">';
                 }
@@ -66,8 +66,8 @@ $(function(){
         $("#side-menu li").click(function(){
             if($(this).children('ul').children('li').length>0){
                 $(this).children('ul').slideToggle();
-                $(this).children('a').children('i:nth-of-type(2)').toggleClass('per');
-                $(this).siblings().children('a').children('i:nth-of-type(2)').addClass('per');
+                $(this).children('a').find('.nav-label span').toggleClass('per');
+                $(this).siblings().children('a').find('.nav-label span').addClass('per');
                 $(this).siblings().children('ul').slideUp();
             }
         });

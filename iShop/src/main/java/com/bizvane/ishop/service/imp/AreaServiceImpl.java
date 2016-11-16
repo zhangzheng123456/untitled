@@ -294,7 +294,9 @@ public class AreaServiceImpl implements AreaService {
                     area_code = area_code + ",";
                 area_code1 = area_code1 + area_code;
             }
-            areaArray = area_code1.split(",");
+            if(!area_code1.equals("")&& !area_code1.equals(",")) {
+                areaArray = area_code1.split(",");
+            }
         }
 
         Map<String, Object> params = new HashMap<String, Object>();
