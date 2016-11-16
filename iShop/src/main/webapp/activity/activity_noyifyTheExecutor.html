@@ -17,11 +17,7 @@
             margin-top:81px;
         }
         .editor_1{border-top: 2px #e0e0e0 solid;margin-top: 15px;margin-right: 10px}
-        /*input样式修改*/
-        /*.conpany_msg input{*/
-            /*background-color: #dfdfdf;*/
-            /*color: #939393;*/
-        /*}*/
+
         /*a标签样式*/
         a, a:link,a:hover,a:visited,a:active{
             color: #434960;
@@ -30,20 +26,27 @@
         .conpany_msg{
             margin-left: 55px;
         }
+        /*左侧input部分整体向左偏移*/
+        .corpadd_oper_btn{
+            margin-left: -10px;
+        }
         .conpany_msg label{
             color: #d4512e;
         }
         /*活动描述input*/
         #describeActivities{
             width: 420px;
-            /*background-color: #dfdfdf;*/
-            /*color: #939393;*/
             height: 110px;
             float: left;
             margin-bottom: 30px;
-            border-radius: 7px;
+            border-radius: 4px;
             padding: 10px;;
             outline: none;
+        }
+      /*右侧箭头*/
+        #selectPeople{
+            background: url("../img/btn_select.jpg")no-repeat right;
+            background-color: white;
         }
     </style>
 </head>
@@ -53,9 +56,11 @@
     <div class="editor_1 col-lg-7 ">
         <form class="conpany_msg">
             <div>
-                <span><label >通知执行人*</label><input  type="text" id="activityTheme" verify="Code"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
+                <ul style="display:inline-flex;">
+                    <li><label>通知执行人*</label></li>
+                    <input type="text" id="selectPeople" verify="Empty" readonly="readonly"/>
+                </ul>
             </div>
-
             <div>
                 <span><label >通知标题*</label><input type="text" id="activityState" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
             </div>
@@ -65,10 +70,10 @@
             </div>
         </form>
     </div>
-    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+    <div class="editor_detail col-lg-4 col-md-6 animated fadeInRight">
         <div class="corpadd_oper_btn">
             <ul>
-                <li style="letter-spacing: 1px;" onclick="send()">发送</li>
+                <li style="letter-spacing: 1px;" onclick="send()"><i class="icon-ishop_6-21"></i>发送</li>
                 <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
@@ -90,17 +95,22 @@
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <!-- error tips -->
 <script>
-    $("body").append("<script src='/js/corp/corp_operate.js?'"+new Date().getTime()+"'><\/script>");
+    //选择执行人
+    $('#selectPeople').click(function(){
+        var num = 32;
+        $('#selectPeople').val('已选择'+num+'人')
+    });
     //发送
     function send(){
-        window.location.href="activity_noyifyTheExecutor.html";    ///未获得具体地址
+
     }
     //关闭 == 返回哪里？
     function closePage(){
-        alert('关了这页去哪？！');
+        window.location.href="activity_details.html";    ///未获得具体地址
     }
     //页面加载
     window.onload = function(){
+
     }
 
 
