@@ -10,10 +10,7 @@ import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.StoreService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -68,6 +65,8 @@ public class CorpController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private BaseService baseService;
 
     /*
     * 列表
@@ -123,15 +122,38 @@ public class CorpController {
                 JSONObject jsonObject = JSONObject.parseObject(message);
                 String corp_code = jsonObject.get("corp_code").toString().trim();
                 String isactive = jsonObject.get("isactive").toString();
-                Corp corp = corpService.selectByCorpId(0,corp_code,isactive);
+                Corp corp = corpService.selectByCorpId(0, corp_code, isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(corp.getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function ="企业管理";
+                String action =Common.ACTION_ADD;
+                String t_corp_code= jsonObject.get("corp_code").toString();
+                String t_code= jsonObject.get("corp_code").toString();
+                String t_name= jsonObject.get("corp_name").toString();
+                baseService.insertUserOperation(operation_corp_code,operation_user_code,function,action,t_corp_code,t_code,t_name);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             }
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -160,6 +182,29 @@ public class CorpController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                JSONObject jsonObject = JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function ="企业管理";
+                String action =Common.ACTION_UPD;
+                String t_corp_code= jsonObject.get("corp_code").toString();
+                String t_code= jsonObject.get("corp_code").toString();
+                String t_name= jsonObject.get("corp_name").toString();
+                baseService.insertUserOperation(operation_corp_code,operation_user_code,function,action,t_corp_code,t_code,t_name);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -226,6 +271,27 @@ public class CorpController {
                     corpService.deleteCorpWechat("", corp.getCorp_code());
                 }
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function ="企业管理";
+                String action =Common.ACTION_DEL;
+                String t_corp_code= corp.getCorp_code();
+                String t_code= corp.getCorp_code();
+                String t_name= corp.getCorp_name();
+                baseService.insertUserOperation(operation_corp_code,operation_user_code,function,action,t_corp_code,t_code,t_name);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg != null) {
                 dataBean.setId(id);
@@ -327,7 +393,7 @@ public class CorpController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Store> list = storeService.getAllStore(request, page_number, page_size, corp_code, "","","");
+            PageInfo<Store> list = storeService.getAllStore(request, page_number, page_size, corp_code, "", "", "");
             result.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -715,12 +781,12 @@ public class CorpController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
-            String result = corpService.updateCorpWechat(wechat,corp_code,user_code);
-            if (!result.equals(Common.DATABEAN_CODE_SUCCESS)){
+            String result = corpService.updateCorpWechat(wechat, corp_code, user_code);
+            if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result.toString());
-            }else {
+            } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("");
