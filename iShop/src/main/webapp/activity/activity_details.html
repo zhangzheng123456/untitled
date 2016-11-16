@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>活动详情</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <style>
+        body{
+            margin-top:81px;
+        }
+        .conpany_msg input{
+            background-color: #dfdfdf;
+            color: #c1c1c1;
+
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="pre_title"><span id="back_corp">活动管理</span><i class="icon-ishop_8-03"></i><label>活动列表</label><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
+    <div class="editor_1 col-lg-7   animated fadeInRight">
+        <div class="operation_conpany">
+        <ul>
+        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-02"></i>删除</li>
+        </ul>
+        </div>
+        <form class="conpany_msg">
+            <div>
+                <span><label >活动主题</label><input  value="123" type="text" id="activityTheme" verify="Code"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
+            </div>
+
+            <div>
+                <span><label >活动状态</label><input type="text" id="activityState" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
+            </div>
+
+            <div>
+                <span><label >活动时间</label><input style="width: 190px;margin-right: 15px" type="text" id="activityBeginTime" verify="Empty"/>~<input style="width: 190px;margin-left: 15px" type="text" id="activityEndTime" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业地址不能为空！"></div></div></span>
+            </div>
+
+            <div>
+                <span><label >执行方式</label><input type="text" id="activityWay" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系人不能为空！"></div></div></span>
+            </div>
+
+            <div>
+                <span><label >分配执行人</label><input type="text" id="activityExecutor" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+            </div>
+            <div>
+                <span><label >目标会员</label><input type="text" id="theVip" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+            </div>
+            <div>
+                <span style="float: left"><label>活动描述</label><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+                <input  style="height: 260px;float: left" type="text" id="describeActivities" verify="Phone"/>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+        <div class="corpadd_oper_btn">
+            <ul>
+                <li style="letter-spacing: 1px;">通知执行人</li>
+                <li style="letter-spacing: 2px;"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label >创建时间</label><input type="text" id="setTime" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+            </div>
+            <div>
+                <span><label >创建人</label><input type="text" id="setPeople" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+            </div>
+            <div>
+                <span><label >修改时间</label><input type="text" id="changeTime" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+            </div>
+            <div>
+                <span><label >修改人</label><input type="text" id="changePeople" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+            </div>
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Custom and plugin javascript -->
+<script src="../js/loading.js"></script>
+<!-- <script src="../js/plugins/pace/pace.min.js"></script> -->
+<!-- Dialog -->
+<script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="../js/multiple_choice.js"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<!-- error tips -->
+<script>
+    function removeselect(obj){//区域  删除
+        $(obj).parent().remove();
+    }
+    $("body").append("<script src='/js/corp/corp_operate.js?'"+new Date().getTime()+"'><\/script>");
+    //禁用所有input
+    $(":input").attr("disabled",true);
+</script>
+</body>
+</html>
