@@ -239,18 +239,18 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td><span title='"+data[i].area_code+"'>"
-            + data[i].area_code
-            + "</span></td><td><span title='"+data[i].area_name+"'>"
-            + data[i].area_name
-            + "</span></td><td><span title='"+data[i].corp.corp_name+"'>"
-            + data[i].corp.corp_name
-            +"</span></td><td><span title='"+data[i].modifier+"'>"
-            +data[i].modifier
-            + "</span></td><td><span title='"+data[i].modified_date+"'>"
-            +data[i].modified_date
+            + "</td><td><span title='"+data[i].activity_theme+"'>"
+            + data[i].activity_theme
+            + "</span></td><td><span title='"+data[i].run_mode+"'>"
+            + data[i].run_mode
+            + "</span></td><td><span title='"+data[i].activity_state+"'>"
+            + data[i].activity_state
+            +"</span></td><td><span title='"+data[i].start_time+"'>"
+            +data[i].start_time
+            + "</span></td><td><span title='"+data[i].end_time+"'>"
+            +data[i].end_time
             + "</span></td><td>"
-            +data[i].isactive
+            +data[i].created_date
             +"</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -327,7 +327,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/activity/activity_add.html");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
@@ -847,4 +847,5 @@ $("#input-txt").keydown(function() {
             }
         };
     }
-})
+});
+

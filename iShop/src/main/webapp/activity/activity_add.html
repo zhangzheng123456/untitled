@@ -2,36 +2,46 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
     <title>创建活动</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
-        body{
-            margin-top:81px;
+        body {
+            margin-top: 81px;
         }
-        .editor_line{
+
+        .editor_line {
             margin-top: 0;
-            border-top:none;
+            border-top: none;
         }
-        .hr{
+
+        .conpany_msg .icon-ishop_8-03 {
+            color: #fff;
+        }
+
+        .hr {
             float: left;
-            width:35%;
+            width: 35%;
             margin: 20px 60px 5px 20px;
             height: 2px;
             background-color: #e0e0e0;
         }
-        .hr_s{
+
+        .hr_s {
             width: 543px;
             height: 2px;
             background-color: #e0e0e0;
         }
-        .operedit_btn li{
+
+        .operedit_btn li {
             width: 160px;
             height: 30px;
             display: inline-block;
@@ -46,41 +56,48 @@
             letter-spacing: 10px;
             cursor: pointer;
         }
-        .activity_date input{
+
+        .activity_date input {
             width: 185px;
         }
-        .activity_date #start{
+
+        .activity_date #start {
             margin-left: -5px;
         }
-        .activity_date span{
+
+        .activity_date span {
             margin: 0 15px;
         }
-        .abstract textarea{
+
+        .abstract textarea {
             width: 420px;
             height: 80px;
             outline: none;
             padding: 8px;
         }
-        .create_src{
+
+        .create_src {
             display: inline-block;
-            width:100px;
+            width: 100px;
             height: 30px;
             line-height: 30px;
             text-align: center;
-            cursor:pointer ;
+            cursor: pointer;
             background: #6dc1c8;
             color: #fff;
             border-radius: 5px;
         }
-        .conpany_msg .src_input{
+
+        .conpany_msg .src_input {
             width: 310px;
             margin-right: 8px;
         }
-        .arrow_right{
+
+        .arrow_right {
             position: absolute;
             right: 0;
-            top:-5px;
-            width:30px;
+            top: -5px;
+            width: 30px;
             height: 30px;
             border-radius: 0 5px 5px 0;
             color: #fff;
@@ -88,7 +105,8 @@
             text-align: center;
             background: #6dc1c8;
         }
-        .execution{
+
+        .execution {
             width: 420px;
             position: absolute;
             left: 123px;
@@ -98,47 +116,54 @@
             background: #f5f5f5;
             display: none;
         }
-        .execution li{
+
+        .execution li {
             cursor: pointer;
             height: 30px;
             line-height: 30px;
             padding-left: 5px;
         }
-        .execution li:hover{
+
+        .execution li:hover {
             background: #4a5f7c;
             color: #fff;
         }
-        .tk{
+
+        .tk {
             display: none;
             width: 280px;
             height: 180px;
             border-radius: 5px;
             background: #fff;
             position: absolute;
-            top:300px;
+            top: 300px;
             left: 30%;
             z-index: 1000;
-            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
         }
-        .tk span{
+
+        .tk span {
             position: absolute;
             right: 5px;
             top: 5px;
             font-size: 16px;
             cursor: pointer;
         }
-        .tk .tip{
+
+        .tk .tip {
             padding: 50px 20px;
             height: 140px;
             text-align: center;
             font-size: 14px;
             color: #888888;
         }
-        .tk .btn{
+
+        .tk .btn {
             padding: 0;
             margin-left: 30px;
         }
-        .tk em{
+
+        .tk em {
             float: left;
             display: inline-block;
             font-style: normal;
@@ -147,20 +172,23 @@
             line-height: 30px;
             cursor: pointer;
         }
-        .tk .cancel{
+
+        .tk .cancel {
             background-color: #e8e8e8;
             color: #888;
             font-size: 14px;
             border-radius: 5px;
         }
-        .tk .enter{
+
+        .tk .enter {
             background-color: #cd706e;
             color: #fff;
             font-size: 14px;
             border-radius: 5px;
             margin-left: 20px;
         }
-        .box_shadow{
+
+        .box_shadow {
             display: none;
             width: 100%;
             height: 1200px;
@@ -169,30 +197,36 @@
             left: 0;
             z-index: 100;
         }
-        .performance{
+
+        .performance {
             background: #d1d1d1;
         }
-        #performance{
+
+        #performance {
             background: #8f9ad2;
         }
-        #edit{
+
+        #edit {
             margin-left: 120px;
             width: 420px;
             margin-top: -20px;
         }
-        #edit div{
+
+        #edit div {
             margin-bottom: 0;
         }
-        #edui1_elementpath{
+
+        #edui1_elementpath {
             display: none;
-         }
+        }
     </style>
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>创建活动</label></div>
+    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span
+            id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>创建活动</label></div>
     <div class="col-lg-12">
-        <hr class="hr" />
+        <hr class="hr"/>
         <div class="operedit_btn">
             <ul>
                 <li class="performance"><i class="icon-ishop_6-20 "></i>执行</li>
@@ -206,16 +240,20 @@
             <div>
                 <ul style="display:inline-flex;">
                     <li><label style="color:#c26555;">所属企业*</label></li>
-                    <input class="PARAM_NAME" readonly/>
+                    <li>
+                        <span class="corp_select">
+                            <select id="OWN_CORP" style="display:inline-flex"></select>
+                        </span>
+                    </li>
                 </ul>
             </div>
             <div>
-                <span><label style="color:#c26555;">活动主题*</label><input type="text"/></span>
+                <span><label style="color:#c26555;">活动主题*</label><input type="text" id="activity_theme"/></span>
             </div>
             <div>
                 <ul style="display:inline-flex;position: relative">
                     <li><label style="color:#c26555;">执行方式*</label></li>
-                    <input  class="PARAM_NAME" id="execution_input" value="(任务)电话通知顾客" readonly/>
+                    <input class="PARAM_NAME" id="execution_input" value="(任务)电话通知顾客"  readonly/>
                     <ul class="execution" id="execution">
                         <li>(任务)电话通知顾客</li>
                         <li>(任务)短信通知顾客</li>
@@ -235,38 +273,41 @@
             </div>
             <div>
                 <span style="position: relative">
-                    <label>目标会员</label><input type="text"/>
-                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
+                    <label>目标会员</label><input type="text" id="target_vip" readonly/>
+                    <span class="arrow_right" id="target_vip_icon"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
             <div class="executor">
                 <span style="position: relative">
-                    <label>执行人</label><input type="text"/>
+                    <label>执行人</label><input type="text" id="executor" readonly/>
                     <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
             <hr class="hr_s"/>
             <div class="send_title" style="display: none">
-                <span><label>推送标题</label><input type="text" placeholder="请输入活动主题"/></span>
+                <span><label>推送标题</label><input type="text" id="send_title"/></span>
             </div>
             <div class="summary" style="display: none">
-                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+                <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract"><textarea
+                      id="summary"  placeholder="请输入活动简介"></textarea></span></span>
             </div>
             <div class="task_title">
-                <span><label>任务标题</label><input type="text" placeholder="未选择"/></span>
+                <span><label>任务标题</label><input type="text" id="task_title"/></span>
             </div>
             <div class="task_dec">
-                <span style="display: inline-flex;width:100%"><label>任务描述</label><span class="abstract" ><textarea  placeholder="未选择"></textarea></span></span>
+                <span style="display: inline-flex;width:100%"><label>任务描述</label><span class="abstract"><textarea
+                      id="task_dec"  placeholder="未选择"></textarea></span></span>
             </div>
             <div class="short_msg" style="display: none">
-                <span style="display: inline-flex;width:100%"><label>短信正文</label><span class="abstract" ><textarea  placeholder="请输入活动简介"></textarea></span></span>
+                <span style="display: inline-flex;width:100%"><label>短信正文</label><span class="abstract"><textarea
+                       id="short_msg" placeholder="请输入活动简介"></textarea></span></span>
             </div>
             <div>
-                <span><label>外部链接</label><input type="text"/></span>
+                <span><label>外部链接</label><input type="text" id="outer_link"/></span>
             </div>
             <div>
                 <label>商品卖点</label>
-                <section >
+                <section>
                     <div id='edit'>
                         <script id="editor" type="text/plain" style="width:420px;height:286px;"></script>
                     </div>
@@ -275,7 +316,7 @@
             <div>
                 <span>
                     <label></label><input type="text" class="src_input"/>
-                    <span class="create_src">生成链接</span>
+                    <span class="create_src" id="creat_link">生成链接</span>
                 </span>
             </div>
         </form>
@@ -295,7 +336,9 @@
                 <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
             </div>
             <div>
-                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test"
+                                                                            class="check" checked="true" id="is_active"><label
+                        for="is_active"></label></em></span>
             </div>
         </form>
     </div>
@@ -309,6 +352,190 @@
     </div>
     <div class="box_shadow"></div>
 </div>
+<div class="content" style="display: none;">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>会员管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span id="back_vip_group_1">会员分组</span>
+            <span class="icon-ishop_8-03"></span>
+            <span id="back_edit_vip_group">编辑会员分组</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>分配会员</span>
+            <!--<span class="icon-ishop_8-03"></span>-->
+            <!--<span>编辑权限</span>-->
+        </div>
+        <div class="list">
+            <div class="list_l">
+                <ul>
+                    <li>
+                        <label>分组编号</label>
+                        <input type="text" disabled="true" id="group_id">
+                    </li>
+                    <li class="r">
+                        <label>分组名称</label>
+                        <input type="text" disabled="true" id="group_name">
+                    </li>
+                </ul>
+            </div>
+            <div class="list_r">
+                <div class="save">
+                    <i class="icon-ishop_6-04"></i>
+                    保存
+                </div>
+                <div class="turnoff" id="turnoff">
+                    <i class="icon-ishop_6-12"></i>
+                    关闭
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul>
+                    <li class="li s">
+                        <input type="text" class="input" placeholder="姓名/手机号/会员卡号" id="search">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
+                    </li>
+                </ul>
+            </div>
+            <!--<div class="action_r">-->
+            <!--<ul>-->
+            <!--<li id="filtrate">-->
+            <!--<span class="icon-ishop_6-05"></span>-->
+            <!--筛选-->
+            <!--</li>-->
+            <!--&lt;!&ndash;<li class="bg">&ndash;&gt;-->
+            <!--&lt;!&ndash;<span class="icon-ishop_6-07"></span>&ndash;&gt;-->
+            <!--&lt;!&ndash;刷新&ndash;&gt;-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span class="icon-ishop_6-08"></span>&ndash;&gt;-->
+            <!--&lt;!&ndash;更多&ndash;&gt;-->
+            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+            <!--</ul>-->
+            <!--</div>-->
+        </div>
+        <!--<div class="sxk" id="sxk">-->
+        <!--<div class="btn">-->
+        <!--<div class="empty" id="empty">-->
+        <!--<i class="icon-ishop_6-16"></i>清空筛选-->
+        <!--</div>-->
+        <!--<div class="r_btn">-->
+        <!--<div class="pack_up" id="pack_up">-->
+        <!--<i class="icon-ishop_6-18"></i>-->
+        <!--收起-->
+        <!--</div>-->
+        <!--<div class="find" id="find">-->
+        <!--<i class="icon-ishop_6-19"></i>-->
+        <!--查找-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="inputs">-->
+        <!--<li>-->
+        <!--<label>公司名称</label>-->
+        <!--<input type="text" id="p1">-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<label>联系人</label>-->
+        <!--<input type="text" id="p2">-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<label>修改人</label>-->
+        <!--<input type="text" id="p3">-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<label>联系电话</label>-->
+        <!--<input type="text" id="p4">-->
+        <!--</li>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th style="text-align: left; padding-left: 22px;">序号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>联系电话</th>
+                    <th>会员卡号</th>
+                    <th>会员类型</th>
+                    <!--<th>分组名称</th>-->
+                    <th>所属导购</th>
+                    <th>所属店铺</th>
+                    <th width="50px;" style="text-align: left;">
+                        <div class="checkbox1">
+                            <input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }"
+                                   type="checkbox" value="" name="test" title="全选/取消" class="check"
+                                   id="checkboxTwoInput0"/>
+                            <label for="checkboxTwoInput0"></label>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="36" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num">
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+
+                        </li>
+                        <li>
+                            <span class="p-bg">1</span>
+                        </li>
+                        <li>
+                            <span>2</span>
+                        </li>
+                        <li>
+                            <span>3</span>
+                        </li>
+                        <li>
+                            <span>4</span>
+                        </li>
+                        <li>
+                            <span>5</span>
+                        </li>
+                        <li class="icon-ishop_4-02">
+
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 0 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="p" id="p"></div>
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
+</div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
@@ -318,18 +545,19 @@
 <script src="../js/artDialog/jquery.artDialog.js"></script>
 <script src="../js/loading.js"></script>
 <script src="../js/artDialog/plugins/iframeTools.js"></script>
+<script src="../js/activity/activity_add.js"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <script type="text/javascript" src="../js/moni_select.js"></script>
 <!--富文本编辑-->
 <script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"> </script>
+<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>
 <script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
     //保存按钮
     $("#save").click(function () {
-        $(".performance").attr("id","performance");
+        $(".performance").attr("id", "performance");
         //点击执行
         $("#performance").click(function () {
             $(".box_shadow").show();
@@ -337,27 +565,50 @@
         });
     });
     //日期插件调用
-    $("#start").click(laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'}));
-    $("#end").click(laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'}));
+    var start = {
+        elem: '#start',
+        format: 'YYYY-MM-DD',
+        min: laydate.now(), //设定最小日期为当前日期
+        max: '2099-06-16 23:59:59', //最大日期
+        istime: true,
+        istoday: false,
+        choose: function (datas) {
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            end.start = datas //将结束日的初始值设定为开始日
+        }
+    };
+    var end = {
+        elem: '#end',
+        format: 'YYYY-MM-DD',
+        min: laydate.now(),
+        max: '2099-06-16 23:59:59',
+        istime: true,
+        istoday: false,
+        choose: function (datas) {
+            start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    laydate(start);
+    laydate(end);
     //执行方式下拉选择
     $("#execution li").click(function () {
         var val = $(this).html();
         $("#execution_input").val(val);
-        if(val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台"){
+        if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
             $(".executor").show();
             $(".task_dec").show();
             $(".task_title").show();
             $(".send_title").hide();
             $(".summary").hide();
             $(".short_msg").hide();
-        }else if(val == "系统短信通知顾客"){
-            $(".executor").show();
+        } else if (val == "系统短信通知顾客") {
+            $(".executor").hide();
             $(".task_dec").hide();
             $(".task_title").hide();
             $(".send_title").hide();
             $(".summary").hide();
             $(".short_msg").show();
-        }else if(val == "微信公众号推送"){
+        } else if (val == "微信公众号推送") {
             $(".executor").hide();
             $(".task_dec").hide();
             $(".task_title").hide();
@@ -370,9 +621,9 @@
         $("#execution").toggle();
     });
     $(document).click(function (e) {
-        if($(e.target).is("#execution_input")){
+        if ($(e.target).is("#execution_input")) {
 
-        }else {
+        } else {
             $("#execution").hide();
         }
     });
@@ -384,15 +635,30 @@
         $(".tk").hide();
     }
 
+    //分配目标会员
+    $("#target_vip").click(function () {
+        $(".content").show();
+        $("#page-wrapper").hide();
+    });
+    $("#target_vip_icon").click(function () {
+        $(".content").show();
+        $("#page-wrapper").hide();
+    });
+    //关闭分配目标会员
+    $("#turnoff").click(function () {
+        $(".content").hide();
+        $("#page-wrapper").show();
+    });
+
     //实例化编辑器
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
     var ue = UE.getEditor('editor');
 
-    function isFocus(e){
+    function isFocus(e) {
         alert(UE.getEditor('editor').isFocus());
         UE.dom.domUtils.preventDefault(e)
     }
-    function setblur(e){
+    function setblur(e) {
         UE.getEditor('editor').blur();
         UE.dom.domUtils.preventDefault(e)
     }
@@ -485,12 +751,12 @@
         }
     }
 
-    function getLocalData () {
-        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
+    function getLocalData() {
+        alert(UE.getEditor('editor').execCommand("getlocaldata"));
     }
 
-    function clearLocalData () {
-        UE.getEditor('editor').execCommand( "clearlocaldata" );
+    function clearLocalData() {
+        UE.getEditor('editor').execCommand("clearlocaldata");
         alert("已清空草稿箱")
     }
 </script>
