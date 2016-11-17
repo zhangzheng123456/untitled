@@ -36,7 +36,7 @@ var oc = new ObjectControl();
         return true;
     };
     areajs.bindbutton = function () {
-        $(".areaadd_oper_btn ul li:nth-of-type(1)").click(function () {
+        $("#save").click(function () {
             if (areajs.firstStep()) {
                 function getContent() {
                     var arr = [];
@@ -279,11 +279,8 @@ jQuery(document).ready(function () {
     $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/area/area.html");
     });
-    $("#edit_close").click(function () {
-        $(window.parent.document).find('#iframepage').attr("src", "/area/area.html");
-    });
-    $("#back_area").click(function () {
-        $(window.parent.document).find('#iframepage').attr("src", "/area/area.html");
+    $("#close").click(function () {
+        $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
     });
 });
 function getcorplist(a) {
