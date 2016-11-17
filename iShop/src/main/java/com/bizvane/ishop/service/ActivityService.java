@@ -18,10 +18,12 @@ public interface ActivityService {
 
     int delete(int id) throws Exception;
 
- String insert(String message, String user_id,HttpServletRequest request) throws Exception;
-//String insert(String message, String user_id) throws Exception;
+// String insert(String message, String user_id,HttpServletRequest request) throws Exception;
+String insert(String message, String user_id) throws Exception;
 
+   // String update(String message, String user_id,HttpServletRequest request) throws Exception;
     String update(String message, String user_id) throws Exception;
+
 
     Activity selectActivityById(int id) throws Exception;
 

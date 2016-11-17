@@ -49,6 +49,9 @@ public class Activity {
     private String creater;
     //是否可用
     private String isactive;
+    //活动执行状态
+
+    private String activity_state;
     private String corp_name;
     private Corp corp;
 
@@ -234,5 +237,13 @@ public class Activity {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public String getActivity_state() {
+        return activity_state;
+    }
+
+    public void setActivity_state(String activity_state) {
+        this.activity_state = activity_state;
     }
 }

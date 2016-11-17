@@ -35,6 +35,8 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
@@ -59,7 +61,8 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
+        def_activity.isactive,
+        def_activity.activity_state
         FROM def_activity,def_corp
         WHERE def_activity.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -70,9 +73,9 @@
             (
             def_activity.activity_theme LIKE concat('%', #{search_value},'%')
             OR def_activity.run_mode LIKE concat('%', #{search_value},'%')
-            OR def_activity.created_date LIKE concat('%', #{search_value},'%')
-            OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
-            OR def_activity.time LIKE concat('%', #{search_value},'%')
+            OR def_activity.start_time LIKE concat('%', #{search_value},'%')
+            OR def_activity.end_time LIKE concat('%', #{search_value},'%')
+            OR def_activity.activity_state LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY def_activity.id DESC
@@ -143,6 +146,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="activity_state!=null">
+                activity_state,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
@@ -206,6 +212,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="activity_state!=null">
+                #{activity_state},
             </if>
         </trim>
     </insert>
@@ -275,6 +284,9 @@
             <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
+            <if test="activity_state!=null">
+                activity_state=#{activity_state},
+            </if>
         </trim>
         WHERE id=#{id};
     </update>
@@ -300,7 +312,8 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
+        def_activity.isactive,
+        def_activity.activity_state
       FROM def_activity,def_corp
       WHERE  def_activity.corp_code=def_corp.corp_code
       AND def_activity.activity_theme = #{activity_theme}
@@ -336,7 +349,8 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
+        def_activity.isactive,
+        def_activity.activity_state
         FROM def_activity,def_corp
         WHERE def_activity.corp_code = def_corp.corp_code
 
@@ -385,7 +399,8 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
+        def_activity.isactive,
+        def_activity.activity_state
         FROM def_activity,def_corp
          WHERE def_activity.corp_code=def_corp.corp_code
         AND def_activity.id =#{id}
