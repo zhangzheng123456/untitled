@@ -15,102 +15,274 @@
     <style>
         body{
             margin-top:81px;
+            font-family: 微软雅黑;
         }
-        .editor_1{border-top: 2px #e0e0e0 solid;margin-top: 15px;margin-right: 10px}
         /*input样式修改*/
         .conpany_msg input{
             background-color: #dfdfdf;
             color: #939393;
         }
-        /*取消顶部边框*/
-        .editor_1{
-            border-top: none;
-        }
         /*a标签样式*/
        a, a:link,a:hover,a:visited,a:active{
             color: #434960;
         }
-       /*左侧input部分整体向右偏移*/
-       .conpany_msg{
-           margin-left: 55px;
-       }
-        /*活动描述input*/
-        #describeActivities{
-            width: 420px;
-            background-color: #dfdfdf;
-            color: #939393;
-            height: 260px;
+        /*终止活动*/
+        #stop{
+            background-color: #bdbdbd;
             float: left;
-            margin-bottom: 30px;
-            border-radius: 4px;
-            padding: 10px;;
-            outline: none;
+            margin-left: 20px;
         }
+        /*通知相关人、关闭*/
+        .corpadd_oper_btn  li{
+            float: right;
+            margin-right: 30px;
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+        /*活动内容区*/
+        .main{
+            margin-top: 21px;
+            width: 100%;
+        }
+        .left{
+            float: left;
+            width: 39%;
+            background-color: white;
+            margin-right: 10px;
+            height: 222px;
+            padding: 20px 61px 23px 61px;
+        }
+        .left_top{margin-right: 80px;margin-left: 80px;height: 120px}
+        .left_bottom{margin-top: 18px;}
+        #TheTarget,#TheCover{
+            font-size: 22px;
+            color: #52a5ac;;
+        }
+        .the_target{
+            float: left;
+        }
+        .the_tover{
+            float: right;
+        }
+        .the_target_content{
+            clear: both;
+            float: left;
+            font-size: 12px;
+            margin-left: 7px;
+        }
+        .the_tover_content{
+            float: right;
+            font-size: 12px;
+            margin-right: 3px;
+        }
+        .right{
+            float: left;
+            width: 58%;
+            background-color: white;
+            height: 222px;
+            padding-top: 28px;
+            padding-left: 40px;
+            position: relative;
+        }
+        #rightMore{
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            width: 60px;
+            height: 29px;
+            line-height: 29px;
+            border: 1px solid #f5f5f5;
+            border-radius: 5px;;
+            background-color: white;
+            color: #888888;
+            text-align: center;
+        }
+        .right li{
+            margin-bottom: 34px;
+        }
+        .right li span:first-child {
+            margin-left: 30px;
+        }
+        /*二级按钮*/
+        .do{
+            margin-top: 20px;
+            margin-bottom: 10px;
+            float: left;
+            width: 100px;
+            margin-left: 10px;
+            height: 30px;
+            line-height: 30px;
+            background-color:#6dc1c8 ;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+        }
+       #choose {
+           float: right;
+            width: 80px;
+            height: 30px;
+            background-color: white;
+            color: black;
+            margin-right: 24px;
+        }
+        /*人员区*/
+        .people{
+            clear: both;
+            background-color: white;
+            width: 98%;
+            height: 319px;
+            overflow-y:auto;
+            overflow-x:hidden;
+            padding: 20px;
+        }
+        .people div{line-height: 50px; color: #434960;font-size: 14px;float: left;}
+        /*标题*/
+        .people_title{ float:left;border-bottom: 1px solid #d7d7d7;}
+        .people_title_order{width: 31px;margin-right: 32px}
+        .people_title_name{width:58px;margin-right: 45px;text-align: center;}
+        .people_title_num{width: 58px;margin-right: 50px;text-align: center;}
+        .people_title_area{width:58px;margin-right: 76px;text-align: center;}
+        .people_title_shop{width: 126px;margin-right: 75px;text-align: center;}
+        .people_title_plan{width: 330px;margin-right:110px;text-align: center;line-height: 50px;position: relative;}
+        .undone{line-height: 50px;clear:both;height: 8px;width: 270px;background-color: #c1c1c1;margin-right: 27px;border-radius: 50px;position: absolute;top:21px}
+        .done{height: 8px;width: 50%;background-color: #7bc7cd;border-radius: 50px;}
+        .people_title_plan span{position: absolute;left:296px}
     </style>
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="activity.html">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
-    <div class="editor_1 col-lg-7 " id="details">
-        <div class="operation_conpany">
-        <ul>
-        <li onclick="reload()"><i class="icon-ishop_6-07"></i>刷新</li><li onclick="remove()"><i class="icon-ishop_6-02"></i>删除</li>
-        </ul>
-        </div>
-        <form class="conpany_msg">
-            <div>
-                <span><label >活动主题</label><input  type="text" id="activityTheme" verify="Code"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >活动状态</label><input type="text" id="activityState" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >活动时间</label><input style="width: 190px;margin-right: 15px" type="text" id="activityBeginTime" verify="Empty"/>~<input style="width: 190px;margin-left: 15px" type="text" id="activityEndTime" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业地址不能为空！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >执行方式</label><input type="text" id="activityWay" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系人不能为空！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >分配执行人</label><input type="text" id="activityExecutor" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label >目标会员</label><input type="text" id="theVip" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span style="float: left"><label>活动描述</label><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-                <textarea type="text" id="describeActivities" verify="Phone"/></textarea>
-            </div>
-        </form>
-    </div>
-    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+    <div class="editor_detail animated fadeInRight">
         <div class="corpadd_oper_btn">
             <ul>
-                <li style="letter-spacing: 1px;" onclick="notice()">通知执行人</li>
+                <li style="letter-spacing: 1px;" onclick="stop()" id="stop" >终止活动</li>
                 <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
+                <li style="letter-spacing: 1px;" onclick="notice()">通知相关人</li>
             </ul>
         </div>
-        <form class="msg_detail">
-            <div>
-                <span><label>创建时间</label><input type="text" id="setTime" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>创建人</label><input type="text" id="setPeople" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>修改时间</label><input type="text" id="changeTime" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>修改人</label><input type="text" id="changePeople" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
-            </div>
-        </form>
     </div>
+    <!--活动显示区-->
+    <div class="main">
+        <ul class="left">
+            <li class="left_top">百分比图</li>
+            <li class="left_bottom">
+                <span id="TheTarget" class="the_target">325656</span><span id="TheCover"class="the_tover">244242</span>
+                <span class="the_target_content">目标会员数</span><span class="the_tover_content">已覆盖会员数</span>
+            </li>
+        </ul>
+        <ul class="right">
+            <li>活动状态 <span id="activityState"></span></li>  <!--活动状态颜色区分-->
+            <li>活动主题 <span id="activityTheme"></span></li>
+            <li>活动状态 <span id="activityState2"></span></li>
+            <li>活动时间 <span id="activityTime"><span id="beiginTime" style="margin-left: 0px"></span> ~ <span id="endTime"></span></span></li>
+            <li id="rightMore">更多</li>
+        </ul>
+    </div>
+    <!--二级按钮-->
+   <div class="btnSecond">
+       <span class="do">仅显示已完成</span>
+       <span class="do">仅显示未完成</span>
+       <span class="do" id="choose">筛选</span>
+   </div>
+    <!--人员区-->
+    <ul class="people">
+        <li class="people_title">
+            <div class="people_title_order">序号</div>
+            <div class="people_title_name">员工姓名</div>
+            <div class="people_title_num">员工编号</div>
+            <div class="people_title_area">所属区域</div>
+            <div class="people_title_shop">所属店铺</div>
+            <div class="people_title_plan">完成进度</div>
+        </li>
+        <li people_content>
+            <ui id ='peopleContent'>
+                <!--js动态生成-->
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+                <li class="people_title">
+                    <div class="people_title_order">${order}</div>
+                    <div class="people_title_name">${name}</div>
+                    <div class="people_title_num">${num}</div>
+                    <div class="people_title_area">${area}</div>
+                    <div class="people_title_shop">${shop}</div>
+                    <div class="people_title_plan">
+                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
+                </li>
+
+            </ui>
+        </li>
+
+    </ul>
 </div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
@@ -127,5 +299,20 @@
 <!-- error tips -->
 <!--匹配js文件-->
 <script type="text/javascript" src="../js/activity/activity_details.js"></script>
+<script>
+    window.onload = function(){
+        var beiginTime = '2016-9-12';
+        var endTime = '2016-12-12'
+        var activityState = '正在执行';
+        var activityTheme = '华东区域门店换季促销'
+        var activityState2 = '执行中';
+        $('#beiginTime').text(beiginTime);
+        $('#endTime').text(endTime);
+        $('#activityState').text(activityState);
+        $('#activityTheme').text(activityTheme);
+        $('#activityState2').text(activityState2);
+    }
+
+</script>
 </body>
 </html>
