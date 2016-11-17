@@ -166,7 +166,7 @@ var oc = new ObjectControl();
                     sessionStorage.setItem("id", data.message);
                     $(window.parent.document).find('#iframepage').attr("src", "/activity/activity_edit.html");
                 }
-                if (_command == "/area/edit") {
+                if (_command == "/activity/edit") {
                     art.dialog({
                         time: 1,
                         lock: true,

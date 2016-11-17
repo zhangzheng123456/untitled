@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>创建活动</title>
+    <title>编辑活动</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
@@ -227,12 +227,12 @@
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span
-            id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>创建活动</label></div>
+            id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>编辑活动</label></div>
     <div class="col-lg-12">
         <hr class="hr"/>
         <div class="operedit_btn">
             <ul>
-                <li class="performance"><i class="icon-ishop_6-20 "></i>执行</li>
+                <li class="performance"><i class="icon-ishop_6-20" id="performance"></i>执行</li>
                 <li style="background: #6dc1c8" id="save"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="background: #4a5f7c" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
@@ -256,9 +256,9 @@
             <div>
                 <ul style="display:inline-flex;position: relative">
                     <li><label style="color:#c26555;">执行方式*</label></li>
-                    <input class="PARAM_NAME" id="execution_input" value="(任务)电话通知顾客"  readonly/>
+                    <input class="PARAM_NAME" id="execution_input" readonly/>
                     <ul class="execution" id="execution">
-                        <li class="liactive">(任务)电话通知顾客</li>
+                        <li>(任务)电话通知顾客</li>
                         <li>(任务)短信通知顾客</li>
                         <li>系统短信通知顾客</li>
                         <li>(任务)分享链接到社交平台</li>
@@ -292,18 +292,18 @@
             </div>
             <div class="summary" style="display: none">
                 <span style="display: inline-flex;width:100%"><label>简介</label><span class="abstract"><textarea
-                      id="summary"  placeholder="请输入活动简介"></textarea></span></span>
+                        id="summary"  placeholder="请输入活动简介"></textarea></span></span>
             </div>
             <div class="task_title">
                 <span><label>任务标题</label><input type="text" id="task_title"/></span>
             </div>
             <div class="task_dec">
                 <span style="display: inline-flex;width:100%"><label>任务描述</label><span class="abstract"><textarea
-                      id="task_dec"  placeholder="未选择"></textarea></span></span>
+                        id="task_dec"  placeholder="未选择"></textarea></span></span>
             </div>
             <div class="short_msg" style="display: none">
                 <span style="display: inline-flex;width:100%"><label>短信正文</label><span class="abstract"><textarea
-                       id="short_msg" placeholder="请输入活动简介"></textarea></span></span>
+                        id="short_msg" placeholder="请输入活动简介"></textarea></span></span>
             </div>
             <div>
                 <span><label>外部链接</label><input type="text" id="outer_link"/></span>
