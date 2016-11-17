@@ -564,7 +564,7 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2)").html();
+        var store_code=$(tr[i]).find("td:eq(2)").find("span").html();
         var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
         var param1={"user_code":store_code,"corp_code":corp_code};
         list.push(param1);
