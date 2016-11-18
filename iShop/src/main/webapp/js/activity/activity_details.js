@@ -3,15 +3,15 @@
  */
 //停止活动
 function stop(){
-    alert('停止活动！');
+    window.location.href = 'activity.html';
 }
 //通知相关人
 function notice(){
-    alert('通知相关人！')
+    window.location.href = 'activity_noyifyTheExecutor.html';
 }
 //关闭
 function closePage(){
-    alert('关闭页面');
+    window.location.href = 'activity.html';
 }
 //加载活动状态
 function activityType(){
