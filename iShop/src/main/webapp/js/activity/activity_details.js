@@ -1,6 +1,38 @@
 /**
  * Created by Administrator on 2016/11/16.
  */
+//停止活动
+function stop(){
+    alert('停止活动！');
+}
+//通知相关人
+function notice(){
+    alert('通知相关人！')
+}
+//关闭
+function closePage(){
+    alert('关闭页面');
+}
+//加载活动状态
+function activityType(){
+    var beiginTime = '2016-9-12';
+    var endTime = '2016-12-12'
+    var activityState = '正在执行';
+    var activityTheme = '华东区域门店换季促销'
+    var activityState2 = '执行中';
+    if(activityState =='正在执行'){
+        $('#activityState').css('color','#50acb4');
+    }else if(activityState =='尚未开始'){
+        $('#activityState').css('color','red');
+    }else if(activityState =='已结束'){
+        $('#activityState').css('color','blue');
+    }
+    $('#activityState').text(activityState);
+    $('#activityTheme').text(activityTheme);
+    $('#activityState2').text(activityState2);
+    $('#beiginTime').text(beiginTime);
+    $('#endTime').text(endTime);
+}
 //仅显示已完成
 $('#showDone').click(function(){
     listShow();
@@ -25,6 +57,7 @@ $('#showDoing').click(function(){
 })
 //员工列表加载
 function listShow(){
+    $('.people').animate({scrollTop:0}, 'fast');
     var name = '张某某';
     var num = '100000';
     var area = '华东一区';
@@ -57,22 +90,6 @@ function listShow(){
 }
 //页面加载假数据
 window.onload = function(){
-    var beiginTime = '2016-9-12';
-    var endTime = '2016-12-12'
-    var activityState = '正在执行';
-    var activityTheme = '华东区域门店换季促销'
-    var activityState2 = '执行中';
-    if(activityState =='正在执行'){
-        $('#activityState').css('color','#50acb4');
-    }else if(activityState =='尚未开始'){
-        $('#activityState').css('color','red');
-    }else if(activityState =='已结束'){
-        $('#activityState').css('color','blue');
-    }
-    $('#activityState').text(activityState);
-    $('#activityTheme').text(activityTheme);
-    $('#activityState2').text(activityState2);
-    $('#beiginTime').text(beiginTime);
-    $('#endTime').text(endTime);
-    listShow()
+   activityType();
+    listShow();
 }
