@@ -16,7 +16,9 @@ public class Activity {
     //活动结束时间
     private String end_time;
     //活动目标会员
-    private String activity_vip;
+    private String target_vips;
+    //执行人
+    private String operators;
     //短信正文
     private String msg_info;
     //任务标题
@@ -50,14 +52,13 @@ public class Activity {
     //活动执行状态
 
     private String activity_state;
-    //任务描述
-    private String vip_gruop;
+
     //任务描述
     private String task_code;
-    private String VIP_GROUP_NAME;
+
     private String corp_name;
     private Corp corp;
-    private VipGroup vipGroup;
+ private Task task;
 
 
     public int getId() {
@@ -106,14 +107,6 @@ public class Activity {
 
     public void setEnd_time(String end_time) {
         this.end_time = end_time;
-    }
-
-    public String getActivity_vip() {
-        return activity_vip;
-    }
-
-    public void setActivity_vip(String activity_vip) {
-        this.activity_vip = activity_vip;
     }
 
 
@@ -246,13 +239,6 @@ public class Activity {
         this.activity_state = activity_state;
     }
 
-    public String getVip_gruop() {
-        return vip_gruop;
-    }
-
-    public void setVip_gruop(String vip_gruop) {
-        this.vip_gruop = vip_gruop;
-    }
 
     public String getTask_code() {
         return task_code;
@@ -262,19 +248,27 @@ public class Activity {
         this.task_code = task_code;
     }
 
-    public String getVIP_GROUP_NAME() {
-        return VIP_GROUP_NAME;
+    public String getTarget_vips() {
+        return target_vips;
     }
 
-    public void setVIP_GROUP_NAME(String VIP_GROUP_NAME) {
-        this.VIP_GROUP_NAME = VIP_GROUP_NAME;
+    public void setTarget_vips(String target_vips) {
+        this.target_vips = target_vips;
     }
 
-    public VipGroup getVipGroup() {
-        return vipGroup;
+    public String getOperators() {
+        return operators;
     }
 
-    public void setVipGroup(VipGroup vipGroup) {
-        this.vipGroup = vipGroup;
+    public void setOperators(String operators) {
+        this.operators = operators;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 }

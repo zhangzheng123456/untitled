@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Activity;
-import com.bizvane.ishop.service.ActivityService;
-import com.bizvane.ishop.utils.LuploadHelper;
-import com.bizvane.ishop.utils.OssUtils;
-import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.ishop.service.ActivityVipService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -19,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by nanji on 2016/11/16.
@@ -30,7 +24,7 @@ import java.util.List;
 @RequestMapping("/activity")
 public class ActivityController {
     @Autowired
-    private ActivityService activityService;
+    private ActivityVipService activityVipService;
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
     String id;
@@ -52,10 +46,10 @@ public class ActivityController {
             PageInfo<Activity> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
 
-                list = this.activityService.selectAllActivity(page_number, page_size, "","");
+                list = this.activityVipService.selectAllActivity(page_number, page_size, "","");
             } else {
 
-                    list = activityService.selectAllActivity(page_number, page_size, corp_code, "");
+                    list = activityVipService.selectAllActivity(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
@@ -87,10 +81,10 @@ public class ActivityController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //this.activityService.insert(message,user_id,request);
-           // String result= this.activityService.insert(message,user_id,request);
+            //this.activityVipService.insert(message,user_id,request);
+           // String result= this.activityVipService.insert(message,user_id,request);
 
-            String result= this.activityService.insert(message,user_id,request);
+            String result= this.activityVipService.insert(message,user_id);
             if(result.equals("新增失败")){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -128,7 +122,7 @@ public class ActivityController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int activity_id = Integer.parseInt(jsonObject.getString("id"));
-           Activity activity=this.activityService.selectActivityById(activity_id);
+           Activity activity=this.activityVipService.selectActivityById(activity_id);
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("activity", JSON.toJSONString(activity));
             dataBean.setId(id);
@@ -161,9 +155,9 @@ public class ActivityController {
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Activity> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
-                list = activityService.selectAllActivity(page_number, page_size, "", search_value);
+                list = activityVipService.selectAllActivity(page_number, page_size, "", search_value);
             } else {
-                list = activityService.selectAllActivity(page_number, page_size, corp_code, search_value);
+                list = activityVipService.selectAllActivity(page_number, page_size, corp_code, search_value);
 
             }
             org.json.JSONObject result = new org.json.JSONObject();
@@ -192,8 +186,8 @@ public class ActivityController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = activityService.update(message, user_id,request);
-           // String result = activityService.update(message, user_id,request);
+            String result = activityVipService.update(message, user_id);
+           // String result = activityVipService.update(message, user_id,request);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -237,10 +231,10 @@ public class ActivityController {
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Activity> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
-                list = activityService.selectAllActivity(page_number, page_size, "", search_value);
+                list = activityVipService.selectAllActivity(page_number, page_size, "", search_value);
             } else {
 
-                    list = activityService.selectAllActivity(page_number, page_size, corp_code, search_value);
+                    list = activityVipService.selectAllActivity(page_number, page_size, corp_code, search_value);
                 }
 
             org.json.JSONObject result = new org.json.JSONObject();
@@ -303,14 +297,14 @@ public class ActivityController {
             String msg = "";
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-                Activity activity = activityService.selectActivityById(Integer.valueOf(ids[i]));
+                Activity activity = activityVipService.selectActivityById(Integer.valueOf(ids[i]));
                 if (activity == null) {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage(msg);
                 } else {
 
-                    activityService.delete(Integer.parseInt(ids[i]));
+                    activityVipService.delete(Integer.parseInt(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     dataBean.setMessage("success");

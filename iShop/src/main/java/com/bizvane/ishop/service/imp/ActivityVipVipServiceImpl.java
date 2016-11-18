@@ -1,12 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.ActivityMapper;
+import com.bizvane.ishop.dao.ActivityVipMapper;
 import com.bizvane.ishop.entity.Activity;
-import com.bizvane.ishop.service.ActivityService;
+import com.bizvane.ishop.service.ActivityVipService;
 import com.bizvane.ishop.utils.CheckUtils;
-import com.bizvane.ishop.utils.LuploadHelper;
-import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,8 +12,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,17 +21,17 @@ import java.util.Map;
  * Created by nanji on 2016/11/15.
  */
 @Service
-public class ActivityServiceImpl implements ActivityService{
+public class ActivityVipVipServiceImpl implements ActivityVipService {
 
     @Autowired
-    ActivityMapper activityMapper;
+    ActivityVipMapper activityVipMapper;
 
 
     @Override
     public PageInfo<Activity> selectAllActivity(int page_num, int page_size, String corp_code, String search_value) throws Exception {
         List<Activity> areas;
         PageHelper.startPage(page_num, page_size);
-        areas = activityMapper.selectAllActivity(corp_code, search_value);
+        areas = activityVipMapper.selectAllActivity(corp_code, search_value);
         for (Activity area : areas) {
             area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
         }
@@ -50,7 +46,7 @@ public class ActivityServiceImpl implements ActivityService{
         params.put("corp_code", corp_code);
         params.put("map", map);
         PageHelper.startPage(page_num, page_size);
-        List<Activity> list1 = activityMapper.selectActivityScreen(params);
+        List<Activity> list1 = activityVipMapper.selectActivityScreen(params);
         for (Activity activity : list1) {
             activity.setIsactive(CheckUtils.CheckIsactive(activity.getIsactive()));
         }
@@ -60,11 +56,11 @@ public class ActivityServiceImpl implements ActivityService{
 
     @Override
     public int delete(int id) throws Exception {
-        return activityMapper.delActivityById(id);
+        return activityVipMapper.delActivityById(id);
     }
 //,HttpServletRequest request
     @Override
-    public String insert(String message, String user_id,HttpServletRequest request) throws Exception {
+    public String insert(String message, String user_id) throws Exception {
         String result = null;
         JSONObject jsonObject = new JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString().trim();
@@ -72,21 +68,21 @@ public class ActivityServiceImpl implements ActivityService{
         String run_mode = jsonObject.get("run_mode").toString().trim();
         String start_time = jsonObject.get("start_time").toString().trim();
         String end_time = jsonObject.get("end_time").toString().trim();
-        String activity_vip = jsonObject.get("activity_vip").toString().trim();
-        //String activity_operator = jsonObject.get("activity_operator").toString().trim();
+        String target_vips = jsonObject.get("target_vips").toString().trim();
+        String operators = jsonObject.get("operators").toString().trim();
         String task_title = jsonObject.get("task_title").toString().trim();
         String task_desc = jsonObject.get("task_desc").toString().trim();
         String wechat_title = jsonObject.get("wechat_title").toString().trim();
         String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-       //String activity_content = jsonObject.get("activity_content").toString().trim();
+       String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
         String activity_state = jsonObject.get("activity_state").toString().trim();
-        String vip_gruop = jsonObject.get("vip_gruop").toString().trim();
+
         String task_code = jsonObject.get("task_code").toString().trim();
         String path="";
         Activity activity = WebUtils.JSON2Bean(jsonObject, Activity.class);
-        String activity_content = activity.getActivity_content();
+       /* String activity_content = activity.getActivity_content();
         List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
         OssUtils ossUtils=new OssUtils();
         String bucketName="products-image";
@@ -100,15 +96,15 @@ public class ActivityServiceImpl implements ActivityService{
             ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
             activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
-        }
+        }*/
         Date now = new Date();
         activity.setCorp_code(corp_code);
         activity.setActivity_theme(activity_theme);
         activity.setRun_mode(run_mode);
         activity.setStart_time(start_time);
         activity.setEnd_time(end_time);
-        activity.setActivity_vip(activity_vip);
-       // activity.setActivity_operator(activity_operator);
+        activity.setTarget_vips(target_vips);
+      activity.setOperators(operators);
         activity.setTask_title(task_title);
         activity.setTask_desc(task_desc);
         activity.setWechat_title(wechat_title);
@@ -122,14 +118,13 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setCreated_date(Common.DATETIME_FORMAT.format(now));
         activity.setIsactive(jsonObject.get("isactive").toString().trim());
         activity.setActivity_state(activity_state);
-        activity.setVip_gruop(vip_gruop);
         activity.setTask_code(task_code);
         int info=0;
-         info=activityMapper.insertActivity(activity);
+         info= activityVipMapper.insertActivity(activity);
         Activity activity1= this.getActivityForId(activity.getCorp_code(),activity.getActivity_theme(),activity.getRun_mode(),activity.getCreated_date());
 
         if (info>0) {
-            result=String.valueOf(activity1.getId());
+            //result=String.valueOf(activity1.getId());
             return result;
         } else {
             result="新增失败";
@@ -138,8 +133,8 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     @Override
-    public String update(String message, String user_id,HttpServletRequest request) throws Exception {
-       String result = null;
+    public String update(String message, String user_id) throws Exception {
+       String result = "";
         JSONObject jsonObject = new JSONObject(message);
         int activity_id = Integer.parseInt(jsonObject.get("id").toString().trim());
 
@@ -148,20 +143,20 @@ public class ActivityServiceImpl implements ActivityService{
         String run_mode = jsonObject.get("run_mode").toString().trim();
         String start_time = jsonObject.get("start_time").toString().trim();
         String end_time = jsonObject.get("end_time").toString().trim();
-       String activity_vip = jsonObject.get("activity_vip").toString().trim();
-        //String activity_operator = jsonObject.get("activity_operator").toString().trim();
+       String target_vips = jsonObject.get("target_vips").toString().trim();
+        String operators = jsonObject.get("operators").toString().trim();
         String task_title = jsonObject.get("task_title").toString().trim();
         String task_desc = jsonObject.get("task_desc").toString().trim();
         String wechat_title = jsonObject.get("wechat_title").toString().trim();
         String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-       //  String activity_content = jsonObject.get("activity_content").toString().trim();
+      String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
-        String vip_gruop = jsonObject.get("vip_gruop").toString().trim();
+
         String task_code = jsonObject.get("task_code").toString().trim();
         String path="";
         Activity activity = WebUtils.JSON2Bean(jsonObject, Activity.class);
-        String activity_content = activity.getActivity_content();
+      /*  String activity_content = activity.getActivity_content();
         List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
         OssUtils ossUtils=new OssUtils();
         String bucketName="products-image";
@@ -176,7 +171,7 @@ public class ActivityServiceImpl implements ActivityService{
             activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
         }
-
+*/
         Date now = new Date();
         activity.setId(activity_id);
         activity.setCorp_code(corp_code);
@@ -184,8 +179,8 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setRun_mode(run_mode);
         activity.setStart_time(start_time);
         activity.setEnd_time(end_time);
-        activity.setActivity_vip(activity_vip);
-        //activity.setActivity_operator(activity_operator);
+        activity.setTarget_vips(target_vips);
+        activity.setOperators(operators);
         activity.setTask_title(task_title);
         activity.setTask_desc(task_desc);
         activity.setWechat_title(wechat_title);
@@ -198,10 +193,9 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setCreater(user_id);
         activity.setCreated_date(Common.DATETIME_FORMAT.format(now));
         activity.setIsactive(jsonObject.get("isactive").toString().trim());
-        activity.setVip_gruop(vip_gruop);
         activity.setTask_code(task_code);
         int info=0;
-        info=activityMapper.updateActivity(activity);
+        info= activityVipMapper.updateActivity(activity);
         Activity activity1= this.getActivityForId(activity.getCorp_code(),activity.getActivity_theme(),activity.getRun_mode(),activity.getCreated_date());
 
         if (info>0) {
@@ -211,17 +205,16 @@ public class ActivityServiceImpl implements ActivityService{
             result="编辑失败";
             return result;
         }
-
     }
 
     @Override
     public Activity selectActivityById(int id) throws Exception {
-        return activityMapper.selActivityById(id);
+        return activityVipMapper.selActivityById(id);
     }
 
     @Override
     public Activity getActivityForId(String corp_code, String activity_theme, String run_mode, String created_date) throws Exception {
-        return activityMapper.getActivityForID( corp_code,  activity_theme,  run_mode, created_date);
+        return activityVipMapper.getActivityForID( corp_code,  activity_theme,  run_mode, created_date);
     }
 
 
