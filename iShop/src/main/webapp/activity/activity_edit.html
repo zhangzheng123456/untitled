@@ -218,9 +218,168 @@
         #edit div {
             margin-bottom: 0;
         }
-
         #edui1_elementpath {
             display: none;
+        }
+        /*分配任务弹窗*/
+        .allocating_task{
+            display: none;
+            width:790px;
+            height: 565px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            border-radius: 5px;
+            position: absolute;
+            top: 84px;
+            left: 239px;
+            z-index: 10001;
+            padding:0 20px;
+            color: #888;
+        }
+        .task_head{
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+        }
+        .allocated{
+            margin-left: 15px;
+        }
+        .schedule{
+            color: #c26555;
+            margin-left: 5px;
+        }
+        .task_close{
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            color: #a1a7b4;
+            float: right;
+            font-size: 16px;
+            margin: 10px -5px;
+        }
+        .task_container{
+            width: 100%;
+            height: 478px;
+            border-top: 1px solid #cacaca;
+            border-bottom: 1px solid #cacaca;
+        }
+        .allocating_task_container{
+            width: 360px;
+            height: 100%;
+            display: inline-block;
+        }
+        .container_right{
+            float: right;
+        }
+        .left_head{
+            width:100%;
+            height: 55px;
+            line-height: 55px;
+            padding-left: 20px;
+        }
+        .left_head span{
+            margin-right: 5px;
+            color: #6cc1c8;
+        }
+        .input_search{
+            position: relative;
+        }
+        .input_search input{
+            width: 100%;
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 15px;
+            outline: none;
+            border: 1px solid #dadada;
+        }
+        .input_search .right_input{
+            width: 320px;
+        }
+        .input_search .rigth_icon{
+            right: 45px;
+        }
+        .input_search span{
+            position: absolute;
+            top: 4px;
+            right: 7px;
+            font-size: 25px;
+        }
+        .input_search .screen{
+            right: 0;
+            top:0;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            line-height: 30px;
+            display: inline-block;
+            background: #6cc1c8;
+            color: #fff;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .left_list{
+            width: 100%;
+            height: 100%;
+        }
+        .left_list ul{
+            width: 100%;
+            height: 360px;
+            margin: 10px 0 20px 0;
+            background: url('../img/bjs.png');
+        }
+        .left_list ul li{
+            height: 40px;
+            line-height: 40px;
+            cursor: pointer;
+        }
+        .left_list .staff{
+            float: right;
+            margin-right: 10px;
+            color: #6dc1c8;
+        }
+        .left_list .close_staff{
+            display: none;
+            float: right;
+            width: 70px;
+            height: 30px;
+            margin: 5px 10px;
+            line-height: 30px;
+            text-align: center;
+            background: #cecece;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .left_list .staff_box:hover .close_staff{
+            display: inline-block;
+        }
+        .left_list .staff_box:hover .staff{
+            display: none;
+        }
+        .reset_btn{
+            display: inline-block;
+            width: 70px;
+            height: 30px;
+            margin-top: 10px;
+            line-height: 30px;
+            text-align: center;
+            background: #cecece;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .allocating_btn{
+            display: inline-block;
+            float: right;
+            width: 160px;
+            height: 30px;
+            margin-top: 10px;
+            line-height: 30px;
+            text-align: center;
+            background: #6dc1c8;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -344,6 +503,228 @@
                         for="is_active"></label></em></span>
             </div>
         </form>
+    </div>
+    <div class="allocating_task" id="allocating_task">
+        <div class="task_head">
+            分配任务<span class="allocated">已分配</span><span class="schedule">80%</span>
+            <span id="allocating_task_close" class="icon-ishop_6-12 task_close"></span>
+        </div>
+        <div class="task_container">
+            <div class="allocating_task_container">
+                <div class="left_head"><span>第一步</span>选择会员分组</div>
+                <div class="input_search">
+                    <input type="text" placeholder="搜索">
+                    <span class="icon-ishop_3-05"></span>
+                </div>
+                <div class="left_list" id="left_list">
+                    <ul>
+                        <li>
+                            <div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>
+                            <span class="p16">饭团</span>
+                            <span class="staff_box">
+                                <span class="staff">导购:王某某</span>
+                                <span class="close_staff">取消分配</span>
+                            </span>
+                        </li>
+                        <li>
+                            <div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>
+                            <span class="p16">饭团</span>
+                            <span class="staff_box">
+                                <span class="staff">导购:王某某</span>
+                                <span class="close_staff">取消分配</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="allocating_task_container container_right">
+                <div class="left_head"><span>第二步</span>分配任务给员工</div>
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" class="right_input">
+                    <span class="icon-ishop_3-05 rigth_icon"></span>
+                    <span class="screen icon-ishop_6-05" id="screen_btn"></span>
+                </div>
+                <div class="left_list" id="righ_list">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="reset_btn">重置</span>
+        <span class="allocating_btn">分配</span>
+    </div>
+    <!-- 拉取区域 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选区域</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"
+                                              data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取员工  -->
+    <div id="screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选员工</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="staff_area_num"
+                                              data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="staff_brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><input type="text" value="" id="staff_shop_num" data-storecode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
     </div>
     <div class="tk" id="tk">
         <span class="icon-ishop_6-12" id="X"></span>
