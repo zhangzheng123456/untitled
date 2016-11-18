@@ -64,7 +64,7 @@ public class ActivityServiceImpl implements ActivityService{
     }
 //,HttpServletRequest request
     @Override
-    public String insert(String message, String user_id) throws Exception {
+    public String insert(String message, String user_id,HttpServletRequest request) throws Exception {
         String result = null;
         JSONObject jsonObject = new JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString().trim();
@@ -73,18 +73,20 @@ public class ActivityServiceImpl implements ActivityService{
         String start_time = jsonObject.get("start_time").toString().trim();
         String end_time = jsonObject.get("end_time").toString().trim();
         String activity_vip = jsonObject.get("activity_vip").toString().trim();
-        String activity_operator = jsonObject.get("activity_operator").toString().trim();
+        //String activity_operator = jsonObject.get("activity_operator").toString().trim();
         String task_title = jsonObject.get("task_title").toString().trim();
         String task_desc = jsonObject.get("task_desc").toString().trim();
         String wechat_title = jsonObject.get("wechat_title").toString().trim();
         String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-       String activity_content = jsonObject.get("activity_content").toString().trim();
+       //String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
         String activity_state = jsonObject.get("activity_state").toString().trim();
+        String vip_gruop = jsonObject.get("vip_gruop").toString().trim();
+        String task_code = jsonObject.get("task_code").toString().trim();
         String path="";
         Activity activity = WebUtils.JSON2Bean(jsonObject, Activity.class);
-       /* String activity_content = activity.getActivity_content();
+        String activity_content = activity.getActivity_content();
         List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
         OssUtils ossUtils=new OssUtils();
         String bucketName="products-image";
@@ -98,7 +100,7 @@ public class ActivityServiceImpl implements ActivityService{
             ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
             activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
-        }*/
+        }
         Date now = new Date();
         activity.setCorp_code(corp_code);
         activity.setActivity_theme(activity_theme);
@@ -106,7 +108,7 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setStart_time(start_time);
         activity.setEnd_time(end_time);
         activity.setActivity_vip(activity_vip);
-        activity.setActivity_operator(activity_operator);
+       // activity.setActivity_operator(activity_operator);
         activity.setTask_title(task_title);
         activity.setTask_desc(task_desc);
         activity.setWechat_title(wechat_title);
@@ -120,12 +122,14 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setCreated_date(Common.DATETIME_FORMAT.format(now));
         activity.setIsactive(jsonObject.get("isactive").toString().trim());
         activity.setActivity_state(activity_state);
+        activity.setVip_gruop(vip_gruop);
+        activity.setTask_code(task_code);
         int info=0;
          info=activityMapper.insertActivity(activity);
         Activity activity1= this.getActivityForId(activity.getCorp_code(),activity.getActivity_theme(),activity.getRun_mode(),activity.getCreated_date());
 
         if (info>0) {
-           //  result=String.valueOf(activity1.getId());
+            result=String.valueOf(activity1.getId());
             return result;
         } else {
             result="新增失败";
@@ -134,7 +138,7 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     @Override
-    public String update(String message, String user_id) throws Exception {
+    public String update(String message, String user_id,HttpServletRequest request) throws Exception {
        String result = null;
         JSONObject jsonObject = new JSONObject(message);
         int activity_id = Integer.parseInt(jsonObject.get("id").toString().trim());
@@ -144,18 +148,20 @@ public class ActivityServiceImpl implements ActivityService{
         String run_mode = jsonObject.get("run_mode").toString().trim();
         String start_time = jsonObject.get("start_time").toString().trim();
         String end_time = jsonObject.get("end_time").toString().trim();
-        String activity_vip = jsonObject.get("activity_vip").toString().trim();
-        String activity_operator = jsonObject.get("activity_operator").toString().trim();
+       String activity_vip = jsonObject.get("activity_vip").toString().trim();
+        //String activity_operator = jsonObject.get("activity_operator").toString().trim();
         String task_title = jsonObject.get("task_title").toString().trim();
         String task_desc = jsonObject.get("task_desc").toString().trim();
         String wechat_title = jsonObject.get("wechat_title").toString().trim();
         String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-         String activity_content = jsonObject.get("activity_content").toString().trim();
+       //  String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
+        String vip_gruop = jsonObject.get("vip_gruop").toString().trim();
+        String task_code = jsonObject.get("task_code").toString().trim();
         String path="";
         Activity activity = WebUtils.JSON2Bean(jsonObject, Activity.class);
-       /* String activity_content = activity.getActivity_content();
+        String activity_content = activity.getActivity_content();
         List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
         OssUtils ossUtils=new OssUtils();
         String bucketName="products-image";
@@ -169,7 +175,7 @@ public class ActivityServiceImpl implements ActivityService{
             ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
             activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
-        }*/
+        }
 
         Date now = new Date();
         activity.setId(activity_id);
@@ -179,7 +185,7 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setStart_time(start_time);
         activity.setEnd_time(end_time);
         activity.setActivity_vip(activity_vip);
-        activity.setActivity_operator(activity_operator);
+        //activity.setActivity_operator(activity_operator);
         activity.setTask_title(task_title);
         activity.setTask_desc(task_desc);
         activity.setWechat_title(wechat_title);
@@ -192,12 +198,14 @@ public class ActivityServiceImpl implements ActivityService{
         activity.setCreater(user_id);
         activity.setCreated_date(Common.DATETIME_FORMAT.format(now));
         activity.setIsactive(jsonObject.get("isactive").toString().trim());
+        activity.setVip_gruop(vip_gruop);
+        activity.setTask_code(task_code);
         int info=0;
         info=activityMapper.updateActivity(activity);
         Activity activity1= this.getActivityForId(activity.getCorp_code(),activity.getActivity_theme(),activity.getRun_mode(),activity.getCreated_date());
 
         if (info>0) {
-           // result=Common.DATABEAN_CODE_SUCCESS;
+            result=Common.DATABEAN_CODE_SUCCESS;
             return result;
         } else {
             result="编辑失败";
