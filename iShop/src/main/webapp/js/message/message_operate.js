@@ -265,7 +265,7 @@ $(".screen_content").on("click","li",function(){
     }else if(input.type=="checkbox"&&input.checked==true){
         input.checked = false;
     }
-})
+});
 function bianse(){
     $(".screen_content_l li:odd").css("backgroundColor","#fff");
     $(".screen_content_l li:even").css("backgroundColor","#ededed");
