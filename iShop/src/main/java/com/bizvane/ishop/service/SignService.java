@@ -2,6 +2,9 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Sign;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +27,7 @@ public interface SignService {
     int deleteByUser(String user_code,String corp_code)throws Exception;
 
     List<Sign> selectUserRecord(String corp_code, String user_code, String date,String status) throws Exception;
+
+    Sign selSignById(int id) throws SQLException;
+
 }

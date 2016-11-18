@@ -91,4 +91,9 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
     public int delAppLoginlogById(int id) {
         return loginLogMapper.delAppLoginlogById(id);
     }
+
+    @Override
+    public AppLoginLog selByLogId(int id) throws Exception {
+        return loginLogMapper.selByLogId(id);
+    }
 }

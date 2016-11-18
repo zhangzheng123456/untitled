@@ -139,14 +139,16 @@ public class CorpController {
                  * @param name 被操作name
                  * @throws Exception
                  */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
                 String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                String function ="企业管理";
-                String action =Common.ACTION_ADD;
-                String t_corp_code= jsonObject.get("corp_code").toString();
-                String t_code= jsonObject.get("corp_code").toString();
-                String t_name= jsonObject.get("corp_name").toString();
-                baseService.insertUserOperation(operation_corp_code,operation_user_code,function,action,t_corp_code,t_code,t_name);
+                String function = "企业管理";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("corp_code").toString();
+                String t_name = action_json.get("corp_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -195,15 +197,16 @@ public class CorpController {
                  * @param name 被操作name
                  * @throws Exception
                  */
-                JSONObject jsonObject = JSONObject.parseObject(message);
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
                 String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                String function ="企业管理";
-                String action =Common.ACTION_UPD;
-                String t_corp_code= jsonObject.get("corp_code").toString();
-                String t_code= jsonObject.get("corp_code").toString();
-                String t_name= jsonObject.get("corp_name").toString();
-                baseService.insertUserOperation(operation_corp_code,operation_user_code,function,action,t_corp_code,t_code,t_name);
+                String function = "企业管理";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("corp_code").toString();
+                String t_name = action_json.get("corp_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -285,12 +288,13 @@ public class CorpController {
                  */
                 String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                String function ="企业管理";
-                String action =Common.ACTION_DEL;
-                String t_corp_code= corp.getCorp_code();
-                String t_code= corp.getCorp_code();
-                String t_name= corp.getCorp_name();
-                baseService.insertUserOperation(operation_corp_code,operation_user_code,function,action,t_corp_code,t_code,t_name);
+                String function = "企业管理";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = corp.getCorp_code();
+                String t_code = corp.getCorp_code();
+                String t_name = corp.getCorp_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg != null) {

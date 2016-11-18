@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.StoreAchvGoal;
-import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -61,6 +58,8 @@ public class StoreAchvGoalController {
     private CorpService corpService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -168,6 +167,31 @@ public class StoreAchvGoalController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(storeAchvGoal.getId()));
 
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "业绩管理_店铺业绩目标";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("store_code").toString();
+                Store store = storeService.getStoreByCode(t_corp_code, t_code, Common.IS_ACTIVE_Y);
+                String t_name = store.getStore_name();
+                String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
+
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -263,6 +287,31 @@ public class StoreAchvGoalController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "业绩管理_店铺业绩目标";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("store_code").toString();
+                Store store = storeService.getStoreByCode(t_corp_code, t_code, Common.IS_ACTIVE_Y);
+                String t_name = store.getStore_name();
+                String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -297,7 +346,31 @@ public class StoreAchvGoalController {
             String storeAchvGoal_id = jsonObject.get("id").toString();
             String[] ids = storeAchvGoal_id.split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
+                StoreAchvGoal storeAchvGoal = storeAchvGoalService.selectlById(Integer.parseInt(ids[i]));
                 storeAchvGoalService.deleteById(Integer.parseInt(ids[i]));
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "业绩管理_店铺业绩目标";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = storeAchvGoal.getCorp_code();
+                String t_code = storeAchvGoal.getStore_code();
+                Store store = storeService.getStoreByCode(t_corp_code, t_code, Common.IS_ACTIVE_Y);
+                String t_name = store.getStore_name();
+                String remark = storeAchvGoal.getTarget_time()+"("+storeAchvGoal.getTime_type()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

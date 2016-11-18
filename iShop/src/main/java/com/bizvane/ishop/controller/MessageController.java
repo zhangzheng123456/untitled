@@ -46,6 +46,8 @@ public class MessageController {
     StoreService storeService;
     @Autowired
     IceInterfaceService iceInterfaceService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -143,6 +145,32 @@ public class MessageController {
                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                dataBean.setId(id);
                dataBean.setMessage("SUCCESS");
+
+               //----------------行为日志------------------------------------------
+               /**
+                * mongodb插入用户操作记录
+                * @param operation_corp_code 操作者corp_code
+                * @param operation_user_code 操作者user_code
+                * @param function 功能
+                * @param action 动作
+                * @param corp_code 被操作corp_code
+                * @param code 被操作code
+                * @param name 被操作name
+                * @throws Exception
+                */
+               com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+               String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+               String operation_user_code = request.getSession().getAttribute("user_code").toString();
+               String function = "消息管理_通知管理";
+               String action = Common.ACTION_ADD;
+               String t_corp_code = action_json.get("corp_code").toString();
+               String t_code = user_id;
+               String t_name = receiver_type;
+               Date now = new Date();
+               String remark = operator+"("+ Common.DATETIME_FORMAT.format(now)+")";
+               baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+               //-------------------行为日志结束--------------------------------------------------------------------------------
+
            }else {
                dataBean.setId(id);
                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -299,7 +327,32 @@ public class MessageController {
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete message--" + Integer.valueOf(ids[i]));
+                MessageInfo messageById = messageService.getMessageById(Integer.valueOf(ids[i]));
                 messageService.delete(Integer.valueOf(ids[i]));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "消息管理_通知管理";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = messageById.getMessage_sender();
+                String t_name = messageById.getReceiver_type();
+                String remark = messageById.getMessage_sender()+"("+ messageById.getCreated_date()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束--------------------------------------------------------------------------------
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

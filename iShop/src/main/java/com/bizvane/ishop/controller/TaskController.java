@@ -44,6 +44,8 @@ public class TaskController {
     private StoreService storeService;
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -209,12 +211,58 @@ public class TaskController {
                 if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
                     del= taskService.delTask(id, corp_code, task_code);
                     count = Integer.parseInt(del);
+
+                    //----------------行为日志开始------------------------------------------
+                    /**
+                     * mongodb插入用户操作记录
+                     * @param operation_corp_code 操作者corp_code
+                     * @param operation_user_code 操作者user_code
+                     * @param function 功能
+                     * @param action 动作
+                     * @param corp_code 被操作corp_code
+                     * @param code 被操作code
+                     * @param name 被操作name
+                     * @throws Exception
+                     */
+                    String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                    String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                    String function = "任务管理_任务列表";
+                    String action = Common.ACTION_DEL;
+                    String t_corp_code = task.getCorp_code();
+                    String t_code = task.getTask_code();
+                    String t_name = task.getTask_title();
+                    String remark = "";
+                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                    //-------------------行为日志结束-----------------------------------------------------------------------------------
                 }else{
                     if(!user_code.equals(task.getCreater())){
                         del="无法删除他人创建的任务";
                     }else{
                         del= taskService.delTask(id, corp_code, task_code);
                         count = Integer.parseInt(del);
+
+                        //----------------行为日志开始------------------------------------------
+                        /**
+                         * mongodb插入用户操作记录
+                         * @param operation_corp_code 操作者corp_code
+                         * @param operation_user_code 操作者user_code
+                         * @param function 功能
+                         * @param action 动作
+                         * @param corp_code 被操作corp_code
+                         * @param code 被操作code
+                         * @param name 被操作name
+                         * @throws Exception
+                         */
+                        String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                        String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                        String function = "任务管理_任务列表";
+                        String action = Common.ACTION_DEL;
+                        String t_corp_code = task.getCorp_code();
+                        String t_code = task.getTask_code();
+                        String t_name = task.getTask_title();
+                        String remark = "";
+                        baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                        //-------------------行为日志结束-----------------------------------------------------------------------------------
                     }
                 }
 
@@ -250,7 +298,8 @@ public class TaskController {
             JSONObject jsonObject = new JSONObject(message);
             Task task=new Task();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-            task.setTask_code("T"+sdf.format(new Date())+Math.round(Math.random()*9));
+            String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
+            task.setTask_code(task_code);
             task.setTask_title(jsonObject.get("task_title").toString());
             task.setTask_type_code(jsonObject.get("task_type_code").toString());
             task.setTask_description(jsonObject.get("task_description").toString());
@@ -277,6 +326,30 @@ public class TaskController {
                 obj.put("taskCode",task1.getTask_code());
                 dataBean.setMessage(String.valueOf(task1.getId()));
                 dataBean.setMessage(obj.toString());
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "任务管理_任务列表";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = task_code;
+                String t_name = action_json.get("task_title").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("-1");
@@ -343,6 +416,30 @@ public class TaskController {
                         dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                         dataBean.setId(id);
                         dataBean.setMessage("编辑成功");
+
+                        //----------------行为日志------------------------------------------
+                        /**
+                         * mongodb插入用户操作记录
+                         * @param operation_corp_code 操作者corp_code
+                         * @param operation_user_code 操作者user_code
+                         * @param function 功能
+                         * @param action 动作
+                         * @param corp_code 被操作corp_code
+                         * @param code 被操作code
+                         * @param name 被操作name
+                         * @throws Exception
+                         */
+                        com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                        String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                        String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                        String function = "任务管理_任务列表";
+                        String action = Common.ACTION_UPD;
+                        String t_corp_code = action_json.get("corp_code").toString();
+                        String t_code = action_json.get("task_code").toString();
+                        String t_name = action_json.get("task_title").toString();
+                        String remark = "";
+                        baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                        //-------------------行为日志结束-----------------------------------------------------------------------------------
                     }else{
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("-1");

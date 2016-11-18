@@ -5,6 +5,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.AppLoginLogService;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.VipLabelService;
 import com.bizvane.ishop.service.ViplableGroupService;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -38,6 +39,8 @@ public class ViplableGroupController {
 
     @Autowired
     private VipLabelService vipLabelService;
+    @Autowired
+    private BaseService baseService;
     String id;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -168,6 +171,29 @@ public class ViplableGroupController {
                         break;
                     }
                 }
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员高级管理_标签分组";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = viplableGroup.getCorp_code();
+                String t_code = viplableGroup.getLabel_group_code();
+                String t_name = viplableGroup.getLabel_group_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg == null) {
                 for (int i = 0; i < ids.length; i++) {
@@ -218,6 +244,30 @@ public class ViplableGroupController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(viplableGroups.get(0).getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员高级管理_标签分组";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("label_group_code").toString();
+                String t_name = action_json.get("label_group_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -286,6 +336,30 @@ public class ViplableGroupController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员高级管理_标签分组";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("label_group_code").toString();
+                String t_name = action_json.get("label_group_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);

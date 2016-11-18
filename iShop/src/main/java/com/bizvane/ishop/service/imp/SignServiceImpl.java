@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,4 +193,16 @@ class SignServiceImpl implements SignService {
         return signs;
     }
 
+    @Override
+    public Sign selSignById(int id) throws SQLException {
+        Sign sign = signMapper.selSignById(id);
+        if(sign.getStatus()==null||sign.getStatus().equals("")){
+            sign.setStatus("无状态");
+        }else   if(sign.getStatus().equals("0")){
+            sign.setStatus("签到");
+        }else{
+            sign.setStatus("签退");
+        }
+        return sign;
+    }
 }

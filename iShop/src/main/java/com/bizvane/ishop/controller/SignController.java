@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.SignService;
-import com.bizvane.ishop.service.StoreService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -39,7 +36,8 @@ public class SignController {
     private SignService signService;
     @Autowired
     private StoreService storeService;
-
+    @Autowired
+    private BaseService baseService;
     String id;
 
     private static final Logger logger = Logger.getLogger(InterfaceController.class);
@@ -180,11 +178,34 @@ public class SignController {
             String inter_id = jsonObject.get("id").toString();
             String[] ids = inter_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                logger.info("-------------delete--" + Integer.valueOf(ids[i]));
+                //logger.info("-------------delete--" + Integer.valueOf(ids[i]));
+                Sign sign = signService.selSignById(Integer.valueOf(ids[i]));
                 signService.delSignById(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+
+//----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "员工管理_签到管理";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = sign.getCorp_code();
+                String t_code = sign.getUser_code();
+                String t_name = sign.getUser_name();
+                String remark = sign.getSign_time()+"("+sign.getStatus()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

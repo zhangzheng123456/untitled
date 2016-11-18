@@ -61,6 +61,8 @@ public class VIPLabelController {
     private CorpService corpService;
     @Autowired
     MongoDBClient mongodbClient;
+    @Autowired
+    private BaseService baseService;
     private static final Logger log = Logger.getLogger(VIPLabelController.class);
 
     String id;
@@ -351,6 +353,30 @@ public class VIPLabelController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(vipLabels.get(0).getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(messsage);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员管理_会员标签";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("label_group_code").toString();
+                String t_name = action_json.get("label_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -399,6 +425,30 @@ public class VIPLabelController {
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setMessage("更改成功");
+
+                    //----------------行为日志开始------------------------------------------
+                    /**
+                     * mongodb插入用户操作记录
+                     * @param operation_corp_code 操作者corp_code
+                     * @param operation_user_code 操作者user_code
+                     * @param function 功能
+                     * @param action 动作
+                     * @param corp_code 被操作corp_code
+                     * @param code 被操作code
+                     * @param name 被操作name
+                     * @throws Exception
+                     */
+                    com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                    String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                    String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                    String function = "会员管理_会员标签";
+                    String action = Common.ACTION_UPD;
+                    String t_corp_code = action_json.get("corp_code").toString();
+                    String t_code = action_json.get("label_group_code").toString();
+                    String t_name = action_json.get("label_name").toString();
+                    String remark = "";
+                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                    //-------------------行为日志结束-----------------------------------------------------------------------------------
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setMessage(result);
@@ -465,7 +515,31 @@ public class VIPLabelController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String[] ids = jsonObject.get("id").toString().split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
+                VipLabel vipLabelById = vipLabelService.getVipLabelById(Integer.parseInt(ids[i]));
                 this.vipLabelService.delete(Integer.parseInt(ids[i]));
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员管理_会员标签";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = vipLabelById.getCorp_code();
+                String t_code = vipLabelById.getLabel_group_code();
+                String t_name = vipLabelById.getLabel_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
+
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

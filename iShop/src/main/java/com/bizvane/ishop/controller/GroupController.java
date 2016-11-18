@@ -60,6 +60,8 @@ public class GroupController {
     private TableManagerService managerService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private BaseService baseService;
     private static Logger logger = LoggerFactory.getLogger((GroupController.class));
     String id;
 
@@ -134,6 +136,30 @@ public class GroupController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(group1.getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "权限管理_群组管理";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("group_code").toString();
+                String t_name = action_json.get("group_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -180,6 +206,31 @@ public class GroupController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
+
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "权限管理_群组管理";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("group_code").toString();
+                String t_name = action_json.get("group_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -225,6 +276,29 @@ public class GroupController {
                         break;
                     }
                 }
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "权限管理_群组管理";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = operation_corp_code;
+                String t_code = group.getGroup_code();
+                String t_name = group.getGroup_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg == null) {
                 for (int i = 0; i < ids.length; i++) {

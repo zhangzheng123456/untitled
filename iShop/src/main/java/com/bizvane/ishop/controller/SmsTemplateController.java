@@ -7,10 +7,7 @@ import com.bizvane.ishop.entity.Message;
 import com.bizvane.ishop.entity.MessageInfo;
 import com.bizvane.ishop.entity.MessageType;
 import com.bizvane.ishop.entity.SmsTemplate;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.MessageService;
-import com.bizvane.ishop.service.SmsTemplateService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -46,7 +43,8 @@ public class SmsTemplateController {
 
     @Autowired
     private SmsTemplateService smsTemplateService;
-
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -142,6 +140,30 @@ public class SmsTemplateController {
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("更改成功");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "消息管理_消息模板";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("template_code").toString();
+                String t_name = action_json.get("template_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
@@ -171,7 +193,31 @@ public class SmsTemplateController {
             JSONObject jsonObject = new JSONObject(message);
             String[] ids = jsonObject.getString("id").split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
+                SmsTemplate smsTemplateById = smsTemplateService.getSmsTemplateById(Integer.parseInt(ids[i]));
                 smsTemplateService.delete(Integer.parseInt(ids[i]));
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "消息管理_消息模板";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = smsTemplateById.getCorp_code();
+                String t_code = smsTemplateById.getTemplate_code();
+                String t_name = smsTemplateById.getTemplate_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -259,6 +305,31 @@ public class SmsTemplateController {
                 SmsTemplate smsTemplate = smsTemplateService.getSmsTemplateForId(SmsTemplate.getCorp_code(),SmsTemplate.getTemplate_code());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(smsTemplate.getId()));
+
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "消息管理_消息模板";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("template_code").toString();
+                String t_name = action_json.get("template_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -100,6 +100,18 @@
         WHERE ID=#{id};
     </delete>
 
+    <select id="selSignById" resultType="com.bizvane.ishop.entity.Sign">
+       SELECT acc_sign.*,
+        def_corp.corp_name,
+        def_store.store_name
+        FROM acc_sign,def_corp,def_store
+        WHERE acc_sign.corp_code=def_corp.corp_code
+        AND def_corp.corp_code = def_store.corp_code
+        AND acc_sign.store_code = def_store.store_code
+        AND acc_sign.status !='1'
+        WHERE acc_sign.ID=#{id};
+    </select>
+
     <delete id="delSignByUser">
         DELETE FROM acc_sign
         WHERE user_code=#{user_code}

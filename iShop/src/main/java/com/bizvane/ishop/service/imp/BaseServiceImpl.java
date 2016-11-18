@@ -118,7 +118,7 @@ public class BaseServiceImpl implements BaseService{
      * @param name 被操作name
      * @throws Exception
      */
-    public void insertUserOperation(String operation_corp_code,String operation_user_code,String function,String action,String corp_code, String code,String name)throws Exception{
+    public void insertUserOperation(String operation_corp_code,String operation_user_code,String function,String action,String corp_code, String code,String name,String remark)throws Exception{
         Date now = new Date();
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection collection = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
@@ -130,6 +130,7 @@ public class BaseServiceImpl implements BaseService{
         saveData.put("name", name);
         saveData.put("operation_corp_code", operation_corp_code);
         saveData.put("operation_user_code", operation_user_code);
+        saveData.put("remark", remark);
         saveData.put("operation_time", Common.DATETIME_FORMAT.format(now));
         collection.insert(saveData);
     }
