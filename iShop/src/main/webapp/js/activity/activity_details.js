@@ -1,11 +1,7 @@
 /**
  * Created by Administrator on 2016/11/16.
  */
-cache = {
-    TheTarget:'',
-    TheCover:''
 
-}
 //停止活动
 function stop(){
     window.location.href = 'activity.html';
@@ -17,37 +13,6 @@ function notice(){
 //关闭
 function closePage(){
     window.location.href = 'activity.html';
-}
-//加载统计
-function check(){
-    var TheTarget = '325656';
-    var TheCover = '244242';
-    cache.TheTarget = TheTarget;
-    cache.TheCover = TheCover;
-    //pie(TheTarget,TheCover);
-    $('#TheTarget').text(TheTarget);
-    $('#TheCover').text(TheCover);
-    table();
-}
-//加载活动状态
-function activityType(){
-    var beiginTime = '2016-9-12';
-    var endTime = '2016-12-12'
-    var activityState = '正在执行';
-    var activityTheme = '华东区域门店换季促销'
-    var activityState2 = '执行中';
-    if(activityState =='正在执行'){
-        $('#activityState').css('color','#50acb4');
-    }else if(activityState =='尚未开始'){
-        $('#activityState').css('color','red');
-    }else if(activityState =='已结束'){
-        $('#activityState').css('color','blue');
-    }
-    $('#activityState').text(activityState);
-    $('#activityTheme').text(activityTheme);
-    $('#activityState2').text(activityState2);
-    $('#beiginTime').text(beiginTime);
-    $('#endTime').text(endTime);
 }
 //仅显示已完成
 $('#showDone').click(function(){
@@ -71,7 +36,34 @@ $('#showDoing').click(function(){
         }
     })
 })
-//员工列表加载
+//加载统计模块
+function check(){
+    var TheTarget = '325656';
+    var TheCover = '244242';
+    table(TheTarget,TheCover);
+}
+//加载活动状态
+function activityType(){
+    var beiginTime = '2016-9-12';
+    var endTime = '2016-12-12'
+    var activityState = '正在执行';
+    var activityTheme = '华东区域门店换季促销'
+    var activityState2 = '执行中';
+    if(activityState =='正在执行'){
+        $('#activityState').css('color','#50acb4');
+    }else if(activityState =='尚未开始'){
+        $('#activityState').css('color','red');
+    }else if(activityState =='已结束'){
+        $('#activityState').css('color','blue');
+    }
+    $('#activityState').text(activityState);
+    $('#activityTheme').text(activityTheme);
+    $('#activityState2').text(activityState2);
+    $('#beiginTime').text(beiginTime);
+    $('#endTime').text(endTime);
+}
+
+//加载员工列表
 function listShow(){
     $('.people').animate({scrollTop:0}, 'fast');
     var name = '张某某';
@@ -104,8 +96,11 @@ function listShow(){
         }
     }
 }
-//饼图
-function table() {
+
+//插件-饼图
+function table(TheTarget,TheCover) {
+    $('#TheTarget').text(TheTarget);
+    $('#TheCover').text(TheCover);
     require.config({
         paths: {
             echarts: '../js/dist'
@@ -121,9 +116,9 @@ function table() {
             'echarts/chart/line'
         ],
         function (ec) {
-            var TheTarget = cache.TheTarget;
+            //var TheTarget = cache.TheTarget;
             console.log(TheTarget);
-            var TheCover = cache.TheCover;
+            //var TheCover = cache.TheCover;
             console.log(TheCover);
             var msg = [
                 {value: TheTarget, name: "目标会员数"},
@@ -170,15 +165,20 @@ function table() {
     );
 }
 //封装函数
+//jq获取text();
 function getText(name){
-    return $('name').text();
+    return $(name).text();
 }
+//jq获取val();
 function getVal(name){
     return $('name').val();
 }
 //页面加载数据
 window.onload = function(){
+    //加载统计模块
     check();
+    //加载活动状态
    activityType();
+    //加载员工列表
     listShow();
 }
