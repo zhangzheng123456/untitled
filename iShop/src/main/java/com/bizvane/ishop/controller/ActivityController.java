@@ -90,7 +90,7 @@ public class ActivityController {
             //this.activityService.insert(message,user_id,request);
            // String result= this.activityService.insert(message,user_id,request);
 
-            String result= this.activityService.insert(message,user_id);
+            String result= this.activityService.insert(message,user_id,request);
             if(result.equals("新增失败")){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -192,7 +192,7 @@ public class ActivityController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = activityService.update(message, user_id);
+            String result = activityService.update(message, user_id,request);
            // String result = activityService.update(message, user_id,request);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

@@ -13,6 +13,13 @@ function notice(){
 function closePage(){
     window.location.href = 'activity.html';
 }
+//加载统计
+function check(){
+    var TheTarget = '325656';
+    var TheCover = '244242';
+    $('#TheTarget').text(TheTarget);
+    $('#TheCover').text(TheCover);
+}
 //加载活动状态
 function activityType(){
     var beiginTime = '2016-9-12';
@@ -61,11 +68,11 @@ function listShow(){
     var name = '张某某';
     var num = '100000';
     var area = '华东一区';
-    var shop='上海敏行分店一店';
+    var shop='上海闵行分店一店上海闵行分店一店';
+    var percent = Math.floor(Math.random()*40+60);
     var tempHTML = '<li class="people_title"> <div class="people_title_order" style="text-align: center">${order}</div> <div class="people_title_name">${name}</div> <div class="people_title_num">${num}</div> <div class="people_title_area">${area}</div> <div class="people_title_shop">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
     for(i=0;i<11;i++){
         //随机进度
-        var percent = Math.floor(Math.random()*40+60);
         var html = '';
         var order = i+1;
         var nowHTML1 = tempHTML;
@@ -90,6 +97,7 @@ function listShow(){
 }
 //页面加载假数据
 window.onload = function(){
+    check();
    activityType();
     listShow();
 }
