@@ -27,6 +27,7 @@ function check(){
     //pie(TheTarget,TheCover);
     $('#TheTarget').text(TheTarget);
     $('#TheCover').text(TheCover);
+    table();
 }
 //加载活动状态
 function activityType(){
@@ -104,68 +105,70 @@ function listShow(){
     }
 }
 //饼图
-require.config({
-    paths: {
-        echarts: '../js/dist'
-    }
-});
-require(
-    [
-        'echarts',
-        'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-        'echarts/chart/radar',
-        'echarts/chart/map',
-        'echarts/chart/bar',
-        'echarts/chart/line'
-    ],
-    function (ec) {
-        var TheTarget = cache.TheTarget;
-        console.log(TheTarget);
-        var TheCover = cache.TheCover;
-        console.log(TheCover);
-        var msg=[
-            {value:222222,name:"目标会员数"},
-            {value:11111, name:'已覆盖会员数'},
-        ];
-        var myChart = ec.init(document.getElementById('main'));
-        var option = {
-            color:[ '#7bc7cd','#eaeaea'] ,
-            series : [
-                {   name:'消费分类',
-                    center:['50%','50%'],
-                    type:'pie',
-                    radius : ['80%', '100%'],
-                    itemStyle : {
-                        normal : {
-                            label : {
-                                show : false
+function table() {
+    require.config({
+        paths: {
+            echarts: '../js/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
+            'echarts/chart/radar',
+            'echarts/chart/map',
+            'echarts/chart/bar',
+            'echarts/chart/line'
+        ],
+        function (ec) {
+            var TheTarget = cache.TheTarget;
+            console.log(TheTarget);
+            var TheCover = cache.TheCover;
+            console.log(TheCover);
+            var msg = [
+                {value: TheTarget, name: "目标会员数"},
+                {value: TheCover, name: '已覆盖会员数'},
+            ];
+            var myChart = ec.init(document.getElementById('main'));
+            var option = {
+                color: ['#7bc7cd', '#eaeaea'],
+                series: [
+                    {
+                        name: '消费分类',
+                        center: ['50%', '50%'],
+                        type: 'pie',
+                        radius: ['80%', '100%'],
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: false
+                                },
+                                labelLine: {
+                                    show: false
+                                }
                             },
-                            labelLine : {
-                                show : false
-                            }
-                        },
-                        emphasis : {
-                            label : {
-                                show : false,
-                                position : 'center',
-                                textStyle : {
-                                    fontSize : '20',
-                                    fontWeight : 'bold'
+                            emphasis: {
+                                label: {
+                                    show: false,
+                                    position: 'center',
+                                    textStyle: {
+                                        fontSize: '20',
+                                        fontWeight: 'bold'
+                                    }
                                 }
                             }
-                        }
-                    },
-                    data:msg
-                }
-            ]
-        };
-        myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
-        });
-    }
-);
-
+                        },
+                        data: msg
+                    }
+                ]
+            };
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+    );
+}
 //封装函数
 function getText(name){
     return $('name').text();
