@@ -222,6 +222,111 @@
         #edui1_elementpath {
             display: none;
         }
+        /*分配任务弹窗*/
+        .allocating_task{
+            width:790px;
+            height: 565px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.35);
+            border-radius: 5px;
+            position: absolute;
+            top: 84px;
+            left: 239px;
+            z-index: 10001;
+            padding:0 20px;
+            color: #888;
+        }
+        .task_head{
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+        }
+        .allocated{
+            margin-left: 15px;
+        }
+        .schedule{
+            color: #c26555;
+            margin-left: 5px;
+        }
+        .task_close{
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            color: #a1a7b4;
+            float: right;
+            font-size: 16px;
+            margin: 10px -5px;
+        }
+        .task_container{
+            width: 100%;
+            height: 478px;
+            border-top: 1px solid #cacaca;
+            border-bottom: 1px solid #cacaca;
+        }
+        .allocating_task_container{
+            width: 360px;
+            height: 100%;
+            display: inline-block;
+        }
+        .container_right{
+            float: right;
+        }
+        .left_head{
+            width:100%;
+            height: 55px;
+            line-height: 55px;
+            padding-left: 20px;
+        }
+        .left_head span{
+            margin-right: 5px;
+            color: #6cc1c8;
+        }
+        .input_search{
+            width: 100%;
+            position: relative;
+        }
+        .input_search input{
+            width: 100%;
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 15px;
+            outline: none;
+            border: 1px solid #dadada;
+        }
+        .input_search .right_input{
+            width: 320px;
+        }
+        .input_search .rigth_icon{
+            right: 45px;
+        }
+        .input_search span{
+            position: absolute;
+            top: 4px;
+            right: 7px;
+            font-size: 25px;
+        }
+        .input_search .screen{
+            position: relative;
+            margin-left: 10px;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            line-height: 30px;
+            display: inline-block;
+            background: #6cc1c8;
+            color: #fff;
+        }
+        .left_list{
+            width: 100%;
+            height: 100%;
+        }
+        .left_list ul{
+            width: 100%;
+            height: 360px;
+            margin: 10px 0 20px 0;
+            background: url('../img/bjs.png');
+        }
     </style>
 </head>
 <body>
@@ -344,6 +449,39 @@
                         for="is_active"></label></em></span>
             </div>
         </form>
+    </div>
+    <div class=" allocating_task">
+        <div class="task_head">
+            分配任务<span class="allocated">已分配</span><span class="schedule">80%</span>
+            <span class="icon-ishop_6-12 task_close"></span>
+        </div>
+        <div class="task_container">
+            <div class="allocating_task_container">
+                <div class="left_head"><span>第一步</span>选择会员分组</div>
+                <div class="input_search">
+                    <input type="text" placeholder="搜索">
+                    <span class="icon-ishop_3-05"></span>
+                </div>
+                <div class="left_list" id="left_list">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="allocating_task_container container_right">
+                <div class="left_head"><span>第二步</span>分配任务给员工</div>
+                <div class="input_search">
+                    <input type="text" placeholder="搜索" class="right_input">
+                    <span class="icon-ishop_3-05 rigth_icon"></span>
+                    <span class="screen icon-ishop_6-05"></span>
+                </div>
+                <div class="left_list" id="righ_list">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="tk" id="tk">
         <span class="icon-ishop_6-12" id="X"></span>
