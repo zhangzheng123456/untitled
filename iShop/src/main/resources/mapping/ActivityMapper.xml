@@ -10,9 +10,8 @@
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
         <result column="activity_vip" property="activity_vip"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_operator" property="activity_operator"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="msg_info" property="msg_info"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -35,6 +34,10 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_gruop" property="vip_gruop" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
@@ -43,8 +46,8 @@
         def_activity.run_mode,
         def_activity.start_time,
         def_activity.end_time,
+
         def_activity.activity_vip,
-        def_activity.activity_operator,
         def_activity.msg_info,
         def_activity.task_title,
         def_activity.task_desc,
@@ -59,9 +62,15 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
-        FROM def_activity,def_corp
+        def_activity.isactive,
+        def_activity.activity_state,
+        def_activity.vip_gruop,
+        def_vip_group.VIP_GROUP_NAME,
+        def_activity.task_code
+        FROM def_activity,def_corp,def_vip_group,def_task
         WHERE def_activity.corp_code=def_corp.corp_code
+        AND def_activity.corp_code=def_vip_group.corp_code
+        AND def_activity.corp_code=def_task.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND def_activity.corp_code = #{corp_code}
         </if>
@@ -70,9 +79,9 @@
             (
             def_activity.activity_theme LIKE concat('%', #{search_value},'%')
             OR def_activity.run_mode LIKE concat('%', #{search_value},'%')
-            OR def_activity.created_date LIKE concat('%', #{search_value},'%')
-            OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
-            OR def_activity.time LIKE concat('%', #{search_value},'%')
+            OR def_activity.start_time LIKE concat('%', #{search_value},'%')
+            OR def_activity.end_time LIKE concat('%', #{search_value},'%')
+            OR def_activity.activity_state LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY def_activity.id DESC
@@ -97,11 +106,9 @@
             <if test="end_time!=null">
                 end_time,
             </if>
+
             <if test="activity_vip!=null">
                 activity_vip,
-            </if>
-            <if test="activity_operator!=null">
-                activity_operator,
             </if>
             <if test="msg_info!=null">
                 msg_info,
@@ -143,6 +150,15 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="activity_state!=null">
+                activity_state,
+            </if>
+            <if test="vip_gruop!=null">
+                vip_gruop,
+            </if>
+            <if test="task_code!=null">
+                task_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
@@ -161,11 +177,9 @@
             <if test="end_time!=null">
                 #{end_time},
             </if>
+
             <if test="activity_vip!=null">
                 #{activity_vip},
-            </if>
-            <if test="activity_operator!=null">
-                #{activity_operator},
             </if>
             <if test="msg_info!=null">
                 #{msg_info},
@@ -207,6 +221,15 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="activity_state!=null">
+                #{activity_state},
+            </if>
+            <if test="vip_gruop!=null">
+                #{vip_gruop},
+            </if>
+            <if test="task_code!=null">
+                #{task_code},
+            </if>
         </trim>
     </insert>
 
@@ -229,11 +252,9 @@
             <if test="end_time!=null">
                 end_time=#{end_time},
             </if>
+
             <if test="activity_vip!=null">
                 activity_vip=#{activity_vip},
-            </if>
-            <if test="activity_operator!=null">
-                activity_operator=#{activity_operator},
             </if>
             <if test="msg_info!=null">
                 msg_info=#{msg_info},
@@ -275,6 +296,15 @@
             <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
+            <if test="activity_state!=null">
+                activity_state=#{activity_state},
+            </if>
+            <if test="vip_gruop!=null">
+                vip_gruop=#{vip_gruop},
+            </if>
+            <if test="task_code!=null">
+                task_code=#{task_code},
+            </if>
         </trim>
         WHERE id=#{id};
     </update>
@@ -284,8 +314,8 @@
         def_activity.run_mode,
         def_activity.start_time,
         def_activity.end_time,
+
         def_activity.activity_vip,
-        def_activity.activity_operator,
         def_activity.msg_info,
         def_activity.task_title,
         def_activity.task_desc,
@@ -300,9 +330,15 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
-      FROM def_activity,def_corp
+        def_activity.isactive,
+        def_activity.activity_state,
+         def_activity.vip_gruop,
+           def_vip_group.VIP_GROUP_NAME,
+          def_activity.task_code
+      FROM def_activity,def_corp,def_vip_group,def_task
       WHERE  def_activity.corp_code=def_corp.corp_code
+       AND def_activity.corp_code=def_vip_group.corp_code
+        AND def_activity.corp_code=def_task.corp_code
       AND def_activity.activity_theme = #{activity_theme}
       AND def_activity.run_mode = #{run_mode}
       AND def_activity.start_time = #{created_date}
@@ -320,9 +356,8 @@
         def_activity.run_mode,
         def_activity.start_time,
         def_activity.end_time,
+
         def_activity.activity_vip,
-        def_activity.activity_operator,
-        def_activity.msg_info,
         def_activity.task_title,
         def_activity.task_desc,
         def_activity.wechat_title,
@@ -336,10 +371,15 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
-        FROM def_activity,def_corp
-        WHERE def_activity.corp_code = def_corp.corp_code
-
+        def_activity.isactive,
+        def_activity.activity_state,
+        def_activity.vip_gruop,
+        def_vip_group.VIP_GROUP_NAME,
+        def_activity.task_code
+        FROM def_activity,def_corp,def_vip_group,def_task
+        WHERE  def_activity.corp_code=def_corp.corp_code
+        AND def_activity.corp_code=def_vip_group.corp_code
+        AND def_activity.corp_code=def_task.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_activity.CORP_CODE = #{corp_code}
         </if>
@@ -350,6 +390,9 @@
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     def_corp.${entryKey} REGEXP ${entryValue}
                 </when>
+                <when test="entryValue!='' and entryKey=='VIP_GROUP_NAME'">
+                    def_vip_group.${entryKey} REGEXP ${entryValue}
+            </when>
 
                 <when test="entryValue!=''">
                     def_activity.${entryKey} REGEXP ${entryValue}
@@ -369,8 +412,8 @@
         def_activity.run_mode,
         def_activity.start_time,
         def_activity.end_time,
+
         def_activity.activity_vip,
-        def_activity.activity_operator,
         def_activity.msg_info,
         def_activity.task_title,
         def_activity.task_desc,
@@ -385,9 +428,12 @@
         def_activity.modified_date,
         def_activity.modifier,
         def_activity.creater,
-        def_activity.isactive
+        def_activity.isactive,
+        def_activity.activity_state,
+         def_activity.vip_gruop,
+        def_activity.task_code
         FROM def_activity,def_corp
-         WHERE def_activity.corp_code=def_corp.corp_code
+        WHERE def_activity.corp_code=def_corp.corp_code
         AND def_activity.id =#{id}
     </select>
 </mapper>

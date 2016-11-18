@@ -17,8 +17,6 @@ public class Activity {
     private String end_time;
     //活动目标会员
     private String activity_vip;
-    //活动执行人
-    private String activity_operator;
     //短信正文
     private String msg_info;
     //任务标题
@@ -49,8 +47,18 @@ public class Activity {
     private String creater;
     //是否可用
     private String isactive;
+    //活动执行状态
+
+    private String activity_state;
+    //任务描述
+    private String vip_gruop;
+    //任务描述
+    private String task_code;
+    private String VIP_GROUP_NAME;
     private String corp_name;
     private Corp corp;
+    private VipGroup vipGroup;
+
 
     public int getId() {
         return id;
@@ -108,13 +116,7 @@ public class Activity {
         this.activity_vip = activity_vip;
     }
 
-    public String getActivity_operator() {
-        return activity_operator;
-    }
 
-    public void setActivity_operator(String activity_operator) {
-        this.activity_operator = activity_operator;
-    }
 
     public String getMsg_info() {
         return msg_info;
@@ -234,5 +236,45 @@ public class Activity {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public String getActivity_state() {
+        return activity_state;
+    }
+
+    public void setActivity_state(String activity_state) {
+        this.activity_state = activity_state;
+    }
+
+    public String getVip_gruop() {
+        return vip_gruop;
+    }
+
+    public void setVip_gruop(String vip_gruop) {
+        this.vip_gruop = vip_gruop;
+    }
+
+    public String getTask_code() {
+        return task_code;
+    }
+
+    public void setTask_code(String task_code) {
+        this.task_code = task_code;
+    }
+
+    public String getVIP_GROUP_NAME() {
+        return VIP_GROUP_NAME;
+    }
+
+    public void setVIP_GROUP_NAME(String VIP_GROUP_NAME) {
+        this.VIP_GROUP_NAME = VIP_GROUP_NAME;
+    }
+
+    public VipGroup getVipGroup() {
+        return vipGroup;
+    }
+
+    public void setVipGroup(VipGroup vipGroup) {
+        this.vipGroup = vipGroup;
     }
 }

@@ -47,7 +47,7 @@
         .left{
             float: left;
             width: 39%;
-            background-color: white;
+            background-color: #fcfcfc;
             margin-right: 10px;
             height: 222px;
             padding: 20px 61px 23px 61px;
@@ -78,7 +78,7 @@
         .right{
             float: left;
             width: 58%;
-            background-color: white;
+            background-color: #fcfcfc;
             height: 222px;
             padding-top: 28px;
             padding-left: 40px;
@@ -93,7 +93,7 @@
             line-height: 29px;
             border: 1px solid #f5f5f5;
             border-radius: 5px;;
-            background-color: white;
+            background-color: #fcfcfc;
             color: #888888;
             text-align: center;
         }
@@ -123,7 +123,7 @@
             height: 30px;
             background-color: white;
             color: black;
-            margin-right: 24px;
+            margin-right: 28px;
         }
         /*人员区*/
         .people{
@@ -133,7 +133,18 @@
             height: 319px;
             overflow-y:auto;
             overflow-x:hidden;
-            padding: 20px;
+            padding: 0 20px 20px 20px;
+        }
+        .people::-webkit-scrollbar{
+            width: 9px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .people::-webkit-scrollbar-thumb{
+            width: 10px;
+            height: 200px;
+            border-radius: 10px;
+            background-color: #dfdfdf;
         }
         .people div{line-height: 50px; color: #434960;font-size: 14px;float: left;}
         /*标题*/
@@ -147,11 +158,12 @@
         .undone{line-height: 50px;clear:both;height: 8px;width: 270px;background-color: #c1c1c1;margin-right: 27px;border-radius: 50px;position: absolute;top:21px}
         .done{height: 8px;width: 50%;background-color: #7bc7cd;border-radius: 50px;}
         .people_title_plan span{position: absolute;left:296px}
+
     </style>
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="activity.html">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
+    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a onclick="closePage()">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
     <div class="editor_detail animated fadeInRight">
         <div class="corpadd_oper_btn">
             <ul>
@@ -180,9 +192,9 @@
     </div>
     <!--二级按钮-->
    <div class="btnSecond">
-       <span class="do">仅显示已完成</span>
-       <span class="do">仅显示未完成</span>
-       <span class="do" id="choose">筛选</span>
+       <span class="do" id="showDone">仅显示已完成</span>
+       <span class="do" id="showDoing">仅显示未完成</span>
+       <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4"></span>筛选</span>
    </div>
     <!--人员区-->
     <ul class="people">
@@ -197,88 +209,6 @@
         <li people_content>
             <ui id ='peopleContent'>
                 <!--js动态生成-->
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-                <li class="people_title">
-                    <div class="people_title_order">${order}</div>
-                    <div class="people_title_name">${name}</div>
-                    <div class="people_title_num">${num}</div>
-                    <div class="people_title_area">${area}</div>
-                    <div class="people_title_shop">${shop}</div>
-                    <div class="people_title_plan">
-                        <div class="undone"><div class="done"></div></div><span>${percent}</span></div>
-                </li>
-
             </ui>
         </li>
 
@@ -299,20 +229,6 @@
 <!-- error tips -->
 <!--匹配js文件-->
 <script type="text/javascript" src="../js/activity/activity_details.js"></script>
-<script>
-    window.onload = function(){
-        var beiginTime = '2016-9-12';
-        var endTime = '2016-12-12'
-        var activityState = '正在执行';
-        var activityTheme = '华东区域门店换季促销'
-        var activityState2 = '执行中';
-        $('#beiginTime').text(beiginTime);
-        $('#endTime').text(endTime);
-        $('#activityState').text(activityState);
-        $('#activityTheme').text(activityTheme);
-        $('#activityState2').text(activityState2);
-    }
 
-</script>
 </body>
 </html>
