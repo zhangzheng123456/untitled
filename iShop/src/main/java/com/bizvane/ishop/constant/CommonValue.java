@@ -36,5 +36,6 @@ public class CommonValue {
     public final static String table_vip_message_content = "vip_message_content";
     //用户操作日志
     public final static String table_log_user_operation = "log_user_operation";
-
+    //会员任务分配
+    public final static String table_vip_task_allocation = "vip_task_allocation";
 }
