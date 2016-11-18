@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.ActivityMapper">
+<mapper namespace="com.bizvane.ishop.dao.ActivityVipMapper">
 
-    <resultMap type="com.bizvane.ishop.entity.Activity" id="Activity">
+    <resultMap type="com.bizvane.ishop.entity.ActivityVip" id="Activity">
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_theme" property="activity_theme"
@@ -10,9 +10,8 @@
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_vip" property="activity_vip"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_operator" property="activity_operator"
+
+        <result column="target_vips" property="target_vips"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="msg_info" property="msg_info"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -35,51 +34,59 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="operators" property="operators" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
-        SELECT def_activity.id,
-        def_activity.activity_theme,
-        def_activity.run_mode,
-        def_activity.start_time,
-        def_activity.end_time,
-        def_activity.activity_vip,
-        def_activity.activity_operator,
-        def_activity.msg_info,
-        def_activity.task_title,
-        def_activity.task_desc,
-        def_activity.wechat_title,
-        def_activity.wechat_desc,
-        def_activity.activity_url,
-        def_activity.activity_content,
-        def_activity.content_url,
-        def_activity.corp_code,
+        SELECT def_activity_vip.id,
+        def_activity_vip.activity_theme,
+        def_activity_vip.run_mode,
+        def_activity_vip.start_time,
+        def_activity_vip.end_time,
+        def_activity_vip.target_vips,
+        def_activity_vip.msg_info,
+        def_activity_vip.task_title,
+        def_activity_vip.task_desc,
+        def_activity_vip.wechat_title,
+        def_activity_vip.wechat_desc,
+        def_activity_vip.activity_url,
+        def_activity_vip.activity_content,
+        def_activity_vip.content_url,
+        def_activity_vip.corp_code,
         def_corp.corp_name,
-        def_activity.created_date,
-        def_activity.modified_date,
-        def_activity.modifier,
-        def_activity.creater,
-        def_activity.isactive
-        FROM def_activity,def_corp
-        WHERE def_activity.corp_code=def_corp.corp_code
+        def_activity_vip.created_date,
+        def_activity_vip.modified_date,
+        def_activity_vip.modifier,
+        def_activity_vip.creater,
+        def_activity_vip.isactive,
+        def_activity_vip.activity_state,
+        def_activity_vip.operators,
+        def_activity_vip.task_code
+        FROM def_activity_vip,def_corp,def_task
+        WHERE def_activity_vip.corp_code=def_corp.corp_code
+        AND def_activity_vip.task_code=def_task.task_code
+        AND def_activity_vip.corp_code=def_task.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            AND def_activity.corp_code = #{corp_code}
+            AND def_activity_vip.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
             (
-            def_activity.activity_theme LIKE concat('%', #{search_value},'%')
-            OR def_activity.run_mode LIKE concat('%', #{search_value},'%')
-            OR def_activity.created_date LIKE concat('%', #{search_value},'%')
-            OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
-            OR def_activity.time LIKE concat('%', #{search_value},'%')
+            def_activity_vip.activity_theme LIKE concat('%', #{search_value},'%')
+            OR def_activity_vip.run_mode LIKE concat('%', #{search_value},'%')
+            OR def_activity_vip.start_time LIKE concat('%', #{search_value},'%')
+            OR def_activity_vip.end_time LIKE concat('%', #{search_value},'%')
+            OR def_activity_vip.activity_state LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY def_activity.id DESC
+        ORDER BY def_activity_vip.id DESC
     </select>
 
-    <insert id="insertActivity" parameterType="com.bizvane.ishop.entity.Activity">
-        INSERT INTO def_activity
+    <insert id="insertActivity" parameterType="com.bizvane.ishop.entity.ActivityVip">
+        INSERT INTO def_activity_vip
         <trim prefix="(" suffix=")" suffixOverrides=",">
 
             <if test="corp_code!=null">
@@ -97,11 +104,9 @@
             <if test="end_time!=null">
                 end_time,
             </if>
-            <if test="activity_vip!=null">
-                activity_vip,
-            </if>
-            <if test="activity_operator!=null">
-                activity_operator,
+
+            <if test="target_vips!=null">
+                target_vips,
             </if>
             <if test="msg_info!=null">
                 msg_info,
@@ -143,6 +148,15 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="activity_state!=null">
+                activity_state,
+            </if>
+            <if test="operators!=null">
+                operators,
+            </if>
+            <if test="task_code!=null">
+                task_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
@@ -161,11 +175,9 @@
             <if test="end_time!=null">
                 #{end_time},
             </if>
-            <if test="activity_vip!=null">
-                #{activity_vip},
-            </if>
-            <if test="activity_operator!=null">
-                #{activity_operator},
+
+            <if test="target_vips!=null">
+                #{target_vips},
             </if>
             <if test="msg_info!=null">
                 #{msg_info},
@@ -207,11 +219,20 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="activity_state!=null">
+                #{activity_state},
+            </if>
+            <if test="operators!=null">
+                #{operators},
+            </if>
+            <if test="task_code!=null">
+                #{task_code},
+            </if>
         </trim>
     </insert>
 
-    <update id="updateActivity" parameterType="com.bizvane.ishop.entity.Activity">
-        UPDATE def_activity
+    <update id="updateActivity" parameterType="com.bizvane.ishop.entity.ActivityVip">
+        UPDATE def_activity_vip
         <trim prefix="SET" suffixOverrides=",">
 
             <if test="corp_code!=null">
@@ -229,11 +250,9 @@
             <if test="end_time!=null">
                 end_time=#{end_time},
             </if>
-            <if test="activity_vip!=null">
-                activity_vip=#{activity_vip},
-            </if>
-            <if test="activity_operator!=null">
-                activity_operator=#{activity_operator},
+
+            <if test="target_vips!=null">
+                target_vips=#{target_vips},
             </if>
             <if test="msg_info!=null">
                 msg_info=#{msg_info},
@@ -275,73 +294,91 @@
             <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
+            <if test="activity_state!=null">
+                activity_state=#{activity_state},
+            </if>
+            <if test="operators!=null">
+                operators=#{operators},
+            </if>
+            <if test="task_code!=null">
+                task_code=#{task_code},
+            </if>
         </trim>
         WHERE id=#{id};
     </update>
-    <select id="getActivityForID" resultType="com.bizvane.ishop.entity.Activity">
-        SELECT def_activity.id,
-        def_activity.activity_theme,
-        def_activity.run_mode,
-        def_activity.start_time,
-        def_activity.end_time,
-        def_activity.activity_vip,
-        def_activity.activity_operator,
-        def_activity.msg_info,
-        def_activity.task_title,
-        def_activity.task_desc,
-        def_activity.wechat_title,
-        def_activity.wechat_desc,
-        def_activity.activity_url,
-        def_activity.activity_content,
-        def_activity.content_url,
-        def_activity.corp_code,
+    <select id="getActivityForID" resultType="com.bizvane.ishop.entity.ActivityVip">
+        SELECT def_activity_vip.id,
+        def_activity_vip.activity_theme,
+        def_activity_vip.run_mode,
+        def_activity_vip.start_time,
+        def_activity_vip.end_time,
+
+        def_activity_vip.target_vips,
+        def_activity_vip.msg_info,
+        def_activity_vip.task_title,
+        def_activity_vip.task_desc,
+        def_activity_vip.wechat_title,
+        def_activity_vip.wechat_desc,
+        def_activity_vip.activity_url,
+        def_activity_vip.activity_content,
+        def_activity_vip.content_url,
+        def_activity_vip.corp_code,
         def_corp.corp_name,
-        def_activity.created_date,
-        def_activity.modified_date,
-        def_activity.modifier,
-        def_activity.creater,
-        def_activity.isactive
-      FROM def_activity,def_corp
-      WHERE  def_activity.corp_code=def_corp.corp_code
-      AND def_activity.activity_theme = #{activity_theme}
-      AND def_activity.run_mode = #{run_mode}
-      AND def_activity.start_time = #{created_date}
-      AND def_activity.corp_code = #{corp_code}
+        def_activity_vip.created_date,
+        def_activity_vip.modified_date,
+        def_activity_vip.modifier,
+        def_activity_vip.creater,
+        def_activity_vip.isactive,
+        def_activity_vip.activity_state,
+         def_activity_vip.operators,
+
+          def_activity_vip.task_code
+      FROM def_activity_vip,def_corp,def_task
+      WHERE  def_activity_vip.corp_code=def_corp.corp_code
+       AND def_activity_vip.task_code=def_task.task_code
+        AND def_activity_vip.corp_code=def_task.corp_code
+      AND def_activity_vip.activity_theme = #{activity_theme}
+      AND def_activity_vip.run_mode = #{run_mode}
+      AND def_activity_vip.start_time = #{created_date}
+      AND def_activity_vip.corp_code = #{corp_code}
     </select>
 
     <delete id="delActivityById">
-        DELETE FROM def_activity
+        DELETE FROM def_activity_vip
         WHERE id=#{id};
     </delete>
 
-    <select id="selectActivityScreen" resultType="com.bizvane.ishop.entity.Activity">
-        SELECT def_activity.id,
-        def_activity.activity_theme,
-        def_activity.run_mode,
-        def_activity.start_time,
-        def_activity.end_time,
-        def_activity.activity_vip,
-        def_activity.activity_operator,
-        def_activity.msg_info,
-        def_activity.task_title,
-        def_activity.task_desc,
-        def_activity.wechat_title,
-        def_activity.wechat_desc,
-        def_activity.activity_url,
-        def_activity.activity_content,
-        def_activity.content_url,
-        def_activity.corp_code,
-        def_corp.corp_name,
-        def_activity.created_date,
-        def_activity.modified_date,
-        def_activity.modifier,
-        def_activity.creater,
-        def_activity.isactive
-        FROM def_activity,def_corp
-        WHERE def_activity.corp_code = def_corp.corp_code
+    <select id="selectActivityScreen" resultType="com.bizvane.ishop.entity.ActivityVip">
+        SELECT def_activity_vip.id,
+        def_activity_vip.activity_theme,
+        def_activity_vip.run_mode,
+        def_activity_vip.start_time,
+        def_activity_vip.end_time,
 
+        def_activity_vip.target_vips,
+        def_activity_vip.task_title,
+        def_activity_vip.task_desc,
+        def_activity_vip.wechat_title,
+        def_activity_vip.wechat_desc,
+        def_activity_vip.activity_url,
+        def_activity_vip.activity_content,
+        def_activity_vip.content_url,
+        def_activity_vip.corp_code,
+        def_corp.corp_name,
+        def_activity_vip.created_date,
+        def_activity_vip.modified_date,
+        def_activity_vip.modifier,
+        def_activity_vip.creater,
+        def_activity_vip.isactive,
+        def_activity_vip.activity_state,
+        def_activity_vip.operators,
+        def_activity_vip.task_code
+        FROM def_activity_vip,def_corp,def_task
+        WHERE  def_activity_vip.corp_code=def_corp.corp_code
+        AND def_activity_vip.task_code=def_task.task_code
+        AND def_activity_vip.corp_code=def_task.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND def_activity.CORP_CODE = #{corp_code}
+            AND def_activity_vip.CORP_CODE = #{corp_code}
         </if>
 
         AND
@@ -351,43 +388,47 @@
                     def_corp.${entryKey} REGEXP ${entryValue}
                 </when>
 
+
                 <when test="entryValue!=''">
-                    def_activity.${entryKey} REGEXP ${entryValue}
+                    def_activity_vip.${entryKey} REGEXP ${entryValue}
                 </when>
                 <otherwise>
                     1=1
                 </otherwise>
             </choose>
         </foreach>
-        GROUP BY def_activity.id
-        ORDER BY def_activity.id DESC
+        GROUP BY def_activity_vip.id
+        ORDER BY def_activity_vip.id DESC
     </select>
 
-    <select id="selActivityById" resultType="com.bizvane.ishop.entity.Activity">
-        SELECT def_activity.id,
-        def_activity.activity_theme,
-        def_activity.run_mode,
-        def_activity.start_time,
-        def_activity.end_time,
-        def_activity.activity_vip,
-        def_activity.activity_operator,
-        def_activity.msg_info,
-        def_activity.task_title,
-        def_activity.task_desc,
-        def_activity.wechat_title,
-        def_activity.wechat_desc,
-        def_activity.activity_url,
-        def_activity.activity_content,
-        def_activity.content_url,
-        def_activity.corp_code,
+    <select id="selActivityById" resultType="com.bizvane.ishop.entity.ActivityVip">
+        SELECT def_activity_vip.id,
+        def_activity_vip.activity_theme,
+        def_activity_vip.run_mode,
+        def_activity_vip.start_time,
+        def_activity_vip.end_time,
+
+        def_activity_vip.target_vips,
+        def_activity_vip.msg_info,
+        def_activity_vip.task_title,
+        def_activity_vip.task_desc,
+        def_activity_vip.wechat_title,
+        def_activity_vip.wechat_desc,
+        def_activity_vip.activity_url,
+        def_activity_vip.activity_content,
+        def_activity_vip.content_url,
+        def_activity_vip.corp_code,
         def_corp.corp_name,
-        def_activity.created_date,
-        def_activity.modified_date,
-        def_activity.modifier,
-        def_activity.creater,
-        def_activity.isactive
-        FROM def_activity,def_corp
-         WHERE def_activity.corp_code=def_corp.corp_code
-        AND def_activity.id =#{id}
+        def_activity_vip.created_date,
+        def_activity_vip.modified_date,
+        def_activity_vip.modifier,
+        def_activity_vip.creater,
+        def_activity_vip.isactive,
+        def_activity_vip.activity_state,
+         def_activity_vip.operators,
+        def_activity_vip.task_code
+        FROM def_activity_vip,def_corp
+        WHERE def_activity_vip.corp_code=def_corp.corp_code
+        AND def_activity_vip.id =#{id}
     </select>
 </mapper>

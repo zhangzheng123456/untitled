@@ -11,180 +11,75 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
-    <style>
-        body{
-            margin-top:81px;
-        }
-        .editor_1{border-top: 2px #e0e0e0 solid;margin-top: 15px;margin-right: 10px}
-        /*input样式修改*/
-        .conpany_msg input{
-            background-color: #dfdfdf;
-            color: #939393;
-        }
-        /*取消顶部边框*/
-        .editor_1{
-            border-top: none;
-        }
-        /*a标签样式*/
-       a, a:link,a:hover,a:visited,a:active{
-            color: #434960;
-        }
-       /*左侧input部分整体向右偏移*/
-       .conpany_msg{
-           margin-left: 55px;
-       }
-        /*活动描述input*/
-        #describeActivities{
-            width: 420px;
-            background-color: #dfdfdf;
-            color: #939393;
-            height: 260px;
-            float: left;
-            margin-bottom: 30px;
-            border-radius: 4px;
-            padding: 10px;;
-            outline: none;
-        }
-    </style>
+    <link href="../table/css/inner.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/activity_details.css"/>
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="#">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
-    <div class="editor_1 col-lg-7 ">
-        <div class="operation_conpany">
-        <ul>
-        <li onclick="reload()"><i class="icon-ishop_6-07"></i>刷新</li><li onclick="remove()"><i class="icon-ishop_6-02"></i>删除</li>
-        </ul>
-        </div>
-        <form class="conpany_msg">
-            <div>
-                <span><label >活动主题</label><input  type="text" id="activityTheme" verify="Code"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >活动状态</label><input type="text" id="activityState" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >活动时间</label><input style="width: 190px;margin-right: 15px" type="text" id="activityBeginTime" verify="Empty"/>~<input style="width: 190px;margin-left: 15px" type="text" id="activityEndTime" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业地址不能为空！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >执行方式</label><input type="text" id="activityWay" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系人不能为空！"></div></div></span>
-            </div>
-
-            <div>
-                <span><label >分配执行人</label><input type="text" id="activityExecutor" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label >目标会员</label><input type="text" id="theVip" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span style="float: left"><label>活动描述</label><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-                <textarea type="text" id="describeActivities" verify="Phone"/></textarea>
-            </div>
-        </form>
-    </div>
-    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a onclick="closePage()">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
+    <div class="editor_detail animated fadeInRight">
         <div class="corpadd_oper_btn">
             <ul>
-                <li style="letter-spacing: 1px;" onclick="notice()">通知执行人</li>
+                <li style="letter-spacing: 1px;" onclick="stop()" id="stop" >终止活动</li>
                 <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
+                <li style="letter-spacing: 1px;" onclick="notice()">通知相关人</li>
             </ul>
         </div>
-        <form class="msg_detail">
-            <div>
-                <span><label>创建时间</label><input type="text" id="setTime" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>创建人</label><input type="text" id="setPeople" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>修改时间</label><input type="text" id="changeTime" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>修改人</label><input type="text" id="changePeople" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
-            </div>
-            <div>
-                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
-            </div>
-        </form>
     </div>
+    <!--活动显示区-->
+    <div class="main">
+        <ul class="left">
+            <li class="left_top">
+                <div id="main" style="height:140px;height: 140px"></div>
+                <!--图标区域-->
+            </li>
+            <li class="left_bottom">
+                <span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>
+                <span class="the_target_content">目标会员数</span><span class="the_tover_content">已覆盖会员数</span>
+            </li>
+        </ul>
+        <ul class="right">
+            <li>活动状态 <span id="activityState"></span></li>  <!--活动状态颜色区分-->
+            <li>活动主题 <span id="activityTheme"></span></li>
+            <li>活动状态 <span id="activityState2"></span></li>
+            <li>活动时间 <span id="activityTime"><span id="beiginTime" style="margin-left: 0px"></span> ~ <span id="endTime"></span></span></li>
+            <li id="rightMore">更多</li>
+        </ul>
+    </div>
+    <!--二级按钮-->
+   <div class="btnSecond">
+       <span class="do" id="showDone">仅显示已完成</span>
+       <span class="do" id="showDoing">仅显示未完成</span>
+       <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4"></span>筛选</span>
+   </div>
+    <!--人员区-->
+    <ul class="people">
+        <li class="people_title">
+            <div class="people_title_order">序号</div>
+            <div class="people_title_name">员工姓名</div>
+            <div class="people_title_num">员工编号</div>
+            <div class="people_title_area">所属区域</div>
+            <div class="people_title_shop">所属店铺</div>
+            <div class="people_title_plan">完成进度</div>
+        </li>
+        <li class="people_content">
+            <ui id ='peopleContent'>
+                <!--js动态生成-->
+            </ui>
+        </li>
+
+    </ul>
 </div>
-<!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<!-- Custom and plugin javascript -->
-<script src="../js/loading.js"></script>
-<!-- <script src="../js/plugins/pace/pace.min.js"></script> -->
-<!-- Dialog -->
-<script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="../js/multiple_choice.js"></script>
-<!-- ajax -->
-<script type="text/javascript" src="../js/insidePostRequire.js"></script>
-<!-- error tips -->
-<script>
-    function removeselect(obj){//区域  删除
-        $(obj).parent().remove();
-    }
-    $("body").append("<script src='/js/corp/corp_operate.js?'"+new Date().getTime()+"'><\/script>");
-    //禁用所有input
-    $(":input").attr("disabled",true);
-    //刷新
-    function reload(){
-        window.location.reload();
-    }
-    //删除
-    function remove(){
-        confirm('确认删除？');
-    }
-    //页面加载请求数据
-    function pageVal(){
-        var activityTheme = '华东区域门店换季促销';
-        var activityState = '执行中';
-        var activityBeginTime = '2016-09-12';
-        var activityEndTime = '2016-12-12';
-        var activityWay = '电话通知';
-        var activityExecutorNum = '32';
-        var theVipNum = '325656';
-        var describeActivities = '测试';
-        var setTime = '2016-03-03 12:39:22';
-        var setPeople = '韦海鸥';
-        var changeTime = '2016-03-02 16:55:37';
-        var changePeople = '陈磊'
-        replaceInput(activityTheme,activityState,activityBeginTime,activityEndTime,activityWay,activityExecutorNum,theVipNum,describeActivities,setTime,setPeople,changeTime,changePeople)
-    }
-    //动态加载input内容
-    function replaceInput(activityTheme,activityState,activityBeginTime,activityEndTime,activityWay,activityExecutorNum,theVipNum,describeActivities,setTime,setPeople,changeTime,changePeople){
-        $('#activityTheme').val(activityTheme);
-        $('#activityState').val(activityState);
-        $('#activityBeginTime').val(activityBeginTime);
-        $('#activityEndTime').val(activityEndTime);
-        $('#activityWay').val(activityWay);
-        $('#activityExecutor').val('已选择'+ activityExecutorNum +'人');
-        $('#theVip').val('已选择'+ theVipNum +'人');
-        $('#describeActivities').val(describeActivities);
-        $('#setTime').val(setTime);
-        $('#setPeople').val(setPeople);
-        $('#changeTime').val(changeTime);
-        $('#changePeople').val(changePeople);
-    }
-    //通知执行人
-    function notice(){
-        window.location.href="activity_noyifyTheExecutor.html";    ///未获得具体地址
-    }
-    //关闭 == 返回哪里？
-    function closePage(){
-        alert('关了这页去哪？！');
-    }
-    //页面加载
-    window.onload = function(){
-        pageVal();
-    }
+<script src="../js/dist/echarts.js"></script>
+<!--匹配js文件-->
+<script type="text/javascript" src="../js/activity/activity_details.js"></script>
+<!--图表js-->
+<script type="text/javascript" src="../js/dist/chart/pie.js"></script>
+<script type="text/javascript" src="../js/dist/chart/bar.js"></script>
+<script type="text/javascript" src="../js/dist/echarts.js"></script>
 
 
-</script>
 </body>
 </html>

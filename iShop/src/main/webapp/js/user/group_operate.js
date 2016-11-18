@@ -52,7 +52,21 @@ var oc = new ObjectControl();
 	};
 	groupjs.bindbutton=function(){
 		$(".groupadd_oper_btn ul li:nth-of-type(1)").click(function(){
+		    var codeMark=$("#GROUP_ID").attr("data-mark");//编号是唯一的标志
+			var nameMark=$("#GROUP_NAME").attr("data-mark");//名称是否是否唯一的标志
 			if(groupjs.firstStep()){
+				if(codeMark=="N"){
+					var div=$("#GROUP_ID").next('.hint').children();
+					div.html("改编号已经存在！");
+					div.addClass("error_tips");
+					return;
+				}
+				if(nameMark=="N"){
+					var div=$("#GROUP_NAME").next('.hint').children();
+					div.html("改名称已经存在！");
+					div.addClass("error_tips");
+					return;
+				}
 				var GROUP_CODE=$("#GROUP_ID").val();
 				var GROUP_NAME=$("#GROUP_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -87,7 +101,21 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".groupedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var codeMark=$("#GROUP_ID").attr("data-mark");//编号是唯一的标志
+			var nameMark=$("#GROUP_NAME").attr("data-mark");//名称是否是否唯一的标志
 			if(groupjs.firstStep()){
+				if(codeMark=="N"){
+					var div=$("#GROUP_ID").next('.hint').children();
+					div.html("改编号已经存在！");
+					div.addClass("error_tips");
+					return;
+				};
+				if(nameMark=="N"){
+					var div=$("#GROUP_NAME").next('.hint').children();
+					div.html("改名称已经存在！");
+					div.addClass("error_tips");
+					return;
+				};
 				var ID=sessionStorage.getItem("id");
 				var GROUP_CODE=$("#GROUP_ID").val();
 				var GROUP_NAME=$("#GROUP_NAME").val();

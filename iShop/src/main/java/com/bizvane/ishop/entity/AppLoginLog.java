@@ -21,10 +21,17 @@ public class AppLoginLog {
     private String creater;
     //是否可用
     private String isactive;
+
+    private String store_code;
     private String store_name;
     private String position;
     private String phone;
     private String brand_name;
+
+    private String user_isactive;
+
+    private String user_can_login;
+
 
     public String getBrand_name() {
         return brand_name;
@@ -32,6 +39,14 @@ public class AppLoginLog {
 
     public void setBrand_name(String brand_name) {
         this.brand_name = brand_name;
+    }
+
+    public String getStore_code() {
+        return store_code;
+    }
+
+    public void setStore_code(String store_code) {
+        this.store_code = store_code;
     }
 
     public String getStore_name() {
@@ -152,5 +167,21 @@ public class AppLoginLog {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getUser_isactive() {
+        return user_isactive;
+    }
+
+    public void setUser_isactive(String user_isactive) {
+        this.user_isactive = user_isactive;
+    }
+
+    public String getUser_can_login() {
+        return user_can_login;
+    }
+
+    public void setUser_can_login(String user_can_login) {
+        this.user_can_login = user_can_login;
     }
 }

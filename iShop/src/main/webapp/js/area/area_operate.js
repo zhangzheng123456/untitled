@@ -266,7 +266,7 @@ jQuery(document).ready(function(){
 	               }else if(data.code=="-1"){
 	               		$("#AREA_ID").attr("data-mark","N");
 	               		div.addClass("error_tips");
-						div.html("该编号已经存在！");	
+						div.html("该编号已经存在！");
 	               }
 		    })
 		}

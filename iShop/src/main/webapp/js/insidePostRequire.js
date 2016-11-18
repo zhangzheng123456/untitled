@@ -10,6 +10,7 @@ ObjectControl.prototype = {
 			type: require_type,
 			dataType: 'json',
 			data:{param:JSON.stringify(_params)},
+			timeout: 30000,
 			success:function(data){
 				if(data){
 				    callback(data);
@@ -18,6 +19,7 @@ ObjectControl.prototype = {
 				}
 			},
 			error:function(data){
+				console.log(data);
 				var str=data.responseText.trim().substring(252,257);
 				if(str=="iShop"){
 					location.href=data;

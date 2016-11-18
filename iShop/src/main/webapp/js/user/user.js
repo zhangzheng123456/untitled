@@ -262,13 +262,13 @@ function superaddition(data,num){
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        +"</td><td>"
+                        +"</td><td><span style='max-width:120px' title="+data[i].user_code+">"
                         + data[i].user_code
-                        +"</td><td>"
+                        +"</span></td><td><span style='max-width:120px' title="+data[i].user_id+">"
                         + data[i].user_id
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +"<img src='"+avatar+"' alt=''>"
-                        + "</td><td><span title='"+data[i].user_name+"'>"
+                        + "</td><td><span style='max-width:120px' title='"+data[i].user_name+"'>"
                         + data[i].user_name
                         + "</span></td><td>"
                         + data[i].sex
@@ -564,7 +564,7 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2)").html();
+        var store_code=$(tr[i]).find("td:eq(2)").find("span").html();
         var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
         var param1={"user_code":store_code,"corp_code":corp_code};
         list.push(param1);

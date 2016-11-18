@@ -14,37 +14,42 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_name" property="store_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_isactive" property="user_isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_can_login" property="user_can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllAppLoginLog" resultMap="AppLoginLog">
       SELECT acc_app_login_log.id,
-      acc_app_login_log.platform,
-      acc_app_login_log.user_code,
-      acc_app_login_log.user_name,
+        acc_app_login_log.platform,
+        acc_app_login_log.user_code,
+        acc_app_login_log.user_name,
         acc_app_login_log.store_name,
         acc_app_login_log.position,
         acc_app_login_log.phone,
         acc_app_login_log.corp_code,
-      def_corp.corp_name,
-      acc_app_login_log.time,
-      acc_app_login_log.created_date
-      FROM acc_app_login_log,def_corp
+        def_corp.corp_name,
+        acc_app_login_log.time,
+        acc_app_login_log.created_date,
+        def_user.isactive user_isactive,
+        def_user.can_login user_can_login
+      FROM acc_app_login_log,def_corp,def_user
       WHERE  acc_app_login_log.corp_code=def_corp.corp_code
+        AND acc_app_login_log.corp_code=def_user.corp_code
+        AND acc_app_login_log.user_code=def_user.user_code
         <if test="corp_code!=null and corp_code!=''">
             AND  acc_app_login_log.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-        AND
-        (
+        AND (
             acc_app_login_log.platform LIKE concat('%', #{search_value},'%')
             OR acc_app_login_log.user_name LIKE concat('%', #{search_value},'%')
-            OR acc_app_login_log.created_date LIKE concat('%', #{search_value},'%')
             OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
-            OR acc_app_login_log.time LIKE concat('%', #{search_value},'%')
             )
         </if>
+        GROUP BY acc_app_login_log.id
         ORDER BY acc_app_login_log.id DESC
     </select>
 
@@ -59,9 +64,13 @@
         acc_app_login_log.corp_code,
         def_corp.corp_name,
         acc_app_login_log.time,
-        acc_app_login_log.created_date
-        FROM acc_app_login_log,def_corp
+        acc_app_login_log.created_date,
+        def_user.isactive user_isactive,
+        def_user.can_login user_can_login
+        FROM acc_app_login_log,def_corp,def_user
         WHERE  acc_app_login_log.corp_code=def_corp.corp_code
+        AND acc_app_login_log.corp_code=def_user.corp_code
+        AND acc_app_login_log.user_code=def_user.user_code
         <if test="corp_code!=null and corp_code!=''">
             AND  acc_app_login_log.corp_code = #{corp_code}
         </if>
@@ -88,6 +97,18 @@
         </if>
         <if test="type=='between' and count_end!=null and count_end!=''">
             AND acc_app_login_log.time  &lt;=${count_end}
+        </if>
+        <if test="user_can_login !=null and user_can_login !=''">
+            AND  (
+            def_user.isactive = #{user_can_login}
+            AND def_user.can_login = #{user_can_login}
+            )
+        </if>
+        <if test="user_no_login !=null and user_no_login !=''">
+            AND  (
+            def_user.isactive = 'N'
+            OR def_user.can_login = 'N'
+            )
         </if>
         <if test="map!=null">
             AND

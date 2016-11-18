@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
     <title>新增消息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
@@ -15,29 +16,32 @@
     <link rel="stylesheet" type="text/css" href="../css/bootstrap-select.css">
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <style>
-        body{
-            margin-top:81px;
+        body {
+            margin-top: 81px;
         }
     </style>
 </head>
 <body>
-    <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title"><span>消息管理</span><i class="icon-ishop_8-03"></i><span id="back_message">通知管理</span><i class="icon-ishop_8-03"></i><label>发送通知</label></div>
-            <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
-                <form style="margin-left:0px" class="conpany_msg">
-                    <div>
-                        <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">所属企业*</label></li>
-                            <li id="corp_select">
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>消息管理</span><i class="icon-ishop_8-03"></i><span id="back_message">通知管理</span><i
+            class="icon-ishop_8-03"></i><label>发送通知</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form style="margin-left:0px" class="conpany_msg">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li id="corp_select">
                                 <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    <select id="OWN_CORP" style="display:inline-flex">
                                     </select>
                                 </span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="drop_down" class="drop_down item_2">
-                        <span><label style="color:#c26555;">发送范围*</label><input class="input_select" type="text" data-type="" id="send_mode" placeholder="请选择发送范围" readonly/>
+                    </li>
+                </ul>
+            </div>
+            <div id="drop_down" class="drop_down item_2">
+                        <span><label style="color:#c26555;">发送范围*</label><input class="input_select" type="text"
+                                                                                data-type="" id="send_mode"
+                                                                                placeholder="请选择发送范围" readonly/>
                             <ul>
                                 <!-- <li>全体成员</li>
                                 <li>指定区域</li>
@@ -45,222 +49,230 @@
                                 <li>指定员工</li> -->
                             </ul>
                         </span>
-                    </div>
-                    <div class="check_per" id="sendee">
-                    <span><label style="color:#c26555;">接收对象*</label><input type="text" id="sendee_r" value="已选0个" data-code="" data-name="" data-phone=""
-                    readonly=""><span class="check_icon" id="add_sendee">选择对象<i class="icon-ishop_8-03"></i></span>
-                        </span>
-                    </div>
-                    <!-- <div id="drop_down" class="drop_down item_1">
-                        <span><label>消息类型</label><input class="input_select" type="text" id="MESSAGE_TYPE" placeholder="请选择消息类型" readonly/>
-                            <ul>
-                                <li>短信</li>
-                                <li>通知</li>
-                            </ul>
-                        </span>
-                    </div> -->
-                    <div>
-                        <span><label style="color:#c26555;">通知标题*</label><input type="text" id="message_title" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="内容标题不能为空！"></div></div></span>
-                    </div>
-                    <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:260px;color:#c26555">通知内容*</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="message_content"></textarea></span></span>
-                    </div>
-                </form>
             </div>
-            <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
-                <div class="oper_btn">
+            <div class="check_per" id="sendee">
+                    <span><label style="color:#c26555;">接收对象*</label><input type="text" id="sendee_r" value="已选0个"
+                                                                            data-code="" data-name="" data-phone=""
+                                                                            readonly=""><span class="check_icon"
+                                                                                              id="add_sendee">选择对象<i
+                            class="icon-ishop_8-03"></i></span>
+                        </span>
+            </div>
+            <!-- <div id="drop_down" class="drop_down item_1">
+                <span><label>消息类型</label><input class="input_select" type="text" id="MESSAGE_TYPE" placeholder="请选择消息类型" readonly/>
                     <ul>
-                        <li id="send"><i class="icon-ishop_6-04"></i>发送</li>
-                        <li id="send_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                        <li>短信</li>
+                        <li>通知</li>
                     </ul>
-                </div>
+                </span>
+            </div> -->
+            <div>
+                <span><label style="color:#c26555;">通知标题*</label><input type="text" id="message_title" verify="Empty"/><div
+                        style="padding-left:122px" class="hint"><div hintinfo="内容标题不能为空！"></div></div></span>
             </div>
+            <div>
+                <span style="display: inline-flex;width:100%"><label
+                        style="height:260px;color:#c26555">通知内容*</label><span class="tempalte_area"
+                                                                              style="height: 260px"><textarea
+                        style="height: 240px" id="message_content"></textarea></span></span>
+            </div>
+        </form>
     </div>
-    <!-- 拉取区域 -->
-    <div id="screen_area" class="screen_area">
-        <div class="screen_title">
-            <h4>筛选区域</h4>
-            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="oper_btn">
+            <ul>
+                <li id="send"><i class="icon-ishop_6-04"></i>发送</li>
+                <li id="send_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
         </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="area_search">
-                <span class="icon-ishop_3-05" id="area_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                    
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_area">确定</div>
     </div>
-     <!-- 拉取店铺 -->
-    <div id="screen_shop" class="screen_area" >
-        <div class="screen_title">
-            <h4>筛选店铺</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input class="area_num" type="text" value=""  readonly="true" id="area_num" data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
-                </div>
-            </div>
-            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="store_search">
-                <span class="icon-ishop_3-05" id="store_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                   
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_shop">确定</div>
+</div>
+<!-- 拉取区域 -->
+<div id="screen_area" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选区域</h4>
+        <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
     </div>
-    <!-- 拉取品牌 -->
-    <div id="screen_brand" class="screen_area" >
-        <div class="screen_title">
-            <h4>筛选品牌</h4>
-            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="area_search">
+            <span class="icon-ishop_3-05" id="area_search_f"></span>
         </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="brand_search">
-                <span class="icon-ishop_3-05" id="brand_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
-     <!-- 拉取导购  -->
-    <div id="screen_staff" class="screen_area">
-        <div class="screen_title">
-            <h4>筛选员工</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="staff_area_num" data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="staff_brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选店铺</label><input type="text" value="" id="staff_shop_num" data-storecode="">
-                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
-                </div>
-            </div>
-            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
         </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="staff_search">
-                <span class="icon-ishop_3-05" id="staff_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
         </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                   
-                </ul>
-            </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
         </div>
-        <div class="screen_que" id="screen_que_staff">确定</div>
     </div>
-    <!-- Mainly scripts -->
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-      <!-- Dialog -->
-    <script src="/js/loading.js?20161116"></script>
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
-    <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
-    <!-- 带搜索的下拉菜单 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <script type="text/javascript" src="../js/multiple_choice.js?20161116"></script>
-     <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js?20161116"></script>
-    <script type="text/javascript" src="../js/message/message_operate.js?20161116"></script>
+    <div class="screen_que" id="screen_que_area">确定</div>
+</div>
+<!-- 拉取店铺 -->
+<div id="screen_shop" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选店铺</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+            </div>
+        </div>
+        <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="store_search">
+            <span class="icon-ishop_3-05" id="store_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_shop">确定</div>
+</div>
+<!-- 拉取品牌 -->
+<div id="screen_brand" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选品牌</h4>
+        <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="brand_search">
+            <span class="icon-ishop_3-05" id="brand_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_brand">确定</div>
+</div>
+<!-- 拉取导购  -->
+<div id="screen_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选员工</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="staff_area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input class="brand_num" type="text" value="" id="staff_brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选店铺</label><input type="text" value="" id="staff_shop_num" data-storecode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+            </div>
+        </div>
+        <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="staff_search">
+            <span class="icon-ishop_3-05" id="staff_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_staff">确定</div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Dialog -->
+<script src="/js/loading.js?20161116"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
+<!-- 带搜索的下拉菜单 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<script type="text/javascript" src="../js/multiple_choice.js?20161116"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?20161116"></script>
+<script type="text/javascript" src="../js/message/message_operate.js?20161116"></script>
 </body>
 </html>
