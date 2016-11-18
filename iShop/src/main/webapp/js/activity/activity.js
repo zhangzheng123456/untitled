@@ -411,7 +411,7 @@ $("#d_search").click(function(){
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/activity/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -469,7 +469,7 @@ $("#delete").click(function(){
     var params={};
     params["id"]=ID;
     console.log(params);
-    oc.postRequire("post","/area/delete","0",params,function(data){
+    oc.postRequire("post","/activity/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
                 frame();
@@ -800,7 +800,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/screen","0",_param,function(data){
+    oc.postRequire("post","/activity/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
