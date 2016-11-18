@@ -30,7 +30,8 @@
     <div class="main">
         <ul class="left">
             <li class="left_top">
-                图标区域
+                <div id="main" style="height:140px;height: 140px"></div>
+                <!--图标区域-->
             </li>
             <li class="left_bottom">
                 <span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>
@@ -69,16 +70,16 @@
 
     </ul>
 </div>
-<!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<!-- Custom and plugin javascript -->
+<script src="../js/dist/echarts.js"></script>
 <!--匹配js文件-->
 <script type="text/javascript" src="../js/activity/activity_details.js"></script>
-<script>
-    $( document ).ready(function() {
-        $('#myStat').circliful();
-    });
-</script>
+<!--图表js-->
+<script type="text/javascript" src="../js/dist/chart/pie.js"></script>
+<script type="text/javascript" src="../js/dist/chart/bar.js"></script>
+<script type="text/javascript" src="../js/dist/echarts.js"></script>
+
+
 </body>
 </html>
