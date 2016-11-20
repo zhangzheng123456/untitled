@@ -5,7 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.ActivityVip;
+import com.bizvane.ishop.entity.TaskType;
+import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.ActivityVipService;
+import com.bizvane.ishop.service.TaskTypeService;
+import com.bizvane.ishop.service.VipGroupService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +32,8 @@ import java.util.List;
 public class ActivityVipController {
     @Autowired
     private ActivityVipService activityVipService;
+    @Autowired
+    private TaskTypeService taskTypeService;
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
     String id;
@@ -313,5 +320,61 @@ public class ActivityVipController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 活动任务类型
+     * @param request
+     * @return
+     */
 
-}
+    @RequestMapping(value = "/taskType", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String taskType(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String jsString = request.getParameter("param");
+        com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(jsString);
+        id = jsonObj.get("id").toString();
+        String message = jsonObj.get("message").toString();
+        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+        try {
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = "";
+            if (jsonObject.containsKey("run_mode"))
+                search_value = jsonObject.get("run_mode").toString();
+
+            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+            List<TaskType> taskTypes = taskTypeService.selectCorpTaskType(corp_code, search_value);
+            result.put("list", JSON.toJSONString(taskTypes));
+
+            if (taskTypes.size() == 0) {
+                Date now = new Date();
+                TaskType task_type=new TaskType();
+                task_type.setTask_type_code(corp_code+"1234");
+                task_type.setTask_type_name(search_value);
+                task_type.setCorp_code(corp_code);
+                task_type.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                task_type.setCreater(user_code);
+                task_type.setModified_date(Common.DATETIME_FORMAT.format(now));
+                task_type.setModifier(user_code);
+                task_type.setIsactive("Y");
+                String result1 = taskTypeService.insertTaskType(task_type.toString(), user_code);
+                System.out.print("--------------" + result1);
+                TaskType taskType1=taskTypeService.getTaskTypeForId(task_type.getCorp_code(),task_type.getTask_type_code());
+                return String.valueOf(taskType1.getTask_type_code());
+
+            } else {
+                System.out.print(taskTypes.toString() + "======");
+              
+            }
+        }catch(Exception ex){
+                ex.printStackTrace();
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("get tasktype error");
+            }
+            return dataBean.getJsonStr();
+        }
+    }
+
