@@ -136,7 +136,7 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String updTask(Task task, String[] user_codes,String user_code) {
+    public String updTask(Task task, String[] user_codes,String user_code) throws Exception {
          int count =0;
          int appCount=0;
         try{
@@ -224,7 +224,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<TaskAllocation> selTaskAllocation(String corp_code, String task_code) {
+    public List<TaskAllocation> selTaskAllocation(String corp_code, String task_code)throws Exception  {
         List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(corp_code, task_code);
             for (TaskAllocation allocation:taskAllocations) {
                 allocation.setIsactive(CheckUtils.CheckIsactive(allocation.getIsactive()));
@@ -257,12 +257,12 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<TaskType> selectAllTaskType(String corp_code) {
+    public List<TaskType> selectAllTaskType(String corp_code)throws Exception {
         return typeMapper.selectAllTaskType(corp_code,"","Y");
     }
 
     @Override
-    public List<Task> selectTaskByTaskType(String corp_code,String task_type_code) {
+    public List<Task> selectTaskByTaskType(String corp_code,String task_type_code) throws Exception {
         return taskMapper.selectTaskByTaskType(corp_code,task_type_code);
     }
 }

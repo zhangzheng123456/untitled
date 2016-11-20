@@ -501,5 +501,39 @@ public class TaskTypeController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 获取企业下任务类型
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getCorpTaskTypes", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpGroups(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = "";
+            if (jsonObject.containsKey("searchValue"))
+                search_value = jsonObject.get("searchValue").toString();
 
+            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+            List<TaskType> taskTypes =taskTypeService.selectCorpTaskType(corp_code,search_value);
+            result.put("list", JSON.toJSONString(taskTypes));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
 }

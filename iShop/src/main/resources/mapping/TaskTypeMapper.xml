@@ -201,5 +201,24 @@
         ORDER BY dt.id DESC
     </select>
 
-
+    <select id="selectTaskTypeSByCorp" resultType="com.bizvane.ishop.entity.TaskType">
+       SELECT dt.id,
+        dt.task_type_code,
+        dt.task_type_name,
+        dt.corp_code,
+        dt.modified_date,
+        dt.modifier,
+        dt.isactive
+        FROM def_task_type dt
+        WHERE
+        <if test="corp_code != null and corp_code !=''">
+            dt.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND dt.task_type_name LIKE concat('%',#{search_value},'%')
+        </if>
+        AND dt.isactive = 'Y'
+        GROUP BY dt.id
+        ORDER BY dt.id DESC
+    </select>
 </mapper>
