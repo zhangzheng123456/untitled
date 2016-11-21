@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -338,6 +339,8 @@ public class ActivityVipController {
         id = jsonObj.get("id").toString();
         String message = jsonObj.get("message").toString();
         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String task_type_code="";
         try {
             String corp_code = jsonObject.get("corp_code").toString();
             String search_value = "";
@@ -350,23 +353,21 @@ public class ActivityVipController {
 
             if (taskTypes.size() == 0) {
                 Date now = new Date();
-                TaskType task_type=new TaskType();
-                task_type.setTask_type_code(corp_code+"1234");
-                task_type.setTask_type_name(search_value);
-                task_type.setCorp_code(corp_code);
-                task_type.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                task_type.setCreater(user_code);
-                task_type.setModified_date(Common.DATETIME_FORMAT.format(now));
-                task_type.setModifier(user_code);
-                task_type.setIsactive("Y");
-                String result1 = taskTypeService.insertTaskType(task_type.toString(), user_code);
-                System.out.print("--------------" + result1);
-                TaskType taskType1=taskTypeService.getTaskTypeForId(task_type.getCorp_code(),task_type.getTask_type_code());
-                return String.valueOf(taskType1.getTask_type_code());
-
+                com.alibaba.fastjson.JSONObject message1=new com.alibaba.fastjson.JSONObject();
+                message1.put("task_type_code",corp_code+sdf.format(new Date()));
+                message1.put("task_type_name",search_value);
+                message1.put("corp_code","C10000");
+                message1.put("created_date",Common.DATETIME_FORMAT.format(now));
+                message1.put("modified_date",Common.DATETIME_FORMAT.format(now));
+                message1.put("creater","10000");
+                message1.put("modifier","10000");
+                message1.put("isactive","Y");
+                String result1 = taskTypeService.insertTaskType(message1.toString(), user_code);
+                 task_type_code= taskTypeService.selectById(result1).getTask_type_code();
+                return task_type_code;
             } else {
-                System.out.print(taskTypes.toString() + "======");
-
+                task_type_code=taskTypes.get(0).getTask_type_code();
+                return task_type_code;
             }
         }catch(Exception ex){
                 ex.printStackTrace();
@@ -374,7 +375,7 @@ public class ActivityVipController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("get tasktype error");
             }
-            return dataBean.getJsonStr();
+        return task_type_code;
         }
     }
 
