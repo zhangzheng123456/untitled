@@ -25,5 +25,5 @@ public interface ActivityVipMapper {
 
     ActivityVip getActivityForID(@Param("corp_code")String corp_code, @Param("activity_theme")String activity_theme, @Param("run_mode")String run_mode, @Param("created_date")String created_date)throws SQLException;
 
-
+    ActivityVip selActivityByCode(@Param("corp_code")String corp_code, @Param("activity_code")String activity_code)throws SQLException;
 }
