@@ -6,12 +6,16 @@ import com.bizvane.ishop.dao.ActivityVipMapper;
 import com.bizvane.ishop.entity.ActivityVip;
 import com.bizvane.ishop.service.ActivityVipService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +62,9 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     public int delete(int id) throws Exception {
         return activityVipMapper.delActivityById(id);
     }
-//,HttpServletRequest request
+//
     @Override
-    public String insert(String message, String user_id) throws Exception {
+    public String insert(String message, String user_id,HttpServletRequest request) throws Exception {
         String result = null;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString().trim();
@@ -81,16 +85,17 @@ public class ActivityVipServiceImpl implements ActivityVipService {
 
         //活动内容
         String activity_url = jsonObject.get("activity_url").toString().trim();
-        String activity_content = jsonObject.get("activity_content").toString().trim();
+       // String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
         String activity_state = "未执行";
 
         ActivityVip activityVip = WebUtils.JSON2Bean(jsonObject, ActivityVip.class);
-       /* String activity_content = activityVip.getActivity_content();
+        String activity_content = activityVip.getActivity_content();
         List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
         OssUtils ossUtils=new OssUtils();
         String bucketName="products-image";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+       String  path="";
         path = request.getSession().getServletContext().getRealPath("/");
         for (int k = 0; k < htmlImageSrcList.size(); k++) {
             String time="ActivityVip/Vip/"+corp_code+"/"+activityVip.getId()+"_"+sdf.format(new Date())+".jpg";
@@ -100,7 +105,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
             activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
-        }*/
+        }
         Date now = new Date();
         activityVip.setCorp_code(corp_code);
         activityVip.setActivity_theme(activity_theme);
@@ -127,7 +132,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         activityVip.setCreated_date(Common.DATETIME_FORMAT.format(now));
         activityVip.setIsactive(jsonObject.get("isactive").toString().trim());
         activityVip.setActivity_state(activity_state);
-//        activityVip.setTask_code(task_code);
+        activityVip.setTask_code("");
         int info=0;
          info= activityVipMapper.insertActivity(activityVip);
         ActivityVip activityVip1 = this.getActivityForId(corp_code, activityVip.getActivity_theme(), activityVip.getRun_mode(), activityVip.getCreated_date());
@@ -142,7 +147,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     }
 
     @Override
-    public String update(String message, String user_id) throws Exception {
+    public String update(String message, String user_id,HttpServletRequest request) throws Exception {
        String result = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         int activity_id = Integer.parseInt(jsonObject.get("id").toString().trim());
@@ -159,13 +164,13 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         String wechat_title = jsonObject.get("wechat_title").toString().trim();
         String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-      String activity_content = jsonObject.get("activity_content").toString().trim();
+     // String activity_content = jsonObject.get("activity_content").toString().trim();
         String content_url = jsonObject.get("content_url").toString().trim();
 
         String task_code = jsonObject.get("task_code").toString().trim();
         String path="";
         ActivityVip activityVip = WebUtils.JSON2Bean(jsonObject, ActivityVip.class);
-      /*  String activity_content = activityVip.getActivity_content();
+        String activity_content = activityVip.getActivity_content();
         List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
         OssUtils ossUtils=new OssUtils();
         String bucketName="products-image";
@@ -180,7 +185,6 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
         }
-*/
         Date now = new Date();
         activityVip.setId(activity_id);
         activityVip.setCorp_code(corp_code);
@@ -214,6 +218,11 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             result="编辑失败";
             return result;
         }
+    }
+
+    @Override
+    public int updateActivityVip(ActivityVip activityVip) throws Exception {
+        return activityVipMapper.updateActivity(activityVip);
     }
 
     @Override

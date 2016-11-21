@@ -450,11 +450,11 @@
 
     <select id="selActivityByCode" resultType="com.bizvane.ishop.entity.ActivityVip">
         SELECT def_activity_vip.id,
+        def_activity_vip.activity_vip_code,
         def_activity_vip.activity_theme,
         def_activity_vip.run_mode,
         def_activity_vip.start_time,
         def_activity_vip.end_time,
-
         def_activity_vip.target_vips,
         def_activity_vip.msg_info,
         def_activity_vip.task_title,
@@ -476,7 +476,7 @@
         def_activity_vip.task_code
         FROM def_activity_vip,def_corp
         WHERE def_activity_vip.corp_code=def_corp.corp_code
-        AND def_activity_vip.activity_code = #{activity_code}
+        AND def_activity_vip.activity_vip_code = #{activity_vip_code}
         AND def_activity_vip.corp_code = #{corp_code}
     </select>
 </mapper>

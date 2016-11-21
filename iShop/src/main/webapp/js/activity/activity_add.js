@@ -115,21 +115,7 @@ var oc = new ObjectControl();
             }
         });
         $("#edit_save").click(function () {
-            var codeMark = $("#AREA_ID").attr("data-mark");//区域名称是否唯一的标志
-            var nameMark = $("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
             if (areajs.firstStep()) {
-                if (nameMark == "N") {
-                    var div = $("#AREA_NAME").next('.hint').children();
-                    div.html("该名称已经存在！");
-                    div.addClass("error_tips");
-                    return;
-                }
-                if (codeMark == "N") {
-                    var div = $("#AREA_ID").next('.hint').children();
-                    div.html("该编号已经存在！");
-                    div.addClass("error_tips");
-                    return;
-                }
                 var ID = sessionStorage.getItem("id");
                 var AREA_ID = $("#AREA_ID").val();
                 var AREA_NAME = $("#AREA_NAME").val();
@@ -386,7 +372,7 @@ $("#staff_search").keydown(function(){
         getstafflist(staff_num);
     }
 })
-//店铺放大镜搜索
+//放大镜搜索
 $("#store_search_f").click(function(){
     shop_num=1;
     isscroll=false;
@@ -394,7 +380,6 @@ $("#store_search_f").click(function(){
     $("#screen_shop .screen_content_l ul").empty();
     getstorelist(shop_num);
 })
-//区域放大镜收索
 $("#area_search_f").click(function(){
     area_num=1;
     isscroll=false;
@@ -420,11 +405,11 @@ $("#screen_close_area").click(function(){
     whir.loading.remove();//移除遮罩层
 });
 //员工关闭
-$("#screen_close_staff").click(function(){
+$("#screen_wrapper_close").click(function(){
     $("#screen_staff").hide();
+    $("#allocating_task").show();
     whir.loading.remove();//移除遮罩层
-})
-//店铺关闭
+})//店铺关闭
 $("#screen_close_shop").click(function(){
     $("#screen_shop").hide();
     $("#screen_staff").show();
@@ -888,34 +873,8 @@ $("#screen_que_brand").click(function(){
         getstorelist(shop_num);
     }
 })
-//店铺里面的区域点击
-$("#shop_area").click(function(){
-    isscroll=false;
-    area_num=1;
-    var arr=whir.loading.getPageSize();
-    var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
-    $("#screen_area .screen_content_l").unbind("scroll");
-    $("#screen_area .screen_content_l ul").empty();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_area").show();
-    $("#screen_shop").hide();
-    getarealist(area_num);
-})
-//店铺里面的品牌点击
-$("#shop_brand").click(function(){
-    var arr=whir.loading.getPageSize();
-    var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
-    $("#screen_brand .screen_content_l ul").empty();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_brand").show();
-    $("#screen_shop").hide();
-    getbrandlist();
-})
-//员工里面的区域点击
-$("#staff_area").click(function(){
-    console.log(123);
+//筛选区域
+$("#find_area").click(function(){
     isscroll=false;
     area_num=1;
     var arr=whir.loading.getPageSize();
@@ -928,8 +887,19 @@ $("#staff_area").click(function(){
     $("#screen_staff").hide();
     getarealist(area_num);
 })
-//员工里面的店铺点击
-$("#staff_shop").click(function(){
+//筛选品牌
+$("#find_brand").click(function(){
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    $("#screen_brand .screen_content_l ul").empty();
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").show();
+    $("#screen_staff").hide();
+    getbrandlist();
+})
+//筛选店铺
+$("#find_shop").click(function(){
     isscroll=false;
     shop_num=1;
     var arr=whir.loading.getPageSize();
@@ -941,17 +911,6 @@ $("#staff_shop").click(function(){
     $("#screen_shop").show();
     $("#screen_staff").hide();
     getstorelist(shop_num);
-})
-//员工里面的品牌点击
-$("#staff_brand").click(function(){
-    var arr=whir.loading.getPageSize();
-    var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
-    $("#screen_brand .screen_content_l ul").empty();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
-    $("#screen_brand").show();
-    $("#screen_staff").hide();
-    getbrandlist();
 })
 //移到右边
 function removeRight(a,b){
