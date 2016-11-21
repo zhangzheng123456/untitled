@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.ActivityVip;
@@ -12,7 +13,6 @@ import com.bizvane.ishop.service.TaskTypeService;
 import com.bizvane.ishop.service.VipGroupService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -158,7 +158,7 @@ public class ActivityVipController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = activityVipService.update(message, user_id);
@@ -263,10 +263,10 @@ public class ActivityVipController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String area_id = jsonObject.get("id").toString();
             String[] ids = area_id.split(",");
             String msg = "";
@@ -377,5 +377,55 @@ public class ActivityVipController {
             }
         return task_type_code;
         }
+
+    /**
+     * 活动，点击执行
+     * @param request
+     * @return
+     */
+
+    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String executeActivity(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String jsString = request.getParameter("param");
+        JSONObject jsonObj = JSONObject.parseObject(jsString);
+        id = jsonObj.get("id").toString();
+        String message = jsonObj.get("message").toString();
+        JSONObject jsonObject = JSONObject.parseObject(message);
+        try {
+            String activity_code = jsonObject.get("activity_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            ActivityVip activityVip = activityVipService.selActivityByCode(corp_code, activity_code);
+            String run_mode = activityVip.getRun_mode();
+            if (run_mode.contains("任务")){
+                List<TaskType> taskTypes = taskTypeService.nameExist(corp_code, run_mode);
+                String task_type_code = "";
+                if (taskTypes.size() > 0){
+                    task_type_code = taskTypes.get(0).getTask_type_code();
+                }else {
+                    JSONObject message1=new JSONObject();
+                    task_type_code = "T"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+                    message1.put("task_type_code",task_type_code);
+                    message1.put("task_type_name",run_mode);
+                    message1.put("corp_code",corp_code);
+                    message1.put("isactive","Y");
+                    taskTypeService.insertTaskType(message1.toString(), user_code);
+                }
+
+
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("get tasktype error");
+        }
+        return dataBean.getJsonStr();
+    }
+
     }
 
