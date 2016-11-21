@@ -76,7 +76,7 @@
     </select>
 
     <select id="selectCorpVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
-        SELECT 
+        SELECT
         dvg.id,
         dvg.vip_group_code,
         dvg.vip_group_name,
@@ -88,7 +88,13 @@
         dvg.modifier,
         dvg.isactive
         FROM def_vip_group dvg
-        WHERE dvg.corp_code = #{corp_code}
+        WHERE
+        <if test="corp_code != null and corp_code !=''">
+            dvg.corp_code = #{corp_code}
+
+        <if test="user_code != null and user_code !=''">
+            AND dvg.user_code = #{user_code}
+        </if>
         <if test="search_value != null and search_value !=''">
             AND dvg.vip_group_name LIKE concat('%',#{search_value},'%')
         </if>

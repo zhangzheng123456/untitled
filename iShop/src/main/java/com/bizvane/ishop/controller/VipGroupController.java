@@ -817,13 +817,24 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             String search_value = "";
             if (jsonObject.containsKey("searchValue"))
                 search_value = jsonObject.get("searchValue").toString();
 
             JSONObject result = new JSONObject();
-            List<VipGroup> vipGroups = vipGroupService.selectCorpVipGroups(corp_code,search_value);
+            List<VipGroup> vipGroups ;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                vipGroups = vipGroupService.selectCorpVipGroups("","",search_value);
+            } else if (role_code.equals(Common.ROLE_GM)){
+                vipGroups = vipGroupService.selectCorpVipGroups(corp_code,"",search_value);
+            }else {
+                vipGroups = vipGroupService.selectCorpVipGroups(corp_code,user_code,search_value);
+            }
             result.put("list", JSON.toJSONString(vipGroups));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
