@@ -110,6 +110,16 @@ a, a:link,a:hover,a:visited,a:active{
     color: black;
     margin-right: 28px;
 }
+/*筛选区域*/
+#screening {
+    width: 98%;
+    clear: both;
+    display: none;
+}
+#sxk{
+    display: block;
+}
+
 /*人员区*/
 .people{
     clear: both;
@@ -143,3 +153,5 @@ a, a:link,a:hover,a:visited,a:active{
 .undone{position: absolute;left:20px;line-height: 50px;clear:both;height: 8px;width: 270px;background-color: #c1c1c1;margin-right: 27px;border-radius: 50px;position: absolute;top:21px}
 .done{height: 8px;width: 50%;background-color: #7bc7cd;border-radius: 50px;}
 .people_title_plan span{position: absolute;left:316px}
+#peopleError{margin: 120px auto;display: none;}
+#peopleError div{width: 100%;text-align: center;}

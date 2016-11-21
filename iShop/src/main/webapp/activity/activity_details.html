@@ -31,7 +31,7 @@
         <ul class="left">
             <li class="left_top">
                 <div id="main" style="height:140px;height: 140px"></div>
-                <!--图标区域-->
+                <!--图表区域-->
             </li>
             <li class="left_bottom">
                 <span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>
@@ -52,6 +52,40 @@
        <span class="do" id="showDoing">仅显示未完成</span>
        <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4"></span>筛选</span>
    </div>
+    <div id="screening">
+        <div class="sxk" id="sxk">
+            <div class="sbtn">
+                <div class="empty" id="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <!--<span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>-->
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                <li>
+                    <label>员工姓名</label><input type="text" id="p1">
+                </li>
+                <li>
+                    <label>员工编号</label><input type="text" id="p2">
+                </li>
+                <li>
+                    <label>所属区域</label><input type="text" id="p3">
+                </li>
+                <li>
+                    <label>所属店铺</label><input type="text" id="p4">
+                </li>
+            </div>
+        </div>
+    </div>
     <!--人员区-->
     <ul class="people">
         <li class="people_title">
@@ -65,11 +99,13 @@
         <li class="people_content">
             <ui id ='peopleContent'>
                 <!--js动态生成-->
+                <li id="peopleError"> <div>没有匹配信息，请核对关键字重新搜索</div> </li>
             </ui>
         </li>
 
     </ul>
 </div>
+
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
 <script src="../js/dist/echarts.js"></script>
