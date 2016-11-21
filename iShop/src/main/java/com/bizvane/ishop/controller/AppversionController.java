@@ -220,10 +220,35 @@ public class AppversionController {
             String[] ids = app_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
+                Appversion appversion = appversionService.selAppversionById(Integer.valueOf(ids[i]));
                 appversionService.delAppversionById(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "系统管理_版本控制";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = appversion.getCorp_code();
+                String t_code = appversion.getPlatform();
+                String t_name = appversion.getVersion_id();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -301,6 +326,30 @@ public class AppversionController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
+
+            //----------------行为日志------------------------------------------
+            /**
+             * mongodb插入用户操作记录
+             * @param operation_corp_code 操作者corp_code
+             * @param operation_user_code 操作者user_code
+             * @param function 功能
+             * @param action 动作
+             * @param corp_code 被操作corp_code
+             * @param code 被操作code
+             * @param name 被操作name
+             * @throws Exception
+             */
+            com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+            String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+            String operation_user_code = request.getSession().getAttribute("user_code").toString();
+            String function = "系统管理_版本控制";
+            String action = Common.ACTION_UPD;
+            String t_corp_code = action_json.get("corp_code").toString();
+            String t_code = action_json.get("platform").toString();
+            String t_name = action_json.get("version_id").toString();
+            String remark = "";
+            baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+            //-------------------行为日志结束-----------------------------------------------------------------------------------
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

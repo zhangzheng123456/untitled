@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.ErrorLog;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.ErrorLogService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -27,6 +28,8 @@ public class ErrorLogController {
     String id;
     @Autowired
     ErrorLogService errorLogService;
+    @Autowired
+    private BaseService baseService;
     private static final Logger logger = Logger.getLogger(ErrorLogController.class);
 
     /**
@@ -79,6 +82,29 @@ public class ErrorLogController {
                 ErrorLog errorLog=errorLogService.getLogById(Integer.valueOf(ids[i]));
                 if (errorLog != null) {
                     errorLogService.delete(Integer.valueOf(ids[i]));
+
+                    //----------------行为日志------------------------------------------
+                    /**
+                     * mongodb插入用户操作记录
+                     * @param operation_corp_code 操作者corp_code
+                     * @param operation_user_code 操作者user_code
+                     * @param function 功能
+                     * @param action 动作
+                     * @param corp_code 被操作corp_code
+                     * @param code 被操作code
+                     * @param name 被操作name
+                     * @throws Exception
+                     */
+                    String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                    String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                    String function = "系统管理_错误日志";
+                    String action = Common.ACTION_DEL;
+                    String t_corp_code = errorLog.getCorp_code();
+                    String t_code = errorLog.getApp_platform();
+                    String t_name = errorLog.getVersion();
+                    String remark = "";
+                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                    //-------------------行为日志结束-----------------------------------------------------------------------------------
                 }else{
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
