@@ -366,7 +366,7 @@ public class ActivityVipController {
 
             } else {
                 System.out.print(taskTypes.toString() + "======");
-              
+
             }
         }catch(Exception ex){
                 ex.printStackTrace();

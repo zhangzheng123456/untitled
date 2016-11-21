@@ -67,7 +67,7 @@ var oc = new ObjectControl();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
                 var target_vip = $("#target_vip").val();
-                // var executor = $("#executor").val();
+                var executor = $("#executor").val();
                 var send_title = $("#send_title").val();
                 var summary = $("#summary").val();
                 var task_title = $("#task_title").val();
@@ -95,9 +95,9 @@ var oc = new ObjectControl();
                     "run_mode": execution_input,
                     "start_time": start_time,
                     "end_time": end_time,
-                    "activity_vip": target_vip,
+                    "target_vips": target_vip,
+                    "operators":executor,
                     "activity_state":"",
-                    "vip_gruop":"",
                     "task_code":"",
                     "task_title": task_title,
                     "task_desc": task_dec,
