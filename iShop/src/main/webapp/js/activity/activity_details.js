@@ -17,25 +17,117 @@ function closePage(){
 //仅显示已完成
 $('#showDone').click(function(){
     listShow();
+    var nowLength = $('.people_title').length;
     $(".percent_percent").each(function(){
         var nowVal=($(this).text().replace('%',''));
         if(nowVal<100){
             $(this).parents('.people_title ').hide();
+            nowLength -=1;
             console.log('隐藏了。。。！');
         }
     })
+    if(nowLength <=1) {
+
+        $('#peopleError').show();
+        $('#peopleError div').text('未发现已完成');
+    }
 });
 //显示未完成
 $('#showDoing').click(function(){
     listShow();
+    var nowLength = $('.people_title').length;
     $(".percent_percent").each(function(){
         var nowVal=($(this).text().replace('%',''));
         if(nowVal==100||nowVal==0){
             $(this).parents('.people_title ').hide();
+            nowLength -=1;
             console.log('隐藏了。。。！');
         }
     })
+    if(nowLength <=1) {
+        $('#peopleError div').text('未发未完成')
+        $('#peopleError').show();
+    }
 })
+//筛选按钮
+$('#choose').click(function(){
+    $('#screening').slideToggle(600);
+    listShow();
+});
+//清空筛选
+$('#empty').click(function(){
+    $('.inputs input').val('');
+    listShow();
+});
+//收起
+$('#pack_up').click(function(){
+    $('#screening').slideToggle(600);
+    listShow();
+})
+//查找
+$('#find').click(function(){
+    var nowLength = $('.people_title').length;
+    var name = $('#p1').val();
+    var num = $('#p2').val();
+    var area = $('#p3').val();
+    var shop = $('#p4').val();
+    search(name,num,area,shop,nowLength);
+
+});
+function search(name,num,area,shop,nowLength){
+    if(name!=''){
+        $('.people_title_name').each(function(){
+            var nameText = $(this).text();
+            console.log(nameText);
+            if(nameText.indexOf(name.trim())<0 && nameText!= '员工姓名'){
+                $(this).parent('.people_title ').hide();
+                nowLength -=1;
+                console.log('员工姓名已隐藏'+nowLength);
+            }
+        })
+    }
+
+    if(num!=''){
+        $('.people_title_num').each(function(){
+            var numText = $(this).text();
+            console.log(numText);
+            if(numText.indexOf(num.trim())<0 && numText!= '员工编号'){
+                $(this).parent('.people_title ').hide();
+                nowLength -=1;
+                console.log('员工编号已隐藏'+nowLength);
+            }
+        })
+    }
+    if(area!=''){
+        console.log(area);
+        $('.people_title_area').each(function(){
+            var areaText = $(this).text();
+            console.log(areaText);
+            if(areaText.indexOf(area.trim())<0 && areaText!= '所属区域'){
+                $(this).parent('.people_title ').hide();
+                nowLength -=1;
+                console.log('所属区域已隐藏'+nowLength);
+            }
+        })
+    }
+    if(shop!=''){
+        console.log(shop);
+        $('.people_title_shop').each(function(){
+            var shopText = $(this).text();
+            console.log(shopText);
+            if(shopText.indexOf(shop.trim())<0 && shopText!= '所属店铺'){
+                $(this).parent('.people_title ').hide();
+                nowLength -=1;
+                console.log('所属区域已隐藏'+nowLength);
+            }
+        })
+    }
+    if(nowLength <= 1) {
+        $('#peopleError').show();
+        $('#peopleError div').text('没有匹配信息，请核对关键字重新搜索');
+    }
+
+}
 //加载统计模块
 function check(){
     var TheTarget = '325656';
@@ -94,6 +186,10 @@ function listShow(){
         }else if(percent==0){
             $('.percent_percent').css('color','red');
         }
+        var nowLength = $('.people_title').length;
+        if(nowLength >1) {
+            $('#peopleError').hide();
+        }
     }
 }
 
@@ -101,6 +197,10 @@ function listShow(){
 function table(TheTarget,TheCover) {
     $('#TheTarget').text(TheTarget);
     $('#TheCover').text(TheCover);
+    var NoCover = ((TheTarget - TheCover)/TheTarget*100).toFixed(2);
+    console.log('未覆盖'+NoCover+'%');
+    var TheCover = (TheCover/TheTarget*100).toFixed(2);
+    console.log('已覆盖'+TheCover+'%');
     require.config({
         paths: {
             echarts: '../js/dist'
@@ -116,44 +216,66 @@ function table(TheTarget,TheCover) {
             'echarts/chart/line'
         ],
         function (ec) {
-            //var TheTarget = cache.TheTarget;
-            console.log(TheTarget);
-            //var TheCover = cache.TheCover;
-            console.log(TheCover);
-            var msg = [
-                {value: TheTarget, name: "目标会员数"},
-                {value: TheCover, name: '已覆盖会员数'},
-            ];
             var myChart = ec.init(document.getElementById('main'));
-            var option = {
-                color: ['#7bc7cd', '#eaeaea'],
-                series: [
-                    {
-                        name: '消费分类',
-                        center: ['50%', '50%'],
-                        type: 'pie',
-                        radius: ['80%', '100%'],
-                        itemStyle: {
-                            normal: {
-                                label: {
-                                    show: false
-                                },
-                                labelLine: {
-                                    show: false
-                                }
-                            },
-                            emphasis: {
-                                label: {
-                                    show: false,
-                                    position: 'center',
-                                    textStyle: {
-                                        fontSize: '20',
-                                        fontWeight: 'bold'
-                                    }
-                                }
-                            }
+            var labelTop = {
+                normal : {
+                    color:'#7bc7cd',
+                    label : {
+                        show : false,
+                        position : 'center',
+                        formatter : '{b}',
+                        textStyle: {
+                            baseline : 'bottom'
+                        }
+                    },
+                    labelLine : {
+                        show : false
+                    }
+                }
+            };
+            var labelFromatter = {
+                normal : {
+                    label : {
+                        formatter : function (params){
+                            return 100 - params.value + '%'
                         },
-                        data: msg
+                        textStyle: {
+                            color:'#7bc7cd',
+                            fontSize: 25
+                        }
+                    }
+                },
+            }
+            var labelBottom = {
+                normal : {
+                    color: '#eaeaea',
+                    label : {
+                        show : true,
+                        position : 'center'
+                    },
+                    labelLine : {
+                        show : false
+                    }
+                },
+                emphasis: {
+                    color: '#eaeaea'
+                }
+            };
+            var radius = [55, 70];
+                option = {
+                series : [
+                    {
+                        type : 'pie',
+                        center : ['50%', '50%'],
+                        radius : radius,
+                        x: '0%', // for funnel
+                        itemStyle : labelFromatter,
+                        //var NoCover = TheTarget - TheCover;
+
+                        data : [
+                            {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
+                            {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
+                        ]
                     }
                 ]
             };

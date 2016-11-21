@@ -16,7 +16,7 @@
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_name" property="store_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="brand_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_isactive" property="user_isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_can_login" property="user_can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
