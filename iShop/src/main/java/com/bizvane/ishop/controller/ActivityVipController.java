@@ -403,9 +403,9 @@ public class ActivityVipController {
         String message = jsonObj.get("message").toString();
         JSONObject jsonObject = JSONObject.parseObject(message);
         try {
-            String activity_code = jsonObject.get("activity_code").toString();
+            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            ActivityVip activityVip = activityVipService.selActivityByCode(corp_code, activity_code);
+            ActivityVip activityVip = activityVipService.selActivityByCode(corp_code, activity_vip_code);
             String run_mode = activityVip.getRun_mode();
 
             if (run_mode.contains("任务")){
@@ -427,6 +427,10 @@ public class ActivityVipController {
                     message1.put("task_type_name",run_mode);
                     message1.put("corp_code",corp_code);
                     message1.put("isactive","Y");
+                    message1.put("created_date",Common.DATETIME_FORMAT.format(now));
+                    message1.put("modified_date",Common.DATETIME_FORMAT.format(now));
+                    message1.put("creater",user_code);
+                    message1.put("modifier",user_code);
                     taskTypeService.insertTaskType(message1.toString(), user_code);
                 }
 
@@ -456,6 +460,9 @@ public class ActivityVipController {
 
                 //更新活动表中task_code
                 activityVip.setTask_code(task_code);
+                //更新活动状态activity_state
+                activityVip.setActivity_state("执行中");
+
                 activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
                 activityVip.setModifier(user_code);
                 activityVipService.updateActivityVip(activityVip);
