@@ -9,6 +9,7 @@ import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.AppversionService;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -44,6 +45,8 @@ public class AppversionController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     private static final Logger logger = Logger.getLogger(AppversionController.class);
@@ -167,6 +170,30 @@ public class AppversionController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(String.valueOf(appversion1.getId()));
+
+            //----------------行为日志------------------------------------------
+            /**
+             * mongodb插入用户操作记录
+             * @param operation_corp_code 操作者corp_code
+             * @param operation_user_code 操作者user_code
+             * @param function 功能
+             * @param action 动作
+             * @param corp_code 被操作corp_code
+             * @param code 被操作code
+             * @param name 被操作name
+             * @throws Exception
+             */
+            com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+            String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+            String operation_user_code = request.getSession().getAttribute("user_code").toString();
+            String function = "系统管理_版本控制";
+            String action = Common.ACTION_ADD;
+            String t_corp_code = action_json.get("corp_code").toString();
+            String t_code = action_json.get("platform").toString();
+            String t_name = action_json.get("version_id").toString();
+            String remark = "";
+            baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+            //-------------------行为日志结束-----------------------------------------------------------------------------------
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

@@ -1087,7 +1087,7 @@ public class UserController {
                 String action = Common.ACTION_ADD;
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("user_code").toString();
-                String t_name = action_json.get("user_name").toString();
+                String t_name = action_json.get("username").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
@@ -1261,7 +1261,7 @@ public class UserController {
                 String action = Common.ACTION_UPD;
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("user_code").toString();
-                String t_name = action_json.get("user_name").toString();
+                String t_name = action_json.get("username").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
@@ -1271,6 +1271,7 @@ public class UserController {
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
