@@ -306,6 +306,7 @@
         </trim>
         WHERE id=#{id};
     </update>
+
     <select id="getActivityForID" resultType="com.bizvane.ishop.entity.ActivityVip">
         SELECT def_activity_vip.id,
         def_activity_vip.activity_theme,
@@ -430,5 +431,37 @@
         FROM def_activity_vip,def_corp
         WHERE def_activity_vip.corp_code=def_corp.corp_code
         AND def_activity_vip.id =#{id}
+    </select>
+
+    <select id="selActivityByCode" resultType="com.bizvane.ishop.entity.ActivityVip">
+        SELECT def_activity_vip.id,
+        def_activity_vip.activity_theme,
+        def_activity_vip.run_mode,
+        def_activity_vip.start_time,
+        def_activity_vip.end_time,
+
+        def_activity_vip.target_vips,
+        def_activity_vip.msg_info,
+        def_activity_vip.task_title,
+        def_activity_vip.task_desc,
+        def_activity_vip.wechat_title,
+        def_activity_vip.wechat_desc,
+        def_activity_vip.activity_url,
+        def_activity_vip.activity_content,
+        def_activity_vip.content_url,
+        def_activity_vip.corp_code,
+        def_corp.corp_name,
+        def_activity_vip.created_date,
+        def_activity_vip.modified_date,
+        def_activity_vip.modifier,
+        def_activity_vip.creater,
+        def_activity_vip.isactive,
+        def_activity_vip.activity_state,
+        def_activity_vip.operators,
+        def_activity_vip.task_code
+        FROM def_activity_vip,def_corp
+        WHERE def_activity_vip.corp_code=def_corp.corp_code
+        AND def_activity_vip.activity_code = #{activity_code}
+        AND def_activity_vip.corp_code = #{corp_code}
     </select>
 </mapper>
