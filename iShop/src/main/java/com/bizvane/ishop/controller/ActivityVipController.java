@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.ActivityVip;
+import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.ActivityVipService;
+import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.TaskTypeService;
 import com.bizvane.ishop.service.VipGroupService;
 import com.github.pagehelper.PageInfo;
@@ -35,7 +37,10 @@ public class ActivityVipController {
     private ActivityVipService activityVipService;
     @Autowired
     private TaskTypeService taskTypeService;
-    private static final Logger logger = Logger.getLogger(AreaController.class);
+    @Autowired
+    private TaskService taskService;
+
+    private static final Logger logger = Logger.getLogger(ActivityVipController.class);
 
     String id;
     /**
@@ -389,6 +394,7 @@ public class ActivityVipController {
     @Transactional
     public String executeActivity(HttpServletRequest request) throws Exception {
         DataBean dataBean = new DataBean();
+        Date now = new Date();
         String id = "";
         String user_code = request.getSession().getAttribute("user_code").toString();
         String jsString = request.getParameter("param");
@@ -401,14 +407,22 @@ public class ActivityVipController {
             String corp_code = jsonObject.get("corp_code").toString();
             ActivityVip activityVip = activityVipService.selActivityByCode(corp_code, activity_code);
             String run_mode = activityVip.getRun_mode();
+
             if (run_mode.contains("任务")){
+                String task_title = activityVip.getTask_title();
+                String task_desc = activityVip.getTask_desc();
+                String operators = activityVip.getOperators();
+                String start_time = activityVip.getStart_time();
+                String end_time = activityVip.getEnd_time();
+
+                //判断是否存在【任务类型】，没有则新建
                 List<TaskType> taskTypes = taskTypeService.nameExist(corp_code, run_mode);
                 String task_type_code = "";
                 if (taskTypes.size() > 0){
                     task_type_code = taskTypes.get(0).getTask_type_code();
                 }else {
                     JSONObject message1=new JSONObject();
-                    task_type_code = "T"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+                    task_type_code = "T"+Common.DATETIME_FORMAT_DAY_NUM.format(now);
                     message1.put("task_type_code",task_type_code);
                     message1.put("task_type_name",run_mode);
                     message1.put("corp_code",corp_code);
@@ -416,7 +430,35 @@ public class ActivityVipController {
                     taskTypeService.insertTaskType(message1.toString(), user_code);
                 }
 
+                //创建任务并分配给执行人
+                JSONArray operators_array = JSONArray.parseArray(operators);
+                String user_codes = "";
+                String phones = "";
+                for (int i = 0; i <operators_array.size() ; i++) {
+                    user_codes = user_codes + operators_array.getJSONObject(i).get("user_code")+",";
+                    phones = phones + operators_array.getJSONObject(i).get("phone")+",";
+                }
+                Task task=new Task();
+                String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
+                task.setTask_code(task_code);
+                task.setTask_title(task_title);
+                task.setTask_type_code(task_type_code);
+                task.setTask_description(task_desc);
+                task.setTarget_start_time(start_time);
+                task.setTarget_end_time(end_time);
+                task.setCorp_code(corp_code);
+                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                task.setCreater(user_code);
+                task.setModified_date(Common.DATETIME_FORMAT.format(now));
+                task.setModifier(user_code);
+                task.setIsactive(Common.IS_ACTIVE_Y);
+                taskService.addTask(task,phones,user_codes,user_code);
 
+                //更新活动表中task_code
+                activityVip.setTask_code(task_code);
+                activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
+                activityVip.setModifier(user_code);
+                activityVipService.updateActivityVip(activityVip);
             }
         }catch(Exception ex){
             ex.printStackTrace();

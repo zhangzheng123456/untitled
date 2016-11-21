@@ -22,6 +22,7 @@ public interface ActivityVipService {
     //String update(String message, String user_id,HttpServletRequest request) throws Exception;
     String update(String message, String user_id) throws Exception;
 
+    int updateActivityVip(ActivityVip activityVip) throws Exception;
 
     ActivityVip selectActivityById(int id) throws Exception;
 

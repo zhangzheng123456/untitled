@@ -20,7 +20,7 @@ public interface TaskService {
 
     String delTask(String id, String corp_code, String task_code) throws Exception;
 
-    String addTask(Task task, String[] user_codes, String phone, String users, String user_code) throws Exception;
+    String addTask(Task task, String phone, String users, String user_code) throws Exception;
 
     String updTask(Task task, String[] user_codes, String user_code) throws Exception;
 

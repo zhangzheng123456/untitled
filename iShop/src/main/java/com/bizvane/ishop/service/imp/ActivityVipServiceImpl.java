@@ -217,6 +217,11 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     }
 
     @Override
+    public int updateActivityVip(ActivityVip activityVip) throws Exception {
+        return activityVipMapper.updateActivity(activityVip);
+    }
+
+    @Override
     public ActivityVip selectActivityById(int id) throws Exception {
         return activityVipMapper.selActivityById(id);
     }
