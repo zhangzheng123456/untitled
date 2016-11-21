@@ -215,7 +215,7 @@
             dt.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            AND dt.task_type_name LIKE concat('%',#{search_value},'%')
+            AND dt.task_type_name= #{search_value}
         </if>
         AND dt.isactive = 'Y'
         GROUP BY dt.id
