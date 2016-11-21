@@ -53,11 +53,14 @@ public class BrandController {
     private StoreService storeService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private BaseService baseService;
     private static final Logger logger = Logger.getLogger(BrandController.class);
 
     /**
      * session企业拉取品牌
      * (包含全部)
+     *
      * @param request
      * @return
      */
@@ -78,14 +81,14 @@ public class BrandController {
 
             String search_value = "";
             String[] codes = null;
-            if (jsonObject.has("searchValue")){
+            if (jsonObject.has("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             List<Brand> brandList = new ArrayList<Brand>();
 
             if (role_code.equals(Common.ROLE_SYS) && jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                 corp_code = jsonObject.get("corp_code").toString();
-                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value,codes);
+                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value, codes);
                 Brand brand_new = new Brand();
                 brand_new.setBrand_code("");
                 brand_new.setBrand_name("全部");
@@ -94,10 +97,10 @@ public class BrandController {
                 brand_new.setCreated_date("");
                 brand_new.setCreater("");
                 brand_new.setId(0);
-                brandList.add(0,brand_new);
+                brandList.add(0, brand_new);
                 brandList.addAll(brand);
-            }else if (role_code.equals(Common.ROLE_GM)){
-                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value,codes);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value, codes);
                 Brand brand_new = new Brand();
                 brand_new.setBrand_code("");
                 brand_new.setBrand_name("全部");
@@ -106,47 +109,47 @@ public class BrandController {
                 brand_new.setCreated_date("");
                 brand_new.setCreater("");
                 brand_new.setId(0);
-                brandList.add(0,brand_new);
+                brandList.add(0, brand_new);
                 brandList.addAll(brand);
-            }else if (role_code.equals(Common.ROLE_BM)){
+            } else if (role_code.equals(Common.ROLE_BM)) {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 codes = brand_code.split(",");
-                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value,codes);
+                List<Brand> brand = brandService.getActiveBrand(corp_code, search_value, codes);
                 brandList.addAll(brand);
-            }else if (role_code.equals(Common.ROLE_AM)){
-                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                area_code = area_code.replace(Common.SPECIAL_HEAD, "");
                 String[] areas = area_code.split(",");
                 String[] stores = null;
-                if (!store_code.equals("")){
-                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                if (!store_code.equals("")) {
+                    store_code = store_code.replace(Common.SPECIAL_HEAD, "");
                     stores = store_code.split(",");
                 }
-                List<Store> storeList = storeService.selectByAreaBrand(corp_code,areas,stores, null,Common.IS_ACTIVE_Y);
+                List<Store> storeList = storeService.selectByAreaBrand(corp_code, areas, stores, null, Common.IS_ACTIVE_Y);
                 String brand_code1 = "";
                 for (int i = 0; i < storeList.size(); i++) {
                     String brand_code = storeList.get(i).getBrand_code();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                    if (!brand_code.endsWith(",")){
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    if (!brand_code.endsWith(",")) {
                         brand_code = brand_code + ",";
                     }
                     brand_code1 = brand_code1 + brand_code;
                     codes = brand_code1.split(",");
-                    brandList = brandService.getActiveBrand(corp_code, search_value,codes);
+                    brandList = brandService.getActiveBrand(corp_code, search_value, codes);
                 }
-            }else if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)){
-                List<Store> stores = storeService.selectAll(store_code,corp_code,Common.IS_ACTIVE_Y);
+            } else if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)) {
+                List<Store> stores = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
                 String brand_code1 = "";
                 for (int i = 0; i < stores.size(); i++) {
                     String brand_code = stores.get(i).getBrand_code();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                    if (!brand_code.endsWith(",")){
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    if (!brand_code.endsWith(",")) {
                         brand_code = brand_code + ",";
                     }
                     brand_code1 = brand_code1 + brand_code;
                 }
                 codes = brand_code1.split(",");
-                brandList = brandService.getActiveBrand(corp_code, search_value,codes);
+                brandList = brandService.getActiveBrand(corp_code, search_value, codes);
             }
 
             JSONArray array = new JSONArray();
@@ -192,12 +195,12 @@ public class BrandController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = brandService.getAllBrandByPage(page_number, page_size, "", "");
-            }else if (role_code.equals(Common.ROLE_BM)){
+            } else if (role_code.equals(Common.ROLE_BM)) {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
-                list = brandService.getPartBrandByPage(page_number,page_size,corp_code,codes,"");
-            }else {
+                list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, "");
+            } else {
                 list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -234,10 +237,34 @@ public class BrandController {
                 String brand_code = jsonObject.get("brand_code").toString().trim();
                 String corp_code = jsonObject.get("corp_code").toString().trim();
                 String isactive = jsonObject.get("isactive").toString();
-                Brand brand = brandService.getBrandByCode(corp_code,brand_code,isactive);
+                Brand brand = brandService.getBrandByCode(corp_code, brand_code, isactive);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(brand.getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "品牌管理";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("brand_code").toString();
+                String t_name = action_json.get("brand_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -271,6 +298,30 @@ public class BrandController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "品牌管理";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("brand_code").toString();
+                String t_name = action_json.get("brand_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -317,12 +368,34 @@ public class BrandController {
                         msg = "有使用品牌" + brand_code + "的商品，请先处理品牌下商品再删除";
                         break;
                     }
-                    count = storeService.selectStoreCountByBrand(corp_code, brand_code,"","").size();
+                    count = storeService.selectStoreCountByBrand(corp_code, brand_code, "", "").size();
                     if (count > 0) {
                         msg = "有使用品牌" + brand_code + "的店铺，请先处理品牌下店铺再删除";
                         break;
                     }
                 }
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "品牌管理";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = brand.getCorp_code();
+                String t_code = brand.getBrand_code();
+                String t_name = brand.getBrand_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg == null) {
                 for (int i = 0; i < ids.length; i++) {
@@ -402,12 +475,12 @@ public class BrandController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = brandService.getAllBrandByPage(page_number, page_size, "", search_value);
-            }else if (role_code.equals(Common.ROLE_BM)){
+            } else if (role_code.equals(Common.ROLE_BM)) {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
-                list = brandService.getPartBrandByPage(page_number,page_size,corp_code,codes,search_value);
+                list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = brandService.getAllBrandByPage(page_number, page_size, corp_code, search_value);
@@ -437,7 +510,7 @@ public class BrandController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String brand_code = jsonObject.get("brand_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Brand brand = brandService.getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
+            Brand brand = brandService.getBrandByCode(corp_code, brand_code, Common.IS_ACTIVE_Y);
             if (brand != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -468,7 +541,7 @@ public class BrandController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String brand_name = jsonObject.get("brand_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Brand brand = brandService.getBrandByName(corp_code, brand_name,Common.IS_ACTIVE_Y);
+            Brand brand = brandService.getBrandByName(corp_code, brand_name, Common.IS_ACTIVE_Y);
             if (brand != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -494,7 +567,7 @@ public class BrandController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -505,49 +578,49 @@ public class BrandController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<Brand> list;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = brandService.getAllBrandByPage(1, 30000, "", search_value);
-                }else if (role_code.equals(Common.ROLE_BM)){
+                } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     String[] codes = brand_code.split(",");
-                    list = brandService.getPartBrandByPage(1,30000,corp_code,codes,search_value);
+                    list = brandService.getPartBrandByPage(1, 30000, corp_code, codes, search_value);
                 } else {
                     list = brandService.getAllBrandByPage(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = brandService.getAllBrandScreen(1, 30000, "",null, map);
-                } else if (role_code.equals(Common.ROLE_BM)){
+                    list = brandService.getAllBrandScreen(1, 30000, "", null, map);
+                } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     String[] codes = brand_code.split(",");
-                    list = brandService.getAllBrandScreen(1,30000,corp_code,codes,map);
-                }else {
-                    list = brandService.getAllBrandScreen(1, 30000, corp_code,null, map);
+                    list = brandService.getAllBrandScreen(1, 30000, corp_code, codes, map);
+                } else {
+                    list = brandService.getAllBrandScreen(1, 30000, corp_code, null, map);
                 }
             }
             List<Brand> brands = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(brands);
-            if(brands.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (brands.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
-            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,brands, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, brands, map, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -563,7 +636,7 @@ public class BrandController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -573,13 +646,13 @@ public class BrandController {
         String result = "";
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
-        Workbook rwb=null;
+        Workbook rwb = null;
         try {
-           rwb= Workbook.getWorkbook(targetFile);
+            rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = 4;//得到所有的列
             int rows = rs.getRows();//得到所有的行
-      //      int actualRows = LuploadHelper.getRightRows(rs);
+            //      int actualRows = LuploadHelper.getRightRows(rs);
 //            if(actualRows != rows){
 //                if(rows-actualRows==1){
 //                    result = "：第"+rows+"行存在空白行,请删除";
@@ -588,20 +661,20 @@ public class BrandController {
 //                }
 //                int i = 5 / 0;
 //            }
-            if(rows<4){
-                result="：请从模板第4行开始插入正确数据";
-                int i=5/0;
+            if (rows < 4) {
+                result = "：请从模板第4行开始插入正确数据";
+                int i = 5 / 0;
             }
-            if(rows>9999){
-                result="：数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "：数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
 
-            if(!role_code.equals(Common.ROLE_SYS)) {
+            if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
+                    if (column3[i].getContents().toString().trim().equals("")) {
                         continue;
                     }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
@@ -617,39 +690,39 @@ public class BrandController {
                     }
                 }
             }
-                for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
-                        continue;
-                    }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
-
+            for (int i = 3; i < column3.length; i++) {
+                if (column3[i].getContents().toString().trim().equals("")) {
+                    continue;
+                }
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                if (corp == null) {
+                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
                 }
 
+            }
+
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
-            if(onlyCell1.equals("存在重复值")){
+            if (onlyCell1.equals("存在重复值")) {
                 result = "：Execl中品牌编号存在重复值";
                 int b = 5 / 0;
             }
             String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
-            if(onlyCell2.equals("存在重复值")){
+            if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中品牌名称存在重复值";
                 int b = 5 / 0;
             }
-         //   Pattern pattern = Pattern.compile("B\\d{4}");
+            //   Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                if(column[i].getContents().toString().trim().equals("")){
+                if (column[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
 //                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
@@ -658,7 +731,7 @@ public class BrandController {
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
+                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     result = "：第" + (i + 1) + "行品牌编号已存在";
                     int b = 5 / 0;
@@ -667,17 +740,17 @@ public class BrandController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
+                if (column1[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
-                Brand brand = brandService.getBrandByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
+                Brand brand = brandService.getBrandByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     result = "：第" + (i + 1) + "行品牌名称已存在";
                     int b = 5 / 0;
                     break;
                 }
             }
-            ArrayList<Brand> brands=new ArrayList<Brand>();
+            ArrayList<Brand> brands = new ArrayList<Brand>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Brand brand = new Brand();
@@ -689,16 +762,16 @@ public class BrandController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && brand_code.equals("") && brand_name.equals("")){
+                    if (cellCorp.equals("") && brand_code.equals("") && brand_name.equals("")) {
                         continue;
                     }
-                    if(cellCorp.equals("")|| brand_code.equals("") || brand_name.equals("")){
-                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
-                        int a=5/0;
+                    if (cellCorp.equals("") || brand_code.equals("") || brand_name.equals("")) {
+                        result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
+                        int a = 5 / 0;
                     }
-                    if(!role_code.equals(Common.ROLE_SYS)){
+                    if (!role_code.equals(Common.ROLE_SYS)) {
                         brand.setCorp_code(corp_code);
-                    }else{
+                    } else {
                         brand.setCorp_code(cellCorp);
                     }
                     brand.setBrand_code(brand_code);
@@ -714,10 +787,10 @@ public class BrandController {
                     brand.setModified_date(Common.DATETIME_FORMAT.format(now));
                     brand.setModifier(user_id);
                     brands.add(brand);
-                  //  result = brandService.insertExecl(brand);
+                    //  result = brandService.insertExecl(brand);
                 }
             }
-            for (Brand brand:brands) {
+            for (Brand brand : brands) {
                 result = brandService.insertExecl(brand);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -728,8 +801,8 @@ public class BrandController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
+        } finally {
+            if (rwb != null) {
                 rwb.close();
             }
             System.gc();
@@ -761,16 +834,16 @@ public class BrandController {
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = brandService.getAllBrandScreen(page_number, page_size, "",null, map);
-            }else if (role_code.equals(Common.ROLE_BM)){
+                list = brandService.getAllBrandScreen(page_number, page_size, "", null, map);
+            } else if (role_code.equals(Common.ROLE_BM)) {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
-                list = brandService.getAllBrandScreen(page_number,page_size,corp_code,codes,map);
+                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, codes, map);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = brandService.getAllBrandScreen(page_number, page_size, corp_code,null, map);
+                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, null, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

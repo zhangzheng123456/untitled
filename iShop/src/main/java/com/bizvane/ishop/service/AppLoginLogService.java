@@ -15,4 +15,6 @@ public interface AppLoginLogService {
     PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String,String> map) throws Exception;
 
     int delAppLoginlogById(int id)throws Exception;
+
+    AppLoginLog selByLogId(int id) throws Exception;
 }

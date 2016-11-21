@@ -107,4 +107,9 @@
         WHERE ID = #{id}
     </delete>
 
+    <select id="selByLogId">
+        SELECT  * FROM
+        acc_login_log
+        WHERE ID = #{id}
+    </select>
 </mapper>

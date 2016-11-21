@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.TaskType;
 import com.github.pagehelper.PageInfo;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +30,6 @@ public interface TaskTypeService {
     PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map)throws Exception;
 
     TaskType getTaskTypeForId(String corp_code,String task_type_code)throws Exception;
+
+    List<TaskType> selectCorpTaskType(String corp_code,String search_value) throws Exception;
 }

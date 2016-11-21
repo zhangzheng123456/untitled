@@ -26,12 +26,20 @@ public class AppLoginLog {
     private String store_name;
     private String position;
     private String phone;
+    private String brand_code;
     private String brand_name;
 
     private String user_isactive;
 
     private String user_can_login;
 
+    public String getBrand_code() {
+        return brand_code;
+    }
+
+    public void setBrand_code(String brand_code) {
+        this.brand_code = brand_code;
+    }
 
     public String getBrand_name() {
         return brand_name;

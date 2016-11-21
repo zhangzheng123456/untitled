@@ -3,10 +3,7 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.AppLoginLog;
-import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Brand;
-import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -41,7 +38,8 @@ public class AppLoginLogController {
     private StoreService storeService;
     @Autowired
     private BrandService brandService;
-
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -175,10 +173,33 @@ public class AppLoginLogController {
             String app_id = jsonObject.get("id").toString();
             String[] ids = app_id.split(",");
             for (int i = 0; i < ids.length; i++) {
+                AppLoginLog appLoginLog = loginLogService.selByLogId(Integer.valueOf(ids[i]));
                 loginLogService.delAppLoginlogById(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "员工管理_登录日志";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = appLoginLog.getCorp_code();
+                String t_code = appLoginLog.getUser_code();
+                String t_name = appLoginLog.getUser_name();
+                String remark = appLoginLog.getTime()+"("+appLoginLog.getPlatform()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

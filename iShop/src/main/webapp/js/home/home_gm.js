@@ -330,16 +330,16 @@ function achieveChart(data){//获取折线图
 //}
 //业绩追加
 function superadditionAchv(c){
-	$("#num_sales").html(c.am.num_sales);
-	$("#num_trade").html(c.am.num_trade);
-	$("#all_price").html(c.am.all_price);
-	$("#amount_price").html(c.am.amount_price);
-	$("#relate_rate").html(c.am.relate_rate);
-	$("#discount").html(c.am.discount);
-	$("#num_nvip").html(c.am.num_nvip);
-	$("#vip_amt_rate").html(c.am.vip_amt_rate);
-	$("#amt_trade").html(c.am.amt_trade);
-	$("#area_ranking").attr("data-percent",c.am.achieve_rate);
+	$("#num_sales").html(c.gm.num_sales);
+	$("#num_trade").html(c.gm.num_trade);
+	$("#all_price").html(c.gm.all_price);
+	$("#amount_price").html(c.gm.amount_price);
+	$("#relate_rate").html(c.gm.relate_rate);
+	$("#discount").html(c.gm.discount);
+	$("#num_nvip").html(c.gm.num_nvip);
+	$("#vip_amt_rate").html(c.gm.vip_amt_rate);
+	$("#amt_trade").html(c.gm.amt_trade);
+	$("#area_ranking").attr("data-percent",c.gm.achieve_rate);
 	$("#achv_mask").hide();
 	$(".yield_rate canvas").remove();
 	var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {

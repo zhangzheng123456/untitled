@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskType;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.TaskTypeService;
@@ -43,7 +44,8 @@ public class TaskTypeController {
     FunctionService functionService;
     @Autowired
     TaskService taskService;
-
+    @Autowired
+    private BaseService baseService;
     String id;
 
     private static final Logger logger = Logger.getLogger(TaskTypeController.class);
@@ -108,6 +110,30 @@ public class TaskTypeController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "任务管理_任务类型";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("task_type_code").toString();
+                String t_name = action_json.get("task_type_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -136,6 +162,30 @@ public class TaskTypeController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "任务管理_任务类型";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("task_type_code").toString();
+                String t_name = action_json.get("task_type_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -240,6 +290,28 @@ public class TaskTypeController {
                         msg = "该任务类型" + task_type_code + "下有任务，请先处理后再删除";
                     }
                 }
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "任务管理_任务类型";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = taskType.getCorp_code();
+                String t_code = taskType.getTask_type_code();
+                String t_name = taskType.getTask_type_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg == null) {
                 for (int i = 0; i < ids.length; i++) {
@@ -429,5 +501,39 @@ public class TaskTypeController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 获取企业下任务类型
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getCorpTaskTypes", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpGroups(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = "";
+            if (jsonObject.containsKey("searchValue"))
+                search_value = jsonObject.get("searchValue").toString();
 
+            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+            List<TaskType> taskTypes =taskTypeService.selectCorpTaskType(corp_code,search_value);
+            result.put("list", JSON.toJSONString(taskTypes));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
 }
