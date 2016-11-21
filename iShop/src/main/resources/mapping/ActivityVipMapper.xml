@@ -5,13 +5,16 @@
     <resultMap type="com.bizvane.ishop.entity.ActivityVip" id="Activity">
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_vip_code" property="activity_vip_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_theme" property="activity_theme"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
         <result column="target_vips" property="target_vips"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="operators" property="operators"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="msg_info" property="msg_info"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -35,13 +38,13 @@
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="operators" property="operators" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
 
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
         SELECT def_activity_vip.id,
+        def_activity_vip.activity_vip_code,
         def_activity_vip.activity_theme,
         def_activity_vip.run_mode,
         def_activity_vip.start_time,
@@ -91,6 +94,9 @@
 
             <if test="corp_code!=null">
                 corp_code,
+            </if>
+            <if test="activity_vip_code!=null">
+                activity_vip_code,
             </if>
             <if test="activity_theme!=null">
                 activity_theme,
@@ -163,9 +169,13 @@
             <if test="corp_code!=null">
                 #{corp_code},
             </if>
+            <if test="activity_vip_code!=null">
+                #{activity_vip_code},
+            </if>
             <if test="activity_theme!=null">
                 #{activity_theme},
             </if>
+
             <if test="run_mode!=null">
                 #{run_mode},
             </if>
@@ -238,6 +248,9 @@
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
+            <if test="activity_vip_code!=null">
+                activity_vip_code=#{activity_vip_code},
+            </if>
             <if test="activity_theme!=null">
                 activity_theme=#{activity_theme},
             </if>
@@ -306,13 +319,14 @@
         </trim>
         WHERE id=#{id};
     </update>
+
     <select id="getActivityForID" resultType="com.bizvane.ishop.entity.ActivityVip">
-        SELECT def_activity_vip.id,
+        SELECT def_activity_vip.id,activity_vip_code
         def_activity_vip.activity_theme,
         def_activity_vip.run_mode,
         def_activity_vip.start_time,
         def_activity_vip.end_time,
-
+        def_activity_vip.activity_vip_code,
         def_activity_vip.target_vips,
         def_activity_vip.msg_info,
         def_activity_vip.task_title,
@@ -350,6 +364,7 @@
 
     <select id="selectActivityScreen" resultType="com.bizvane.ishop.entity.ActivityVip">
         SELECT def_activity_vip.id,
+        def_activity_vip.activity_vip_code,
         def_activity_vip.activity_theme,
         def_activity_vip.run_mode,
         def_activity_vip.start_time,
@@ -403,6 +418,7 @@
 
     <select id="selActivityById" resultType="com.bizvane.ishop.entity.ActivityVip">
         SELECT def_activity_vip.id,
+        def_activity_vip.activity_vip_code,
         def_activity_vip.activity_theme,
         def_activity_vip.run_mode,
         def_activity_vip.start_time,
@@ -430,5 +446,37 @@
         FROM def_activity_vip,def_corp
         WHERE def_activity_vip.corp_code=def_corp.corp_code
         AND def_activity_vip.id =#{id}
+    </select>
+
+    <select id="selActivityByCode" resultType="com.bizvane.ishop.entity.ActivityVip">
+        SELECT def_activity_vip.id,
+        def_activity_vip.activity_theme,
+        def_activity_vip.run_mode,
+        def_activity_vip.start_time,
+        def_activity_vip.end_time,
+
+        def_activity_vip.target_vips,
+        def_activity_vip.msg_info,
+        def_activity_vip.task_title,
+        def_activity_vip.task_desc,
+        def_activity_vip.wechat_title,
+        def_activity_vip.wechat_desc,
+        def_activity_vip.activity_url,
+        def_activity_vip.activity_content,
+        def_activity_vip.content_url,
+        def_activity_vip.corp_code,
+        def_corp.corp_name,
+        def_activity_vip.created_date,
+        def_activity_vip.modified_date,
+        def_activity_vip.modifier,
+        def_activity_vip.creater,
+        def_activity_vip.isactive,
+        def_activity_vip.activity_state,
+        def_activity_vip.operators,
+        def_activity_vip.task_code
+        FROM def_activity_vip,def_corp
+        WHERE def_activity_vip.corp_code=def_corp.corp_code
+        AND def_activity_vip.activity_code = #{activity_code}
+        AND def_activity_vip.corp_code = #{corp_code}
     </select>
 </mapper>

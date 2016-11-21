@@ -128,7 +128,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         return taskTypeMapper.selectByCode(corp_code, task_type_code);
     }
 
-    public List<TaskType> nameExist  (String corp_code, String task_type_name)throws Exception  {
+    public List<TaskType> nameExist(String corp_code, String task_type_name)throws Exception  {
         return taskTypeMapper.selectByName(corp_code, task_type_name);
     }
 
