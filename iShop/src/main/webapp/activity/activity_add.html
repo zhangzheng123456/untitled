@@ -383,13 +383,13 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .screen_area .input{
-            height: 30px;
-            background: #fff;
-        }
-        .screen_area{
-            min-height: 320px;
-        }
+        /*.screen_area .input{*/
+            /*height: 30px;*/
+            /*background: #fff;*/
+        /*}*/
+        /*.screen_area{*/
+            /*min-height: 320px;*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -448,12 +448,12 @@
                     <span class="arrow_right" id="target_vip_icon"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
-            <!--<div class="executor">-->
-                <!--<span style="position: relative">-->
-                    <!--<label>执行人</label><input type="text" id="executor" readonly/>-->
-                    <!--<span class="arrow_right"><i class="icon-ishop_8-03"></i></span>-->
-                <!--</span>-->
-            <!--</div>-->
+            <div class="executor">
+                <span style="position: relative">
+                    <label>执行人</label><input type="text" id="executor" readonly/>
+                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
+                </span>
+            </div>
             <hr class="hr_s"/>
             <div class="send_title" style="display: none">
                 <span><label>推送标题</label><input type="text" id="send_title"/></span>
@@ -527,33 +527,25 @@
                 </div>
                 <div class="left_list" id="left_list">
                     <ul>
-                        <li>
-                            <div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>
-                            <span class="p16">饭团</span>
-                            <span class="staff_box">
-                                <span class="staff">导购:王某某</span>
-                                <span class="close_staff">取消分配</span>
-                            </span>
-                        </li>
-                        <li>
-                            <div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>
-                            <span class="p16">饭团</span>
-                            <span class="staff_box">
-                                <span class="staff">导购:王某某</span>
-                                <span class="close_staff">取消分配</span>
-                            </span>
-                        </li>
+                        <!--<li>-->
+                            <!--<div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>-->
+                            <!--<span class="p16">饭团</span>-->
+                            <!--<span class="staff_box">-->
+                                <!--<span class="staff">导购:王某某</span>-->
+                                <!--<span class="close_staff">取消分配</span>-->
+                            <!--</span>-->
+                        <!--</li>-->
                     </ul>
                 </div>
             </div>
             <div class="allocating_task_container container_right">
                 <div class="left_head"><span>第二步</span>分配任务给员工</div>
                 <div class="input_search">
-                    <input type="text" placeholder="搜索" class="right_input">
+                    <input type="text" placeholder="搜索" class="right_input" id="right_input">
                     <span class="icon-ishop_3-05 rigth_icon"></span>
                     <span class="screen icon-ishop_6-05" id="screen_btn"></span>
                 </div>
-                <div class="left_list" id="righ_list">
+                <div class="left_list" id="right_list">
                     <ul>
 
                     </ul>
@@ -603,17 +595,17 @@
     <div id="screen_shop" class="screen_area">
         <div class="screen_title">
             <h4>筛选店铺</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"
-                                              data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
-                </div>
-            </div>
+            <!--<div class="xuanzhong">-->
+                <!--<div class="xuanzhong_p">-->
+                    <!--<label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"-->
+                                              <!--data-areacode="">-->
+                    <!--<span class="icon_r icon-ishop_8-03" id="shop_area"></span>-->
+                <!--</div>-->
+                <!--<div class="xuanzhong_p">-->
+                    <!--<label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">-->
+                    <!--<span class="icon_r icon-ishop_8-03" id="shop_brand"></span>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
@@ -685,14 +677,62 @@
         <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
     <!-- 拉取员工  -->
-    <div id="screen_staff" class="screen_area" style="width:540px;height: 320px">
-        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
-        <div class="contion">
-            <div class="contion_input"><label>所属区域</label><span id="find_area"><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></span></div>
-            <div class="contion_input"><label>所属品牌</label><span id="find_brand"><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></span></div>
-            <div class="contion_input"><label>所属店铺</label><span id="find_shop"><input id="screen_shop_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></span></div>
+    <div id="screen_staff" class="screen_area">
+        <!--<div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>-->
+        <!--<div class="contion">-->
+            <!--<div class="contion_input"><label>所属区域</label><span id="find_area"><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></span></div>-->
+            <!--<div class="contion_input"><label>所属品牌</label><span id="find_brand"><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></span></div>-->
+            <!--<div class="contion_input"><label>所属店铺</label><span id="find_shop"><input id="screen_shop_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></span></div>-->
+        <!--</div>-->
+        <!--<div class="ensure"><span id="screen_vip_que">确定</span></div>-->
+        <div class="screen_title">
+            <h4>筛选员工</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><span id="find_area"><input class="area_num" type="text" readonly="true" id="staff_area_num"
+                                              data-code="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><span id="find_brand"><input class="brand_num" type="text" readonly="true" id="staff_brand_num" data-code="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><span id="find_shop"><input type="text" readonly="true" id="staff_shop_num" data-code="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
         </div>
-        <div class="ensure"><span id="screen_vip_que">确定</span></div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
     </div>
     <div class="tk" id="tk">
         <span class="icon-ishop_6-12" id="X"></span>
@@ -950,12 +990,14 @@
         $("#execution_input").val(val);
         if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
             $(".task_dec").show();
+            $(".executor").show();
             $(".task_title").show();
             $(".send_title").hide();
             $(".summary").hide();
             $(".short_msg").hide();
         } else if (val == "系统短信通知顾客") {
             $(".task_dec").hide();
+            $(".executor").hide();
             $(".task_title").hide();
             $(".send_title").hide();
             $(".summary").hide();
@@ -963,6 +1005,7 @@
         } else if (val == "微信公众号推送") {
             $(".task_dec").hide();
             $(".task_title").hide();
+            $(".executor").hide();
             $(".send_title").show();
             $(".summary").show();
             $(".short_msg").hide();
@@ -991,9 +1034,11 @@
         if(val.indexOf("任务")<0){
             $(".content").show();
             $("#page-wrapper").hide();
+            oc.postRequire()
         }else {
             $("#allocating_task").show();
             $(".box_shadow").show();
+            getstafflist(staff_num);
             var param={};
             var corp_code = $("#OWN_CORP").val();
             var search_value = "";
@@ -1014,10 +1059,8 @@
                                     + 1
                                     + "'></label></div><span class='p16'>"+list[i].vip_group_name+"</span></li>");
                         }
-                        if(list.length>9){
-                            $("#left_list ul").css("background","#fff");
-                            $("#left_list ul li:nth-child(odd)").css("background","#e8e8e8");
-                        }
+                        $(".left_list ul li:odd").css("backgroundColor","#fff");
+                        $(".left_list ul li:even").css("backgroundColor","#ededed");
                         $("#left_list ul li").click(function () {
                             var input=$(this).find("input")[0];
                             if(input.type=="checkbox"&&input.checked==false){
