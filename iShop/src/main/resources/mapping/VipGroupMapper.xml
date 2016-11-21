@@ -87,10 +87,10 @@
         dvg.modified_date,
         dvg.modifier,
         dvg.isactive
-        FROM def_vip_group dvg
-        WHERE
+        FROM def_vip_group dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code != null and corp_code !=''">
-            dvg.corp_code = #{corp_code}
+            AND dvg.corp_code = #{corp_code}
         </if>
         <if test="user_code != null and user_code !=''">
             AND dvg.user_code = #{user_code}
