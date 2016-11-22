@@ -235,37 +235,27 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i]._id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
             + i
             + 1
             + "'></label></div>"
-            + "</td><td style='text-align:left;'>"
+            + "</td><td style='text-align:center;'>"
             + a
             + "</td><td>"
-            + data[i].platform
+            + data[i].corp_code
             + "</td><td>"
-            + data[i].user_name+
-            "</td><td>" +
-            data[i].user_code+
-            "</td><td>"
-            + data[i].position
+            + data[i].function
             + "</td><td>"
-            + data[i].store_code
-            + "</td><td><span title="+data[i].store_name+">"
-            + data[i].store_name
-            + "</span></td><td>"
-            + data[i].brand_name
-            + "</td><td><span>"
-            + data[i].corp_name
-            + "</span></td><td><span>"
-            + data[i].created_date
-            + "</span></td><td>"
-            + data[i].time
+            + data[i].action
             + "</td><td>"
-            + data[i].user_can_login
+            + data[i].name
+            + "</td><td>"
+            + data[i].operation_user_code
+            + "</td><td>"
+            + data[i].operation_time
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -305,16 +295,23 @@ function GET(a,b){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            console.log('message是:'+JSON.stringify(message));
+            //console.log('message是:'+JSON.stringify(message));
             var list=message.list;
-            console.log('message是:'+JSON.stringify(list));
+            //console.log('message是:'+JSON.stringify(list));
             var page_number = message.page_number;
-            console.log('页面是：'+page_number+  '  '   +"list是："+JSON.stringify(list));
+            console.log('页面是：'+page_number+  '  '   +"list是："+list);
             superaddition(list,page_number);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,page_number,b,funcCode);
+            for(i=0;i<list.length;i++) {
+                var funcCode = list[i].code;
+                var _id = list[i]._id;
+                var cout = list.length;
+                //console.log(funcCode+''+action+''+JSON.stringify(_id)+'________'+cout);
+                setPage($("#foot-num")[0], cout, page_number, b, funcCode);
+            }
+
         }else if(data.code=="-1"){
-            // alert(data.message);
+             alert(data.message);
         }
     });
 }
@@ -389,10 +386,9 @@ function POST(a,b){
     oc.postRequire("post","/userOperation/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
+            var list=message.list;
+            cout=list.length;
+            var pageNum = message.page_number;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -607,6 +603,7 @@ $('#file_close').click(function(){
 oc.postRequire("get","/userOperation/screen?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
         var message=JSON.parse(data.message);
+        console.log(JSON.stringify(message));
         var filter=message.filter;
         console.log(filter);
         $("#sxk .inputs ul").empty();
@@ -821,3 +818,7 @@ $("#input-txt").keydown(function() {
         };
     }
 })
+//刷新页面
+function reload(){
+    document.location.reload();
+}

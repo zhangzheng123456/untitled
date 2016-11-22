@@ -383,6 +383,15 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        /*分配目标会员*/
+        .content .screen_wrapper{
+            top:30%;
+            left:40%;
+        }
+        .content .contion .input{
+            background: #fff;
+            height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -506,48 +515,48 @@
             </div>
         </form>
     </div>
-    <div class="allocating_task" id="allocating_task">
-        <div class="task_head">
-            分配任务<span class="allocated">已分配</span><span class="schedule">80%</span>
-            <span id="allocating_task_close" class="icon-ishop_6-12 task_close"></span>
-        </div>
-        <div class="task_container">
-            <div class="allocating_task_container">
-                <div class="left_head"><span>第一步</span>选择会员分组</div>
-                <div class="input_search">
-                    <input type="text" placeholder="搜索">
-                    <span class="icon-ishop_3-05"></span>
-                </div>
-                <div class="left_list" id="left_list">
-                    <ul>
-                        <!--<li>-->
-                            <!--<div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>-->
-                            <!--<span class="p16">饭团</span>-->
-                            <!--<span class="staff_box">-->
-                                <!--<span class="staff">导购:王某某</span>-->
-                                <!--<span class="close_staff">取消分配</span>-->
-                            <!--</span>-->
-                        <!--</li>-->
-                    </ul>
-                </div>
-            </div>
-            <div class="allocating_task_container container_right">
-                <div class="left_head"><span>第二步</span>分配任务给员工</div>
-                <div class="input_search">
-                    <input type="text" placeholder="搜索" class="right_input" id="right_input">
-                    <span class="icon-ishop_3-05 rigth_icon"></span>
-                    <span class="screen icon-ishop_6-05" id="screen_btn"></span>
-                </div>
-                <div class="left_list" id="right_list">
-                    <ul>
+    <!--<div class="allocating_task" id="allocating_task">-->
+        <!--<div class="task_head">-->
+            <!--分配任务<span class="allocated">已分配</span><span class="schedule">80%</span>-->
+            <!--<span id="allocating_task_close" class="icon-ishop_6-12 task_close"></span>-->
+        <!--</div>-->
+        <!--<div class="task_container">-->
+            <!--<div class="allocating_task_container">-->
+                <!--<div class="left_head"><span>第一步</span>选择会员分组</div>-->
+                <!--<div class="input_search">-->
+                    <!--<input type="text" placeholder="搜索">-->
+                    <!--<span class="icon-ishop_3-05"></span>-->
+                <!--</div>-->
+                <!--<div class="left_list" id="left_list">-->
+                    <!--<ul>-->
+                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="p16">饭团</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="staff_box">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="staff">导购:王某某</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="close_staff">取消分配</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="allocating_task_container container_right">-->
+                <!--<div class="left_head"><span>第二步</span>分配任务给员工</div>-->
+                <!--<div class="input_search">-->
+                    <!--<input type="text" placeholder="搜索" class="right_input" id="right_input">-->
+                    <!--<span class="icon-ishop_3-05 rigth_icon"></span>-->
+                    <!--<span class="screen icon-ishop_6-05" id="screen_btn"></span>-->
+                <!--</div>-->
+                <!--<div class="left_list" id="right_list">-->
+                    <!--<ul>-->
 
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <span class="reset_btn">重置</span>
-        <span class="allocating_btn">分配</span>
-    </div>
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<span class="reset_btn">重置</span>-->
+        <!--<span class="allocating_btn">分配</span>-->
+    <!--</div>-->
     <!-- 拉取区域 -->
     <div id="screen_area" class="screen_area">
         <div class="screen_title">
@@ -671,15 +680,8 @@
     </div>
     <!-- 拉取员工  -->
     <div id="screen_staff" class="screen_area">
-        <!--<div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>-->
-        <!--<div class="contion">-->
-            <!--<div class="contion_input"><label>所属区域</label><span id="find_area"><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></span></div>-->
-            <!--<div class="contion_input"><label>所属品牌</label><span id="find_brand"><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></span></div>-->
-            <!--<div class="contion_input"><label>所属店铺</label><span id="find_shop"><input id="screen_shop_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></span></div>-->
-        <!--</div>-->
-        <!--<div class="ensure"><span id="screen_vip_que">确定</span></div>-->
         <div class="screen_title">
-            <h4>筛选员工</h4>
+            <h4>筛选执行人</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
                     <label>已选区域</label><span id="find_area"><input class="area_num" type="text" readonly="true" id="staff_area_num"
@@ -751,19 +753,23 @@
             <!--<span>编辑权限</span>-->
         </div>
         <div class="list">
-            <div class="list_l">
-                <ul>
-                    <li>
-                        <label>分组编号</label>
-                        <input type="text" disabled="true" id="group_id">
-                    </li>
-                    <li class="r">
-                        <label>分组名称</label>
-                        <input type="text" disabled="true" id="group_name">
-                    </li>
-                </ul>
-            </div>
+            <!--<div class="list_l">-->
+                <!--<ul>-->
+                    <!--<li>-->
+                        <!--<label>分组编号</label>-->
+                        <!--<input type="text" disabled="true" id="group_id">-->
+                    <!--</li>-->
+                    <!--<li class="r">-->
+                        <!--<label>分组名称</label>-->
+                        <!--<input type="text" disabled="true" id="group_name">-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
             <div class="list_r">
+                <div class="save" id="target_vip_all" style="margin-right: 20px;display: none">
+                    <i class="icon-ishop_6-04"></i>
+                    保存全部
+                </div>
                 <div class="save" id="target_vip_save">
                     <i class="icon-ishop_6-04"></i>
                     保存
@@ -800,41 +806,6 @@
             </ul>
             </div>
         </div>
-        <!--<div class="sxk" id="sxk">-->
-        <!--<div class="btn">-->
-        <!--<div class="empty" id="empty">-->
-        <!--<i class="icon-ishop_6-16"></i>清空筛选-->
-        <!--</div>-->
-        <!--<div class="r_btn">-->
-        <!--<div class="pack_up" id="pack_up">-->
-        <!--<i class="icon-ishop_6-18"></i>-->
-        <!--收起-->
-        <!--</div>-->
-        <!--<div class="find" id="find">-->
-        <!--<i class="icon-ishop_6-19"></i>-->
-        <!--查找-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="inputs">-->
-        <!--<li>-->
-        <!--<label>公司名称</label>-->
-        <!--<input type="text" id="p1">-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<label>联系人</label>-->
-        <!--<input type="text" id="p2">-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<label>修改人</label>-->
-        <!--<input type="text" id="p3">-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<label>联系电话</label>-->
-        <!--<input type="text" id="p4">-->
-        <!--</li>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="table">
             <table id="table" cellpadding="0" cellspacing="0" width="100%">
                 <thead>
@@ -910,7 +881,7 @@
             </ul>
         </div>
     </div>
-    <div class="p" id="p"></div>
+    <div id="p"></div>
     <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -918,6 +889,165 @@
         <div class="gobottom">
             <span class="icon-ishop_4-04"></span>
         </div>
+    </div>
+    <!-- 拉取区域 -->
+    <div id="vip_screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选区域</h4>
+            <div class="screen_close" id="close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_area">
+                <span class="icon-ishop_3-05" id="search_area_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="vip_screen_shop" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="screen_close" id="close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_store">
+                <span class="icon-ishop_3-05" id="search_store_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="vip_screen_brand" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_brand" readonly="true">
+                <span class="icon-ishop_3-05" id="search_brand_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_brand">确定</div>
+    </div>
+    <!-- 拉取导购  -->
+    <div id="vip_screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="screen_close" id="close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_staff">
+                <span class="icon-ishop_3-05" id="search_staff_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_staff">确定</div>
+    </div>
+    <!-- 会员弹框 -->
+    <div class="screen_wrapper" id="screen_wrapper">
+        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+        <div class="contion">
+            <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+            <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+            <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text" readonly="true"
+                                                                 data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+            <div class="contion_input"><label>所属导购</label><input id="screen_staff_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+        </div>
+        <div class="ensure"><span id="screen_vip_que">确定</span></div>
     </div>
 </div>
 <!-- Mainly scripts -->
@@ -1066,7 +1196,6 @@
 //        }
     });
     $("#target_vip_icon").click(function () {
-        var val = $("#execution_input").val();
             $(".content").show();
             $("#page-wrapper").hide();
     });
@@ -1079,10 +1208,312 @@
         $("#allocating_task").hide();
         $(".box_shadow").hide();
     });
-    //分配员工筛选
-    $("#screen_btn").click(function () {
-        $("#screen_staff").show();
-        $("#allocating_task").hide();
+    //分配目标会员筛选
+    $("#filtrate").click(function () {
+        $("#screen_wrapper").show();
+        $("#p").show();
+    });
+    $("#screen_wrapper_close").click(function () {
+        $("#screen_wrapper").hide();
+        $("#p").hide();
+    });
+    //区域显示,关闭
+    $("#screen_area_num").click(function () {
+        $("#vip_screen_area").show();
+        $("#screen_wrapper").hide();
+        isscroll=false;
+        area_num=1;
+        var b="area";//标记
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_area").width())/2;
+        var tp=(arr[1]-$("#vip_screen_area").height())/2+63;
+        $("#vip_screen_area .screen_content_l").unbind("scroll");
+        $("#vip_screen_area .screen_content_l ul").empty();
+        $("#vip_screen_area").css({"left":+left+"px","top":+tp+"px"});
+        getarealist(area_num,b);
+    });
+    $("#screen_areal").click(function () {
+        $("#vip_screen_area").show();
+        $("#screen_wrapper").hide();
+        var b="area";//标记
+        isscroll=false;
+        area_num=1;
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_area").width())/2;
+        var tp=(arr[1]-$("#vip_screen_area").height())/2+63;
+        $("#vip_screen_area .screen_content_l").unbind("scroll");
+        $("#vip_screen_area .screen_content_l ul").empty();
+        $("#vip_screen_area").css({"left":+left+"px","top":+tp+"px"});
+        getarealist(area_num,b);
+    });
+    $("#close_area").click(function () {
+        $("#vip_screen_area").hide();
+        $("#screen_wrapper").show();
+    });
+    //区域搜索，确定
+    $("#search_area_f").click(function () {
+        area_num=1;
+        isscroll=false;
+        var b="area";//标记
+        $("#vip_screen_area .screen_content_l").unbind("scroll");
+        $("#vip_screen_area .screen_content_l ul").empty();
+        getarealist(area_num,b);
+    });
+    $("#search_area").keydown(function () {
+        var event=window.event||arguments[0];
+        area_num=1;
+        if(event.keyCode == 13){
+            var b="area";//标记
+            isscroll=false;
+            $("#vip_screen_area .screen_content_l").unbind("scroll");
+            $("#vip_screen_area .screen_content_l ul").empty();
+            getarealist(area_num,b);
+        }
+    });
+    $("#que_area").click(function () {
+        $("#vip_screen_area").hide();
+        $("#screen_wrapper").show();
+        var li=$("#vip_screen_area .screen_content_r input[type='checkbox']").parents("li");
+        var area_code="";
+        for(var i=0;i<li.length;i++){
+            var r=$(li[i]).attr("id");
+            if(i<li.length-1){
+                area_code+=r+",";
+            }else{
+                area_code+=r;
+            }
+        }
+        isscroll=false;
+        $("#screen_area_num").val("已选"+li.length+"个");
+        $("#screen_area_num").attr("data-code",area_code);
+    });
+    //品牌显示，关闭
+    $("#screen_brand_num").click(function () {
+        var a="brand";
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_brand").width())/2;
+        var tp=(arr[1]-$("#vip_screen_brand").height())/2+63;
+        $("#vip_screen_brand .screen_content_l ul").empty();
+        $("#vip_screen_brand").css({"left":+left+"px","top":+tp+"px"});
+        $("#vip_screen_brand").show();
+        $("#screen_wrapper").hide();
+        getbrandlist(a);
+    });
+    $("#screen_brandl").click(function () {
+        var a="brand";
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_brand").width())/2;
+        var tp=(arr[1]-$("#vip_screen_brand").height())/2+63;
+        $("#vip_screen_brand .screen_content_l ul").empty();
+        $("#vip_screen_brand").css({"left":+left+"px","top":+tp+"px"});
+        $("#vip_screen_brand").show();
+        $("#screen_wrapper").hide();
+        getbrandlist(a);
+    });
+    $("#close_brand").click(function () {
+        $("#vip_screen_brand").hide();
+        $("#screen_wrapper").show();
+    });
+    //品牌搜索，确定
+    $("#search_brand_f").click(function () {
+        var a="brand";
+        $("#vip_screen_brand .screen_content_l").unbind("scroll");
+        $("#vip_screen_brand .screen_content_l ul").empty();
+        getbrandlist(a);
+    });
+    $("#search_brand").keydown(function () {
+        var a="brand";
+        var event=window.event||arguments[0];
+        if(event.keyCode == 13){
+            $("#vip_screen_area .screen_content_l").unbind("scroll");
+            $("#vip_screen_area .screen_content_l ul").empty();
+            getbrandlist(a);
+        }
+    });
+    $("#que_brand").click(function () {
+        var li=$("#vip_screen_brand .screen_content_r input[type='checkbox']").parents("li");
+        var brand_code="";
+        for(var i=0;i<li.length;i++){
+            var r=$(li[i]).attr("id");
+            if(i<li.length-1){
+                brand_code+=r+",";
+            }else{
+                brand_code+=r;
+            }
+        }
+        $("#screen_brand_num").attr("data-code",brand_code);
+        $("#screen_brand_num").val("已选"+li.length+"个");
+        $("#vip_screen_brand").hide();
+        $("#screen_wrapper").show();
+    });
+    //店铺显示，关闭
+    $("#screen_shop_num").click(function () {
+        isscroll=false;
+        shop_num=1;
+        var b="shop";
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_shop").width())/2;
+        var tp=(arr[1]-$("#vip_screen_shop").height())/2+63;
+        $("#vip_screen_shop .screen_content_l ul").empty();
+        $("#vip_screen_shop").css({"left":+left+"px","top":+tp+"px"});
+        $("#vip_screen_shop").show();
+        $("#screen_wrapper").hide();
+        getstorelist(shop_num,b);
+    });
+    $("#screen_shopl").click(function () {
+        isscroll=false;
+        shop_num=1;
+        var b="shop";
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_shop").width())/2;
+        var tp=(arr[1]-$("#vip_screen_shop").height())/2+63;
+        $("#vip_screen_shop .screen_content_l ul").empty();
+        $("#vip_screen_shop").css({"left":+left+"px","top":+tp+"px"});
+        $("#vip_screen_shop").show();
+        $("#screen_wrapper").hide();
+        getstorelist(shop_num,b);
+    });
+    $("#close_shop").click(function () {
+        $("#vip_screen_shop").hide();
+        $("#screen_wrapper").show();
+    });
+    //店铺搜索，确定
+    $("#search_shop_f").click(function () {
+        shop_num=1;
+        isscroll=false;
+        var b="shop";
+        $("#vip_screen_shop .screen_content_l").unbind("scroll");
+        $("#vip_screen_shop .screen_content_l ul").empty();
+        getstorelist(shop_num,b)
+    });
+    $("#search_shop").keydown(function () {
+        shop_num=1;
+        var event=window.event||arguments[0];
+        if(event.keyCode == 13){
+            var b="shop";
+            isscroll=false;
+            $("#vip_screen_area .screen_content_l").unbind("scroll");
+            $("#vip_screen_area .screen_content_l ul").empty();
+            getstorelist(shop_num,b);
+        }
+    });
+    $("#que_shop").click(function () {
+        var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
+        var store_code="";
+        for(var i=0;i<li.length;i++){
+            var r=$(li[i]).attr("id");
+            if(i<li.length-1){
+                store_code+=r+",";
+            }else{
+                store_code+=r;
+            }
+        }
+        isscroll=false;
+        $("#screen_shop_num").attr("data-code",store_code);
+        $("#screen_shop_num").val("已选"+li.length+"个");
+        $("#vip_screen_shop").hide();
+        $("#screen_wrapper").show();
+    });
+    //导购显示，关闭
+    $("#screen_staff_num").click(function () {
+        isscroll=false;
+        staff_num=1;
+        var b="staff";
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_staff").width())/2;
+        var tp=(arr[1]-$("#vip_screen_staff").height())/2+63;
+        $("#vip_screen_staff .screen_content_l ul").empty();
+        $("#vip_screen_staff").css({"left":+left+"px","top":+tp+"px"});
+        $("#vip_screen_staff").show();
+        $("#screen_wrapper").hide();
+        getstafflist(staff_num,b);
+    });
+    $("#screen_shopl").click(function () {
+        isscroll=false;
+        staff_num=1;
+        var b="staff";
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#vip_screen_staff").width())/2;
+        var tp=(arr[1]-$("#vip_screen_staff").height())/2+63;
+        $("#vip_screen_staff .screen_content_l ul").empty();
+        $("#vip_screen_staff").css({"left":+left+"px","top":+tp+"px"});
+        $("#vip_screen_staff").show();
+        $("#screen_wrapper").hide();
+        getstafflist(staff_num,b);
+    });
+    $("#close_shop").click(function () {
+        $("#vip_screen_staff").hide();
+        $("#screen_wrapper").show();
+    });
+    //导购搜索，确定
+    $("#search_staff_f").click(function () {
+        staff_num=1;
+        isscroll=false;
+        var b="staff";
+        $("#vip_screen_staff .screen_content_l").unbind("scroll");
+        $("#vip_screen_staff .screen_content_l ul").empty();
+        getstafflist(staff_num,b);
+    });
+    $("#search_staff").keydown(function () {
+        staff_num=1;
+        var b="staff";
+        var event=window.event||arguments[0];
+        if(event.keyCode == 13){
+            isscroll=false;
+            $("#vip_screen_staff .screen_content_l").unbind("scroll");
+            $("#vip_screen_staff .screen_content_l ul").empty();
+            getstafflist(staff_num,b);
+        }
+    });
+    $("#que_staff").click(function () {
+        var li=$("#vip_screen_staff .screen_content_r input[type='checkbox']").parents("li");
+        var user_code="";
+        var phone="";
+        var name="";
+        for(var i=0;i<li.length;i++){
+            var r=$(li[i]).attr("id");
+            var p=$(li[i]).find("input").attr("data-phone");
+            var h=$(li[i]).find(".p16").html();
+            if(i<li.length-1){
+                user_code+=r+",";
+                phone+=p+",";
+                name+=h+",";
+            }else{
+                user_code+=r;
+                phone+=p;
+                name+=h;
+            }
+        }
+        $("#screen_staff_num").attr("data-code", user_code);
+        $("#vip_screen_staff").hide();
+        $("#screen_wrapper").show();
+        $("#screen_staff_num").val("已选"+li.length+"个");
+    });
+    //分配会员确定
+    $("#screen_vip_que").click(function () {
+        inx=1;
+        var tr= $('#table tbody tr');
+        var corp_code=$('#OWN_CORP').val();
+        var area_code =$('#screen_area_num').attr("data-code");//区域
+        var brand_code=$('#screen_brand_num').attr("data-code");//品牌
+        var store_code=$("#screen_shop_num").attr("data-code");//店铺
+        var user_code=$("#screen_staff_num").attr("data-code");//员工
+        _param["corp_code"]=corp_code;
+        _param["brand_code"]=brand_code;
+        _param["store_code"]=store_code;
+        _param["area_code"]=area_code;
+        _param["user_code"]=user_code;
+        _param["pageNumber"] = inx;
+        _param["pageSize"] = pageSize;
+        if(area_code==""&&brand_code==""&&store_code==""&&user_code==""){
+            GET(inx,pageSize);
+        }
+        if(area_code!==""||brand_code!==""||store_code!==""||user_code!==""){
+            filtrates(inx,pageSize);
+        }
+        $("#target_vip_all").show();
+        $("#screen_wrapper").hide();
+        $("#p").hide();
     });
     //实例化编辑器
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
