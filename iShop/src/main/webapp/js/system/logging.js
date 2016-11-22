@@ -747,7 +747,7 @@ function getInputValue(){
             }
             function _value(){
                 screen_value['value']={};
-               var between_value=$(input[i]).find("input").nextAll();
+                var between_value=$(input[i]).find("input").nextAll();
                 screen_value['value'].start=$(between_value[0]).val();
                 screen_value['value'].end=$(between_value[1]).val();
             }
@@ -756,8 +756,9 @@ function getInputValue(){
             var end=$('#end').val();
             screen_key=$(input[i]).attr("id");
             screen_value={"start":start,"end":end};
-        }else if($(input[i]).parent("li").attr("class")=="isActive_select"){
-            screen_value=$(input[i]).attr("data-code");
+        }else if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input").attr("id");
+            screen_value=$(input[i]).find("input").attr("data-code");
         }else{
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");
