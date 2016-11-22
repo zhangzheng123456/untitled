@@ -818,3 +818,7 @@ $("#input-txt").keydown(function() {
         };
     }
 })
+//刷新页面
+function reload(){
+    document.location.reload();
+}
