@@ -326,6 +326,7 @@
             width: 100%;
             height: 360px;
             margin: 10px 0 20px 0;
+            overflow-y: scroll;
             background: url('../img/bjs.png');
         }
         .left_list ul li{
@@ -439,12 +440,12 @@
                     <span class="arrow_right" id="target_vip_icon"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
-            <div class="executor">
-                <span style="position: relative">
-                    <label>执行人</label><input type="text" id="executor" readonly/>
-                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
-                </span>
-            </div>
+            <!--<div class="executor">-->
+                <!--<span style="position: relative">-->
+                    <!--<label>执行人</label><input type="text" id="executor" readonly/>-->
+                    <!--<span class="arrow_right"><i class="icon-ishop_8-03"></i></span>-->
+                <!--</span>-->
+            <!--</div>-->
             <hr class="hr_s"/>
             <div class="send_title" style="display: none">
                 <span><label>推送标题</label><input type="text" id="send_title"/></span>
@@ -739,13 +740,13 @@
 <div class="content" style="display: none;">
     <div class="con_table" id="con_table">
         <div class="title">
-            <span>会员管理</span>
+            <span>活动管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span id="back_vip_group_1">会员分组</span>
+            <span id="back_vip_group_1">活动列表</span>
             <span class="icon-ishop_8-03"></span>
-            <span id="back_edit_vip_group">编辑会员分组</span>
+            <span id="back_edit_vip_group">创建活动</span>
             <span class="icon-ishop_8-03"></span>
-            <span>分配会员</span>
+            <span>分配目标会员</span>
             <!--<span class="icon-ishop_8-03"></span>-->
             <!--<span>编辑权限</span>-->
         </div>
@@ -763,7 +764,7 @@
                 </ul>
             </div>
             <div class="list_r">
-                <div class="save">
+                <div class="save" id="target_vip_save">
                     <i class="icon-ishop_6-04"></i>
                     保存
                 </div>
@@ -782,22 +783,22 @@
                     </li>
                 </ul>
             </div>
-            <!--<div class="action_r">-->
-            <!--<ul>-->
-            <!--<li id="filtrate">-->
-            <!--<span class="icon-ishop_6-05"></span>-->
-            <!--筛选-->
+            <div class="action_r">
+            <ul>
+            <li id="filtrate">
+            <span class="icon-ishop_6-05"></span>
+            筛选
+            </li>
+            <!--<li class="bg">-->
+            <!--<span class="icon-ishop_6-07"></span>-->
+            <!--刷新-->
             <!--</li>-->
-            <!--&lt;!&ndash;<li class="bg">&ndash;&gt;-->
-            <!--&lt;!&ndash;<span class="icon-ishop_6-07"></span>&ndash;&gt;-->
-            <!--&lt;!&ndash;刷新&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span class="icon-ishop_6-08"></span>&ndash;&gt;-->
-            <!--&lt;!&ndash;更多&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--</ul>-->
-            <!--</div>-->
+            <!--<li>-->
+            <!--<span class="icon-ishop_6-08"></span>-->
+            <!--更多-->
+            <!--</li>-->
+            </ul>
+            </div>
         </div>
         <!--<div class="sxk" id="sxk">-->
         <!--<div class="btn">-->
@@ -980,21 +981,18 @@
         $(this).addClass("liactive").siblings("li").removeClass("liactive");
         $("#execution_input").val(val);
         if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
-            $(".executor").show();
             $(".task_dec").show();
             $(".task_title").show();
             $(".send_title").hide();
             $(".summary").hide();
             $(".short_msg").hide();
         } else if (val == "系统短信通知顾客") {
-            $(".executor").hide();
             $(".task_dec").hide();
             $(".task_title").hide();
             $(".send_title").hide();
             $(".summary").hide();
             $(".short_msg").show();
         } else if (val == "微信公众号推送") {
-            $(".executor").hide();
             $(".task_dec").hide();
             $(".task_title").hide();
             $(".send_title").show();

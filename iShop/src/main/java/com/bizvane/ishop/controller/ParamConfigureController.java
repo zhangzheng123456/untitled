@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.ParamConfigure;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.CorpParamService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.ParamConfigureService;
@@ -41,7 +42,8 @@ public class ParamConfigureController {
     private CorpParamService corpParamService;
     @Autowired
     ParamConfigureService paramConfigureService;
-
+    @Autowired
+    private BaseService baseService;
     private static final Logger logger = Logger.getLogger(ParamConfigureController.class);
 
 
@@ -96,6 +98,31 @@ public class ParamConfigureController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(paramConfigure.getId()));
+
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "系统管理_参数定义";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = "";
+                String t_code = action_json.get("param_name").toString();
+                String t_name = action_json.get("param_type").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -133,6 +160,30 @@ public class ParamConfigureController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("param edit success");
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "系统管理_参数定义";
+                String action = Common.ACTION_UPD;
+                String t_corp_code ="";
+                String t_code = action_json.get("param_name").toString();
+                String t_name = action_json.get("param_type").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -179,6 +230,29 @@ public class ParamConfigureController {
                         break;
                     }
                 }
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "系统管理_参数定义";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = "";
+                String t_code = paramConfigure.getParam_name();
+                String t_name = paramConfigure.getParam_type();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg == null) {
                 for (int i = 0; i < ids.length; i++) {

@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * 用户拥有店铺下的员工
+     * 用户拥有店铺下的员工(包括区经)
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
     public PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas,String role_code) throws Exception {
@@ -192,6 +192,26 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(page_number, page_size);
         List<User> users = userMapper.selUserByStoreCode(params);
         PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
+    /**
+     * 根据员工编号拉取员工
+     */
+    @Override
+    public PageInfo<User> selectUsersByUserCode(int page_number, int page_size, String corp_code, String search_value, String user_code) throws Exception {
+        String[] users = null;
+        if (!user_code.equals("")) {
+            user_code = user_code.replace(Common.SPECIAL_HEAD,"");
+            users = user_code.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_code", users);
+        params.put("search_value", search_value);
+        params.put("corp_code", corp_code);
+        PageHelper.startPage(page_number, page_size);
+        List<User> userList = userMapper.selectUsersByUserCode(params);
+        PageInfo<User> page = new PageInfo<User>(userList);
         return page;
     }
 

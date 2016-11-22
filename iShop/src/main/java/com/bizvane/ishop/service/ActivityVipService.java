@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.ActivityVip;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -16,16 +17,15 @@ public interface ActivityVipService {
 
     int delete(int id) throws Exception;
 
- //String insert(String message, String user_id,HttpServletRequest request) throws Exception;
-String insert(String message, String user_id) throws Exception;
+    String insert(String message, String user_id, HttpServletRequest request) throws Exception;
 
-    //String update(String message, String user_id,HttpServletRequest request) throws Exception;
-    String update(String message, String user_id) throws Exception;
 
+    String update(String message, String user_id, HttpServletRequest request) throws Exception;
+
+
+    int updateActivityVip(ActivityVip activityVip) throws Exception;
 
     ActivityVip selectActivityById(int id) throws Exception;
 
-    ActivityVip getActivityForId(String corp_code, String activity_theme, String run_mode, String created_date) throws Exception;
-
-
+    ActivityVip selActivityByCode(String corp_code, String activity_vip_code) throws Exception;
 }

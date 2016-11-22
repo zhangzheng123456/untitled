@@ -308,6 +308,8 @@ function jurisdiction(actions){
             $('#more_down').append("<div id='signIn'>签到</div>");
         }else if(actions[i].act_name=="signOut"){
             $('#more_down').append("<div id='signOut'>签退</div>");
+        }else if(actions[i].act_name=="synchronization"){
+            $('#more_down').append("<div id='synchronization'>同步</div>");
         }
     }
     quanXian();

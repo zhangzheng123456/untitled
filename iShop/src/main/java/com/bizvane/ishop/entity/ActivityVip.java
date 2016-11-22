@@ -7,6 +7,8 @@ public class ActivityVip {
     private int id;
     //所属企业
     private String corp_code;
+    //活动编号
+    private String activity_vip_code;
     //活动主题
     private String activity_theme;
     //活动执行方式
@@ -77,6 +79,14 @@ public class ActivityVip {
         this.corp_code = corp_code;
     }
 
+    public String getActivity_vip_code() {
+        return activity_vip_code;
+    }
+
+    public void setActivity_vip_code(String activity_vip_code) {
+        this.activity_vip_code = activity_vip_code;
+    }
+
     public String getActivity_theme() {
         return activity_theme;
     }
@@ -108,7 +118,6 @@ public class ActivityVip {
     public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
-
 
 
     public String getMsg_info() {

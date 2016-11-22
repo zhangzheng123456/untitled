@@ -172,40 +172,47 @@ public class UserController {
 
             String area_code = "";
             String store_code = "";
+            String brand_code = "";
             PageInfo<User> list = null;
+            if (jsonObject.has("brand_code") && !jsonObject.get("brand_code").equals("")){
+                brand_code = jsonObject.get("brand_code").toString();
+            }
+            if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                area_code = jsonObject.get("area_code").toString();
+            }
+            if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
+                store_code = jsonObject.get("store_code").toString();
+            }
             if (role_code.equals(Common.ROLE_SYS)) {
                 if (jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                     corp_code = jsonObject.get("corp_code").toString();
                 }
-                if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
-                    area_code = jsonObject.get("area_code").toString();
-                }
-                if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
-                    store_code = jsonObject.get("store_code").toString();
-                }
-                if (!area_code.equals("") && !store_code.equals("")) {
+                if (!store_code.equals("")) {
 //                    String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                }else if(!area_code.equals("") && store_code.equals("")){
+                }else if(!area_code.equals("") || !brand_code.equals("")){
                     //拉取区域下所有员工（包括区经）
                     String[] areas = area_code.split(",");
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,areas, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + stores.get(i).getStore_code();
+                    }
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
                 }else {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
                 }
             } else if (role_code.equals(Common.ROLE_GM)) {
-                if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
-                    area_code = jsonObject.get("area_code").toString();
-                }
-                if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
-                    store_code = jsonObject.get("store_code").toString();
-                }
                 if (!area_code.equals("") && !store_code.equals("")) {
 //                    String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                }else if(!area_code.equals("") && store_code.equals("")){
+                }else if(!area_code.equals("") || !brand_code.equals("")){
+                    //拉取区域下所有员工（包括区经）
                     String[] areas = area_code.split(",");
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,areas, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + stores.get(i).getStore_code();
+                    }
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
                 }else {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
                 }
@@ -249,8 +256,12 @@ public class UserController {
                     }
                 }
             }else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = request.getSession().getAttribute("brand_code").toString();
-
+                if (jsonObject.has("brand_code") && !jsonObject.get("brand_code").equals("")){
+                    brand_code = jsonObject.get("brand_code").toString();
+                }else {
+                    brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                }
                 if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")) {
                     area_code = jsonObject.get("area_code").toString();
                 }
@@ -1087,7 +1098,7 @@ public class UserController {
                 String action = Common.ACTION_ADD;
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("user_code").toString();
-                String t_name = action_json.get("user_name").toString();
+                String t_name = action_json.get("username").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
@@ -1261,7 +1272,7 @@ public class UserController {
                 String action = Common.ACTION_UPD;
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("user_code").toString();
-                String t_name = action_json.get("user_name").toString();
+                String t_name = action_json.get("username").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
@@ -1271,6 +1282,7 @@ public class UserController {
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());

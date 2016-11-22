@@ -10,6 +10,7 @@ import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Feedback;
 
 import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FeedbackService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
@@ -48,6 +49,8 @@ public class FeedbackController {
     private FeedbackService feedbackService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     private static final Logger logger = Logger.getLogger(FeedbackController.class);
@@ -167,6 +170,30 @@ public class FeedbackController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add success");
+
+            //----------------行为日志------------------------------------------
+            /**
+             * mongodb插入用户操作记录
+             * @param operation_corp_code 操作者corp_code
+             * @param operation_user_code 操作者user_code
+             * @param function 功能
+             * @param action 动作
+             * @param corp_code 被操作corp_code
+             * @param code 被操作code
+             * @param name 被操作name
+             * @throws Exception
+             */
+            com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+            String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+            String operation_user_code = request.getSession().getAttribute("user_code").toString();
+            String function = "系统管理_用户反馈";
+            String action = Common.ACTION_ADD;
+            String t_corp_code = "";
+            String t_code = action_json.get("user_code").toString();
+            String t_name = action_json.get("phone").toString();
+            String remark = action_json.get("feedback_date").toString();
+            baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+            //-------------------行为日志结束-----------------------------------------------------------------------------------
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -193,10 +220,37 @@ public class FeedbackController {
             String[] ids = feed_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
+                Feedback feedback = feedbackService.selFeedbackById(Integer.valueOf(ids[i]));
                 feedbackService.delFeedbackById(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "系统管理_用户反馈";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = "";
+                String t_code = feedback.getUser_code();
+                String t_name =feedback.getPhone();
+                String remark = feedback.getFeedback_date();
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
+
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -271,6 +325,30 @@ public class FeedbackController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
+
+            //----------------行为日志------------------------------------------
+            /**
+             * mongodb插入用户操作记录
+             * @param operation_corp_code 操作者corp_code
+             * @param operation_user_code 操作者user_code
+             * @param function 功能
+             * @param action 动作
+             * @param corp_code 被操作corp_code
+             * @param code 被操作code
+             * @param name 被操作name
+             * @throws Exception
+             */
+            com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+            String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+            String operation_user_code = request.getSession().getAttribute("user_code").toString();
+            String function = "系统管理_用户反馈";
+            String action = Common.ACTION_UPD;
+            String t_corp_code = "";
+            String t_code = action_json.get("user_code").toString();
+            String t_name = action_json.get("phone").toString();
+            String remark = action_json.get("feedback_date").toString();
+            baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+            //-------------------行为日志结束-----------------------------------------------------------------------------------
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

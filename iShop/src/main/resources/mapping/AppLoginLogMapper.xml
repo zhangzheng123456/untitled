@@ -16,6 +16,7 @@
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_name" property="store_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_isactive" property="user_isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_can_login" property="user_can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -26,6 +27,8 @@
         acc_app_login_log.platform,
         acc_app_login_log.user_code,
         acc_app_login_log.user_name,
+        def_store.store_code,
+        def_store.brand_code,
         acc_app_login_log.store_name,
         acc_app_login_log.position,
         acc_app_login_log.phone,
@@ -35,10 +38,11 @@
         acc_app_login_log.created_date,
         def_user.isactive user_isactive,
         def_user.can_login user_can_login
-      FROM acc_app_login_log,def_corp,def_user
+      FROM acc_app_login_log,def_corp,def_user,def_store
       WHERE  acc_app_login_log.corp_code=def_corp.corp_code
         AND acc_app_login_log.corp_code=def_user.corp_code
         AND acc_app_login_log.user_code=def_user.user_code
+        AND acc_app_login_log.store_name=def_store.store_name
         <if test="corp_code!=null and corp_code!=''">
             AND  acc_app_login_log.corp_code = #{corp_code}
         </if>
@@ -58,6 +62,8 @@
         acc_app_login_log.platform,
         acc_app_login_log.user_code,
         acc_app_login_log.user_name,
+        def_store.store_code,
+        def_store.brand_code,
         acc_app_login_log.store_name,
         acc_app_login_log.position,
         acc_app_login_log.phone,
@@ -67,10 +73,11 @@
         acc_app_login_log.created_date,
         def_user.isactive user_isactive,
         def_user.can_login user_can_login
-        FROM acc_app_login_log,def_corp,def_user
+        FROM acc_app_login_log,def_corp,def_user,def_store
         WHERE  acc_app_login_log.corp_code=def_corp.corp_code
         AND acc_app_login_log.corp_code=def_user.corp_code
         AND acc_app_login_log.user_code=def_user.user_code
+        AND acc_app_login_log.store_name=def_store.store_name
         <if test="corp_code!=null and corp_code!=''">
             AND  acc_app_login_log.corp_code = #{corp_code}
         </if>
