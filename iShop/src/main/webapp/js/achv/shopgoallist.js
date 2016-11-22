@@ -759,20 +759,20 @@ function filtrateDown(){
         }else{
             ul.hide();
         }
-    })
+    });
     $(".isActive_select input").blur(function(){
         var ul=$(this).next(".isActive_select_down");
         setTimeout(function(){
             ul.hide();
         },200);
-    })
+    });
     $(".isActive_select_down li").click(function () {
         var html=$(this).text();
         var code=$(this).attr("data-code");
         $(this).parents("li").find("input").val(html);
         $(this).parents("li").find("input").attr("data-code",code);
         $(".isActive_select_down").hide();
-    })
+    });
 }
 //筛选查找
 $("#find").click(function(){
