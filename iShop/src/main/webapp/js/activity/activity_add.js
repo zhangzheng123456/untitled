@@ -80,8 +80,29 @@ var funcCode=key_val.func_code;
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
-                var target_vip = $("#target_vip").val();
-                var executor = $("#executor").val();
+                var target_vip = {};
+                var type = $("#target_vip").attr("data-type");
+                if(type == "1"){
+                    target_vip["type"] = "1";
+                    target_vip["area_code"] = $("#target_vip").attr("data-areacode");
+                    target_vip["brand_code"] = $("#target_vip").attr("data-brandcode");
+                    target_vip["store_code"] = $("#target_vip").attr("data-shopcode");
+                    target_vip["user_code"] = $("#target_vip").attr("data-usercode");
+                }else {
+                    target_vip["type"] = "2";
+                    target_vip["vips"] = $("#target_vip").attr("data-vips");
+                }
+                var executor = [];
+                var user_code = $("#executor").attr("data-code");
+                    user_code = user_code.split(",");
+                var phone = $("#executor").attr("data-phone");
+                    phone = phone.split(",");
+                for(var i=0;i<user_code.length;i++){
+                    var list={};
+                    list['user_code'] = user_code[i];
+                    list['phone'] = phone[i];
+                    executor.push(list);
+                }
                 var send_title = $("#send_title").val();
                 var summary = $("#summary").val();
                 var task_title = $("#task_title").val();
@@ -89,7 +110,7 @@ var funcCode=key_val.func_code;
                 var short_msg = $("#short_msg").val();
                 var outer_link = $("#outer_link").val();
                 var activity_content = nr;
-                var creat_link = $("#creat_link").val();
+                var create_link = $("#creat_link").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (input.checked == true) {
@@ -105,6 +126,7 @@ var funcCode=key_val.func_code;
                 };
                 var _params = {
                     "corp_code": OWN_CORP,
+                    "activity_code": executor,
                     "activity_theme": activity_theme,
                     "run_mode": execution_input,
                     "start_time": start_time,
@@ -120,7 +142,7 @@ var funcCode=key_val.func_code;
                     "wechat_desc": summary,
                     "activity_content": activity_content,
                     "activity_url": outer_link,
-                    "content_url": creat_link,
+                    "content_url": create_link,
                     "isactive": ISACTIVE
                 };
                 areajs.ajaxSubmit(_command, _params, opt);
@@ -158,8 +180,29 @@ var funcCode=key_val.func_code;
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
-                var target_vip = $("#target_vip").val();
-                var executor = $("#executor").val();
+                var target_vip = {};
+                var type = $("#target_vip").attr("data-type");
+                if(type == "1"){
+                    target_vip["type"] = "1";
+                    target_vip["area_code"] = $("#target_vip").attr("data-areacode");
+                    target_vip["brand_code"] = $("#target_vip").attr("data-brandcode");
+                    target_vip["store_code"] = $("#target_vip").attr("data-shopcode");
+                    target_vip["user_code"] = $("#target_vip").attr("data-usercode");
+                }else {
+                    target_vip["type"] = "2";
+                    target_vip["vips"] = $("#target_vip").attr("data-vips");
+                }
+                var executor = [];
+                var user_code = $("#executor").attr("data-code");
+                user_code = user_code.split(",");
+                var phone = $("#executor").attr("data-phone");
+                phone = phone.split(",");
+                for(var i=0;i<user_code.length;i++){
+                    var list={};
+                    list['user_code'] = user_code[i];
+                    list['phone'] = phone[i];
+                    executor.push(list);
+                }
                 var send_title = $("#send_title").val();
                 var summary = $("#summary").val();
                 var task_title = $("#task_title").val();
@@ -167,7 +210,7 @@ var funcCode=key_val.func_code;
                 var short_msg = $("#short_msg").val();
                 var outer_link = $("#outer_link").val();
                 var activity_content = nr;
-                var creat_link = $("#creat_link").val();
+                var create_link = $("#creat_link").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (input.checked == true) {
@@ -183,6 +226,7 @@ var funcCode=key_val.func_code;
                 };
                 var _params = {
                     "corp_code": OWN_CORP,
+                    "activity_code": executor,
                     "activity_theme": activity_theme,
                     "run_mode": execution_input,
                     "start_time": start_time,
@@ -198,7 +242,7 @@ var funcCode=key_val.func_code;
                     "wechat_desc": summary,
                     "activity_content": activity_content,
                     "activity_url": outer_link,
-                    "content_url": creat_link,
+                    "content_url": create_link,
                     "isactive": ISACTIVE
                 };
                 areajs.ajaxSubmit(_command, _params, opt);
@@ -671,12 +715,14 @@ function getarealist(a,b){
 function getstorelist(a,b){
     if(b="shop"){
         var searchValue=$("#store_search").val().trim();
+        var area_code =$('#screen_area_num').attr("data-code");
+        var brand_code=$('#screen_brand_num').attr("data-code");
     }else {
         var searchValue=$("#search_store").val().trim();
+        var area_code =$('#staff_area_num').attr("data-code");
+        var brand_code=$('#staff_brand_num').attr("data-code");
     }
     var corp_code = $('#OWN_CORP').val();
-    var area_code =$('#staff_area_num').attr("data-code");
-    var brand_code=$('#staff_brand_num').attr("data-code");
     var pageSize=20;
     var pageNumber=a;
     var _param={};
@@ -768,13 +814,16 @@ function getstorelist(a,b){
 function getstafflist(a,b){
     if(b="staff"){
         var searchValue=$('#staff_search').val().trim();
+        var area_code =$("#screen_area_num").attr("data-code");
+        var brand_code=$("#screen_brand_num").attr("data-code");
+        var store_code=$("#screen_shop_num").attr("data-code");
     }else {
         var searchValue=$('#search_staff').val().trim();
+        var area_code =$("#staff_area_num").attr("data-code");
+        var brand_code=$("#staff_brand_num").attr("data-code");
+        var store_code=$("#staff_shop_num").attr("data-code");
     }
     var corp_code = $('#OWN_CORP').val();
-    var area_code =$("#staff_area_num").attr("data-code");
-    var brand_code=$("#staff_brand_num").attr("data-code");
-    var store_code=$("#staff_shop_num").attr("data-code");
     var pageSize=20;
     var pageNumber=a;
     var _param={};
@@ -786,7 +835,6 @@ function getstafflist(a,b){
     _param['pageNumber']=pageNumber;
     _param['pageSize']=pageSize;
     whir.loading.add("",0.5);//加载等待框
-    $("#mask").css("z-index","10002");
     oc.postRequire("post","/user/selectUsersByRole","", _param, function(data) {
         if (data.code == "0"){
             var message=JSON.parse(data.message);
@@ -876,6 +924,7 @@ function getuserlist(a,b) {
         target_vips["type"] = "2";
         target_vips["vips"] = $("#target_vip").attr("data-vips");
     }
+    whir.loading.add("",0.5);
     oc.postRequire("post","/activity/selUserByVip","",param,function (data) {
         if (data.code == "0"){
             var message=JSON.parse(data.message);
@@ -1921,7 +1970,7 @@ $("#screen_staff_num").click(function () {
     $("#screen_wrapper").hide();
     getstafflist(staff_num,b);
 });
-$("#screen_shopl").click(function () {
+$("#screen_staffl").click(function () {
     isscroll=false;
     staff_num=1;
     var b="staff";
@@ -1934,7 +1983,7 @@ $("#screen_shopl").click(function () {
     $("#screen_wrapper").hide();
     getstafflist(staff_num,b);
 });
-$("#close_shop").click(function () {
+$("#close_staff").click(function () {
     $("#vip_screen_staff").hide();
     $("#screen_wrapper").show();
 });
