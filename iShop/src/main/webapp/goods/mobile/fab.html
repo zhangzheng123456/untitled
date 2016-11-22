@@ -14,7 +14,9 @@
 <body style="font-size: 12px;">
 	<div class="header_line">
 		<div class="search">
-			<input id="input" type="text" value="" placeholder="搜索商品">
+			<form onkeydown="if(event.keyCode==13)return false;">
+				<input id="input" type="search" value="" placeholder="搜索商品">
+			</form>
 		</div>
 		<div class="screen" id="screen">筛选</div>
 	</div>

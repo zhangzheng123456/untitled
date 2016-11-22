@@ -43,6 +43,7 @@ function getcorplist(a){
 				$("#staff_shop_num").val("全部");
 				$("#staff_shop_num").attr("data-storecode","");
 			})
+			
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -264,7 +265,7 @@ $(".screen_content").on("click","li",function(){
     }else if(input.type=="checkbox"&&input.checked==true){
         input.checked = false;
     }
-})
+});
 function bianse(){
     $(".screen_content_l li:odd").css("backgroundColor","#fff");
     $(".screen_content_l li:even").css("backgroundColor","#ededed");
@@ -327,6 +328,17 @@ $("#area_search_f").click(function(){
 	$("#screen_area .screen_content_l").unbind("scroll");
 	$("#screen_area .screen_content_l ul").empty();
 	getarealist(area_num);
+})
+$("#staff_search_f").click(function(){
+	staff_num=1;
+	isscroll=false;
+	$("#screen_staff .screen_content_l").unbind("scroll");
+    $("#screen_staff .screen_content_l ul").empty();
+	getstafflist(staff_num);
+})
+$("#brand_search_f").click(function(){
+	$("#screen_brand .screen_content_l ul").empty();
+	getbrandlist();
 })
 //区域关闭
 $("#screen_close_area").click(function(){
@@ -610,7 +622,7 @@ function getstafflist(a){
                         + i
                         + a
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"\("+list[i].user_code+"\)</span></li>"
                     }
                 }
             }
@@ -682,6 +694,8 @@ $("#screen_que_area").click(function(){
 		staff_num=1;
 		$("#staff_area_num").attr("data-areacode",area_code);
 		$("#staff_area_num").val("已选"+li.length+"个");
+		$("#area_num").attr("data-areacode",area_code);
+		$("#area_num").val("已选"+li.length+"个");
 		$("#screen_staff .screen_content_l ul").empty();
 		$("#screen_staff .screen_content_l").unbind("scroll");
 		$("#screen_area").hide();
@@ -778,6 +792,8 @@ $("#screen_que_brand").click(function(){
 		staff_num=1;
 		$("#staff_brand_num").attr("data-brandcode",brand_code);
 		$("#staff_brand_num").val("已选"+li.length+"个");
+		$("#brand_num").attr("data-brandcode",brand_code);
+		$("#brand_num").val("已选"+li.length+"个");
 		$("#screen_staff .screen_content_l ul").empty();
 		$("#screen_staff .screen_content_l").unbind("scroll");
 		$("#screen_brand").hide();
@@ -793,7 +809,7 @@ $("#screen_que_brand").click(function(){
 		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_brand").hide();
 		$("#screen_shop").show();
-		getstafflist(shop_num);
+		getstorelist(shop_num);
 	}
 })
 //店铺里面的区域点击
@@ -848,7 +864,7 @@ $("#staff_shop").click(function(){
 	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
 	$("#screen_shop").show();
 	$("#screen_staff").hide();
-	getarealist(shop_num);
+	getstorelist(shop_num);
 })
 //员工里面的品牌点击
 $("#staff_brand").click(function(){

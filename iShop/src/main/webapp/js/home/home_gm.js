@@ -330,17 +330,31 @@ function achieveChart(data){//获取折线图
 //}
 //业绩追加
 function superadditionAchv(c){
-	$("#num_sales").html(c.am.num_sales);
-	$("#num_trade").html(c.am.num_trade);
-	$("#all_price").html(c.am.all_price);
-	$("#amount_price").html(c.am.amount_price);
-	$("#relate_rate").html(c.am.relate_rate);
-	$("#discount").html(c.am.discount);
-	$("#num_nvip").html(c.am.num_nvip);
-	$("#vip_amt_rate").html(c.am.vip_amt_rate);
-	$("#amt_trade").html(c.am.amt_trade);
-	$("#area_ranking").attr("data-percent",c.am.area_ranking);
+	$("#num_sales").html(c.gm.num_sales);
+	$("#num_trade").html(c.gm.num_trade);
+	$("#all_price").html(c.gm.all_price);
+	$("#amount_price").html(c.gm.amount_price);
+	$("#relate_rate").html(c.gm.relate_rate);
+	$("#discount").html(c.gm.discount);
+	$("#num_nvip").html(c.gm.num_nvip);
+	$("#vip_amt_rate").html(c.gm.vip_amt_rate);
+	$("#amt_trade").html(c.gm.amt_trade);
+	$("#area_ranking").attr("data-percent",c.gm.achieve_rate);
 	$("#achv_mask").hide();
+	$(".yield_rate canvas").remove();
+	var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
+        easing: 'easeOutElastic',
+        delay: 3000,
+        barColor: '#6cc1c8',
+        trackColor: '#4a5f7c',
+        scaleColor: false,
+        lineWidth: 10,
+        trackWidth: 10,
+        lineCap: 'butt',
+        onStep: function(from, to, percent) {
+            this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
+        }
+    });
 }
 //业绩加载
 function achAnalysis(a){

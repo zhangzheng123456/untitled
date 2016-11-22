@@ -39,18 +39,15 @@ import java.util.*;
 public class MessageController {
 
     private static Logger logger = LoggerFactory.getLogger((MessageController.class));
-    @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private SmsTemplateService smsTemplateService;
+
     @Autowired
     private MessageService messageService;
     @Autowired
     StoreService storeService;
     @Autowired
-    private TableManagerService managerService;
-    @Autowired
     IceInterfaceService iceInterfaceService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -117,6 +114,7 @@ public class MessageController {
            String store_id = jsonObject.get("store_id").toString();
            String title=jsonObject.get("title").toString();
            String message_content=jsonObject.get("message_content").toString();
+           String message_type="text";
 
            Data data_operator = new Data("operator", operator, ValueType.PARAM);
            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
@@ -126,6 +124,7 @@ public class MessageController {
            Data data_receiver_type = new Data("receiver_type", receiver_type, ValueType.PARAM);
            Data data_title = new Data("title", title, ValueType.PARAM);
            Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
+           Data data_message_type = new Data("message_type", message_type, ValueType.PARAM);
 
            Map datalist = new HashMap<String, Data>();
            datalist.put(data_user_id.key, data_user_id);
@@ -136,20 +135,42 @@ public class MessageController {
            datalist.put(data_receiver_type.key, data_receiver_type);
            datalist.put(data_title.key, data_title);
            datalist.put(data_message_content.key, data_message_content);
+           datalist.put(data_message_type.key, data_message_type);
 
            logger.info("-------发送通知" +datalist.toString());
-
-        DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
-        logger.info("-------发送通知" + dataBox.status);
-//        String result = dataBox.data.get("message").value;
-
-//            logger.info("after------addd----- result" + result);
-
+           DataBox dataBox = iceInterfaceService.iceInterfaceV3("MessageForWeb", datalist);
+           logger.info("-------发送通知" + dataBox.status);
 
            if (dataBox.status.toString().equals("SUCCESS")) {
                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                dataBean.setId(id);
                dataBean.setMessage("SUCCESS");
+
+               //----------------行为日志------------------------------------------
+               /**
+                * mongodb插入用户操作记录
+                * @param operation_corp_code 操作者corp_code
+                * @param operation_user_code 操作者user_code
+                * @param function 功能
+                * @param action 动作
+                * @param corp_code 被操作corp_code
+                * @param code 被操作code
+                * @param name 被操作name
+                * @throws Exception
+                */
+               com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+               String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+               String operation_user_code = request.getSession().getAttribute("user_code").toString();
+               String function = "消息管理_通知管理";
+               String action = Common.ACTION_ADD;
+               String t_corp_code = action_json.get("corp_code").toString();
+               String t_code = user_id;
+               String t_name = receiver_type;
+               Date now = new Date();
+               String remark = operator+"("+ Common.DATETIME_FORMAT.format(now)+")";
+               baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+               //-------------------行为日志结束--------------------------------------------------------------------------------
+
            }else {
                dataBean.setId(id);
                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -306,7 +327,32 @@ public class MessageController {
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete message--" + Integer.valueOf(ids[i]));
+                MessageInfo messageById = messageService.getMessageById(Integer.valueOf(ids[i]));
                 messageService.delete(Integer.valueOf(ids[i]));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "消息管理_通知管理";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = messageById.getMessage_sender();
+                String t_name = messageById.getReceiver_type();
+                String remark = messageById.getMessage_sender()+"("+ messageById.getCreated_date()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束--------------------------------------------------------------------------------
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

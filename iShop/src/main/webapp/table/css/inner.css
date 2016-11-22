@@ -109,7 +109,7 @@ input::-webkit-input-placeholder{
 	background-color:#6cc1c8;
 }
 .list .list_l li input{
-	width: 195px;
+	width: 150px;
 	height: 30px;
 	border:none;
 	outline: none;
@@ -392,7 +392,7 @@ input::-webkit-input-placeholder{
 	font-size: 14px;
 	text-align: center;
 }
-.table tr th{
+.table tr th,.power_table tr th{
 	font-weight: normal;
 	text-align: center;
 }
@@ -468,7 +468,7 @@ input::-webkit-input-placeholder{
 }
 .th{
 	background-color: #fff;
-	min-width: 50px;
+	height: 50px;
 }
 .foot{
 	height: 50px;
@@ -517,6 +517,11 @@ input::-webkit-input-placeholder{
 	font-size: 30px;
 	vertical-align: middle;
 	cursor: pointer;
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 }
 .foot-num li span.icon-ishop_4-01,.foot-num li span.icon-ishop_4-02{
 	display: block;
@@ -604,12 +609,13 @@ input::-webkit-input-placeholder{
 	text-align: center;
 	color: #888;
 	display: none;
+	box-shadow: 0 0 10px rgba(0,0,0,0.35);
 }
 .tk span{
 	position: absolute;
-	right: 0;
-	top: 0;
-	font-size:25px;
+	right: 5px;
+	top: 5px;
+	font-size:16px;
 	cursor: pointer;
 }
 .tk p{
@@ -657,17 +663,17 @@ input::-webkit-input-placeholder{
 	margin-left: 20px;
 }
 .frame{
-	padding-left: 10px;
-	padding-right: 10px;
-	min-width: 130px;
-	min-height: 50px;
-	background:rgba(0,0,0,0.5);
+	margin-left: -10%;
+	min-width: 370px;
+	min-height: 80px;
+	background:rgba(74,95,124,0.8);
 	position: absolute;
 	z-index: 10003;
 	border-radius: 5px;
 	color:#fff;
 	text-align: center;
-	line-height: 50px;
+	line-height: 80px;
+	box-shadow: 0px 3px 13px rgba(51, 56, 72,0.53);
 }
 /**回到顶部按钮 回到底部按钮**/
 #side_bar{
@@ -773,18 +779,17 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 }
 #file_close{
-	font-size: 25px;
+	font-size: 16px;
 	letter-spacing: 2px;
 	color:#999;
 	text-align: center;
 	cursor: pointer;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
     float: right;
 }
 #file_list{
-	overflow-y: auto;
 	padding-left: 20px;
 	padding-right: 20px;
 	height:200px;
@@ -796,12 +801,16 @@ input::-webkit-input-placeholder{
 	float: left;
 	margin-right: 15.7%;
 	background:url("../../img/bjs.png");
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 #file_list_r{
 	width: 42%;
 	height: 200px;
 	float: left;
 	background:url("../../img/bjs.png");
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 #file_list_z{
 	width: 15.7%;
@@ -825,6 +834,11 @@ input::-webkit-input-placeholder{
 	margin: 0 auto;
 	margin-top: 10px;
 	cursor: pointer;
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 }
 .shift:active{
 	background-color: #6dc1c8;
@@ -883,13 +897,13 @@ input::-webkit-input-placeholder{
 	margin: 60px 40px
 }
 .into_frame span{
-	width: 40px;
-	height: 40px;
+	width: 30px;
+	height: 30px;
 	text-align: center;
-	line-height: 40px;
+	line-height: 30px;
 	color: #999;
 	float: right;
-	font-size: 25px;
+	font-size: 16px;
 	cursor: pointer;
 }
 .down_load{
@@ -1025,7 +1039,7 @@ input::-webkit-input-placeholder{
 	width:260px;
 	height:35px;
 	margin:0;
-	line-height: 30px;
+	line-height: 35px;
 	text-indent: 10px;
 	color:#807a62;
 }
@@ -1194,11 +1208,11 @@ input::-webkit-input-placeholder{
 	border-bottom: 1px solid #cacaca;
 }
 .screen_area .screen_title .screen_close{
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
 	color: #888;
-	font-size: 25px;
+	font-size: 16px;
 	cursor: pointer;
 	position: absolute;
 	top: 0;
@@ -1319,7 +1333,7 @@ input::-webkit-input-placeholder{
 .screen_head i{
     width: 40px;
     height: 40px;
-    font-size: 25px;
+    font-size: 16px;
     color: #999999;
     text-align: right;
     float: right;
@@ -1527,4 +1541,67 @@ input::-webkit-input-placeholder{
 	width: 420px;
 	height: 300px;
 	margin: -10px -20px;
+}
+/*****编辑权限的样式*******/
+.power_table table{ 
+	border-collapse:collapse;
+	color: #434960;
+}
+.power_table tbody tr{
+    height: 70px;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #f4f4f4;
+    text-align: center;
+    color: #888;
+}
+.power_table tbody tr .action_name{
+	min-width: 190px;
+	line-height: 50px;
+	background-color: #ededed;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.power_table tbody tr .action_name ul,.power_table tbody tr .modify_options ul{
+	margin-left:-10px;
+    padding:10px 10px 0 10px;
+    overflow: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.power_table tbody tr .action_name ul li,.power_table tbody tr .modify_options ul li{
+	min-width:50px;
+	float: left;
+	height: 30px;
+	line-height: 30px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	padding: 0 10px 0 10px;
+	color: #AAA;
+	cursor: pointer;
+	border-radius: 5px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
+}
+.power_table tbody tr .action_name ul li.active,.power_table tbody tr .modify_options ul li.active{
+	border:1px solid #6CC1C8;
+	color: #fff;
+	background-color: #6CC1C8;
+}
+.power_table tbody tr .modify_options{
+	min-width: 470px;
+	min-height: 50px;
+	margin-left: 20px;
+	margin-right: 10px;
+	background-color: #ededed;
 }

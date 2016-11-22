@@ -106,12 +106,14 @@ public class VipGroupServiceImpl implements VipGroupService {
     }
 
     @Override
-    public List<VipGroup> selectCorpVipGroups(String corp_code,String search_value) throws Exception {
+    public List<VipGroup> selectCorpVipGroups(String corp_code, String user_code, String search_value) throws Exception {
         List<VipGroup> vipGroups;
-        vipGroups = vipGroupMapper.selectCorpVipGroups(corp_code,search_value);
+        vipGroups = vipGroupMapper.selectCorpVipGroups(corp_code,user_code,search_value);
 
         return vipGroups;
     }
+
+
 
     @Override
     public String insert(String message, String user_id) throws Exception {

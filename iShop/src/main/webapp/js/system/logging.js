@@ -252,14 +252,20 @@ function superaddition(data,num){//页面加载循环
             data[i].user_code+
             "</td><td>"
             + data[i].position
-            + "</td><td><span>"
+            + "</td><td>"
+            + data[i].store_code
+            + "</td><td><span title="+data[i].store_name+">"
             + data[i].store_name
-            + "</span></td><td><span>"
+            + "</span></td><td>"
+            + data[i].brand_name
+            + "</td><td><span>"
             + data[i].corp_name
             + "</span></td><td><span>"
             + data[i].created_date
             + "</span></td><td>"
             + data[i].time
+            + "</td><td>"
+            + data[i].user_can_login
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -305,7 +311,7 @@ function GET(a,b){
             var list=list.list;
             superaddition(list,pageNum);
             jumpBianse();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             // alert(data.message);
         }
@@ -404,7 +410,7 @@ function POST(a,b){
             filtrate="";
             list="";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -784,7 +790,7 @@ function filtrates(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }

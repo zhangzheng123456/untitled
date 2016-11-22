@@ -9,10 +9,7 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.VipGroup;
-import com.bizvane.ishop.service.IceInterfaceService;
-import com.bizvane.ishop.service.StoreService;
-import com.bizvane.ishop.service.UserService;
-import com.bizvane.ishop.service.VipGroupService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
@@ -53,7 +50,8 @@ public class VipGroupController {
     private VipGroupService vipGroupService;
     @Autowired
     IceInterfaceService iceInterfaceService;
-
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -175,6 +173,31 @@ public class VipGroupController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(String.valueOf(vipGroup.getId()));
+
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员管理_会员分组";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("vip_group_code").toString();
+                String t_name = action_json.get("vip_group_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -211,6 +234,30 @@ public class VipGroupController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员管理_会员分组";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("vip_group_code").toString();
+                String t_name = action_json.get("vip_group_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -248,10 +295,34 @@ public class VipGroupController {
             int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
+                VipGroup vipGroupById = vipGroupService.getVipGroupById(Integer.valueOf(ids[i]));
                 vipGroupService.delete(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "会员管理_会员分组";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = vipGroupById.getCorp_code();
+                String t_code = vipGroupById.getVip_group_code();
+                String t_name = vipGroupById.getVip_group_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -528,11 +599,13 @@ public class VipGroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String corp_code = jsonObject.get("corp_code").toString();
-            String vip_group_code = jsonObject.get("vip_group_code").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+            String vip_group_id = jsonObject.get("vip_group_id").toString();
 
             String vip_ids = "";
-            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(vip_group_id));
+
+//            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
             if (vipGroup != null && vipGroup.getVip_ids() != null && !vipGroup.getVip_ids().equals("")){
                 vip_ids = vipGroup.getVip_ids();
                 vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
@@ -744,13 +817,24 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             String search_value = "";
             if (jsonObject.containsKey("searchValue"))
                 search_value = jsonObject.get("searchValue").toString();
 
             JSONObject result = new JSONObject();
-            List<VipGroup> vipGroups = vipGroupService.selectCorpVipGroups(corp_code,search_value);
+            List<VipGroup> vipGroups ;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                vipGroups = vipGroupService.selectCorpVipGroups("","",search_value);
+            } else if (role_code.equals(Common.ROLE_GM)){
+                vipGroups = vipGroupService.selectCorpVipGroups(corp_code,"",search_value);
+            }else {
+                vipGroups = vipGroupService.selectCorpVipGroups(corp_code,user_code,search_value);
+            }
             result.put("list", JSON.toJSONString(vipGroups));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

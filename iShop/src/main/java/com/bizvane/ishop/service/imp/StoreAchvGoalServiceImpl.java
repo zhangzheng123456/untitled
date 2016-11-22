@@ -31,7 +31,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 
 
     @Override
-    public String  update(StoreAchvGoal storeAchvGoal) throws Exception{
+    public String update(StoreAchvGoal storeAchvGoal) throws Exception {
         int count = -1;
         if (storeAchvGoal.getTarget_time().equals(Common.TIME_TYPE_WEEK)) {
             String time = storeAchvGoal.getTarget_time();
@@ -49,7 +49,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
             storeAchvGoalMapper.update(storeAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
         } else {
-            count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time(),storeAchvGoal.getIsactive());
+            count = storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(), storeAchvGoal.getStore_code(), storeAchvGoal.getTime_type(), storeAchvGoal.getTarget_time(), storeAchvGoal.getIsactive());
             if (count > 0) {
                 return Common.DATABEAN_CODE_ERROR;
             }
@@ -59,40 +59,45 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value)
+    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value,String area_store_code)
             throws Exception {
         String[] area_codes = null;
         String[] store_codes = null;
-
+        String[] area_store_codes = null;
         if (!area_code.equals("")) {
             if (area_code.contains(Common.SPECIAL_HEAD))
-                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                area_code = area_code.replace(Common.SPECIAL_HEAD, "");
             area_codes = area_code.split(",");
+        }
+        if (!area_store_code.equals("")){
+            area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+            area_store_codes = area_store_code.split(",");
         }
         if (!store_code.equals("")) {
             if (store_code.contains(Common.SPECIAL_HEAD))
-                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                store_code = store_code.replace(Common.SPECIAL_HEAD, "");
             store_codes = store_code.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", area_codes);
+        params.put("area_store_codes",area_store_codes);
         params.put("store_codes", store_codes);
         params.put("search_value", search_value);
         List<StoreAchvGoal> storeAchvGoals;
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectBySearch(params);
-        for (StoreAchvGoal storeAchvGoal:storeAchvGoals) {
+        for (StoreAchvGoal storeAchvGoal : storeAchvGoals) {
             storeAchvGoal.setIsactive(CheckUtils.CheckIsactive(storeAchvGoal.getIsactive()));
-            if(storeAchvGoal.getTime_type()==null||storeAchvGoal.getTime_type().equals("")) {
+            if (storeAchvGoal.getTime_type() == null || storeAchvGoal.getTime_type().equals("")) {
                 storeAchvGoal.setTime_type("未设定");
-            }else if(storeAchvGoal.getTime_type().equals("D")){
+            } else if (storeAchvGoal.getTime_type().equals("D")) {
                 storeAchvGoal.setTime_type("日");
-            }else if(storeAchvGoal.getTime_type().equals("W")){
+            } else if (storeAchvGoal.getTime_type().equals("W")) {
                 storeAchvGoal.setTime_type("周");
-            }else if(storeAchvGoal.getTime_type().equals("M")){
+            } else if (storeAchvGoal.getTime_type().equals("M")) {
                 storeAchvGoal.setTime_type("月");
-            }else if(storeAchvGoal.getTime_type().equals("Y")){
+            } else if (storeAchvGoal.getTime_type().equals("Y")) {
                 storeAchvGoal.setTime_type("年");
             }
         }
@@ -101,7 +106,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public String storeAchvExist(String corp_code, String store_code) throws Exception{
+    public String storeAchvExist(String corp_code, String store_code) throws Exception {
         //this.storeAchvGoalMapper.selectById(1);
         try {
             if (null != this.storeAchvGoalMapper.selectByCorpAndUserCode(corp_code, store_code)) {
@@ -114,20 +119,29 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public StoreAchvGoal getStoreAchvForID(String corp_code, String store_code) throws Exception {
-        return this.storeAchvGoalMapper.selectByCorpAndUserCode(corp_code, store_code);
+    public StoreAchvGoal getStoreAchvForID(String corp_code, String store_code, String target_time) throws Exception {
+        return storeAchvGoalMapper.selectForId(corp_code, store_code, target_time);
     }
 
+
     @Override
-    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) throws Exception{
+    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map,String area_store_code) throws Exception {
         String[] area_codes = null;
         String[] store_codes = null;
+        String[] area_store_codes = null;
+
         if (!area_code.equals("")) {
             area_codes = area_code.split(",");
             for (int i = 0; area_codes != null && area_codes.length > i; i++) {
                 area_codes[i] = area_codes[i].substring(1, area_codes.length);
             }
         }
+
+        if (!area_store_code.equals("")){
+            area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+            area_store_codes = area_store_code.split(",");
+        }
+
         if (!store_code.equals("")) {
             store_codes = store_code.split(",");
             for (int i = 0; store_codes != null && i < area_codes.length; i++) {
@@ -137,22 +151,23 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_codes", area_codes);
+        params.put("area_store_codes",area_store_codes);
         params.put("store_codes", store_codes);
         params.put("map", map);
         List<StoreAchvGoal> storeAchvGoals;
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectAllStoreAchvScreen(params);
-        for (StoreAchvGoal storeAchvGoal:storeAchvGoals) {
+        for (StoreAchvGoal storeAchvGoal : storeAchvGoals) {
             storeAchvGoal.setIsactive(CheckUtils.CheckIsactive(storeAchvGoal.getIsactive()));
-            if(storeAchvGoal.getTime_type()==null||storeAchvGoal.getTime_type().equals("")) {
+            if (storeAchvGoal.getTime_type() == null || storeAchvGoal.getTime_type().equals("")) {
                 storeAchvGoal.setTime_type("未设定");
-            }else if(storeAchvGoal.getTime_type().equals("D")){
+            } else if (storeAchvGoal.getTime_type().equals("D")) {
                 storeAchvGoal.setTime_type("日");
-            }else if(storeAchvGoal.getTime_type().equals("W")){
+            } else if (storeAchvGoal.getTime_type().equals("W")) {
                 storeAchvGoal.setTime_type("周");
-            }else if(storeAchvGoal.getTime_type().equals("M")){
+            } else if (storeAchvGoal.getTime_type().equals("M")) {
                 storeAchvGoal.setTime_type("月");
-            }else if(storeAchvGoal.getTime_type().equals("Y")){
+            } else if (storeAchvGoal.getTime_type().equals("Y")) {
                 storeAchvGoal.setTime_type("年");
             }
         }
@@ -175,15 +190,15 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 //    }
 
     @Override
-    public int deleteById(int id) throws Exception{
+    public int deleteById(int id) throws Exception {
         return this.storeAchvGoalMapper.deleteById(id);
     }
 
     @Override
-    public String insert(StoreAchvGoal storeAchvGoal) throws Exception{
+    public String insert(StoreAchvGoal storeAchvGoal) throws Exception {
         int count = -1;
 
-        count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time(),storeAchvGoal.getIsactive());
+        count = storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(), storeAchvGoal.getStore_code(), storeAchvGoal.getTime_type(), storeAchvGoal.getTarget_time(), storeAchvGoal.getIsactive());
         if (count > 0) {
             return "店铺业绩重复";
         } else {
@@ -193,12 +208,12 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public StoreAchvGoal selectlById(int id) throws Exception{
+    public StoreAchvGoal selectlById(int id) throws Exception {
         return this.storeAchvGoalMapper.selectById(id);
     }
 
     @Override
-    public List<StoreAchvGoal> selectUsersBySearch(String corp_code, String search_value) throws Exception{
+    public List<StoreAchvGoal> selectUsersBySearch(String corp_code, String search_value) throws Exception {
         return null;
     }
 }

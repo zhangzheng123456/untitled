@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
@@ -57,7 +58,8 @@ public class UserServiceImpl implements UserService {
     private PrivilegeMapper privilegeMapper;
     @Autowired
     private BrandService brandService;
-
+    @Autowired
+    AppversionService appversionService;
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     /**
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * 用户拥有店铺下的员工
+     * 用户拥有店铺下的员工(包括区经)
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
     public PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas,String role_code) throws Exception {
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService {
         }
         if (!area_code.equals("")) {
             String[] area_codes = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, area_codes, null,Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.selectByAreaBrand(corp_code, area_codes, null,null,Common.IS_ACTIVE_Y);
             String a = "";
             if (store.size()>0) {
                 for (int i = 0; i < store.size(); i++) {
@@ -128,7 +130,7 @@ public class UserServiceImpl implements UserService {
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
-    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
+    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_store, String area_code, String role_code) throws Exception {
         String[] stores = null;
 
         if (!store_code.equals("")) {
@@ -138,9 +140,14 @@ public class UserServiceImpl implements UserService {
             stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
+            String[] storeCodes = null;
+            if (!area_store.equals("")){
+                area_store = area_store.replace(Common.SPECIAL_HEAD,"");
+                storeCodes = area_store.split(",");
+            }
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null ,Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,storeCodes, null ,Common.IS_ACTIVE_Y);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
@@ -188,43 +195,44 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
+    /**
+     * 根据员工编号拉取员工
+     */
+    @Override
+    public PageInfo<User> selectUsersByUserCode(int page_number, int page_size, String corp_code, String search_value, String user_code) throws Exception {
+        String[] users = null;
+        if (!user_code.equals("")) {
+            user_code = user_code.replace(Common.SPECIAL_HEAD,"");
+            users = user_code.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_code", users);
+        params.put("search_value", search_value);
+        params.put("corp_code", corp_code);
+        PageHelper.startPage(page_number, page_size);
+        List<User> userList = userMapper.selectUsersByUserCode(params);
+        PageInfo<User> page = new PageInfo<User>(userList);
+        return page;
+    }
+
     public User getUserById(int id) throws Exception {
         User user = userMapper.selectUserById(id);
         String corp_code = user.getCorp_code();
         String role_code = user.getRole_code();
+        String area_code1 = user.getArea_code();
+        String store_code1 = user.getStore_code();
+        String brand_code = user.getBrand_code();
         ProcessCodeToSpecial(user);
-        if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
-            String store_name = "";
-            String store_code1 = user.getStore_code();
-            if (store_code1 != null && !store_code1.equals("")) {
-                store_code1 = store_code1.replace(Common.SPECIAL_HEAD,"");
-                String[] ids = store_code1.split(",");
-                String store_code = "";
-                for (int i = 0; i < ids.length; i++) {
-                    Store store = storeService.getStoreByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
-                    if (store != null) {
-                        String store_name1 = store.getStore_name();
-                        store_name = store_name + store_name1;
-                        store_code = store_code + ids[i];
-                        if (i != ids.length - 1) {
-                            store_name = store_name + ",";
-                            store_code = store_code + ",";
-                        }
-                    }
-                }
-                user.setStore_name(store_name);
-                user.setStore_code(store_code);
-            } else {
-                user.setStore_name("");
-                user.setStore_code("");
-            }
-        } else {
-            user.setStore_name("");
-            user.setStore_code("");
-        }
+        user.setStore_name("");
+        user.setStore_code("");
+        user.setArea_code("");
+        user.setArea_name("");
+        user.setBrand_code("");
+        user.setBrand_name("");
         if (role_code.equals(Common.ROLE_AM)) {
             String area_name = "";
-            String area_code1 = user.getArea_code();
+            String store_name = "";
+
             if (area_code1 != null && !area_code1.equals("")) {
                 area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
                 String[] areaCodes = area_code1.split(",");
@@ -243,17 +251,51 @@ public class UserServiceImpl implements UserService {
                 }
                 user.setArea_code(areaCode);
                 user.setArea_name(area_name);
-            } else {
-                user.setArea_code("");
-                user.setArea_name("");
             }
-        } else {
-            user.setArea_code("");
-            user.setArea_name("");
+            if (store_code1 != null && !store_code1.equals("")) {
+                store_code1 = store_code1.replace(Common.SPECIAL_HEAD,"");
+                String[] ids = store_code1.split(",");
+                String store_code = "";
+                for (int i = 0; i < ids.length; i++) {
+                    Store store = storeService.getStoreByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
+                    if (store != null) {
+                        String store_name1 = store.getStore_name();
+                        store_name = store_name + store_name1;
+                        store_code = store_code + ids[i];
+                        if (i != ids.length - 1) {
+                            store_name = store_name + ",";
+                            store_code = store_code + ",";
+                        }
+                    }
+                }
+                user.setStore_name(store_name);
+                user.setStore_code(store_code);
+            }
+        }
+        if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
+            String store_name = "";
+            if (store_code1 != null && !store_code1.equals("")) {
+                store_code1 = store_code1.replace(Common.SPECIAL_HEAD,"");
+                String[] ids = store_code1.split(",");
+                String store_code = "";
+                for (int i = 0; i < ids.length; i++) {
+                    Store store = storeService.getStoreByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
+                    if (store != null) {
+                        String store_name1 = store.getStore_name();
+                        store_name = store_name + store_name1;
+                        store_code = store_code + ids[i];
+                        if (i != ids.length - 1) {
+                            store_name = store_name + ",";
+                            store_code = store_code + ",";
+                        }
+                    }
+                }
+                user.setStore_name(store_name);
+                user.setStore_code(store_code);
+            }
         }
         if (role_code.equals(Common.ROLE_BM)) {
             String brand_name = "";
-            String brand_code = user.getBrand_code();
             if (brand_code != null && !brand_code.equals("")) {
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                 String[] brandCodes = brand_code.split(",");
@@ -272,13 +314,7 @@ public class UserServiceImpl implements UserService {
                 }
                 user.setBrand_code(brandCode);
                 user.setBrand_name(brand_name);
-            } else {
-                user.setBrand_code("");
-                user.setBrand_name("");
             }
-        } else {
-            user.setBrand_code("");
-            user.setBrand_name("");
         }
         List<UserQrcode> qrcodeList = userMapper.selectByUserCode(corp_code, user.getUser_code());
         user.setQrcodeList(qrcodeList);
@@ -416,13 +452,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public JSONObject login(HttpServletRequest request, String phone, String password) throws Exception {
         System.out.println("---------login--------");
-//        List<User> user1 = userMapper.selectLogin(phone, password);
         password = CheckUtils.encryptMD5Hash(password);
-//        List<User> user2 = userMapper.selectLogin(phone, password);
         logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
 
-        List<User> users = userMapper.selectByPhone(phone);
+        List<User> users = userMapper.selectByLogin(phone);
         if (users.size()>1 || users.size()<1 || users.get(0).getCan_login().equals("N")){
             user_info.put("error", "账号异常");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
@@ -431,21 +465,8 @@ public class UserServiceImpl implements UserService {
             if (!password.equals(CheckUtils.encryptMD5Hash(user_password))) {
                 user_info.put("error", "密码错误");
                 user_info.put("status", Common.DATABEAN_CODE_ERROR);
-//            }
-//        }
-//        if (user2.size() == 0 && user1.size() == 0) {
-//            user_info.put("error", "用户名或密码错误");
-//            user_info.put("status", Common.DATABEAN_CODE_ERROR);
-//        } else if (login_user.getIsactive().contains("N")) {
-//            user_info.put("error", "当前用户不可用");
-//            user_info.put("status", Common.DATABEAN_CODE_ERROR);
             } else {
                 User login_user = users.get(0);
-//                if (user1.size() != 0) {
-//                    login_user = user1.get(0);
-//                } else {
-//                    login_user = user2.get(0);
-//                }
                 int user_id = login_user.getId();
                 String user_code = login_user.getUser_code().trim();
                 String corp_code = login_user.getCorp_code().trim();
@@ -465,9 +486,6 @@ public class UserServiceImpl implements UserService {
                 request.getSession().setAttribute("store_code", "");
                 request.getSession().setAttribute("brand_code", "");
 
-                Date now = new Date();
-                login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
-                userMapper.updateByUserId(login_user);
                 String user_type;
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
@@ -487,6 +505,7 @@ public class UserServiceImpl implements UserService {
                     //区经
                     user_type = "am";
                     request.getSession().setAttribute("area_code", area_code);
+                    request.getSession().setAttribute("store_code", store_code);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     user_type = "sm";
@@ -501,6 +520,10 @@ public class UserServiceImpl implements UserService {
                 user_info.put("user_id", user_id);
                 user_info.put("role_code", role_code);
                 user_info.put("status", Common.DATABEAN_CODE_SUCCESS);
+
+                Date now = new Date();
+                login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
+                userMapper.updateByUserId(login_user);
             }
         }
         return user_info;
@@ -569,7 +592,7 @@ public class UserServiceImpl implements UserService {
             List<User> u = this.userMapper.selectByPhone(phone);
             if (u.size() == 0) {
 
-                ValidateCode code = validateCodeService.selectValidateCode(0, phone, Common.IS_ACTIVE_Y);
+                ValidateCode code = validateCodeService.selectPhoneExist("web", phone, Common.IS_ACTIVE_Y);
                 Date now = new Date();
                 String modified_date = code.getModified_date();
                 Date time = Common.DATETIME_FORMAT.parse(modified_date);
@@ -675,7 +698,7 @@ public class UserServiceImpl implements UserService {
 //        JSONObject obj = new JSONObject(msg);
         if (dataBox.status.toString().equals("SUCCESS")) {
             //验证码存表
-            ValidateCode code = validateCodeService.selectValidateCode(0, phone, "");
+            ValidateCode code = validateCodeService.selectPhoneExist("web", phone, "");
             Date now = new Date();
             if (code == null) {
                 code = new ValidateCode();
@@ -754,7 +777,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String, String> map, String store_code, String area_code, String role_code) throws Exception {
+    public PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String, String> map, String store_code,String area_store, String area_code, String role_code) throws Exception {
         String[] stores = null;
 
         if (!store_code.equals("")) {
@@ -764,9 +787,14 @@ public class UserServiceImpl implements UserService {
             stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
+            String[] storeCodes = null;
+            if (!area_store.equals("")){
+                area_store = area_store.replace(Common.SPECIAL_HEAD,"");
+                storeCodes = area_store.split(",");
+            }
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, null,Common.IS_ACTIVE_Y);
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes,null,Common.IS_ACTIVE_Y);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
@@ -822,8 +850,8 @@ public class UserServiceImpl implements UserService {
             String area = user.getArea_code();
             String role_code = user.getRole_code();
             if (role_code != null && (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null) {
-                if (store.contains(Common.SPECIAL_HEAD)) {
-                    String store_code1 = store.replace(Common.SPECIAL_HEAD, "");
+                String store_code1 = store.replace(Common.SPECIAL_HEAD, "");
+                if (store_code1.endsWith(",")) {
                     store = store_code1.substring(0, store_code1.length() - 1);
                 }
                 user.setStore_code(store);
@@ -831,11 +859,16 @@ public class UserServiceImpl implements UserService {
                 user.setStore_code("");
             }
             if (role_code != null && role_code.equals(Common.ROLE_AM) && area != null) {
-                if (area.contains(Common.SPECIAL_HEAD)) {
-                    String area_code1 = area.replace(Common.SPECIAL_HEAD, "");
+                String area_code1 = area.replace(Common.SPECIAL_HEAD, "");
+                String store_code1 = store.replace(Common.SPECIAL_HEAD, "");
+                if (area_code1.endsWith(",")) {
                     area = area_code1.substring(0, area_code1.length() - 1);
                 }
                 user.setArea_code(area);
+                if (store_code1.endsWith(",")) {
+                    store = store_code1.substring(0, store_code1.length() - 1);
+                }
+                user.setStore_code(store);
             } else {
                 user.setArea_code("");
             }
@@ -882,7 +915,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUserCode(corp_code, user_code);
     }
 
-    public UserQrcode selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception {
+    public List<UserQrcode> selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception {
         return userMapper.selectByUserApp(corp_code, user_code, app_id);
 
     }
@@ -900,10 +933,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public String creatUserQrcode(String corp_code, String user_code, String auth_appid, String user_id) throws Exception {
-        UserQrcode userQrcode = selectQrcodeByUserApp(corp_code, user_code, auth_appid);
+        List<UserQrcode> userQrcodes = selectQrcodeByUserApp(corp_code, user_code, auth_appid);
         String picture = "";
-        if (userQrcode == null) {
-            String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
+        if (userQrcodes.size() != 1) {
+            deleteUserQrcodeOne(corp_code,user_code,auth_appid);
+            String url = CommonValue.wechat_url+"/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);
             if (!result.startsWith("{")) {
@@ -916,7 +950,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 picture = obj.get("picture").toString();
                 String qrcode_url = obj.get("url").toString();
-                userQrcode = new UserQrcode();
+                UserQrcode userQrcode = new UserQrcode();
                 userQrcode.setApp_id(auth_appid);
                 userQrcode.setCorp_code(corp_code);
                 userQrcode.setUser_code(user_code);
@@ -931,7 +965,7 @@ public class UserServiceImpl implements UserService {
                 userMapper.insertUserQrcode(userQrcode);
             }
         } else {
-            picture = userQrcode.getQrcode();
+            picture = userQrcodes.get(0).getQrcode();
         }
         return picture;
     }
@@ -964,7 +998,7 @@ public class UserServiceImpl implements UserService {
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
-                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code,null, Common.IS_ACTIVE_Y);
+                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code,null,null, Common.IS_ACTIVE_Y);
                         if (stores.size() > 0)
                             sign.setStore_code(stores.get(0).getStore_code());
                     }
@@ -1008,7 +1042,7 @@ public class UserServiceImpl implements UserService {
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
-                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, null, Common.IS_ACTIVE_Y);
+                        List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code,null, null, Common.IS_ACTIVE_Y);
                         if (stores.size() > 0)
                             sign.setStore_code(stores.get(0).getStore_code());
                     }
@@ -1043,10 +1077,16 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }else if (role_code.equals(Common.ROLE_AM)){
+            String store_code = user.getStore_code();
             String area_code = user.getArea_code();
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            stores = storeService.selectByAreaBrand(corp_code,areas, null,Common.IS_ACTIVE_Y);
+            String[] storeCodes = null;
+            if (!store_code.equals("")){
+                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                storeCodes = store_code.split(",");
+            }
+            stores = storeService.selectByAreaBrand(corp_code,areas,storeCodes, null,Common.IS_ACTIVE_Y);
             for (int i = 0; i < stores.size(); i++) {
                 String brand_code = stores.get(i).getBrand_code();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");

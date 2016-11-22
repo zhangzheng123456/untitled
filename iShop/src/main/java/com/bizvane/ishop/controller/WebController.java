@@ -99,23 +99,19 @@ public class WebController {
 
                         if (role_code.equals(Common.ROLE_AM)) {
                             String area_code = user.getArea_code();
+                            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
                             String[] areaCodes = area_code.split(",");
-                            if (areaCodes[0].contains(Common.SPECIAL_HEAD)) {
-                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
-                            }
                             String[] ids = new String[]{areaCodes[0]};
-                            List<Store> list = storeService.selectByAreaBrand(corp_code, ids, null,Common.IS_ACTIVE_Y);
+                            List<Store> list = storeService.selectByAreaBrand(corp_code, ids,null, null,Common.IS_ACTIVE_Y);
                             array.add(list.get(0).getStore_code());
                         } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                             String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
                             array.add(store_code);
                         } else {
                             String store_code = user.getStore_code();
+                            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                             String[] ids = store_code.split(",");
                             for (int i = 0; i < ids.length; i++) {
-                                if (ids[i].startsWith(Common.SPECIAL_HEAD)) {
-                                    ids[i] = ids[i].substring(1, ids[i].length());
-                                }
                                 array.add(i, ids[i]);
                             }
                         }
@@ -390,7 +386,7 @@ public class WebController {
             logger.info("--------brand_code:"+brand_code+"----------- ");
 
             List<Goods> list = goodsService.selectCorpPublicImgs(corp_code,brand_code,search_value);
-            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
+//            logger.info("--------list:"+JSON.toJSONString(list)+"----------- ");
 
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
@@ -423,11 +419,11 @@ public class WebController {
             JSONObject message = new JSONObject();
             if (request.getParameter("brand_id") != null && !request.getParameter("brand_id").equals("")) {
                 logger.info("-------------111111111111-------------------");
-                goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"));
+                goodList = weimobService.getSearchClassify(accessToken, request.getParameter("brand_id"),rowno);
                 logger.info("handleWeimob Brand_id ->" + request.getParameter("brand_id"));
             }else if (request.getParameter("key") != null && !request.getParameter("key").equals("")) {
                 logger.info("-------------22222222222------------------");
-                goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"));
+                goodList = weimobService.getSearchTitle(accessToken, request.getParameter("key"),rowno);
                 logger.info("handleWeimob Key ->" + request.getParameter("key"));
             }else {
                 goodList = weimobService.getList(accessToken, rowno);

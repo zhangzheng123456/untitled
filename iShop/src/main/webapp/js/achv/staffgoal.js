@@ -229,6 +229,7 @@ var oc = new ObjectControl();
 		});
 	};
 	staffgoaljs.ajaxSubmit=function(_command,_params,opt){
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				if(_command=="/userAchvGoal/add"){
@@ -251,6 +252,7 @@ var oc = new ObjectControl();
 					content: data.message
 				});
 			}
+			whir.loading.remove();
 		});
 	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
@@ -308,6 +310,7 @@ jQuery(document).ready(function(){
 		var a="";
 		var b="";
 		var e="";
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
@@ -355,6 +358,7 @@ jQuery(document).ready(function(){
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	}else{
 		getcorplist(a,b,e);
@@ -412,8 +416,8 @@ jQuery(document).ready(function(){
 function getcorplist(a,b,e){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			console.log(msg);
@@ -450,6 +454,7 @@ function getcorplist(a,b,e){
 				content: data.message
 			});
 		}
+		whir.loading.remove();
 	});
 }
 //获取店铺列表信息
@@ -457,6 +462,7 @@ function store_data(c,b,e){
 	var _params={};
 	_params["corp_code"]=c;//企业编号
 	var _command="/user/store";//调取店铺的名字
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
@@ -503,6 +509,7 @@ function store_data(c,b,e){
 				content: data.message
 			});
 		}
+		whir.loading.remove();//移除加载框
 	})
 }
 //获取员工列表信息
@@ -516,6 +523,7 @@ function staff_data(d,f,b,e){
 	}
 	_params["corp_code"]=d;
 	_params["store_code"]=f;
+	whir.loading.add("",0.5);
 	oc.postRequire("post","/shop/staff","list",_params,function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
@@ -545,6 +553,7 @@ function staff_data(d,f,b,e){
 				content: data.message
 			});
 		}
+		whir.loading.remove();
 	})
 }
 function year(){

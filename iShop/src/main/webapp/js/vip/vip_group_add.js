@@ -563,9 +563,9 @@ $("#save").click(function () {
         if (data.code == 0) {
             var msg=JSON.parse(data.message);
             console.log(msg);
-            $('#vip_num').val(msg.vip_group_code);
-            $('#vip_id').val(msg.vip_group_name);
-            $('#vip_remark').val(msg.vip_group_name);
+            $('#vip_num').val(group_code);
+            $('#vip_id').val(group_name);
+            $('#vip_remark').val(group_remark);
             $('#group_recode').val('共' +msg.vip_count+ "个会员");
             // if (role == 'eidtor') {
             //     // window.location.reload()
@@ -613,17 +613,19 @@ function GET(a, b, c) {
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
     // param["user_code"] = user_code;
-    param["vip_group_code"] =vip_group_code;
+    param["vip_group_id"] =sessionStorage.getItem("id");;
     oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
             var message = JSON.parse(data.message);
             var list = message.all_vip_list;
+            console.log(list);
             cout = message.pages;
             //var list=list.list;
             superaddition(list, a, c);
             jumpBianse();
             filtrate = "";
+            $(".table p").remove();
             setPage($("#foot-num")[0], cout, a, b, c);
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
@@ -658,7 +660,7 @@ function superaddition(data, num, c) {
             judge = '';
         }
         if (num >= 2) {
-            var a = i + num * pageSize;
+            var a = i + 1 + (num - 1) * pageSize;
         } else {
             var a = i + 1;
         }
@@ -673,7 +675,10 @@ function superaddition(data, num, c) {
             + gender
             + "</td><td>"
             + data[i].vip_phone
-            + "</td><td data_cardno='" + data[i].cardno + "'>"
+            // + "</td><td data_cardno='" + data[i].cardno + "'>"
+            + "</td><td>"
+            + data[i].cardno
+            + "</td><td>"
             + data[i].vip_card_type
             // + "</td><td>"
             // + data[i].vip_group_name
@@ -701,6 +706,7 @@ function superaddition(data, num, c) {
             input.checked = false;
         }
     })
+    $(".th th:last-child input").removeAttr("checked");
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {
@@ -1320,19 +1326,14 @@ function getarealist(a) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout = list.pages;
             var list = list.list;
             var area_html_left = '';
             var area_html_right = '';
             if (list.length == 0) {
-                if (a == 1) {
-                    for (var h = 0; h < 9; h++) {
-                        area_html_left += "<li></li>";
-                    }
-                }
-                area_next = true;
             } else {
-                if (list.length < 9 && a == 1) {
+                if (list.length>0) {
                     for (var i = 0; i < list.length; i++) {
                         area_html_left += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].area_code + "' data-areaname='" + list[i].area_name + "' name='test'  class='check'  id='checkboxOneInput"
                             + i
@@ -1343,25 +1344,15 @@ function getarealist(a) {
                             + a
                             + 1
                             + "'></label></div><span class='p16'>" + list[i].area_name + "</span></li>"
-                    }
-                    for (var j = 0; j < 9 - list.length; j++) {
-                        area_html_left += "<li></li>"
-                    }
-                } else if (list.length >= 9 || list.length < 9 && a > 1) {
-                    for (var i = 0; i < list.length; i++) {
-                        area_html_left += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].area_code + "' data-areaname='" + list[i].area_name + "' name='test'  class='check'  id='checkboxOneInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxOneInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>" + list[i].area_name + "</span></li>"
-                    }
+                    }    
                 }
+            }
+            if(hasNextPage==true){
                 area_num++;
-                area_next = false;
+                area_next=false;
+            }
+            if(hasNextPage==false){
+                area_next=true;
             }
             $("#screen_area .screen_content_l ul").append(area_html_left);
             bianse();
@@ -1401,33 +1392,13 @@ function getstorelist(a) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout = list.pages;
             var list = list.list;
             var store_html = '';
             if (list.length == 0) {
-                if (a == 1) {
-                    for (var h = 0; h < 9; h++) {
-                        store_html += "<li></li>";
-                    }
-                }
-                shop_next = true;
             } else {
-                if (list.length < 9 && a == 1) {
-                    for (var i = 0; i < list.length; i++) {
-                        store_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].store_code + "' data-storename='" + list[i].store_name + "' name='test'  class='check'  id='checkboxTowInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxTowInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>" + list[i].store_name + "</span></li>"
-                    }
-                    for (var j = 0; j < 9 - list.length; j++) {
-                        store_html += "<li></li>"
-                    }
-                } else if (list.length >= 9 || list.length < 9 && a > 1) {
+                if (list.length>0){
                     for (var i = 0; i < list.length; i++) {
                         store_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].store_code + "' data-storename='" + list[i].store_name + "' name='test'  class='check'  id='checkboxTowInput"
                             + i
@@ -1440,8 +1411,13 @@ function getstorelist(a) {
                             + "'></label></div><span class='p16'>" + list[i].store_name + "</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 shop_num++;
                 shop_next = false;
+            }
+            if(hasNextPage==false){
+                shop_next=true;
             }
             $("#screen_shop .screen_content_l ul").append(store_html);
             bianse();
@@ -1528,33 +1504,14 @@ function getstafflist(a) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
+            var hasNextPage=list.hasNextPage;
             var cout = list.pages;
             var list = list.list;
             var staff_html = '';
             if (list.length == 0) {
-                if (a == 1) {
-                    for (var h = 0; h < 9; h++) {
-                        staff_html += "<li></li>";
-                    }
-                }
-                staff_next = true;
+
             } else {
-                if (list.length < 9 && a == 1) {
-                    for (var i = 0; i < list.length; i++) {
-                        staff_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].user_code + "' data-storename='" + list[i].user_name + "' name='test'  class='check'  id='checkboxFourInput"
-                            + i
-                            + a
-                            + 1
-                            + "'/><label for='checkboxFourInput"
-                            + i
-                            + a
-                            + 1
-                            + "'></label></div><span class='p16'>" + list[i].user_name + "</span></li>"
-                    }
-                    for (var j = 0; j < 9 - list.length; j++) {
-                        staff_html += "<li></li>"
-                    }
-                } else if (list.length >= 9 || list.length < 9 && a > 1) {
+                if (list.length>0) {
                     for (var i = 0; i < list.length; i++) {
                         staff_html += "<li><div class='checkbox1'><input  type='checkbox' value='" + list[i].user_code + "' data-storename='" + list[i].user_name + "' name='test'  class='check'  id='checkboxFourInput"
                             + i
@@ -1567,8 +1524,13 @@ function getstafflist(a) {
                             + "'></label></div><span class='p16'>" + list[i].user_name + "</span></li>"
                     }
                 }
+            }
+            if(hasNextPage==true){
                 staff_num++;
                 staff_next = false;
+            }
+            if(hasNextPage==false){
+                staff_next=true;
             }
             $("#screen_staff .screen_content_l ul").append(staff_html);
             bianse();
@@ -1642,6 +1604,7 @@ $("#search").keydown(function () {
             param["searchValue"] = value;
             param["pageNumber"] = inx;
             param["pageSize"] = pageSize;
+            POST(inx, pageSize, group_code);
         }else{
             GET(inx, pageSize, group_code);
         }

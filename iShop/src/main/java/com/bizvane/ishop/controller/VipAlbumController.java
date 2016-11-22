@@ -1,50 +1,10 @@
 package com.bizvane.ishop.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.bizvane.ishop.bean.DataBean;
-import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.LuploadHelper;
-import com.bizvane.ishop.utils.MongoUtils;
-import com.bizvane.ishop.utils.OutExeclHelper;
-import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.PageInfo;
-import com.mongodb.*;
-import com.sun.corba.se.spi.ior.ObjectId;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.lang.System;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**

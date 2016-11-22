@@ -1,4 +1,5 @@
 var oc = new ObjectControl();
+var swip_image = [];
 (function(root,factory){
 	root.fab = factory();
 }(this,function(){
@@ -63,13 +64,16 @@ var oc = new ObjectControl();
 				return arr.join("\n");
 			}
 			var reg = /<img[^>]*>/gi;;
-			sessionStorage.setItem('register','');
-			var  i=0;
+			function imge_change() {
+				var  i=0;
+				return function img_change(){
+					i++;
+					return i;
+				}
+			}
+			var img_c=imge_change();
 			var nr= getContent().replace(reg,function () {
-				console.log(arguments[1]);
-				arguments[1]==sessionStorage.getItem('register')?'':i++;
-				sessionStorage.setItem('register',arguments[1]);
-				console.log(i);
+				var i=img_c();
 				return getPlainTxt().match(reg)[i-1];
 			});
 			console.log(nr);
@@ -195,7 +199,7 @@ var oc = new ObjectControl();
 			var delete_image=[];//需要删除的数据
 			console.log(sessionStorage.getItem('goods_description'));
 			console.log(getContent()==sessionStorage.getItem('goods_description'))
-			console.log('抓取图片')
+			console.log('抓取图片');
 			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
 			var save_image=getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
 			// console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
@@ -223,12 +227,17 @@ var oc = new ObjectControl();
 			}
 			var reg = /<img[^>]*>/gi;;
 			// var nr= getContent().replace(reg,getPlainTxt().match(reg));
-			sessionStorage.setItem('register','');
-			var  i=0;
+
+			function imge_change() {
+				var  i=0;
+				return function img_change(){
+					i++;
+					return i;
+				}
+			}
+			var img_c=imge_change();
 			var nr= getContent().replace(reg,function () {
-				console.log(arguments[1]);
-				arguments[1]==sessionStorage.getItem('register')?'':i++;
-				sessionStorage.setItem('register',arguments[1]);
+				var i=img_c();
 				return getPlainTxt().match(reg)[i-1];
 			});
 			console.log(nr);
@@ -470,6 +479,7 @@ jQuery(document).ready(function(){
 				// 	goods_arr.push(goods_img);
 				// }
 				for(var i=0;i<goods_arr.length;i++){
+					swip_image.push(goods_arr[i].image);
 					if(goods_arr[i].image.indexOf('http')==-1)continue;
 					// if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
 					// {
@@ -748,7 +758,17 @@ function getvarbrandlist(c,d){
 	})
 // }
 //删除图片
+Array.prototype.removeByValue = function(val) {
+	for(var i=0; i<this.length; i++) {
+		if(this[i] == val) {
+			this.splice(i, 1);
+			break;
+		}
+	}
+}
 $(".good_imgs").on("click",".diyCancel",function(){
+	var src = $(this).parent().children().find("img").attr("src");
+	swip_image.removeByValue(src);
 	$(this).parent().remove();
 })
 function getmatchgoodsList(a) {
@@ -763,18 +783,19 @@ function getmatchgoodsList(a) {
 	param["goods_code"]=goods_code;
 	param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
-	param["searchValue"]=searchValue;whir.loading.add("",0.5);//加载等待框
-	
+	param["searchValue"]=searchValue;
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
+			console.log(data);
 			var msg=JSON.parse(data.message);
 			var list=JSON.parse(msg.list);
+			var hasNextPage=list.hasNextPage;
+			var list=list.list;
+			console.log(list);
 			if(list.length<=0){
-				jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>")
-				next=true;
+				jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>");
 			}else{
-				num++;
-				a++;
 				for(var i=0;i<list.length;i++){
 					jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -783,10 +804,15 @@ function getmatchgoodsList(a) {
 						+ list[i].goods_name + '</span><span class="goods_add">'
 						+'+</span><i class="icon-ishop_6-12"></i></li>');
 				}
+			}
+			if(hasNextPage==true){
+				num++;
+				a++;
 				next=false;
 			}
-
-
+			if(hasNextPage==false){
+				next=true;
+			}
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -857,5 +883,9 @@ function public_click(a) {
 		$(a).prev().attr('checked','true')
 	}
 }
-//
+//商品图片放大
+$(".good_imgs").on("click","div img",function () {
+	var src=$(this).attr("src");
+	whir.loading.add("",0.5,src);
+})
 

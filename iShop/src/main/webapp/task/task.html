@@ -6,13 +6,13 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
+    <link href="../css/style.css?20161116?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
     <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
-	<link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
+	<link rel="stylesheet" href="../table/css/inner.css?20161116">
 	<!-- <script src="../table/js/jquery.min.js"></script> -->
     <script src="/js/loading.js"></script>
 </head>
@@ -238,7 +238,7 @@
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
                         <ul style="display:inline-flex;">
-                            <li><label>所属企业</label></li>
+                            <li><label style="color:#c26555;">所属企业*</label></li>
                             <li id="corp_select">
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex" >
@@ -249,7 +249,7 @@
                     </div>
                     <div>
                         <ul style="display:inline-flex;">
-                            <li><label>任务类型</label></li>
+                            <li><label style="color:#c26555;">任务类型*</label></li>
                             <li id="task_type_list">
                                 <span class="corp_select">
                                     <select id="task_type_code" style="display:inline-flex" >
@@ -259,13 +259,13 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label>任务名称</label><input type="text" id="task_title_e" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div>
+                        <span><label style="color:#c26555;">任务名称*</label><input type="text" id="task_title_e" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div>
                             <input type="hidden" id="task_id" />
                             <input type="hidden" id="task_code_e"/>
                         </span>
                     </div>
                     <div>
-                        <span style="display: inline-flex;width:100%"><label style="height:180px;">任务描述</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="task_describe"></textarea></span></span>
+                        <span style="display: inline-flex;width:100%"><label style="height:180px;color:#c26555">任务描述*</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="task_describe"></textarea></span></span>
                     </div>
                     <div>
                         <!--<span><label style="margin-right:14px;">分配任务</label></span>-->
@@ -275,7 +275,7 @@
                                 <!--<div class="webuploader-pick"><i class="icon-ishop_6-01"></i></div>-->
                             <!--</span></span>-->
                         <!--</span>-->
-                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">分配任务</div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;color:#c26555">分配任务*</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
                                 <div class="xingming">
                                     <!--<p>-->
@@ -284,7 +284,7 @@
                                     <!--</p>-->
                                 </div>
                                 <div id="test">
-                                    <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;margin-left: 0px">
                                     新增 <span>+</span>
                                     </div>
                                 </div>
@@ -292,12 +292,12 @@
                         </div>
                     </div>
                     <div>
-                        <span><label>开始时间</label><input type="text" id="target_start_time_e" placeholder="请输入日期" class="laydate-icon"/>
+                        <span><label style="color:#c26555;">开始时间*</label><input type="text" id="target_start_time_e" placeholder="请输入日期" class="laydate-icon"/>
                         <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span><label>截止时间</label><input type="text" id="target_end_time_e" placeholder="请输入日期" class="laydate-icon" />
+                        <span><label style="color:#c26555;">截止时间*</label><input type="text" id="target_end_time_e" placeholder="请输入日期" class="laydate-icon" />
                         <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
                         </span>
                     </div>
@@ -390,22 +390,22 @@
     </div>
 </body>
     <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="/js/loading.js"></script>
+    <script src="/js/loading.js?20161116"></script>
     <script type="text/javascript" src="/table/js/jquery.nicescroll.min.js"></script>
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script type="text/javascript" src="../js/moni_select.js"></script>
+    <script type="text/javascript" src="../js/moni_select.js?20161116"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/multiple_choice.js"></script>
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js?20161116"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="../js/task/task_operate.js"></script>
-    <script src="/js/task/task.js"></script>
-    <script src="/js/silide.js"></script>
+    <script type="text/javascript" src="../js/task/task_operate.js?20161116"></script>
+    <script src="/js/task/task.js?20161116"></script>
+    <script src="/js/silide.js?20161116"></script>
     <script>
         var start = {
             elem: '#target_start_time_e',

@@ -3,11 +3,9 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.AppLoginLog;
-import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.service.AppLoginLogService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +35,20 @@ public class AppLoginLogController {
     @Autowired
     private AppLoginLogService loginLogService;
     @Autowired
-    private TableManagerService managerService;
+    private StoreService storeService;
+    @Autowired
+    private BrandService brandService;
+    @Autowired
+    private BaseService baseService;
     String id;
+
+    /**
+     * 列表
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    //列表
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -50,6 +58,7 @@ public class AppLoginLogController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             PageInfo<AppLoginLog> list=new PageInfo<AppLoginLog>();
+            //系统管理员，不传企业编号
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = loginLogService.selectAllAppLoginLog(page_number, page_size, "", "");
             }else {
@@ -60,12 +69,14 @@ public class AppLoginLogController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
     //条件查询
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
@@ -79,7 +90,6 @@ public class AppLoginLogController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            //-------------------------------------------------------
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -95,6 +105,7 @@ public class AppLoginLogController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -103,7 +114,11 @@ public class AppLoginLogController {
     }
 
 
-
+    /**
+     * 筛选
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String selectByScreen(HttpServletRequest request) {
@@ -158,10 +173,33 @@ public class AppLoginLogController {
             String app_id = jsonObject.get("id").toString();
             String[] ids = app_id.split(",");
             for (int i = 0; i < ids.length; i++) {
+                AppLoginLog appLoginLog = loginLogService.selByLogId(Integer.valueOf(ids[i]));
                 loginLogService.delAppLoginlogById(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "员工管理_登录日志";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = appLoginLog.getCorp_code();
+                String t_code = appLoginLog.getUser_code();
+                String t_name = appLoginLog.getUser_name();
+                String remark = appLoginLog.getTime()+"("+appLoginLog.getPlatform()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -208,13 +246,43 @@ public class AppLoginLogController {
                 }
             }
             List<AppLoginLog> appLoginLogs = pageInfo.getList();
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(appLoginLogs);
             if (appLoginLogs.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
+//            List<AppLoginLog> appLoginLogs1 = new ArrayList<AppLoginLog>();
+//            for (AppLoginLog appLoginLog:appLoginLogs) {
+//                appLoginLog.setIsactive(CheckUtils.CheckIsactive(appLoginLog.getIsactive()));
+//                appLoginLog.setBrand_name("");
+//                if (appLoginLog.getStore_name() != null && !appLoginLog.getStore_name().equals("") && appLoginLog.getCorp_code() != null
+//                        && !appLoginLog.getCorp_code().equals("")) {
+//                    List<Store> stores = storeService.getStoreByName(appLoginLog.getCorp_code(), appLoginLog.getStore_name(), Common.IS_ACTIVE_Y);
+//                    if (stores.size() > 0) {
+//                        String brand_code = stores.get(0).getBrand_code();
+//                        if (brand_code != null && !brand_code.equals("")) {
+//                            brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+//                            String[] ids = brand_code.split(",");
+//                            String brand_name = "";
+//                            for (int i = 0; i < ids.length; i++) {
+//                                Brand brand = brandService.getBrandByCode(appLoginLog.getCorp_code(), ids[i], Common.IS_ACTIVE_Y);
+//                                if (brand != null) {
+//                                    String brand_name1 = brand.getBrand_name();
+//                                    brand_name = brand_name + brand_name1 + "、";
+//                                }
+//                            }
+//                            if (brand_name.endsWith("、"))
+//                                brand_name = brand_name.substring(0, brand_name.length() - 1);
+//                            appLoginLog.setBrand_name(brand_name);
+//                        }
+//                    }
+//                }
+//                appLoginLogs1.add(appLoginLog);
+//            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(appLoginLogs);
+
+
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             String pathname = OutExeclHelper.OutExecl(json,appLoginLogs, map, response, request);
             JSONObject result = new JSONObject();
@@ -227,6 +295,7 @@ public class AppLoginLogController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);

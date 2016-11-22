@@ -4,6 +4,7 @@ var param={};//定义传值对象
 var cls="";//标签搜索下class名
 var txt="";//标签搜索下标签名
 var val="";//贴上input值
+var swip_image = [];//图片切换播放
 
 function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
@@ -23,6 +24,7 @@ function getConsumCount(){//获取会员信息
         if(album.length!==0){
             $("#upAlbum").parent().parent().siblings().remove();
             for(var i=0;i<album.length;i++){
+                swip_image.push(album[i].image_url);
                 var date=album[i].time;
                 date=date.substring(0,11);
                 if(i<16){
@@ -622,6 +624,7 @@ function addVipAlbum(url){//上传照片到相册
     oc.postRequire("post","/vip/vipSaveInfo","",param_addAblum,function(data){
         var AlbumData=data;
         if(data.code=="0"){
+            swip_image.push(url);
             frame();
             $('.frame').html('添加成功');
             $("#upAlbum").parent().parent().before("<li>"

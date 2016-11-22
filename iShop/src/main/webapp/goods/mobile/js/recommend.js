@@ -151,15 +151,28 @@ jQuery(function(){
         var that=this;
         $(this).unbind("input propertychange",thatFun);
 		value=$('#input').val().replace(/\s+/g,"");
-		$(".screen_content .list li").attr("class","");
-		param["search_value"]=value;
-		param["brand_code"]="";
-		param["goods_quarter"]="";
-		param["goods_wave"]="";
-		jQuery('.allShops').empty();
-		getSearchList(rowno);
+		if(value==""){
+			jQuery('.allShops').empty();
+			jQuery(".more").hide();
+			getList(rowno);
+		}
 		setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
 	});
+	$("#input").keydown(function() {
+	    var event=window.event||arguments[0];
+	    if(event.keyCode == 13){
+	    	value=$('#input').val().trim();
+	    	if(value!==""){
+	    		$(".screen_content .list li").attr("class","");
+				param["search_value"]=value;
+				param["brand_code"]="";
+				param["goods_quarter"]="";
+				param["goods_wave"]="";
+				jQuery('.allShops').empty();
+				getSearchList(rowno);
+	    	}
+	    }
+    });
 	//搜索加载list
 	function getSearchList(a){
 		param["rowno"]=a;
@@ -181,7 +194,6 @@ jQuery(function(){
             }
 			if(list.length<=0){
 				$("#kong_img").show();
-				sessionStorage.removeItem("return_jump");
 			}
 			if(list.length>0){
 				$("#kong_img").hide();

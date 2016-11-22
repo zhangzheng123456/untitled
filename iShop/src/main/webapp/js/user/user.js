@@ -227,7 +227,7 @@ function superaddition(data,num){
                 $($(".table tbody tr")[i]).append("<td></td>");
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
@@ -262,13 +262,13 @@ function superaddition(data,num){
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        +"</td><td>"
+                        +"</td><td><span style='max-width:120px' title="+data[i].user_code+">"
                         + data[i].user_code
-                        +"</td><td>"
+                        +"</span></td><td><span style='max-width:120px' title="+data[i].user_id+">"
                         + data[i].user_id
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +"<img src='"+avatar+"' alt=''>"
-                        + "</td><td><span title='"+data[i].user_name+"'>"
+                        + "</td><td><span style='max-width:120px' title='"+data[i].user_name+"'>"
                         + data[i].user_name
                         + "</span></td><td>"
                         + data[i].sex
@@ -566,7 +566,7 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2)").html();
+        var store_code=$(tr[i]).find("td:eq(2)").find("span").html();
         var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
         var param1={"user_code":store_code,"corp_code":corp_code};
         list.push(param1);

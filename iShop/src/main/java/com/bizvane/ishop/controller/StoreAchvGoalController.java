@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.StoreAchvGoal;
-import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -58,11 +55,11 @@ public class StoreAchvGoalController {
     @Autowired
     FunctionService functionService = null;
     @Autowired
-    private TableManagerService managerService;
-    @Autowired
     private CorpService corpService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -86,25 +83,26 @@ public class StoreAchvGoalController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", "");
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", "","");
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
                     store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "");
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "","");
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", "", "");
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", "", "","");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, area_code, "", "");
+                String area_store_code = request.getSession().getAttribute("store_code").toString();
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, area_code, "", "",area_store_code);
             } else {
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "");
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "","");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -132,7 +130,7 @@ public class StoreAchvGoalController {
     public String addStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
-        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
         String id = "";
         try {
@@ -164,10 +162,35 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
             String result = storeAchvGoalService.insert(storeAchvGoal1);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                StoreAchvGoal storeAchvGoal = storeAchvGoalService.getStoreAchvForID(storeAchvGoal1.getCorp_code(),storeAchvGoal1.getStore_code());
-                dataBean.setMessage(String.valueOf(storeAchvGoal.getId()));
+                StoreAchvGoal storeAchvGoal = storeAchvGoalService.getStoreAchvForID(storeAchvGoal1.getCorp_code(),storeAchvGoal1.getStore_code(),storeAchvGoal1.getTarget_time());
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage(String.valueOf(storeAchvGoal.getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "业绩管理_店铺业绩目标";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("store_code").toString();
+                Store store = storeService.getStoreByCode(t_corp_code, t_code, Common.IS_ACTIVE_Y);
+                String t_name = store.getStore_name();
+                String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
 
             } else {
                 dataBean.setId(id);
@@ -264,6 +287,31 @@ public class StoreAchvGoalController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("edit success");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "业绩管理_店铺业绩目标";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("store_code").toString();
+                Store store = storeService.getStoreByCode(t_corp_code, t_code, Common.IS_ACTIVE_Y);
+                String t_name = store.getStore_name();
+                String remark = action_json.get("end_time").toString()+"("+action_json.get("achv_type").toString()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -298,7 +346,31 @@ public class StoreAchvGoalController {
             String storeAchvGoal_id = jsonObject.get("id").toString();
             String[] ids = storeAchvGoal_id.split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
+                StoreAchvGoal storeAchvGoal = storeAchvGoalService.selectlById(Integer.parseInt(ids[i]));
                 storeAchvGoalService.deleteById(Integer.parseInt(ids[i]));
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "业绩管理_店铺业绩目标";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = storeAchvGoal.getCorp_code();
+                String t_code = storeAchvGoal.getStore_code();
+                Store store = storeService.getStoreByCode(t_corp_code, t_code, Common.IS_ACTIVE_Y);
+                String t_name = store.getStore_name();
+                String remark = storeAchvGoal.getTarget_time()+"("+storeAchvGoal.getTime_type()+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -337,25 +409,26 @@ public class StoreAchvGoalController {
             JSONObject result = new JSONObject();
             PageInfo<StoreAchvGoal> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", search_value);
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "", "", search_value,"");
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", "", search_value);
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", "", search_value,"");
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
                     store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, search_value);
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, search_value,"");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, area_code, "", search_value);
+                String area_store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, area_code, "", search_value,area_store_code);
             } else {
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, search_value);
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, search_value,"");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -391,48 +464,52 @@ public class StoreAchvGoalController {
             PageInfo<StoreAchvGoal> list = null;
             if (screen.equals("")) {
                 if (role_code.contains(Common.ROLE_SYS)) {
-                    list = storeAchvGoalService.selectBySearch(1, 30000, "", "", "", search_value);
+                    list = storeAchvGoalService.selectBySearch(1, 30000, "", "", "", search_value,"");
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", "", search_value);
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", "", search_value,"");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
-                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value);
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value,"");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
-                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, area_code, "", search_value);
+                    String area_store_code = request.getSession(false).getAttribute("store_code").toString();
+
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, area_code, "", search_value,area_store_code);
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value);
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value,"");
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, "", "", "", map);
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, "", "", "", map,"");
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", "", map);
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", "", map,"");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                     String store_code = "";
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
-                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map);
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map,"");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, area_code, "", map);
+                    String area_store_code = request.getSession(false).getAttribute("store_code").toString();
+
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, area_code, "", map,area_store_code);
                 } else {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map);
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map,"");
                 }
             }
             List<StoreAchvGoal> storeAchvGoals = list.getList();
@@ -679,25 +756,26 @@ public class StoreAchvGoalController {
             JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, "", "", "", map);
+                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, "", "", "", map,"");
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", "", map);
+                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", "", map,"");
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                 String store_code = "";
                 for (int i = 0; i < stores.size(); i++) {
                     store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                 }
-                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", store_code, map);
+                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", store_code, map,"");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
-                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, area_code, "", map);
+                String area_store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, area_code, "", map,area_store_code);
             } else {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", store_code, map);
+                list = storeAchvGoalService.getAllStoreAchvScreen(page_number, page_size, corp_code, "", store_code, map,"");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);

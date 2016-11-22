@@ -54,6 +54,8 @@ public class GoodsController {
     private CorpService corpService;
     @Autowired
     private BrandService brandService;
+    @Autowired
+    private BaseService baseService;
     String id;
 
     /**
@@ -637,6 +639,30 @@ public class GoodsController {
                 Goods goods1 = goodsService.getGoodsByCode(corp_code,goods.getGoods_code(),goods.getIsactive());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(String.valueOf(goods1.getId()));
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "商品管理_商品培训(FAB)";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("goods_code").toString();
+                String t_name = action_json.get("goods_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束--------------------------------------------------------------------------------
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -739,6 +765,30 @@ public class GoodsController {
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("商品更改成功");
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "商品管理_商品培训(FAB)";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = action_json.get("corp_code").toString();
+                String t_code = action_json.get("goods_code").toString();
+                String t_name = action_json.get("goods_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
@@ -772,7 +822,31 @@ public class GoodsController {
             String ids[] = goods_id.split(",");
 
             for (int i = 0; i < ids.length; i++) {
+                Goods goodsById = goodsService.getGoodsById(Integer.parseInt(ids[i]));
                 this.goodsService.delete(Integer.parseInt(ids[i]));
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "商品管理_商品培训(FAB)";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = goodsById.getCorp_code();
+                String t_code = goodsById.getGoods_code();
+                String t_name = goodsById.getGoods_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -848,7 +922,7 @@ public class GoodsController {
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Goods> list = goodsService.matchGoodsList(page_number, page_size,corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list.getList()));
+            result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

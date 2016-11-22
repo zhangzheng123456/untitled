@@ -125,8 +125,7 @@
         <if test="search_value != null and search_value !=''">
             AND
             (
-            BRAND_CODE LIKE concat('%',#{search_value},'%')
-            OR BRAND_NAME LIKE concat('%',#{search_value},'%')
+             BRAND_NAME LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND isactive = 'Y'

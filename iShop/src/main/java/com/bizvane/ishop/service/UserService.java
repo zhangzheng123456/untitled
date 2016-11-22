@@ -1,6 +1,5 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.entity.UserQrcode;
@@ -8,7 +7,6 @@ import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +36,13 @@ public interface UserService {
 
     List<User> selectBySearch(String corp_code) throws Exception;
 
-    PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception;
+    PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_store, String area_code, String role_code) throws Exception;
 
     PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area,String role_code) throws Exception;
 
-    PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas, String role_code) throws Exception;
+    PageInfo<User> selectUsersByUserCode(int page_number, int page_size, String corp_code, String search_value, String user_code) throws Exception;
+
+    PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas,String role_code) throws Exception;
 
     PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code,String search_value) throws Exception;
 
@@ -67,13 +67,13 @@ public interface UserService {
 
     int selectCount(String created_date) throws Exception;
 
-    PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code, String area_code, String role_code) throws Exception;
+    PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code,String area_store, String area_code, String role_code) throws Exception;
 
     PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code,Map<String,String> map) throws Exception;
 
     List<UserQrcode> selectQrcodeByUser(String corp_code, String user_code) throws Exception;
 
-    UserQrcode selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception;
+    List<UserQrcode> selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception;
 
     int insertUserQrcode(UserQrcode userQrcode) throws Exception;
 

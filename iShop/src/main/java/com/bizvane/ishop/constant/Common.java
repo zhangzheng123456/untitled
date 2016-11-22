@@ -67,4 +67,10 @@ public class Common {
     //数据显示类型——长文本
     public static final String DATE_SHOW_TYPE_LONGTEXT = "longtext";
 
+    public static  final String ACTION_ADD ="新增";
+
+    public static  final String ACTION_DEL ="删除";
+
+    public static  final String ACTION_UPD ="编辑";
+
 }

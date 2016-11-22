@@ -25,6 +25,16 @@ public class Sign {
     private String phone;
     private String corp_name;
 
+    private String store_name;
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
     public String getCorp_name() {
         return corp_name;
     }

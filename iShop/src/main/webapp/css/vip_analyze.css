@@ -83,7 +83,7 @@
     height: 32px;
     line-height: 32px;
     background: #fff;
-    margin-bottom: 3px;
+    /*margin-bottom: 3px;*/
     font-weight: normal;
     padding: 0 10px;
     font-size: 12px;
@@ -138,6 +138,7 @@
     padding: 0 10px;
     font-size: 12px;
     color:#888888;
+    background: #efefef;
 }
 #side_analyze .vip_count{
     float: right;
@@ -236,7 +237,7 @@
     height: 35px;
     line-height: 35px;
     font-size: 14px;
-    background: #e8e8e8;
+    background: #efefef;
     margin-left: 10px;
 }
 .vip_table thead th{
@@ -269,12 +270,13 @@
     position: absolute;
     display:none;
     left: 2%;
-    top:69px;
+    top:79px;
     z-index: 100;
     background: #E8E8E8;
     border: 1px solid #e8e8e8;
     color: #888888;
     width: 95%;
+    overflow: hidden;
 }
 #select_analyze_brand{
     width: 95%;
@@ -307,20 +309,22 @@
     border: none;
     /*padding-left: 5px;*/
     padding-right: 15px;
-    margin-left: 5%;
+    margin-left: 20px;
     outline: none;
+    color:#888;
 }
 #select_analyze b,#select_analyze_shop b,#select_analyze_brand b{
     display: block;
-    width: 100%;
     position: relative;
 }
 #select_analyze b,#select_analyze_shop b,#select_analyze_brand b{
     border-radius: 7px;
-    width: 87%;
-    margin-left:17px;
+    /*width: 87%;*/
+    /*margin-left:6.5%;*/
     border: 1px solid #d7d7d7;
     background: white;
+    margin-left: 5px;
+    margin-right:5px;
 }
 #select_analyze span,#select_analyze_shop span,#select_analyze_brand span{
     position: absolute;
@@ -331,22 +335,27 @@
 }
 #select_analyze ul,#select_analyze_shop ul,#select_analyze_brand ul{
     overflow-y: auto;
-    width:100%;
     max-height:207px;
+    margin-top:4px;
+    padding-right: 5px;
+    padding-left: 5px;
+    /*padding: 0px 6.5% 0px 6.5%;*/
 }
 #select_analyze ul li,#select_analyze_shop ul li,#select_analyze_brand ul li{
     padding: 5px 5px 5px 20px;
-    margin-left: 5%;
-    margin-right: 5%;
-    border-radius: 10px;
-    margin-bottom: 1px;
+    /*margin-left: 6%;*/
+    /*margin-right: 5%;*/
+    /*border-radius: 10px;*/
+    /*margin-top: 2px;*/
 }
 #select_analyze ul li:hover,#select_analyze_shop ul li:hover,#select_analyze_brand ul li:hover{
     background:#4a5f7c;
     color: #fff;
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     cursor: pointer;
-    width: 302px;
+    width: 100%;
+    /*width:91.5%;*/
+    /*margin-left: 6.7%;*/
 }
 #select_analyze s,#select_analyze_shop s,#select_analyze_brand s{
     text-decoration: none;
@@ -427,10 +436,12 @@
 .vip_table_lg .vip_table tbody tr:nth-child(even){
     background: #fff;
     line-height: 45px;
+    height:45px;
 }
 .vip_table_lg .vip_table tbody tr:nth-child(odd){
     background: #e8e8e8;
     line-height: 45px;
+    height:45px;
 }
 .vip_table_lg .vip_table thead tr{
     background: #fff;
@@ -447,4 +458,6 @@
     font-size: 15px;
     letter-spacing: 20px;
 }
-
+.thead_color{
+    background: #efefef;
+}

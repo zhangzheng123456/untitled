@@ -201,7 +201,6 @@ var oc = new ObjectControl();
 		});
 	};
 	shopgoaljs.ajaxSubmit=function(_command,_params,opt){
-		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				if(_command=="/storeAchvGoal/add"){
@@ -282,8 +281,8 @@ jQuery(document).ready(function(){
 		});
 		var _params={"id":id};
 		var _command="/storeAchvGoal/select";
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
-			// console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				msg=JSON.parse(msg.storeAchvGoal);
@@ -330,6 +329,7 @@ jQuery(document).ready(function(){
 					content: data.message
 				});
 			}
+			whir.loading.remove();
 		});
 	}else{
 		getcorplist(a,b);
@@ -386,8 +386,8 @@ jQuery(document).ready(function(){
 function getcorplist(a,b){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
+	whir.loading.add("",0.5);
 	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			console.log(msg);
@@ -424,12 +424,14 @@ function getcorplist(a,b){
 				content: data.message
 			});
 		}
+		whir.loading.remove();//移除加载框
 	});
 }
 function store_data(c,b){
 	var _params={};
 	_params["corp_code"]=c;//企业编号
 	var _command="/user/store";//调取店铺的名字
+	whir.loading.add("",0.5);
 	oc.postRequire("post", _command,"", _params, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
@@ -460,6 +462,7 @@ function store_data(c,b){
 				content: data.message
 			});
 		}
+		whir.loading.remove();
 	})
 }
 function year(){

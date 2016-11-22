@@ -154,9 +154,6 @@ body{
 	margin-left: -10px;
 	height: 40px;
 }
-#img{
-	height: 80px;
-}
 .navbar .person_menu a{
 	display: block;
 	color: #888;
@@ -200,12 +197,22 @@ body{
 	cursor: pointer;
 }
 .h1{
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 	background-color:#3a4054 !important;
 }
 .sidebar dl{
 	display: none;
 }
 .sidebar dd{
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 	height: 50px;
 	text-align: center;
 	color: #fff;
@@ -261,6 +268,11 @@ body{
 	vertical-align: middle;
 }
 .sidebar .menu_t {
+	-moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -khtml-user-select: none; 
+    user-select: none; 
 	width: 200px;
 	height: 50px;
 	line-height:50px;

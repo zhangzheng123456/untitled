@@ -29,8 +29,10 @@ var oc = new ObjectControl();
 		else hint.html(content);
 	};
 	appjs.firstStep = function(){
+
 		var inputText = jQuery(".conpany_msg").find(":text");
 		for(var i=0,length=inputText.length;i<length;i++){
+			if($(inputText[i]).val()=='Web')return true;
 			if(!bindFun(inputText[i]))return false;
 		}
 		return true;
@@ -38,31 +40,41 @@ var oc = new ObjectControl();
 	appjs.bindbutton=function(){
 		$(".appadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(appjs.firstStep()){
-				var platform=$('#platform').val();//运行平台
-				var download_addr=$("#download_addr").val();//下载地址
-				var version_id=$("#version_id").val();//版本
-				var corp_code=$("#corp_code").val();//企业编号
-				var force_update=$("#is_force_update").val();//是否强制升级
-				var version_describe=$("#version_describe").val();//版本说明
-				var ISACTIVE="";
-				var input=$("#is_active")[0];
-				if(input.checked==true){
-					ISACTIVE="Y";
-				}else if(input.checked==false){
-					ISACTIVE="N";
+			if($('#platform').val()=='Web'){
+				var platform = $('#platform').val();//运行平台
+				var version_id = $("#version_id").val();//版本
+				var version_describe = $("#version_describe").val();//版本说明
+				var download_addr='';
+				var corp_code='';
+				var is_force_update='';
+			}else {
+				var platform = $('#platform').val();//运行平台
+				var download_addr = $("#download_addr").val();//下载地址
+				var version_id = $("#version_id").val();//版本
+				var corp_code = $("#corp_code").val();//企业编号
+				var force_update = $("#is_force_update").val();//是否强制升级
+				var version_describe = $("#version_describe").val();//版本说明
+			}
+				var ISACTIVE = "";
+				var input = $("#is_active")[0];
+				if (input.checked == true) {
+					ISACTIVE = "Y";
+				} else if (input.checked == false) {
+					ISACTIVE = "N";
 				}
-				var is_force_update="";
-				if(force_update=="是"){
-					is_force_update="Y";
-				}else if(force_update=="否"){
-					is_force_update="N";
+				var is_force_update = "";
+				if (force_update == "是") {
+					is_force_update = "Y";
+				} else if (force_update == "否") {
+					is_force_update = "N";
 				}
-				var _command="/appversion/add";//接口名
+				var _command = "/appversion/add";//接口名
 				var opt = {//返回成功后的操作
-					success:function(){
+					success: function () {
 
 					}
 				};
+
 				var _params = {
 					"platform":platform,
 					"download_addr": download_addr,
@@ -79,26 +91,35 @@ var oc = new ObjectControl();
 		});
 		$(".appedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(appjs.firstStep()){
-				var platform=$('#platform').val();//运行平台
-				var download_addr=$("#download_addr").val();//下载地址
-				var version_id=$("#version_id").val();//版本
-				var corp_code=$("#corp_code").val();//企业编号
-				var force_update=$("#is_force_update").val();//是否强制升级
-				var version_describe=$("#version_describe").val();//版本说明
-				var ISACTIVE="";
-				var input=$("#is_active")[0];
-				var ID=sessionStorage.getItem("id");
-				if(input.checked==true){
-					ISACTIVE="Y";
-				}else if(input.checked==false){
-					ISACTIVE="N";
+				if($('#platform').val()=='Web'){
+					var platform = $('#platform').val();//运行平台
+					var version_id = $("#version_id").val();//版本
+					var version_describe = $("#version_describe").val();//版本说明
+					var download_addr='';
+					var corp_code='';
+					var is_force_update='';
+				}else {
+					var platform = $('#platform').val();//运行平台
+					var download_addr = $("#download_addr").val();//下载地址
+					var version_id = $("#version_id").val();//版本
+					var corp_code = $("#corp_code").val();//企业编号
+					var force_update = $("#is_force_update").val();//是否强制升级
+					var version_describe = $("#version_describe").val();//版本说明
 				}
-				var is_force_update="";
-				if(force_update=="是"){
-					is_force_update="Y";
-				}else if(force_update=="否"){
-					is_force_update="N";
-				}
+					var ISACTIVE = "";
+					var input = $("#is_active")[0];
+					var ID = sessionStorage.getItem("id");
+					if (input.checked == true) {
+						ISACTIVE = "Y";
+					} else if (input.checked == false) {
+						ISACTIVE = "N";
+					}
+					var is_force_update = "";
+					if (force_update == "是") {
+						is_force_update = "Y";
+					} else if (force_update == "否") {
+						is_force_update = "N";
+					}
 				var _command="/appversion/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -123,6 +144,7 @@ var oc = new ObjectControl();
 	};
 	appjs.ajaxSubmit=function(_command,_params,opt){
 		whir.loading.add("",0.5);//加载等待框
+		console.log(_command);
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
 				if(_command=="/appversion/add"){
@@ -213,6 +235,11 @@ jQuery(document).ready(function(){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
+				}
+				if($('#platform').val()=='Web'){
+					$('.conpany_msg').children(':not(".version_web")').hide();
+				}else{
+					$('.conpany_msg').children(':not(".version_web")').show();
 				}
 			}else if(data.code=="-1"){
 				art.dialog({

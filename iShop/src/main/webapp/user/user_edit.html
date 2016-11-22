@@ -7,12 +7,12 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
-    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
+    <link href="../css/style.css?20161116" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?20161116">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
                             <li>
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display: inline-flex">
-                                        <option value="-1">请选择所属企业</option>
+                                        
                                     </select>
                                 </span>
                             </li>
@@ -39,13 +39,13 @@
                        <!--  <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" /></span> -->
                     </div>
                     <div>
-                        <span><label>员工编号</label><input type="text" id="USERID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="用户编号为必填项,不能为空!"></div></div></span>
+                        <span><label style="color:#c26555;">员工编号*</label><input type="text" id="USERID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="用户编号为必填项,不能为空!"></div></div></span>
                     </div>
                     <div>
                         <span><label title="客户业务系统下的员工ID">员工ID</label><input type="text" id="user_id"><div style="padding-left:125px" class="hint"><div></div></div></span>
                     </div>
                     <div>
-                        <span><label>姓名</label><input type="text" id="USER_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项，不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">姓名*</label><input type="text" id="USER_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>职务</label><input type="text" id="position"/><div style="padding-left:125px" class="hint"><div  hintinfo="职务为必填项，不能为空！"></div></div></span>
@@ -64,7 +64,7 @@
                         </span>
                     </div>
                     <div class="drop_down item_1">
-                    <span><label>性别</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="请选择性别" readonly/>
+                    <span><label style="color:#c26555;">性别*</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="请选择性别" readonly/>
                             <ul>
                                 <li>男</li>
                                 <li>女</li>
@@ -72,23 +72,33 @@
                         </span>
                     </div>
                     <div id="per_type" >
-                        <span onclick="selectownrole(this)"><label>所属群组</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" data-myrcode="" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
+                        <span onclick="selectownrole(this)"><label style="color:#c26555;">所属群组*</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" data-myrcode="" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
                             <ul id="role_list">
                             </ul></span><span class="add_per_icon" id="edit_power"><i class="icon-ishop_8-03"></i>编辑权限</span>
                             <div style="padding-left:125px" class="hint"><div  hintinfo="可不填！" id="group"></div></div>
                     </div>
-                    <div>
-                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">所属店铺</div>
+                    <div id="all_type">
+                        <div class="task_allot"style="color:#c26555; margin-right:14px;display: inline-block; vertical-align:top;">所属店铺*</div>
                         <div class="good_imgs" style="display: inline-block;width:420px">
                             <div class="xingming">
-                                
                             </div>
-                            <div id="test">
+                            <div>
                                 <div class="add_app_id" id="screen_add" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
                                     新增 <span>+</span>
                                 </div>
                             </div>
-
+                        </div>
+                    </div>
+                    <div id="shop" style="display:none">
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">所属店铺</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming">
+                            </div>
+                            <div>
+                                <div class="add_app_id" id="shop_add" style="margin-bottom: -20px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -346,7 +356,7 @@
         </div>
         <div class="screen_que" id="screen_que_area">确定</div>
     </div>
-    <!-- 拉取店铺 -->
+     <!-- 拉取店铺 -->
     <div id="screen_shop" class="screen_area" >
         <div class="screen_title">
             <h4>筛选店铺</h4>
@@ -359,13 +369,17 @@
                     <label>已选品牌</label><input type="text" value="" id="brand_num" data-brandcode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
+                <div class="xuanzhong_p">
+                    <label>已选城市</label><input type="text" value="" id="city_num" data-citycode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_city"></span>
+                </div>
             </div>
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索店铺" id="store_search">
+                <input type="text" placeholder="搜索" id="store_search">
                 <span class="icon-ishop_3-05" id="store_search_f"></span>
             </div>
             <div class="s_center"></div>
@@ -430,6 +444,42 @@
         </div>
         <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
+    <!-- 拉取城市 -->
+    <div id="screen_city" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选城市</h4>
+            <div class="screen_close" id="screen_close_city"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="city_search">
+                <span class="icon-ishop_3-05" id="city_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>   
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+                   
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_city">确定</div>
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- oss存储 -->
@@ -442,19 +492,19 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script src="/js/loading.js"></script>
     <!-- 上传头像 -->
-    <script type="text/javascript" src="../js/upload_touxiang.js"></script>
+    <script type="text/javascript" src="../js/upload_touxiang.js?20161116"></script>
     <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
      <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script src="/js/login_account/md5.js"></script>
-    <script type="text/javascript" src="../js/user/user_operate.js"></script>
-    <script src="/js/user/usercheck_power.js"></script>
-    <script src="/js/user/screen.js"></script>
+    <script type="text/javascript" src="../js/user/user_operate.js?20161116"></script>
+    <script src="/js/user/usercheck_power.js?20161116"></script>
+    <script src="/js/user/screen.js?20161116"></script>
 <script>
     function chongzhi() {
         $("#chongzhi_pwd").css('display','block');

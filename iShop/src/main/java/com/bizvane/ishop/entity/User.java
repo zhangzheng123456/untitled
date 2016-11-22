@@ -57,6 +57,8 @@ public class User {
 
 	private String role_code;
 
+	private String version_id;
+
 	private Group group;
 	private String corp_name;
 	private String group_name;
@@ -326,6 +328,14 @@ public class User {
 
 	public void setRole_code(String role_code) {
 		this.role_code = role_code;
+	}
+
+	public String getVersion_id() {
+		return version_id;
+	}
+
+	public void setVersion_id(String version_id) {
+		this.version_id = version_id;
 	}
 
 	public Corp getCorp() {

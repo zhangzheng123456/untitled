@@ -1,10 +1,4 @@
 var oc = new ObjectControl();
-//自定义选择器
-$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
-    return function( elem ) {
-      return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-    };
-});
 (function(root,factory){
 	root.user = factory();
 }(this,function(){
@@ -149,7 +143,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 // }else if(input2.checked==false){
                 // 	isonline="N";
                 // }
-                var a=$('.xingming input');
+                var a=$('#all_type .xingming input');
 				var STORE_CODE="";
 				for(var i=0;i<a.length;i++){
 			        var u=$(a[i]).attr("data-code");
@@ -159,16 +153,46 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			             STORE_CODE+=u;
 			        }     
 			    }
+			    var area_store_code="";
+			    var b=$('#shop .xingming input');
+			    for(var i=0;i<b.length;i++){
+			    	var d=$(b[i]).attr("data-code");
+			        if(i<b.length-1){
+			             area_store_code+=d+",";
+			        }else{
+			             area_store_code+=d;
+			        }     
+			    }
 				//如果角色是导购，店长，区经的时候
-				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
-						art.dialog({
-							time: 1,
-							lock:true,
-							cancel: false,
-							content:"所属店铺或所属区域不能为空"
-						});
+						if(r_code=="R2000"||r_code=="R3000"){
+							art.dialog({
+								time: 1,
+								lock:true,
+								cancel: false,
+								content:"所属店铺不能为空"
+							});
 						return;
+						}
+						if(r_code=="R4000"){
+							art.dialog({
+								time: 1,
+								lock:true,
+								cancel: false,
+								content:"所属区域不能为空"
+							});
+							return;
+						}
+						if(r_code=="R4800"){
+							art.dialog({
+								time: 1,
+								lock:true,
+								cancel: false,
+								content:"所属品牌不能为空"
+							});
+							return;
+						}
 					}
 				}
 				var _command="/user/add";//接口名
@@ -201,7 +225,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 	            	_params["area_code"]="";//区域编号
 	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R4000"){
-	            	_params["store_code"]=""//店铺编号
+	            	_params["store_code"]=area_store_code//店铺编号
 	            	_params["area_code"]=STORE_CODE;//区域编号
 	            	_params["brand_code"]="";//品牌编号
 	            }
@@ -300,14 +324,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input1.checked==false){
                 	can_login="N";
                 }
-                // var isonline="";//签到状态
-                // var input2=$("#isonline")[0];
-                // if(input2.checked==true){
-                // 	isonline="Y";
-                // }else if(input2.checked==false){
-                // 	isonline="N";
-                // }
-				var a=$('.xingming input');
+				var a=$('#all_type .xingming input');
 				var STORE_CODE="";
 				for(var i=0;i<a.length;i++){
 			        var u=$(a[i]).attr("data-code");
@@ -317,28 +334,48 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			             STORE_CODE+=u;
 			        }     
 			    }
-				// var PSW=$("#init_password").val();
+			    var area_store_code="";
+			    var b=$('#shop .xingming input');
+			    for(var i=0;i<b.length;i++){
+			    	var d=$(b[i]).attr("data-code");
+			        if(i<b.length-1){
+			             area_store_code+=d+",";
+			        }else{
+			             area_store_code+=d;
+			        }     
+			    }
 				//如果角色是导购，店长，区经的时候
-				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"||r_code=="R4800"){
 					if(STORE_CODE==""){
-						art.dialog({
-							time: 1,
-							lock:true,
-							cancel: false,
-							content:"所属店铺或所属区域不能为空"
-						});
+						if(r_code=="R2000"||r_code=="R3000"){
+							art.dialog({
+								time: 1,
+								lock:true,
+								cancel: false,
+								content:"所属店铺不能为空"
+							});
 						return;
+						}
+						if(r_code=="R4000"){
+							art.dialog({
+								time: 1,
+								lock:true,
+								cancel: false,
+								content:"所属区域不能为空"
+							});
+							return;
+						}
+						if(r_code=="R4800"){
+							art.dialog({
+								time: 1,
+								lock:true,
+								cancel: false,
+								content:"所属品牌不能为空"
+							});
+							return;
+						}
 					}
 				}
-				// if(PSW==""){
-				// 	art.dialog({
-				// 		time: 1,
-				// 		lock:true,
-				// 		cancel: false,
-				// 		content:"密码不能为空！"
-				// 	});
-				// 	return;
-				// }
 				var _command="/user/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -371,7 +408,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 	            	_params["area_code"]="";//区域编号
 	            	_params["brand_code"]="";//品牌编号
 	            }else if(r_code=="R4000"){
-	            	_params["store_code"]=""//店铺编号
+	            	_params["store_code"]=area_store_code//店铺编号
 	            	_params["area_code"]=STORE_CODE;//区域编号
 	            	_params["brand_code"]="";//品牌编号
 	            }
@@ -454,66 +491,6 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 	obj.init = init;
 	return obj;
 }));
-function selectownshop(obj){//加载店铺列表的时候
-	var event = window.event || arguments[0];
-	if (event.stopPropagation) {
-		event.stopPropagation();
-	} else {
-		event.cancelBubble = true;
-	}
-	var input=$(obj);
-	var div=$(obj).nextAll('.store_list_kuang');
-	var inputs=$(obj).nextAll('.store_list_kuang').find('.search');
-    if(div.css("display")=="none"){
-        div.show();
-    }else{
-        div.hide();
-    };
-    // $(this).find("h1").parents().siblings("li").find("dl").slideUp(300);
-    $(div).parent().parent().siblings('div').find(".store_list_kuang").hide();
-    $(inputs).on('keyup', function(event){
-	    var text=$(this).val();
-	    $(this).siblings('ul').find("li").addClass('store_list_kuang_hide');
-	    $(this).siblings('ul').find('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
-    })
-    var c_code=$('#OWN_CORP').val();
-	var corp_code1=$(input).attr("corp_code");
-	if(c_code==corp_code1){
-		return;
-	}
-	$(input).attr("corp_code",c_code);
-
-    store_li_list(obj);     
-}
-function selectownarea(obj){//加载区域列表的时候
-	var event = window.event || arguments[0];
-	if (event.stopPropagation) {
-		event.stopPropagation();
-	} else {
-		event.cancelBubble = true;
-	}
-	var input=$(obj);
-	var div=$(obj).nextAll('.store_list_kuang');
-	var inputs=$(obj).nextAll('.store_list_kuang').find('.search');
-    if(div.css("display")=="none"){
-        div.show();
-    }else{
-        div.hide();
-    };
-    $(div).parent().parent().siblings('div').find(".store_list_kuang").hide();
-    $(inputs).on('keyup', function(event){
-	    var text=$(this).val();
-	    $(this).siblings('ul').find("li").addClass('store_list_kuang_hide');
-	    $(this).siblings('ul').find('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
-    })
-    var c_code=$('#OWN_CORP').val();
-	var corp_code1=$(input).attr("corp_code");
-	if(c_code==corp_code1){
-		return;
-	}
-	$(input).attr("corp_code",c_code);
-	area_li_list(obj);    
-}
 function selectownrole(obj){//加载群组列表的时候
 	$("#role_list").html('');
 	role_li_list();
@@ -530,8 +507,6 @@ function selectownrole(obj){//加载群组列表的时候
         },200);  
     });   
 }
-// var c_code="";
-// var r_code="";
 function role_li_list(){
 	var c_code=$('#OWN_CORP').val();
 	role_data(c_code);
@@ -570,166 +545,31 @@ function role_data(c){//
             $(this_).parent().parent().children(".input_select").attr('data-myjcode',j_code);//角色编号
             $(this_).addClass('rel').siblings().removeClass('rel');
             if(j_code=="R2000"||j_code=="R3000"){
-            	$('.task_allot').html("所属店铺");
-            	$('.task_allot').parent().show();
+            	$('#all_type .task_allot').html("所属店铺*");
+            	$('#all_type .task_allot').parent().show();
             	$('.xingming').empty();
+            	$("#shop").hide();
             }else if(j_code=="R4000"){
-            	$('.task_allot').html("所属区域");
-            	$('.task_allot').parent().show();
+            	$('#all_type .task_allot').html("所属区域*");
+            	$('#all_type .task_allot').parent().show();
             	$('.xingming').empty();
+            	$("#shop").show();
             }
             else if(j_code=="R5000"){
-            	$('.task_allot').parent().hide();
+            	$('#all_type .task_allot').parent().hide();
+            	$("#shop").hide();
             }else if(j_code=="R6000"){
-            	$('.task_allot').parent().hide();
+            	$('#all_type .task_allot').parent().hide();
+            	$("#shop").hide();
             }else if(j_code=="R4800"){
-            	$('.task_allot').html("所属品牌");
-            	$('.task_allot').parent().show();
+            	$("#shop").hide();
+            	$('#all_type .task_allot').html("所属品牌*");
+            	$('#all_type .task_allot').parent().show();
             	$('.xingming').empty();
             }
         });
 	});
 }
-// function store_li_list(p){//店铺
-// 	var c_code=$('#OWN_CORP').val();
-// 	// var corp_code1=$('#OWN_CORP').attr("corp_code");
-// 	// if(c_code==corp_code1){
-// 	// 		return;
-// 	// }
-// 	$('#OWN_CORP').attr("corp_code",c_code);
-// 	store_data(p,c_code);
-// }
-// function area_li_list(p) {//区域
-// 	var c_code=$('#OWN_CORP').val();
-// 	// var corp_code1=$('#OWN_CORP').attr("corp_code");
-// 	// if(c_code==corp_code1){
-// 	// 		return;
-// 	// }
-// 	$('#OWN_CORP').attr("corp_code",c_code);
-// 	area_data(p,c_code);
-// }
-// function store_data(p,c){//店铺
-// 	// var _params={"group_code":r,"corp_code":c};
-// 	var _params={"corp_code":c};	
-// 	var _command="/user/store";
-// 	whir.loading.add("",0.5);//加载等待框
-// 	oc.postRequire("post", _command,"", _params, function(data){
-// 		var msg=JSON.parse(data.message);
-// 		var msg_stores=JSON.parse(msg.stores);
-// 		var index=0;
-// 		var html="";
-// 		if(msg_stores.length!==0){
-// 			for(index in msg_stores){
-// 				html +='<li data-storecode="'+msg_stores[index].store_code+'">'+msg_stores[index].store_name+'</li>';
-// 			}
-// 		}else{
-// 			art.dialog({
-// 				time: 1,
-// 				lock:true,
-// 				cancel: false,
-// 				content:"该企业目前没有店铺，请先定义店铺"
-// 			});
-// 		}
-// 		whir.loading.remove();//移除加载框
-// 		$(p).siblings('.store_list_kuang').find("ul").html(html);
-// 		$(p).siblings('.store_list_kuang').find("li").click(function(){
-// 			var event=window.event||arguments[0];
-//         	if(event.stopPropagation){
-//             	event.stopPropagation();
-//         	}else{
-//             	event.cancelBubble=true;
-//         	}
-//             var this_=this;
-//             var txt = $(this_).text();
-//             var s_code=$(this_).data("storecode");
-//             $(this_).parent().parent().parent().children(".input_select").val(txt);
-//             $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
-//             $(this_).addClass('rel').siblings().removeClass('rel');
-//             $(this_).parent().parent().hide();
-//         });
-// 	});//追加店铺
-// }
-// function area_data(p,c){//区域
-// 	var _params={"corp_code":c};	
-// 	var _command="/shop/area";
-// 	whir.loading.add("",0.5);//加载等待框
-// 	oc.postRequire("post", _command,"", _params, function(data){
-// 		var msg=JSON.parse(data.message);
-// 		var msg_areas=msg.areas;
-// 		var index=0;
-// 		var html="";
-// 		if(msg_areas.length!==0){
-// 			for(index in msg_areas){
-// 				html +='<li data-storecode="'+msg_areas[index].area_code+'">'+msg_areas[index].area_name+'</li>';
-// 			}
-// 		}else{
-// 			art.dialog({
-// 				time: 1,
-// 				lock:true,
-// 				cancel: false,
-// 				content:"该企业目前没有区域，请先定义区域"
-// 			});
-// 		}
-// 		whir.loading.remove();//移除加载框
-// 		$(p).siblings('.store_list_kuang').find("ul").html(html);
-// 		$(p).siblings('.store_list_kuang').find("li").click(function(){
-// 			var event=window.event||arguments[0];
-//         	if(event.stopPropagation){
-//             	event.stopPropagation();
-//         	}else{
-//             	event.cancelBubble=true;
-//         	}
-//             var this_=this;
-//             var txt = $(this_).text();
-//             var s_code=$(this_).data("storecode");
-//             $(this_).parent().parent().parent().children(".input_select").val(txt);
-//             $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
-//             $(this_).addClass('rel').siblings().removeClass('rel');
-//             $(this_).parent().parent().hide();
-//         });
-// 	});//追加店铺
-// }
-// function addshopselect(){//店铺
-// 		var k=$("#select_ownshop .shop_list div").length;
-// 		$(".shop_list").append('<div id="per_type">'
-//             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
-//                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode="" onclick="selectownshop(this)"/>'
-//                 +'<div class="store_list_kuang">'
-//                 +'<input class="search" type="text" placeholder="请输入搜索内容">'
-//                 +'<ul style="margin-left:0px" id="store_list">'
-//                 +'</ul>'
-//                 +'</div>'
-//             +'</span>'
-//             +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
-//         +'</div>');
-// }
-// function addareaselect(){//区域
-// 		var k=$("#select_ownshop .shop_list div").length;
-// 		$(".shop_list").append('<div id="per_type">'
-//             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
-//                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode="" onclick="selectownarea(this)"/>'
-//                 +'<div class="store_list_kuang">'
-//                 +'<input class="search" type="text" placeholder="请输入搜索内容">'
-//                 +'<ul style="margin-left:0px" id="store_list">'
-//                 +'</ul>'
-//                 +'</div>'
-//             +'</span>'
-//             +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
-//         +'</div>');
-// }
-function minusareaselect(obj){//区域  删除
-	$(obj).parent().remove();
-}
-function minusshopselect(obj){//店铺  删除
-	$(obj).parent().remove();
-}
-$(document).click(function(e){
-	if($(e.target).is('.shop_list .input_select')||$(e.target).is('.store_list_kuang')||$(e.target).is('.store_list_kuang .search')||$(e.target).is('.store_list_kuang ul')||$(e.target).is('.store_list_kuang li')){
-	    return;
-	}else{
-	    $(".store_list_kuang").hide();
-	}
-});
 //ready事件
 jQuery(document).ready(function(){
 	window.user.init();//初始化
@@ -782,7 +622,7 @@ jQuery(document).ready(function(){
 				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
 				if(j_code=="R2000"||j_code=="R3000"){
-					$('.task_allot').html("所属店铺");
+					$('#all_type .task_allot').html("所属店铺*");
 					if(msg.store_name!==""){
 			            var store_lists=msg.store_name.split(",");
 						var storecode_list=msg.store_code.split(",");
@@ -791,18 +631,26 @@ jQuery(document).ready(function(){
 						}
 					}
             	}else if(j_code=="R4000"){
-	            	$('.task_allot').html("所属区域");
+	            	$('#all_type .task_allot').html("所属区域*");
+	            	$('#shop').show();
 	            	if(msg.area_name!==""){
 		            	var area_lists=msg.area_name.split(",");
 						var areacode_list=msg.area_code.split(",");
 						for(var i=0;i<area_lists.length;i++){
-							$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+							$('#all_type .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+						}
+					}
+					if(msg.store_name!==""){
+						var store_lists=msg.store_name.split(",");
+						var storecode_list=msg.store_code.split(",");
+						for(var i=0;i<store_lists.length;i++){
+							$('#shop .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+storecode_list[i]+"'  value='"+store_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
 						}
 					}
             	}else if(j_code=="R5000"||j_code=="R6000"){
-            		$('.task_allot').parent().hide();
+            		$('#all_type .task_allot').parent().hide();
             	}else if(j_code="R4800"){
-            		$('.task_allot').html("所属品牌");
+            		$('#all_type .task_allot').html("所属品牌*");
 	            	if(msg.brand_name!==""){
 		            	var brand_lists=msg.brand_name.split(",");
 						var brandcode_list=msg.brand_code.split(",");
@@ -1048,8 +896,8 @@ function getcorplist(a){
 					$("#OWN_STORE").val('');
 					$("#OWN_STORE").attr("data-myscode","");
 					$('.xingming').empty();
-					$('.task_allot').html("所属店铺");
-					$("#ownshop_list .per_type").nextAll().remove();
+					$('#all_type .task_allot').html("所属店铺");
+					$("#shop").hide();
 				}
 			})
 			$('.searchable-select-item').click(function(){
@@ -1067,8 +915,8 @@ function getcorplist(a){
 					$("#OWN_STORE").val('');
 					$("#OWN_STORE").attr("data-myscode","");
 					$('.xingming').empty();
-					$('.task_allot').html("所属店铺");
-					$("#ownshop_list .per_type").nextAll().remove();
+					$('#all_type .task_allot').html("所属店铺");
+					$("#shop").hide();
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
@@ -1143,7 +991,6 @@ function getTwoCode(b){
 		}
 	})
 }
-
 //生成二维码下拉框
 function select_down(a){
 	if($(a).next().css("display")=="none"){
@@ -1197,5 +1044,3 @@ function remove_app_id(obj) {
 	}
 
 }
-
-

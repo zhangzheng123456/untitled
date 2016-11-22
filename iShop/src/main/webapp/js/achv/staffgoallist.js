@@ -227,7 +227,7 @@ function superaddition(data,num){//页面加载循环
                 $($(".table tbody tr")[i]).append("<td></td>")
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
@@ -287,11 +287,17 @@ function jurisdiction(actions){
 function qjia(){
     var param={};
     param["funcCode"]=funcCode;
+    whir.loading.add("",0.5);
     oc.postRequire("post","/list/action","0",param,function(data){
-        var message=JSON.parse(data.message);
-        var actions=message.actions;
-        jurisdiction(actions);
-        jumpBianse();
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var actions=message.actions;
+            jurisdiction(actions);
+            jumpBianse();
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();
     })
 }
 qjia();
@@ -313,6 +319,7 @@ function GET(a,b){
                 setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
             }else if(data.code=="-1"){
                 alert(data.message);
+                whir.loading.remove();
             }
     });
 }
@@ -454,6 +461,7 @@ function POST(a,b){
             setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();
         }
     })
 }
@@ -483,7 +491,6 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(param);
     oc.postRequire("post","/userAchvGoal/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
@@ -753,6 +760,8 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 getInputValue();
             }
         })
+    }else if(data.code=="-1"){
+        alert(data.message);
     }
 });
 function filtrateDown(){

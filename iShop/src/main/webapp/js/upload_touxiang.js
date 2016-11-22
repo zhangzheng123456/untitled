@@ -74,7 +74,7 @@ $(function(){
         }
         client.multipartUpload(storeAs, file).then(function (result) {
             var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com'+result.name;
-            // $("#imghead").attr("src",result.url);
+            // $("#imghead").attr(src",result.url);
             $("#imghead").attr("data-src",storeAs);
         }).catch(function (err) {
             // console.log(err);

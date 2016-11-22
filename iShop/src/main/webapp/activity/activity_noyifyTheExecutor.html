@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>通知执行人</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
+    <link href="../css/style.css?20161116" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-select.css">
+    <link rel="stylesheet" href="../table/css/inner.css?20161116">
+    <style>
+        body{
+            margin-top:81px;
+        }
+        .editor_1{border-top: 2px #e0e0e0 solid;margin-top: 15px;margin-right: 10px}
+
+        /*a标签样式*/
+        a, a:link,a:hover,a:visited,a:active{
+            color: #434960;
+        }
+        /*左侧input部分整体向右偏移*/
+        .conpany_msg{
+            margin-left: 55px;
+        }
+        /*右侧input部分整体向左偏移*/
+        .corpadd_oper_btn{
+            margin-left: -10px;
+        }
+        .conpany_msg label{
+            color: #d4512e;
+        }
+        /*活动描述input*/
+        #callMain{
+            width: 420px;
+            height: 110px;
+            float: left;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            padding: 10px;;
+            outline: none;
+        }
+        /*添加执行人*/
+        #sendee_r{
+            width: 390px !important;
+        }
+        #add_sendee{
+            text-align: center;
+            width: 30px;
+        }
+        /*修改箭头位置*/
+        #add_sendee .icon-ishop_8-03{
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a href="activity.html">活动列表</a><i class="icon-ishop_8-03"></i><a href="activity_details.html">活动详情</a><i class="icon-ishop_8-03"></i><lable>通知执行人</lable></div>
+    <div class="editor_1 col-lg-7 ">
+
+        <form class="conpany_msg">
+            <!--添加执行人-->
+            <div class="check_per" id="sendee">
+                <span><label>添加执行人*</label><input type="text" id="sendee_r" value="已选择32人" data-code="" data-name="" data-phone="" readonly=""><span class="check_icon" id="add_sendee"><i class="icon-ishop_8-03"></i></span></span>
+            </div>
+            <!--通知标题-->
+            <div>
+                <span><label >通知标题*</label><input type="text" id="callitile" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div></span>
+            </div>
+            <!--通知正文-->
+            <div>
+                <span style="float: left"><label>通知正文*</label><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+                <textarea type="text" id="callMain"/></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight corpadd_oper_btn">
+        <div class="oper_btn">
+            <ul>
+                <li id="send"><i class="icon-ishop_6-04"></i>发送</li>
+                <li id="send_close"><i class="icon-ishop_6-12" onclick="closePage()"></i>关闭</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- 添加执行人  -->
+<div id="screen_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选员工</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="staff_area_num" data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input class="brand_num" type="text" value="" id="staff_brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选店铺</label><input type="text" value="" id="staff_shop_num" data-storecode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+            </div>
+        </div>
+        <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="staff_search">
+            <span class="icon-ishop_3-05" id="staff_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_staff">确定</div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Dialog -->
+<!--<script src="/js/loading.js?20161116"></script>-->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
+<!-- 带搜索的下拉菜单 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<script type="text/javascript" src="../js/multiple_choice.js?20161116"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?20161116"></script>
+<script type="text/javascript" src="../js/message/message_operate.js?20161116"></script>
+<script>
+    cache = {
+        "selectPeopleNum": '',
+    };
+    //添加执行人
+    $('#add_sendee').click(function(){
+        $("#screen_staff").show();
+        //写死的数据
+        var num = 32;
+        cache.selectPeopleNum = num;
+        $('#selectPeople').val('已选择'+num+'人')
+    });
+    //发送
+    function send(){
+        var callitile = $('#callitile').val();
+        console.log('通知标题:'+callitile);
+        var callMain = $('#callMain').val();
+        console.log('通知正文:'+callMain);
+        if(callitile==''||callMain==''){
+            alert('通知标题或者正文不能为空！');
+        }else if(callitile.length){}
+    }
+    //关闭
+    function closePage(){
+        window.location.href = 'activity_details.html';    ///未获得具体地址
+    }
+    //页面加载
+    window.onload = function(){
+
+    }
+
+
+</script>
+</body>
+</html>

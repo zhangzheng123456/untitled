@@ -218,6 +218,17 @@ function superaddition(data,num){//页面加载循环
     //     pageNumber=num;
     // }
     pageNumber=num;
+    if(data.length == 0){
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -374,7 +385,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -468,16 +478,10 @@ $("#delete").click(function(){
             if(value==""&&filtrate==""){
                 frame();
                 $('.frame').html('删除成功');
-                var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-                var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-                $(".frame").css({"left":+left+"px","top":+tp+"px"});
                 GET(pageNumber,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
-               var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-               var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-               $(".frame").css({"left":+left+"px","top":+tp+"px"});
                param["pageNumber"]=pageNumber;
                POST(pageNumber,pageSize);
             }else if(filtrate!==""){
@@ -491,25 +495,21 @@ $("#delete").click(function(){
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
-            var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-            var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-            $(".frame").css({"left":+left+"px","top":+tp+"px"});
         }
     })
 })
 //删除弹框
  function frame(){
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
-    $('.content').append('<div class="frame"></div>');
-    var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-    $(".frame").css({"left":+left+"px","top":+tp+"px"});
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-     setTimeout(function(){
-         $(".frame").hide();
-     },2000);
-} 
+    setTimeout(function(){
+        $(".frame").hide(); 
+    },1500);
+}  
 //全选
 function checkAll(name){
     var el=$("tbody input");

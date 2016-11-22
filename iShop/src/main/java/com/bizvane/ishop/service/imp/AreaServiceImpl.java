@@ -294,7 +294,9 @@ public class AreaServiceImpl implements AreaService {
                     area_code = area_code + ",";
                 area_code1 = area_code1 + area_code;
             }
-            areaArray = area_code1.split(",");
+            if(!area_code1.equals("")&& !area_code1.equals(",")) {
+                areaArray = area_code1.split(",");
+            }
         }
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -303,9 +305,9 @@ public class AreaServiceImpl implements AreaService {
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selAreaByCorpCode(params);
-        for (Area area : areas) {
-            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
-        }
+//        for (Area area : areas) {
+//            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
+//        }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }
@@ -345,44 +347,6 @@ public class AreaServiceImpl implements AreaService {
         List<Area> areas = areaMapper.selAreaByCorpCode(params);
 
         return areas;
-    }
-
-    @Override
-    public PageInfo<Store> getAllStoresByCorpCode(int page_number, int page_size, String corp_code, String search_value) throws Exception {
-
-        PageHelper.startPage(page_number, page_size);
-        List<Store> stores = storeMapper.selectAllStoresByCorpCode(corp_code, search_value);
-        PageInfo<Store> page = new PageInfo<Store>(stores);
-        return page;
-    }
-
-    @Override
-    public PageInfo<Store> selectAllStoresByAreaBrand(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("corp_code", corp_code);
-        params.put("area_code", "");
-        params.put("brand_code", "");
-        if (!area_code.equals("")){
-            String[] areaCodes = area_code.split(",");
-            for (int i = 0; i < areaCodes.length; i++) {
-                areaCodes[i] = Common.SPECIAL_HEAD +areaCodes[i]+",";
-            }
-            params.put("area_code", areaCodes);
-        }
-        if (!brand_code.equals("")){
-            String[] brandCodes = brand_code.split(",");
-            for (int i = 0; i < brandCodes.length; i++) {
-                brandCodes[i] = Common.SPECIAL_HEAD +brandCodes[i]+",";
-            }
-            params.put("brand_code", brandCodes);
-        }
-        params.put("search_value", search_value);
-        params.put("isactive", "Y");
-
-        PageHelper.startPage(page_number, page_size);
-        List<Store> stores = storeMapper.selectAllStoresByAreaBrand(params);
-        PageInfo<Store> page = new PageInfo<Store>(stores);
-        return page;
     }
 
     public void trans(PageInfo<Store> page,String area_code){

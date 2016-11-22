@@ -7,15 +7,31 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
-    <link href="../table/css/inner.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link href="../table/css/inner.css?20161116" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
+    <link href="../css/style.css?20161116" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
     <style>
         body{
             margin-top:81px;
+        }
+        .r_filrate{
+            width:30px;
+            height:30px;
+            background: #6dc1c8;
+            border-radius: 5px;
+            margin-left: 10px;
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        .r_filrate_hint{
+            margin-left: 10px;
+            font-size: 12px;
+            color: #888;
+            display:none;
         }
     </style>
 </head>
@@ -34,21 +50,20 @@
                 <form class="conpany_msg">
                     <div>
                         <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">所属企业</label></li>
+                            <li><label style="color:#c26555;">所属企业*</label></li>
                             <li>
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex">
-                                        <option value="-1">请选择所属企业</option>
                                     </select>
                                 </span>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <span><label>区域编号</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域编号不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">区域编号*</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域编号不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>区域名称</label><input type="text" id="AREA_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域名称不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">区域名称*</label><input type="text" id="AREA_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域名称不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>下属店铺</label><input type="text" id="area_shop" class="area_shop" disabled="disabled"/></span>
@@ -102,6 +117,12 @@
                            <label>区域名称</label>
                            <input type="text" disabled="true" id="areaName">
                        </li>
+                       <li class="r_filrate">
+                           <i class="icon-ishop_6-05"></i>
+                       </li>
+                       <li class="r_filrate_hint">
+                           显示当前区域店铺
+                       </li>
                    </ul>
                </div>
                <div class="list_r">
@@ -147,26 +168,27 @@
                    </ul>  -->
                    <ul>
                        <li class="li s">
-                           <input type="text" class="input" placeholder="店铺编号/店铺名称/区域编号" id="search">
+                           <input type="text" class="input" placeholder="店铺编号/店铺名称" id="search">
                            <i class="icon-ishop_3-05" id="d_search"></i>
                        </li>
                    </ul>
                </div>
-               <!-- <div class="action_r">
+                <div class="action_r">
                    <ul>
                        <li id="filtrate">
                            <span class="icon-ishop_6-05"></span>
+                           筛选
                        </li>
-                       <li class="bg">
-                           <span class="icon-ishop_6-07"></span>
-                           刷新
-                       </li>
-                       <li>
-                           <span class="icon-ishop_6-08"></span>
-                           更多
-                       </li>
+                       <!--<li class="bg">-->
+                           <!--<span class="icon-ishop_6-07"></span>-->
+                           <!--刷新-->
+                       <!--</li>-->
+                       <!--<li>-->
+                           <!--<span class="icon-ishop_6-08"></span>-->
+                           <!--更多-->
+                       <!--</li>-->
                    </ul>
-               </div> -->
+               </div>
            </div>
            <div class="sxk" id="sxk">
                <div class="sbtn">
@@ -186,20 +208,20 @@
                </div>
                <div class="inputs">
                    <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
+                       <label>店铺编号</label>
+                       <input type="text" id='store_code'>
                    </li>
                    <li>
-                       <label>联系人</label>
-                       <input type="text" id="p2">
+                       <label>店铺名称</label>
+                       <input type="text" id="store_name">
                    </li>
                    <li>
-                       <label>修改人</label>
-                       <input type="text" id="p3">
+                       <label>所属区域</label>
+                       <input type="text" id="area_name">
                    </li>
                    <li>
-                       <label>联系电话</label>
-                       <input type="text" id="p4">
+                       <label>所属品牌</label>
+                       <input type="text" id="brand_name">
                    </li>
                </div>
            </div>
@@ -210,7 +232,8 @@
                        <th style="text-align: left; padding-left: 22px;">序号</th>
                        <th>店铺编号</th>
                        <th>店铺名称</th>
-                       <th>区域编号</th>
+                       <th>所属区域</th>
+                       <th>所属品牌</th>
                        <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                    </tr>
                    </thead>
@@ -252,21 +275,17 @@
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
-    <script src="../js/loading.js"></script>
+    <script src="../js/loading.js?20161116"></script>
    <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
     <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/area/area_operate.js"></script>
-   <script type="text/javascript" src="../js/area/batch_manage_shop.js"></script>
+    <script type="text/javascript" src="../js/area/area_operate.js?20161116"></script>
+   <script type="text/javascript" src="../js/area/batch_manage_shop.js?20161116"></script>
 </body>
 
 </html>

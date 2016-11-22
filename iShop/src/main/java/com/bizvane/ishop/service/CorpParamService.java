@@ -1,8 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.CorpParam;
-import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

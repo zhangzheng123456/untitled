@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Function;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.Role;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.GroupService;
 import com.bizvane.ishop.service.RoleService;
@@ -48,7 +49,8 @@ public class RoleController {
     private RoleService roleService;
     @Autowired
     private GroupService groupService;
-
+    @Autowired
+    private BaseService baseService;
     private static Logger logger = LoggerFactory.getLogger((RoleController.class));
     String id;
 
@@ -111,14 +113,39 @@ public class RoleController {
             role1.setIsactive(jsonObject.get("isactive").toString());
             String result = roleService.insertRole(role1);
             if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                Role role=roleService.getRoleForID(role1.getRole_code());
+
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(String.valueOf(role.getId()));
+                dataBean.setMessage(result);
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "权限管理_角色定义";
+                String action = Common.ACTION_ADD;
+                String t_corp_code = operation_corp_code;
+                String t_code = action_json.get("role_code").toString();
+                String t_name = action_json.get("role_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
+                Role role=roleService.getRoleForID(role1.getRole_code());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("add role success");
+                dataBean.setMessage(String.valueOf(role.getId()));
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -149,6 +176,29 @@ public class RoleController {
                     msg = "角色" + role_code + "下有所属群组，请先处理角色下群组再删除";
                     break;
                 }
+
+                //----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "权限管理_角色定义";
+                String action = Common.ACTION_DEL;
+                String t_corp_code = operation_corp_code;
+                String t_code = roleService.selectByRoleId(role_id).getRole_code();
+                String t_name = roleService.selectByRoleId(role_id).getRole_name();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             }
             if (msg == null) {
                 for (int i = 0; i < role_ids.length; i++) {
@@ -245,6 +295,30 @@ public class RoleController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
+
+                //----------------行为日志------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "权限管理_角色定义";
+                String action = Common.ACTION_UPD;
+                String t_corp_code = operation_corp_code;
+                String t_code = action_json.get("role_code").toString();
+                String t_name = action_json.get("role_name").toString();
+                String remark = "";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                //-------------------行为日志结束-----------------------------------------------------------------------------------
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

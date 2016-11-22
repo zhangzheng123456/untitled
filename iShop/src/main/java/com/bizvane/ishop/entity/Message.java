@@ -8,6 +8,9 @@ public class Message {
     //接收人
     private String message_receiver;
 
+    private String user_code;
+
+    private String user_name;
     //接收人类型
     private String receiver_type;
 
@@ -43,6 +46,22 @@ public class Message {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUser_code() {
+        return user_code;
+    }
+
+    public void setUser_code(String user_code) {
+        this.user_code = user_code;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getMessage_receiver() {

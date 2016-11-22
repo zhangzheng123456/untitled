@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +21,15 @@ import java.util.Map;
  * Created by yin on 2016/6/23.
  */
 @Service
-public class SignServiceImpl implements SignService {
+public
+class SignServiceImpl implements SignService {
     @Autowired
     private SignMapper signMapper;
     @Autowired
     StoreService storeService;
 
     @Override
-    public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
+    public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code,String area_store_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
@@ -36,7 +38,12 @@ public class SignServiceImpl implements SignService {
         if (!area_code.equals("")) {
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,null, "");
+            String[] storeCodes = null;
+            if (!area_store_code.equals("")){
+                area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+                storeCodes = area_store_code.split(",");
+            }
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas,storeCodes,null, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -91,21 +98,22 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) throws Exception{
+    public PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map,String area_store_code) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         String[] stores = null;
         if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             stores = store_code.split(",");
-            for (int i = 0; null != stores && i < stores.length; i++) {
-                stores[i] = stores[i].substring(1, stores[i].length());
-            }
         }
         if (!area_code.equals("")) {
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
-            for (int i = 0; null != stores && i < stores.length; i++) {
-                areas[i] = areas[i].substring(1, areas[i].length());
+            String[] storeCodes = null;
+            if (!area_store_code.equals("")){
+                area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+                storeCodes = area_store_code.split(",");
             }
-            List<Store> stores1 = storeService.selectByAreaBrand(corp_code, areas,null, "");
+            List<Store> stores1 = storeService.selectByAreaBrand(corp_code, areas,storeCodes,null, "");
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < stores1.size(); i++) {
                 sb.append(stores1.get(i).getStore_code()).append(",");
@@ -115,7 +123,7 @@ public class SignServiceImpl implements SignService {
 
         JSONObject date = JSONObject.parseObject(map.get("sign_time"));
         params.put("created_date_start", date.get("start").toString());
-        params.put("created_date_end", date.get("end").toString());
+        params.put("created_date_end", date.get("end").toString()+"24:00:00");
         map.remove("sign_time");
 
         params.put("array", stores);
@@ -185,4 +193,16 @@ public class SignServiceImpl implements SignService {
         return signs;
     }
 
+    @Override
+    public Sign selSignById(int id) throws SQLException {
+        Sign sign = signMapper.selSignById(id);
+        if(sign.getStatus()==null||sign.getStatus().equals("")){
+            sign.setStatus("无状态");
+        }else   if(sign.getStatus().equals("0")){
+            sign.setStatus("签到");
+        }else{
+            sign.setStatus("签退");
+        }
+        return sign;
+    }
 }

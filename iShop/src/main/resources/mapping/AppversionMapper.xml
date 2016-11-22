@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.AppversionMapper">
+
     <select id="selectAllAppversion" resultType="com.bizvane.ishop.entity.Appversion">
         SELECT *
         FROM def_app_version
@@ -9,19 +10,15 @@
             AND
             (
             platform LIKE concat('%', #{search_value},'%')
-            OR download_addr LIKE concat('%', #{search_value},'%')
             OR version_id LIKE concat('%', #{search_value},'%')
-            OR is_force_update LIKE concat('%',#{search_value},'%')
             OR version_describe LIKE concat('%', #{search_value},'%')
             OR corp_code LIKE concat('%', #{search_value},'%')
-            OR modified_date LIKE concat('%', #{search_value},'%')
-            OR modifier LIKE concat('%', #{search_value},'%')
-            OR isactive LIKE concat('%', #{search_value},'%')
             )
         </if>
         GROUP BY ID
         ORDER BY ID DESC
     </select>
+
     <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Appversion">
     SELECT *
     FROM def_app_version
@@ -40,6 +37,7 @@
         GROUP BY id
         ORDER BY id DESC
     </select>
+
     <insert id="addAppversion" parameterType="com.bizvane.ishop.entity.Appversion">
         INSERT INTO  def_app_version
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -115,6 +113,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updAppversionById" parameterType="com.bizvane.ishop.entity.Appversion">
         UPDATE  def_app_version
         <trim prefix="SET" suffixOverrides=",">
@@ -155,6 +154,7 @@
         </trim>
         WHERE ID=#{id};
     </update>
+
     <delete id="delAppversionById">
         DELETE FROM def_app_version
         WHERE ID=#{id};
@@ -162,5 +162,22 @@
     <!--根据ID查询-->
     <select id="selAppversionById" resultType="com.bizvane.ishop.entity.Appversion">
         SELECT * FROM def_app_version WHERE ID=#{id};
+    </select>
+
+    <select id="selAppversionForId" resultType="com.bizvane.ishop.entity.Appversion">
+        SELECT * FROM def_app_version
+        WHERE corp_code=#{corp_code}
+        AND version_id=#{version_id}
+        AND platform = #{platform};
+    </select>
+
+    <select id="selLatestVersion" resultType="com.bizvane.ishop.entity.Appversion">
+        SELECT * FROM def_app_version
+        WHERE platform= 'Web'
+        AND VERSION_ID = (SELECT max(VERSION_ID)
+            FROM DEF_APP_VERSION
+            WHERE PLATFORM= 'Web')
+        AND ISACTIVE='Y'
+        ORDER BY id desc
     </select>
 </mapper>

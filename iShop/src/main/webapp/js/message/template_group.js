@@ -220,7 +220,7 @@ function superaddition(data,num){//页面加载循环
                 $($(".table tbody tr")[i]).append("<td></td>");
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     if(data.length==1&&num>1){
         pageNumber=num-1;

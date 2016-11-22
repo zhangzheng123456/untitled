@@ -17,4 +17,5 @@ public interface AppLoginLogMapper {
     //删除
     int delAppLoginlogById(int id);
 
+    AppLoginLog selByLogId(int id);
 }

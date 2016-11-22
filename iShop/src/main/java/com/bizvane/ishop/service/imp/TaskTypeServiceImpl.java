@@ -29,15 +29,15 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Autowired
     TaskMapper taskMapper;
 
-    public TaskType selectById(String id) {
+    public TaskType selectById(String id)throws Exception {
         return taskTypeMapper.selectById(Integer.parseInt(id));
     }
 
-    public List<TaskType> selectByCode(String corp_code, String task_type_code) {
+    public List<TaskType> selectByCode(String corp_code, String task_type_code)throws Exception  {
         return taskTypeMapper.selectByCode(corp_code, task_type_code);
     }
 
-    public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value) {
+    public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_num, page_size);
         List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value,"");
         for (TaskType taskType:task_types) {
@@ -81,7 +81,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         }
     }
 
-    public String updateTaskType(String message, String user_code) {
+    public String updateTaskType(String message, String user_code) throws Exception {
         JSONObject jsonObject = new JSONObject(message);
         int id = Integer.parseInt(jsonObject.get("id").toString());
         String task_type_code = jsonObject.get("task_type_code").toString().trim();
@@ -120,20 +120,20 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         }
     }
 
-    public int deleteTaskType(int id) {
+    public int deleteTaskType(int id)throws Exception  {
         return taskTypeMapper.deleteById(id);
     }
 
-    public List<TaskType> codeExist(String corp_code, String task_type_code) {
+    public List<TaskType> codeExist(String corp_code, String task_type_code) throws Exception {
         return taskTypeMapper.selectByCode(corp_code, task_type_code);
     }
 
-    public List<TaskType> nameExist(String corp_code, String task_type_name) {
+    public List<TaskType> nameExist(String corp_code, String task_type_name)throws Exception  {
         return taskTypeMapper.selectByName(corp_code, task_type_name);
     }
 
     @Override
-    public PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map)throws Exception  {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("map", map);
@@ -149,5 +149,14 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public TaskType getTaskTypeForId(String corp_code, String task_type_code) throws Exception {
         return taskTypeMapper.getTaskTypeForId(corp_code, task_type_code);
+    }
+
+    @Override
+    public List<TaskType> selectCorpTaskType(String corp_code, String search_value) throws Exception {
+        List<TaskType> taskTypes;
+        taskTypes = taskTypeMapper.selectTaskTypeSByCorp(corp_code,search_value);
+
+        return taskTypes;
+
     }
 }

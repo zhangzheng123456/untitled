@@ -227,7 +227,7 @@ function superaddition(data,num){//页面加载循环
                 $($(".table tbody tr")[i]).append("<td></td>");
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
@@ -250,6 +250,8 @@ function superaddition(data,num){//页面加载循环
                         + data[i].user_name
                         + "</td><td><span>"
                         + data[i].corp_name
+                        + "</span></td><td><span title="+data[i].store_name+">"
+                        + data[i].store_name
                         + "</span></td><td onmouseover='mapInit(this)' onmouseleave='mapHide(this)'><span>"
                         + data[i].location
                         + "</span></td><td>"
@@ -258,9 +260,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].sign_time
                         + "</td><td>"
                         + data[i].status
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 900px;'></td></tr>");
+                        +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 1000px;'></td></tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -693,9 +693,9 @@ function getInputValue(){
    var screen_value={};
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_key=$(input[i]).attr("id")
-           screen_value=$(input[i]).attr("data-code");
+       if($(input[i]).attr("class")=="isActive_select"){
+           screen_key=$(input[i]).find("input").attr("id")
+           screen_value=$(input[i]).find("input").attr("data-code");
        }else if($(input[i]).attr("class")=="created_date"){
            var start=$('#start').val();
            var end=$('#end').val();
@@ -774,13 +774,13 @@ $("#input-txt").keydown(function() {
 })
 //签到位置在地图显示
 function mapInit(obj) {
-    var val=$(obj).parents("tr").children("td:nth-child(6)").children('span').html();
+    var val=$(obj).parents("tr").children("td:nth-child(7)").children('span').html();
     if(val!==""){
         $(obj).parents("tr").children("td:last-child").show();
     }
     for(var j=0;j<$(".table tbody tr").length;j++){
         var map = new BMap.Map('ghy'+j);          // 创建地图实例
-        var location=$($(".table tbody tr")[j]).children("td:nth-child(6)").children("span").html();
+        var location=$($(".table tbody tr")[j]).children("td:nth-child(7)").children("span").html();
         if(location!==""){
             location=location.split(",");
             var x=location[0];
