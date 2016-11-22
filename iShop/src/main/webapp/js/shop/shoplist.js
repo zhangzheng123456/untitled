@@ -281,7 +281,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="qrcode"){
             $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成二维码</a></li>");
         }else if(actions[i].act_name=="synchronization"){
-            $('#more_down').append("<div id='signOut'>同步</div>");
+            $('#more_down').append("<div id='synchronization'>同步</div>");
         }
     }
 }
