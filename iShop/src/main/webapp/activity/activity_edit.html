@@ -392,7 +392,7 @@
         <hr class="hr"/>
         <div class="operedit_btn">
             <ul>
-                <li class="performance"><i class="icon-ishop_6-20" id="performance"></i>执行</li>
+                <li class="performance" id="performance"><i class="icon-ishop_6-20"></i>执行</li>
                 <li style="background: #6dc1c8" id="save"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="background: #4a5f7c" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
@@ -440,12 +440,12 @@
                     <span class="arrow_right" id="target_vip_icon"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
-            <!--<div class="executor">-->
-                <!--<span style="position: relative">-->
-                    <!--<label>执行人</label><input type="text" id="executor" readonly/>-->
-                    <!--<span class="arrow_right"><i class="icon-ishop_8-03"></i></span>-->
-                <!--</span>-->
-            <!--</div>-->
+            <div class="executor">
+                <span style="position: relative">
+                    <label>执行人</label><input type="text" id="executor" readonly/>
+                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
+                </span>
+            </div>
             <hr class="hr_s"/>
             <div class="send_title" style="display: none">
                 <span><label>推送标题</label><input type="text" id="send_title"/></span>
@@ -1001,7 +1001,7 @@
     <!-- 拉取导购  -->
     <div id="vip_screen_staff" class="screen_area">
         <div class="screen_title">
-            <h4>筛选</h4>
+            <h4>筛选导购</h4>
             <div class="screen_close" id="close_staff"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
@@ -1067,84 +1067,6 @@
 <script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>
 <script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    //保存按钮
-    $("#save").click(function () {
-        $(".performance").attr("id", "performance");
-        //点击执行
-        $("#performance").click(function () {
-            $(".box_shadow").show();
-            $(".tk").show();
-        });
-    });
-    //日期插件调用
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD',
-        min: laydate.now(), //设定最小日期为当前日期
-        max: '2099-06-16 23:59:59', //最大日期
-        istime: true,
-        istoday: false,
-        choose: function (datas) {
-            end.min = datas; //开始日选好后，重置结束日的最小日期
-            end.start = datas //将结束日的初始值设定为开始日
-        }
-    };
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD',
-        min: laydate.now(),
-        max: '2099-06-16 23:59:59',
-        istime: true,
-        istoday: false,
-        choose: function (datas) {
-            start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    laydate(start);
-    laydate(end);
-    //执行方式下拉选择
-    $("#execution li").click(function () {
-        var val = $(this).html();
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#execution_input").val(val);
-        if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
-            $(".task_dec").show();
-            $(".task_title").show();
-            $(".send_title").hide();
-            $(".summary").hide();
-            $(".short_msg").hide();
-        } else if (val == "系统短信通知顾客") {
-            $(".task_dec").hide();
-            $(".task_title").hide();
-            $(".send_title").hide();
-            $(".summary").hide();
-            $(".short_msg").show();
-        } else if (val == "微信公众号推送") {
-            $(".task_dec").hide();
-            $(".task_title").hide();
-            $(".send_title").show();
-            $(".summary").show();
-            $(".short_msg").hide();
-        }
-    });
-    $("#execution_input").click(function () {
-        $("#execution").toggle();
-    });
-    $(document).click(function (e) {
-        if ($(e.target).is("#execution_input")) {
-
-        } else {
-            $("#execution").hide();
-        }
-    });
-    //关闭弹出层
-    $("#cancel").click(close_float);
-    $("#X").click(close_float);
-    function close_float() {
-        $(".box_shadow").hide();
-        $(".tk").hide();
-    }
-
     //分配目标会员
     $("#target_vip").click(function () {
         $(".content").show();
