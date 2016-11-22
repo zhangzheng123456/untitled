@@ -353,51 +353,14 @@ public class VIPController {
                 corp_code = jsonObject.get("corp_code").toString();
             }
             String search_value = jsonObject.get("searchValue").toString();
-            logger.info("json--------------corp_code-" + corp_code);
+            logger.info("json-----555555555555555555---------corp_code-" + corp_code);
 
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
-            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
-            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
-            Map datalist = new HashMap<String, Data>();
             datalist.put(data_search_value.key, data_search_value);
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_page_num.key, data_page_num);
-            datalist.put(data_page_size.key, data_page_size);
-
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
-            JSONObject messageobj = new JSONObject();
-
-            JSONObject jsonObject1 = JSON.parseObject(result);
-            String all_vip_list = jsonObject1.get("all_vip_list").toString();
-            String pageNum = jsonObject1.get("pageNum").toString();
-            String pageSize = jsonObject1.get("pageSize").toString();
-            String pages = jsonObject1.get("pages").toString();
-            JSONArray jsonArray = new JSONArray();
-            JSONArray jsonArray2 = new JSONArray();
-            if (all_vip_list != null && !all_vip_list.equals("")) {
-                jsonArray = JSON.parseArray(all_vip_list);
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    String jsonArr = jsonArray.get(i).toString();
-                    JSONObject jsonObject2 = JSON.parseObject(jsonArr);
-                    String user_id = jsonObject2.get("user_id").toString();
-                    if (user_id.equals(user_code)) {
-                        jsonArray2.add(jsonObject2);
-                    }
-                }
-            }
-            messageobj.put("all_vip_list", jsonArray2);
-            messageobj.put("pageNum", pageNum);
-            messageobj.put("pageSize", pageSize);
-            messageobj.put("pages", pages);
-//            JSONObject obj = JSON.parseObject(result);
-//            String vipLists = obj.get("all_vip_list").toString();
-//            JSONArray array = JSONArray.parseArray(vipLists);
-//            JSONArray new_array = vipGroupService.findVipsGroup(array);
-//            obj.put("all_vip_list",new_array);
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result);
