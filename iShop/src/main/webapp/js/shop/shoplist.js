@@ -280,6 +280,8 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="qrcode"){
             $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成二维码</a></li>");
+        }else if(actions[i].act_name=="synchronization"){
+            $('#more_down').append("<div id='synchronization'>同步</div>");
         }
     }
 }
@@ -582,6 +584,9 @@ function frame(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+         $(".frame").hide();
+    },2000);
 
 }
 //弹框删除关闭

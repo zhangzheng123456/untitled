@@ -2,7 +2,7 @@ var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
-var pageNumber=1;//删除默认第一页
+var pageNumber=1;//删除的默认的第一页;
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
@@ -16,7 +16,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -31,10 +30,10 @@ if(return_jump==null){
     }
 }else if(return_jump!==null){
     if(pageSize==10){
-        $("#page_row").val("10行/页");  
+        $("#page_row").val("10行/页");
     }
     if(pageSize==30){
-        $("#page_row").val("30行/页");  
+        $("#page_row").val("30行/页");
     }
     if(pageSize==50){
         $("#page_row").val("50行/页");
@@ -46,51 +45,51 @@ if(return_jump==null){
         GET(inx,pageSize);
     }else if(value!==""){
         $("#search").val(value);
-        POST(inx,pageSize); 
+        POST(inx,pageSize);
     }else if(filtrate!==""){
-        filtrates(inx,pageSize); 
+        filtrates(inx,pageSize);
     }
 }
-//模仿select
+//模拟select每页
 $(function(){
         $("#page_row").click(function(){
-            if("block" == $("#liebiao").css("display")){  
-                hideLi();  
-            }else{  
-                showLi();  
-            }  
-        });                             
-        $("#liebiao li").each(function(i,v){  
+            if("block" == $("#liebiao").css("display")){
+                hideLi();
+            }else{
+                showLi();
+            }
+        });
+        $("#liebiao li").each(function(i,v){
             $(this).click(function(){
-                pageSize=$(this).attr('id');  
+                pageSize=$(this).attr('id');
                 if(value==""&&filtrate==""){
                     inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
-                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
-                    POST(inx,pageSize); 
+                    param["pageNumber"]=inx;
+                    POST(inx,pageSize);
                 }else if(filtrate!==""){
                     inx=1;
-                    _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
-                    filtrates(inx,pageSize); 
+                    _param["pageNumber"]=inx;
+                    filtrates(inx,pageSize);
                 }
-                $("#page_row").val($(this).html());  
+                $("#page_row").val($(this).html());
                 hideLi();
-            });    
+            });
         });
-        $("#page_row").blur(function(){  
-            setTimeout(hideLi,200);  
-        });         
-    }      
+        $("#page_row").blur(function(){
+            setTimeout(hideLi,200);
+        });
+    }
 );
 function showLi(){
-    $("#liebiao").show(); 
+    $("#liebiao").show();
 }
-function hideLi(){  
-    $("#liebiao").hide();  
+function hideLi(){
+    $("#liebiao").hide();
 }
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
@@ -112,14 +111,14 @@ $("#empty").click(function(){
     $(".table p").remove();
     GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize,funcCode) {
+function setPage(container, count, pageindex,pageSize) {
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
     var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
@@ -156,9 +155,9 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
             for (var i = pageindex - 2; i <= pageindex + 2; i++) {
                 setPageList();
             }
-                a[a.length] = "...<li><span>" + count + "</span></li>";
-            }
+            a[a.length] = "...<li><span>" + count + "</span></li>";
         }
+    }
     if (pageindex == count) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
     }else{
@@ -181,7 +180,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
-            inx = parseInt(this.innerHTML);
+                inx = parseInt(this.innerHTML);
                 dian(inx,pageSize);
                 // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
@@ -212,11 +211,6 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    if(data.length==1&&num>1){
-        pageNumber=num-1;
-    }else{
-        pageNumber=num;
-    }
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -226,7 +220,14 @@ function superaddition(data,num){//页面加载循环
                 $($(".table tbody tr")[i]).append("<td></td>")
             }
         }
-        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
+
+
+    if(data.length==1&&num>1){
+        pageNumber=num-1;
+    }else{
+        pageNumber=num;
     }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
@@ -234,34 +235,28 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        + "</td><td>"
-                        + data[i].store_code
-                        + "</td><td>"
-                        + data[i].store_name
-                        + "</td><td>"
-                        + data[i].corp.corp_name
-                        +"</td><td>"
-                        + data[i].target_amount
-                        +"</td><td>"
-                        + data[i].time_type
-                        +"</td><td>"
-                        + data[i].target_time
-                        +"</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
+        $(".table tbody").append("<tr id='"+data[i]._id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            + i
+            + 1
+            + "'/><label for='checkboxTwoInput"
+            + i
+            + 1
+            + "'></label></div>"
+            + "</td><td style='text-align:center;'>"
+            + a
+            + "</td><td>"
+            + data[i].corp_code
+            + "</td><td>"
+            + data[i].function
+            + "</td><td>"
+            + data[i].action
+            + "</td><td>"
+            + data[i].name
+            + "</td><td>"
+            + data[i].operation_user_code
+            + "</td><td>"
+            + data[i].operation_time
+            + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -282,53 +277,55 @@ function jurisdiction(actions){
 }
 //页面加载调权限接口
 function qjia(){
-    whir.loading.add("",0.5);//加载等待框
     var param={};
     param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var actions=message.actions;
-            jurisdiction(actions);
-            jumpBianse();
-        }
-        whir.loading.remove();//移除加载框
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
     })
 }
-qjia();
+//qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/storeAchvGoal/list?pageNumber="+a+"&pageSize="+b
+    oc.postRequire("get","/userOperation/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
-            if(data.code=="0"){
-                $(".table tbody").empty();
-                var message=JSON.parse(data.message);
-                var list=JSON.parse(message.list);
-                cout=list.pages;
-                var pageNum = list.pageNum;
-                var list=list.list;
-                superaddition(list,pageNum);
-                jumpBianse();
-                setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
-            }else if(data.code=="-1"){
-                alert(data.message);
+        if(data.code=="0"){
+            $(".table tbody").empty();
+            var message=JSON.parse(data.message);
+            //console.log('message是:'+JSON.stringify(message));
+            var list=message.list;
+            //console.log('message是:'+JSON.stringify(list));
+            var page_number = message.page_number;
+            console.log('页面是：'+page_number+  '  '   +"list是："+list);
+            superaddition(list,page_number);
+            jumpBianse();
+            for(i=0;i<list.length;i++) {
+                var funcCode = list[i].code;
+                var _id = list[i]._id;
+                var cout = list.length;
+                //console.log(funcCode+''+action+''+JSON.stringify(_id)+'________'+cout);
+                setPage($("#foot-num")[0], cout, page_number, b, funcCode);
             }
+
+        }else if(data.code=="-1"){
+             alert(data.message);
+        }
     });
 }
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
-         $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -342,47 +339,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_add.html");
-    })
-    //点击编辑时页面进行的跳转
-    $('#compile').click(function(){
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        if(tr.length==1){
-            id=$(tr).attr("id");
-            var return_jump={};//定义一个对象
-            return_jump["inx"]=inx;//跳转到第几页
-            return_jump["value"]=value;//搜索的值;
-            return_jump["filtrate"]=filtrate;//筛选的值
-            return_jump["param"]=JSON.stringify(param);//搜索定义的值
-            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-            return_jump["list"]=list;//筛选的请求的list;
-            return_jump["pageSize"]=pageSize;//每页多少行
-            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-            sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
-        }else if(tr.length==0){
-            frame();
-            $('.frame').html("请先选择");
-        }else if(tr.length>1){
-            frame();
-            $('.frame').html("不能选择多个");
-        }
-    })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        var return_jump={};//定义一个对象
-        return_jump["inx"]=inx;//跳转到第几页
-        return_jump["value"]=value;//搜索的值;
-        return_jump["filtrate"]=filtrate;//筛选的值
-        return_jump["param"]=JSON.stringify(param);//搜索定义的值
-        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-        return_jump["list"]=list;//筛选的请求的list;
-        return_jump["pageSize"]=pageSize;//每页多少行
-        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_add.html");
     })
     //删除
     $("#remove").click(function(){
@@ -396,7 +353,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -407,7 +363,7 @@ $("#search").keydown(function() {
     inx=1;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         value=this.value.trim();
         param["searchValue"]=value;
@@ -421,24 +377,23 @@ $("#d_search").click(function(){
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     POST(inx,pageSize);
 })
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/storeAchvGoal/search","0",param,function(data){
+    oc.postRequire("post","/userOperation/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
+            var list=message.list;
+            cout=list.length;
+            var pageNum = message.page_number;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
@@ -472,7 +427,7 @@ $("#cancel").click(function(){
 $("#delete").click(function(){
     $("#p").hide();
     $("#tk").hide();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
     for(var i=tr.length-1,ID="";i>=0;i--){
         var r=$(tr[i]).attr("id");
         if(i>0){
@@ -483,7 +438,7 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    oc.postRequire("post","/storeAchvGoal/delete","0",params,function(data){
+    oc.postRequire("post","/userOperation/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
@@ -497,11 +452,11 @@ $("#delete").click(function(){
             } else if (filtrate !== "") {
                 frame();
                 $('.frame').html('删除成功');
-                _param["pageNumber"]=pageNumber;
+                _param["pageNumber"]=pageNumber
                 filtrates(pageNumber, pageSize);
             }
-        var thinput=$("thead input")[0];
-        thinput.checked =false;
+            var thinput=$("thead input")[0];
+            thinput.checked =false;
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
@@ -509,14 +464,17 @@ $("#delete").click(function(){
     })
 })
 //删除弹框
- function frame(){
+function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-} 
+    setTimeout(function(){
+        $(".frame").hide();
+    },2000);
+}
 //全选
 function checkAll(name){
     var el=$("tbody input");
@@ -524,12 +482,12 @@ function checkAll(name){
     var len = el.length;
 
     for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
         {
-           if((el[i].type=="checkbox") && (el[i].name==name))
-            {
-              el[i].checked = true;
-            }
+            el[i].checked = true;
         }
+    }
 };
 
 //取消全选
@@ -538,13 +496,14 @@ function clearAll(name){
     el.parents("tr").removeClass("tr");
     var len = el.length;
     for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
         {
-            if((el[i].type=="checkbox") && (el[i].name==name))
-            {
-              el[i].checked = false;
-            }
+            el[i].checked = false;
         }
+    }
 };
+
 //导出拉出list
 $("#leading_out").click(function(){
     var l=$(window).width();
@@ -559,22 +518,22 @@ $("#leading_out").click(function(){
     var param={};
     param["function_code"]=funcCode;
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/list/ getCols","0",param,function(data){
+    oc.postRequire("post","/list/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
-                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
-                +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
+                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
             bianse();
             $("#file_list_r ul").empty();
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
-        whir.loading.remove();//移除加载框
     })
 })
 function bianse(){
@@ -608,7 +567,7 @@ $("#file_submit").click(function(){
         param["list"]=list;
     }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/storeAchvGoal/exportExecl","0",param,function(data){
+    oc.postRequire("post","/apploginlog/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;
@@ -640,93 +599,46 @@ $('#file_close').click(function(){
     $('#file_submit').show();
     $('#download').hide();
 })
-//点击导入
-$("#guide_into").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    var left=($(window).width()-$(".into_frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".into_frame").height())/2;//弹框定位的top值
-    $(".into_frame").css({"left":+left+"px","top":+tp+"px"});
-    $("#p").show();
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $('.file').hide();
-    $(".into_frame").show();
-})
-//导入关闭按钮
-$("#x1").click(function(){
-    $("#p").hide();
-    $(".into_frame").hide();
-})
-//上传文件
-function UpladFile() {
-    whir.loading.add("",0.5);//加载等待框
-    var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
-    var FileController = "/storeAchvGoal/addByExecl"; //接收上传文件的后台地址
-    var form = new FormData();
-    form.append("file", fileObj); // 文件对象
-    // XMLHttpRequest 对象
-    var xhr = null;
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else {
-        xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                doResult(xhr.responseText);
-            } else {
-                console.log('服务器返回了错误的响应状态码');
-                $('#file').val("");
-                whir.loading.remove();//移除加载框
-            }
-        }
-    }
-    function doResult(data) {
-        var data=JSON.parse(data);
-        whir.loading.remove();
-        if(data.code=="0"){
-            alert('导入成功');
-            window.location.reload();
-        }else if(data.code=="-1"){
-             alert("导入失败"+data.message);
-        }
-        $('#file').val("");
-    }
-    xhr.open("post", FileController, true);
-    xhr.onload = function() {
-        // alert("上传完成!");
-    };
-    xhr.send(form);
-    $("#p").hide();
-    $(".into_frame").hide();
-}
 //筛选按钮
-oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+oc.postRequire("get","/userOperation/screen?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
         var message=JSON.parse(data.message);
+        console.log(JSON.stringify(message));
         var filter=message.filter;
+        console.log(filter);
         $("#sxk .inputs ul").empty();
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                if(filter[i].show_name=="时间段"){
-                    li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "' class='laydate-icon' onclick='laydate({istime: true, format: \"YYYY-MM-DD\"})'></li>";
-                }else {
-                    li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>";
-                }
+                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
                 }
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }else if(filter[i].type=="date"){
+                li+="<li class='created_date' id='"
+                +filter[i].col_name
+                +"'><label>"
+                +filter[i].show_name
+                +"</label>"                                                         
+                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                +"<label class='tm20'>至</label>"
+                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                +"</li>";
+            }else if(filter[i].type=='number'){
+                li+="<li class='isActive_select' id='"
+                    +filter[i].col_name
+                    +"'><label>"
+                    +filter[i].show_name
+                    +"</label>"
+                +"<input style='width: 66px' type='text' id='isactive' readonly>"
+                +" <ul class='isActive_select_down'style='display:none;width:41px;left:65px'><li style='text-indent: 5px'>>=</li><li  style='text-indent: 5px'><=</li><li  style='text-indent: 5px'>介于</li><li style='text-indent: 5px'>等于</li><li style='text-indent: 5px'>全部</li></ul>"
+                +"</li>";
             }
-
         }
         $("#sxk .inputs ul").html(li);
         if(filtrate!==""){
@@ -741,67 +653,111 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             }
         }
         filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
-            }
-        })
     }
 });
+//筛选的keydow事件
+$('#sxk .inputs').on("keydown","input",function(){
+    var event=window.event||arguments[0];
+    if(event.keyCode == 13){
+        var test_input=$('#isactive').nextAll('input');
+        for(var i=0;i<test_input.length;i++){
+            var reg=/^[0-9]*$/g;
+            var input_value=$(test_input[i]).val().trim();
+            var test_value=reg.test(input_value);
+            if(!test_value){
+                frame();
+                $('.frame').html('请输入数字');
+                return
+            }
+        }
+        getInputValue();
+    }
+})
 function filtrateDown(){
     //筛选select框
-    $(".isActive_select input").click(function (){
-        var ul=$(this).next(".isActive_select_down");
+    $(".isActive_select input:nth-child(2)").click(function (){
+        var ul=$(this).nextAll("ul.isActive_select_down");
         if(ul.css("display")=="none"){
             ul.show();
         }else{
             ul.hide();
         }
-    });
+    })
     $(".isActive_select input").blur(function(){
         var ul=$(this).next(".isActive_select_down");
         setTimeout(function(){
             ul.hide();
         },200);
-    });
+    })
     $(".isActive_select_down li").click(function () {
         var html=$(this).text();
         var code=$(this).attr("data-code");
         $(this).parents("li").find("input").val(html);
         $(this).parents("li").find("input").attr("data-code",code);
         $(".isActive_select_down").hide();
-    });
+    })
 }
 //筛选查找
 $("#find").click(function(){
+    var test_input=$('#isactive').nextAll('input');
+    for(var i=0;i<test_input.length;i++){
+        var reg=/^[0-9]*$/g;
+        var input_value=$(test_input[i]).val().trim();
+        var test_value=reg.test(input_value);
+        if(!test_value){
+            frame();
+            $('.frame').html('请输入数字');
+            return
+        }
+    }
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
-   inx=1;
-   _param["pageNumber"]=inx;
-   _param["pageSize"]=pageSize;
-   _param["funcCode"]=funcCode;
-   var num=0;
-   list=[];//定义一个list
-   for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
-        var screen_value="";
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_value=$(input[i]).attr("data-code");
-       }else{
-           screen_value=$(input[i]).val().trim();
-       }
+    // var input=$('#sxk .inputs li');
+    var input=$('#sxk .inputs>ul>li');
+    console.log(input);
+    inx=1;
+    _param["pageNumber"]=inx;
+    _param["pageSize"]=pageSize;
+    _param["funcCode"]=funcCode;
+    var num=0;
+    list=[];//定义一个list
+    for(var i=0;i<input.length;i++){
+        var screen_key="";
+        var screen_value={};
+        if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).attr("id");
+            switch ($(input[i]).find("input").val()){
+              case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '介于':screen_value['type']='between';_value();break;
+              case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
+              case '全部':screen_value['type']='all';screen_value['value']='';;break;
+              case '':screen_value['type']='all';screen_value['value']='';;break;
+          }
+            function _value(){
+                screen_value['value']={};
+               var between_value=$(input[i]).find("input").nextAll();
+                screen_value['value'].start=$(between_value[0]).val();
+                screen_value['value'].end=$(between_value[1]).val();
+            }
+        }else if($(input[i]).attr("class")=="created_date"){
+            var start=$('#start').val();
+            var end=$('#end').val();
+            screen_key=$(input[i]).attr("id");
+            screen_value={"start":start,"end":end};
+        }else{
+            screen_value=$(input[i]).find("input").val().trim();
+            screen_key=$(input[i]).find("input").attr("id");
+        }
         if(screen_value!=""){
             num++;
         }
-       var param1={"screen_key":screen_key,"screen_value":screen_value};
-       list.push(param1);
-   }
-   _param["list"]=list;
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    console.log( _param);
+    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
     filtrates(inx,pageSize)
@@ -814,12 +770,12 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/storeAchvGoal/screen","0",_param,function(data){
+    oc.postRequire("post","/apploginlog/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             cout=list.pages;
-            var pageNum=list.pageNum;
+            var pageNum = list.pageNum;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -836,7 +792,7 @@ function filtrates(a,b){
         }else if(data.code=="-1"){
             alert(data.message);
         }
-   });
+    });
 }
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
@@ -862,3 +818,7 @@ $("#input-txt").keydown(function() {
         };
     }
 })
+//刷新页面
+function reload(){
+    document.location.reload();
+}

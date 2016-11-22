@@ -632,7 +632,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
                 +"</li>";
             }else if(filter[i].type=='number'){
-                li+="<li class='isActive_select' id='"
+                li+="<li class='isActive_select2' id='"
                     +filter[i].col_name
                     +"'><label>"
                     +filter[i].show_name
@@ -677,8 +677,16 @@ $('#sxk .inputs').on("keydown","input",function(){
 })
 function filtrateDown(){
     //筛选select框
-    $(".isActive_select input:nth-child(2)").click(function (){
-        var ul=$(this).nextAll("ul.isActive_select_down");
+    $(".isActive_select2 input").click(function (){
+        var ul=$(this).nextAll(".isActive_select_down");
+        if(ul.css("display")=="none"){
+            ul.show();
+        }else{
+            ul.hide();
+        }
+    });
+    $(".isActive_select input").click(function(){
+        var ul=$(this).next(".isActive_select_down");
         if(ul.css("display")=="none"){
             ul.show();
         }else{
@@ -727,7 +735,7 @@ function getInputValue(){
     for(var i=0;i<input.length;i++){
         var screen_key="";
         var screen_value={};
-        if($(input[i]).attr("class")=="isActive_select"){
+        if($(input[i]).attr("class")=="isActive_select2"){
             screen_key=$(input[i]).attr("id");
             switch ($(input[i]).find("input").val()){
               case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
@@ -736,10 +744,10 @@ function getInputValue(){
               case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
               case '全部':screen_value['type']='all';screen_value['value']='';;break;
               case '':screen_value['type']='all';screen_value['value']='';;break;
-          }
+            }
             function _value(){
                 screen_value['value']={};
-               var between_value=$(input[i]).find("input").nextAll();
+                var between_value=$(input[i]).find("input").nextAll();
                 screen_value['value'].start=$(between_value[0]).val();
                 screen_value['value'].end=$(between_value[1]).val();
             }
@@ -748,6 +756,9 @@ function getInputValue(){
             var end=$('#end').val();
             screen_key=$(input[i]).attr("id");
             screen_value={"start":start,"end":end};
+        }else if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input").attr("id");
+            screen_value=$(input[i]).find("input").attr("data-code");
         }else{
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");

@@ -5,14 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.ActivityVip;
-import com.bizvane.ishop.entity.Task;
-import com.bizvane.ishop.entity.TaskType;
-import com.bizvane.ishop.entity.VipGroup;
-import com.bizvane.ishop.service.ActivityVipService;
-import com.bizvane.ishop.service.TaskService;
-import com.bizvane.ishop.service.TaskTypeService;
-import com.bizvane.ishop.service.VipGroupService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.*;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by nanji on 2016/11/16.
@@ -39,6 +32,10 @@ public class ActivityVipController {
     private TaskTypeService taskTypeService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private StoreService storeService;
 
     private static final Logger logger = Logger.getLogger(ActivityVipController.class);
 
@@ -119,6 +116,79 @@ public class ActivityVipController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 根据选择的目标会员
+     * 选择导购
+     */
+    @RequestMapping(value = "/selUserByVip", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String selUserByVip(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject obj = JSONObject.parseObject(message);
+            int page_number = Integer.valueOf(obj.get("pageNumber").toString());
+            int page_size = Integer.valueOf(obj.get("pageSize").toString());
+            String searchValue = obj.get("searchValue").toString();
+            String corp_code = obj.get("corp_code").toString();
+            JSONObject target_vips = obj.getJSONObject("target_vips");
+            String type = target_vips.get("type").toString();
+            PageInfo<User> userList = new PageInfo<User>();
+            if (type.equals("1")){
+                String area_code = target_vips.get("area_code").toString();
+                String brand_code = target_vips.get("brand_code").toString();
+                String store_code = target_vips.get("store_code").toString();
+                String user_code = target_vips.get("user_code").toString();
+                if (!user_code.equals("")){
+                    userList = userService.selectUsersByUserCode(page_number,page_size,corp_code,searchValue,user_code);
+                }else if (!store_code.equals("")) {
+//                    String[] areas = area_code.split(",");
+                    userList = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
+                }else if(!area_code.equals("") || !brand_code.equals("")){
+                    //拉取区域下所有员工（包括区经）
+                    String[] areas = area_code.split(",");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + stores.get(i).getStore_code();
+                    }
+                    userList = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
+                }else {
+                    userList = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
+                }
+            }else if (type.equals("2")){
+                JSONArray vips = target_vips.getJSONArray("vips");
+                Set<String> user_codes = new HashSet<String>();
+                for (int i = 0; i < vips.size(); i++) {
+                    JSONObject vip = vips.getJSONObject(i);
+                    String user_code = vip.get("user_code").toString();
+                    if (!user_codes.contains(user_code))
+                        user_codes.add(user_code);
+                }
+                String codes = "";
+                for (String user_code : user_codes) {
+                    codes = codes + user_code + ",";
+                }
+                userList = userService.selectUsersByUserCode(page_number,page_size,corp_code,searchValue,codes);
+            }
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(userList));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 活动编辑之前
@@ -369,7 +439,6 @@ public class ActivityVipController {
      * @param request
      * @return
      */
-
     @RequestMapping(value = "/executeActivity", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
@@ -443,7 +512,6 @@ public class ActivityVipController {
                 activityVip.setTask_code(task_code);
                 //更新活动状态activity_state
                 activityVip.setActivity_state("执行中");
-
                 activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
                 activityVip.setModifier(user_code);
                 activityVipService.updateActivityVip(activityVip);

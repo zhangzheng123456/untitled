@@ -1015,11 +1015,11 @@ input::-webkit-input-placeholder{
 	top: 0;
 	left: 0;
 }
-.isActive_select{
+.isActive_select,.isActive_select2{
 	color: #888;
 	position: relative;
 }
-.isActive_select input{
+.isActive_select input,.isActive_select2 input{
 	background:#fff url(../../img/btn_dropmenu.png) no-repeat 100% 50%;
 	background-size:30px;
 
