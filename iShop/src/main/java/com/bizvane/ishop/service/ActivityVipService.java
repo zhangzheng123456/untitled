@@ -27,7 +27,5 @@ public interface ActivityVipService {
 
     ActivityVip selectActivityById(int id) throws Exception;
 
-    ActivityVip getActivityForId(String corp_code, String activity_theme, String run_mode, String created_date) throws Exception;
-
-    ActivityVip selActivityByCode(String corp_code, String activity_code) throws Exception;
+    ActivityVip selActivityByCode(String corp_code, String activity_vip_code) throws Exception;
 }
