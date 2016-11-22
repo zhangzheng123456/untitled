@@ -80,7 +80,8 @@ public class UserOperationController {
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
             }
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+
+            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -144,7 +145,7 @@ public class UserOperationController {
                 pages = MongoUtils.getPages(dbCursor2,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
             }
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -204,7 +205,7 @@ public class UserOperationController {
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
             }
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -261,7 +262,7 @@ public class UserOperationController {
                     queryCondition1.put("$and", value);
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 }
-                list = MongoUtils.dbCursorToList(dbCursor);
+                list = MongoUtils.dbCursorToList_id(dbCursor);
             } else {
                 JSONArray array = JSONArray.parseArray(screen);
                 BasicDBObject queryCondition = MongoUtils.andOperation(array);
@@ -277,7 +278,7 @@ public class UserOperationController {
                     queryCondition1.put("$and", value);
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 }
-                list = MongoUtils.dbCursorToList(dbCursor);
+                list = MongoUtils.dbCursorToList_id(dbCursor);
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
