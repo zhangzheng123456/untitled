@@ -470,7 +470,7 @@ $("#d_search").click(function(){
     }else{
         GET(inx,pageSize);
     }
-})
+});
 //搜索的请求函数
 function POST(a,b){
     param["corp_code"]="C10000";

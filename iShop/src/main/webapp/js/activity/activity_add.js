@@ -1,7 +1,14 @@
 var oc = new ObjectControl();
+var inx=1;//默认是第一页
+var pageSize=10;//默认传的每页多少行
 var staff_num = 1;//分配员工初始page
 var staff_next=false;//下一页标志
+var value = "";//收索的关键词
+var param={};
 var isscroll=false;
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+key_val=JSON.parse(key_val);//取key_val的值
+var funcCode=key_val.func_code;
 (function (root, factory) {
     root.area = factory();
 }(this, function () {
@@ -832,7 +839,7 @@ $("#find_area").click(function(){
     $("#screen_area").show();
     $("#screen_staff").hide();
     getarealist(area_num);
-})
+});
 //筛选品牌
 $("#find_brand").click(function(){
     var arr=whir.loading.getPageSize();
@@ -843,7 +850,7 @@ $("#find_brand").click(function(){
     $("#screen_brand").show();
     $("#screen_staff").hide();
     getbrandlist();
-})
+});
 //筛选店铺
 $("#find_shop").click(function(){
     isscroll=false;
@@ -961,38 +968,66 @@ $(".shift_left_all").click(function(){
     removeLeft(left,div);
 })
 //请求页面数据
-function GET(a, b, c) {
-    whir.loading.add("", 0.5);//加载等待框
-    var user_code =$("#PARAM_NAME").attr("data-code");
-    var vip_group_code = $("#vip_num").val();
-    if(user_code == undefined){
-        user_code = "";
-    }
-    var param = {};
-    param["pageNumber"] = a;
-    param["pageSize"] = b;
-    param["corp_code"] = corp_code;
-    param["vip_group_id"] =sessionStorage.getItem("id");;
-    oc.postRequire("post", "/vipGroup/allVip ", "", param, function (data) {
-        if (data.code == "0") {
+//页面加载时list请求
+function GET(a,b){
+    whir.loading.add("",0.5);//加载等待框
+    var param={};
+    param["pageNumber"]=a;
+    param["pageSize"]=b;
+    param["corp_code"]=$('#OWN_CORP').val();
+    oc.postRequire("post","/vipAnalysis/allVip","",param,function(data){
+        console.log(data);
+        if(data.code=="0"){
             $(".table tbody").empty();
-            var message = JSON.parse(data.message);
-            var list = message.all_vip_list;
-            console.log(list);
-            cout = message.pages;
+            var message=JSON.parse(data.message);
+            console.log(message);
+            var list=message.all_vip_list;
+            cout=message.pages;
+            var pageNum = message.pageNum;
             //var list=list.list;
-            superaddition(list, a, c);
+            superaddition(list,pageNum);
             jumpBianse();
-            filtrate = "";
-            $(".table p").remove();
-            setPage($("#foot-num")[0], cout, a, b, c);
-            whir.loading.remove();//移除加载框
-        } else if (data.code == "-1") {
+            filtrate="";
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+        }else if(data.code=="-1"){
             alert(data.message);
         }
     });
 }
-function superaddition(data, num, c) {
+function POST(a,b){
+    param["corp_code"]=$('#OWN_CORP').val();;
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/vip/vipSearch","0",param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var list=message.all_vip_list;
+            cout=message.pages;
+            var pageNum = message.pageNum;
+            var actions=message.actions;
+            $(".table tbody").empty();
+            if(list.length<=0){
+                $(".table p").remove();
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+                $(".table p").remove();
+                superaddition(list,pageNum);
+                jumpBianse();
+            }
+            filtrate="";
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+    })
+}
+function jumpBianse() {
+    $(document).ready(function () {//隔行变色
+        $(".table tbody tr:odd").css("backgroundColor", "#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor", "#f4f4f4");
+    })
+}
+function superaddition(data, num) {
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -1004,7 +1039,6 @@ function superaddition(data, num, c) {
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-    group_cheked = [];
     var judge = '';
     for (var i = 0; i < data.length; i++) {
         if ( data[i].is_this_group == "Y") {
@@ -1047,9 +1081,6 @@ function superaddition(data, num, c) {
             + 1
             + "'></label></div></td></tr>";
         $(".table tbody").append(tr_node);
-        if (judge) {
-            group_cheked.push(tr_vip_id);
-        }
     }
     $("tbody tr").click(function () {
         var input = $(this).find("input")[0];
@@ -1060,6 +1091,7 @@ function superaddition(data, num, c) {
         }
     })
     $(".th th:last-child input").removeAttr("checked");
+    whir.loading.remove();//移除加载框
 };
 //生成分页
 function setPage(container, count, pageindex, pageSize, c) {
@@ -1150,18 +1182,13 @@ function setPage(container, count, pageindex, pageSize, c) {
     }()
 }
 //点击页码
-function dian(a, b, c) {//点击分页的时候调什么接口
-    console.log(c)
-    if (value == "" && filtrate == "") {
-        GET(a, b, c);
+function dian(a, b) {//点击分页的时候调什么接口
+    if (value == "") {
+        GET(a, b);
     } else if (value !== "") {
         param["pageNumber"] = a;
         param["pageSize"] = b;
         POST(a, b);
-    } else if (filtrate !== "") {
-        _param["pageNumber"] = a;
-        _param["pageSize"] = b;
-        filtrates(a, b);
     }
 }
 //全选
@@ -1177,7 +1204,6 @@ function checkAll(name) {
         }
     }
 };
-
 //取消全选
 function clearAll(name) {
     console.log(name);
@@ -1231,3 +1257,38 @@ function showLi() {
 function hideLi() {
     $("#liebiao").hide();
 }
+//鼠标按下时触发的收索
+$("#search").keydown(function() {
+    var event=window.event||arguments[0];
+    if(event.keyCode==13){
+        value=this.value.trim();
+        if(value!==""){
+            inx=1;
+            param["searchValue"]=value;
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
+            POST(inx,pageSize);
+        }else if(value==""){
+            GET(inx,pageSize);
+        }
+    }
+});
+//点击放大镜触发搜索
+$("#d_search").click(function(){
+    value=$("#search").val().replace(/\s+/g,"");
+    if(value!==""){
+        inx=1;
+        param["searchValue"]=value;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        POST(inx,pageSize);
+    }else{
+        GET(inx,pageSize);
+    }
+});
+//目标会员保存
+$("#target_vip_save").click(function () {
+
+});
