@@ -38,7 +38,7 @@
                 </div>
                 <ul>
                     <li class="li">
-                        <input type="text" class="input" id="search" placeholder="编号/内容/手机号码">
+                        <input type="text" class="input" id="search" placeholder="企业编号/内容/时间/动作">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
@@ -53,7 +53,7 @@
                     <!--<span class="icon-ishop_6-06"></span>-->
                     <!--配置-->
                     <!--</li>-->
-                    <li class="bg">
+                    <li class="bg" onclick="reload()">
                         <span class="icon-ishop_6-07"></span>
                         刷新
                     </li>
@@ -115,15 +115,18 @@
                 </div>
             </div>
             <div class="inputs">
-                <ul>
-                    <!--<li class="isActive_select">-->
-                    <!--<label>登录次数</label>-->
-                    <!--<input style='width: 66px' type='text' id='isactive' readonly>-->
-                    <!--<ul class='isActive_select_down'style='display:none;width:44px;left:69px'>-->
-                    <!--<li>>=</li><li><=</li><li>介于</li><li>全部</li>-->
-                    <!--</ul>-->
-                    <!--</li>-->
-                </ul>
+                <!--<li>-->
+                    <!--<label>企业编号</label><input type="text" id="p1">-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<label>功能</label><input type="text" id="p2">-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<label>动作</label><input type="text" id="p3">-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<label>修改人</label><input type="text" id="p4">-->
+                <!--</li>-->
             </div>
         </div>
         <div class="table">
@@ -131,15 +134,16 @@
                 <thead>
                 <tr class="th">
                     <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
-                    <th style="text-align: left;width: 50px">序号</th>
-                    <th>企业ID</th>
-                    <th>用户ID</th>
-                    <th>手机号</th>
+                    <th style="text-align: center;width: 50px">序号</th>
+                    <th>操作者</th>
+                    <th>功能</th>
+                    <th>动作</th>
+                    <th>企业名称</th>
+                    <th>操作编号</th>
+                    <th>操作内容</th>
                     <th>时间</th>
-                    <th>状态</th>
-                    <th>可用</th>
+                    <th>备注</th>
                 </tr>
-                <tr></tr>
                 </thead>
                 <tbody>
 

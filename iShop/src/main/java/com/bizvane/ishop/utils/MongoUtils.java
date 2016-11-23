@@ -73,10 +73,22 @@ public class MongoUtils {
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             list.add(obj.toMap());
+
         }
         return list;
     }
 
+    //DBCursor数据集转arrayList+id
+    public static ArrayList dbCursorToList_id(DBCursor dbCursor){
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            obj.put("id",id);
+            list.add(obj.toMap());
+        }
+        return list;
+    }
     //DBCursor排序分页
     //sort_type（1：正序，-1：倒序）
     public static DBCursor sortAndPage(DBCursor dbCursor,int page_num,int page_size,String sort_key,int sort_type){

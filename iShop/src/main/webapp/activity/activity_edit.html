@@ -392,8 +392,8 @@
         <hr class="hr"/>
         <div class="operedit_btn">
             <ul>
-                <li class="performance"><i class="icon-ishop_6-20" id="performance"></i>执行</li>
-                <li style="background: #6dc1c8" id="save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="performance" id="performance"><i class="icon-ishop_6-20"></i>执行</li>
+                <li style="background: #6dc1c8" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="background: #4a5f7c" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
@@ -440,12 +440,12 @@
                     <span class="arrow_right" id="target_vip_icon"><i class="icon-ishop_8-03"></i></span>
                 </span>
             </div>
-            <!--<div class="executor">-->
-                <!--<span style="position: relative">-->
-                    <!--<label>执行人</label><input type="text" id="executor" readonly/>-->
-                    <!--<span class="arrow_right"><i class="icon-ishop_8-03"></i></span>-->
-                <!--</span>-->
-            <!--</div>-->
+            <div class="executor">
+                <span style="position: relative">
+                    <label>执行人</label><input type="text" id="executor" readonly/>
+                    <span class="arrow_right"><i class="icon-ishop_8-03"></i></span>
+                </span>
+            </div>
             <hr class="hr_s"/>
             <div class="send_title" style="display: none">
                 <span><label>推送标题</label><input type="text" id="send_title"/></span>
@@ -505,56 +505,56 @@
             </div>
         </form>
     </div>
-    <div class="allocating_task" id="allocating_task">
-        <div class="task_head">
-            分配任务<span class="allocated">已分配</span><span class="schedule">80%</span>
-            <span id="allocating_task_close" class="icon-ishop_6-12 task_close"></span>
-        </div>
-        <div class="task_container">
-            <div class="allocating_task_container">
-                <div class="left_head"><span>第一步</span>选择会员分组</div>
-                <div class="input_search">
-                    <input type="text" placeholder="搜索">
-                    <span class="icon-ishop_3-05"></span>
-                </div>
-                <div class="left_list" id="left_list">
-                    <ul>
-                        <li>
-                            <div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>
-                            <span class="p16">饭团</span>
-                            <span class="staff_box">
-                                <span class="staff">导购:王某某</span>
-                                <span class="close_staff">取消分配</span>
-                            </span>
-                        </li>
-                        <li>
-                            <div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>
-                            <span class="p16">饭团</span>
-                            <span class="staff_box">
-                                <span class="staff">导购:王某某</span>
-                                <span class="close_staff">取消分配</span>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="allocating_task_container container_right">
-                <div class="left_head"><span>第二步</span>分配任务给员工</div>
-                <div class="input_search">
-                    <input type="text" placeholder="搜索" class="right_input">
-                    <span class="icon-ishop_3-05 rigth_icon"></span>
-                    <span class="screen icon-ishop_6-05" id="screen_btn"></span>
-                </div>
-                <div class="left_list" id="righ_list">
-                    <ul>
+    <!--<div class="allocating_task" id="allocating_task">-->
+        <!--<div class="task_head">-->
+            <!--分配任务<span class="allocated">已分配</span><span class="schedule">80%</span>-->
+            <!--<span id="allocating_task_close" class="icon-ishop_6-12 task_close"></span>-->
+        <!--</div>-->
+        <!--<div class="task_container">-->
+            <!--<div class="allocating_task_container">-->
+                <!--<div class="left_head"><span>第一步</span>选择会员分组</div>-->
+                <!--<div class="input_search">-->
+                    <!--<input type="text" placeholder="搜索">-->
+                    <!--<span class="icon-ishop_3-05"></span>-->
+                <!--</div>-->
+                <!--<div class="left_list" id="left_list">-->
+                    <!--<ul>-->
+                        <!--<li>-->
+                            <!--<div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>-->
+                            <!--<span class="p16">饭团</span>-->
+                            <!--<span class="staff_box">-->
+                                <!--<span class="staff">导购:王某某</span>-->
+                                <!--<span class="close_staff">取消分配</span>-->
+                            <!--</span>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<div class="checkbox1"><input type="checkbox" name="test" class="check" id="checkboxFourInput011"><label for="checkboxFourInput011"></label></div>-->
+                            <!--<span class="p16">饭团</span>-->
+                            <!--<span class="staff_box">-->
+                                <!--<span class="staff">导购:王某某</span>-->
+                                <!--<span class="close_staff">取消分配</span>-->
+                            <!--</span>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="allocating_task_container container_right">-->
+                <!--<div class="left_head"><span>第二步</span>分配任务给员工</div>-->
+                <!--<div class="input_search">-->
+                    <!--<input type="text" placeholder="搜索" class="right_input">-->
+                    <!--<span class="icon-ishop_3-05 rigth_icon"></span>-->
+                    <!--<span class="screen icon-ishop_6-05" id="screen_btn"></span>-->
+                <!--</div>-->
+                <!--<div class="left_list" id="righ_list">-->
+                    <!--<ul>-->
 
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <span class="reset_btn">重置</span>
-        <span class="allocating_btn">分配</span>
-    </div>
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<span class="reset_btn">重置</span>-->
+        <!--<span class="allocating_btn">分配</span>-->
+    <!--</div>-->
     <!-- 拉取区域 -->
     <div id="screen_area" class="screen_area">
         <div class="screen_title">
@@ -679,7 +679,7 @@
     <!-- 拉取员工  -->
     <div id="screen_staff" class="screen_area">
         <div class="screen_title">
-            <h4>筛选员工</h4>
+            <h4>筛选执行人</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
                     <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="staff_area_num"
@@ -751,19 +751,23 @@
             <!--<span>编辑权限</span>-->
         </div>
         <div class="list">
-            <div class="list_l">
-                <ul>
-                    <li>
-                        <label>分组编号</label>
-                        <input type="text" disabled="true" id="group_id">
-                    </li>
-                    <li class="r">
-                        <label>分组名称</label>
-                        <input type="text" disabled="true" id="group_name">
-                    </li>
-                </ul>
-            </div>
+            <!--<div class="list_l">-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<label>分组编号</label>-->
+            <!--<input type="text" disabled="true" id="group_id">-->
+            <!--</li>-->
+            <!--<li class="r">-->
+            <!--<label>分组名称</label>-->
+            <!--<input type="text" disabled="true" id="group_name">-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</div>-->
             <div class="list_r">
+                <div class="save" id="target_vip_all" style="margin-right: 20px;display: none">
+                    <i class="icon-ishop_6-04"></i>
+                    保存全部
+                </div>
                 <div class="save" id="target_vip_save">
                     <i class="icon-ishop_6-04"></i>
                     保存
@@ -784,57 +788,22 @@
                 </ul>
             </div>
             <div class="action_r">
-            <ul>
-            <li id="filtrate">
-            <span class="icon-ishop_6-05"></span>
-            筛选
-            </li>
-            <!--<li class="bg">-->
-            <!--<span class="icon-ishop_6-07"></span>-->
-            <!--刷新-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<span class="icon-ishop_6-08"></span>-->
-            <!--更多-->
-            <!--</li>-->
-            </ul>
+                <ul>
+                    <li id="filtrate">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                    <!--<li class="bg">-->
+                    <!--<span class="icon-ishop_6-07"></span>-->
+                    <!--刷新-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<span class="icon-ishop_6-08"></span>-->
+                    <!--更多-->
+                    <!--</li>-->
+                </ul>
             </div>
         </div>
-        <!--<div class="sxk" id="sxk">-->
-        <!--<div class="btn">-->
-        <!--<div class="empty" id="empty">-->
-        <!--<i class="icon-ishop_6-16"></i>清空筛选-->
-        <!--</div>-->
-        <!--<div class="r_btn">-->
-        <!--<div class="pack_up" id="pack_up">-->
-        <!--<i class="icon-ishop_6-18"></i>-->
-        <!--收起-->
-        <!--</div>-->
-        <!--<div class="find" id="find">-->
-        <!--<i class="icon-ishop_6-19"></i>-->
-        <!--查找-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="inputs">-->
-        <!--<li>-->
-        <!--<label>公司名称</label>-->
-        <!--<input type="text" id="p1">-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<label>联系人</label>-->
-        <!--<input type="text" id="p2">-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<label>修改人</label>-->
-        <!--<input type="text" id="p3">-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<label>联系电话</label>-->
-        <!--<input type="text" id="p4">-->
-        <!--</li>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="table">
             <table id="table" cellpadding="0" cellspacing="0" width="100%">
                 <thead>
@@ -845,7 +814,6 @@
                     <th>联系电话</th>
                     <th>会员卡号</th>
                     <th>会员类型</th>
-                    <!--<th>分组名称</th>-->
                     <th>所属导购</th>
                     <th>所属店铺</th>
                     <th width="50px;" style="text-align: left;">
@@ -911,7 +879,7 @@
             </ul>
         </div>
     </div>
-    <div class="p" id="p"></div>
+    <div id="p"></div>
     <div id="side_bar">
         <div class="gotop">
             <span class="icon-ishop_4-03"></span>
@@ -919,6 +887,165 @@
         <div class="gobottom">
             <span class="icon-ishop_4-04"></span>
         </div>
+    </div>
+    <!-- 拉取区域 -->
+    <div id="vip_screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选区域</h4>
+            <div class="screen_close" id="close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_area">
+                <span class="icon-ishop_3-05" id="search_area_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="vip_screen_shop" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="screen_close" id="close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_store">
+                <span class="icon-ishop_3-05" id="search_store_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="vip_screen_brand" class="screen_area" >
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_brand" readonly="true">
+                <span class="icon-ishop_3-05" id="search_brand_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_brand">确定</div>
+    </div>
+    <!-- 拉取导购  -->
+    <div id="vip_screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选导购</h4>
+            <div class="screen_close" id="close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="search_staff">
+                <span class="icon-ishop_3-05" id="search_staff_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="que_staff">确定</div>
+    </div>
+    <!-- 会员弹框 -->
+    <div class="screen_wrapper" id="screen_wrapper">
+        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+        <div class="contion">
+            <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+            <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+            <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text" readonly="true"
+                                                                 data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+            <div class="contion_input"><label>所属导购</label><input id="screen_staff_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+        </div>
+        <div class="ensure"><span id="screen_vip_que">确定</span></div>
     </div>
 </div>
 <!-- Mainly scripts -->
@@ -940,84 +1067,6 @@
 <script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>
 <script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    //保存按钮
-    $("#save").click(function () {
-        $(".performance").attr("id", "performance");
-        //点击执行
-        $("#performance").click(function () {
-            $(".box_shadow").show();
-            $(".tk").show();
-        });
-    });
-    //日期插件调用
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD',
-        min: laydate.now(), //设定最小日期为当前日期
-        max: '2099-06-16 23:59:59', //最大日期
-        istime: true,
-        istoday: false,
-        choose: function (datas) {
-            end.min = datas; //开始日选好后，重置结束日的最小日期
-            end.start = datas //将结束日的初始值设定为开始日
-        }
-    };
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD',
-        min: laydate.now(),
-        max: '2099-06-16 23:59:59',
-        istime: true,
-        istoday: false,
-        choose: function (datas) {
-            start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    laydate(start);
-    laydate(end);
-    //执行方式下拉选择
-    $("#execution li").click(function () {
-        var val = $(this).html();
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#execution_input").val(val);
-        if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
-            $(".task_dec").show();
-            $(".task_title").show();
-            $(".send_title").hide();
-            $(".summary").hide();
-            $(".short_msg").hide();
-        } else if (val == "系统短信通知顾客") {
-            $(".task_dec").hide();
-            $(".task_title").hide();
-            $(".send_title").hide();
-            $(".summary").hide();
-            $(".short_msg").show();
-        } else if (val == "微信公众号推送") {
-            $(".task_dec").hide();
-            $(".task_title").hide();
-            $(".send_title").show();
-            $(".summary").show();
-            $(".short_msg").hide();
-        }
-    });
-    $("#execution_input").click(function () {
-        $("#execution").toggle();
-    });
-    $(document).click(function (e) {
-        if ($(e.target).is("#execution_input")) {
-
-        } else {
-            $("#execution").hide();
-        }
-    });
-    //关闭弹出层
-    $("#cancel").click(close_float);
-    $("#X").click(close_float);
-    function close_float() {
-        $(".box_shadow").hide();
-        $(".tk").hide();
-    }
-
     //分配目标会员
     $("#target_vip").click(function () {
         $(".content").show();
