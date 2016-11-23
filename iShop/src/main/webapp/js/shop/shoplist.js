@@ -471,6 +471,13 @@ function jumpBianse(){
         })
     });
 }
+//同步掉接口
+$("#more_down").on("click","#synchronization",function(){
+    console.log(123123);
+    oc.postRequire("post","/shop/synchronization","0","",function(data){
+        console.log(data);
+    })
+})
 //二维码弹框
 $("#code_close").click(function(){
     $("#p").hide();

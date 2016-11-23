@@ -7,6 +7,10 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -36,6 +39,8 @@ public class ActivityVipController {
     private UserService userService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private IceInterfaceService iceInterfaceService;
 
     private static final Logger logger = Logger.getLogger(ActivityVipController.class);
 
@@ -47,7 +52,7 @@ public class ActivityVipController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public String goodsTrainManage(HttpServletRequest request) {
+    public String activityVipList(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
@@ -55,13 +60,11 @@ public class ActivityVipController {
 
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            org.json.JSONObject result = new org.json.JSONObject();
+            JSONObject result = new JSONObject();
             PageInfo<ActivityVip> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-
                 list = this.activityVipService.selectAllActivity(page_number, page_size, "", "");
             } else {
-
                 list = activityVipService.selectAllActivity(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -87,7 +90,6 @@ public class ActivityVipController {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
-
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -96,7 +98,6 @@ public class ActivityVipController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
 
             String result = this.activityVipService.insert(message, user_id, request);
-
             if (result.equals("新增失败")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -125,7 +126,6 @@ public class ActivityVipController {
     @Transactional
     public String selUserByVip(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -138,44 +138,9 @@ public class ActivityVipController {
             String searchValue = obj.get("searchValue").toString();
             String corp_code = obj.get("corp_code").toString();
             JSONObject target_vips = obj.getJSONObject("target_vips");
-            String type = target_vips.get("type").toString();
-            PageInfo<User> userList = new PageInfo<User>();
-            if (type.equals("1")){
-                String area_code = target_vips.get("area_code").toString();
-                String brand_code = target_vips.get("brand_code").toString();
-                String store_code = target_vips.get("store_code").toString();
-                String user_code = target_vips.get("user_code").toString();
-                if (!user_code.equals("")){
-                    userList = userService.selectUsersByUserCode(page_number,page_size,corp_code,searchValue,user_code);
-                }else if (!store_code.equals("")) {
-//                    String[] areas = area_code.split(",");
-                    userList = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                }else if(!area_code.equals("") || !brand_code.equals("")){
-                    //拉取区域下所有员工（包括区经）
-                    String[] areas = area_code.split(",");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + stores.get(i).getStore_code();
-                    }
-                    userList = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
-                }else {
-                    userList = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
-                }
-            }else if (type.equals("2")){
-                JSONArray vips = target_vips.getJSONArray("vips");
-                Set<String> user_codes = new HashSet<String>();
-                for (int i = 0; i < vips.size(); i++) {
-                    JSONObject vip = vips.getJSONObject(i);
-                    String user_code = vip.get("user_code").toString();
-                    if (!user_codes.contains(user_code))
-                        user_codes.add(user_code);
-                }
-                String codes = "";
-                for (String user_code : user_codes) {
-                    codes = codes + user_code + ",";
-                }
-                userList = userService.selectUsersByUserCode(page_number,page_size,corp_code,searchValue,codes);
-            }
+
+            PageInfo<User> userList = activityVipService.selUserByVip(page_number,page_size,corp_code,searchValue,target_vips);
+
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(userList));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -269,7 +234,6 @@ public class ActivityVipController {
         String id = "";
         String role_code = request.getSession(false).getAttribute("role_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
-
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -332,7 +296,6 @@ public class ActivityVipController {
                     dataBean.setId(id);
                     dataBean.setMessage(msg);
                 } else {
-
                     activityVipService.delete(Integer.parseInt(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
@@ -363,74 +326,36 @@ public class ActivityVipController {
     public String screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-
         try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<ActivityVip> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = activityVipService.selectActivityAllScreen(page_number, page_size, "", "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = activityVipService.selectActivityAllScreen(page_number, page_size, corp_code, "", map);
+            }
+            result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("screen error");
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
-    }
-
-    /**
-     * 活动任务类型
-     *
-     * @param request
-     * @return
-     */
-
-    @RequestMapping(value = "/taskType", method = RequestMethod.POST)
-    @ResponseBody
-    @Transactional
-    public String taskType(HttpServletRequest request) throws Exception {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        String user_code = request.getSession().getAttribute("user_code").toString();
-        String jsString = request.getParameter("param");
-        com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(jsString);
-        id = jsonObj.get("id").toString();
-        String message = jsonObj.get("message").toString();
-        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        String task_type_code = "";
-        try {
-            String corp_code = jsonObject.get("corp_code").toString();
-            String search_value = "";
-            if (jsonObject.containsKey("run_mode"))
-                search_value = jsonObject.get("run_mode").toString();
-
-            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-            List<TaskType> taskTypes = taskTypeService.selectCorpTaskType(corp_code, search_value);
-            result.put("list", JSON.toJSONString(taskTypes));
-
-            if (taskTypes.size() == 0) {
-                Date now = new Date();
-                com.alibaba.fastjson.JSONObject message1 = new com.alibaba.fastjson.JSONObject();
-                message1.put("task_type_code", corp_code + sdf.format(new Date()));
-                message1.put("task_type_name", search_value);
-                message1.put("corp_code", "C10000");
-                message1.put("created_date", Common.DATETIME_FORMAT.format(now));
-                message1.put("modified_date", Common.DATETIME_FORMAT.format(now));
-                message1.put("creater", "10000");
-                message1.put("modifier", "10000");
-                message1.put("isactive", "Y");
-                String result1 = taskTypeService.insertTaskType(message1.toString(), user_code);
-                task_type_code = taskTypeService.selectById(result1).getTask_type_code();
-                return task_type_code;
-            } else {
-                task_type_code = taskTypes.get(0).getTask_type_code();
-                return task_type_code;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("get tasktype error");
-        }
-        return task_type_code;
     }
 
     /**
@@ -439,7 +364,7 @@ public class ActivityVipController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST)
+    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     @Transactional
     public String executeActivity(HttpServletRequest request) throws Exception {
@@ -453,11 +378,19 @@ public class ActivityVipController {
         String message = jsonObj.get("message").toString();
         JSONObject jsonObject = JSONObject.parseObject(message);
         try {
-            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            ActivityVip activityVip = activityVipService.selActivityByCode(corp_code, activity_vip_code);
-            String run_mode = activityVip.getRun_mode();
+            int activity_id = Integer.parseInt(jsonObject.get("id").toString());
 
+//            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+            ActivityVip activityVip = activityVipService.selectActivityById(activity_id);
+            String corp_code = activityVip.getCorp_code();
+            String run_mode = activityVip.getRun_mode();
+            String activity_state = activityVip.getActivity_state();
+            if (!activity_state.equals("未执行")){
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("该任务非未执行状态");
+            }
             if (run_mode.contains("任务")) {
                 String task_title = activityVip.getTask_title();
                 String task_desc = activityVip.getTask_desc();
@@ -516,11 +449,14 @@ public class ActivityVipController {
                 activityVip.setModifier(user_code);
                 activityVipService.updateActivityVip(activityVip);
             }
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("execute success");
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("get tasktype error");
+            dataBean.setMessage("execute error");
         }
         return dataBean.getJsonStr();
     }

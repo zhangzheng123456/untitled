@@ -196,15 +196,35 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 根据店铺拉取员工
+     */
+    @Override
+    public List<User> selUserByStoreCode(String corp_code, String search_value, String store_code, String[] area, String role_code) throws Exception {
+        String[] stores = null;
+        if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+            stores = store_code.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", stores);
+        params.put("search_value", search_value);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        params.put("areas", area);
+        List<User> users = userMapper.selUserByStoreCode(params);
+        return users;
+    }
+
+       /**
      * 根据员工编号拉取员工
      */
     @Override
     public PageInfo<User> selectUsersByUserCode(int page_number, int page_size, String corp_code, String search_value, String user_code) throws Exception {
         String[] users = null;
-        if (!user_code.equals("")) {
-            user_code = user_code.replace(Common.SPECIAL_HEAD,"");
-            users = user_code.split(",");
-        }
+
+        user_code = user_code.replace(Common.SPECIAL_HEAD,"");
+        users = user_code.split(",");
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_code", users);
         params.put("search_value", search_value);
@@ -213,6 +233,16 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userMapper.selectUsersByUserCode(params);
         PageInfo<User> page = new PageInfo<User>(userList);
         return page;
+    }
+
+    /**
+     * 根据员工编号拉取员工
+     */
+    @Override
+    public List<User> selectSMByStoreCode(String corp_code, String store_code,String store_id,String role_code, String search_value) throws Exception {
+
+        List<User> userList = userMapper.selectSMByStoreCode(corp_code,store_code,store_id,role_code,search_value);
+        return userList;
     }
 
     public User getUserById(int id) throws Exception {

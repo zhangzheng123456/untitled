@@ -68,10 +68,8 @@
         def_activity_vip.activity_state,
         def_activity_vip.operators,
         def_activity_vip.task_code
-        FROM def_activity_vip,def_corp,def_task
+        FROM def_activity_vip,def_corp
         WHERE def_activity_vip.corp_code=def_corp.corp_code
-        AND def_activity_vip.task_code=def_task.task_code
-        AND def_activity_vip.corp_code=def_task.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND def_activity_vip.corp_code = #{corp_code}
         </if>
@@ -320,43 +318,6 @@
         WHERE id=#{id};
     </update>
 
-    <select id="getActivityForID" resultType="com.bizvane.ishop.entity.ActivityVip">
-        SELECT def_activity_vip.id,activity_vip_code
-        def_activity_vip.activity_theme,
-        def_activity_vip.run_mode,
-        def_activity_vip.start_time,
-        def_activity_vip.end_time,
-        def_activity_vip.activity_vip_code,
-        def_activity_vip.target_vips,
-        def_activity_vip.msg_info,
-        def_activity_vip.task_title,
-        def_activity_vip.task_desc,
-        def_activity_vip.wechat_title,
-        def_activity_vip.wechat_desc,
-        def_activity_vip.activity_url,
-        def_activity_vip.activity_content,
-        def_activity_vip.content_url,
-        def_activity_vip.corp_code,
-        def_corp.corp_name,
-        def_activity_vip.created_date,
-        def_activity_vip.modified_date,
-        def_activity_vip.modifier,
-        def_activity_vip.creater,
-        def_activity_vip.isactive,
-        def_activity_vip.activity_state,
-         def_activity_vip.operators,
-
-          def_activity_vip.task_code
-      FROM def_activity_vip,def_corp,def_task
-      WHERE  def_activity_vip.corp_code=def_corp.corp_code
-       AND def_activity_vip.task_code=def_task.task_code
-        AND def_activity_vip.corp_code=def_task.corp_code
-      AND def_activity_vip.activity_theme = #{activity_theme}
-      AND def_activity_vip.run_mode = #{run_mode}
-      AND def_activity_vip.start_time = #{created_date}
-      AND def_activity_vip.corp_code = #{corp_code}
-    </select>
-
     <delete id="delActivityById">
         DELETE FROM def_activity_vip
         WHERE id=#{id};
@@ -388,22 +349,17 @@
         def_activity_vip.activity_state,
         def_activity_vip.operators,
         def_activity_vip.task_code
-        FROM def_activity_vip,def_corp,def_task
+        FROM def_activity_vip,def_corp
         WHERE  def_activity_vip.corp_code=def_corp.corp_code
-        AND def_activity_vip.task_code=def_task.task_code
-        AND def_activity_vip.corp_code=def_task.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND def_activity_vip.CORP_CODE = #{corp_code}
+            AND def_activity_vip.corp_code = #{corp_code}
         </if>
-
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     def_corp.${entryKey} REGEXP ${entryValue}
                 </when>
-
-
                 <when test="entryValue!=''">
                     def_activity_vip.${entryKey} REGEXP ${entryValue}
                 </when>
@@ -423,7 +379,6 @@
         def_activity_vip.run_mode,
         def_activity_vip.start_time,
         def_activity_vip.end_time,
-
         def_activity_vip.target_vips,
         def_activity_vip.msg_info,
         def_activity_vip.task_title,

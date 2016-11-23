@@ -110,6 +110,20 @@ $("#shop_add").click(function(){
 	getstorelist(shop_num);
 	bianse();
 });
+//点击同步显示列表内容
+$("#more_down").on("click","#synchronization",function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	whir.loading.add("",0.5);
+	$("#loading").remove();
+	$("#screen_shop").show();
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_area").hide();
+	getstorelist(shop_num);
+	shop_num=1;
+	isscroll=false;
+})
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){
     var input=$(this).find("input")[0];
@@ -270,7 +284,7 @@ $("#store_search").keydown(function(){
 	shop_num=1;
 	if(event.keyCode==13){
 		isscroll=false;
-		$("#screen_shop .screen_content_l ul").unbind("scroll");
+		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_shop .screen_content_l ul").empty();
 		getstorelist(shop_num);
 	}

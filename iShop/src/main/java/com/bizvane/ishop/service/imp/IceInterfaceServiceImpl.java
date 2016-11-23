@@ -60,6 +60,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return dataBox;
     }
 
+    //会员列表
     public Map vipBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
         String user_code = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -133,6 +134,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return datalist;
     }
 
+    //会员分析
     public Map vipAnalysisBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
         String user_code = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -242,5 +244,51 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         datalist.put(data_page_size.key, data_page_size);
 
         return datalist;
+    }
+
+    //会员筛选
+    public DataBox vipScreenMethod(String page_num,String page_size,String corp_code,String area_code,String brand_code,String store_code,String user_code) throws Exception{
+        DataBox dataBox = null;
+        if (user_code.equals("")) {
+            String role_code = Common.ROLE_SM;
+            if (store_code.equals("")) {
+                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                for (int i = 0; i < storeList.size(); i++) {
+                    store_code = store_code + storeList.get(i).getStore_code() + ",";
+                }
+            }
+            Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_code, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_id.key, data_store_id);
+            datalist.put(data_area_code.key, data_area_code);
+            datalist.put(data_role_code.key, data_role_code);
+            datalist.put(data_page_num.key, data_page_num);
+            datalist.put(data_page_size.key, data_page_size);
+
+            dataBox = iceInterfaceV2("AnalysisAllVip", datalist);
+        } else {
+            Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_page_num.key, data_page_num);
+            datalist.put(data_page_size.key, data_page_size);
+
+            dataBox = iceInterfaceV2("AnalysisEmpsVip", datalist);
+        }
+        return dataBox;
     }
 }

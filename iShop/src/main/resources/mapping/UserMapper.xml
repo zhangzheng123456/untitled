@@ -798,11 +798,48 @@
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
         AND def_user.corp_code = #{corp_code}
-        <if test="user_code != null and user_code !=''">
+        <if test="user_code != null">
             AND def_user.user_code IN
-            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            <foreach collection="user_code" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (  user_name LIKE concat('%',#{search_value},'%')
+            OR user_code LIKE concat('%',#{search_value},'%')
+            OR phone LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_user.id
+        ORDER BY def_user.ID DESC
+    </select>
+
+    <select id="selectSMByStoreCode" resultType="com.bizvane.ishop.entity.User">
+        SELECT  def_user.id,
+        user_id,
+        user_code,
+        user_name,
+        phone,
+        store_code,
+        def_user.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_group.group_name,
+        def_group.role_code
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.corp_code = #{corp_code}
+        <if test="role_code != null and role_code != ''">
+            AND def_group.role_code = #{role_code}
+        </if>
+        <if test="store_code != null and store_code !='' and store_id !=null and store_id !=''">
+            AND (def_user.store_code regexp #{store_code}
+            OR def_user.store_code regexp #{store_id} )
         </if>
         <if test="search_value != null and search_value !=''">
             AND
