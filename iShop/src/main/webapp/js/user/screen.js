@@ -9,7 +9,7 @@ $("#screen_add").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
 	if(r_code==undefined||r_code==""){
 		art.dialog({
 			zIndex:10003,
@@ -24,7 +24,7 @@ $("#screen_add").click(function(){
 		whir.loading.add("",0.5);
 		$("#loading").remove();
 		$("#screen_shop").show();
-		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 		$("#screen_area").hide();
 		shop_num=1;
 		isscroll=false;
@@ -52,7 +52,7 @@ $("#screen_add").click(function(){
 		whir.loading.add("",0.5);
 		$("#loading").remove();
 		$("#screen_area").show();
-		$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 		$("#screen_shop").hide();
 		area_num=1;
 		$("#screen_area .screen_content_l ul").empty();
@@ -70,7 +70,7 @@ $("#screen_add").click(function(){
 		whir.loading.add("",0.5);
 		$("#loading").remove();
 		$("#screen_brand").show();
-		$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 		$("#screen_shop").hide();
 		$("#screen_area").hide();
 		$("#screen_brand .screen_content_l ul").empty();
@@ -84,11 +84,11 @@ $("#screen_add").click(function(){
 $("#shop_add").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
 	whir.loading.add("",0.5);
 	$("#loading").remove();
 	$("#screen_shop").show();
-	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_area").hide();
 	shop_num=1;
 	isscroll=false;
@@ -114,7 +114,7 @@ $("#shop_add").click(function(){
 $("#more_down").on("click","#synchronization",function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[3]-$("#screen_shop").height())/2+40;
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
 	whir.loading.add("",0.5);
 	$("#loading").remove();
 	$("#screen_shop").show();
@@ -140,10 +140,10 @@ $("#shop_area").click(function(){
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
 	$("#screen_shop").hide();
 	$("#screen_area").show();
-	$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	area_num=1;
 	$("#screen_area .screen_content_l ul").empty();
 	$("#area_search").val("");
@@ -158,10 +158,10 @@ $("#shop_area").click(function(){
 $("#shop_brand").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
 	$("#screen_shop").hide();
 	$("#screen_brand").show();
-	$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_brand .screen_content_l ul").empty();
 	// $("#screen_brand .screen_content_r ul").empty();
 	getbrandlist();
@@ -170,7 +170,7 @@ $("#shop_brand").click(function(){
 $("#shop_city").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[3]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
 	$("#screen_shop").hide();
 	$("#screen_city").show();
 	$("#screen_city").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
@@ -387,9 +387,9 @@ $("#screen_que_area").click(function(){
 		$("#area_num").attr("data-areacode",area_codes);
 		var arr=whir.loading.getPageSize();
 		var left=(arr[0]-$("#screen_shop").width())/2;
-		var tp=(arr[1]-$("#screen_shop").height())/2+80;
+		var tp=(arr[3]-$("#screen_shop").height())/2+50;
 		$("#screen_area").attr("type","");
-		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 		$("#screen_area").hide();
 		$("#screen_shop").show();
 		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
@@ -409,8 +409,8 @@ $("#screen_que_area").click(function(){
 		$("#area_num").attr("data-areacode",area_codes);
 		var arr=whir.loading.getPageSize();
 		var left=(arr[0]-$("#screen_shop").width())/2;
-		var tp=(arr[1]-$("#screen_shop").height())/2+80;
-		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+		var tp=(arr[3]-$("#screen_shop").height())/2+50;
+		$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 		$("#screen_area").hide();
 		$("#screen_shop").show();
 		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
@@ -497,8 +497,8 @@ $("#screen_que_brand").click(function(){
 	$("#brand_num").attr("data-brandcode",brand_codes);
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
-	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_brand").hide();
 	$("#screen_shop").show();
 	var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
