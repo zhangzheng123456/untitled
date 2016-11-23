@@ -1,7 +1,9 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,4 +26,6 @@ public interface BaseService {
     String userCodeConvertUserId(String corp_code,String user_code)throws Exception;
 
     void insertUserOperation(String operation_corp_code,String operation_user_code,String function,String action,String corp_code, String code,String name,String remark)throws Exception;
+
+    Corp selectByCorpcode(String corp_code) throws SQLException;
 }

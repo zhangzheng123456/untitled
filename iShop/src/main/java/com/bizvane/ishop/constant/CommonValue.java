@@ -20,7 +20,7 @@ public class CommonValue {
     public final static String CLIENT_SECRET = "D747A297458D75239387F46DC95D2B35";
     public final static String REDIRECT_URL = "http://ishop.dev.bizvane.com/api/weimob/auth";
 
-//    public final static String wechat_url = "http://wechat.app.bizvane.com/app/wechat";
+    //    public final static String wechat_url = "http://wechat.app.bizvane.com/app/wechat";
     public final static String wechat_url = "http://wechat.dev.bizvane.com/app/wechat";
 
     //table名（mongodb）
@@ -38,4 +38,6 @@ public class CommonValue {
     public final static String table_log_user_operation = "log_user_operation";
     //会员任务分配
     public final static String table_vip_task_allocation = "vip_task_allocation";
+    //用户登录日志
+    public final static String table_login_log = "login_log";
 }
