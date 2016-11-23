@@ -40,4 +40,6 @@ public class CommonValue {
     public final static String table_vip_task_allocation = "vip_task_allocation";
     //用户登录日志
     public final static String table_login_log = "login_log";
+    //会员活动执行
+    public final static String table_vip_activity_allocation = "vip_activity_allocation";
 }

@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.ActivityVip;
 import com.bizvane.ishop.entity.User;
@@ -30,4 +31,6 @@ public interface ActivityVipService {
 
     //根据选择的vip，显示对应的执行人
     PageInfo<User> selUserByVip(int page_number, int page_size, String corp_code, String search_value, JSONObject target_vips) throws Exception;
+
+    JSONObject executeDetail(ActivityVip activityVip) throws Exception;
 }

@@ -169,6 +169,7 @@ public class UserController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String searchValue = jsonObject.get("searchValue").toString();
+            String user_name = request.getSession().getAttribute("user_name").toString();
 
             String area_code = "";
             String store_code = "";
@@ -223,6 +224,7 @@ public class UserController {
                 list = new PageInfo<User>();
                 list.setList(users);
             } else if (role_code.equals(Common.ROLE_SM)) {
+
                 if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
                     store_code = jsonObject.get("store_code").toString();
                 }else {
@@ -230,7 +232,7 @@ public class UserController {
                     store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                 }
                 list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null,role_code);
-                if (page_number == 1) {
+                if (page_number == 1 && (searchValue.equals("") || user_name.contains(searchValue))) {
                     List<User> users = list.getList();
                     User self = userService.getUserById(user_id);
                     users.add(self);
@@ -249,7 +251,8 @@ public class UserController {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",null,role_code);
                 }else {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, null, role_code);
-                    if (page_number == 1) {
+                    if (page_number == 1 && (searchValue.equals("") || user_name.contains(searchValue))) {
+
                         List<User> users = list.getList();
                         User self = userService.getUserById(user_id);
                         users.add(self);

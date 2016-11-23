@@ -43,6 +43,9 @@ public class Task {
     private String task_type_code_old;
     private String task_type_code_new;
 
+    //关联活动
+    private String activity_vip_code;
+
     public String getTask_type_code_old() {
         return task_type_code_old;
     }
@@ -220,5 +223,13 @@ public class Task {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getActivity_vip_code() {
+        return activity_vip_code;
+    }
+
+    public void setActivity_vip_code(String activity_vip_code) {
+        this.activity_vip_code = activity_vip_code;
     }
 }
