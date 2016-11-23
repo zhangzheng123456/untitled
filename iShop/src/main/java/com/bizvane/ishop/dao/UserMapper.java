@@ -53,6 +53,8 @@ public interface UserMapper {
 
     List<User> selectUsersByUserCode(Map<String, Object> params) throws SQLException;
 
+    List<User> selectSMByStoreCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code,@Param("store_id") String store_id,
+                                   @Param("role_code") String role_code, @Param("search_value") String search_value) throws SQLException;
 
     //------------------------UserQrcodeMapper.xml----------
 
