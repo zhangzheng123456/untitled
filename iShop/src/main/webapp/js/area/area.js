@@ -330,7 +330,7 @@ function jumpBianse(){
             input.checked = false;
             $(this).removeClass("tr");
         }
-    })
+    });
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/area/area_add.html");
