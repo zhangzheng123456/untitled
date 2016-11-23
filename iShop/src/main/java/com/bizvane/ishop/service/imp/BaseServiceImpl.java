@@ -3,8 +3,10 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.BaseMapper;
+import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.dao.UserMapper;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.BaseService;
@@ -35,6 +37,8 @@ public class BaseServiceImpl implements BaseService{
     StoreMapper storeMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    CorpMapper corpMapper;
     @Autowired
     MongoDBClient mongodbClient;
 
@@ -131,8 +135,14 @@ public class BaseServiceImpl implements BaseService{
         saveData.put("operation_corp_code", operation_corp_code);
         saveData.put("operation_user_code", operation_user_code);
         saveData.put("remark", remark);
+        Corp corp = selectByCorpcode(corp_code);
+        saveData.put("corp_name", corp.getCorp_name());
         saveData.put("operation_time", Common.DATETIME_FORMAT.format(now));
         collection.insert(saveData);
     }
 
+    @Override
+    public Corp selectByCorpcode(String corp_code) throws SQLException {
+        return corpMapper.selectByCorpcode(corp_code);
+    }
 }

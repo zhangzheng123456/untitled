@@ -235,7 +235,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i]._id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -295,21 +295,16 @@ function GET(a,b){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            //console.log('message是:'+JSON.stringify(message));
             var list=message.list;
-            //console.log('message是:'+JSON.stringify(list));
             var page_number = message.page_number;
-            console.log('页面是：'+page_number+  '  '   +"list是："+list);
+            cout=list.length;
             superaddition(list,page_number);
             jumpBianse();
-            for(i=0;i<list.length;i++) {
-                var funcCode = list[i].code;
-                var _id = list[i]._id;
-                var cout = list.length;
-                //console.log(funcCode+''+action+''+JSON.stringify(_id)+'________'+cout);
-                setPage($("#foot-num")[0], cout, page_number, b, funcCode);
-            }
-
+            setPage($("#foot-num")[0],cout,a,b,funcCode);
+            setPage($("#foot-num")[0],cout,page_number,b,funcCode);
+            console.log('页面是：'+page_number+  '  '   +"list是："+JSON.stringify(list));
+            console.log('message是:'+JSON.stringify(list));
+            console.log('message是:'+JSON.stringify(message));
         }else if(data.code=="-1"){
              alert(data.message);
         }
@@ -600,7 +595,8 @@ $('#file_close').click(function(){
     $('#download').hide();
 })
 //筛选按钮
-oc.postRequire("get","/userOperation/screen?funcCode="+funcCode+"","0","",function(data){
+oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+    console.log(funcCode);
     if(data.code=="0"){
         var message=JSON.parse(data.message);
         console.log(JSON.stringify(message));

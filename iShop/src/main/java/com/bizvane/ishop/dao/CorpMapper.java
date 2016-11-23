@@ -57,4 +57,6 @@ public interface CorpMapper {
     int updateCorpWechat(CorpWechat record) throws SQLException;
 
     int deleteCorpWechat(@Param("app_id") String app_id,@Param("corp_code") String corp_code) throws SQLException;
+
+    Corp selectByCorpcode(@Param("corp_code")String corp_code) throws SQLException;
 }
