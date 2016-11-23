@@ -123,6 +123,7 @@ $("#more_down").on("click","#synchronization",function(){
 	getstorelist(shop_num);
 	shop_num=1;
 	isscroll=false;
+
 })
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){
@@ -400,10 +401,27 @@ $("#screen_que_area").click(function(){
 	    // $("#screen_shop .screen_content_r ul").empty();
 		getstorelist(shop_num);
 	}
-	if(r_code=="R4000"){
+	if(r_code=="R4000"&&type!="1"){
 		$("#screen_area").hide();
+		whir.loading.remove();//移除遮罩层
 	}
-	whir.loading.remove();//移除遮罩层
+	if(r_code==undefined){
+		$("#area_num").attr("data-areacode",area_codes);
+		var arr=whir.loading.getPageSize();
+		var left=(arr[0]-$("#screen_shop").width())/2;
+		var tp=(arr[1]-$("#screen_shop").height())/2+80;
+		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_area").hide();
+		$("#screen_shop").show();
+		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
+		$("#area_num").val("已选"+num+"个");
+		var shop_num=1;
+		isscroll=false;
+		$("#screen_shop .screen_content_l").unbind("scroll");
+		$("#screen_shop .screen_content_l ul").empty();
+	    // $("#screen_shop .screen_content_r ul").empty();
+		getstorelist(shop_num);
+	}
 })
 //点击店铺确定追加节点
 $("#screen_que_shop").click(function(){
@@ -474,7 +492,6 @@ $("#screen_que_brand").click(function(){
 	$("#screen_shop .screen_content_l ul").empty();
 	// $("#screen_shop .screen_content_r ul").empty();
 	getstorelist(shop_num);
-	whir.loading.remove();//移除遮罩层
 })
 //点击区域的城市的确定追加节点
 $("#screen_que_city").click(function(){
@@ -512,7 +529,11 @@ function getarealist(a){
 	var pageSize=20;
 	var pageNumber=a;
 	var _param = {};
-	_param["corp_code"] = corp_code;
+	if(corp_code==undefined){
+		_param['corp_code']="C10000";
+	}else{
+		_param['corp_code']=corp_code;
+	}
 	_param["searchValue"]=searchValue;
 	_param["pageSize"]=pageSize;
 	_param["pageNumber"]=pageNumber;
@@ -591,7 +612,11 @@ function getstorelist(a){
 	var pageSize=20;
 	var pageNumber=a;
 	var _param={};
-	_param['corp_code']=corp_code;
+	if(corp_code==undefined){
+		_param['corp_code']="C10000";
+	}else{
+		_param['corp_code']=corp_code;
+	}
 	_param['area_code']=area_code;
 	_param['brand_code']=brand_code;
 	_param['city']=city;
@@ -602,8 +627,7 @@ function getstorelist(a){
 	$("#mask").css("z-index","10002");
 	// oc.postRequire("post","/user/stores","", _param, function(data) {
 	oc.postRequire("post","/shop/selectByAreaCode","", _param, function(data) {
-
-	if (data.code == "0") {
+	    if (data.code == "0") {
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var hasNextPage=list.hasNextPage;
@@ -675,7 +699,11 @@ function getbrandlist(){
 	var corp_code = $('#OWN_CORP').val();
 	var searchValue=$("#brand_search").val();
 	var _param={};
-	_param["corp_code"]=corp_code;
+	if(corp_code==undefined){
+		_param['corp_code']="C10000";
+	}else{
+		_param['corp_code']=corp_code;
+	}
 	_param["searchValue"]=searchValue;
 	whir.loading.add("",0.5);//加载等待框
 	$("#mask").css("z-index","10002");
@@ -737,7 +765,11 @@ function getcitylist(){
 	var corp_code = $('#OWN_CORP').val();
 	var searchValue=$("#brand_search").val();
 	var _param={};
-	_param["corp_code"]=corp_code;
+	if(corp_code==undefined){
+		_param['corp_code']="C10000";
+	}else{
+		_param['corp_code']=corp_code;
+	}
 	_param["search_value"]=searchValue;
 	whir.loading.add("",0.5);//加载等待框
 	$("#mask").css("z-index","10002");
