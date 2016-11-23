@@ -270,7 +270,7 @@ $("#store_search").keydown(function(){
 	shop_num=1;
 	if(event.keyCode==13){
 		isscroll=false;
-		$("#screen_shop .screen_content_l ul").unbind("scroll");
+		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_shop .screen_content_l ul").empty();
 		getstorelist(shop_num);
 	}
