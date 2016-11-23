@@ -245,17 +245,21 @@ function superaddition(data,num){//页面加载循环
             + "</td><td style='text-align:center;'>"
             + a
             + "</td><td>"
-            + data[i].corp_code
+            + data[i].operation_user_code
             + "</td><td>"
             + data[i].function
             + "</td><td>"
             + data[i].action
             + "</td><td>"
+            + data[i].corp_code
+            + "</td><td>"
+            + data[i].code
+            + "</td><td>"
             + data[i].name
             + "</td><td>"
-            + data[i].operation_user_code
-            + "</td><td>"
             + data[i].operation_time
+            + "</td><td>"
+            + data[i].remark
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -297,7 +301,7 @@ function GET(a,b){
             var message=JSON.parse(data.message);
             var list=message.list;
             var page_number = message.page_number;
-            cout=list.length;
+            cout=message.pages;
             superaddition(list,page_number);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
@@ -382,7 +386,7 @@ function POST(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=message.list;
-            cout=list.length;
+            cout=message.pages;
             var pageNum = message.page_number;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -596,12 +600,10 @@ $('#file_close').click(function(){
 })
 //筛选按钮
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
-    console.log(funcCode);
     if(data.code=="0"){
         var message=JSON.parse(data.message);
         console.log(JSON.stringify(message));
         var filter=message.filter;
-        console.log(filter);
         $("#sxk .inputs ul").empty();
         var li="";
         for(var i=0;i<filter.length;i++){
@@ -766,12 +768,12 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/apploginlog/screen","0",_param,function(data){
+    oc.postRequire("post","/userOperation/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
+            cout=message.pages;
+            var pageNum = message.page_number;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
