@@ -77,12 +77,38 @@ var funcCode=key_val.func_code;
                 });
                 var OWN_CORP = $("#OWN_CORP").val();
                 var activity_theme = $("#activity_theme").val();
+                if(activity_theme == ""){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "活动主题不能为空"
+                    });
+                    return ;
+                }
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
+                if(execution_input.indexOf("任务")>-1&&(start_time==""||end_time=="")){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "活动时间不能为空"
+                    });
+                    return ;
+                }
                 var target_vip = {};
                 var type = $("#target_vip").attr("data-type");
-                if(type == "1"){
+                if(type == ""||type == undefined){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "目标会员不能为空"
+                    });
+                    return ;
+                }else if(type == "1"){
                     target_vip["type"] = "1";
                     target_vip["area_code"] = $("#target_vip").attr("data-areacode");
                     target_vip["brand_code"] = $("#target_vip").attr("data-brandcode");
@@ -94,9 +120,19 @@ var funcCode=key_val.func_code;
                 }
                 var executor = [];
                 var user_code = $("#executor").attr("data-code");
-                    user_code = user_code.split(",");
                 var phone = $("#executor").attr("data-phone");
+                if((user_code == undefined|| phone == undefined) && $("#executor").css("display") !=="none"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "执行人不能为空"
+                    });
+                    return ;
+                }else {
+                    user_code = user_code.split(",");
                     phone = phone.split(",");
+                }
                 for(var i=0;i<user_code.length;i++){
                     var list={};
                     list['user_code'] = user_code[i];
@@ -177,12 +213,38 @@ var funcCode=key_val.func_code;
                 });
                 var OWN_CORP = $("#OWN_CORP").val();
                 var activity_theme = $("#activity_theme").val();
+                if(activity_theme == ""){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "活动主题不能为空"
+                    });
+                    return ;
+                }
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
+                if(execution_input.indexOf("任务")>-1&&(start_time==""||end_time=="")){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "活动时间不能为空"
+                    });
+                    return ;
+                }
                 var target_vip = {};
                 var type = $("#target_vip").attr("data-type");
-                if(type == "1"){
+                if(type == ""||type == undefined){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "目标会员不能为空"
+                    });
+                    return ;
+                }else if(type == "1"){
                     target_vip["type"] = "1";
                     target_vip["area_code"] = $("#target_vip").attr("data-areacode");
                     target_vip["brand_code"] = $("#target_vip").attr("data-brandcode");
@@ -194,9 +256,19 @@ var funcCode=key_val.func_code;
                 }
                 var executor = [];
                 var user_code = $("#executor").attr("data-code");
-                user_code = user_code.split(",");
                 var phone = $("#executor").attr("data-phone");
-                phone = phone.split(",");
+                if((user_code == undefined|| phone == undefined) && $("#executor").css("display") !=="none"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "执行人不能为空"
+                    });
+                    return ;
+                }else {
+                    user_code = user_code.split(",");
+                    phone = phone.split(",");
+                }
                 for(var i=0;i<user_code.length;i++){
                     var list={};
                     list['user_code'] = user_code[i];
@@ -339,6 +411,33 @@ jQuery(document).ready(function () {
                 var msg = JSON.parse(data.message);
                     msg = JSON.parse(msg.activityVip);
                 console.log(msg);
+                var val = msg.run_mode;
+                var target_vips = JSON.parse(msg.target_vips);
+                var executor = JSON.parse(msg.operators);
+                var user_code = "";
+                var phone = "";
+                for(var i=0;i<executor.length;i++){
+                    if(i<executor.length-1){
+                        user_code+=executor[i].user_code+",";
+                        phone+=executor[i].user_code+","
+                    }else {
+                        user_code+=executor[i].user_code;
+                        phone+=executor[i].user_code;
+                    }
+                    $("#executor").val("已选"+executor.length+"个");
+                }
+                if(target_vips.type == "2"){
+                    $("#target_vip").attr("data-type","2");
+                    $("#target_vip").attr("data-vips",target_vips.vips);
+                    var vips = target_vips.vips.split(",");
+                    $("#target_vip").val("已选"+vips.length+"个");
+                }else if(target_vips.type == "1"){
+                    $("#target_vip").attr("data-type","1");
+                    $("#target_vip").attr("data-areacode",target_vips.area_code);
+                    $("#target_vip").attr("data-brandcode",target_vips.brand_code);
+                    $("#target_vip").attr("data-shopcode",target_vips.store_code);
+                    $("#target_vip").attr("data-usercode",target_vips.user_code);
+                }
                 $("#activity_theme").val(msg.activity_theme);
                 $("#execution_input").val(msg.run_mode);
                 $("#start").val(msg.start_time);
@@ -350,6 +449,7 @@ jQuery(document).ready(function () {
                 $("#summary").val(msg.wechat_desc);
                 $("#outer_link").val(msg.activity_url);
                 $("#src_input").val(msg.content_url);
+                $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
@@ -360,6 +460,7 @@ jQuery(document).ready(function () {
                     input.checked = false;
                 }
                 getcorplist(msg.corp_code);
+                execution_change(val);
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -431,7 +532,7 @@ function bianse(){
     $(".screen_content_r li:even").css("backgroundColor","#ededed");
 }
 //执行方式变化页面变化
-function execution_change() {
+function execution_change(val) {
     if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
         $(".task_dec").show();
         $(".executor").show();
@@ -1672,7 +1773,7 @@ $("#execution li").click(function () {
     var val = $(this).html();
     $(this).addClass("liactive").siblings("li").removeClass("liactive");
     $("#execution_input").val(val);
-    execution_change();
+    execution_change(val);
 });
 $("#execution_input").click(function () {
     $("#execution").toggle();
