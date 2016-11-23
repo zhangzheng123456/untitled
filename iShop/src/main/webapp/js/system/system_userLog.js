@@ -306,9 +306,9 @@ function GET(a,b){
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
             setPage($("#foot-num")[0],cout,page_number,b,funcCode);
-            console.log('页面是：'+page_number+  '  '   +"list是："+JSON.stringify(list));
-            console.log('message是:'+JSON.stringify(list));
-            console.log('message是:'+JSON.stringify(message));
+            // console.log('页面是：'+page_number+  '  '   +"list是："+JSON.stringify(list));
+            // console.log('message是:'+JSON.stringify(list));
+            // console.log('message是:'+JSON.stringify(message));
         }else if(data.code=="-1"){
              alert(data.message);
         }
@@ -602,7 +602,7 @@ $('#file_close').click(function(){
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
         var message=JSON.parse(data.message);
-        console.log(JSON.stringify(message));
+        // console.log(JSON.stringify(message));
         var filter=message.filter;
         $("#sxk .inputs ul").empty();
         var li="";
@@ -771,10 +771,9 @@ function filtrates(a,b){
     oc.postRequire("post","/userOperation/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
+            var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;
-            var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
