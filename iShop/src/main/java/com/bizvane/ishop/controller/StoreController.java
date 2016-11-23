@@ -80,8 +80,8 @@ public class StoreController {
     @ResponseBody
     public String selectByAreaCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String role_code = ("role_code").toString();
-        String corp_code = ("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
 
         try {
             String jsString = request.getParameter("param");
@@ -117,20 +117,20 @@ public class StoreController {
                     list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code, brand_code, searchValue, "", city);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     if (brand_code.equals("")) {
-                        brand_code = ("brand_code").toString();
+                        brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     }
                     list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code, brand_code, searchValue, "", city);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_store_code = "";
                     if (area_code.equals("")) {
-                        area_code = ("area_code").toString();
+                        area_code = request.getSession().getAttribute("area_code").toString();
                         area_code = area_code.replace(Common.SPECIAL_HEAD, "");
-                        area_store_code = ("store_code").toString();
+                        area_store_code = request.getSession().getAttribute("store_code").toString();
                     }
                     list = storeService.selStoreByAreaBrandCity(page_number, page_size, corp_code, area_code, brand_code, searchValue, area_store_code, city);
                 } else {
-                    String store_code = ("store_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     list = storeService.selStoreByStoreCodes(page_number, page_size, store_code, corp_code, searchValue);
                 }
             }
@@ -165,8 +165,8 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String role_code = ("role_code").toString();
-            String corp_code = ("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
             PageInfo<Store> list;
             String brand_code = "";
@@ -212,9 +212,9 @@ public class StoreController {
                     String area_code = jsonObject.get("area_code").toString();
                     String area_store_code = "";
                     if (area_code.equals("")) {
-                        area_code = ("area_code").toString();
+                        area_code = request.getSession().getAttribute("area_code").toString();
                         area_code = area_code.replace(Common.SPECIAL_HEAD, "");
-                        area_store_code = ("store_code").toString();
+                        area_store_code = request.getSession().getAttribute("store_code").toString();
                     }
                     list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code, brand_code, searchValue, area_store_code);
                     List<Store> stores = new ArrayList<Store>();
@@ -247,7 +247,7 @@ public class StoreController {
                     stores.addAll(list.getList());
                     list.setList(stores);
                 } else {
-                    String store_code = ("store_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     list = storeService.selStoreByStoreCodes(page_number, page_size, store_code, corp_code, searchValue);
                 }
             }
@@ -282,7 +282,7 @@ public class StoreController {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
                 list = storeService.selectStore(corp_code, store_code);
             } else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = ("brand_code").toString();
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 list = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "", "");
             }
@@ -337,8 +337,8 @@ public class StoreController {
     public String list(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String role_code = ("role_code").toString();
-            String corp_code = ("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
@@ -352,7 +352,7 @@ public class StoreController {
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStore(request, page_number, page_size, corp_code, "", "", "");
                 } else if (role_code.equals(Common.ROLE_BM)) {
-                    String brand_code = ("brand_code").toString();
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
                     if (brand_code == null || brand_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -368,8 +368,8 @@ public class StoreController {
                         list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null, null, brandCodes, "", "", "");
                     }
                 } else if (role_code.equals(Common.ROLE_AM)) {
-                    String area_code = ("area_code").toString();
-                    String store_code = ("store_code").toString();
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     if (area_code == null || area_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -390,7 +390,7 @@ public class StoreController {
                         list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, storeCodes, null, "", "", "");
                     }
                 } else {
-                    String store_code = ("store_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     if (store_code == null || store_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -422,7 +422,7 @@ public class StoreController {
     @Transactional
     public String addShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = ("user_code").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -453,8 +453,8 @@ public class StoreController {
                  * @throws Exception
                  */
                 com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
-                String operation_corp_code = ("corp_code").toString();
-                String operation_user_code = ("user_code").toString();
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "店铺管理";
                 String action = Common.ACTION_ADD;
                 String t_corp_code = action_json.get("corp_code").toString();
@@ -485,7 +485,7 @@ public class StoreController {
     @Transactional
     public String editShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = ("user_code").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -511,8 +511,8 @@ public class StoreController {
                  * @throws Exception
                  */
                 com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
-                String operation_corp_code = ("corp_code").toString();
-                String operation_user_code = ("user_code").toString();
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "店铺管理";
                 String action = Common.ACTION_UPD;
                 String t_corp_code = action_json.get("corp_code").toString();
@@ -546,7 +546,7 @@ public class StoreController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String role_code = ("role_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -591,8 +591,8 @@ public class StoreController {
                  * @param name 被操作name
                  * @throws Exception
                  */
-                String operation_corp_code = ("corp_code").toString();
-                String operation_user_code = ("user_code").toString();
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "店铺管理";
                 String action = Common.ACTION_DEL;
                 String t_corp_code = store.getCorp_code();
@@ -681,8 +681,8 @@ public class StoreController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
 
-            String role_code = ("role_code").toString();
-            String corp_code = ("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -692,7 +692,7 @@ public class StoreController {
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value, "", "");
                 } else if (role_code.equals(Common.ROLE_BM)) {
-                    String brand_code = ("brand_code").toString();
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
                     if (brand_code == null || brand_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -708,8 +708,8 @@ public class StoreController {
                         list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null, null, brandCodes, search_value, "", "");
                     }
                 } else if (role_code.equals(Common.ROLE_AM)) {
-                    String area_code = ("area_code").toString();
-                    String store_code = ("store_code").toString();
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     if (area_code == null || area_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -730,7 +730,7 @@ public class StoreController {
                         list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, storeCodes, null, search_value, "", "");
                     }
                 } else {
-                    String store_code = ("store_code").toString();
+                    String store_code = request.getSession().getAttribute("store_code").toString();
                     if (store_code == null || store_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId("1");
@@ -762,10 +762,10 @@ public class StoreController {
     @ResponseBody
     public String getBrand(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String corp_code = ("corp_code").toString();
-        String role_code = ("role_code").toString();
-        String store_code = ("store_code").toString();
-        String area_code = ("area_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
 
         try {
             String jsString = request.getParameter("param");
@@ -784,7 +784,7 @@ public class StoreController {
                 corp_code = jsonObject.get("corp_code").toString();
                 brand = brandService.getActiveBrand(corp_code, search_value, codes);
             } else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = ("brand_code").toString();
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 codes = brand_code.split(",");
                 brand = brandService.getActiveBrand(corp_code, search_value, codes);
@@ -860,8 +860,8 @@ public class StoreController {
 //            String message = jsonObj.get("message").toString();
 //            JSONObject jsonObject = new JSONObject(message);
 //            String corp_code = jsonObject.get("corp_code").toString();
-//            String user_id = ("user_id").toString();
-//            String role_code = ("role_code").toString();
+//            String user_id = request.getSession().getAttribute("user_id").toString();
+//            String role_code = request.getSession().getAttribute("role_code").toString();
 //            List<Area> list = null;
 //            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
 //                //系统管理员
@@ -913,11 +913,11 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String role_code = ("role_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
             List<User> user = new ArrayList<User>();
             if (role_code.equals(Common.ROLE_STAFF)) {
                 //列表只显示自己
-                String user_id = ("user_id").toString();
+                String user_id = request.getSession().getAttribute("user_id").toString();
                 User user1 = userService.getUserById(Integer.parseInt(user_id));
                 user.add(user1);
             } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_AM)) {
@@ -954,11 +954,11 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String role_code = ("role_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
             List<User> user = new ArrayList<User>();
             if (role_code.equals(Common.ROLE_STAFF)) {
                 //列表只显示自己
-                String user_id = ("user_id").toString();
+                String user_id = request.getSession().getAttribute("user_id").toString();
                 User user1 = userService.getUserById(Integer.parseInt(user_id));
                 user.add(user1);
             } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_AM)) {
@@ -1097,7 +1097,7 @@ public class StoreController {
     @ResponseBody
     public String creatQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = ("user_code").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -1151,7 +1151,7 @@ public class StoreController {
     @ResponseBody
     public String creatStoresQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_code = ("user_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -1251,8 +1251,8 @@ public class StoreController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String role_code = ("role_code").toString();
-            String corp_code = ("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<Store> list;
@@ -1264,7 +1264,7 @@ public class StoreController {
                     if (role_code.equals(Common.ROLE_GM)) {
                         list = storeService.getAllStore(request, 1, 30000, corp_code, search_value, "", "");
                     } else if (role_code.equals(Common.ROLE_BM)) {
-                        String brand_code = ("brand_code").toString();
+                        String brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                         String[] brandCodes = brand_code.split(",");
                         for (int i = 0; i < brandCodes.length; i++) {
@@ -1272,8 +1272,8 @@ public class StoreController {
                         }
                         list = storeService.selectByAreaBrand(1, 30000, corp_code, null, null, brandCodes, search_value, "", "");
                     } else if (role_code.equals(Common.ROLE_AM)) {
-                        String area_code = ("area_code").toString();
-                        String store_code = ("store_code").toString();
+                        String area_code = request.getSession().getAttribute("area_code").toString();
+                        String store_code = request.getSession().getAttribute("store_code").toString();
 
                         area_code = area_code.replace(Common.SPECIAL_HEAD, "");
 
@@ -1285,7 +1285,7 @@ public class StoreController {
                         }
                         list = storeService.selectByAreaBrand(1, 30000, corp_code, areaCodes, storeCode, null, search_value, "", "");
                     } else {
-                        String store_code = ("store_code").toString();
+                        String store_code = request.getSession().getAttribute("store_code").toString();
                         list = storeService.selectByUserId(1, 30000, store_code, corp_code, search_value);
                     }
                 }
@@ -1296,7 +1296,7 @@ public class StoreController {
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStoreScreen(1, 30000, corp_code, "", "", "", map, "", "");
                 } else if (role_code.equals(Common.ROLE_BM)) {
-                    String brand_code = ("brand_code").toString();
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
                     list = storeService.getAllStoreScreen(1, 30000, corp_code, "", brand_code, "", map, "", "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
@@ -1354,9 +1354,9 @@ public class StoreController {
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = ("user_code").toString();
-        String corp_code = ("corp_code").toString();
-        String role_code = ("role_code").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
 
         String result = "";
         Workbook rwb = null;
@@ -1640,7 +1640,7 @@ public class StoreController {
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "", "", "", map, "", "");
             } else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = ("brand_code").toString();
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
                 list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "", brand_code, "", map, "", "");
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_codes = request.getSession(false).getAttribute("area_code").toString();
@@ -1672,8 +1672,8 @@ public class StoreController {
     @ResponseBody
     public String synchronization(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String role_code = ("role_code").toString();
-        String corp_code = ("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
 
         try {
             String jsString = request.getParameter("param");
@@ -1688,7 +1688,7 @@ public class StoreController {
             }
             com.alibaba.fastjson.JSONObject obj_corp = new com.alibaba.fastjson.JSONObject();
             obj_corp.put("corp_code", corp_code);
-            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", obj_corp.toJSONString(), ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataSynchronization", datalist);

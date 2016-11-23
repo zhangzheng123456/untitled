@@ -11,9 +11,6 @@ import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
-import com.bizvane.sun.v1.common.DataBox;
-import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -54,8 +51,7 @@ import java.util.regex.Pattern;
 public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger((UserController.class));
-    @Autowired
-    IceInterfaceService iceInterfaceService;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -76,12 +72,10 @@ public class UserController {
     WeimobService weimobService;
     @Autowired
     private BaseService baseService;
-
     String id;
 
     /***
      * 根据企业，区域，店铺（必填）
-
      * 拉取员工
      */
     @RequestMapping(value = "/selectByPart", method = RequestMethod.POST)
@@ -2218,60 +2212,6 @@ public class UserController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("success");
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString() + "========ex==========");
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 同步
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/synchronization", method = RequestMethod.POST)
-    @ResponseBody
-    public String synchronization(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String  role_code= request.getSession().getAttribute("role_code").toString();
-        String corp_code = request.getSession().getAttribute("corp_code").toString();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json--user sign-------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                corp_code = "C10000";
-            }
-            String store_code=jsonObj.get("store_code").toString();
-            com.alibaba.fastjson.JSONObject obj_corp=new com.alibaba.fastjson.JSONObject();
-            obj_corp.put("corp_code",corp_code);
-            com.alibaba.fastjson.JSONObject obj_store=new com.alibaba.fastjson.JSONObject();
-            obj_store.put("store_code",store_code);
-            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
-            Data data_store_code = new Data("store_code", obj_store.toString(), ValueType.PARAM);
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_store_code.key, data_store_code);
-
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataBackup", datalist);
-            if (dataBox.status.toString().equals("SUCCESS")) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.data.get("message").value);
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.status.toString());
-            }
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
