@@ -1681,7 +1681,7 @@ public class StoreController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            //JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = new JSONObject(message);
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 corp_code = "C10000";
@@ -1695,7 +1695,7 @@ public class StoreController {
             if (dataBox.status.toString().equals("SUCCESS")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage(dataBox.status.toString());
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
