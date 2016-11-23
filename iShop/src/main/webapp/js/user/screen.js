@@ -114,11 +114,11 @@ $("#shop_add").click(function(){
 $("#more_down").on("click","#synchronization",function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+40;
 	whir.loading.add("",0.5);
 	$("#loading").remove();
 	$("#screen_shop").show();
-	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_area").hide();
 	getstorelist(shop_num);
 	shop_num=1;
@@ -170,10 +170,10 @@ $("#shop_brand").click(function(){
 $("#shop_city").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
-	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	var tp=(arr[3]-$("#screen_shop").height())/2+80;
 	$("#screen_shop").hide();
 	$("#screen_city").show();
-	$("#screen_city").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_city").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_city .screen_content_l ul").empty();
 	getcitylist();
 })
@@ -430,7 +430,7 @@ $("#screen_que_shop").click(function(){
 	for(var i=0;i<li.length;i++){
 		var a=$('#all_type .xingming input');
 		var b=$("#shop .xingming input");
-		if(r_code!=="R4000"){
+		if(r_code!=="R4000"&&r_code!==undefined){
 			for(var j=0;j<a.length;j++){
 				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
 					$(a[j]).parent("p").remove();
@@ -446,6 +446,23 @@ $("#screen_que_shop").click(function(){
 			}
 			$('#shop .xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");	
 		};
+	}
+	if(r_code==undefined){
+		var store_codes="";
+		var _param={};
+		for(var i=0;i<li.length;i++){
+			var r=$(li[i]).attr("id");
+	        if(i<li.length-1){
+	            store_codes+=r+",";
+	        }else{
+	            store_codes+=r;
+	        }
+		}
+		_param["store_code"]=store_codes;
+		console.log(store_codes);
+		oc.postRequire("post","/user/synchronization","", _param, function(data) {
+			console.log(data)
+		})
 	}
 	$("#screen_shop").hide();
 	whir.loading.remove();//移除遮罩层
