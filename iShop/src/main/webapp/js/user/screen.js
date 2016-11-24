@@ -459,9 +459,24 @@ $("#screen_que_shop").click(function(){
 	        }
 		}
 		_param["store_code"]=store_codes;
-		console.log(store_codes);
+		whir.loading.add("",0.5);
 		oc.postRequire("post","/user/synchronization","", _param, function(data) {
-			console.log(data)
+			if(data.code=="0"){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: data.message
+				});
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: data.message
+				});
+			}
+			whir.loading.remove();//移除遮罩层
 		})
 	}
 	$("#screen_shop").hide();
@@ -612,7 +627,6 @@ function getarealist(a){
 			art.dialog({
 				time: 1,
 				lock: true,
-				
 				cancel: false,
 				content: data.message
 			});

@@ -1680,8 +1680,6 @@ public class StoreController {
             logger.info("json--user sign-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 corp_code = "C10000";
