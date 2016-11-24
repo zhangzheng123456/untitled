@@ -147,21 +147,25 @@ function getExecuteDetail(){
             param:JSON.stringify(_params)
         },
         success: function (data) {
-            var message = data.message;
-            console.log(message)
-            if(message =='活动在执行'){
-                console.log('********活动在执行********')
-                getSelect(id);
-                var complete_vips_count = message.complete_vips_count;
-                var userList =message.userList;
-                var target_vips_count = message.target_vips_count;
-                console.log(complete_vips_count)
-                console.log(userList)
-                console.log(target_vips_count)
-
-            }else{
-                console.log('********该活动未执行********')
+            var message = JSON.parse(data.message);
+            console.log(message);
+            getSelect(id);
+            var complete_vips_count = message.complete_vips_count;
+            var userList =message.userList;
+            var count = userList.length;
+            var target_vips_count = message.target_vips_count;
+            for(var i=0;i<userList.length;i++){
+                var name = userList[i].user_name;
+                var num = userList[i].user_code;
+                var area = userList[i].area_name;
+                var shop = userList[i].store_name;
+                var rate = userList[i].complete_rate;
+                listShow(name,num,area,shop,rate,count);
             }
+            console.log(complete_vips_count);
+            console.log(userList);
+            console.log(target_vips_count);
+            check(target_vips_count,complete_vips_count);
         },
         error: function (data) {
             console.log('获取活动执行情况失败');
@@ -188,9 +192,14 @@ function getSelect(id){
             var message = JSON.parse(data.message);
             var activityVip = JSON.parse(message.activityVip);
             var activity_theme = activityVip.activity_theme;
+            var activity_state = activityVip.activity_state;
+            var runMode = activityVip.run_mode;
+            var beiginTime = activityVip.start_time;
+            var endTime = activityVip.end_time;
             var corp_code = activityVip.corp_code;
             sessionStorage.setItem("corp_code",JSON.stringify(corp_code));//存储的方法
-            console.log(corp_code+'___'+activity_theme)
+            console.log(corp_code+'___'+activity_theme);
+            activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
         },
         error: function (data) {
             console.log('获取活动详情失败');
@@ -198,18 +207,18 @@ function getSelect(id){
     });
 }
 //加载统计模块
-function check(){
-    var TheTarget = '325656';
-    var TheCover = '244242';
+function check(a,b){
+    var TheTarget = a;
+    var TheCover = b;
     table(TheTarget,TheCover);
 }
 //加载活动状态
-function activityType(){
-    var beiginTime = '2016-9-12';
-    var endTime = '2016-12-12'
-    var activityState = '正在执行';
-    var activityTheme = '华东区域门店换季促销'
-    var activityState2 = '执行中';
+function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
+    var beiginTime = beiginTime;
+    var endTime = endTime;
+    var activityState = activityState;
+    var activityTheme = activityTheme;
+    var runMode = runMode;
     if(activityState =='正在执行'){
         $('#activityState').css('color','#50acb4');
     }else if(activityState =='尚未开始'){
@@ -219,21 +228,22 @@ function activityType(){
     }
     $('#activityState').text(activityState);
     $('#activityTheme').text(activityTheme);
-    $('#activityState2').text(activityState2);
+    $('#activityState2').text(runMode);
     $('#beiginTime').text(beiginTime);
     $('#endTime').text(endTime);
 }
 
 //加载员工列表
-function listShow(){
+function listShow(name,num,area,shop,rate,count){
     $('.people').animate({scrollTop:0}, 'fast');
-    var name = '张某某';
-    var num = '100000';
-    var area = '华东一区';
-    var shop='上海闵行分店一店上海闵行分店一店';
-    var percent = Math.floor(Math.random()*40+60);
+    var name = name;
+    var num = num;
+    var area = area;
+    var shop = shop;
+    // var percent = Math.floor(Math.random()*40+60);
+    var percent = rate;
     var tempHTML = '<li class="people_title"> <div class="people_title_order" style="text-align: center">${order}</div> <div class="people_title_name">${name}</div> <div class="people_title_num">${num}</div> <div class="people_title_area">${area}</div> <div class="people_title_shop">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
-    for(i=0;i<11;i++){
+    for(i=0;i<count;i++){
         //随机进度
         var html = '';
         var order = i+1;
@@ -369,7 +379,7 @@ window.onload = function(){
     //获取活动执行情况
     getExecuteDetail();
     //加载统计模块
-    check();
+    // check();
     //加载活动状态
    activityType();
     //加载员工列表
