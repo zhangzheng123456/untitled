@@ -9,53 +9,52 @@
     <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">-->
     <!--<script src="/js/loading.js?20161116"></script>-->
     <style>
-        #show{
+        /*主要区域*/
+        #main{
 
         }
-        .showBox{
-            padding-top: 30px;
-            margin-right: 10px;
-            background-color: white;
-            width: 330px;
-            float: left;
+        /*盒子区域*/
+        .boxArea{
+            width: 320px;
+            height: auto;
+            padding-top: 40px;
+            padding-left: 10px;
+            background-color: #ffffff;
             position: relative;
-            border-radius: 5px;
-
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
-        .showBox input{
+        .boxArea input{
             position: absolute;
+            width: 20px;
+            height: 20px;
             top: 10px;
             left: 10px;
-            height: 20px;
-            width: 20px;
-            background-color: white;
-            color: #dbdbdb;
         }
-        .showItem{
-            margin-top:10px;
-            margin-left: 10px;
+        /*独立图片+文字区域*/
+        .oneArea{
+            /*background-color: #00625A;*/
+            position: relative;
             width: 150px;
             height: 190px;
-            background-color: yellow; /*测试属性*/
             float: left;
-
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
-        .showImg{
+        .oneArea img{
             width: 150px;
             height: 150px;
-            background-color: #FFFFFF;
             border-radius: 5px;
         }
-        .showText{
+        .oneArea div{
             width: 150px;
             height: 30px;
-            color: #888888;
-            font-size: 14px;
-            text-align: center;
             line-height: 30px;
-           background-color: #0000cc; /*测试属性*/
+            font-size: 14px;
+            color: #888888;
+            text-align: center;
         }
-
     </style>
 </head>
 
@@ -70,31 +69,10 @@
         <div class="action">
             <div class="action_l">
                 <ul id="jurisdiction">
-                     <li id="add">
-                        <a href="javascript:void(0);">
-                            <span class="icon-ishop_6-01"></span>
-                            新增
-                        </a>
-
-                    </li>
-                    <li class="bg" id="remove">
-                        <span class="icon-ishop_6-02"></span>
-                        删除
-                    </li>
-                    <li id="compile">
-                        <a href="javascript:void(0);">
-                            <span class="icon-ishop_6-03"></span>
-                            编辑
-                        </a>
-                    </li>
-                     <li class="bg">
-                        <span class="icon-ishop_6-04"></span>
-                        保存
-                    </li>
                 </ul>
                 <ul>
                     <li class="li">
-                        <input type="text" class="input" id="search" placeholder="输入搜索内容">
+                        <input type="text" class="input" id="search" placeholder="输入搜索的内容">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
@@ -121,44 +99,123 @@
                             <div id="guide_into">导入</div>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </div>
-        <div id="show">
-            <ul class="showBox">
-                <input name="" type="checkbox" value=""/>
-                <li class="showItem">
-                    <span class="showImg"></span>
-                    <span class="showText">AJEL059598</span>
-                </li>
-                <li class="showItem">
-                    <span class="showImg"></span>
-                    <span class="showText">AJEL059598</span>
-                </li>
-            </ul>
-            <ul class="showBox">
-                <input name="" type="checkbox" value=""/>
-                <li class="showItem">
-                    <span class="showImg"></span>
-                    <span class="showText">AJEL059598</span>
-                </li>
-                <li class="showItem">
-                    <span class="showImg"></span>
-                    <span class="showText">AJEL059598</span>
-                </li>
-            </ul>
-            <ul class="showBox">
-                <input name="" type="checkbox" value=""/>
-                <li class="showItem">
-                    <span class="showImg"></span>
-                    <span class="showText">AJEL059598</span>
-                </li>
-                <li class="showItem">
-                    <span class="showImg"></span>
-                    <span class="showText">AJEL059598</span>
-                </li>
-            </ul>
-    </div>
+      <div id="main">
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                      <img src="" alt=""/>
+                      <div>AJEL059598</div>
+              </div>
+          </div>
+          <!--瀑布流测试区域-->
+          <!--****************************-->
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div>
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div>
+
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div>
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div><div class="oneArea">
+              <img src="" alt=""/>
+              <div>AJEL059598</div>
+          </div>
+
+          </div>
+          <div class="boxArea">
+              <input type="checkbox"/>
+              <div class="oneArea">
+                  <img src="" alt=""/>
+                  <div>AJEL059598</div>
+              </div>
+
+          </div>
+          <!--****************************-->
+      </div>
+</div>
 </div>
 <div class="p" id="p"></div>
 <div class="tk" id="tk">
@@ -171,6 +228,13 @@
 </div>
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
+<script>
+//    盒子上部分+复选框
+    var HTML1='<div class="boxArea"><input type="checkbox"/>';
+//    内容（图片+文字）迭代生成
+    var HTML2='<div class="oneArea"> <img src="" alt=""/> <div>AJEL059598</div> </div>';
+//    盒子下部分
+    var HTML3='</div>';
+</script>
 </body>
 </html>
