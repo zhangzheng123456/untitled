@@ -281,6 +281,7 @@ function jurisdiction(actions){
 }
 //页面加载调权限接口
 function qjia(){
+    console.log('权限接口调用');
     var param={};
     param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
@@ -290,7 +291,7 @@ function qjia(){
         jumpBianse();
     })
 }
-//qjia();
+qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
