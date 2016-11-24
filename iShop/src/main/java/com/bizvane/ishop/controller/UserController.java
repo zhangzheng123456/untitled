@@ -4,13 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -72,6 +74,8 @@ public class UserController {
     WeimobService weimobService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    IceInterfaceService iceInterfaceService;
     String id;
 
     /***
@@ -169,6 +173,7 @@ public class UserController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String searchValue = jsonObject.get("searchValue").toString();
+            String user_name = request.getSession().getAttribute("user_name").toString();
 
             String area_code = "";
             String store_code = "";
@@ -190,31 +195,34 @@ public class UserController {
                 if (!store_code.equals("")) {
 //                    String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                }else if(!area_code.equals("") || !brand_code.equals("")){
-                    //拉取区域下所有员工（包括区经）
-                    String[] areas = area_code.split(",");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + stores.get(i).getStore_code();
-                    }
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
                 }else {
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
+                    if(!area_code.equals("") || !brand_code.equals("")){
+                        //拉取区域下所有员工（包括区经）
+                        String[] areas = area_code.split(",");
+                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
+                        for (int i = 0; i < stores.size(); i++) {
+                            store_code = store_code + stores.get(i).getStore_code();
+                        }
+                        list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
+                    }else {
+                        list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
+                    }
                 }
             } else if (role_code.equals(Common.ROLE_GM)) {
-                if (!area_code.equals("") && !store_code.equals("")) {
-//                    String[] areas = area_code.split(",");
+                if (!store_code.equals("")) {
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                }else if(!area_code.equals("") || !brand_code.equals("")){
-                    //拉取区域下所有员工（包括区经）
-                    String[] areas = area_code.split(",");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + stores.get(i).getStore_code();
-                    }
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
                 }else {
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
+                    if(!area_code.equals("") || !brand_code.equals("")){
+                        //拉取区域下所有员工（包括区经）
+                        String[] areas = area_code.split(",");
+                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
+                        for (int i = 0; i < stores.size(); i++) {
+                            store_code = store_code + stores.get(i).getStore_code();
+                        }
+                        list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
+                    }else {
+                        list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
+                    }
                 }
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 User user = userService.getUserById(user_id);
@@ -223,6 +231,7 @@ public class UserController {
                 list = new PageInfo<User>();
                 list.setList(users);
             } else if (role_code.equals(Common.ROLE_SM)) {
+
                 if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
                     store_code = jsonObject.get("store_code").toString();
                 }else {
@@ -230,7 +239,7 @@ public class UserController {
                     store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                 }
                 list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null,role_code);
-                if (page_number == 1) {
+                if (page_number == 1 && (searchValue.equals("") || user_name.contains(searchValue))) {
                     List<User> users = list.getList();
                     User self = userService.getUserById(user_id);
                     users.add(self);
@@ -249,7 +258,8 @@ public class UserController {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",null,role_code);
                 }else {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, null, role_code);
-                    if (page_number == 1) {
+                    if (page_number == 1 && (searchValue.equals("") || user_name.contains(searchValue))) {
+
                         List<User> users = list.getList();
                         User self = userService.getUserById(user_id);
                         users.add(self);
@@ -292,7 +302,6 @@ public class UserController {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, new_store, "", null, role_code);
                 }
             }
-
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -2212,6 +2221,70 @@ public class UserController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString() + "========ex==========");
+        }
+        return dataBean.getJsonStr();
+    }
+    /**
+     * 同步
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/synchronization", method = RequestMethod.POST)
+    @ResponseBody
+    public String synchronization(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String  role_code= request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json--user sign-------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_code=jsonObject.get("store_code").toString();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                corp_code = "C10000";
+            }
+            com.alibaba.fastjson.JSONObject obj_corp=new com.alibaba.fastjson.JSONObject();
+            obj_corp.put("corp_code",corp_code);
+            com.alibaba.fastjson.JSONObject obj_store=new com.alibaba.fastjson.JSONObject();
+            obj_store.put("store_code",store_code);
+            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
+            Data data_store_code = new Data("store_code", obj_store.toString(), ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_code.key, data_store_code);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataBackup", datalist);
+            String  message_info=dataBox.data.get("message").value.toString();
+            com.alibaba.fastjson.JSONObject info= JSON.parseObject(message_info);
+            String store_count=info.get("store_count").toString();
+            if(Integer.parseInt(store_count)>0){
+                String hbase_user_count=info.get("hbase_user_count").toString();
+                if(Integer.parseInt(hbase_user_count)>0){
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("同步成功");
+
+                }else{
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("同步成功");
+                }
+            }else{
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("同步失败");
+
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

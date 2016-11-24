@@ -58,6 +58,8 @@ public class VIPController {
     @Autowired
     UserService userService;
     @Autowired
+    StoreService storeService;
+    @Autowired
     MongoDBClient mongodbClient;
 
 
@@ -393,6 +395,7 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String user_code = jsonObject.get("user_code").toString();
             String store_code = jsonObject.get("store_code").toString();
+            String brand_code = jsonObject.get("brand_code").toString();
             String area_code = jsonObject.get("area_code").toString();
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
@@ -401,45 +404,51 @@ public class VIPController {
                 corp_code = jsonObject.get("corp_code").toString();
             }
             logger.info("json--------------corp_code-" + corp_code);
-            DataBox dataBox = null;
-            if (user_code.equals("")) {
-                if (!store_code.equals("")) {
-                    role_code = Common.ROLE_SM;
-                } else {
-                    role_code = Common.ROLE_AM;
-                }
-                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
-                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
-                Data data_store_id = new Data("store_id", store_code, ValueType.PARAM);
-                Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
-                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
-                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
-
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_user_id.key, data_user_id);
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_store_id.key, data_store_id);
-                datalist.put(data_area_code.key, data_area_code);
-                datalist.put(data_role_code.key, data_role_code);
-                datalist.put(data_page_num.key, data_page_num);
-                datalist.put(data_page_size.key, data_page_size);
-
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
-            } else {
-                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
-                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
-                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
-
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_user_id.key, data_user_id);
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_page_num.key, data_page_num);
-                datalist.put(data_page_size.key, data_page_size);
-
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisEmpsVip", datalist);
-            }
+            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
+//            if (user_code.equals("")) {
+//                role_code = Common.ROLE_SM;
+//                if (!store_code.equals("")) {
+//                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+//                    for (int i = 0; i < storeList.size(); i++) {
+//                        store_code = store_code + storeList.get(i).getStore_code() + ",";
+//                    }
+//                }
+////                if (!store_code.equals("")) {
+////                } else {
+////                    role_code = Common.ROLE_AM;
+////                }
+//                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+//                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+//                Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+//                Data data_store_id = new Data("store_id", store_code, ValueType.PARAM);
+//                Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+//                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+//                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+//
+//                Map datalist = new HashMap<String, Data>();
+//                datalist.put(data_user_id.key, data_user_id);
+//                datalist.put(data_corp_code.key, data_corp_code);
+//                datalist.put(data_store_id.key, data_store_id);
+//                datalist.put(data_area_code.key, data_area_code);
+//                datalist.put(data_role_code.key, data_role_code);
+//                datalist.put(data_page_num.key, data_page_num);
+//                datalist.put(data_page_size.key, data_page_size);
+//
+//                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+//            } else {
+//                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+//                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+//                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+//                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+//
+//                Map datalist = new HashMap<String, Data>();
+//                datalist.put(data_user_id.key, data_user_id);
+//                datalist.put(data_corp_code.key, data_corp_code);
+//                datalist.put(data_page_num.key, data_page_num);
+//                datalist.put(data_page_size.key, data_page_size);
+//
+//                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisEmpsVip", datalist);
+//            }
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 

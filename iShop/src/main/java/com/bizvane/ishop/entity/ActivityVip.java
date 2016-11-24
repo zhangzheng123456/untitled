@@ -52,15 +52,13 @@ public class ActivityVip {
     //是否可用
     private String isactive;
     //活动执行状态
-
     private String activity_state;
-
-    //任务描述
+    //任务编号
     private String task_code;
 
     private String corp_name;
-    private Corp corp;
- private Task task;
+
+    private String target_vips_count;
 
 
     public int getId() {
@@ -232,14 +230,6 @@ public class ActivityVip {
         this.corp_name = corp_name;
     }
 
-    public Corp getCorp() {
-        return corp;
-    }
-
-    public void setCorp(Corp corp) {
-        this.corp = corp;
-    }
-
     public String getActivity_state() {
         return activity_state;
     }
@@ -273,11 +263,11 @@ public class ActivityVip {
         this.operators = operators;
     }
 
-    public Task getTask() {
-        return task;
+    public String getTarget_vips_count() {
+        return target_vips_count;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setTarget_vips_count(String target_vips_count) {
+        this.target_vips_count = target_vips_count;
     }
 }
