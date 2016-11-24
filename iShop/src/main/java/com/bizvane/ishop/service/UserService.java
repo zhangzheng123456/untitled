@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.entity.UserQrcode;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 
 public interface UserService {
+    List<User> getCanloginByCode(String corp_code);
 
     User getUserById(int id) throws Exception;
 

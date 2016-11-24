@@ -45,4 +45,5 @@ public interface GoodsMapper {
     //获取企业FAB波段
     List<Goods> selectCorpGoodsWave(@Param("corp_code") String corp_code) throws SQLException;
 
+    List<Goods> getMatchFab(@Param("corp_code")String corp_code) throws SQLException;
 }

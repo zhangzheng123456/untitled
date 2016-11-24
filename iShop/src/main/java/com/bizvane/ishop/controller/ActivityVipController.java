@@ -31,16 +31,6 @@ import java.util.*;
 public class ActivityVipController {
     @Autowired
     private ActivityVipService activityVipService;
-    @Autowired
-    private TaskTypeService taskTypeService;
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private StoreService storeService;
-    @Autowired
-    private IceInterfaceService iceInterfaceService;
 
     private static final Logger logger = Logger.getLogger(ActivityVipController.class);
 
@@ -107,7 +97,6 @@ public class ActivityVipController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setId(id);
@@ -117,43 +106,43 @@ public class ActivityVipController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 根据选择的目标会员
-     * 选择导购
-     */
-    @RequestMapping(value = "/selUserByVip", method = RequestMethod.POST)
-    @ResponseBody
-    @Transactional
-    public String selUserByVip(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject obj = JSONObject.parseObject(message);
-            int page_number = Integer.valueOf(obj.get("pageNumber").toString());
-            int page_size = Integer.valueOf(obj.get("pageSize").toString());
-            String searchValue = obj.get("searchValue").toString();
-            String corp_code = obj.get("corp_code").toString();
-            JSONObject target_vips = obj.getJSONObject("target_vips");
-
-            PageInfo<User> userList = activityVipService.selUserByVip(page_number,page_size,corp_code,searchValue,target_vips);
-
-            JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(userList));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 根据选择的目标会员
+//     * 选择导购
+//     */
+//    @RequestMapping(value = "/selUserByVip", method = RequestMethod.POST)
+//    @ResponseBody
+//    @Transactional
+//    public String selUserByVip(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            JSONObject obj = JSONObject.parseObject(message);
+//            int page_number = Integer.valueOf(obj.get("pageNumber").toString());
+//            int page_size = Integer.valueOf(obj.get("pageSize").toString());
+//            String searchValue = obj.get("searchValue").toString();
+//            String corp_code = obj.get("corp_code").toString();
+//            JSONObject target_vips = obj.getJSONObject("target_vips");
+//
+//            PageInfo<User> userList = activityVipService.selUserByVip(page_number,page_size,corp_code,searchValue,target_vips);
+//
+//            JSONObject result = new JSONObject();
+//            result.put("list", JSON.toJSONString(userList));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
 
@@ -217,7 +206,6 @@ public class ActivityVipController {
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = activityVipService.selectAllActivity(page_number, page_size, "", search_value);
             } else {
-
                 list = activityVipService.selectAllActivity(page_number, page_size, corp_code, search_value);
             }
 
@@ -338,7 +326,6 @@ public class ActivityVipController {
     @Transactional
     public String executeActivity(HttpServletRequest request) throws Exception {
         DataBean dataBean = new DataBean();
-        Date now = new Date();
         String id = "";
         String user_code = request.getSession().getAttribute("user_code").toString();
         String jsString = request.getParameter("param");
@@ -349,77 +336,16 @@ public class ActivityVipController {
         try {
             int activity_id = Integer.parseInt(jsonObject.get("id").toString());
 
-//            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
-//            String corp_code = jsonObject.get("corp_code").toString();
             ActivityVip activityVip = activityVipService.selectActivityById(activity_id);
-            String activity_vip_code = activityVip.getActivity_vip_code();
-            String corp_code = activityVip.getCorp_code();
-            String run_mode = activityVip.getRun_mode();
             String activity_state = activityVip.getActivity_state();
             if (!activity_state.equals("未执行")){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("该任务非未执行状态");
+            }else {
+                activityVipService.executeActivity(activityVip,user_code);
             }
-            if (run_mode.contains("任务")) {
-                String task_title = activityVip.getTask_title();
-                String task_desc = activityVip.getTask_desc();
-                String operators = activityVip.getOperators();
-                String start_time = activityVip.getStart_time();
-                String end_time = activityVip.getEnd_time();
 
-                //判断是否存在【任务类型】，没有则新建
-                List<TaskType> taskTypes = taskTypeService.nameExist(corp_code, run_mode);
-                String task_type_code = "";
-                if (taskTypes.size() > 0) {
-                    task_type_code = taskTypes.get(0).getTask_type_code();
-                } else {
-                    JSONObject message1 = new JSONObject();
-                    task_type_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now);
-                    message1.put("task_type_code", task_type_code);
-                    message1.put("task_type_name", run_mode);
-                    message1.put("corp_code", corp_code);
-                    message1.put("isactive", "Y");
-                    message1.put("created_date", Common.DATETIME_FORMAT.format(now));
-                    message1.put("modified_date", Common.DATETIME_FORMAT.format(now));
-                    message1.put("creater", user_code);
-                    message1.put("modifier", user_code);
-                    taskTypeService.insertTaskType(message1.toString(), user_code);
-                }
-
-                //创建任务并分配给执行人
-                JSONArray operators_array = JSONArray.parseArray(operators);
-                String user_codes = "";
-                String phones = "";
-                for (int i = 0; i < operators_array.size(); i++) {
-                    user_codes = user_codes + operators_array.getJSONObject(i).get("user_code") + ",";
-                    phones = phones + operators_array.getJSONObject(i).get("phone") + ",";
-                }
-                Task task = new Task();
-                String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
-                task.setTask_code(task_code);
-                task.setTask_title(task_title);
-                task.setTask_type_code(task_type_code);
-                task.setTask_description(task_desc);
-                task.setTarget_start_time(start_time);
-                task.setTarget_end_time(end_time);
-                task.setCorp_code(corp_code);
-                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                task.setCreater(user_code);
-                task.setModified_date(Common.DATETIME_FORMAT.format(now));
-                task.setModifier(user_code);
-                task.setIsactive(Common.IS_ACTIVE_Y);
-                task.setActivity_vip_code(activity_vip_code);
-                taskService.addTask(task, phones, user_codes, user_code);
-
-                //更新活动表中task_code
-                activityVip.setTask_code(task_code);
-                //更新活动状态activity_state
-                activityVip.setActivity_state("执行中");
-                activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
-                activityVip.setModifier(user_code);
-                activityVipService.updateActivityVip(activityVip);
-            }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("execute success");
@@ -433,7 +359,7 @@ public class ActivityVipController {
     }
 
     /**
-     * 活动(未执行)
+     *
      * 获取活动详情
      * @param request
      * @return
@@ -483,16 +409,20 @@ public class ActivityVipController {
             int activity_id = Integer.parseInt(jsonObject.getString("id"));
             ActivityVip activityVip = activityVipService.selectActivityById(activity_id);
             String activity_state = activityVip.getActivity_state();
-
+            String run_mode = activityVip.getRun_mode();
+            String result = "";
             if (activity_state.equals("未执行")){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("该活动未执行");
             }else {
-                JSONObject result = activityVipService.executeDetail(activityVip);
+                if (run_mode.contains("任务")){
+                    JSONObject result_obj = activityVipService.executeDetail(activityVip);
+                    result = result_obj.toString();
+                }
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(result.toString());
+                dataBean.setMessage(result);
             }
         } catch (Exception ex) {
             dataBean.setId(id);

@@ -1,7 +1,9 @@
 package com.bizvane.ishop.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bizvane.ishop.entity.User;
 import com.mongodb.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +27,65 @@ public class MongoUtils {
             String screen_value = json.get("screen_value").toString();
             Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
             values.add(new BasicDBObject(screen_key, pattern));
+        }
+        queryCondition.put("$and", values);
+        return queryCondition;
+    }
+
+    //多个“与”查询(筛选)登录日志
+    public static BasicDBObject andLoginlogScreen(JSONArray array) {
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        for (int i = 0; i < array.size(); i++) {
+            String info = array.get(i).toString();
+            JSONObject json = JSONObject.parseObject(info);
+            String screen_key = json.get("screen_key").toString();
+            String screen_value = json.get("screen_value").toString();
+            if (CheckUtils.checkJson(screen_value) == false) {
+                Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
+                values.add(new BasicDBObject(screen_key, pattern));
+            }
+            if(screen_key.equals("created_date")){
+                JSONObject date = JSON.parseObject(screen_value);
+                String start = date.get("start").toString();
+                String end = date.get("end").toString();
+                if(!start.equals("") && start!=null){
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$gt", start)));
+                }
+                if(!end.equals("") && end!=null){
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$lt", end)));
+                }
+            }
+            if(screen_key.equals("time")){
+                JSONObject time_count = JSON.parseObject(screen_value);
+                String type = time_count.get("type").toString();
+                String value = time_count.get("value").toString();
+                if (type.equals("gt")) {
+                    //大于
+                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$gt",value)));
+                } else if (type.equals("lt")) {
+                    //小于
+                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$lt",value)));
+                } else if (type.equals("between")) {
+                    //介于
+                    JSONObject values2 = JSONObject.parseObject(value);
+                    String start = values2.get("start").toString();
+                    String end = values2.get("end").toString();
+                    if(!start.equals("") && start!=null){
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$gt", start)));
+                    }
+                    if(!end.equals("") && end!=null){
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$lt", end)));
+                    }
+                } else if (type.equals("eq")) {
+                    //等于
+                    values.add(new BasicDBObject(screen_key,value));
+                } else if (type.equals("all")) {
+                    Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
+                    values.add(new BasicDBObject(screen_key, pattern));
+                }
+            }
+
         }
         queryCondition.put("$and", values);
         return queryCondition;
@@ -85,6 +146,26 @@ public class MongoUtils {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
             obj.put("id",id);
+            list.add(obj.toMap());
+        }
+        return list;
+    }
+
+    //DBCursor数据集转arrayList+id+can_login
+    public static ArrayList dbCursorToList_canLogin(DBCursor dbCursor, List<User> users){
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            String user_id = obj.get("user_id").toString();
+            obj.put("id",id);
+        for (int i=0;i<users.size();i++){
+            if(user_id.equals(users.get(i).getUser_code())){
+                obj.put("user_can_login","离职");
+            }else{
+                obj.put("user_can_login","在职");
+            }
+        }
             list.add(obj.toMap());
         }
         return list;

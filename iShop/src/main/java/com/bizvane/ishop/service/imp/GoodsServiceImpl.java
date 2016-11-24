@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -372,4 +373,12 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
+    @Override
+    public PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code) throws SQLException {
+        List<Goods> list;
+        PageHelper.startPage(page_number, page_size);
+        list = goodsMapper.getMatchFab(corp_code);
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
+        return page;
+    }
 }

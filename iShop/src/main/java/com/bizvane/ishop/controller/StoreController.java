@@ -1697,7 +1697,7 @@ public class StoreController {
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("同步失败");
+                dataBean.setMessage("数据已是最新，无需同步");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
