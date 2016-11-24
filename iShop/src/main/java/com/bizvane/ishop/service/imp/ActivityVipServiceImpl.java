@@ -1,23 +1,28 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.ActivityVipMapper;
-import com.bizvane.ishop.entity.ActivityVip;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.entity.ValidateCode;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +44,11 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     @Autowired
     private ValidateCodeService validateService;
     @Autowired
+    private TaskService taskService;
+    @Autowired
     private IceInterfaceService iceInterfaceService;
+    @Autowired
+    MongoDBClient mongodbClient;
 
     @Override
     public PageInfo<ActivityVip> selectAllActivity(int page_num, int page_size, String corp_code, String search_value) throws Exception {
@@ -166,7 +175,8 @@ public class ActivityVipServiceImpl implements ActivityVipService {
        String result = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         int activity_id = Integer.parseInt(jsonObject.get("id").toString().trim());
-
+        ActivityVip activityVip1 = activityVipMapper.selActivityById(activity_id);
+        String activity_vip_code = activityVip1.getActivity_vip_code();
         String corp_code = jsonObject.get("corp_code").toString().trim();
 //        String activity_theme = jsonObject.get("activity_theme").toString().trim();
 //        String run_mode = jsonObject.get("run_mode").toString().trim();
@@ -186,22 +196,25 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         String path="";
         ActivityVip activityVip = WebUtils.JSON2Bean(jsonObject, ActivityVip.class);
         String activity_content = activityVip.getActivity_content();
-        List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
-        OssUtils ossUtils=new OssUtils();
-        String bucketName="products-image";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        path = request.getSession().getServletContext().getRealPath("/");
-        for (int k = 0; k < htmlImageSrcList.size(); k++) {
-            String time="ActivityVip/Vip/"+corp_code+"/"+activityVip.getId()+"_"+sdf.format(new Date())+".jpg";
-            if(!htmlImageSrcList.get(k).contains("image/upload")){
-                continue;
+        if (activity_content != null && !activity_content.equals("")){
+            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(activity_content);
+            OssUtils ossUtils=new OssUtils();
+            String bucketName="products-image";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            path = request.getSession().getServletContext().getRealPath("/");
+            for (int k = 0; k < htmlImageSrcList.size(); k++) {
+                String time="ActivityVip/Vip/"+corp_code+"/"+activityVip.getId()+"_"+sdf.format(new Date())+".jpg";
+                if(!htmlImageSrcList.get(k).contains("image/upload")){
+                    continue;
+                }
+                ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
+                activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
+                LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
             }
-            ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
-            activity_content = activity_content.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
-            LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
         }
         Date now = new Date();
         activityVip.setId(activity_id);
+        activityVip.setActivity_vip_code(activity_vip_code);
 //        activityVip.setCorp_code(corp_code);
 //        activityVip.setActivity_theme(activity_theme);
 //        activityVip.setRun_mode(run_mode);
@@ -350,6 +363,65 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             }
         }
         return userList;
+    }
+
+    /**
+     * 获取活动任务执行情况
+     *
+     */
+    @Override
+    public JSONObject executeDetail(ActivityVip activityVip) throws Exception {
+        JSONObject result = new JSONObject();
+        String task_code = activityVip.getTask_code();
+        String corp_code = activityVip.getCorp_code();
+        String target_vips_count = activityVip.getTarget_vips_count();
+
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
+
+        List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
+        BasicDBObject dbObject = new BasicDBObject();
+        dbObject.put("corp_code", corp_code);
+        JSONArray task_array = new JSONArray();
+        int complete_vip_count = 0;
+        for (int i = 0; i < taskAllocations.size(); i++) {
+            JSONObject task_obj = new JSONObject();
+            String user_code = taskAllocations.get(i).getUser_code();
+            String user_name = taskAllocations.get(i).getUser_name();
+            String store_code = taskAllocations.get(i).getStore_code();
+            dbObject.put("user_code", user_code);
+            DBCursor dbCursor = cursor.find(dbObject);
+            String complete_rate = "0";
+            String store_name = "";
+            String area_name = "";
+            while (dbCursor.hasNext()) {
+                DBObject obj = dbCursor.next();
+                if (obj.containsField("complete_rate")){
+                    complete_rate = obj.get("complete_rate").toString();
+                }
+                if (obj.containsField("complete_vip_count")){
+                    String user_complete_vip_count = obj.get("complete_vip_count").toString();
+                    complete_vip_count = complete_vip_count + Integer.parseInt(user_complete_vip_count);
+                }
+            }
+            if (store_code != null && !store_code.equals("")){
+                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                String[] codes = store_code.split(",");
+                Store store = storeService.getStoreByCode(corp_code,store_code,Common.IS_ACTIVE_Y);
+            }
+
+            task_obj.put("user_code",user_code);
+            task_obj.put("user_name",user_name);
+            task_obj.put("store_name",store_name);
+            task_obj.put("area_name",area_name);
+            task_obj.put("complete_rate",complete_rate);
+            task_array.add(task_obj);
+        }
+        result.put("userList", task_array);
+        result.put("target_vips_count", target_vips_count);
+        result.put("complete_vips_count", complete_vip_count);
+
+        return result;
     }
 
 }

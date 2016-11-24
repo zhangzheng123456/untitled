@@ -1688,14 +1688,14 @@ public class StoreController {
             }
             com.alibaba.fastjson.JSONObject obj_corp = new com.alibaba.fastjson.JSONObject();
             obj_corp.put("corp_code", corp_code);
-            Data data_corp_code = new Data("corp_code", obj_corp.toJSONString(), ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataSynchronization", datalist);
             if (dataBox.status.toString().equals("SUCCESS")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.data.get("message").value);
+                dataBean.setMessage(dataBox.status.toString());
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

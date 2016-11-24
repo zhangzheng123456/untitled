@@ -5,6 +5,7 @@
 	<title>员工管理之员工列表</title>
 	<link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../table/css/style.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
     <script src="/table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
 </head>
@@ -274,11 +275,11 @@
             <h4>筛选店铺</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="" readonly="true" id="area_num" data-areacode="">
+                    <label>已选区域</label><input type="text" value="全部" readonly="true" id="area_num" data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
                 </div>
                 <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="" id="brand_num" data-brandcode="">
+                    <label>已选品牌</label><input type="text" value="全部" id="brand_num" data-brandcode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
             </div>
@@ -356,7 +357,9 @@
 <script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
 <script type="text/javascript" src="/js/user/user.js?20161117"></script>
 <script type="text/javascript" src="/js/silide.js?20161116"></script>
-<script type="text/javascript" src="/js/screen.js"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+<script type="text/javascript" src="/js/user/screen.js"></script>
 <script>
     $(".icon-ishop_6-07").parent().click(function () {
         window.location.reload();

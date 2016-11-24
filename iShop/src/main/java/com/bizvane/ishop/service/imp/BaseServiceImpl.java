@@ -136,7 +136,11 @@ public class BaseServiceImpl implements BaseService{
         saveData.put("operation_user_code", operation_user_code);
         saveData.put("remark", remark);
         Corp corp = selectByCorpcode(corp_code);
-        saveData.put("corp_name", corp.getCorp_name());
+        if (corp != null) {
+            saveData.put("corp_name", corp.getCorp_name());
+        }else {
+            saveData.put("corp_name", "");
+        }
         saveData.put("operation_time", Common.DATETIME_FORMAT.format(now));
         collection.insert(saveData);
     }

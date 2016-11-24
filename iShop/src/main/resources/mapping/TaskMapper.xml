@@ -110,6 +110,7 @@
          rel_task_allocation.user_code,
          def_user.user_name,
          def_user.phone,
+         def_user.store_code,
          rel_task_allocation.task_status,
          rel_task_allocation.real_start_time,
          rel_task_allocation.real_end_time,
@@ -200,6 +201,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="activity_vip_code!=null">
+                activity_vip_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="task_code!=null">
@@ -237,6 +241,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="activity_vip_code!=null">
+                #{activity_vip_code},
             </if>
         </trim>
     </insert>

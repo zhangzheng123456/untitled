@@ -155,37 +155,6 @@ public class ActivityVipController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 活动编辑之前
-     * 获取数据
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/select", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectActivity(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int activity_id = Integer.parseInt(jsonObject.getString("id"));
-            ActivityVip activityVip = this.activityVipService.selectActivityById(activity_id);
-            org.json.JSONObject result = new org.json.JSONObject();
-            result.put("activityVip", JSON.toJSONString(activityVip));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
 
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -383,6 +352,7 @@ public class ActivityVipController {
 //            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
 //            String corp_code = jsonObject.get("corp_code").toString();
             ActivityVip activityVip = activityVipService.selectActivityById(activity_id);
+            String activity_vip_code = activityVip.getActivity_vip_code();
             String corp_code = activityVip.getCorp_code();
             String run_mode = activityVip.getRun_mode();
             String activity_state = activityVip.getActivity_state();
@@ -439,6 +409,7 @@ public class ActivityVipController {
                 task.setModified_date(Common.DATETIME_FORMAT.format(now));
                 task.setModifier(user_code);
                 task.setIsactive(Common.IS_ACTIVE_Y);
+                task.setActivity_vip_code(activity_vip_code);
                 taskService.addTask(task, phones, user_codes, user_code);
 
                 //更新活动表中task_code
@@ -461,5 +432,74 @@ public class ActivityVipController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 活动(未执行)
+     * 获取活动详情
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectActivity(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            int activity_id = Integer.parseInt(jsonObject.getString("id"));
+            ActivityVip activityVip = this.activityVipService.selectActivityById(activity_id);
+            JSONObject result = new JSONObject();
+            result.put("activityVip", JSON.toJSONString(activityVip));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 活动(执行中)
+     * 获取活动执行情况
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/executeDetail", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    @Transactional
+    public String executeDetail(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            int activity_id = Integer.parseInt(jsonObject.getString("id"));
+            ActivityVip activityVip = activityVipService.selectActivityById(activity_id);
+            String activity_state = activityVip.getActivity_state();
+
+            if (activity_state.equals("未执行")){
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("该活动未执行");
+            }else {
+                JSONObject result = activityVipService.executeDetail(activityVip);
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage(result.toString());
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }
 
