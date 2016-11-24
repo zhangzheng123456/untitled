@@ -1696,7 +1696,7 @@ public class StoreController {
                 dataBean.setMessage("同步成功");
             } else {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("同步失败");
             }
         } catch (Exception ex) {
