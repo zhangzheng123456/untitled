@@ -2267,27 +2267,24 @@ public class UserController {
             String  message_info=dataBox.data.get("message").value.toString();
             com.alibaba.fastjson.JSONObject info= JSON.parseObject(message_info);
             String store_count=info.get("store_count").toString();
-            String insert_count=info.get("insert_count").toString();
-            String update_count=info.get("update_count").toString();
-            String hbase_user_count=info.get("hbase_user_count").toString();
-             if(Integer.parseInt(store_count)==0){
-                 dataBean.setId(id);
-                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                 dataBean.setMessage("店铺为0");
-            }else if(Integer.parseInt(insert_count)>0){
-                 dataBean.setId(id);
-                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                 dataBean.setMessage("同步成功");
-             }else if(Integer.parseInt(update_count)>0&&Integer.parseInt(hbase_user_count)>0){
-                 dataBean.setId(id);
-                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                 dataBean.setMessage("同步成功");
-             }else{
-                 dataBean.setId(id);
-                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                 dataBean.setMessage("同步失败，MySql数据更新时间大于HBase数据更新时间");
-             }
+            if(Integer.parseInt(store_count)>0){
+                String hbase_user_count=info.get("hbase_user_count").toString();
+                if(Integer.parseInt(hbase_user_count)>0){
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("同步成功");
 
+                }else{
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("同步成功");
+                }
+            }else{
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("同步失败");
+
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

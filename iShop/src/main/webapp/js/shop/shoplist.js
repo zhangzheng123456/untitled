@@ -473,9 +473,16 @@ function jumpBianse(){
 }
 //同步掉接口
 $("#more_down").on("click","#synchronization",function(){
-    console.log(123123);
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/shop/synchronization","0","",function(data){
-        console.log(data);
+        if(data.code=="0"){
+            frame();
+            $('.frame').html(data.message);
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
+        }
+        whir.loading.remove();//移除加载框
     })
 })
 //二维码弹框
