@@ -399,7 +399,7 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 var val = msg.run_mode;
                 var target_vips = JSON.parse(msg.target_vips);
-                var executor = JSON.parse(msg.operators);
+                var executor = msg.operators;
                     executor = executor.split(",");
                 $("#executor").val("已选"+executor.length+"个");
                 $("#executor").attr("data-code",msg.operators);
@@ -1754,22 +1754,32 @@ $("#target_vip_save").click(function () {
     }
 });
 $("#target_vip_all").click(function () {
-    art.dialog({
-        time: 1,
-        lock: true,
-        cancel: false,
-        content: "保存成功"
-    });
-    setTimeout(function () {
-        $(".content").hide();
-        $("#page-wrapper").show();
-    },500);
-    $("#target_vip").val("已选"+count+"个");
-    $("#target_vip").attr("data-type","1");
-    $("#target_vip").attr("data-areacode",$('#screen_area_num').attr("data-code"));
-    $("#target_vip").attr("data-brandcode",$('#screen_brand_num').attr("data-code"));
-    $("#target_vip").attr("data-shopcode",$("#screen_shop_num").attr("data-code"));
-    $("#target_vip").attr("data-usercode",$("#screen_staff_num").attr("data-code"));
+    if(count>500){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "分配的会员不能超过500个"
+        });
+        return ;
+    }else {
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "保存成功"
+        });
+        setTimeout(function () {
+            $(".content").hide();
+            $("#page-wrapper").show();
+        },500);
+        $("#target_vip").val("已选"+count+"个");
+        $("#target_vip").attr("data-type","1");
+        $("#target_vip").attr("data-areacode",$('#screen_area_num').attr("data-code"));
+        $("#target_vip").attr("data-brandcode",$('#screen_brand_num').attr("data-code"));
+        $("#target_vip").attr("data-shopcode",$("#screen_shop_num").attr("data-code"));
+        $("#target_vip").attr("data-usercode",$("#screen_staff_num").attr("data-code"));
+    }
 });
 //执行方式下拉选择
 $("#execution li").click(function () {
