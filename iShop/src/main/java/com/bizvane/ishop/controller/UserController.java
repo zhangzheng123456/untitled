@@ -4,13 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -72,6 +74,8 @@ public class UserController {
     WeimobService weimobService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    IceInterfaceService iceInterfaceService;
     String id;
 
     /***
@@ -2215,6 +2219,73 @@ public class UserController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString() + "========ex==========");
+        }
+        return dataBean.getJsonStr();
+    }
+    /**
+     * 同步
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/synchronization", method = RequestMethod.POST)
+    @ResponseBody
+    public String synchronization(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String  role_code= request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json--user sign-------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_code=jsonObject.get("store_code").toString();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                corp_code = "C10000";
+            }
+            com.alibaba.fastjson.JSONObject obj_corp=new com.alibaba.fastjson.JSONObject();
+            obj_corp.put("corp_code",corp_code);
+            com.alibaba.fastjson.JSONObject obj_store=new com.alibaba.fastjson.JSONObject();
+            obj_store.put("store_code",store_code);
+            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
+            Data data_store_code = new Data("store_code", obj_store.toString(), ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_code.key, data_store_code);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataBackup", datalist);
+            String  message_info=dataBox.data.get("message").value.toString();
+            com.alibaba.fastjson.JSONObject info= JSON.parseObject(message_info);
+            String store_count=info.get("store_count").toString();
+            String insert_count=info.get("insert_count").toString();
+            String update_count=info.get("update_count").toString();
+            String hbase_user_count=info.get("hbase_user_count").toString();
+             if(Integer.parseInt(store_count)==0){
+                 dataBean.setId(id);
+                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                 dataBean.setMessage("店铺为0");
+            }else if(Integer.parseInt(insert_count)>0){
+                 dataBean.setId(id);
+                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                 dataBean.setMessage("同步成功");
+             }else if(Integer.parseInt(update_count)>0&&Integer.parseInt(hbase_user_count)>0){
+                 dataBean.setId(id);
+                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                 dataBean.setMessage("同步成功");
+             }else{
+                 dataBean.setId(id);
+                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                 dataBean.setMessage("同步失败，MySql数据更新时间大于HBase数据更新时间");
+             }
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

@@ -287,7 +287,7 @@ function operate() {
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/activity/activity_add.html");
     });
-    //点击编辑时页面进行的跳转s
+    //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
