@@ -118,27 +118,19 @@ var funcCode=key_val.func_code;
                     target_vip["type"] = "2";
                     target_vip["vips"] = $("#target_vip").attr("data-vips");
                 }
-                var executor = [];
-                var user_code = $("#executor").attr("data-code");
-                var phone = $("#executor").attr("data-phone");
+                var executor = "";
                 if($(".executor").css("display") !=="none"){
-                    if(user_code == undefined|| phone == undefined){
+                    var code = $("#executor").attr("data-code");
+                    if(code == "" || code == undefined){
                         art.dialog({
                             time: 1,
                             lock: true,
                             cancel: false,
-                            content: "执行人不能为空"
+                            content: "执行范围不能为空"
                         });
                         return ;
                     }else {
-                        user_code = user_code.split(",");
-                        phone = phone.split(",");
-                        for(var i=0;i<user_code.length;i++){
-                            var list={};
-                            list['user_code'] = user_code[i];
-                            list['phone'] = phone[i];
-                            executor.push(list);
-                        }
+                        executor = code;
                     }
                 }
                 var send_title = $("#send_title").val();
@@ -255,27 +247,19 @@ var funcCode=key_val.func_code;
                     target_vip["type"] = "2";
                     target_vip["vips"] = $("#target_vip").attr("data-vips");
                 }
-                var executor = [];
-                var user_code = $("#executor").attr("data-code");
-                var phone = $("#executor").attr("data-phone");
+                var executor = "";
                 if($(".executor").css("display") !=="none"){
-                    if(user_code == undefined|| phone == undefined){
+                    var code = $("#executor").attr("data-code");
+                    if(code == "" || code == undefined){
                         art.dialog({
                             time: 1,
                             lock: true,
                             cancel: false,
-                            content: "执行人不能为空"
+                            content: "执行范围不能为空"
                         });
                         return ;
                     }else {
-                        user_code = user_code.split(",");
-                        phone = phone.split(",");
-                        for(var i=0;i<user_code.length;i++){
-                            var list={};
-                            list['user_code'] = user_code[i];
-                            list['phone'] = phone[i];
-                            executor.push(list);
-                        }
+                        executor = code;
                     }
                 }
                 var send_title = $("#send_title").val();
@@ -416,20 +400,9 @@ jQuery(document).ready(function () {
                 var val = msg.run_mode;
                 var target_vips = JSON.parse(msg.target_vips);
                 var executor = JSON.parse(msg.operators);
-                var user_code = "";
-                var phone = "";
-                for(var i=0;i<executor.length;i++){
-                    if(i<executor.length-1){
-                        user_code+=executor[i].user_code+",";
-                        phone+=executor[i].user_code+","
-                    }else {
-                        user_code+=executor[i].user_code;
-                        phone+=executor[i].user_code;
-                    }
-                    $("#executor").val("已选"+executor.length+"个");
-                    $("#executor").attr("data-code",user_code);
-                    $("#executor").attr("data-phone",phone);
-                }
+                    executor = executor.split(",");
+                $("#executor").val("已选"+executor.length+"个");
+                $("#executor").attr("data-code",msg.operators);
                 if(target_vips.type == "2"){
                     $("#target_vip").attr("data-type","2");
                     $("#target_vip").attr("data-vips",target_vips.vips);
@@ -1076,7 +1049,7 @@ function getbrandlist(a){
 };
 //拉取区域
 function getarealist(a,b){
-    if(b = "area"){
+    if(b == "area"){
         var searchValue=$("#search_area").val().trim();
     }else {
         var searchValue=$("#area_search").val().trim();
@@ -1169,7 +1142,7 @@ function getarealist(a,b){
 }
 //获取店铺列表
 function getstorelist(a,b){
-    if(b="shop"){
+    if(b =="shop"){
         var searchValue=$("#search_store").val().trim();
         var area_code =$('#screen_area_num').attr("data-code");
         var brand_code=$('#screen_brand_num').attr("data-code");
@@ -1267,7 +1240,7 @@ function getstorelist(a,b){
 }
 //获取员工列表
 function getstafflist(a,b){
-    if(b="staff"){
+    if(b=="staff"){
         var searchValue=$('#staff_search').val().trim();
         var area_code =$("#screen_area_num").attr("data-code");
         var brand_code=$("#screen_brand_num").attr("data-code");
@@ -1454,34 +1427,27 @@ $("#screen_que_area").click(function(){
     $("#area_num").val("已选"+li.length+"个");
     $("#screen_area").hide();
     $("#screen_shop").show();
-    $("#screen_staff .screen_content_l ul").empty();
+    $("#screen_shop .screen_content_l ul").empty();
     getstorelist(shop_num);
-})
+});
 //点击店铺的确定
 $("#screen_que_shop").click(function(){
     var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
     var store_code="";
-    var name=""
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("id");
-        var h=$(li[i]).find(".p16").html();
         if(i<li.length-1){
             store_code+=r+",";
-            name+=h+",";
         }else{
             store_code+=r;
-            name+=h;
         }
     }
     isscroll=false;
-    staff_num=1;
-    $("#staff_shop_num").attr("data-code",store_code);
-    $("#staff_shop_num").val("已选"+li.length+"个");
+    $("#executor").attr("data-code",store_code);
+    $("#executor").val("已选"+li.length+"个");
     $("#screen_shop").hide();
-    $("#screen_staff").show();
-    $("#screen_staff .screen_content_l ul").empty();
-    getstafflist(staff_num);
-})
+    $(".box_shadow").hide();
+});
 //点击品牌的确定
 $("#screen_que_brand").click(function(){
     var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
@@ -1494,15 +1460,13 @@ $("#screen_que_brand").click(function(){
             brand_code+=r;
         }
     }
-    staff_num=1;
-    $("#staff_brand_num").attr("data-code",brand_code);
-    $("#staff_brand_num").val("已选"+li.length+"个");
-    $("#staff_shop_num").attr("data-code","");
-    $("#staff_shop_num").val("");
+    shop_num=1;
+    $("#brand_num").attr("data-brandcode",brand_code);
+    $("#brand_num").val("已选"+li.length+"个");
     $("#screen_brand").hide();
-    $("#screen_staff").show();
-    $("#screen_staff .screen_content_l ul").empty();
-    getstafflist(staff_num);
+    $("#screen_shop").show();
+    $("#screen_shop .screen_content_l ul").empty();
+    getstorelist(shop_num);
 });
 //点击员工的确定
 $("#screen_que_staff").click(function(){
@@ -1548,12 +1512,12 @@ $("#area_num").click(function(){
     area_num=1;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    var tp=(arr[3]-$("#screen_shop").height())/2+63;
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
     $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_area").show();
-    $("#screen_staff").hide();
+    $("#screen_shop").hide();
     getarealist(area_num);
 });
 $("#shop_area").click(function () {
@@ -1561,29 +1525,29 @@ $("#shop_area").click(function () {
     area_num=1;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    var tp=(arr[3]-$("#screen_shop").height())/2+63;
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
     $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_area").show();
-    $("#screen_staff").hide();
+    $("#screen_shop").hide();
     getarealist(area_num);
 });
 //筛选品牌
 $("#brand_num").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    var tp=(arr[3]-$("#screen_shop").height())/2+63;
     $("#screen_brand .screen_content_l ul").empty();
     $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_brand").show();
-    $("#screen_staff").hide();
+    $("#screen_shop").hide();
     getbrandlist();
 });
 $("#shop_brand").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    var tp=(arr[3]-$("#screen_shop").height())/2+63;
     $("#screen_brand .screen_content_l ul").empty();
     $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_brand").show();
@@ -1610,7 +1574,7 @@ $("#executor").click(function () {
     shop_num=1;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    var tp=(arr[3]-$("#screen_shop").height())/2+63;
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
     $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
@@ -1623,7 +1587,7 @@ $("#executor_icon").click(function () {
     shop_num=1;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
-    var tp=(arr[1]-$("#screen_shop").height())/2+63;
+    var tp=(arr[3]-$("#screen_shop").height())/2+63;
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
     $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
