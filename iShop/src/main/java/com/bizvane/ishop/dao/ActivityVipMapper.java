@@ -23,5 +23,5 @@ public interface ActivityVipMapper {
 
     List<ActivityVip> selectActivityScreen(Map<String, Object> params)throws SQLException;
 
-    ActivityVip selActivityByCode(@Param("corp_code")String corp_code, @Param("activity_vip_code")String activity_vip_code)throws SQLException;
+    ActivityVip selActivityByCode(@Param("activity_vip_code")String activity_vip_code)throws SQLException;
 }

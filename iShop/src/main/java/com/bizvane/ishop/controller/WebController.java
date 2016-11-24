@@ -56,6 +56,8 @@ public class WebController {
     BrandService brandService;
     @Autowired
     WeimobService weimobService;
+    @Autowired
+    ActivityVipService activityVipService;
 
     /**
      *
@@ -488,6 +490,33 @@ public class WebController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 活动
+     * 获取活动富文本
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/api/produceActivityUrl", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String produceActivityUrl(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String code = request.getParameter("code");
+            ActivityVip activityVip = this.activityVipService.selActivityByCode(code);
+            String content = activityVip.getActivity_content();
+
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(content);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
