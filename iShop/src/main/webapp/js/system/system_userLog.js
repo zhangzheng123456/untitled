@@ -252,9 +252,9 @@ function superaddition(data,num){//页面加载循环
             + data[i].action
             + "</td><td>"
             + data[i].corp_code
-            + "</td><td>"
+            + "</td><td title="+data[i].code+"><span>"
             + data[i].code
-            + "</td><td>"
+            + "</span></td><td>"
             + data[i].name
             + "</td><td>"
             + data[i].operation_time
