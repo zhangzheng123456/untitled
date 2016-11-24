@@ -27,7 +27,7 @@ public interface ActivityVipService {
 
     ActivityVip selectActivityById(int id) throws Exception;
 
-    ActivityVip selActivityByCode(String corp_code, String activity_vip_code) throws Exception;
+    ActivityVip selActivityByCode(String activity_vip_code) throws Exception;
 
     //根据选择的vip，显示对应的执行人
 //    PageInfo<User> selUserByVip(int page_number, int page_size, String corp_code, String search_value, JSONObject target_vips) throws Exception;
