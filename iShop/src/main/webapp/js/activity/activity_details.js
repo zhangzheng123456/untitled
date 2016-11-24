@@ -128,6 +128,75 @@ function search(name,num,area,shop,nowLength){
     }
 
 }
+
+//获取活动执行情况
+function getExecuteDetail(){
+    var id=sessionStorage.getItem("id");//获取
+    console.log('获取的id是：'+id)
+    var _params={
+        "id":"",
+        "message":{
+            "id":id
+        }
+    };
+    $.ajax({
+        url: '/activity/executeDetail',
+        type: 'POST',
+        dataType: "JSON",
+        data:{
+            param:JSON.stringify(_params)
+        },
+        success: function (data) {
+            var message = data.message;
+            console.log(message)
+            if(message =='活动在执行'){
+                console.log('********活动在执行********')
+                getSelect(id);
+                var complete_vips_count = message.complete_vips_count;
+                var userList =message.userList;
+                var target_vips_count = message.target_vips_count;
+                console.log(complete_vips_count)
+                console.log(userList)
+                console.log(target_vips_count)
+
+            }else{
+                console.log('********该活动未执行********')
+            }
+        },
+        error: function (data) {
+            console.log('获取活动执行情况失败');
+        }
+    });
+}
+//获取活动详情
+function getSelect(id){
+    var _params={
+        "id":"",
+        "message":{
+            "id":id
+        }
+    };
+
+    $.ajax({
+        url: '/activity/select',
+        type: 'POST',
+        dataType: "JSON",
+        data:{
+            param:JSON.stringify(_params)
+        },
+        success: function (data) {
+            var message = JSON.parse(data.message);
+            var activityVip = JSON.parse(message.activityVip);
+            var activity_theme = activityVip.activity_theme;
+            var corp_code = activityVip.corp_code;
+            sessionStorage.setItem("corp_code",JSON.stringify(corp_code));//存储的方法
+            console.log(corp_code+'___'+activity_theme)
+        },
+        error: function (data) {
+            console.log('获取活动详情失败');
+        }
+    });
+}
 //加载统计模块
 function check(){
     var TheTarget = '325656';
@@ -297,6 +366,8 @@ function getVal(name){
 }
 //页面加载数据
 window.onload = function(){
+    //获取活动执行情况
+    getExecuteDetail();
     //加载统计模块
     check();
     //加载活动状态
