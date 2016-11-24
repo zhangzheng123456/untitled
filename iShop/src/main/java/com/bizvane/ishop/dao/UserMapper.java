@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserMapper {
+    List<User> getCanloginByCode(@Param("corp_code")String corp_code);
+
     int deleteByUserId(int id) throws SQLException;
 
     int insertUser(User record) throws SQLException;

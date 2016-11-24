@@ -1114,4 +1114,9 @@ public class UserServiceImpl implements UserService {
         }
         return brand_codes;
     }
+
+    @Override
+    public List<User> getCanloginByCode(String corp_code) {
+        return userMapper.getCanloginByCode(corp_code);
+    }
 }

@@ -61,6 +61,14 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
+    <select id="getCanloginByCode" resultType="com.bizvane.ishop.entity.User">
+        SELECT * FROM def_user
+        WHERE 1=1
+        <if test="corp_code != null and corp_code !=''">
+            AND def_user.corp_code = #{corp_code}
+        </if>
+        AND def_user.can_login !='Y' OR def_user.isactive !='Y'
+    </select>
 <!--列表上去掉了email, birthday,can_login, position,login_time_recently,  def_user.created_date, def_user.creater,-->
     <select id="selectAllUser" resultMap="UserInfo">
         SELECT def_user.id,

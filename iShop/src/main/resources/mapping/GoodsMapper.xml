@@ -26,10 +26,10 @@
         <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
 
         <!--<association property="corp" javaType="com.bizvane.ishop.entity.Corp">-->
-            <!--<result column="corp_name" property="corp_name"/>-->
+        <!--<result column="corp_name" property="corp_name"/>-->
         <!--</association>-->
         <!--<association property="brand" javaType="com.bizvane.ishop.entity.Brand">-->
-            <!--<result column="brand_name" property="brand_name"/>-->
+        <!--<result column="brand_name" property="brand_name"/>-->
         <!--</association>-->
     </resultMap>
 
@@ -113,26 +113,26 @@
         <if test="goods_quarter!=null and goods_quarter!=''">
             AND
             <foreach collection="goods_quarter" index="index" item="item" open="(" separator="or" close=")">
-            g.goods_quarter = #{item}
+                g.goods_quarter = #{item}
             </foreach>
         </if>
         <if test="goods_wave!=null and goods_wave!=''">
             AND
             <foreach collection="goods_wave" index="index" item="item" open="(" separator="or" close=")">
-            g.goods_wave = #{item}
+                g.goods_wave = #{item}
             </foreach>
         </if>
         <if test="brand_code!=null and brand_code!=''">
             AND
             <foreach collection="brand_code" index="index" item="item" open="(" separator="or" close=")">
-            g.brand_code = #{item}
+                g.brand_code = #{item}
             </foreach>
         </if>
         <if test="time_start!=null and time_start!=''">
-            AND  g.goods_time &gt;= #{time_start}
+            AND g.goods_time &gt;= #{time_start}
         </if>
         <if test="time_end!=null and time_end!=''">
-            AND  g.goods_time &lt;= #{time_end}
+            AND g.goods_time &lt;= #{time_end}
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
@@ -506,24 +506,24 @@
     </select>
 
     <select id="getGoodsByName" resultType="com.bizvane.ishop.entity.Goods">
-         SELECT g.id,
-         g.goods_code,
-         g.goods_name,
-         g.goods_image,
-         g.goods_price,
-         g.goods_time,
-         g.goods_quarter,
-         g.goods_wave,
-         g.modified_date,
-         g.modifier,
-         g.isactive,
-         g.created_date,
-         g.creater,
-         g.goods_description,
-         g.corp_code,
-         cp.corp_name,
-         g.brand_code,
-         db.brand_name
+        SELECT g.id,
+        g.goods_code,
+        g.goods_name,
+        g.goods_image,
+        g.goods_price,
+        g.goods_time,
+        g.goods_quarter,
+        g.goods_wave,
+        g.modified_date,
+        g.modifier,
+        g.isactive,
+        g.created_date,
+        g.creater,
+        g.goods_description,
+        g.corp_code,
+        cp.corp_name,
+        g.brand_code,
+        db.brand_name
         FROM def_goods g,def_corp cp,def_brand db
         WHERE g.corp_code=cp.corp_code
         AND g.corp_code=db.corp_code
@@ -564,5 +564,16 @@
         AND db.isactive = 'Y'
         GROUP BY g.goods_wave
     </select>
-
+    <select id="getMatchFab" resultType="com.bizvane.ishop.entity.Goods">
+        SELECT
+         dg.goods_code,
+         dg.goods_name,
+         dg.goods_image
+         FROM def_goods dg
+         WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND dg.corp_code=#{corp_code}
+        </if>
+        AND dg.isactive='Y'
+    </select>
 </mapper>
