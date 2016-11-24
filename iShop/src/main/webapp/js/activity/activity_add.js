@@ -436,6 +436,7 @@ jQuery(document).ready(function () {
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
+                $("#src_input").attr("data-code",msg.activity_vip_code);//生成链接code
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (msg.isactive == "Y") {
                     input.checked = true;
@@ -2146,5 +2147,10 @@ $("#enter").click(function () {
 
         }
     })
+});
+//点击生成链接
+$("#creat_link").click(function () {
+    var code = $("#src_input").attr("data-code");
+   $("#src_input").val(window.location.host+"/activity/active_ueditor.html?code="+code);
 });
 
