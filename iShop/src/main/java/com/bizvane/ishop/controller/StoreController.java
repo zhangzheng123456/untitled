@@ -1693,11 +1693,11 @@ public class StoreController {
             if (dataBox.status.toString().equals("SUCCESS")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.status.toString());
+                dataBean.setMessage("同步成功");
             } else {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.status.toString());
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("同步失败");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
