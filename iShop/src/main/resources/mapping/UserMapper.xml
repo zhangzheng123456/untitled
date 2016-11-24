@@ -166,7 +166,9 @@
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
         AND def_user.corp_code = #{corp_code}
-        AND def_group.role_code &gt;= #{role_code}
+        <if test="role_code != null and role_code !=''">
+          AND def_group.role_code &gt;= #{role_code}
+        </if>
         <if test="array !=null">
         AND (
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
