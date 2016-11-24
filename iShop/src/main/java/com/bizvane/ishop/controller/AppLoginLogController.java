@@ -107,7 +107,7 @@ public class AppLoginLogController {
 //            System.out.println("======UserOperationController===== ");
 //
 //            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_login_log);
+ //          DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_login_log);
 //            List<User> canloginByCode=null;
 //            DBCursor dbCursor = null;
 //            // 读取数据
