@@ -17,97 +17,157 @@
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="pre_title"><a href="#">活动管理</a><i class="icon-ishop_8-03"></i><a onclick="closePage()">活动列表</a><i class="icon-ishop_8-03"></i><label>活动详情</label></div>
-    <div class="editor_detail animated fadeInRight">
-        <div class="corpadd_oper_btn">
-            <ul>
-                <li style="letter-spacing: 1px;" onclick="stop()" id="stop" >终止活动</li>
-                <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
-                <li style="letter-spacing: 1px;" onclick="notice()">通知相关人</li>
+    <!--父级样式-->
+    <div style="padding-right:30px">
+        <div class="editor_detail animated fadeInRight">
+            <div class="corpadd_oper_btn">
+                <ul>
+                    <li style="letter-spacing: 1px;" onclick="stop()" id="stop" >终止活动</li>
+                    <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
+                    <li style="letter-spacing: 1px;" onclick="notice()">通知相关人</li>
+                </ul>
+            </div>
+        </div>
+        <!--活动显示区-->
+        <div class="main">
+            <ul class="left">
+                <li class="left_top">
+                    <div id="main" style="height:140px;height: 140px"></div>
+                    <!--图表区域-->
+                </li>
+                <li class="left_bottom">
+                    <span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>
+                    <span class="the_target_content">目标会员数</span><span class="the_tover_content">已覆盖会员数</span>
+                </li>
+            </ul>
+            <ul class="right">
+                <li>活动状态 <span id="activityState"></span></li>  <!--活动状态颜色区分-->
+                <li>活动主题 <span id="activityTheme"></span></li>
+                <li>活动状态 <span id="activityState2"></span></li>
+                <li>活动时间 <span id="activityTime"><span id="beiginTime" style="margin-left: 0px"></span> ~ <span id="endTime"></span></span></li>
+                <li id="rightMore">更多</li>
             </ul>
         </div>
-    </div>
-    <!--活动显示区-->
-    <div class="main">
-        <ul class="left">
-            <li class="left_top">
-                <div id="main" style="height:140px;height: 140px"></div>
-                <!--图表区域-->
-            </li>
-            <li class="left_bottom">
-                <span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>
-                <span class="the_target_content">目标会员数</span><span class="the_tover_content">已覆盖会员数</span>
-            </li>
-        </ul>
-        <ul class="right">
-            <li>活动状态 <span id="activityState"></span></li>  <!--活动状态颜色区分-->
-            <li>活动主题 <span id="activityTheme"></span></li>
-            <li>执行方式 <span id="activityState2"></span></li>
-            <li>活动时间 <span id="activityTime"><span id="beiginTime" style="margin-left: 0px"></span> ~ <span id="endTime"></span></span></li>
-            <li id="rightMore">更多</li>
-        </ul>
-    </div>
-    <!--二级按钮-->
-   <div class="btnSecond">
-       <span class="do" id="showDone">仅显示已完成</span>
-       <span class="do" id="showDoing">仅显示未完成</span>
-       <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4"></span>筛选</span>
-   </div>
-    <div id="screening">
-        <div class="sxk" id="sxk">
-            <div class="sbtn">
-                <div class="empty" id="empty">
-                    <i class="icon-ishop_6-16"></i>清空筛选
-                </div>
-                <!--<span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>-->
-                <div class="r_btn">
-                    <div class="pack_up" id="pack_up">
-                        <i class="icon-ishop_6-18"></i>
-                        收起
+        <!--二级按钮-->
+        <div class="btnSecond">
+            <span class="do" id="showDone">仅显示已完成</span>
+            <span class="do" id="showDoing">仅显示未完成</span>
+            <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4"></span>筛选</span>
+        </div>
+        <div id="screening">
+            <div class="sxk" id="sxk">
+                <div class="sbtn">
+                    <div class="empty" id="empty">
+                        <i class="icon-ishop_6-16"></i>清空筛选
                     </div>
-                    <div class="find" id="find">
-                        <i class="icon-ishop_6-19"></i>
-                        查找
+                    <!--<span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>-->
+                    <div class="r_btn">
+                        <div class="pack_up" id="pack_up">
+                            <i class="icon-ishop_6-18"></i>
+                            收起
+                        </div>
+                        <div class="find" id="find">
+                            <i class="icon-ishop_6-19"></i>
+                            查找
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="inputs">
-                <li>
-                    <label>员工姓名</label><input type="text" id="p1">
-                </li>
-                <li>
-                    <label>员工编号</label><input type="text" id="p2">
-                </li>
-                <li>
-                    <label>所属区域</label><input type="text" id="p3">
-                </li>
-                <li>
-                    <label>所属店铺</label><input type="text" id="p4">
-                </li>
+                <div class="inputs">
+                    <li>
+                        <label>员工姓名</label><input type="text" id="p1">
+                    </li>
+                    <li>
+                        <label>员工编号</label><input type="text" id="p2">
+                    </li>
+                    <li>
+                        <label>所属区域</label><input type="text" id="p3">
+                    </li>
+                    <li>
+                        <label>所属店铺</label><input type="text" id="p4">
+                    </li>
+                </div>
             </div>
         </div>
-    </div>
-    <!--人员区-->
-    <ul class="people">
-        <li class="people_title">
-            <div class="people_title_order">序号</div>
-            <div class="people_title_name">员工姓名</div>
-            <div class="people_title_num">员工编号</div>
-            <div class="people_title_area">所属区域</div>
-            <div class="people_title_shop">所属店铺</div>
-            <div class="people_title_plan">完成进度</div>
-        </li>
-        <li class="people_content">
-            <ui id ='peopleContent'>
-                <!--js动态生成-->
-                <li id="peopleError"> <div>没有匹配信息，请核对关键字重新搜索</div> </li>
+        <!--人员区-->
+        <ul class="people">
+            <li class="people_title">
+                <div class="people_title_order">序号</div>
+                <div class="people_title_name">员工姓名</div>
+                <div class="people_title_num">员工编号</div>
+                <div class="people_title_area">所属区域</div>
+                <div class="people_title_shop">所属店铺</div>
+                <div class="people_title_plan">完成进度</div>
+            </li>
+            <li class="people_content">
+                <ui id ='peopleContent'>
+                    <!--js动态生成-->
+            <li id="peopleError"> <div>没有匹配信息，请核对关键字重新搜索</div> </li>
             </ui>
-        </li>
+            </li>
 
-    </ul>
+        </ul>
+    </div>
+   <!--更多详情页面-->
+    <div id="get_more">
+        <div>
+            <span class="head_span_l">活动详情</span>
+            <span class="head_span_r icon-ishop_6-12" ></span>
+        </div>
+        <ul id="content">
+            <li>
+                <span class="content_l">活动状态</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动主题</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动状态</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动时间</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">执行方式</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">分配执行人</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">目标会员</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动描述</span>
+                <div id="fab_describe">
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script src="../js/loading.js"></script>
 <!--匹配js文件-->
 <script type="text/javascript" src="../js/activity/activity_details.js"></script>
 <script src="../js/dist/echarts.js"></script>
@@ -115,7 +175,17 @@
 <script type="text/javascript" src="../js/dist/chart/pie.js"></script>
 <script type="text/javascript" src="../js/dist/chart/bar.js"></script>
 <script type="text/javascript" src="../js/dist/echarts.js"></script>
-
+<script>
+    $('#rightMore').click(function () {
+        $('#get_more').show();
+        whir.loading.add("",0.5);//加载等待框
+        $('#loading').remove();
+    });
+    $('#get_more .head_span_r').click(function () {
+        $('#get_more').hide();
+        whir.loading.remove();//移除加载框
+    });
+</script>
 
 </body>
 </html>
