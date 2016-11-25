@@ -4,42 +4,21 @@
 }
 .content .rec_con ul li{
 	float: left;
-	width: 290px;
-	padding: 5px;
-	margin: 0 8px;
-	height: 200px;
-	background: #E8E8E8;
-	border-radius: 3px;
-	position: relative;
-	-webkit-transition: all .45s ease-in-out;
-	   -moz-transition: all .45s ease-in-out;
-	    -ms-transition: all .45s ease-in-out;
-	     -o-transition: all .45s ease-in-out;
-	        transition: all .45s ease-in-out;
-}
-.content .rec_con ul li.bd-1{
-	border:solid 1px #98D3E8;
-}
-.content .rec_con ul li.bd-1:hover{
-	background: #98D3E8;
-}
-.content .rec_con ul li.bd-2{
-	border:solid 1px #FFCB76;
-}
-.content .rec_con ul li.bd-2:hover{
-	background: #FFCB76;
-}
-.content .rec_con ul li.bd-3{
-	border:solid 1px #FF525A;
-}
-.content .rec_con ul li.bd-3:hover{
-	background: #FF525A;
-}
-.content .rec_con ul li.bd-4{
-	border:solid 1px #71C46F;
-}
-.content .rec_con ul li.bd-4:hover{
-	background: #71C46F;
+	width: 320px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 10px;
+	/*margin: 0 8px;*/
+	/*height: 200px;*/
+	/*background: #E8E8E8;*/
+	/*border-radius: 3px;*/
+	/*position: relative;*/
+	/*-webkit-transition: all .45s ease-in-out;*/
+	   /*-moz-transition: all .45s ease-in-out;*/
+	    /*-ms-transition: all .45s ease-in-out;*/
+	     /*-o-transition: all .45s ease-in-out;*/
+	        /*transition: all .45s ease-in-out;*/
 }
 .content .rec_con ul li img{
 	width: 290px;
@@ -74,22 +53,6 @@
 	display: table;
 	padding: 0 1%;
 	letter-spacing: 2px;
-}
-.content .rec_con ul li .a-index h2.fc-1{
-	color:#98D3E8;
-}
-.content .rec_con ul li .a-index h2.fc-2{
-	color:#FFCB76;
-}
-.content .rec_con ul li .a-index h2.fc-3{
-	color:#FF525A;
-}
-.content .rec_con ul li .a-index h2.fc-4{
-	color:#71C46F;
-}
-.content .rec_con ul li .a-index h2 span{
-	display: table-cell;
-	vertical-align: middle;
 }
 @media screen and (max-width: 1024px){
 	.content{
@@ -291,16 +254,15 @@
 	margin: 0 auto;
 }
 .waterfull ul li{
-	float: left;
-	width: 284px;
-	padding: 8px;
-	margin: 0 6px 10px;
-	background: #fff;
-	border-radius: 3px;
+	width: 330px;
+	height: auto;
+	/*padding-top: 40px;*/
+	/*padding-left: 10px;*/
+	background-color: #ffffff;
 	position: relative;
-	overflow: hidden;
-	border:solid 1px #BCBCBC;
-	box-shadow: 0 0 10px #BCBCBC;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
 }
 .waterfull ul li .a-img{
 	width: 284px;

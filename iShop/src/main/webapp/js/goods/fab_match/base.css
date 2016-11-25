@@ -13,9 +13,9 @@ select:focus {outline: none;}
 textarea:focus {outline: none;}
 textarea{resize: none;}
 body{
-	background: #EEEEEE;
+	/*background: #EEEEEE;*/
 	overflow-x: hidden;
-	font-size: 62.5%;
+	/*font-size: 62.5%;*/
 }
 a{
 	text-decoration: none;
