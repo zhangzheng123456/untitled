@@ -1259,10 +1259,10 @@ public class StoreController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = storeService.getAllStore(request, 1, 30000, "", search_value, "", "");
+                    list = storeService.getAllStore(request, 1, Common.EXPORTEXECLCOUNT, "", search_value, "", "");
                 } else {
                     if (role_code.equals(Common.ROLE_GM)) {
-                        list = storeService.getAllStore(request, 1, 30000, corp_code, search_value, "", "");
+                        list = storeService.getAllStore(request, 1, Common.EXPORTEXECLCOUNT, corp_code, search_value, "", "");
                     } else if (role_code.equals(Common.ROLE_BM)) {
                         String brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
@@ -1270,7 +1270,7 @@ public class StoreController {
                         for (int i = 0; i < brandCodes.length; i++) {
                             brandCodes[i] = Common.SPECIAL_HEAD + brandCodes[i] + ",";
                         }
-                        list = storeService.selectByAreaBrand(1, 30000, corp_code, null, null, brandCodes, search_value, "", "");
+                        list = storeService.selectByAreaBrand(1, Common.EXPORTEXECLCOUNT, corp_code, null, null, brandCodes, search_value, "", "");
                     } else if (role_code.equals(Common.ROLE_AM)) {
                         String area_code = request.getSession().getAttribute("area_code").toString();
                         String store_code = request.getSession().getAttribute("store_code").toString();
@@ -1283,33 +1283,33 @@ public class StoreController {
                             store_code = store_code.replace(Common.SPECIAL_HEAD, "");
                             storeCode = store_code.split(",");
                         }
-                        list = storeService.selectByAreaBrand(1, 30000, corp_code, areaCodes, storeCode, null, search_value, "", "");
+                        list = storeService.selectByAreaBrand(1, Common.EXPORTEXECLCOUNT, corp_code, areaCodes, storeCode, null, search_value, "", "");
                     } else {
                         String store_code = request.getSession().getAttribute("store_code").toString();
-                        list = storeService.selectByUserId(1, 30000, store_code, corp_code, search_value);
+                        list = storeService.selectByUserId(1, Common.EXPORTEXECLCOUNT, store_code, corp_code, search_value);
                     }
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = storeService.getAllStoreScreen(1, 30000, "", "", "", "", map, "", "");
+                    list = storeService.getAllStoreScreen(1, Common.EXPORTEXECLCOUNT, "", "", "", "", map, "", "");
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "", "", "", map, "", "");
+                    list = storeService.getAllStoreScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", "", "", map, "", "");
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "", brand_code, "", map, "", "");
+                    list = storeService.getAllStoreScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", brand_code, "", map, "", "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, area_codes, "", "", map, store_code, "");
+                    list = storeService.getAllStoreScreen(1, Common.EXPORTEXECLCOUNT, corp_code, area_codes, "", "", map, store_code, "");
                 } else {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "", "", store_code, map, "", "");
+                    list = storeService.getAllStoreScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", "", store_code, map, "", "");
                 }
             }
             List<Store> stores = list.getList();
             System.out.println("TimeOut测试：" + stores.size());
-            if (stores.size() >= 29999) {
+            if (stores.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

@@ -729,28 +729,28 @@ public class GroupController {
             if(screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = groupService.getGroupAll(1, 30000, "", "", search_value);
+                    list = groupService.getGroupAll(1, Common.EXPORTEXECLCOUNT, "", "", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = groupService.getGroupAll(1, 30000, corp_code, "", search_value);
+                    list = groupService.getGroupAll(1, Common.EXPORTEXECLCOUNT, corp_code, "", search_value);
                 } else {
-                    list = groupService.getGroupAll(1, 30000, corp_code, role_code, search_value);
+                    list = groupService.getGroupAll(1, Common.EXPORTEXECLCOUNT, corp_code, role_code, search_value);
                 }
             }else{
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = groupService.getAllGroupScreen(1, 30000, "", "", map);
+                    list = groupService.getAllGroupScreen(1, Common.EXPORTEXECLCOUNT, "", "", map);
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    list = groupService.getAllGroupScreen(1, 30000, corp_code, "",map);
+                    list = groupService.getAllGroupScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "",map);
                 } else {
-                    list = groupService.getAllGroupScreen(1, 30000, corp_code, role_code, map);
+                    list = groupService.getAllGroupScreen(1, Common.EXPORTEXECLCOUNT, corp_code, role_code, map);
                 }
             }
             List<Group> groups = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(groups);
-            if(groups.size()>=29999){
+            if(groups.size()>=Common.EXPORTEXECLCOUNT){
                 errormessage="导出数据过大";
                 int i=9/0;
             }

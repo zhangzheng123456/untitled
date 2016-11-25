@@ -376,16 +376,16 @@ public class FeedbackController {
             String screen = jsonObject.get("list").toString();
             PageInfo<Feedback> corpInfo = null;
             if (screen.equals("")) {
-                corpInfo= feedbackService.selectAllFeedback(1, 30000, search_value);
+                corpInfo= feedbackService.selectAllFeedback(1, Common.EXPORTEXECLCOUNT, search_value);
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                corpInfo = feedbackService.selectAllScreen(1, 30000, map);
+                corpInfo = feedbackService.selectAllScreen(1, Common.EXPORTEXECLCOUNT, map);
             }
             List<Feedback> feedbacks = corpInfo.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(feedbacks);
-            if (feedbacks.size() >= 29999) {
+            if (feedbacks.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

@@ -483,23 +483,23 @@ public class ViplableGroupController {
             PageInfo<ViplableGroup> list;
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = viplableGroupService.selectViplabGroup(1, 30000, "", search_value);
+                    list = viplableGroupService.selectViplabGroup(1, Common.EXPORTEXECLCOUNT, "", search_value);
                 }else {
-                    list = viplableGroupService.selectViplabGroup(1, 30000, corp_code, search_value);
+                    list = viplableGroupService.selectViplabGroup(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = viplableGroupService.selectViplabGroupScreen(1, 30000, "", map);
+                    list = viplableGroupService.selectViplabGroupScreen(1, Common.EXPORTEXECLCOUNT, "", map);
                 }else {
-                    list = viplableGroupService.selectViplabGroupScreen(1, 30000, corp_code, map);
+                    list = viplableGroupService.selectViplabGroupScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map);
                 }
             }
             List<ViplableGroup> viplableGroups = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
             String json = mapper.writeValueAsString(viplableGroups);
-            if (viplableGroups.size() >= 29999) {
+            if (viplableGroups.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
