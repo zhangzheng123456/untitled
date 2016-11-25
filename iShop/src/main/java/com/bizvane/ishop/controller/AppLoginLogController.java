@@ -115,7 +115,7 @@ public class AppLoginLogController {
                 DBCursor dbCursor1 = cursor.find();
 
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode("");
             } else {
                 Map keyMap = new HashMap();
@@ -125,7 +125,7 @@ public class AppLoginLogController {
                 DBCursor dbCursor1 = cursor.find(ref);
 
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
 
@@ -216,7 +216,7 @@ public class AppLoginLogController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode("");
             } else {
                 BasicDBList value = new BasicDBList();
@@ -227,7 +227,7 @@ public class AppLoginLogController {
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor2, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
             ArrayList list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
@@ -320,7 +320,7 @@ public class AppLoginLogController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
 
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode("");
             } else {
                 BasicDBList value = new BasicDBList();
@@ -331,7 +331,7 @@ public class AppLoginLogController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
             ArrayList list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
@@ -628,7 +628,7 @@ public class AppLoginLogController {
                 list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
             } else {
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andOperation(array);
+                BasicDBObject queryCondition = MongoUtils.andLoginlogScreen(array);
                 DBCursor dbCursor = null;
                 List<User> canloginByCode = null;
                 // 读取数据

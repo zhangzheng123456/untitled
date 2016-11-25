@@ -69,7 +69,7 @@ public class UserOperationController {
                 DBCursor dbCursor1 = cursor.find();
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
             } else {
                 Map keyMap = new HashMap();
                 keyMap.put("corp_code", corp_code);
@@ -78,7 +78,7 @@ public class UserOperationController {
                 DBCursor dbCursor1 = cursor.find(ref);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
             }
 
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
@@ -132,7 +132,7 @@ public class UserOperationController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
 
             } else {
                 BasicDBList value = new BasicDBList();
@@ -143,7 +143,7 @@ public class UserOperationController {
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor2,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"operation_time",-1);
             }
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
@@ -182,7 +182,7 @@ public class UserOperationController {
             String lists = jsonObject.get("list").toString();
 
             JSONArray array = JSONArray.parseArray(lists);
-            BasicDBObject queryCondition = MongoUtils.andOperation(array);
+            BasicDBObject queryCondition = MongoUtils.andUserOperScreen(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
@@ -193,7 +193,7 @@ public class UserOperationController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
             } else {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -203,7 +203,7 @@ public class UserOperationController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
             }
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
@@ -265,7 +265,7 @@ public class UserOperationController {
                 list = MongoUtils.dbCursorToList_id(dbCursor);
             } else {
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andOperation(array);
+                BasicDBObject queryCondition = MongoUtils.andUserOperScreen(array);
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
