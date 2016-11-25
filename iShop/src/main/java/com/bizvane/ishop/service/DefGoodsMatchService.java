@@ -15,7 +15,7 @@ public interface DefGoodsMatchService {
 
     List<DefGoodsMatch> selectMatchByCode(String corp_code,String goods_match_code);
 
-    int delMatchByCode(String goods_match_code);
+    int delMatchByCode(String corp_code,String goods_match_code);
 
     int delMatchById(String id);
 

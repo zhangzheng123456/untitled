@@ -47,7 +47,7 @@
     </select>
     <delete id="delMatchByCode">
         DELETE FROM def_goods_match
-        WHERE goods_match_code= #{goods_match_code}
+        WHERE corp_code = #{corp_code} AND goods_match_code= #{goods_match_code}
     </delete>
     <delete id="delMatchById">
         DELETE FROM def_goods_match

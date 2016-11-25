@@ -136,11 +136,12 @@ public class DefGoodsMatchController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
             String area_id = jsonObject.get("goods_match_code").toString();
             String[] ids = area_id.split(",");
             int msg = 0;
             for (int i = 0; i < ids.length; i++) {
-                msg+=  defGoodsMatchService.delMatchByCode(ids[i]);
+                msg+=  defGoodsMatchService.delMatchByCode(corp_code,ids[i]);
             }
             if (msg >0) {
                 dataBean.setId(id);
@@ -231,8 +232,9 @@ public class DefGoodsMatchController {
             JSONObject jsonObject = new JSONObject(message);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
           //  String goods_match_code =sdf.format(new Date()) + Math.round(Math.random() * 9);
+            String corp_code_json = jsonObject.get("corp_code").toString();
             String goods_match_code = jsonObject.get("goods_match_code").toString();
-             int delCount=defGoodsMatchService.delMatchByCode(goods_match_code);
+             int delCount=defGoodsMatchService.delMatchByCode(corp_code_json,goods_match_code);
             System.out.println("======删除关联商品========="+delCount);
             String goods_code = jsonObject.get("goods_code").toString();
             String[] split = goods_code.split(",");
