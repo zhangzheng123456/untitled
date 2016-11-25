@@ -1285,6 +1285,18 @@ input::-webkit-input-placeholder{
 	width: 310px;
 	background:url("../../img/bjs.png");
 }
+.screen_content .screen_content_l ul li:nth-child(odd){
+	 background: #EDEDED;
+ }
+.screen_content .screen_content_l ul li:nth-child(even){
+	background: #fff;
+}
+.screen_content .screen_content_r ul li:nth-child(odd){
+	background: #EDEDED;
+}
+.screen_content .screen_content_r ul li:nth-child(even){
+	background: #fff;
+}
 .screen_area .screen_content .screen_content_l li,.screen_area .screen_content .screen_content_r li{
 	width: 100%;
 	height: 40px;

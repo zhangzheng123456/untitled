@@ -1680,26 +1680,24 @@ public class StoreController {
             logger.info("json--user sign-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 corp_code = "C10000";
             }
             com.alibaba.fastjson.JSONObject obj_corp = new com.alibaba.fastjson.JSONObject();
             obj_corp.put("corp_code", corp_code);
-            Data data_corp_code = new Data("corp_code", obj_corp.toJSONString(), ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataSynchronization", datalist);
             if (dataBox.status.toString().equals("SUCCESS")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.data.get("message").value);
+                dataBean.setMessage("同步成功");
             } else {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(dataBox.status.toString());
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("数据已是最新，无需同步");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

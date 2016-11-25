@@ -499,6 +499,7 @@ public class UserServiceImpl implements UserService {
                 User login_user = users.get(0);
                 int user_id = login_user.getId();
                 String user_code = login_user.getUser_code().trim();
+                String user_name = login_user.getUser_name();
                 String corp_code = login_user.getCorp_code().trim();
                 String group_code = login_user.getGroup_code().trim();
                 String store_code = login_user.getStore_code().trim();
@@ -507,6 +508,7 @@ public class UserServiceImpl implements UserService {
                 String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code().trim();
 
                 request.getSession().setAttribute("user_id", user_id);
+                request.getSession().setAttribute("user_name", user_name);
                 request.getSession().setAttribute("user_code", user_code);
                 request.getSession().setAttribute("phone", phone);
                 request.getSession().setAttribute("corp_code", corp_code);
@@ -1143,5 +1145,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         return brand_codes;
+    }
+
+    @Override
+    public List<User> getCanloginByCode(String corp_code) {
+        return userMapper.getCanloginByCode(corp_code);
     }
 }

@@ -21,24 +21,11 @@
         </div>
         <div class="action">
             <div class="action_l">
-                <div class="action_l">
-                    <ul id="jurisdiction">
-                        <li id="compile" class="bg">
-                            <a href="javascript:void(0);">
-                                <span class="icon-ishop_6-03"></span>
-                                编辑
-                            </a>
-                        </li>
-                        <li  id="remove">
-                            <span class="icon-ishop_6-02"></span>
-                            删除
-                        </li>
-
-                    </ul>
-                </div>
+                <ul id="jurisdiction">
+                </ul>
                 <ul>
                     <li class="li">
-                        <input type="text" class="input" id="search" placeholder="企业编号/内容/时间/动作">
+                        <input type="text" class="input" id="search" placeholder="功能/动作/企业编号/操作编号/操作内容">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
@@ -53,7 +40,7 @@
                     <!--<span class="icon-ishop_6-06"></span>-->
                     <!--配置-->
                     <!--</li>-->
-                    <li class="bg" onclick="reload()">
+                    <li class="bg">
                         <span class="icon-ishop_6-07"></span>
                         刷新
                     </li>
@@ -62,8 +49,10 @@
                         更多
                         <div class="more_down">
                             <div id="leading_out">导出</div>
+                            <div id="guide_into">导入</div>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -115,6 +104,7 @@
                 </div>
             </div>
             <div class="inputs">
+                <ul></ul>
                 <!--<li>-->
                     <!--<label>企业编号</label><input type="text" id="p1">-->
                 <!--</li>-->
@@ -138,7 +128,7 @@
                     <th>操作者</th>
                     <th>功能</th>
                     <th>动作</th>
-                    <th>企业名称</th>
+                    <th>企业编号</th>
                     <th>操作编号</th>
                     <th>操作内容</th>
                     <th>时间</th>

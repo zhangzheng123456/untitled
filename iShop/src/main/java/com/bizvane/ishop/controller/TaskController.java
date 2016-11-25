@@ -208,36 +208,8 @@ public class TaskController {
                 String corp_code = json.get("corp_code").toString();
                 String task_code = json.get("task_code").toString();
                 Task task = taskService.selectTaskById(id);
-                if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
-                    del= taskService.delTask(id, corp_code, task_code);
-                    count = Integer.parseInt(del);
-
-                    //----------------行为日志开始------------------------------------------
-                    /**
-                     * mongodb插入用户操作记录
-                     * @param operation_corp_code 操作者corp_code
-                     * @param operation_user_code 操作者user_code
-                     * @param function 功能
-                     * @param action 动作
-                     * @param corp_code 被操作corp_code
-                     * @param code 被操作code
-                     * @param name 被操作name
-                     * @throws Exception
-                     */
-                    String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
-                    String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                    String function = "任务管理_任务列表";
-                    String action = Common.ACTION_DEL;
-                    String t_corp_code = task.getCorp_code();
-                    String t_code = task.getTask_code();
-                    String t_name = task.getTask_title();
-                    String remark = "";
-                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
-                    //-------------------行为日志结束-----------------------------------------------------------------------------------
-                }else{
-                    if(!user_code.equals(task.getCreater())){
-                        del="无法删除他人创建的任务";
-                    }else{
+                if (task != null){
+                    if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
                         del= taskService.delTask(id, corp_code, task_code);
                         count = Integer.parseInt(del);
 
@@ -263,9 +235,38 @@ public class TaskController {
                         String remark = "";
                         baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                         //-------------------行为日志结束-----------------------------------------------------------------------------------
+                    }else{
+                        if(!user_code.equals(task.getCreater())){
+                            del="无法删除他人创建的任务";
+                        }else{
+                            del= taskService.delTask(id, corp_code, task_code);
+                            count = Integer.parseInt(del);
+
+                            //----------------行为日志开始------------------------------------------
+                            /**
+                             * mongodb插入用户操作记录
+                             * @param operation_corp_code 操作者corp_code
+                             * @param operation_user_code 操作者user_code
+                             * @param function 功能
+                             * @param action 动作
+                             * @param corp_code 被操作corp_code
+                             * @param code 被操作code
+                             * @param name 被操作name
+                             * @throws Exception
+                             */
+                            String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                            String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                            String function = "任务管理_任务列表";
+                            String action = Common.ACTION_DEL;
+                            String t_corp_code = task.getCorp_code();
+                            String t_code = task.getTask_code();
+                            String t_name = task.getTask_title();
+                            String remark = "";
+                            baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+                            //-------------------行为日志结束-----------------------------------------------------------------------------------
+                        }
                     }
                 }
-
             }
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

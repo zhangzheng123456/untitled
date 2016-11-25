@@ -42,6 +42,8 @@ public class TaskAllocation {
     //是否可用
     private String isactive;
 
+    private String store_code;
+
     public String getPhone() {
         return phone;
     }
@@ -200,5 +202,13 @@ public class TaskAllocation {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public String getStore_code() {
+        return store_code;
+    }
+
+    public void setStore_code(String store_code) {
+        this.store_code = store_code;
     }
 }

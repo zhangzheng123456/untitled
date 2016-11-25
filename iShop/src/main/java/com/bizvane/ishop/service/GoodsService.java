@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Goods;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -84,4 +85,6 @@ public interface GoodsService {
     List<Goods> selectCorpGoodsWave(String corp_code) throws Exception;
 
     List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception;
+
+    PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code) throws SQLException;
 }
