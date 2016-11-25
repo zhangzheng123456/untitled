@@ -15,7 +15,7 @@ public interface DefGoodsMatchMapper {
 
     List<DefGoodsMatch> selectMatchByCode(@Param("corp_code")String corp_code,@Param("goods_match_code")String goods_match_code);
 
-    int delMatchByCode(@Param("goods_match_code")String goods_match_code);
+    int delMatchByCode(@Param("corp_code")String corp_code,@Param("goods_match_code")String goods_match_code);
 
     int delMatchById(@Param("id")String id);
 

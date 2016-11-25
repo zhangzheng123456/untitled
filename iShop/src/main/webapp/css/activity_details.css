@@ -1,40 +1,40 @@
 body{
     margin-top:81px;
-    font-family: Î¢ÈíÑÅºÚ;
+    font-family: Î¢ï¿½ï¿½ï¿½Åºï¿½;
     margin-left: 10px;
 }
-/*inputÑùÊ½ÐÞ¸Ä*/
+/*inputï¿½ï¿½Ê½ï¿½Þ¸ï¿½*/
 .conpany_msg input{
     background-color: #dfdfdf;
     color: #939393;
 }
-/*a±êÇ©ÑùÊ½*/
+/*aï¿½ï¿½Ç©ï¿½ï¿½Ê½*/
 a, a:link,a:hover,a:visited,a:active{
     color: #434960;
 }
-/*ÖÕÖ¹»î¶¯*/
+/*ï¿½ï¿½Ö¹ï¿½î¶¯*/
 #stop{
     background-color: #bdbdbd;
     float: left;
-    margin-left: 20px;
+    margin-left: 0px;
 }
-/*Í¨ÖªÏà¹ØÈË¡¢¹Ø±Õ*/
+/*Í¨Öªï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½Ø±ï¿½*/
 .corpadd_oper_btn  li{
     float: right;
-    margin-right: 30px;
+    /*margin-right: 30px;*/
     margin-left: 20px;
     margin-top: 12px;
 }
-/*»î¶¯ÄÚÈÝÇø*/
+/*ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .main{
     margin-top: 21px;
     width: 100%;
 }
 .left{
     float: left;
-    width: 39%;
+    width: 39.6%;
     background-color: #fcfcfc;
-    margin-right: 10px;
+    margin-right: 1%;
     height: 222px;
     padding: 20px 61px 23px 61px;
 }
@@ -63,7 +63,7 @@ a, a:link,a:hover,a:visited,a:active{
 }
 .right{
     float: left;
-    width: 58%;
+    width: 59.4%;
     background-color: #fcfcfc;
     height: 222px;
     padding-top: 28px;
@@ -89,7 +89,7 @@ a, a:link,a:hover,a:visited,a:active{
 .right li span:first-child {
     margin-left: 30px;
 }
-/*¶þ¼¶°´Å¥*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥*/
 .do{
     margin-top: 20px;
     margin-bottom: 10px;
@@ -103,15 +103,21 @@ a, a:link,a:hover,a:visited,a:active{
     border-radius: 5px;
     text-align: center;
 }
+.btnSecond{
+    width: 100%;
+    overflow: hidden;
+}
+#showDone{
+    margin-left: 0px;
+}
 #choose {
     float: right;
     width: 80px;
     height: 30px;
     background-color: white;
     color: black;
-    margin-right: 28px;
 }
-/*É¸Ñ¡ÇøÓò*/
+/*É¸Ñ¡ï¿½ï¿½ï¿½ï¿½*/
 #screening {
     width: 98%;
     clear: both;
@@ -121,15 +127,16 @@ a, a:link,a:hover,a:visited,a:active{
     display: block;
 }
 
-/*ÈËÔ±Çø*/
+/*ï¿½ï¿½Ô±ï¿½ï¿½*/
 .people{
     clear: both;
     background-color: white;
-    width: 98%;
+    width: 100%;
     height: 319px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    padding: 0 20px 20px 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* padding: 0 20px 20px 0px; */
+    padding-left: 5px;
 }
 .people::-webkit-scrollbar{
     width: 9px;
@@ -143,7 +150,7 @@ a, a:link,a:hover,a:visited,a:active{
     background-color: #dfdfdf;
 }
 .people div{line-height: 50px; color: #434960;font-size: 14px;float: left;}
-/*±êÌâ*/
+/*ï¿½ï¿½ï¿½ï¿½*/
 .people_title{ float:left;border-bottom: 1px solid #d7d7d7;width: 100%}
 .people_title_order{width: 31px;margin-right:4%}
 .people_title_name{width:58px;margin-right: 4%;text-align: center;}
@@ -156,3 +163,71 @@ a, a:link,a:hover,a:visited,a:active{
 .people_title_plan span{position: absolute;left:316px}
 #peopleError{margin: 120px auto;display: none;}
 #peopleError div{width: 100%;text-align: center;}
+/*æ›´å¤šè¯¦æƒ…*/
+#get_more{
+    display: none;
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 570px;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 99999;
+}
+#get_more .head_span_l{
+    padding-left: 5px;
+    padding-top: 5px;
+}
+#get_more .head_span_r{
+    float:right;
+    padding-right: 2px;
+    padding-top: 5px;
+}
+#content{
+    margin-top:10px;
+    padding-top: 10px;
+    padding-right: 20px;
+    overflow-y: auto;
+    height: 400px;
+}
+#content .content_l{
+    float:left;
+    color:#434960;
+    width: 120px;
+    height: 50px;
+    text-align: right;
+    line-height: 50px;
+}
+#content .content_r{
+    margin-left: 120px;
+    padding-left: 25px;
+    padding-left: 25px;
+    height: 50px;
+    color:#888;
+    text-align:left;
+    line-height: 50px;
+}
+#fab_describe {
+    min-height: 100px;
+    margin-bottom: 30px;
+    border-radius: 4px;
+    outline: none;
+    background: #dfdfdf;
+    position: relative;
+    top: 18px;
+    margin-left: 145px;
+    padding-left: 25px;
+    color:#888;
+}
+#content::-webkit-scrollbar{
+    width: 9px;
+    background-color: white;
+    border-radius: 5px;
+}
+#content::-webkit-scrollbar-thumb{
+    width: 10px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #dfdfdf;
+}

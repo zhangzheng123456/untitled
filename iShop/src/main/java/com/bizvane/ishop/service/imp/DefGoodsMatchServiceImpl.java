@@ -31,8 +31,8 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     }
 
     @Override
-    public int delMatchByCode(String goods_match_code) {
-        return defGoodsMatchMapper.delMatchByCode(goods_match_code);
+    public int delMatchByCode(String corp_code,String goods_match_code) {
+        return defGoodsMatchMapper.delMatchByCode(corp_code,goods_match_code);
     }
 
     @Override

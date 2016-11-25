@@ -211,6 +211,7 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -245,15 +246,15 @@ function superaddition(data,num){//页面加载循环
             + "</td><td style='text-align:left;'>"
             + a
             + "</td><td>"
-            + data[i].platform
+            + data[i].app_platform
             + "</td><td>"
             + data[i].user_name+
             "</td><td>" +
-            data[i].user_code+
+            data[i].user_id+
             "</td><td>"
             + data[i].position
             + "</td><td>"
-            + data[i].store_code
+            + data[i].store_id
             + "</td><td><span title="+data[i].store_name+">"
             + data[i].store_name
             + "</span></td><td>"
@@ -263,7 +264,7 @@ function superaddition(data,num){//页面加载循环
             + "</span></td><td><span>"
             + data[i].created_date
             + "</span></td><td>"
-            + data[i].time
+            + data[i].count
             + "</td><td>"
             + data[i].user_can_login
             + "</td></tr>");
@@ -305,10 +306,9 @@ function GET(a,b){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
+            var list=message.list;
+            cout=message.pages;
+            var pageNum = message.page_number;
             superaddition(list,pageNum);
             jumpBianse();
             setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
@@ -387,12 +387,16 @@ function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/apploginlog/search","0",param,function(data){
         if(data.code=="0"){
+            // var message=JSON.parse(data.message);
+            // var list=JSON.parse(message.list);
+            // cout=list.pages;
+            // var pageNum = list.pageNum;
+            // var list=list.list;
+            // var actions=message.actions;
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
-            var actions=message.actions;
+            var list=message.list;
+            cout=message.pages;
+            var pageNum = message.page_number;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -785,12 +789,17 @@ function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/apploginlog/screen","0",_param,function(data){
         if(data.code=="0"){
+            // var message=JSON.parse(data.message);
+            // var list=JSON.parse(message.list);
+            // cout=list.pages;
+            // var pageNum = list.pageNum;
+            // var list=list.list;
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
-            var actions=message.actions;
+            console.log(message);
+            var list=message.list;
+            cout=message.pages;
+            var pageNum = message.page_number;
+            // var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
