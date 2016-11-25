@@ -496,10 +496,10 @@ public class CorpController {
             String screen = jsonObject.get("list").toString();
             PageInfo<Corp> corpInfo = null;
             if (screen.equals("")) {
-                corpInfo = corpService.selectAllCorp(1, 30000, search_value);
+                corpInfo = corpService.selectAllCorp(1, Common.EXPORTEXECLCOUNT, search_value);
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                corpInfo = corpService.selectAllCorpScreen(1, 30000, map);
+                corpInfo = corpService.selectAllCorpScreen(1, Common.EXPORTEXECLCOUNT, map);
             }
             List<Corp> corps = corpInfo.getList();
             for (Corp corp : corps) {
@@ -510,7 +510,7 @@ public class CorpController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(corps);
-            if (corps.size() >= 29999) {
+            if (corps.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

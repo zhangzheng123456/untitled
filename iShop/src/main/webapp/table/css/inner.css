@@ -1321,6 +1321,36 @@ input::-webkit-input-placeholder{
 	border-radius:5px;
 	cursor: pointer;
 }
+.screen_area .screen_footer{
+	width: 100%;
+	height: 30px;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+.screen_area .screen_footer .gong{
+	width: 160px;
+	height: 30px;
+	border-radius: 5px;
+	color: #ffffff;
+	line-height: 30px;
+	text-align: center;
+}
+.screen_area .screen_footer .gong span{
+	display: inline-block;
+	font-size: 20px;
+	vertical-align: middle;
+	line-height: 30px;
+	margin-bottom: 3px;
+	margin-right: 6px;
+}
+.screen_area .screen_footer .left{
+	background-color: #4a5f7c;
+	float: left;
+}
+.screen_area .screen_footer .right{
+	background-color: #6dc1c8;
+	float: right;
+}
 /********会员筛选首页弹出框********/
 .screen_wrapper{
     width:480px;

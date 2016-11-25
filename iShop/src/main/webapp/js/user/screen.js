@@ -459,10 +459,21 @@ $("#screen_que_shop").click(function(){
 	        }
 		}
 		_param["store_code"]=store_codes;
+		if(store_codes==""){
+			art.dialog({
+				zIndex:10003,
+				time: 1,
+				lock: true,
+				cancel: false,
+				content:"店铺不能为空"
+			});
+			return;
+		}
 		whir.loading.add("",0.5);
 		oc.postRequire("post","/user/synchronization","", _param, function(data) {
 			if(data.code=="0"){
 				art.dialog({
+					zIndex:10003,
 					time: 1,
 					lock: true,
 					cancel: false,
@@ -470,6 +481,7 @@ $("#screen_que_shop").click(function(){
 				});
 			}else if(data.code=="-1"){
 				art.dialog({
+					zIndex:10003,
 					time: 1,
 					lock: true,
 					cancel: false,
@@ -479,6 +491,35 @@ $("#screen_que_shop").click(function(){
 			whir.loading.remove();//移除遮罩层
 		})
 	}
+	$("#screen_shop").hide();
+	whir.loading.remove();//移除遮罩层
+})
+//点击同步员工按钮
+$("#screen_que_staff").click(function(){
+	var _param={};
+	var store_codes="";
+	_param["store_code"]=store_codes;
+	whir.loading.add("",0.5);
+	oc.postRequire("post","/user/synchronization","", _param, function(data) {
+			if(data.code=="0"){
+				art.dialog({
+					zIndex:10003,
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: data.message
+				});
+			}else if(data.code=="-1"){
+				art.dialog({
+					zIndex:10003,
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: data.message
+				});
+			}
+			whir.loading.remove();//移除遮罩层
+	});
 	$("#screen_shop").hide();
 	whir.loading.remove();//移除遮罩层
 })
@@ -625,6 +666,7 @@ function getarealist(a){
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
+				zIndex:10003,
 				time: 1,
 				lock: true,
 				cancel: false,
@@ -717,6 +759,7 @@ function getstorelist(a){
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
+				zIndex:10003,
 				time: 1,
 				lock: true,
 				cancel: false,
@@ -783,6 +826,7 @@ function getbrandlist(){
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
+				zIndex:10003,
 				time: 1,
 				lock: true,
 				cancel: false,
@@ -821,8 +865,4 @@ function getcitylist(){
 		bianse();
 		whir.loading.remove();
 	})
-}
-//刷新列表
-$(".icon-ishop_6-07").parent().click(function () {
-	window.location.reload();
-});
+};

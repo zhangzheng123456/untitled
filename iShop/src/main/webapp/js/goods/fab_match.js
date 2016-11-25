@@ -1,17 +1,32 @@
 /**
  * Created by Administrator on 2016/11/25.
  */
+var oc = new ObjectControl();
+var left=($(window).width()-$("#tk").width())/2;//å¼¹æ¡†å®šä½çš„leftå€¼
+var tp=($(window).height()-$("#tk").height())/2;//å¼¹æ¡†å®šä½çš„topå€¼
+var inx=1;//é»˜è®¤æ˜¯ç¬¬ä¸€é¡µ
+var pageNumber=1;//åˆ é™¤çš„é»˜è®¤çš„ç¬¬ä¸€é¡µ;
+var pageSize=10;//é»˜è®¤ä¼ çš„æ¯é¡µå¤šå°‘è¡Œ
+var value="";//æ”¶ç´¢çš„å…³é”®è¯
+var param={};//å®šä¹‰çš„å¯¹è±¡
+var _param={};//ç­›é€‰å®šä¹‰çš„å†…å®¹
+var list="";
+var cout="";
+var filtrate="";//ç­›é€‰çš„å®šä¹‰çš„å€¼
+var key_val=sessionStorage.getItem("key_val");//å–é¡µé¢çš„function_code
+key_val=JSON.parse(key_val);
+var funcCode=key_val.func_code;
 /*
- Å×¿ªÆÙ²¼Á÷²¼¾Ö¸÷ÖÖÂÒÆß°ËÔãµÄËã·¨£¬»ùÓÚmasonryµÄÆÙ²¼Á÷£¬ºÜÊÇ¼òµ¥µÄ£¬¶øÇÒÍ¨¹ıÀ©Õ¹animate,ÄÜÊµÏÖÆÙ²¼Á÷²¼¾ÖµÄ»Î¶¯¡¢µ¯ÇòµÈĞ§¹û¡£
- masonry»¹ÓĞºÜ¶à²ÎÊıÎÒÕâÀï×¢½âÁË³£ÓÃµÄ²ÎÊı
+ æŠ›å¼€ç€‘å¸ƒæµå¸ƒå±€å„ç§ä¹±ä¸ƒå…«ç³Ÿçš„ç®—æ³•ï¼ŒåŸºäºmasonryçš„ç€‘å¸ƒæµï¼Œå¾ˆæ˜¯ç®€å•çš„ï¼Œè€Œä¸”é€šè¿‡æ‰©å±•animate,èƒ½å®ç°ç€‘å¸ƒæµå¸ƒå±€çš„æ™ƒåŠ¨ã€å¼¹çƒç­‰æ•ˆæœã€‚
+ masonryè¿˜æœ‰å¾ˆå¤šå‚æ•°æˆ‘è¿™é‡Œæ³¨è§£äº†å¸¸ç”¨çš„å‚æ•°
  */
 $(function(){
-    /*ÆÙ²¼Á÷¿ªÊ¼*/
+    /*ç€‘å¸ƒæµå¼€å§‹*/
     var container = $('.waterfull ul');
     var loading=$('#imloading');
-    // ³õÊ¼»¯loading×´Ì¬
+    // åˆå§‹åŒ–loadingçŠ¶æ€
     loading.data("on",false);
-    /*ÅĞ¶ÏÆÙ²¼Á÷×î´ó²¼¾Ö¿í¶È£¬×î´óÎª1280*/
+    /*åˆ¤æ–­ç€‘å¸ƒæµæœ€å¤§å¸ƒå±€å®½åº¦ï¼Œæœ€å¤§ä¸º1280*/
     function tores(){
         var tmpWid=$(window).width();
         if(tmpWid>1280){
@@ -30,21 +45,21 @@ $(function(){
         container.masonry({
             columnWidth: 340,
             itemSelector : '.item',
-            isFitWidth: false,//ÊÇ·ñ¸ù¾İä¯ÀÀÆ÷´°¿Ú´óĞ¡×Ô¶¯ÊÊÓ¦Ä¬ÈÏfalse
-            isAnimated: false,//ÊÇ·ñ²ÉÓÃjquery¶¯»­½øĞĞÖØÅÄ°æ
-            isRTL:false,//ÉèÖÃ²¼¾ÖµÄÅÅÁĞ·½Ê½£¬¼´£º¶¨Î»×©¿éÊ±£¬ÊÇ´Ó×óÏòÓÒÅÅÁĞ»¹ÊÇ´ÓÓÒÏò×óÅÅÁĞ¡£Ä¬ÈÏÖµÎªfalse£¬¼´´Ó×óÏòÓÒ
-            isResizable: true,//ÊÇ·ñ×Ô¶¯²¼¾ÖÄ¬ÈÏtrue
+            isFitWidth: false,//æ˜¯å¦æ ¹æ®æµè§ˆå™¨çª—å£å¤§å°è‡ªåŠ¨é€‚åº”é»˜è®¤false
+            isAnimated: false,//æ˜¯å¦é‡‡ç”¨jqueryåŠ¨ç”»è¿›è¡Œé‡æ‹ç‰ˆ
+            isRTL:false,//è®¾ç½®å¸ƒå±€çš„æ’åˆ—æ–¹å¼ï¼Œå³ï¼šå®šä½ç –å—æ—¶ï¼Œæ˜¯ä»å·¦å‘å³æ’åˆ—è¿˜æ˜¯ä»å³å‘å·¦æ’åˆ—ã€‚é»˜è®¤å€¼ä¸ºfalseï¼Œå³ä»å·¦å‘å³
+            isResizable: true,//æ˜¯å¦è‡ªåŠ¨å¸ƒå±€é»˜è®¤true
             animationOptions: {
                 duration: 800,
-                easing: 'easeInOutBack',//Èç¹ûÄãÒıÓÃÁËjQeasingÕâÀï¾Í¿ÉÒÔÌí¼Ó¶ÔÓ¦µÄ¶¯Ì¬¶¯»­Ğ§¹û£¬Èç¹ûÃ»ÒıÓÃÉ¾³ıÕâĞĞ£¬Ä¬ÈÏÊÇÔÈËÙ±ä»¯
-                queue: false//ÊÇ·ñ¶ÓÁĞ£¬´ÓÒ»µãÌî³äÆÙ²¼Á÷
+                easing: 'easeInOutBack',//å¦‚æœä½ å¼•ç”¨äº†jQeasingè¿™é‡Œå°±å¯ä»¥æ·»åŠ å¯¹åº”çš„åŠ¨æ€åŠ¨ç”»æ•ˆæœï¼Œå¦‚æœæ²¡å¼•ç”¨åˆ é™¤è¿™è¡Œï¼Œé»˜è®¤æ˜¯åŒ€é€Ÿå˜åŒ–
+                queue: false//æ˜¯å¦é˜Ÿåˆ—ï¼Œä»ä¸€ç‚¹å¡«å……ç€‘å¸ƒæµ
             }
         });
     });
 
     function loadImage(url) {
         var img = new Image();
-        //´´½¨Ò»¸öImage¶ÔÏó£¬ÊµÏÖÍ¼Æ¬µÄÔ¤ÏÂÔØ
+        //åˆ›å»ºä¸€ä¸ªImageå¯¹è±¡ï¼Œå®ç°å›¾ç‰‡çš„é¢„ä¸‹è½½
         img.src = url;
         if (img.complete) {
             return img.src;
@@ -54,7 +69,7 @@ $(function(){
         };
     };
     loadImage('images/one.jpeg');
-//        /*item hoverĞ§¹û*/
+//        /*item hoveræ•ˆæœ*/
 //        var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
 //        $('#waterfull').on('mouseover','.item',function(){
 //            var random=Math.floor(Math.random() * 4);
@@ -64,36 +79,128 @@ $(function(){
 //            $(this).stop(true).animate({'backgroundColor':'#fff'},1000);
 //        });
 });
-
-
-//»ñÈ¡Êı¾İ
-function getVal(){
-    var _params={
-        //a:a
+//æƒé™é…ç½®
+function jurisdiction(actions){
+    $('#jurisdiction').empty();
+    for(var i=0;i<actions.length;i++){
+        if(actions[i].act_name=="add"){
+            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>æ–°å¢</a></li>");
+        }else if(actions[i].act_name=="delete"){
+            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>åˆ é™¤</a></li>");
+        }else if(actions[i].act_name=="edit"){
+            $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>ç¼–è¾‘</a></li>");
+        }
+    }
+}
+//é¡µé¢åŠ è½½è°ƒæƒé™æ¥å£
+function qjia(){
+    console.log('æƒé™æ¥å£è°ƒç”¨');
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
+//åŠ è½½å®Œæˆä»¥åé¡µé¢è¿›è¡Œçš„æ“ä½œ
+function jumpBianse(){
+    $(document).ready(function(){//éš”è¡Œå˜è‰²
+        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    })
+    //ç‚¹å‡»tr inputæ˜¯é€‰æ‹©çŠ¶æ€  trå¢åŠ classå±æ€§
+    $(".table tbody tr").click(function(){
+        var input=$(this).find("input")[0];
+        var thinput=$("thead input")[0];
+        $(this).toggleClass("tr");
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+            $(this).addClass("tr");
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+                thinput.checked=false;
+            }
+            input.checked = false;
+            $(this).removeClass("tr");
+        }
+    })
+    //ç‚¹å‡»æ–°å¢æ—¶é¡µé¢è¿›è¡Œçš„è·³è½¬
+    $('#add').click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchAdd.html");
+    })
+    //åˆ é™¤
+    $("#remove").click(function(){
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            frame();
+            $('.frame').html("è¯·å…ˆé€‰æ‹©");
+            return;
+        }
+        $("#p").show();
+        $("#tk").show();
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+        $("#tk").css({"left":+left+"px","top":+tp+"px"});
+    })
+}
+//æ–°å¢
+function getAdd(){
+    var _params= {
+        "id":"0",
+        'goods_code':'',
+        "message":""
     };
     $.ajax({
-        url: url,
-        type: type,
+        url: '/defmatch/addMatch',
+        type: 'post',
         dataType: "JSON",
         data:{
             param:JSON.stringify(_params)
         },
         success: function (data) {
-            console.log('»ñÈ¡Êı¾İ³É¹¦')
-            pageVal();
+            console.log('æ–°å¢æ¥å£è°ƒç”¨æˆåŠŸ'+JSON.stringify(data));
+
+            //pageVal();
         },
         error: function (data) {
-            console.log('»ñÈ¡Êı¾İÊ§°Ü')
+            console.log('æ–°å¢æ¥å£è°ƒç”¨å¤±è´¥')
         }
     });
 }
-//Êı¾İÄ£°å
+//è·å–æ•°æ®
+function getVal(){
+    var _params= {
+        "id":"0",
+        "message":""
+    };
+    $.ajax({
+        url: '/defmatch/list',
+        type: 'get',
+        dataType: "JSON",
+        data:{
+            param:JSON.stringify(_params)
+        },
+        success: function (data) {
+            console.log('è·å–æ•°æ®æˆåŠŸ'+JSON.stringify(data));
+
+            //pageVal();
+        },
+        error: function (data) {
+            console.log('è·å–æ•°æ®å¤±è´¥')
+        }
+    });
+}
+//æ•°æ®æ¨¡æ¿
 function pageVal(){
-    //ºĞ×ÓÉÏ²¿·Ö+¸´Ñ¡¿ò
+    //ç›’å­ä¸Šéƒ¨åˆ†+å¤é€‰æ¡†
     var tempHTML1='<li class="item"><div class="boxArea"><input type="checkbox"/>';
-    //ÄÚÈİ£¨Í¼Æ¬+ÎÄ×Ö£©µü´úÉú³É
+    //å†…å®¹ï¼ˆå›¾ç‰‡+æ–‡å­—ï¼‰è¿­ä»£ç”Ÿæˆ
     var tempHTML2='<div class="oneArea"> <img src="" alt=""/> <div>AJEL059598</div> </div>';
-    //ºĞ×ÓÏÂ²¿·Ö
+    //ç›’å­ä¸‹éƒ¨åˆ†
     var tempHTML3='</div></li>';
     var html = '';
     var html2 = '';
@@ -114,4 +221,5 @@ function pageVal(){
 }
 window.onload =function() {
     getVal();
+    getAdd();
 }

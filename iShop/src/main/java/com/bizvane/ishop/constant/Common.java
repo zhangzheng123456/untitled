@@ -58,6 +58,9 @@ public class Common {
     //签退
     public static final String STATUS_SIGN_OUT = "-1";
 
+    //导出数量限制10000条
+    public static int EXPORTEXECLCOUNT =10000;
+
     //数据显示类型——文本框
     public static final String DATE_SHOW_TYPE_TEXT = "text";
     //数据显示类型——下拉 框

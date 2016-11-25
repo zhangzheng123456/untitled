@@ -182,23 +182,23 @@ public class VIPLabelController {
             PageInfo<VipLabel> list;
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = vipLabelService.selectBySearch(1, 30000, "", search_value);
+                    list = vipLabelService.selectBySearch(1, Common.EXPORTEXECLCOUNT, "", search_value);
                 } else {
-                    list = vipLabelService.selectBySearch(1, 30000, corp_code, search_value);
+                    list = vipLabelService.selectBySearch(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = this.vipLabelService.selectAllVipScreen(1, 30000, "", map);
+                    list = this.vipLabelService.selectAllVipScreen(1, Common.EXPORTEXECLCOUNT, "", map);
                 } else {
-                    list = this.vipLabelService.selectAllVipScreen(1, 30000, corp_code, map);
+                    list = this.vipLabelService.selectAllVipScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map);
                 }
             }
             List<VipLabel> vipLabels = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(vipLabels);
-            if (vipLabels.size() >= 29999) {
+            if (vipLabels.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

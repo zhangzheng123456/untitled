@@ -100,6 +100,3 @@ $("#file_list").on("click","li",function(){
         input.checked = false;
     }
 })
-$("#reload").click(function(){
-    window.location.reload();
-})

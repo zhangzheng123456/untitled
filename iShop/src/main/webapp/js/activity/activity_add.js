@@ -1569,17 +1569,22 @@ function getuserlist(a,b) {
 $("#screen_que_area").click(function(){
     var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
     var area_code="";
+    var area_name="";
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("id");
+        var h=$(li[i]).find(".p16").html();
         if(i<li.length-1){
             area_code+=r+",";
+            area_name+=h+",";
         }else{
             area_code+=r;
+            area_name+=h;
         }
     }
     isscroll=false;
     shop_num=1;
     $("#area_num").attr("data-areacode",area_code);
+    $("#area_num").attr("data-name",area_name);
     $("#area_num").val("已选"+li.length+"个");
     $("#screen_area").hide();
     $("#screen_shop").show();
@@ -1613,16 +1618,21 @@ $("#screen_que_shop").click(function(){
 $("#screen_que_brand").click(function(){
     var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
     var brand_code="";
+    var brand_name="";
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("id");
+        var h=$(li[i]).find(".p16").html();
         if(i<li.length-1){
             brand_code+=r+",";
+            brand_name+=h+",";
         }else{
             brand_code+=r;
+            brand_name+=h;
         }
     }
     shop_num=1;
     $("#brand_num").attr("data-brandcode",brand_code);
+    $("#brand_num").attr("data-name",brand_name);
     $("#brand_num").val("已选"+li.length+"个");
     $("#screen_brand").hide();
     $("#screen_shop").show();
@@ -1674,11 +1684,24 @@ $("#area_num").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2-200;
     var tp=(arr[3]-$("#screen_shop").height())/2+63;
+    var code = $("#area_num").attr("data-areacode");
+    var name = $("#area_num").attr("data-name");
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
+    $("#screen_area .screen_content_r ul").empty();
     $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_area").show();
     $("#screen_shop").hide();
+    if(code!==undefined && code!==""){
+        code = code.split(",");
+        name = name.split(",");
+        var area_html = "";
+        for(var i=0;i<code.length;i++){
+            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-areaname='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+                + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
+        }
+        $("#screen_area .screen_content_r ul").append(area_html);
+    }
     getarealist(area_num);
 });
 $("#shop_area").click(function () {
@@ -1687,11 +1710,24 @@ $("#shop_area").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2-200;
     var tp=(arr[3]-$("#screen_shop").height())/2+63;
+    var code = $("#area_num").attr("data-areacode");
+    var name = $("#area_num").attr("data-name");
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
+    $("#screen_area .screen_content_r ul").empty();
     $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_area").show();
     $("#screen_shop").hide();
+    if(code!==undefined && code!==""){
+        code = code.split(",");
+        name = name.split(",");
+        var area_html = "";
+        for(var i=0;i<code.length;i++){
+            area_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-areaname='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+                + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
+        }
+        $("#screen_area .screen_content_r ul").append(area_html);
+    }
     getarealist(area_num);
 });
 //筛选品牌
@@ -1699,20 +1735,46 @@ $("#brand_num").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2-200;
     var tp=(arr[3]-$("#screen_shop").height())/2+63;
+    var code = $("#brand_num").attr("data-brandcode");
+    var name = $("#brand_num").attr("data-name");
     $("#screen_brand .screen_content_l ul").empty();
+    $("#screen_brand .screen_content_r ul").empty();
     $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_brand").show();
     $("#screen_shop").hide();
+    if(code!==undefined && code!==""){
+        code = code.split(",");
+        name = name.split(",");
+        var brand_html = "";
+        for(var i=0;i<code.length;i++){
+            brand_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-areaname='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+                + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
+        }
+        $("#screen_brand .screen_content_r ul").append(brand_html);
+    }
     getbrandlist();
 });
 $("#shop_brand").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2-200;
     var tp=(arr[3]-$("#screen_shop").height())/2+63;
+    var code = $("#brand_num").attr("data-brandcode");
+    var name = $("#brand_num").attr("data-name");
     $("#screen_brand .screen_content_l ul").empty();
+    $("#screen_brand .screen_content_r ul").empty();
     $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_brand").show();
-    $("#screen_staff").hide();
+    $("#screen_shop").hide();
+    if(code!==undefined && code!==""){
+        code = code.split(",");
+        name = name.split(",");
+        var brand_html = "";
+        for(var i=0;i<code.length;i++){
+            brand_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-areaname='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+                + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
+        }
+        $("#screen_brand .screen_content_r ul").append(brand_html);
+    }
     getbrandlist();
 });
 //分配执行范围
@@ -1722,11 +1784,24 @@ $("#executor").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2-200;
     var tp=(arr[3]-$("#screen_shop").height())/2+63;
+    var code = $("#executor").attr("data-code");
+    var name = $("#executor").attr("data-name");
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
+    $("#screen_shop .screen_content_r ul").empty();
     $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_shop").show();
     $(".box_shadow").show();
+    if(code!==undefined&&code!==""){
+        code = code.split(",");
+        name = name.split(",");
+        var store_html = "";
+        for(var i=0;i<code.length;i++){
+            store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-storename='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+                + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
+        }
+        $("#screen_shop .screen_content_r ul").append(store_html);
+    }
     getstorelist(shop_num);
 });
 $("#executor_icon").click(function () {
@@ -1735,11 +1810,25 @@ $("#executor_icon").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2-200;
     var tp=(arr[3]-$("#screen_shop").height())/2+63;
+    var code = $("#executor").attr("data-code");
+    var name = $("#executor").attr("data-name");
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
+    $("#screen_shop .screen_content_r ul").empty();
     $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_shop").show();
     $(".box_shadow").show();
+    console.log(code);
+    if(code!==undefined&&code!==""){
+        code = code.split(",");
+        name = name.split(",");
+        var store_html = "";
+        for(var i=0;i<code.length;i++){
+            store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-storename='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+                + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
+        }
+        $("#screen_shop .screen_content_r ul").append(store_html);
+    }
     getstorelist(shop_num);
 });
 //移到右边
@@ -1778,10 +1867,10 @@ function removeRight(a,b){
     }
     var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
     $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-    $("#screen_staff .screen_content_l li:odd").css("backgroundColor","#fff");
-    $("#screen_staff .screen_content_l li:even").css("backgroundColor","#ededed");
-    $("#screen_staff .screen_content_r li:odd").css("backgroundColor","#fff");
-    $("#screen_staff .screen_content_r li:even").css("backgroundColor","#ededed");
+    // $("#screen_staff .screen_content_l li:odd").css("backgroundColor","#fff");
+    // $("#screen_staff .screen_content_l li:even").css("backgroundColor","#ededed");
+    // $("#screen_staff .screen_content_r li:odd").css("backgroundColor","#fff");
+    // $("#screen_staff .screen_content_r li:even").css("backgroundColor","#ededed");
 }
 //移到左边
 function removeLeft(a,b){
@@ -2291,8 +2380,11 @@ $("#screen_vip_que").click(function () {
 });
 //点击执行
 $("#performance").click(function () {
-    $(".box_shadow").show();
-    $(".tk").show();
+    $("#edit_save").trigger("click");
+    setTimeout(function () {
+        $(".box_shadow").show();
+        $(".tk").show();
+    },1000);
 });
 $("#enter").click(function () {
     var id = sessionStorage.getItem("id");

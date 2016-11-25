@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>员工管理之员工列表</title>
 	<link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../table/css/style.css?20161116">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
     <script src="/table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
@@ -58,7 +58,7 @@
     						<!--<span class="icon-ishop_6-06"></span>-->
     						<!--配置-->
     					<!--</li>-->
-    					<li class="bg">
+    					<li class="bg" id="reload">
     						<span class="icon-ishop_6-07"></span>
     						刷新
     					</li>
@@ -272,7 +272,7 @@
     <!-- 拉取店铺 -->
     <div id="screen_shop" class="screen_area">
         <div class="screen_title">
-            <h4>筛选店铺</h4>
+            <h4>选择同步范围</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
                     <label>已选区域</label><input type="text" value="全部" readonly="true" id="area_num" data-areacode="">
@@ -314,7 +314,10 @@
                 </ul>
             </div>
         </div>
-        <div class="screen_que" id="screen_que_shop">确定</div>
+        <div class="screen_footer">
+            <div class="gong left" id="screen_que_staff"><span class="icon-ishopwebicon_6-20"></span>同步企业所有员工</div>
+            <div class="gong right" id="screen_que_shop"><span class="icon-ishop_6-07"></span>同步选中店铺</div>
+        </div>
     </div>
     <!-- 拉取品牌 -->
     <div id="screen_brand" class="screen_area" >
@@ -361,7 +364,7 @@
 <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
 <script type="text/javascript" src="/js/user/screen.js"></script>
 <script>
-    $(".icon-ishop_6-07").parent().click(function () {
+    $("#reload").click(function () {
         window.location.reload();
     })
 </script>

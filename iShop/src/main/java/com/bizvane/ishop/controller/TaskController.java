@@ -475,24 +475,24 @@ public class TaskController {
             PageInfo<Task> tasks = null;
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    tasks = taskService.selectAllTask(1, 30000, "", "", "", search_value);
+                    tasks = taskService.selectAllTask(1, Common.EXPORTEXECLCOUNT, "", "", "", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    tasks = taskService.selectAllTask(1, 30000, corp_code, "", "", search_value);
+                    tasks = taskService.selectAllTask(1, Common.EXPORTEXECLCOUNT, corp_code, "", "", search_value);
                 } else {
-                    tasks = taskService.selectAllTask(1, 30000, corp_code, "ident", user_code, search_value);
+                    tasks = taskService.selectAllTask(1, Common.EXPORTEXECLCOUNT, corp_code, "ident", user_code, search_value);
                 }
             }else{
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    tasks = taskService.selectSignAllScreen(1, 30000, "", "", "", map);
+                    tasks = taskService.selectSignAllScreen(1, Common.EXPORTEXECLCOUNT, "", "", "", map);
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    tasks = taskService.selectSignAllScreen(1, 30000, corp_code, "", "", map);
+                    tasks = taskService.selectSignAllScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "", "", map);
                 } else {
-                    tasks = taskService.selectSignAllScreen(1, 30000, corp_code, "ident", user_code, map);
+                    tasks = taskService.selectSignAllScreen(1, Common.EXPORTEXECLCOUNT, corp_code, "ident", user_code, map);
                 }
             }
             List<Task> list = tasks.getList();
-            if (list.size() >= 29999) {
+            if (list.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
