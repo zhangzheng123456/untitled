@@ -250,9 +250,9 @@ function superaddition(data,num){//页面加载循环
             + data[i].function
             + "</td><td>"
             + data[i].action
-            + "</td><td>"
-            + data[i].corp_code
-            + "</td><td title="+data[i].code+"><span>"
+            + "</td><td title="+data[i].corp_name+"><span>"
+            + data[i].corp_name
+            + "</span></td><td title="+data[i].code+"><span>"
             + data[i].code
             + "</span></td><td>"
             + data[i].name
@@ -567,7 +567,7 @@ $("#file_submit").click(function(){
         param["list"]=list;
     }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/apploginlog/exportExecl","0",param,function(data){
+    oc.postRequire("post","/userOperation/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;
