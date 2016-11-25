@@ -126,16 +126,16 @@
                     测试
                 </div>
             </li>
-            <li>
-                <span class="content_l">活动状态</span>
-                <div class="content_r">
-                    测试
-                </div>
-            </li>
+            <!--<li>-->
+                <!--<span class="content_l">活动状态</span>-->
+                <!--<div class="content_r">-->
+                    <!--测试-->
+                <!--</div>-->
+            <!--</li>-->
             <li>
                 <span class="content_l">活动时间</span>
                 <div class="content_r">
-                    测试
+                    <span id="beiginTime_1" style="margin-left: 0px"></span> ~ <span id="endTime_1"></span></span>
                 </div>
             </li>
             <li>
@@ -145,7 +145,7 @@
                 </div>
             </li>
             <li>
-                <span class="content_l">分配执行人</span>
+                <span class="content_l">执行范围</span>
                 <div class="content_r">
                     测试
                 </div>
@@ -176,15 +176,7 @@
 <script type="text/javascript" src="../js/dist/chart/bar.js"></script>
 <script type="text/javascript" src="../js/dist/echarts.js"></script>
 <script>
-    $('#rightMore').click(function () {
-        $('#get_more').show();
-        whir.loading.add("",0.5);//加载等待框
-        $('#loading').remove();
-    });
-    $('#get_more .head_span_r').click(function () {
-        $('#get_more').hide();
-        whir.loading.remove();//移除加载框
-    });
+
 </script>
 
 </body>

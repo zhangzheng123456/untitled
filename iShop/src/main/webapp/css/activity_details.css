@@ -217,7 +217,7 @@ a, a:link,a:hover,a:visited,a:active{
     position: relative;
     top: 18px;
     margin-left: 145px;
-    padding-left: 25px;
+    padding:5px;
     color:#888;
 }
 #content::-webkit-scrollbar{
@@ -230,4 +230,12 @@ a, a:link,a:hover,a:visited,a:active{
     height: 200px;
     border-radius: 10px;
     background-color: #dfdfdf;
+}
+.ellipsis{
+    height: 40px;
+    line-height: 39px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
 }

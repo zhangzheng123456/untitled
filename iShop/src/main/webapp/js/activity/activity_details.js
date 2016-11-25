@@ -3,6 +3,7 @@
  */
 
 //停止活动
+var moreDetail={};//更多详情
 function stop(){
     window.location.href = 'activity.html';
 }
@@ -148,7 +149,7 @@ function getExecuteDetail(){
         },
         success: function (data) {
             var message = JSON.parse(data.message);
-            console.log('获取活动执行情况'+JSON.stringify(message));
+            // console.log('获取活动执行情况'+JSON.stringify(message));
             getSelect(id);
             var complete_vips_count = message.complete_vips_count;
             var userList =message.userList;
@@ -162,9 +163,9 @@ function getExecuteDetail(){
                 var rate = userList[i].complete_rate;
                 listShow(name,num,area,shop,rate,count);
             }
-            console.log(complete_vips_count);
-            console.log(userList);
-            console.log(target_vips_count);
+            // console.log(complete_vips_count);
+            // console.log(userList);
+            // console.log(target_vips_count);
             check(target_vips_count,complete_vips_count);
         },
         error: function (data) {
@@ -191,6 +192,7 @@ function getSelect(id){
         success: function (data) {
             var message = JSON.parse(data.message);
             var activityVip = JSON.parse(message.activityVip);
+            moreDetail=activityVip;
             var activity_state = activityVip.activity_state;
             var activity_theme = activityVip.activity_theme;
             var runMode = activityVip.run_mode;
@@ -198,7 +200,6 @@ function getSelect(id){
             var endTime = activityVip.end_time;
             activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
             var corp_code = activityVip.corp_code;
-            console.log(corp_code);
             sessionStorage.setItem("corp_code",corp_code);//存储的方法
         },
         error: function (data) {
@@ -242,9 +243,10 @@ function listShow(name,num,area,shop,rate,count){
     var shop = shop;
     // var percent = Math.floor(Math.random()*40+60);
     var percent = rate;
-    console.log('员工姓名：'+name+'员工编号：'+num+'所属区域'+area+'所属店铺'+shop+'百分比：'+percent);
-    var tempHTML = '<li class="people_title"> <div class="people_title_order" style="text-align: center">${order}</div> <div class="people_title_name">${name}</div> <div class="people_title_num">${num}</div> <div class="people_title_area">${area}</div> <div class="people_title_shop">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
-    for(i=0;i<count;i++){
+    // console.log('员工姓名：'+name+'员工编号：'+num+'所属区域'+area+'所属店铺'+shop+'百分比：'+percent);
+    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis">${name}</div> <div class="people_title_num ellipsis">${num}</div> <div class="people_title_area ellipsis"title="${area}">${area}</div> <div class="people_title_shop ellipsis">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
+    console.log(tempHTML);
+    for(var i=0;i<count;i++){
         //随机进度
         var html = '';
         var order = i+1;
@@ -375,6 +377,37 @@ function getText(name){
 function getVal(name){
     return $('name').val();
 }
+$('#rightMore').click(function () {
+    whir.loading.add("",0.5);//加载等待框
+    $('#loading').remove();
+    //赋值
+    $('#content .content_r ').each(function(a,obj){
+        switch (a){
+            case 0:active();break;
+            case 1:  $(obj).html(moreDetail.activity_theme);;break;
+            case 2: $('#beiginTime_1').html(moreDetail.start_time);$('#endTime_1').html(moreDetail.end_time);break;
+            case 3:  $(obj).html(moreDetail.run_mode);;break;
+            case 4:  $(obj).html('已选'+JSON.parse(moreDetail.operators).length+'个');;break;
+            case 5:  $(obj).html('已选'+moreDetail.target_vips_count+'个');break;
+        }
+        function active() {
+            $(obj).html(moreDetail.activity_state);
+            if(moreDetail.activity_state =='执行中'){
+                $(obj).css('color','#50acb4');
+            }else if(moreDetail.activity_state =='尚未开始'){
+                $(obj).css('color','red');
+            }else if(moreDetail.activity_state =='已结束'){
+                $(obj).css('color','blue');
+            }
+        }
+    });
+    $('#fab_describe').append(moreDetail.activity_content);
+    $('#get_more').show();
+});
+$('#get_more .head_span_r').click(function () {
+    $('#get_more').hide();
+    whir.loading.remove();//移除加载框
+});
 //页面加载数据
 window.onload = function(){
     //获取活动执行情况
