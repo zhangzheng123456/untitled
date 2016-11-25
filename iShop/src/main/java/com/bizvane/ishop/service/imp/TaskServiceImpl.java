@@ -90,10 +90,9 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String addTask(Task task,String phone,String users,String user_code) {
+    public String addTask(Task task,String phone,String users,String user_code) throws Exception{
         int count=0;
         String[] user_codes = users.split(",");
-        try {
             count+=taskMapper.addTask(task);
            for(int i=0;i<user_codes.length;i++){
                TaskAllocation allocation=new TaskAllocation();
@@ -126,12 +125,10 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_user.key, data_user);
                 datalist.put(data_user_id.key, data_user_id);
                 DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
-                String msg = dataBox.data.get("message").value;
-                System.out.println("APP："+msg);
+//                if (!dataBox.status.toString().equals("SUCCESS")){
+//                   int a = 1/0;
+//                }
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         return count+"";
     }
 

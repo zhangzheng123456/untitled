@@ -133,42 +133,30 @@
                 </div>
             </li>
             <li>
-                <span class="content_l">活动时间</span>
+                <span class="content_l">活动</span>
                 <div class="content_r">
                     测试
                 </div>
             </li>
             <li>
-                <span class="content_l">执行方式</span>
+                <span class="content_l">活动状态</span>
                 <div class="content_r">
                     测试
                 </div>
             </li>
-            <li>
-                <span class="content_l">分配执行人</span>
-                <div class="content_r">
-                    测试
-                </div>
-            </li>
-            <li>
-                <span class="content_l">目标会员</span>
-                <div class="content_r">
-                    测试
-                </div>
-            </li>
-            <li>
-                <span class="content_l">活动描述</span>
-                <div id="fab_describe">
-
-                </div>
-            </li>
+            <li>活动主题 <span ></span></li>
+            <li>活动状态 <span ></span></li>
+            <li>活动时间 <span ><span id="beiginTime" style="margin-left: 0px"></span> ~ <span id="endTime"></span></span></li>
+            <li>执行方式 <span >测试</span></li>
+            <li>分配执行人 <span >测试</span></li>
+            <li>目标会员 <span >测试</span></li>
+            <li>活动描述 <span >测试</span></li>
         </ul>
     </div>
 </div>
 
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<script src="../js/loading.js"></script>
 <!--匹配js文件-->
 <script type="text/javascript" src="../js/activity/activity_details.js"></script>
 <script src="../js/dist/echarts.js"></script>
@@ -177,6 +165,9 @@
 <script type="text/javascript" src="../js/dist/chart/bar.js"></script>
 <script type="text/javascript" src="../js/dist/echarts.js"></script>
 <script>
+    $('#rightMore').click(function () {
+       $('#get_more').toggle();
+    });
 </script>
 
 </body>

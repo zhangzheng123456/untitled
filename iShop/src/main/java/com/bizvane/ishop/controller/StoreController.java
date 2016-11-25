@@ -1684,9 +1684,9 @@ public class StoreController {
                 //系统管理员
                 corp_code = "C10000";
             }
-            com.alibaba.fastjson.JSONObject obj_corp = new com.alibaba.fastjson.JSONObject();
-            obj_corp.put("corp_code", corp_code);
-            Data data_corp_code = new Data("corp_code", obj_corp.toString(), ValueType.PARAM);
+//            com.alibaba.fastjson.JSONObject obj_corp = new com.alibaba.fastjson.JSONObject();
+//            obj_corp.put("corp_code", corp_code);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataSynchronization", datalist);
