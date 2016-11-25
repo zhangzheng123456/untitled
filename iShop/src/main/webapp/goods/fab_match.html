@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
     <title>商品管理</title>
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161116">
@@ -124,16 +125,16 @@
               <!--</div>-->
           <!--</div>-->
       <!--</div>-->
-        <div class="waterfull clearfloat" id="waterfull">
-            <ul>
-
-            </ul>
-        </div>
-        <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
-            <!--站长素材加载中.....-->
-            <!--</div>-->
-        </div>
 </div>
+</div>
+<div class="waterfull clearfloat" id="waterfull">
+    <ul>
+
+    </ul>
+</div>
+<div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
+    <!--站长素材加载中.....-->
+    <!--</div>-->
 </div>
 <div class="p" id="p"></div>
 <div class="tk" id="tk">
@@ -255,9 +256,7 @@
         });
     })
 
-</script>
-<script>
-    (function pageVal(value){
+    function pageVal(){
         //盒子上部分+复选框
         var tempHTML1='<li class="item"><div class="boxArea"><input type="checkbox"/>';
         //内容（图片+文字）迭代生成
@@ -280,8 +279,10 @@
             html += nowHTML3;
             $(".waterfull ul").append(html);
         }
-    })();
-</script>
+    }
+    window.onload = function(){
+        pageVal();
+    }
 </script>
 </body>
 </html>
