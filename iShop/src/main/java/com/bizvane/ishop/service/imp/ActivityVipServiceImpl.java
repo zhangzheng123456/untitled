@@ -42,6 +42,8 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     @Autowired
     private StoreService storeService;
     @Autowired
+    private AreaService areaService;
+    @Autowired
     private ValidateCodeService validateService;
     @Autowired
     private TaskService taskService;
@@ -162,7 +164,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         activityVip.setTask_code("");
         int info=0;
          info= activityVipMapper.insertActivity(activityVip);
-        ActivityVip activityVip1 = selActivityByCode(corp_code, activity_code);
+        ActivityVip activityVip1 = selActivityByCode(activity_code);
         if (info>0) {
             //result=String.valueOf(activityVip1.getId());
             return String.valueOf(activityVip1.getId());
@@ -279,8 +281,8 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     }
 
     @Override
-    public ActivityVip selActivityByCode(String corp_code, String activity_vip_code) throws Exception {
-        return activityVipMapper.selActivityByCode( corp_code, activity_vip_code);
+    public ActivityVip selActivityByCode(String activity_vip_code) throws Exception {
+        return activityVipMapper.selActivityByCode(activity_vip_code);
     }
 
     /**
@@ -408,11 +410,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             //创建任务并分配给执行人
             String user_codes = "";
             String phones = "";
-//            JSONArray operators_array = JSONArray.parseArray(operators);
-//            for (int i = 0; i < operators_array.size(); i++) {
-//                user_codes = user_codes + operators_array.getJSONObject(i).get("user_code") + ",";
-//                phones = phones + operators_array.getJSONObject(i).get("phone") + ",";
-//            }
+
             List<User> userList = userService.selUserByStoreCode(corp_code,"",operators,null,"");
             for (int i = 0; i < userList.size(); i++) {
                 user_codes = user_codes + userList.get(i).getUser_code();
@@ -462,12 +460,10 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                             }
                         }
                         Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                        Data data_vip_id = new Data("vip_ids", "", ValueType.PARAM);
                         Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
 
                         Map datalist = new HashMap<String, Data>();
                         datalist.put(data_corp_code.key, data_corp_code);
-                        datalist.put(data_vip_id.key, data_vip_id);
                         datalist.put(data_store_code.key, data_store_code);
                         DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
                         String message = dataBox.data.get("message").value;
@@ -478,13 +474,19 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                             phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                         }
                     }else {
-                        DataBox dataBox = iceInterfaceService.vipScreenMethod("1","500",corp_code,"","","",vip_user_code);
+                        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                        Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
+
+                        Map datalist = new HashMap<String, Data>();
+                        datalist.put(data_corp_code.key, data_corp_code);
+                        datalist.put(data_user_code.key, data_user_code);
+                        DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
                         String message = dataBox.data.get("message").value;
                         JSONObject msg_obj = JSONObject.parseObject(message);
                         JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                         for (int i = 0; i < vip_infos.size(); i++) {
                             JSONObject vip_obj = vip_infos.getJSONObject(i);
-                            phone = phone + vip_obj.getString("PHONE_VIP") + ",";
+                            phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                         }
                     }
                 }else {
@@ -503,7 +505,6 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                     }
-
                 }
                 Data data_channel = new Data("channel", "santong", ValueType.PARAM);
                 Data data_phone = new Data("phone", phone, ValueType.PARAM);
@@ -533,6 +534,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         JSONObject result = new JSONObject();
         String task_code = activityVip.getTask_code();
         String corp_code = activityVip.getCorp_code();
+        String operators = activityVip.getOperators();
         String target_vips_count = activityVip.getTarget_vips_count();
 
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -563,12 +565,27 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                     complete_vip_count = complete_vip_count + Integer.parseInt(user_complete_vip_count);
                 }
             }
-            if (store_code != null && !store_code.equals("")){
-                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
-                String[] codes = store_code.split(",");
-                Store store = storeService.getStoreByCode(corp_code,store_code,Common.IS_ACTIVE_Y);
+            //目标店铺
+            String[] store_codes = operators.split(",");
+            //任务执行人的店铺编号
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+            String[] codes = store_code.split(",");
+            for (int j = 0; j < store_codes.length; j++) {
+                for (int k = 0; k < codes.length; k++) {
+                    if (store_codes[j].equals(codes[k])){
+                        Store store = storeService.getStoreByCode(corp_code,codes[k],Common.IS_ACTIVE_Y);
+                        if (store != null){
+                            store_name = store.getStore_name();
+                            String area_code = store.getArea_code().replace(Common.SPECIAL_HEAD,"");
+                            String code  = area_code.split(",")[0];
+                            Area area = areaService.getAreaByCode(corp_code,code,Common.IS_ACTIVE_Y);
+                            if (area != null)
+                                area_name = area.getArea_name();
+                        }
+                        break;
+                    }
+                }
             }
-
             task_obj.put("user_code",user_code);
             task_obj.put("user_name",user_name);
             task_obj.put("store_name",store_name);

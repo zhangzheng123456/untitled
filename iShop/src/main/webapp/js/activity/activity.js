@@ -292,8 +292,8 @@ function operate() {
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
             var state = $(tr).children("td:nth-child(5)").text();
+            var id=$(tr).attr("id");
             if(state == "未执行"){
-                var id=$(tr).attr("id");
                 var return_jump={};//定义一个对象
                 return_jump["inx"]=inx;//跳转到第几页
                 return_jump["value"]=value;//搜索的值;
@@ -306,6 +306,7 @@ function operate() {
                 sessionStorage.setItem("id",id);
                 $(window.parent.document).find('#iframepage').attr("src","activity/activity_edit.html");
             }else if(state == "执行中"){
+                sessionStorage.setItem("id",id);
                 $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
             }
         }else if(tr.length==0){
@@ -379,8 +380,8 @@ function jumpBianse(){
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var state = $(this).children("td:nth-child(5)").text();
+        var id=$(this).attr("id");
         if(state == "未执行"){
-            var id=$(this).attr("id");
             var return_jump={};//定义一个对象
             return_jump["inx"]=inx;//跳转到第几页
             return_jump["value"]=value;//搜索的值;
@@ -393,6 +394,7 @@ function jumpBianse(){
             sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_edit.html");
         }else if(state == "执行中"){
+            sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
         }
     });
