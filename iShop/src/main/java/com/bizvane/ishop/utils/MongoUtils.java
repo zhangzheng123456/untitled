@@ -5,10 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.User;
 import com.mongodb.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -48,40 +46,45 @@ public class MongoUtils {
             if(screen_key.equals("created_date")){
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();
+
                 String end = date.get("end").toString();
                 if(!start.equals("") && start!=null){
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$gt", start)));
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$gte",start)));
                 }
                 if(!end.equals("") && end!=null){
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$lt", end)));
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$lte", end)));
                 }
             }
-            if(screen_key.equals("time")){
+            if(screen_key.equals("count")){
                 JSONObject time_count = JSON.parseObject(screen_value);
                 String type = time_count.get("type").toString();
                 String value = time_count.get("value").toString();
+                int count =0;
+                if(value!=null && !value.equals("")) {
+                    count = Integer.parseInt(value);
+                }
                 if (type.equals("gt")) {
                     //大于
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$gt",value)));
+                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$gte",count)));
                 } else if (type.equals("lt")) {
                     //小于
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$lt",value)));
+                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$lte",count)));
                 } else if (type.equals("between")) {
                     //介于
                     JSONObject values2 = JSONObject.parseObject(value);
                     String start = values2.get("start").toString();
                     String end = values2.get("end").toString();
                     if(!start.equals("") && start!=null){
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$gt", start)));
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$gte", count)));
                     }
                     if(!end.equals("") && end!=null){
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$lt", end)));
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$lte",count)));
                     }
                 } else if (type.equals("eq")) {
                     //等于
-                    values.add(new BasicDBObject(screen_key,value));
+                    values.add(new BasicDBObject(screen_key,count));
                 } else if (type.equals("all")) {
-                    Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
+                    Pattern pattern = Pattern.compile("^.*" + "" + ".*$", Pattern.CASE_INSENSITIVE);
                     values.add(new BasicDBObject(screen_key, pattern));
                 }
             }
@@ -159,6 +162,7 @@ public class MongoUtils {
             String id = obj.get("_id").toString();
             String user_id = obj.get("user_id").toString();
             obj.put("id",id);
+            obj.removeField("_id");
         for (int i=0;i<users.size();i++){
             if(user_id.equals(users.get(i).getUser_code())){
                 obj.put("user_can_login","离职");
