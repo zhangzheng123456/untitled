@@ -1,11 +1,8 @@
 package com.bizvane.ishop.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.ActivityVip;
-import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -13,7 +10,7 @@ import java.util.Map;
  * Created by nanji on 2016/11/15.
  */
 public interface ActivityVipService {
-    PageInfo<ActivityVip> selectAllActivity(int page_num, int page_size, String corp_code, String search_value) throws Exception;
+    PageInfo<ActivityVip> selectAllActivity(int page_num, int page_size, String corp_code,String user_code, String search_value) throws Exception;
 
     PageInfo<ActivityVip> selectActivityAllScreen(int page_num, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception;
 

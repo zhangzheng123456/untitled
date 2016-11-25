@@ -55,10 +55,10 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     MongoDBClient mongodbClient;
 
     @Override
-    public PageInfo<ActivityVip> selectAllActivity(int page_num, int page_size, String corp_code, String search_value) throws Exception {
+    public PageInfo<ActivityVip> selectAllActivity(int page_num, int page_size, String corp_code, String user_code, String search_value) throws Exception {
         List<ActivityVip> activityVips;
         PageHelper.startPage(page_num, page_size);
-        activityVips = activityVipMapper.selectAllActivity(corp_code, search_value);
+        activityVips = activityVipMapper.selectAllActivity(corp_code, user_code, search_value);
         for (ActivityVip activityVip : activityVips) {
             activityVip.setIsactive(CheckUtils.CheckIsactive(activityVip.getIsactive()));
         }
@@ -71,6 +71,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     public PageInfo<ActivityVip> selectActivityAllScreen(int page_num, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
+        params.put("user_code", user_code);
         params.put("map", map);
         PageHelper.startPage(page_num, page_size);
         List<ActivityVip> list1 = activityVipMapper.selectActivityScreen(params);

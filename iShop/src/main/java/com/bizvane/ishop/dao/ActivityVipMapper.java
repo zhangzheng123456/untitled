@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by nanji on 2016/11/15.
  */
 public interface ActivityVipMapper {
-    List<ActivityVip> selectAllActivity(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+    List<ActivityVip> selectAllActivity(@Param("corp_code") String corp_code, @Param("user_code") String user_code,@Param("search_value") String search_value) throws SQLException;
 
     ActivityVip selActivityById(int id)throws SQLException;
 
