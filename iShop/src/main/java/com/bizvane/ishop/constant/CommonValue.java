@@ -47,7 +47,7 @@ public class CommonValue {
 
 
     //错误日志
-    public final static String table_error_log = "err_log";
+    public final static String table_error_log = "error_log";
 
     //会员标签
     public final static String table_vip_label_def = "vip_label_def";
