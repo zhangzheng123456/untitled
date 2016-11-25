@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?xqbrt4');
-  src:  url('../fonts/icomoon.eot?xqbrt4#iefix') format('embedded-opentype'),
-  url('../fonts/icomoon.ttf?xqbrt4') format('truetype'),
-  url('../fonts/icomoon.woff?xqbrt4') format('woff'),
-  url('../fonts/icomoon.svg?xqbrt4#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?7gxt1r');
+  src:  url('../fonts/icomoon.eot?7gxt1r#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?7gxt1r') format('truetype'),
+    url('../fonts/icomoon.woff?7gxt1r') format('woff'),
+    url('../fonts/icomoon.svg?7gxt1r#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -171,6 +171,9 @@
 .icon-ishop_6-19:before {
   content: "\e92a";
 }
+.icon-ishopwebicon_6-20:before {
+  content: "\e93c";
+}
 .icon-ishop_7-01:before {
   content: "\e92b";
 }
@@ -204,10 +207,3 @@
 .icon-ishop_9-02:before {
   content: "\e93a";
 }
-
-
-
-
-
-
-
