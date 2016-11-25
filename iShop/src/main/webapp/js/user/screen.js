@@ -821,8 +821,4 @@ function getcitylist(){
 		bianse();
 		whir.loading.remove();
 	})
-}
-//刷新列表
-$(".icon-ishop_6-07").parent().click(function () {
-	window.location.reload();
-});
+};
