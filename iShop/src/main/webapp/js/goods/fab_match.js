@@ -1,6 +1,21 @@
 /**
  * Created by Administrator on 2016/11/25.
  */
+var oc = new ObjectControl();
+var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
+var inx=1;//默认是第一页
+var pageNumber=1;//删除的默认的第一页;
+var pageSize=10;//默认传的每页多少行
+var value="";//收索的关键词
+var param={};//定义的对象
+var _param={};//筛选定义的内容
+var list="";
+var cout="";
+var filtrate="";//筛选的定义的值
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+key_val=JSON.parse(key_val);
+var funcCode=key_val.func_code;
 /*
  抛开瀑布流布局各种乱七八糟的算法，基于masonry的瀑布流，很是简单的，而且通过扩展animate,能实现瀑布流布局的晃动、弹球等效果。
  masonry还有很多参数我这里注解了常用的参数
@@ -64,23 +79,115 @@ $(function(){
 //            $(this).stop(true).animate({'backgroundColor':'#fff'},1000);
 //        });
 });
-
-
-//获取数据
-function getVal(){
-    var _params={
-        //a:a
+//权限配置
+function jurisdiction(actions){
+    $('#jurisdiction').empty();
+    for(var i=0;i<actions.length;i++){
+        if(actions[i].act_name=="add"){
+            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+        }else if(actions[i].act_name=="delete"){
+            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+        }else if(actions[i].act_name=="edit"){
+            $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }
+    }
+}
+//页面加载调权限接口
+function qjia(){
+    console.log('权限接口调用');
+    var param={};
+    param["funcCode"]='';
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
+//加载完成以后页面进行的操作
+function jumpBianse(){
+    $(document).ready(function(){//隔行变色
+        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    })
+    //点击tr input是选择状态  tr增加class属性
+    $(".table tbody tr").click(function(){
+        var input=$(this).find("input")[0];
+        var thinput=$("thead input")[0];
+        $(this).toggleClass("tr");
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+            $(this).addClass("tr");
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+                thinput.checked=false;
+            }
+            input.checked = false;
+            $(this).removeClass("tr");
+        }
+    })
+    //点击新增时页面进行的跳转
+    $('#add').click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_add.html");
+    })
+    //删除
+    $("#remove").click(function(){
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        $("#p").show();
+        $("#tk").show();
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+        $("#tk").css({"left":+left+"px","top":+tp+"px"});
+    })
+}
+//新增
+function getAdd(){
+    var _params= {
+        "id":"0",
+        'goods_code':'',
+        "message":""
     };
     $.ajax({
-        url: url,
-        type: type,
+        url: '/defmatch/addMatch',
+        type: 'post',
         dataType: "JSON",
         data:{
             param:JSON.stringify(_params)
         },
         success: function (data) {
-            console.log('获取数据成功')
-            pageVal();
+            console.log('新增接口调用成功'+JSON.stringify(data));
+
+            //pageVal();
+        },
+        error: function (data) {
+            console.log('新增接口调用失败')
+        }
+    });
+}
+//获取数据
+function getVal(){
+    var _params= {
+        "id":"0",
+        "message":""
+    };
+    $.ajax({
+        url: '/defmatch/list',
+        type: 'get',
+        dataType: "JSON",
+        data:{
+            param:JSON.stringify(_params)
+        },
+        success: function (data) {
+            console.log('获取数据成功'+JSON.stringify(data));
+
+            //pageVal();
         },
         error: function (data) {
             console.log('获取数据失败')
@@ -114,4 +221,5 @@ function pageVal(){
 }
 window.onload =function() {
     getVal();
+    getAdd();
 }
