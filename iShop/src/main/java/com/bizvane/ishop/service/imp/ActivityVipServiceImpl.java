@@ -93,26 +93,6 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = "A"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
-
-//        String activity_theme = jsonObject.get("activity_theme").toString().trim();
-//        String run_mode = jsonObject.get("run_mode").toString().trim();
-//        String start_time = jsonObject.get("start_time").toString().trim();
-//        String end_time = jsonObject.get("end_time").toString().trim();
-//        String target_vips = jsonObject.get("target_vips").toString().trim();
-//        String operators = jsonObject.get("operators").toString().trim();
-//        //任务类型
-//        String task_title = jsonObject.get("task_title").toString().trim();
-//        String task_desc = jsonObject.get("task_desc").toString().trim();
-//        //公众号消息推送
-//        String wechat_title = jsonObject.get("wechat_title").toString().trim();
-//        String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
-//        //短信
-//        String msg_info = jsonObject.get("msg_info").toString().trim();
-//
-//        //活动内容
-//        String activity_url = jsonObject.get("activity_url").toString().trim();
-//       // String activity_content = jsonObject.get("activity_content").toString().trim();
-//        String content_url = jsonObject.get("content_url").toString().trim();
         String activity_state = "未执行";
 
         ActivityVip activityVip = WebUtils.JSON2Bean(jsonObject, ActivityVip.class);
@@ -134,39 +114,18 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
             }
         }
-
-//        activityVip.setCorp_code(corp_code);
-//        activityVip.setActivity_theme(activity_theme);
-//        activityVip.setRun_mode(run_mode);
-//        activityVip.setStart_time(start_time);
-//        activityVip.setEnd_time(end_time);
-//        activityVip.setTarget_vips(target_vips);
-//        activityVip.setOperators(operators);
-//
-//        activityVip.setTask_title(task_title);
-//        activityVip.setTask_desc(task_desc);
-//
-//        activityVip.setWechat_title(wechat_title);
-//        activityVip.setWechat_desc(wechat_desc);
-//
-//        activityVip.setMsg_info(msg_info);
-//
-//        activityVip.setActivity_url(activity_url);
         activityVip.setActivity_vip_code(activity_code);
         activityVip.setActivity_content(activity_content);
-//        activityVip.setContent_url(content_url);
         activityVip.setModifier(user_id);
         activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
         activityVip.setCreater(user_id);
         activityVip.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//        activityVip.setIsactive(jsonObject.get("isactive").toString().trim());
         activityVip.setActivity_state(activity_state);
         activityVip.setTask_code("");
         int info=0;
          info= activityVipMapper.insertActivity(activityVip);
         ActivityVip activityVip1 = selActivityByCode(activity_code);
         if (info>0) {
-            //result=String.valueOf(activityVip1.getId());
             return String.valueOf(activityVip1.getId());
         } else {
             result="新增失败";
@@ -182,21 +141,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         ActivityVip activityVip1 = activityVipMapper.selActivityById(activity_id);
         String activity_vip_code = activityVip1.getActivity_vip_code();
         String corp_code = jsonObject.get("corp_code").toString().trim();
-//        String activity_theme = jsonObject.get("activity_theme").toString().trim();
-//        String run_mode = jsonObject.get("run_mode").toString().trim();
-//        String start_time = jsonObject.get("start_time").toString().trim();
-//        String end_time = jsonObject.get("end_time").toString().trim();
-//       String target_vips = jsonObject.get("target_vips").toString().trim();
-//        String operators = jsonObject.get("operators").toString().trim();
-//        String task_title = jsonObject.get("task_title").toString().trim();
-//        String task_desc = jsonObject.get("task_desc").toString().trim();
-//        String wechat_title = jsonObject.get("wechat_title").toString().trim();
-//        String wechat_desc = jsonObject.get("wechat_desc").toString().trim();
-//        String activity_url = jsonObject.get("activity_url").toString().trim();
-     // String activity_content = jsonObject.get("activity_content").toString().trim();
-//        String content_url = jsonObject.get("content_url").toString().trim();
 
-//        String task_code = jsonObject.get("task_code").toString().trim();
         String path="";
         ActivityVip activityVip = WebUtils.JSON2Bean(jsonObject, ActivityVip.class);
         String activity_content = activityVip.getActivity_content();
@@ -219,26 +164,9 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         Date now = new Date();
         activityVip.setId(activity_id);
         activityVip.setActivity_vip_code(activity_vip_code);
-//        activityVip.setCorp_code(corp_code);
-//        activityVip.setActivity_theme(activity_theme);
-//        activityVip.setRun_mode(run_mode);
-//        activityVip.setStart_time(start_time);
-//        activityVip.setEnd_time(end_time);
-//        activityVip.setTarget_vips(target_vips);
-//        activityVip.setOperators(operators);
-//        activityVip.setTask_title(task_title);
-//        activityVip.setTask_desc(task_desc);
-//        activityVip.setWechat_title(wechat_title);
-//        activityVip.setWechat_desc(wechat_desc);
-//        activityVip.setActivity_url(activity_url);
         activityVip.setActivity_content(activity_content);
-//        activityVip.setContent_url(content_url);
         activityVip.setModifier(user_id);
         activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
-//        activityVip.setCreater(user_id);
-//        activityVip.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//        activityVip.setIsactive(jsonObject.get("isactive").toString().trim());
-//        activityVip.setTask_code(task_code);
         int info=0;
         info= activityVipMapper.updateActivity(activityVip);
         if (info>0) {
@@ -277,6 +205,12 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             String[] vips_array = vips.split(",");
             activityVip.setTarget_vips_count(String.valueOf(vips_array.length));
         }
+        return activityVip;
+    }
+
+    @Override
+    public ActivityVip getActivityById(int id) throws Exception {
+        ActivityVip activityVip = activityVipMapper.selActivityById(id);
         return activityVip;
     }
 
@@ -374,7 +308,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
      *
      */
     @Override
-    public void executeActivity(ActivityVip activityVip,String user_code) throws Exception {
+    public String executeActivity(ActivityVip activityVip,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         String run_mode = activityVip.getRun_mode();
         String activity_vip_code = activityVip.getActivity_vip_code();
@@ -411,35 +345,44 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             String user_codes = "";
             String phones = "";
 
-            List<User> userList = userService.selUserByStoreCode(corp_code,"",operators,null,"");
-            for (int i = 0; i < userList.size(); i++) {
-                user_codes = user_codes + userList.get(i).getUser_code();
-                phones = phones + userList.get(i).getPhone();
+            JSONArray store_codes_array = JSONArray.parseArray(operators);
+            String store_codes = "";
+            for (int i = 0; i <store_codes_array.size() ; i++) {
+                store_codes = store_codes + store_codes_array.getJSONObject(i).get("store_code")+",";
             }
-            Task task = new Task();
-            String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
-            task.setTask_code(task_code);
-            task.setTask_title(task_title);
-            task.setTask_type_code(task_type_code);
-            task.setTask_description(task_desc);
-            task.setTarget_start_time(start_time);
-            task.setTarget_end_time(end_time);
-            task.setCorp_code(corp_code);
-            task.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            task.setCreater(user_code);
-            task.setModified_date(Common.DATETIME_FORMAT.format(now));
-            task.setModifier(user_code);
-            task.setIsactive(Common.IS_ACTIVE_Y);
-            task.setActivity_vip_code(activity_vip_code);
-            taskService.addTask(task, phones, user_codes, user_code);
+            List<User> userList = userService.selUserByStoreCode(corp_code,"",store_codes,null,"");
+            if (userList.size() > 0){
+                for (int i = 0; i < userList.size(); i++) {
+                    user_codes = user_codes + userList.get(i).getUser_code() + ",";
+                    phones = phones + userList.get(i).getPhone() + ",";
+                }
+                Task task = new Task();
+                String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
+                task.setTask_code(task_code);
+                task.setTask_title(task_title);
+                task.setTask_type_code(task_type_code);
+                task.setTask_description(task_desc);
+                task.setTarget_start_time(start_time);
+                task.setTarget_end_time(end_time);
+                task.setCorp_code(corp_code);
+                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                task.setCreater(user_code);
+                task.setModified_date(Common.DATETIME_FORMAT.format(now));
+                task.setModifier(user_code);
+                task.setIsactive(Common.IS_ACTIVE_Y);
+                task.setActivity_vip_code(activity_vip_code);
+                taskService.addTask(task, phones, user_codes, user_code);
 
-            //更新活动表中task_code
-            activityVip.setTask_code(task_code);
-            //更新活动状态activity_state
-            activityVip.setActivity_state("执行中");
-            activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
-            activityVip.setModifier(user_code);
-            updateActivityVip(activityVip);
+                //更新活动表中task_code
+                activityVip.setTask_code(task_code);
+                //更新活动状态activity_state
+                activityVip.setActivity_state("执行中");
+                activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
+                activityVip.setModifier(user_code);
+                updateActivityVip(activityVip);
+            }else {
+                return "该范围下没有执行人，无法执行";
+            }
         }else{
             if (run_mode.contains("系统短信")){
                 String target_vips = activityVip.getTarget_vips();
@@ -516,13 +459,13 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 datalist.put(data_text.key, data_text);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
                 if (!dataBox.status.toString().equals("SUCCESS")){
-                    status = Common.DATABEAN_CODE_ERROR;
+                    status = "执行失败";
                 }
-
             }else if (run_mode.contains("微信")){
 
             }
         }
+        return status;
     }
 
     /**
@@ -566,16 +509,19 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 }
             }
             //目标店铺
-            String[] store_codes = operators.split(",");
+            JSONArray store_array = JSONArray.parseArray(operators);
             //任务执行人的店铺编号
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             String[] codes = store_code.split(",");
-            for (int j = 0; j < store_codes.length; j++) {
+            for (int j = 0; j < store_array.size(); j++) {
+                JSONObject store_obj = store_array.getJSONObject(j);
+                String store_obj_code = store_obj.get("store_code").toString();
+                String store_obj_name = store_obj.get("store_name").toString();
                 for (int k = 0; k < codes.length; k++) {
-                    if (store_codes[j].equals(codes[k])){
+                    if (store_obj_code.equals(codes[k])){
                         Store store = storeService.getStoreByCode(corp_code,codes[k],Common.IS_ACTIVE_Y);
                         if (store != null){
-                            store_name = store.getStore_name();
+                            store_name = store_obj_name;
                             String area_code = store.getArea_code().replace(Common.SPECIAL_HEAD,"");
                             String code  = area_code.split(",")[0];
                             Area area = areaService.getAreaByCode(corp_code,code,Common.IS_ACTIVE_Y);
@@ -586,6 +532,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                     }
                 }
             }
+
             task_obj.put("user_code",user_code);
             task_obj.put("user_name",user_name);
             task_obj.put("store_name",store_name);

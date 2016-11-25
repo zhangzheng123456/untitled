@@ -148,12 +148,12 @@ function getExecuteDetail(){
         },
         success: function (data) {
             var message = JSON.parse(data.message);
-            console.log(message);
+            console.log('获取活动执行情况'+JSON.stringify(message));
             getSelect(id);
             var complete_vips_count = message.complete_vips_count;
             var userList =message.userList;
-            var count = userList.length;
             var target_vips_count = message.target_vips_count;
+            var count = userList.length;
             for(var i=0;i<userList.length;i++){
                 var name = userList[i].user_name;
                 var num = userList[i].user_code;
@@ -191,15 +191,15 @@ function getSelect(id){
         success: function (data) {
             var message = JSON.parse(data.message);
             var activityVip = JSON.parse(message.activityVip);
-            var activity_theme = activityVip.activity_theme;
             var activity_state = activityVip.activity_state;
+            var activity_theme = activityVip.activity_theme;
             var runMode = activityVip.run_mode;
             var beiginTime = activityVip.start_time;
             var endTime = activityVip.end_time;
-            var corp_code = activityVip.corp_code;
-            sessionStorage.setItem("corp_code",JSON.stringify(corp_code));//存储的方法
-            console.log(corp_code+'___'+activity_theme);
             activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
+            var corp_code = activityVip.corp_code;
+            console.log(corp_code);
+            sessionStorage.setItem("corp_code",corp_code);//存储的方法
         },
         error: function (data) {
             console.log('获取活动详情失败');
@@ -219,7 +219,7 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
     var activityState = activityState;
     var activityTheme = activityTheme;
     var runMode = runMode;
-    if(activityState =='正在执行'){
+    if(activityState =='执行中'){
         $('#activityState').css('color','#50acb4');
     }else if(activityState =='尚未开始'){
         $('#activityState').css('color','red');
@@ -242,6 +242,7 @@ function listShow(name,num,area,shop,rate,count){
     var shop = shop;
     // var percent = Math.floor(Math.random()*40+60);
     var percent = rate;
+    console.log('员工姓名：'+name+'员工编号：'+num+'所属区域'+area+'所属店铺'+shop+'百分比：'+percent);
     var tempHTML = '<li class="people_title"> <div class="people_title_order" style="text-align: center">${order}</div> <div class="people_title_name">${name}</div> <div class="people_title_num">${num}</div> <div class="people_title_area">${area}</div> <div class="people_title_shop">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
     for(i=0;i<count;i++){
         //随机进度
@@ -381,7 +382,7 @@ window.onload = function(){
     //加载统计模块
     // check();
     //加载活动状态
-   activityType();
+   //activityType();
     //加载员工列表
-    listShow();
+    //listShow();
 }
