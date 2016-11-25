@@ -89,11 +89,11 @@ public class ErrorLogController {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            System.out.println("======错误日志mongeDB===== ");
+
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_error_log);
-
+            System.out.println("======错误日志mongeDB===== "+CommonValue.table_error_log);
             DBCursor dbCursor = null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {

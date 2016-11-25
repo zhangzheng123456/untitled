@@ -391,13 +391,13 @@ public class ValidateCodeController {
             String screen = jsonObject.get("list").toString();
             PageInfo<ValidateCode> corpInfo = null;
             if (screen.equals("")) {
-                corpInfo= validateCodeService.selectAllValidateCode(1, 30000, search_value);
+                corpInfo= validateCodeService.selectAllValidateCode(1, Common.EXPORTEXECLCOUNT, search_value);
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                corpInfo = validateCodeService.selectAllScreen(1, 30000, map);
+                corpInfo = validateCodeService.selectAllScreen(1, Common.EXPORTEXECLCOUNT, map);
             }
             List<ValidateCode> feedbacks = corpInfo.getList();
-            if (feedbacks.size() >= 29999) {
+            if (feedbacks.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

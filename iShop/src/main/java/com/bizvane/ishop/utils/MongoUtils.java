@@ -43,18 +43,18 @@ public class MongoUtils {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
-            if(screen_key.equals("operation_time")){
+            if (screen_key.equals("operation_time")) {
                 JSONObject date = JSON.parseObject(screen_value);
-                String start = date.get("start").toString();
+                String start = date.get("start").toString();//2016-11-25 14:43:15
 
                 String end = date.get("end").toString();
-                if(!start.equals("") && start!=null){
-                    System.out.println("=========start:"+start);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE,start)));
+                if (!start.equals("") && start != null) {
+                    System.out.println("=========start:" + start);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start + " 00:00:00")));
                 }
-                if(!end.equals("") && end!=null){
-                    System.out.println("=========end:"+end);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
+                if (!end.equals("") && end != null) {
+                    System.out.println("=========end:" + end);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end + " 23:59:59")));
                 }
             }
 
@@ -62,6 +62,7 @@ public class MongoUtils {
         queryCondition.put("$and", values);
         return queryCondition;
     }
+
     //多个“与”查询(筛选)登录日志
     public static BasicDBObject andLoginlogScreen(JSONArray array) {
         BasicDBObject queryCondition = new BasicDBObject();
@@ -75,47 +76,47 @@ public class MongoUtils {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
-            if(screen_key.equals("created_date")){
+            if (screen_key.equals("created_date")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();
 
                 String end = date.get("end").toString();
-                if(!start.equals("") && start!=null){
-                    System.out.println("=========start:"+start);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE,start)));
+                if (!start.equals("") && start != null) {
+                    System.out.println("=========start:" + start);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start)));
                 }
-                if(!end.equals("") && end!=null){
-                    System.out.println("=========end:"+end);
+                if (!end.equals("") && end != null) {
+                    System.out.println("=========end:" + end);
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
                 }
             }
-            if(screen_key.equals("count")){
+            if (screen_key.equals("count")) {
                 JSONObject time_count = JSON.parseObject(screen_value);
                 String type = time_count.get("type").toString();
                 String value = time_count.get("value").toString();
-                System.out.println("=========count:"+value);
+                System.out.println("=========count:" + value);
                 if (type.equals("gt")) {
                     //大于
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject(QueryOperators.GTE,Integer.parseInt(value))));
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(value))));
                 } else if (type.equals("lt")) {
                     //小于
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject(QueryOperators.LTE,Integer.parseInt(value))));
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(value))));
                 } else if (type.equals("between")) {
                     //介于
                     JSONObject values2 = JSONObject.parseObject(value);
                     String start = values2.get("start").toString();
                     String end = values2.get("end").toString();
-                    if(!start.equals("") && start!=null){
+                    if (!start.equals("") && start != null) {
                         values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(start))));
                     }
-                    if(!end.equals("") && end!=null){
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE,Integer.parseInt(end))));
+                    if (!end.equals("") && end != null) {
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(end))));
                     }
                 } else if (type.equals("eq")) {
                     //等于
-                    values.add(new BasicDBObject(screen_key,Integer.parseInt(value)));
+                    values.add(new BasicDBObject(screen_key, Integer.parseInt(value)));
                 } else if (type.equals("all")) {
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject(QueryOperators.GTE,0)));
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, 0)));
                 }
             }
 
@@ -125,7 +126,7 @@ public class MongoUtils {
     }
 
     //多个“或”查询(搜索)
-    public static BasicDBObject orOperation(String[] column_names,String search_value) {
+    public static BasicDBObject orOperation(String[] column_names, String search_value) {
         Pattern pattern = Pattern.compile("^.*" + search_value + ".*$", Pattern.CASE_INSENSITIVE);
         BasicDBObject queryCondition = new BasicDBObject();
         BasicDBList values = new BasicDBList();
@@ -138,7 +139,7 @@ public class MongoUtils {
     }
 
     //in查询
-    public static BasicDBObject inOperation(String[] args,String condition){
+    public static BasicDBObject inOperation(String[] args, String condition) {
         BasicDBObject queryCondition = new BasicDBObject();
         //age in [13, 47]
         BasicDBList values = new BasicDBList();
@@ -150,7 +151,7 @@ public class MongoUtils {
     }
 
     //获取总页数
-    public static int getPages(DBCursor dbCursor,int page_size){
+    public static int getPages(DBCursor dbCursor, int page_size) {
         int pages = 0;
         int count = Integer.parseInt(String.valueOf(dbCursor.count()));
         if (count % page_size == 0) {
@@ -162,7 +163,7 @@ public class MongoUtils {
     }
 
     //DBCursor数据集转arrayList
-    public static ArrayList dbCursorToList(DBCursor dbCursor){
+    public static ArrayList dbCursorToList(DBCursor dbCursor) {
         ArrayList list = new ArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
@@ -173,47 +174,51 @@ public class MongoUtils {
     }
 
     //DBCursor数据集转arrayList+id
-    public static ArrayList dbCursorToList_id(DBCursor dbCursor){
+    public static ArrayList dbCursorToList_id(DBCursor dbCursor) {
         ArrayList list = new ArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
-            obj.put("id",id);
+            obj.put("id", id);
             list.add(obj.toMap());
         }
         return list;
     }
 
-    //DBCursor数据集转arrayList+id+can_login
-    public static ArrayList dbCursorToList_canLogin(DBCursor dbCursor, List<User> users){
+    //DBCursor数据集转arrayList+id+can_login+品牌名
+    public static ArrayList dbCursorToList_canLogin(DBCursor dbCursor, List<User> users) {
         ArrayList list = new ArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
             String user_id = obj.get("user_id").toString();
-            obj.put("id",id);
+            String brand_name = obj.get("brand_name").toString();
+            String replaceStr = WebUtils.StringFilter(brand_name);
+            obj.put("brand_name", replaceStr);
+            obj.put("id", id);
             obj.removeField("_id");
-        for (int i=0;i<users.size();i++){
-            if(user_id.equals(users.get(i).getUser_code())){
-                obj.put("user_can_login","离职");
-            }else{
-                obj.put("user_can_login","在职");
+            for (int i = 0; i < users.size(); i++) {
+                if (user_id.equals(users.get(i).getUser_code())) {
+                    obj.put("user_can_login", "离职");
+                } else {
+                    obj.put("user_can_login", "在职");
+                }
             }
-        }
             list.add(obj.toMap());
         }
         return list;
     }
+
     //DBCursor排序分页
     //sort_type（1：正序，-1：倒序）
-    public static DBCursor sortAndPage(DBCursor dbCursor,int page_num,int page_size,String sort_key,int sort_type){
+    public static DBCursor sortAndPage(DBCursor dbCursor, int page_num, int page_size, String sort_key, int sort_type) {
         DBObject sort_obj = new BasicDBObject(sort_key, sort_type);
         dbCursor = dbCursor.sort(sort_obj).skip((page_num - 1) * page_size).limit(page_size);
         return dbCursor;
     }
 
     //根据条件查找并更新
-    public static void findAndUpdate(String key,String value,DBCollection collection,String update_key,Object update_value) {
+    public static void findAndUpdate(String key, String value, DBCollection collection, String update_key, Object update_value) {
         Map keyMap = new HashMap();
         keyMap.put(key, value);
         BasicDBObject queryCondition = new BasicDBObject();
@@ -248,8 +253,8 @@ public class MongoUtils {
 //    }
 
     //insert方式插入数据
-    private static void insertData(DBCollection collection){
-        DBObject saveData=new BasicDBObject();
+    private static void insertData(DBCollection collection) {
+        DBObject saveData = new BasicDBObject();
         saveData.put("userName", "iwtxokhtd");
         saveData.put("age", "26");
         saveData.put("gender", "m");
@@ -257,13 +262,13 @@ public class MongoUtils {
     }
 
     //insert批量插入数据
-    private static void insertListData(DBCollection collection){
-        DBObject insertData1=new BasicDBObject();
+    private static void insertListData(DBCollection collection) {
+        DBObject insertData1 = new BasicDBObject();
         insertData1.put("userName", "iwtxokhtd");
         insertData1.put("age", "26");
         insertData1.put("gender", "m");
 
-        DBObject insertData2=new BasicDBObject();
+        DBObject insertData2 = new BasicDBObject();
         insertData2.put("userName", "iwtxokhtd");
         insertData2.put("age", "26");
         insertData2.put("gender", "m");
@@ -281,7 +286,6 @@ public class MongoUtils {
         deletePig.put("name", "pig");
         collection.remove(deletePig);
     }
-
 
 
 }
