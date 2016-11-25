@@ -367,7 +367,7 @@ public class ActivityVipController {
 
     /**
      *
-     * 获取活动详情
+     * 获取活动详细信息
      * @param request
      * @return
      */
@@ -431,6 +431,45 @@ public class ActivityVipController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
             }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     *
+     * 终止/恢复活动
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/changeState", method = RequestMethod.POST)
+    @ResponseBody
+    public String changeState(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            int activity_id = Integer.parseInt(jsonObject.getString("id"));
+            ActivityVip activityVip = this.activityVipService.selectActivityById(activity_id);
+            if (activityVip != null){
+                String activity_state = activityVip.getActivity_state();
+                if (activity_state.equals("执行中")){
+                    activityVip.setActivity_state("已中止");
+                    activityVipService.updateActivityVip(activityVip);
+                }else if (activity_state.equals("已中止")){
+                    activityVip.setActivity_state("执行中");
+                    activityVipService.updateActivityVip(activityVip);
+                }
+            }
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -125,8 +125,9 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_user.key, data_user);
                 datalist.put(data_user_id.key, data_user_id);
                 DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
-                String msg = dataBox.data.get("message").value;
-                System.out.println("APP："+msg);
+//                if (!dataBox.status.toString().equals("SUCCESS")){
+//                   int a = 1/0;
+//                }
             }
         return count+"";
     }
