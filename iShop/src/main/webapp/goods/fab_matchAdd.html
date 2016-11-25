@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>新增商品</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
+    <link href="../css/style.css?20161116" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161116">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
+    <!--富文本编辑-->
+    <!--<link href="font_editor/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+    <!--<link href="font_editor/css/froala_editor.min.css" rel="stylesheet" type="text/css">-->
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.config.js?20161116"></script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.min.js?20161116"> </script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.js?20161116"> </script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/lang/zh-cn/zh-cn.js?20161116"></script>
+    <script src="../js/loading.js?20161116"></script>
+    <style type="text/css">
+        div{
+            width:100%;
+        }
+        #edui1_elementpath{
+            display: none;
+        }
+        .good_imgs .fileBoxUl .check_public{
+            width: 16px;
+            height: 16px;
+            background-color: #d5d5d5;
+            border-radius: 15px;
+            position: absolute;
+            left: -15px;
+            top: 8px;
+            background-size: 22px 22px;
+            margin-left: 28px;
+        }
+    </style>
+    <style>
+        body{
+            margin-top:81px;
+        }
+        #edit div{margin-bottom: 0px;}
+        #edit{ margin-left: 120px;width: 420px; margin-top: -20px;}
+        #add{margin-top: -35px;
+            margin-left: 120px;
+            margin-bottom: 0;
+            text-align: center;
+            width: 420px;
+            background: #f1f1f1;
+            line-height: 50px;
+            border-radius: 5px;
+            color: #6cc1c8;
+            font-size: 15px;
+            cursor:pointer;
+        }
+        .add span{font-size: 20px;margin-left: 5px;}
+        .match_goods ul{width:420px;height:250px;margin-left:120px;margin-top: 5px;overflow-y: auto;overflow-x: hidden;}
+        .match_goods ul li{width:410px;height:50px;margin:auto;padding-top:5px;border-bottom: 1px solid rgba(255,255,255,0.4);}
+        .match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .match_goods .icon-ishop_6-12{float:right;margin:10px;font-size: 20px;color: #c26555;}
+        .goodsImg{width:40px;height:40px;margin:0 10px;border-radius:5px;border: 1px solid #dbdbdb; }
+        #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 5px;cursor:pointer;}
+        #search_match_goods{width:450px;min-height:460px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;position: absolute;top:750px;left:530px;z-index: 1000;display: none;}
+        #search{width:400px;height:30px;border-radius:30px;border: 1px solid #EAE2E2;margin: 20px 20px ;}
+        #d_search{float: right;position: relative;  top: -48px;  left: -37px;  font-size: 25px;}
+        #goods_box{width:100%;height:1200px;position:absolute;top:45%;left: 20%;z-index: 100;display: none;}
+        #search_match_goods .li{margin-bottom: 0;height:100px;}
+        #search_match_goods ul{ width:425px;height:350px;overflow-y:auto;overflow-x: hidden;margin-left:20px; margin-bottom: 20px}
+        #search_match_goods ul li{width:400px;height:50px;background:#ededed;padding-top:5px;display: inline-block; }
+        #search_match_goods ul li:nth-child(even){background: #FFFFFF;}
+        #search_match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+        #search_match_goods ul li i{position:relative;right:5px;top:8px;color: #c26555;display: none;cursor: pointer;}
+        .goods_add{width: 40px;height:50px;float:right;font-size: 30px;  margin-top: -5px; text-align: center;  line-height: 50px;color:#c3c3c3; }
+        .goods_add:hover{color:#6dc1c8;cursor: pointer;}
+        .bttn-wrapper .fr-bttn:last-child{display: none;}
+        .bttn-wrapper .fr-bttn:nth-last-of-type(4){display: none}
+    </style>
+</head>
+<body style="    margin-right: 200px">
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span id="back_goods_fab">搭配管理</span><i class="icon-ishop_8-03"></i><label>编辑搭配</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg" style="margin-left:0px">
+            <!--<div>-->
+                <!--<ul style="display:inline-flex;">-->
+                    <!--<li><label style="color:#c26555;">所属企业*</label></li>-->
+                    <!--<li>-->
+                                <!--<span class="corp_select">-->
+                                    <!--<select id="OWN_CORP" style="display:inline-flex" >-->
+                                    <!--</select>-->
+                                <!--</span>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label style="color:#c26555;">商品编号*</label><input type="text" id="GOODS_CODE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品编号不能为空！"></div></div></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label style="color:#c26555;">商品名称*</label><input type="text" id="GOODS_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品名称不能为空！"></div></div></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label style="color:#c26555;">价格*</label><input type="text" id="GOODS_PRICE" verify="Number"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品价格不能为空！"></div></div></span>-->
+            <!--</div>-->
+            <!--<div style="padding-left: 126px;position: relative;margin-bottom: 10px">-->
+                <!--<span><label style="margin-right:14px;position: absolute;top:12px;left:0px;display:inline-block">商品图片</label></span>-->
+                        <!--<span class="good_imgs" style="display: inline-block;width:420px">-->
+                            <!--<span class="parentFileBox" style="display:inline-flex;vertical-align: middle;">-->
+                                <!--<ul class="fileBoxUl">-->
+                                    <!--&lt;!&ndash;<li id="fileBox_WU_FILE_10" class="diyUploadHover"style="height: 90px">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="viewThumb"><img src="http://products-image.oss-cn-hangzhou.aliyuncs.com/FAB/C10000/1476698096374.jpg"></div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="diyCancel" onclick="img_del(this)"></div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="diySuccess"></div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="diyFileName"style="bottom:30px">1476698096374.jpg</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<span style="position: absolute;top: 60px;width: 60px;padding-right:4px;margin-top: 2px">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<label>可用</label>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<em class="checkbox_isactive"style="position: absolute; top: 0px;left: -9px;">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<input style="width: 30px;margin:0px" checked="true" type="checkbox" value="" name="test" class="check" id="is_active">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<label for="is_active"></label>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</em>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--<li class="add_li">-->
+                                        <!--<span class="add_new_touxiang" style="position: relative;margin-bottom: 38px"><span id="test"></span></span>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</span>-->
+                            <!--&lt;!&ndash;<span class="add_new_touxiang" style="position: relative;margin-bottom: 38px"><span id="test"></span></span>&ndash;&gt;-->
+                        <!--</span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label style="color:#c26555;">季度*</label><input type="text" value="" id="GOODS_QUARTER" verify="Empty" /><div class="hint"><div  hintinfo="季度不能为空！"></div></div></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<span><label style="color:#c26555;">波段*</label><input type="text" id="GOODS_BAND" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="波段不能为空！"></div></div></span>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<ul style="display:inline-flex;">-->
+                    <!--<li><label style="color:#c26555;">所属品牌*</label></li>-->
+                    <!--<li id="brand_select">-->
+                                <!--<span class="message_type_select">-->
+                                    <!--<select id="OWN_BRAND" style="display:inline-flex" >-->
+                                    <!--</select>-->
+                                <!--</span>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div>-->
+                        <!--<span><label style="color:#c26555;">发布时间*</label><input type="text" id="GOODS_RELEASETIME" readonly="true" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />-->
+                        <!--<div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>-->
+                        <!--</span>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;富文本编辑&ndash;&gt;-->
+            <!--<div>-->
+                <!--<label>商品卖点</label>-->
+                <!--<section >-->
+                    <!--<div id='edit'>-->
+                        <!--<script id="editor" type="text/plain" style="width:420px;height:286px;"></script>-->
+                    <!--</div>-->
+                <!--</section>-->
+            <!--</div>-->
+            <!--<div>-->
+                        <!--<span class="match_goods" id="match_goods">-->
+                        <!--<label>相关搭配</label>-->
+                        <!--<div id="add">添加搭配<span>+</span></div>-->
+                         <!--<ul>-->
+                             <!--&lt;!&ndash;<li><img class="goodsImg" src="../img/head.png"><span>001</span><span>名称</span><i class="icon-ishop_6-12"></i></li>&ndash;&gt;-->
+                         <!--</ul>-->
+                        <!--</span>-->
+            <!--</div>-->
+            <!--<div id="search_match_goods">-->
+                <!--<i class="icon-ishop_6-12" id="close_match_goods"></i>-->
+                <!--<div class="li">-->
+                    <!--<input type="text" class="input" id="search" placeholder="名称">-->
+                    <!--<i class="icon-ishop_3-05" id="d_search"></i>-->
+                <!--</div>-->
+                <!--<ul>-->
+
+                <!--</ul>-->
+                <!--<div id="more" class="more">加载更多<i class="icon-ishop_6-18"></i></div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span style="display: inline-flex;width:100%"><label style="height:180px;">商品卖点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>&ndash;&gt;-->
+            <!--</div>-->
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="fabadd_oper_btn">
+            <ul>
+                <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
+                <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>创建时间</label><div></div></span>
+
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="goods_box"></div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+<!-- oss -->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!-- Custom and plugin javascript -->
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js?20161116"></script>
+<!-- 图片上传(支持批量) -->
+<script type="text/javascript" src="../js/webuploader.html5only.min.js?20161116"></script>
+<script type="text/javascript" src="../js/diyUpload.js?20161116"></script>
+<script type="text/javascript">
+    $('#test').diyUpload({
+        url:'server/fileupload.php',
+        success:function( data ) {
+            console.info( data );
+        },
+        error:function( err ) {
+            console.info( err );
+        }
+    });
+</script>
+
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
+<script type="text/javascript" src="../js/goods/fab_operate.js?20161116"></script>
+<!-- 日期选择器 -->
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<!--富文本编辑器-->
+<script type="text/javascript">
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor');
+</script>
+</body>
+
+</html>
