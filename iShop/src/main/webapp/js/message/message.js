@@ -47,8 +47,7 @@ $(function(){
         $("#page_row").blur(function(){  
             setTimeout(hideLi,200);  
         });          
-    }      
-); 
+    }); 
 function showLi() {
     $("#liebiao").show();
 }
