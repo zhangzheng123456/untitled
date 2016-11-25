@@ -154,18 +154,7 @@ function getExecuteDetail(){
             var complete_vips_count = message.complete_vips_count;
             var userList =message.userList;
             var target_vips_count = message.target_vips_count;
-            var count = userList.length;
-            for(var i=0;i<userList.length;i++){
-                var name = userList[i].user_name;
-                var num = userList[i].user_code;
-                var area = userList[i].area_name;
-                var shop = userList[i].store_name;
-                var rate = userList[i].complete_rate;
-                listShow(name,num,area,shop,rate,count);
-            }
-            // console.log(complete_vips_count);
-            // console.log(userList);
-            // console.log(target_vips_count);
+            listShow(userList);
             check(target_vips_count,complete_vips_count);
         },
         error: function (data) {
@@ -235,28 +224,23 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
 }
 
 //加载员工列表
-function listShow(name,num,area,shop,rate,count){
+function listShow(userList){
     $('.people').animate({scrollTop:0}, 'fast');
-    var name = name;
-    var num = num;
-    var area = area;
-    var shop = shop;
-    // var percent = Math.floor(Math.random()*40+60);
-    var percent = rate;
-    // console.log('员工姓名：'+name+'员工编号：'+num+'所属区域'+area+'所属店铺'+shop+'百分比：'+percent);
-    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis">${name}</div> <div class="people_title_num ellipsis">${num}</div> <div class="people_title_area ellipsis"title="${area}">${area}</div> <div class="people_title_shop ellipsis">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
+    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis">${name}</div> <div class="people_title_num ellipsis">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
     console.log(tempHTML);
-    for(var i=0;i<count;i++){
+    for(var i=0;i<userList.length;i++){
         //随机进度
         var html = '';
         var order = i+1;
         var nowHTML1 = tempHTML;
+        var percent = userList[i].complete_rate;
         nowHTML1 = nowHTML1.replace("${order}", order);
-        nowHTML1 = nowHTML1.replace("${name}", name);
-        nowHTML1 = nowHTML1.replace("${num}", num);
-        nowHTML1 = nowHTML1.replace("${area}", area);
-        nowHTML1 = nowHTML1.replace("${shop}", shop);
-        $('.done').css('width',percent+'%');
+        nowHTML1 = nowHTML1.replace("${name}", userList[i].user_name);
+        nowHTML1 = nowHTML1.replace("${num}", userList[i].user_code);
+        nowHTML1 = nowHTML1.replace("${area}", userList[i].area_name);
+        nowHTML1 = nowHTML1.replace("${title}", userList[i].area_name);
+        nowHTML1 = nowHTML1.replace("${shop}", userList[i].store_name);
+        $('.done').css('width', percent+'%');
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
         $("#peopleContent").append(html);
