@@ -311,156 +311,11 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     public String executeActivity(ActivityVip activityVip,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         String run_mode = activityVip.getRun_mode();
-        String activity_vip_code = activityVip.getActivity_vip_code();
-        String corp_code = activityVip.getCorp_code();
-        Date now = new Date();
-
         if (run_mode.contains("任务")) {
-            String task_title = activityVip.getTask_title();
-            String task_desc = activityVip.getTask_desc();
-            String operators = activityVip.getOperators();
-            String start_time = activityVip.getStart_time();
-            String end_time = activityVip.getEnd_time();
-
-            //判断是否存在【任务类型】，没有则新建
-            List<TaskType> taskTypes = taskTypeService.nameExist(corp_code, run_mode);
-            String task_type_code = "";
-            if (taskTypes.size() > 0) {
-                task_type_code = taskTypes.get(0).getTask_type_code();
-            } else {
-                JSONObject message1 = new JSONObject();
-                task_type_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now);
-                message1.put("task_type_code", task_type_code);
-                message1.put("task_type_name", run_mode);
-                message1.put("corp_code", corp_code);
-                message1.put("isactive", "Y");
-                message1.put("created_date", Common.DATETIME_FORMAT.format(now));
-                message1.put("modified_date", Common.DATETIME_FORMAT.format(now));
-                message1.put("creater", user_code);
-                message1.put("modifier", user_code);
-                taskTypeService.insertTaskType(message1.toString(), user_code);
-            }
-
-            //创建任务并分配给执行人
-            String user_codes = "";
-            String phones = "";
-
-            JSONArray store_codes_array = JSONArray.parseArray(operators);
-            String store_codes = "";
-            for (int i = 0; i <store_codes_array.size() ; i++) {
-                store_codes = store_codes + store_codes_array.getJSONObject(i).get("store_code")+",";
-            }
-            List<User> userList = userService.selUserByStoreCode(corp_code,"",store_codes,null,"");
-            if (userList.size() > 0){
-                for (int i = 0; i < userList.size(); i++) {
-                    user_codes = user_codes + userList.get(i).getUser_code() + ",";
-                    phones = phones + userList.get(i).getPhone() + ",";
-                }
-                Task task = new Task();
-                String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
-                task.setTask_code(task_code);
-                task.setTask_title(task_title);
-                task.setTask_type_code(task_type_code);
-                task.setTask_description(task_desc);
-                task.setTarget_start_time(start_time);
-                task.setTarget_end_time(end_time);
-                task.setCorp_code(corp_code);
-                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                task.setCreater(user_code);
-                task.setModified_date(Common.DATETIME_FORMAT.format(now));
-                task.setModifier(user_code);
-                task.setIsactive(Common.IS_ACTIVE_Y);
-                task.setActivity_vip_code(activity_vip_code);
-                taskService.addTask(task, phones, user_codes, user_code);
-
-                //更新活动表中task_code
-                activityVip.setTask_code(task_code);
-                //更新活动状态activity_state
-                activityVip.setActivity_state("执行中");
-                activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
-                activityVip.setModifier(user_code);
-                updateActivityVip(activityVip);
-            }else {
-                return "该范围下没有执行人，无法执行";
-            }
+            status = executeTask(activityVip,user_code);
         }else{
             if (run_mode.contains("系统短信")){
-                String target_vips = activityVip.getTarget_vips();
-                String msg_info = activityVip.getMsg_info();
-                JSONObject target_vips_obj = JSONObject.parseObject(target_vips);
-                String type = target_vips_obj.getString("type");
-                String phone = "";
-                if (type.equals("1")){
-                    String area_code = target_vips_obj.get("area_code").toString();
-                    String brand_code = target_vips_obj.get("brand_code").toString();
-                    String store_code = target_vips_obj.get("store_code").toString();
-                    String vip_user_code = target_vips_obj.get("user_code").toString();
-                    if (vip_user_code.equals("")){
-                        if (store_code.equals("")) {
-                            List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-                            for (int i = 0; i < storeList.size(); i++) {
-                                store_code = store_code + storeList.get(i).getStore_code() + ",";
-                            }
-                        }
-                        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                        Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
-
-                        Map datalist = new HashMap<String, Data>();
-                        datalist.put(data_corp_code.key, data_corp_code);
-                        datalist.put(data_store_code.key, data_store_code);
-                        DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
-                        String message = dataBox.data.get("message").value;
-                        JSONObject msg_obj = JSONObject.parseObject(message);
-                        JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-                        for (int i = 0; i < vip_infos.size(); i++) {
-                            JSONObject vip_obj = vip_infos.getJSONObject(i);
-                            phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                        }
-                    }else {
-                        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                        Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
-
-                        Map datalist = new HashMap<String, Data>();
-                        datalist.put(data_corp_code.key, data_corp_code);
-                        datalist.put(data_user_code.key, data_user_code);
-                        DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
-                        String message = dataBox.data.get("message").value;
-                        JSONObject msg_obj = JSONObject.parseObject(message);
-                        JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-                        for (int i = 0; i < vip_infos.size(); i++) {
-                            JSONObject vip_obj = vip_infos.getJSONObject(i);
-                            phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                        }
-                    }
-                }else {
-                    String vips = target_vips_obj.get("vips").toString();
-
-                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                    Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
-                    Map datalist = new HashMap<String, Data>();
-                    datalist.put(data_corp_code.key, data_corp_code);
-                    datalist.put(data_vip_id.key, data_vip_id);
-                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
-                    String message = dataBox.data.get("message").value;
-                    JSONObject msg_obj = JSONObject.parseObject(message);
-                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-                    for (int i = 0; i < vip_infos.size(); i++) {
-                        JSONObject vip_obj = vip_infos.getJSONObject(i);
-                        phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                    }
-                }
-                Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-                Data data_phone = new Data("phone", phone, ValueType.PARAM);
-                Data data_text = new Data("text", msg_info, ValueType.PARAM);
-
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_channel.key, data_channel);
-                datalist.put(data_phone.key, data_phone);
-                datalist.put(data_text.key, data_text);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
-                if (!dataBox.status.toString().equals("SUCCESS")){
-                    status = "执行失败";
-                }
+                status = executeSysMsg(activityVip,user_code);
             }else if (run_mode.contains("微信")){
 
             }
@@ -547,4 +402,171 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         return result;
     }
 
+    //执行任务活动
+    public String executeTask(ActivityVip activityVip,String user_code) throws Exception{
+        String status = Common.DATABEAN_CODE_SUCCESS;
+
+        String activity_vip_code = activityVip.getActivity_vip_code();
+        String corp_code = activityVip.getCorp_code();
+        String run_mode = activityVip.getRun_mode();
+        Date now = new Date();
+        String task_title = activityVip.getTask_title();
+        String task_desc = activityVip.getTask_desc();
+        String operators = activityVip.getOperators();
+        String start_time = activityVip.getStart_time();
+        String end_time = activityVip.getEnd_time();
+
+        //判断是否存在【任务类型】，没有则新建
+        List<TaskType> taskTypes = taskTypeService.nameExist(corp_code, run_mode);
+        String task_type_code = "";
+        if (taskTypes.size() > 0) {
+            task_type_code = taskTypes.get(0).getTask_type_code();
+        } else {
+            JSONObject message1 = new JSONObject();
+            task_type_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now);
+            message1.put("task_type_code", task_type_code);
+            message1.put("task_type_name", run_mode);
+            message1.put("corp_code", corp_code);
+            message1.put("isactive", "Y");
+            message1.put("created_date", Common.DATETIME_FORMAT.format(now));
+            message1.put("modified_date", Common.DATETIME_FORMAT.format(now));
+            message1.put("creater", user_code);
+            message1.put("modifier", user_code);
+            taskTypeService.insertTaskType(message1.toString(), user_code);
+        }
+
+        //创建任务并分配给执行人
+        String user_codes = "";
+        String phones = "";
+
+        JSONArray store_codes_array = JSONArray.parseArray(operators);
+        String store_codes = "";
+        for (int i = 0; i <store_codes_array.size() ; i++) {
+            store_codes = store_codes + store_codes_array.getJSONObject(i).get("store_code")+",";
+        }
+        List<User> userList = userService.selUserByStoreCode(corp_code,"",store_codes,null,"");
+        if (userList.size() > 0){
+            for (int i = 0; i < userList.size(); i++) {
+                user_codes = user_codes + userList.get(i).getUser_code() + ",";
+                phones = phones + userList.get(i).getPhone() + ",";
+            }
+            Task task = new Task();
+            String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
+            task.setTask_code(task_code);
+            task.setTask_title(task_title);
+            task.setTask_type_code(task_type_code);
+            task.setTask_description(task_desc);
+            task.setTarget_start_time(start_time);
+            task.setTarget_end_time(end_time);
+            task.setCorp_code(corp_code);
+            task.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            task.setCreater(user_code);
+            task.setModified_date(Common.DATETIME_FORMAT.format(now));
+            task.setModifier(user_code);
+            task.setIsactive(Common.IS_ACTIVE_Y);
+            task.setActivity_vip_code(activity_vip_code);
+            taskService.addTask(task, phones, user_codes, user_code);
+
+            //更新活动表中task_code
+            activityVip.setTask_code(task_code);
+            //更新活动状态activity_state
+            activityVip.setActivity_state("执行中");
+            activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
+            activityVip.setModifier(user_code);
+            updateActivityVip(activityVip);
+        }else {
+            return "该范围下没有执行人，无法执行";
+        }
+        return status;
+    }
+
+    //执行系统发送短信活动
+    public String executeSysMsg(ActivityVip activityVip,String user_code) throws Exception{
+        String status = Common.DATABEAN_CODE_SUCCESS;
+        Date now = new Date();
+
+        String corp_code = activityVip.getCorp_code();
+        String target_vips = activityVip.getTarget_vips();
+        String msg_info = activityVip.getMsg_info();
+        JSONObject target_vips_obj = JSONObject.parseObject(target_vips);
+        String type = target_vips_obj.getString("type");
+        String phone = "";
+        if (type.equals("1")){
+            String area_code = target_vips_obj.get("area_code").toString();
+            String brand_code = target_vips_obj.get("brand_code").toString();
+            String store_code = target_vips_obj.get("store_code").toString();
+            String vip_user_code = target_vips_obj.get("user_code").toString();
+            if (vip_user_code.equals("")){
+                if (store_code.equals("")) {
+                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                    for (int i = 0; i < storeList.size(); i++) {
+                        store_code = store_code + storeList.get(i).getStore_code() + ",";
+                    }
+                }
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_store_code.key, data_store_code);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+                String message = dataBox.data.get("message").value;
+                JSONObject msg_obj = JSONObject.parseObject(message);
+                JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                for (int i = 0; i < vip_infos.size(); i++) {
+                    JSONObject vip_obj = vip_infos.getJSONObject(i);
+                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                }
+            }else {
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_user_code.key, data_user_code);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+                String message = dataBox.data.get("message").value;
+                JSONObject msg_obj = JSONObject.parseObject(message);
+                JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                for (int i = 0; i < vip_infos.size(); i++) {
+                    JSONObject vip_obj = vip_infos.getJSONObject(i);
+                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                }
+            }
+        }else {
+            String vips = target_vips_obj.get("vips").toString();
+
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_vip_id.key, data_vip_id);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+            String message = dataBox.data.get("message").value;
+            JSONObject msg_obj = JSONObject.parseObject(message);
+            JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+            for (int i = 0; i < vip_infos.size(); i++) {
+                JSONObject vip_obj = vip_infos.getJSONObject(i);
+                phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+            }
+        }
+        Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+        Data data_phone = new Data("phone", phone, ValueType.PARAM);
+        Data data_text = new Data("text", msg_info, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_channel.key, data_channel);
+        datalist.put(data_phone.key, data_phone);
+        datalist.put(data_text.key, data_text);
+        DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
+        if (!dataBox.status.toString().equals("SUCCESS")){
+            status = "执行失败";
+        }else {
+            activityVip.setActivity_state("执行中");
+            activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
+            activityVip.setModifier(user_code);
+            updateActivityVip(activityVip);
+        }
+        return status;
+    }
 }

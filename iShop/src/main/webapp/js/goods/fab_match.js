@@ -96,7 +96,7 @@ function jurisdiction(actions){
 function qjia(){
     console.log('权限接口调用');
     var param={};
-    param["funcCode"]='';
+    param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
@@ -129,7 +129,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchAdd.html");
     })
     //删除
     $("#remove").click(function(){
