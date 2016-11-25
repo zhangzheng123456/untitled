@@ -121,33 +121,33 @@ public class GoodsController {
             PageInfo<Goods> list = null;
             if (screen.equals("")) {
                 if (role_code.contains(Common.ROLE_SYS)) {
-                    list = goodsService.selectBySearch(1, 30000, "", search_value,null);
+                    list = goodsService.selectBySearch(1, Common.EXPORTEXECLCOUNT, "", search_value,null);
                 } else {
                     if (role_code.equals(Common.ROLE_GM)) {
-                        list = goodsService.selectBySearch(1, 30000, corp_code, search_value,null);
+                        list = goodsService.selectBySearch(1, Common.EXPORTEXECLCOUNT, corp_code, search_value,null);
                     }else if (role_code.equals(Common.ROLE_BM)){
                         String brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                         String[] brands = brand_code.split(",");
-                        list = goodsService.selectBySearch(1, 30000, corp_code, search_value,brands);
+                        list = goodsService.selectBySearch(1, Common.EXPORTEXECLCOUNT, corp_code, search_value,brands);
                     }else {
-                        list = goodsService.selectBySearch(1, 30000,  corp_code, search_value,null);
+                        list = goodsService.selectBySearch(1, Common.EXPORTEXECLCOUNT,  corp_code, search_value,null);
                     }
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.contains(Common.ROLE_SYS)) {
-                    list = goodsService.selectAllGoodsScreen(1, 30000, "", map,null);
+                    list = goodsService.selectAllGoodsScreen(1, Common.EXPORTEXECLCOUNT, "", map,null);
                 } else {
                     if (role_code.equals(Common.ROLE_GM)) {
-                        list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,null);
+                        list = goodsService.selectAllGoodsScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map,null);
                     }else if (role_code.equals(Common.ROLE_BM)){
                         String brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                         String[] brands = brand_code.split(",");
-                        list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,brands);
+                        list = goodsService.selectAllGoodsScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map,brands);
                     }else {
-                        list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map,null);
+                        list = goodsService.selectAllGoodsScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map,null);
                     }
                 }
             }
@@ -156,7 +156,7 @@ public class GoodsController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(goodses);
-            if (goodses.size() >= 29999) {
+            if (goodses.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
@@ -950,13 +950,14 @@ public class GoodsController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("search_value").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             PageInfo<Goods> list=null;
             if(role_code.equals(Common.ROLE_SYS)){
-                list = goodsService.getMatchFab(page_number,page_size,"");
+                list = goodsService.getMatchFab(page_number,page_size,"",search_value);
             }else{
-                list = goodsService.getMatchFab(page_number,page_size,corp_code);
+                list = goodsService.getMatchFab(page_number,page_size,corp_code,search_value);
             }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));

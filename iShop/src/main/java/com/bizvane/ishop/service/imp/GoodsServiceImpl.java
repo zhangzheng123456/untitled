@@ -374,10 +374,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code) throws SQLException {
+    public PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code,String search_value) throws SQLException {
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
-        list = goodsMapper.getMatchFab(corp_code);
+        list = goodsMapper.getMatchFab(corp_code,search_value);
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
     }

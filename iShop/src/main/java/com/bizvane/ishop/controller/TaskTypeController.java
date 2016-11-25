@@ -462,20 +462,20 @@ public class TaskTypeController {
             PageInfo<TaskType> taskTypes = null;
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    taskTypes = taskTypeService.selectAllTaskType(1, 30000, "", search_value);
+                    taskTypes = taskTypeService.selectAllTaskType(1, Common.EXPORTEXECLCOUNT, "", search_value);
                 } else {
-                    taskTypes = taskTypeService.selectAllTaskType(1, 30000, corp_code, search_value);
+                    taskTypes = taskTypeService.selectAllTaskType(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    taskTypes = taskTypeService.selectAllTaskTypeScreen(1, 30000, "", map);
+                    taskTypes = taskTypeService.selectAllTaskTypeScreen(1, Common.EXPORTEXECLCOUNT, "", map);
                 } else {
-                    taskTypes = taskTypeService.selectAllTaskTypeScreen(1, 30000, corp_code, map);
+                    taskTypes = taskTypeService.selectAllTaskTypeScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map);
                 }
             }
             List<TaskType> list = taskTypes.getList();
-            if (list.size() >= 29999) {
+            if (list.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

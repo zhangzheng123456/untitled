@@ -378,16 +378,16 @@ public class AppversionController {
             String screen = jsonObject.get("list").toString();
             PageInfo<Appversion> corpInfo = null;
             if (screen.equals("")) {
-                corpInfo= appversionService.selectAllAppversion(1, 30000, search_value);
+                corpInfo= appversionService.selectAllAppversion(1, Common.EXPORTEXECLCOUNT, search_value);
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                corpInfo = appversionService.selectAllScreen(1, 30000, map);
+                corpInfo = appversionService.selectAllScreen(1, Common.EXPORTEXECLCOUNT, map);
             }
             List<Appversion> appversions = corpInfo.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(appversions);
-            if (appversions.size() >= 29999) {
+            if (appversions.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
