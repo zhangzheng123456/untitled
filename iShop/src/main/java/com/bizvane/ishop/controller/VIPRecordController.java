@@ -84,7 +84,7 @@ public class VIPRecordController {
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names, search_value);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     DBCursor dbCursor1 = cursor.find(queryCondition);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1, 1, 30000, "message_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1, 1, Common.EXPORTEXECLCOUNT, "message_date", -1);
 
                 } else {
                     BasicDBList value = new BasicDBList();
@@ -93,7 +93,7 @@ public class VIPRecordController {
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, 1, 30000, "message_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, 1, Common.EXPORTEXECLCOUNT, "message_date", -1);
                 }
             } else {
 
@@ -104,7 +104,7 @@ public class VIPRecordController {
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
                     DBCursor dbCursor1 = cursor.find(queryCondition);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1, 1, 30000, "message_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1, 1, Common.EXPORTEXECLCOUNT, "message_date", -1);
                 } else {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
@@ -112,7 +112,7 @@ public class VIPRecordController {
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
                     DBCursor dbCursor1 = cursor.find(queryCondition1);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1, 1, 30000, "message_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1, 1, Common.EXPORTEXECLCOUNT, "message_date", -1);
                 }
             }
             JSONArray array = vipRecordService.transRecord(dbCursor);
@@ -120,7 +120,7 @@ public class VIPRecordController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(array);
-            if (array.size() >= 29999) {
+            if (array.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

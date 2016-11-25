@@ -429,8 +429,8 @@ public class AppLoginLogController {
             for (int i = 0; i < ids.length; i++) {
                 DBObject deleteRecord = new BasicDBObject();
                 deleteRecord.put("_id", new ObjectId(ids[i]));
+
                 DBCursor dbObjects = cursor.find(deleteRecord);
-                cursor.remove(deleteRecord);
 
                 String corp_code = "";
                 String user_id = "";
@@ -476,6 +476,8 @@ public class AppLoginLogController {
                 String t_name = user_name;
                 String remark = created_date + "(" + app_platform + ")";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
+
+                cursor.remove(deleteRecord);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -649,7 +651,7 @@ public class AppLoginLogController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
             String json = mapper.writeValueAsString(list);
-            if (list.size() >= 29999) {
+            if (list.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

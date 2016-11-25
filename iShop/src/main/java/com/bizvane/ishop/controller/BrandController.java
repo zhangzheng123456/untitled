@@ -581,33 +581,33 @@ public class BrandController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = brandService.getAllBrandByPage(1, 30000, "", search_value);
+                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, "", search_value);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     String[] codes = brand_code.split(",");
-                    list = brandService.getPartBrandByPage(1, 30000, corp_code, codes, search_value);
+                    list = brandService.getPartBrandByPage(1, Common.EXPORTEXECLCOUNT, corp_code, codes, search_value);
                 } else {
-                    list = brandService.getAllBrandByPage(1, 30000, corp_code, search_value);
+                    list = brandService.getAllBrandByPage(1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = brandService.getAllBrandScreen(1, 30000, "", null, map);
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, "", null, map);
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     String[] codes = brand_code.split(",");
-                    list = brandService.getAllBrandScreen(1, 30000, corp_code, codes, map);
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, codes, map);
                 } else {
-                    list = brandService.getAllBrandScreen(1, 30000, corp_code, null, map);
+                    list = brandService.getAllBrandScreen(1, Common.EXPORTEXECLCOUNT, corp_code, null, map);
                 }
             }
             List<Brand> brands = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(brands);
-            if (brands.size() >= 29999) {
+            if (brands.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

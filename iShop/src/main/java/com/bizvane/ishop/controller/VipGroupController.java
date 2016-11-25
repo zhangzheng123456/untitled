@@ -537,28 +537,28 @@ public class VipGroupController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000,"","", search_value);
+                    list = vipGroupService.getAllVipGroupByPage(1, Common.EXPORTEXECLCOUNT,"","", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)){
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,"",search_value);
+                    list = vipGroupService.getAllVipGroupByPage(1, Common.EXPORTEXECLCOUNT, corp_code,"",search_value);
                 }else {
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code,user_code,search_value);
+                    list = vipGroupService.getAllVipGroupByPage(1, Common.EXPORTEXECLCOUNT, corp_code,user_code,search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", "",map);
+                    list = vipGroupService.getAllVipGrouScreen(1, Common.EXPORTEXECLCOUNT, "", "",map);
                 } else if (role_code.equals(Common.ROLE_GM)){
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,"",map);
+                    list = vipGroupService.getAllVipGrouScreen(1, Common.EXPORTEXECLCOUNT,corp_code,"",map);
                 }else {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000,corp_code,user_code,map);
+                    list = vipGroupService.getAllVipGrouScreen(1, Common.EXPORTEXECLCOUNT,corp_code,user_code,map);
                 }
             }
             List<VipGroup> vipGroups = list.getList();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
             String json = mapper.writeValueAsString(vipGroups);
-            if (vipGroups.size() >= 29999) {
+            if (vipGroups.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }

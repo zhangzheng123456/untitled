@@ -574,6 +574,12 @@
         <if test="corp_code!=null and corp_code!=''">
             AND dg.corp_code=#{corp_code}
         </if>
+        <if test="search_value!=null and search_value!=''">
+            AND
+            (dg.goods_code LIKE concat('%',#{search_value},'%')
+            OR dg.goods_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
         AND dg.isactive='Y'
     </select>
 </mapper>

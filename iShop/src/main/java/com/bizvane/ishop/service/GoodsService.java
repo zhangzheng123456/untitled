@@ -86,5 +86,5 @@ public interface GoodsService {
 
     List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception;
 
-    PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code) throws SQLException;
+    PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code,String search_value) throws SQLException;
 }

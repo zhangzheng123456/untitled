@@ -339,10 +339,10 @@ public class UserController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = userService.selectBySearch(request, 1, 30000, "", search_value);
+                    list = userService.selectBySearch(request, 1, Common.EXPORTEXECLCOUNT, "", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     //系统管理员
-                    list = userService.selectBySearch(request, 1, 30000, corp_code, search_value);
+                    list = userService.selectBySearch(request, 1, Common.EXPORTEXECLCOUNT, corp_code, search_value);
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     //员工
                     User user = userService.getUserById(user_id);
@@ -353,7 +353,7 @@ public class UserController {
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = userService.selectBySearchPart(1, 30000, corp_code, search_value, store_code,"", "", role_code);
+                    list = userService.selectBySearchPart(1, Common.EXPORTEXECLCOUNT, corp_code, search_value, store_code,"", "", role_code);
                     List<User> users = list.getList();
                     User self = userService.getUserById(user_id);
                     users.add(self);
@@ -361,7 +361,7 @@ public class UserController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     String area_store = request.getSession().getAttribute("store_code").toString();
-                    list = userService.selectBySearchPart(1, 30000, corp_code, search_value, "",area_store, area_code, role_code);
+                    list = userService.selectBySearchPart(1, Common.EXPORTEXECLCOUNT, corp_code, search_value, "",area_store, area_code, role_code);
                     List<User> users = list.getList();
                     User self = userService.getUserById(user_id);
                     users.add(self);
@@ -374,26 +374,26 @@ public class UserController {
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
                     }
-                    list = userService.selectBySearchPart(1, 30000, corp_code, search_value, store_code,"", "", role_code);
+                    list = userService.selectBySearchPart(1, Common.EXPORTEXECLCOUNT, corp_code, search_value, store_code,"", "", role_code);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = userService.getAllUserScreen(1, 30000, "", map);
+                    list = userService.getAllUserScreen(1, Common.EXPORTEXECLCOUNT, "", map);
                 } else {
                     if (role_code.equals(Common.ROLE_GM)) {
                         //企业管理员
-                        list = userService.getAllUserScreen(1, 30000, corp_code, map);
+                        list = userService.getAllUserScreen(1, Common.EXPORTEXECLCOUNT, corp_code, map);
                     } else if (role_code.equals(Common.ROLE_SM)) {
                         //店长
                         String store_code = request.getSession().getAttribute("store_code").toString();
-                        list = userService.getScreenPart(1, 30000, corp_code, map, store_code, "","", role_code);
+                        list = userService.getScreenPart(1, Common.EXPORTEXECLCOUNT, corp_code, map, store_code, "","", role_code);
                     } else if (role_code.equals(Common.ROLE_AM)) {
                         //区经
                         String area_code = request.getSession().getAttribute("area_code").toString();
                         String area_store = request.getSession().getAttribute("store_code").toString();
-                        list = userService.getScreenPart(1, 30000, corp_code, map, "", area_store,area_code, role_code);
+                        list = userService.getScreenPart(1, Common.EXPORTEXECLCOUNT, corp_code, map, "", area_store,area_code, role_code);
                     }else if (role_code.equals(Common.ROLE_BM)){
                         String brand_code = request.getSession().getAttribute("brand_code").toString();
                         brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
@@ -402,13 +402,13 @@ public class UserController {
                         for (int i = 0; i < stores.size(); i++) {
                             store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
                         }
-                        list = userService.getScreenPart(1, 30000, corp_code, map, store_code,"", "", role_code);
+                        list = userService.getScreenPart(1, Common.EXPORTEXECLCOUNT, corp_code, map, store_code,"", "", role_code);
                     }
                 }
 
             }
             List<User> users = list.getList();
-            if (users.size() >= 29999) {
+            if (users.size() >= Common.EXPORTEXECLCOUNT) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
