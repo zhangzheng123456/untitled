@@ -13,7 +13,6 @@ var filtrate = "";//筛选的定义的值
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
-
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -205,13 +204,6 @@ function superaddition(data, num) {//页面加载循环
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
-        var receiver_type='';
-        switch (data[i].receiver_type){
-            case 'staff': receiver_type='员工'; break;
-            case 'area': receiver_type='区域'; break;
-            case 'corp': receiver_type='企业'; break;
-            case 'store': receiver_type='店铺'; break;
-        }
         if (num >= 2) {
             var a = i + 1 + (num - 1) * pageSize;
         } else {
@@ -226,26 +218,18 @@ function superaddition(data, num) {//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td>"
-            // + data[i].message_receiver
-            // + "</td><td>"
-            + data[i].message_type
-            + "</td><td >"
-            + receiver_type
-            + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
-            + data[i].message_title
-            + "</td><td><span title='" + data[i].message_content + "'>"
-            + data[i].message_content
+            + "</td><td><span  title='"+data[i].sms_code+"'>"
+            + data[i].sms_code
+            + "</span></td><td><span title='"+data[i].content+"'>"
+            + data[i].content
             + "</span></td><td>"
-            + data[i].message_sender
-            + "</td><td>"
             + data[i].corp_name
-            + "</span></td><td class='details'><a href='javascript:void(0)'>"
-            + "查看"
-            + "</a></td><td>"
+            + "</td><td><span title='" + data[i].modifier + "'>"
+            + data[i].modifier
+            + "</span></td><td>"
             + data[i].modified_date
             + "</td><td>"
-            + data[i].modifier
+            + data[i].created_date
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -279,7 +263,7 @@ qjia();
 //页面加载时list请求
 function GET(a, b) {
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("get", "/message/list?pageNumber=" + a + "&pageSize=" + b
+    oc.postRequire("get", "/vipFsend/list?pageNumber=" + a + "&pageSize=" + b
         + "&funcCode=" + funcCode + "", "", "", function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
@@ -296,7 +280,7 @@ function GET(a, b) {
         }
     });
 }
-// GET(inx, pageSize);
+GET(inx, pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse() {
     $(document).ready(function () {//隔行变色
@@ -427,7 +411,7 @@ $("#d_search").click(function () {
 //搜索的请求函数
 function POST(a,b) {
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("post", "/message/search", "0", param, function (data) {
+    oc.postRequire("post", "/vipFsend/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
@@ -484,7 +468,7 @@ $("#cancel").click(function () {
         }
         var params= {};
         params["id"] = ID;
-        oc.postRequire("post", "/message/delete", "0", params, function(data) {
+        oc.postRequire("post", "/vipFsend/delete", "0", params, function(data) {
             if (data.code == "0") {
                 if (value == "" && filtrate == "") {
                     frame();
@@ -807,7 +791,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b) {
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("post", "/message/screen", "0", _param, function (data) {
+    oc.postRequire("post", "/vipFsend/screen", "0", _param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
