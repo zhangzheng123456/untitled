@@ -49,10 +49,12 @@ public class MongoUtils {
 
                 String end = date.get("end").toString();
                 if(!start.equals("") && start!=null){
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$gte",start)));
+                    System.out.println("=========start:"+start);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE,start)));
                 }
                 if(!end.equals("") && end!=null){
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject("$lte", end)));
+                    System.out.println("=========end:"+end);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
                 }
             }
             if(screen_key.equals("count")){
@@ -65,27 +67,27 @@ public class MongoUtils {
                 }
                 if (type.equals("gt")) {
                     //大于
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$gte",count)));
+                    values.add(new BasicDBObject(screen_key,new BasicDBObject(QueryOperators.GTE,count)));
                 } else if (type.equals("lt")) {
                     //小于
-                    values.add(new BasicDBObject(screen_key,new BasicDBObject("$lte",count)));
+                    values.add(new BasicDBObject(screen_key,new BasicDBObject(QueryOperators.LTE,count)));
                 } else if (type.equals("between")) {
                     //介于
                     JSONObject values2 = JSONObject.parseObject(value);
                     String start = values2.get("start").toString();
                     String end = values2.get("end").toString();
                     if(!start.equals("") && start!=null){
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$gte", count)));
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE count)));
                     }
                     if(!end.equals("") && end!=null){
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject("$lte",count)));
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE,count)));
                     }
                 } else if (type.equals("eq")) {
                     //等于
                     values.add(new BasicDBObject(screen_key,count));
                 } else if (type.equals("all")) {
-                    Pattern pattern = Pattern.compile("^.*" + "" + ".*$", Pattern.CASE_INSENSITIVE);
-                    values.add(new BasicDBObject(screen_key, pattern));
+//                    Pattern pattern = Pattern.compile("^.*" + "" + ".*$", Pattern.CASE_INSENSITIVE);
+//                    values.add(new BasicDBObject(screen_key, pattern));
                 }
             }
 

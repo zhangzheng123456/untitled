@@ -281,6 +281,12 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     }
 
     @Override
+    public ActivityVip getActivityById(int id) throws Exception {
+        ActivityVip activityVip = activityVipMapper.selActivityById(id);
+        return activityVip;
+    }
+
+    @Override
     public ActivityVip selActivityByCode(String activity_vip_code) throws Exception {
         return activityVipMapper.selActivityByCode(activity_vip_code);
     }
@@ -374,7 +380,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
      *
      */
     @Override
-    public void executeActivity(ActivityVip activityVip,String user_code) throws Exception {
+    public String executeActivity(ActivityVip activityVip,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         String run_mode = activityVip.getRun_mode();
         String activity_vip_code = activityVip.getActivity_vip_code();
@@ -412,34 +418,38 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             String phones = "";
 
             List<User> userList = userService.selUserByStoreCode(corp_code,"",operators,null,"");
-            for (int i = 0; i < userList.size(); i++) {
-                user_codes = user_codes + userList.get(i).getUser_code();
-                phones = phones + userList.get(i).getPhone();
-            }
-            Task task = new Task();
-            String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
-            task.setTask_code(task_code);
-            task.setTask_title(task_title);
-            task.setTask_type_code(task_type_code);
-            task.setTask_description(task_desc);
-            task.setTarget_start_time(start_time);
-            task.setTarget_end_time(end_time);
-            task.setCorp_code(corp_code);
-            task.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            task.setCreater(user_code);
-            task.setModified_date(Common.DATETIME_FORMAT.format(now));
-            task.setModifier(user_code);
-            task.setIsactive(Common.IS_ACTIVE_Y);
-            task.setActivity_vip_code(activity_vip_code);
-            taskService.addTask(task, phones, user_codes, user_code);
+            if (userList.size() > 0){
+                for (int i = 0; i < userList.size(); i++) {
+                    user_codes = user_codes + userList.get(i).getUser_code() + ",";
+                    phones = phones + userList.get(i).getPhone() + ",";
+                }
+                Task task = new Task();
+                String task_code = "T" + Common.DATETIME_FORMAT_DAY_NUM.format(now) + Math.round(Math.random() * 9);
+                task.setTask_code(task_code);
+                task.setTask_title(task_title);
+                task.setTask_type_code(task_type_code);
+                task.setTask_description(task_desc);
+                task.setTarget_start_time(start_time);
+                task.setTarget_end_time(end_time);
+                task.setCorp_code(corp_code);
+                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                task.setCreater(user_code);
+                task.setModified_date(Common.DATETIME_FORMAT.format(now));
+                task.setModifier(user_code);
+                task.setIsactive(Common.IS_ACTIVE_Y);
+                task.setActivity_vip_code(activity_vip_code);
+                taskService.addTask(task, phones, user_codes, user_code);
 
-            //更新活动表中task_code
-            activityVip.setTask_code(task_code);
-            //更新活动状态activity_state
-            activityVip.setActivity_state("执行中");
-            activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
-            activityVip.setModifier(user_code);
-            updateActivityVip(activityVip);
+                //更新活动表中task_code
+                activityVip.setTask_code(task_code);
+                //更新活动状态activity_state
+                activityVip.setActivity_state("执行中");
+                activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
+                activityVip.setModifier(user_code);
+                updateActivityVip(activityVip);
+            }else {
+                return "该范围下没有执行人，无法执行";
+            }
         }else{
             if (run_mode.contains("系统短信")){
                 String target_vips = activityVip.getTarget_vips();
@@ -516,13 +526,13 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 datalist.put(data_text.key, data_text);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
                 if (!dataBox.status.toString().equals("SUCCESS")){
-                    status = Common.DATABEAN_CODE_ERROR;
+                    status = "执行失败";
                 }
-
             }else if (run_mode.contains("微信")){
 
             }
         }
+        return status;
     }
 
     /**

@@ -90,10 +90,9 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String addTask(Task task,String phone,String users,String user_code) {
+    public String addTask(Task task,String phone,String users,String user_code) throws Exception{
         int count=0;
         String[] user_codes = users.split(",");
-        try {
             count+=taskMapper.addTask(task);
            for(int i=0;i<user_codes.length;i++){
                TaskAllocation allocation=new TaskAllocation();
@@ -129,9 +128,6 @@ public class TaskServiceImpl implements TaskService{
                 String msg = dataBox.data.get("message").value;
                 System.out.println("APP："+msg);
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         return count+"";
     }
 
