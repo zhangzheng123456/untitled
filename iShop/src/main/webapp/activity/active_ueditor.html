@@ -6,13 +6,11 @@
     <title>ueditor</title>
 </head>
 <body>
-<h1>你好</h1>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/insidePostRequire.js"></script>
 <script>
     $(function () {
         //获取当前url的参数
-        console.log(window.location.search);
         function url(){
             //获取url后面的参数
             var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -26,11 +24,14 @@
             }
             return theRequest;
         }
-        console.log(url().code);
-        console.log("/api/produceActivityUrl?code="+url().code);
         var oc = new ObjectControl();
         oc.postRequire("get","/api/produceActivityUrl?code="+url().code,"",'',function(data){
-            console.log(data);
+            if(data.code==0){
+                document.body.innerHTML=data.message
+            }else if(data.code==-1){
+                alert(data.message);
+            }
+
         })
     });
 

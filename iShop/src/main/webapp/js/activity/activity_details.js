@@ -364,6 +364,15 @@ function getText(name){
 function getVal(name){
     return $('name').val();
 }
+$('#rightMore').click(function () {
+    $('#get_more').toggle();
+    whir.loading.add("",0.5);//加载等待框
+    $('#loading').remove();
+});
+$('#get_more .head_span_r').click(function () {
+    $('#get_more').toggle();
+    whir.loading.remove();//移除加载框
+});
 //页面加载数据
 window.onload = function(){
     //获取活动执行情况
