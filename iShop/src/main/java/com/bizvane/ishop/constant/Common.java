@@ -11,7 +11,7 @@ public class Common {
 
     //系统管理员role
     public static final String ROLE_SYS = "R6000";
-    //总经理role
+    //企业管理员
     public static final String ROLE_GM = "R5000";
     //品牌管理role
     public static final String ROLE_BM = "R4800";

@@ -41,6 +41,10 @@ public class CommonValue {
     //用户登录日志
     public final static String table_login_log = "login_log";
 
+    //用户签到记录
+    public final static String table_sign_content="staff_sign";
+
+
 
     //错误日志
     public final static String table_error_log = "error_log";
