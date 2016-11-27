@@ -112,52 +112,9 @@
                         <span class="icon-ishop_6-05"></span>
                         筛选
                     </li>
-                    <!--&lt;!&ndash;<li class="bg">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="icon-ishop_6-07"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;刷新&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="icon-ishop_6-08"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;更多&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
                 </ul>
             </div>
         </div>
-        <!--<div class="sxk" id="sxk">-->
-            <!--<div class="btn">-->
-                <!--<div class="empty" id="empty">-->
-                    <!--<i class="icon-ishop_6-16"></i>清空筛选-->
-                <!--</div>-->
-                <!--<div class="r_btn">-->
-                    <!--<div class="pack_up" id="pack_up">-->
-                        <!--<i class="icon-ishop_6-18"></i>-->
-                        <!--收起-->
-                    <!--</div>-->
-                    <!--<div class="find" id="find">-->
-                        <!--<i class="icon-ishop_6-19"></i>-->
-                        <!--查找-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="inputs">-->
-                <!--<li>-->
-                    <!--<label>公司名称</label>-->
-                    <!--<input type="text" id="p1">-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<label>联系人</label>-->
-                    <!--<input type="text" id="p2">-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<label>修改人</label>-->
-                    <!--<input type="text" id="p3">-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<label>联系电话</label>-->
-                    <!--<input type="text" id="p4">-->
-                <!--</li>-->
-            <!--</div>-->
-        <!--</div>-->
         <div class="table">
             <table id="table" cellpadding="0" cellspacing="0" width="100%">
                 <thead>
@@ -168,7 +125,6 @@
                     <th>联系电话</th>
                     <th>会员卡号</th>
                     <th>会员类型</th>
-                    <!--<th>分组名称</th>-->
                     <th>所属导购</th>
                     <th>所属店铺</th>
                     <th width="50px;" style="text-align: left;">
@@ -242,6 +198,32 @@
         </div>
     </div>
 </div>
+<!-- 会员弹框 -->
+    <div class="screen_wrapper" id="screen_wrapper">
+        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+        <div class="contion">
+            <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+            <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+            <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text" readonly="true"
+            data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+            <div class="contion_input"><label>所属导购</label><input id="screen_stff_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+           <!--  <div class="contion_input"><label>会员等级</label><input class="input" type="text" readonly="true"><span class="icon_r icon-ishop_8-03" id=""></span></div> -->
+            <!-- <div class="contion_input"><label>加入时间</label><input id="start" class="short_input laydate-icon" onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})"><label class="jian">~</label><input id="end" class="short_input laydate-icon" onclick="laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})">
+            </div> -->
+           <!--  <div class="contion_input"><label>性别</label><input class="input" type="text" value="女" readonly="readonly"></div> -->
+            <!-- <div class="contion_input"><label>年龄</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input laydate-icon">
+            </div> -->
+            <!-- <div class="contion_input"><label>距上次消费</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
+            </div> -->
+            <!-- <div class="contion_input"><label>消费次数</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
+            </div> -->
+            <!-- <div class="contion_input"><label>消费金额</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
+            </div> -->
+            <!-- <div class="contion_input"><label>积分余额</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
+            </div> -->
+            </div>
+        <div class="ensure"><span id="screen_vip_que">确定</span></div>
+    </div>
 <!-- 拉取区域 -->
 <div id="screen_area" class="screen_area">
     <div class="screen_title">
@@ -414,6 +396,7 @@
     </div>
     <div class="screen_que" id="screen_que_staff">确定</div>
 </div>
+
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
