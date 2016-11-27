@@ -165,7 +165,7 @@ public class VipFsendServiceImpl implements VipFsendService{
             datalist.put(data_text.key, data_text);
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
             if (!dataBox.status.toString().equals("SUCCESS")){
-                status = Common.DATABEAN_CODE_ERROR;
+                status = "发送失败";
             }
             return status;
         }else{
