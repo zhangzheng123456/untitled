@@ -227,8 +227,6 @@ function superaddition(data, num) {//页面加载循环
             + "</td><td><span title='" + data[i].creater + "'>"
             + data[i].creater
             + "</span></td><td>"
-            + data[i].modified_date
-            + "</td><td>"
             + data[i].created_date
             + "</td></tr>");
     }
