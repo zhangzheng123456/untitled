@@ -166,8 +166,7 @@ public class MessageController {
                String t_corp_code = action_json.get("corp_code").toString();
                String t_code = user_id;
                String t_name = receiver_type;
-               Date now = new Date();
-               String remark = operator+"("+ Common.DATETIME_FORMAT.format(now)+")";
+               String remark ="";
                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                //-------------------行为日志结束--------------------------------------------------------------------------------
 
@@ -350,7 +349,7 @@ public class MessageController {
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = messageById.getMessage_sender();
                 String t_name = messageById.getReceiver_type();
-                String remark = messageById.getMessage_sender()+"("+ messageById.getCreated_date()+")";
+                String remark ="";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束--------------------------------------------------------------------------------
             }
