@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -12,6 +13,7 @@ import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.VipLabel;
 
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -69,99 +71,99 @@ public class VIPLabelController {
 
     String id;
 
-    /**
-     * 会员标签管理
-     * 列表
-     */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String VIPLabelManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<VipLabel> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipLabelService.selectBySearch(page_number, page_size, "", "");
-            } else {
-                list = vipLabelService.selectBySearch(page_number, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            ex.printStackTrace();
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
 //    /**
-//     * 列表展示
-//     *
-//     * @param request
-//     * @return
+//     * 会员标签管理
+//     * 列表
 //     */
 //    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @ResponseBody
-//    public String userActionList(HttpServletRequest request) {
+//    public String VIPLabelManage(HttpServletRequest request) {
 //        DataBean dataBean = new DataBean();
-//        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-//        int pages = 0;
 //        try {
 //            String role_code = request.getSession(false).getAttribute("role_code").toString();
 //            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//
 //            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
 //            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            System.out.println("======会员标签mongeDB===== ");
 //
-//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//           DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
-//
-//            DBCursor dbCursor = null;
-//            // 读取数据
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            PageInfo<VipLabel> list;
 //            if (role_code.equals(Common.ROLE_SYS)) {
-//                DBCursor dbCursor1 = cursor.find();
-//
-//                pages = MongoUtils.getPages(dbCursor1, page_size);
-//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "modified_date", -1);
+//                list = vipLabelService.selectBySearch(page_number, page_size, "", "");
 //            } else {
-//                Map keyMap = new HashMap();
-//                keyMap.put("corp_code", corp_code);
-//                BasicDBObject ref = new BasicDBObject();
-//                ref.putAll(keyMap);
-//                DBCursor dbCursor1 = cursor.find(ref);
-//
-//                pages = MongoUtils.getPages(dbCursor1, page_size);
-//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "modified_date", -1);
+//                list = vipLabelService.selectBySearch(page_number, page_size, corp_code, "");
 //            }
-//
-//            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
-//            result.put("list", list);
-//            result.put("pages", pages);
-//            result.put("page_number", page_number);
-//            result.put("page_size", page_size);
+//            result.put("list", JSON.toJSONString(list));
 //            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
 //            dataBean.setId("1");
 //            dataBean.setMessage(result.toString());
 //        } catch (Exception ex) {
-//            ex.printStackTrace();
 //            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
 //            dataBean.setId("1");
 //            dataBean.setMessage(ex.getMessage());
-//            //logger.info(ex.getMessage());
+//            ex.printStackTrace();
+//            log.info(ex.getMessage());
 //        }
 //        return dataBean.getJsonStr();
 //    }
+
+    /**
+     * 列表展示
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public String userActionList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+        int pages = 0;
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            System.out.println("======会员标签mongeDB===== ");
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+           DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+
+            DBCursor dbCursor = null;
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                DBCursor dbCursor1 = cursor.find();
+
+                pages = MongoUtils.getPages(dbCursor1, page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "modified_date", -1);
+            } else {
+                Map keyMap = new HashMap();
+                keyMap.put("corp_code", corp_code);
+                BasicDBObject ref = new BasicDBObject();
+                ref.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(ref);
+
+                pages = MongoUtils.getPages(dbCursor1, page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "modified_date", -1);
+            }
+
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_labelType(dbCursor);
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            //logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /***
      * 导出数据
@@ -500,149 +502,210 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     *
-//     * 页面查找
-//     */
-//    @RequestMapping(value = "/find", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String getsearch(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-//        int pages = 0;
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String search_value = jsonObject.get("searchValue").toString();
-//
-//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
-//
-//            String[] column_names = new String[]{"app_platform","corp_code","version"};
-//            BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
-//
-//            DBCursor dbCursor = null;
-//            // 读取数据
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                DBCursor dbCursor1 = cursor.find(queryCondition);
-//                pages = MongoUtils.getPages(dbCursor1,page_size);
-//                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"modified_date",-1);
-//
-//            } else {
-//                BasicDBList value = new BasicDBList();
-//                value.add(new BasicDBObject("corp_code", corp_code));
-//                value.add(queryCondition);
-//                BasicDBObject queryCondition1 = new BasicDBObject();
-//                queryCondition1.put("$and", value);
-//                DBCursor dbCursor2 = cursor.find(queryCondition1);
-//
-//                pages = MongoUtils.getPages(dbCursor2,page_size);
-//                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"modified_date",-1);
-//            }
-//            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
-//            result.put("list", list);
-//            result.put("pages", pages);
-//            result.put("page_number", page_number);
-//            result.put("page_size", page_size);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//
-//        }
-//        return dataBean.getJsonStr();
-//    }
     /**
-     * 会员标签管理
-     * 查找
+     *
+     * 页面查找
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
-    public String findVIPLabelFind(HttpServletRequest request) {
+    public String getsearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String id = "";
+        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+        int pages = 0;
         try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.getString("id");
+            id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_Number = jsonObject.getInt("pageNumber");
-            int page_Size = jsonObject.getInt("pageSize");
-            String search_value = jsonObject.getString("searchValue").toString();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<VipLabel> list;
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("searchValue").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+
+            String[] column_names = new String[]{"corp_name","label_name"};
+            BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
+
+            DBCursor dbCursor = null;
+            // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.vipLabelService.selectBySearch(page_Number, page_Size, "", search_value);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"modified_date",-1);
+
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.vipLabelService.selectBySearch(page_Number, page_Size, corp_code, search_value);
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+
+                pages = MongoUtils.getPages(dbCursor2,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"modified_date",-1);
             }
-            result.put("list", JSON.toJSONString(list));
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_labelType(dbCursor);
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
+
         }
         return dataBean.getJsonStr();
     }
-    /**
-     * 会员标签管理
-     * 筛选
-     */
+//    /**
+//     * 会员标签管理
+//     * 查找
+//     */
+//    @RequestMapping(value = "/find", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String findVIPLabelFind(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int page_Number = jsonObject.getInt("pageNumber");
+//            int page_Size = jsonObject.getInt("pageSize");
+//            String search_value = jsonObject.getString("searchValue").toString();
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            PageInfo<VipLabel> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = this.vipLabelService.selectBySearch(page_Number, page_Size, "", search_value);
+//            } else {
+//                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//                list = this.vipLabelService.selectBySearch(page_Number, page_Size, corp_code, search_value);
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+
+
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
-    public String selectAllVipScreen(HttpServletRequest request) {
+    public String Screen(HttpServletRequest request) {
+        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
         DataBean dataBean = new DataBean();
-        String id = "";
+        int pages = 0;
         try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.getString("id");
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_Number = jsonObject.getInt("pageNumber");
-            int page_Size = jsonObject.getInt("pageSize");
-//            String screen = jsonObject.get("screen").toString();
-//            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String, String> map = WebUtils.Json2Map(jsonObject);
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<VipLabel> list;
+            com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String lists = jsonObject.get("list").toString();
+
+            JSONArray array = JSONArray.parseArray(lists);
+            BasicDBObject queryCondition = MongoHelperServiceImpl.andUserOperScreen(array);
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+
+            DBCursor dbCursor = null;
+            // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.vipLabelService.selectAllVipScreen(page_Number, page_Size, "", map);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"modified_date",-1);
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.vipLabelService.selectAllVipScreen(page_Number, page_Size, corp_code, map);
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+
+                pages = MongoUtils.getPages(dbCursor1,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"modified_date",-1);
             }
-            result.put("list", JSON.toJSONString(list));
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_labelType(dbCursor);
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
+           // logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
+//    /**
+//     * 会员标签管理
+//     * 筛选
+//     */
+//    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String selectAllVipScreen(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int page_Number = jsonObject.getInt("pageNumber");
+//            int page_Size = jsonObject.getInt("pageSize");
+////            String screen = jsonObject.get("screen").toString();
+////            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
+//            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            PageInfo<VipLabel> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = this.vipLabelService.selectAllVipScreen(page_Number, page_Size, "", map);
+//            } else {
+//                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//                list = this.vipLabelService.selectAllVipScreen(page_Number, page_Size, corp_code, map);
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     //热门标签
     @RequestMapping(value = "/findHotViplabel", method = RequestMethod.POST)
