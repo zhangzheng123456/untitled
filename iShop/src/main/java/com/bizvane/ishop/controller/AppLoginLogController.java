@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -129,7 +130,7 @@ public class AppLoginLogController {
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
 
-            ArrayList list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -230,7 +231,7 @@ public class AppLoginLogController {
                 dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
-            ArrayList list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -309,7 +310,7 @@ public class AppLoginLogController {
             String lists = jsonObject.get("list").toString();
 
             JSONArray array = JSONArray.parseArray(lists);
-            BasicDBObject queryCondition = MongoUtils.andLoginlogScreen(array);
+            BasicDBObject queryCondition = MongoHelperServiceImpl.andLoginlogScreen(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_login_log);
@@ -334,7 +335,7 @@ public class AppLoginLogController {
                 dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
-            ArrayList list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -627,10 +628,10 @@ public class AppLoginLogController {
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                     canloginByCode = userService.getCanloginByCode(corp_code);
                 }
-                list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
+                list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
             } else {
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andLoginlogScreen(array);
+                BasicDBObject queryCondition = MongoHelperServiceImpl.andLoginlogScreen(array);
                 DBCursor dbCursor = null;
                 List<User> canloginByCode = null;
                 // 读取数据
@@ -646,7 +647,7 @@ public class AppLoginLogController {
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                     canloginByCode = userService.getCanloginByCode(corp_code);
                 }
-                list = MongoUtils.dbCursorToList_canLogin(dbCursor, canloginByCode);
+                list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
