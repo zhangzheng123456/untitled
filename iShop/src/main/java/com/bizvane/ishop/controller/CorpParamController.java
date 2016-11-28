@@ -149,7 +149,7 @@ public class CorpParamController {
                 String action = Common.ACTION_ADD;
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("param_id").toString();
-                String t_name = action_json.get("param_name").toString();
+                String t_name = action_json.get("param_value").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ public class CorpParamController {
                 String action = Common.ACTION_UPD;
                 String t_corp_code = action_json.get("corp_code").toString();
                 String t_code = action_json.get("param_id").toString();
-                String t_name = action_json.get("param_name").toString();
+                String t_name = action_json.get("param_value").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
@@ -272,7 +272,7 @@ public class CorpParamController {
                 String action = Common.ACTION_DEL;
                 String t_corp_code = corpParam.getCorp_code();
                 String t_code = corpParam.getParam_id();
-                String t_name = corpParam.getParam_name();
+                String t_name = corpParam.getParam_value();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------

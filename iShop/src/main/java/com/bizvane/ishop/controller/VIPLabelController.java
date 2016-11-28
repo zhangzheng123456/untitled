@@ -22,10 +22,7 @@ import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
+import com.mongodb.*;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -375,7 +372,39 @@ public class VIPLabelController {
         }
         return dataBean.getJsonStr();
     }
-
+//
+//    /**
+//     * 编辑标签前，获取数据
+//     *
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping(value = "/select", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String findVipLabelById(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String data = null;
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int vip_tag_id = Integer.parseInt(jsonObject.getString("id"));
+//            VipLabel vipLabel = vipLabelService.getVipLabelById(vip_tag_id);
+//            data = JSON.toJSONString(vipLabel);
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage(data);
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
     /**
      * 编辑标签前，获取数据
      *
@@ -384,52 +413,132 @@ public class VIPLabelController {
      */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public String findVipLabelById(HttpServletRequest request) {
+    public String getfindById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String data = null;
-        String id = "";
+
         try {
             String jsString = request.getParameter("param");
+
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int vip_tag_id = Integer.parseInt(jsonObject.getString("id"));
-            VipLabel vipLabel = vipLabelService.getVipLabelById(vip_tag_id);
-            data = JSON.toJSONString(vipLabel);
-            dataBean.setId(id);
+            String errorLog_id = jsonObject.get("id").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+            DBObject deleteRecord = new BasicDBObject();
+            deleteRecord.put("_id",errorLog_id);
+            DBCursor dbObjects = cursor.find(deleteRecord);
+            DBObject vip_label=null;
+            while (dbObjects.hasNext()) {
+                vip_label  = dbObjects.next();
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(data);
-        } catch (Exception ex) {
-            dataBean.setId(id);
+            dataBean.setId("1");
+            dataBean.setMessage(vip_label.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
+            dataBean.setId("1");
+            dataBean.setMessage("信息异常");
         }
         return dataBean.getJsonStr();
     }
+//    /**
+//     * 会员标签类型管理
+//     * 删除
+//     */
+//    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+//    @ResponseBody
+//    @Transactional
+//    public String findVIPLabelDelete(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String messageType_id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            String[] ids = jsonObject.get("id").toString().split(",");
+//            for (int i = 0; ids != null && i < ids.length; i++) {
+//                VipLabel vipLabelById = vipLabelService.getVipLabelById(Integer.parseInt(ids[i]));
+//                this.vipLabelService.delete(Integer.parseInt(ids[i]));
+//                //----------------行为日志开始------------------------------------------
+//                /**
+//                 * mongodb插入用户操作记录
+//                 * @param operation_corp_code 操作者corp_code
+//                 * @param operation_user_code 操作者user_code
+//                 * @param function 功能
+//                 * @param action 动作
+//                 * @param corp_code 被操作corp_code
+//                 * @param code 被操作code
+//                 * @param name 被操作name
+//                 * @throws Exception
+//                 */
+//                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+//                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+//                String function = "会员管理_会员标签";
+//                String action = Common.ACTION_DEL;
+//                String t_corp_code = vipLabelById.getCorp_code();
+//                String t_code = vipLabelById.getLabel_group_code();
+//                String t_name = vipLabelById.getLabel_name();
+//                String remark = "";
+//                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+//                //-------------------行为日志结束-----------------------------------------------------------------------------------
+//
+//            }
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage("scuccess");
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+
 
     /**
-     * 会员标签类型管理
      * 删除
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public String findVIPLabelDelete(HttpServletRequest request) {
+    public String callbackDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
-            String messageType_id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String[] ids = jsonObject.get("id").toString().split(",");
-            for (int i = 0; ids != null && i < ids.length; i++) {
-                VipLabel vipLabelById = vipLabelService.getVipLabelById(Integer.parseInt(ids[i]));
-                this.vipLabelService.delete(Integer.parseInt(ids[i]));
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+
+            for (int i = 0; i < ids.length; i++) {
+                DBObject deleteRecord = new BasicDBObject();
+                deleteRecord.put("_id", ids[i]);
+
+                DBCursor dbObjects = cursor.find(deleteRecord);
+                String corp_code = "";
+
+                String label_name = "";
+                while (dbObjects.hasNext()) {
+                    DBObject errorlog = dbObjects.next();
+                    if (errorlog.containsField("corp_code")) {
+                        corp_code = errorlog.get("corp_code").toString();
+                    }
+                    if (errorlog.containsField("label_name")) {
+                        label_name = errorlog.get("label_name").toString();
+                    }
+                }
                 //----------------行为日志开始------------------------------------------
                 /**
                  * mongodb插入用户操作记录
@@ -446,25 +555,29 @@ public class VIPLabelController {
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "会员管理_会员标签";
                 String action = Common.ACTION_DEL;
-                String t_corp_code = vipLabelById.getCorp_code();
-                String t_code = vipLabelById.getLabel_group_code();
-                String t_name = vipLabelById.getLabel_name();
+                String t_corp_code = corp_code;
+                String t_code = ids[i];
+                String t_name = label_name;
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
-
+                cursor.remove(deleteRecord);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("scuccess");
+
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
+
         }
         return dataBean.getJsonStr();
     }
+
+
 
     /**
      * 会员标签管理
