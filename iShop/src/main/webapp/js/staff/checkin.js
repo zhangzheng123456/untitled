@@ -296,14 +296,13 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/sign/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-            // console.log(data);
             if(data.code=="0"){
+                console.log(data);
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var list=JSON.parse(message.list);
-                cout=list.pages;
-                var pageNum = list.pageNum;
-                var list=list.list;
+                var cout=message.pages;
+                var list=message.list;
+                var pageNum = message.page_number;
                 superaddition(list,pageNum);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
@@ -385,11 +384,9 @@ function POST(a,b){
     oc.postRequire("post","/sign/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
-            var actions=message.actions;
+            var cout=message.pages;
+            var list=message.list;
+            var pageNum = message.page_number;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -684,7 +681,7 @@ $("#find").click(function(){
 })
 function getInputValue(){
     var input=$('#sxk .inputs>ul>li');
-   inx=1;
+    inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
@@ -693,31 +690,32 @@ function getInputValue(){
    var screen_value={};
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
-       if($(input[i]).attr("class")=="isActive_select"){
+        if($(input[i]).attr("class")=="isActive_select"){
            screen_key=$(input[i]).find("input").attr("id")
            screen_value=$(input[i]).find("input").attr("data-code");
-       }else if($(input[i]).attr("class")=="created_date"){
+        }else if($(input[i]).attr("class")=="created_date"){
            var start=$('#start').val();
            var end=$('#end').val();
            screen_key=$(input[i]).attr("id");
            screen_value={"start":start,"end":end};
-       }else{
+        }else{
            screen_key=$(input[i]).find("input").attr("id");
            screen_value=$(input[i]).find("input").val().trim();
-       }
-        if(screen_value!=""){
+        }
+        if(screen_value!=""&&(start!==""||end!=="")){
             num++;
         }
-       var param1={"screen_key":screen_key,"screen_value":screen_value};
-       list.push(param1);
-   }
-   _param["list"]=list;
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
+        filtrates(inx,pageSize);
     }else if(num<=0){
+        GET(inx,pageSize);
         filtrate="";
     }
 }
@@ -727,11 +725,9 @@ function filtrates(a,b){
     oc.postRequire("post","/sign/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
-            var actions=message.actions;
+            var cout=message.pages;
+            var list=message.list;
+            var pageNum = message.page_number;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();

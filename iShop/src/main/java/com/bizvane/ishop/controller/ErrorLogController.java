@@ -8,6 +8,7 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.ErrorLog;
 import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.ErrorLogService;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
@@ -100,7 +101,7 @@ public class ErrorLogController {
                 DBCursor dbCursor1 = cursor.find();
 
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
             } else {
                 Map keyMap = new HashMap();
                 keyMap.put("corp_code", corp_code);
@@ -109,7 +110,7 @@ public class ErrorLogController {
                 DBCursor dbCursor1 = cursor.find(ref);
 
                 pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
             }
 
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
@@ -219,8 +220,8 @@ public class ErrorLogController {
 
             for (int i = 0; i < ids.length; i++) {
                 DBObject deleteRecord = new BasicDBObject();
-                deleteRecord.put("_id", new ObjectId(ids[i]));
-                cursor.remove(deleteRecord);
+                deleteRecord.put("_id", ids[i]);
+
                 DBCursor dbObjects = cursor.find(deleteRecord);
                 String corp_code = "";
                 String version = "";
@@ -233,7 +234,7 @@ public class ErrorLogController {
                     if (errorlog.containsField("version")) {
                         version = errorlog.get("version").toString();
                     }
-                    if (errorlog.containsField("user_name")) {
+                    if (errorlog.containsField("app_platform")) {
                         app_platform = errorlog.get("app_platform").toString();
                     }
                 }
@@ -259,6 +260,7 @@ public class ErrorLogController {
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name, remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------
+                cursor.remove(deleteRecord);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -328,12 +330,17 @@ public class ErrorLogController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_error_log);
             DBObject deleteRecord = new BasicDBObject();
-            deleteRecord.put("_id", new ObjectId(errorLog_id));
+            deleteRecord.put("_id",errorLog_id);
             DBCursor dbObjects = cursor.find(deleteRecord);
+            DBObject errorlog=null;
+            while (dbObjects.hasNext()) {
+                errorlog  = dbObjects.next();
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage( dbObjects.toString());
+            dataBean.setMessage(errorlog.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage("错误日志信息异常");
@@ -410,7 +417,7 @@ public class ErrorLogController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
             } else {
                 BasicDBList value = new BasicDBList();
@@ -421,7 +428,7 @@ public class ErrorLogController {
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor2,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
             }
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
@@ -473,10 +480,9 @@ public class ErrorLogController {
 //        return dataBean.getJsonStr();
 //    }
 
-
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
-    public String getScreen(HttpServletRequest request) {
+    public String Screen(HttpServletRequest request) {
         com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
         DataBean dataBean = new DataBean();
         int pages = 0;
@@ -493,7 +499,7 @@ public class ErrorLogController {
             String lists = jsonObject.get("list").toString();
 
             JSONArray array = JSONArray.parseArray(lists);
-            BasicDBObject queryCondition = MongoUtils.andOperation(array);
+            BasicDBObject queryCondition = MongoHelperServiceImpl.andUserOperScreen(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_error_log);
@@ -504,7 +510,7 @@ public class ErrorLogController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -514,7 +520,7 @@ public class ErrorLogController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             }
             ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
             result.put("list", list);
@@ -533,6 +539,4 @@ public class ErrorLogController {
         }
         return dataBean.getJsonStr();
     }
-
-
 }

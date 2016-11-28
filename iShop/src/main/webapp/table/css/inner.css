@@ -1353,7 +1353,7 @@ input::-webkit-input-placeholder{
 }
 /********会员筛选首页弹出框********/
 .screen_wrapper{
-    width:480px;
+    width:500px;
     // height: 330px;
     font-size: 14px;
     color: #888888;
@@ -1365,7 +1365,10 @@ input::-webkit-input-placeholder{
     top:85px;
     left: 189px;
     display: none;
-    z-index: 10001
+    z-index: 10001;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .screen_head{
     height: 39px;
@@ -1387,6 +1390,9 @@ input::-webkit-input-placeholder{
     margin-top: 20px;
     padding: 0 30px;
     overflow-y: auto;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .contion label{
     width: 70px;
@@ -1394,8 +1400,8 @@ input::-webkit-input-placeholder{
     display:inline-block;
 }
 .contion .contion_input{
-	width: 420px;
-	height: 30px;
+	width: 420px!important;
+	height: 30px!important;
 	margin-bottom: 20px;
 	position: relative;
 }
@@ -1413,8 +1419,8 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 }
 .contion .input{
-    width: 328px;
-    height: 28px;
+    width: 340px!important;
+    height: 30px!important;
     margin-left: 10px;
     padding-left: 10px;
     border: 1px solid #d7d7d7;
@@ -1423,6 +1429,9 @@ input::-webkit-input-placeholder{
     color: #888888;
     background:url("../../img/btn_dropmenu.png")no-repeat 100% 50%;
     background-size: 30px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .contion .short_input{
     width:148px;
@@ -1433,6 +1442,9 @@ input::-webkit-input-placeholder{
     border-radius: 6px;
     outline: none;
     color: #888888;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .contion .jian{
 	width: 20px;

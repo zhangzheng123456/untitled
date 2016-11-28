@@ -87,13 +87,13 @@ public class VipFsendController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
 
             String result = this.vipFsendService.insert(message, user_id);
-            if (result.equals("发送失败")) {
+            if (result.equals("0")) {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
             } else {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {
