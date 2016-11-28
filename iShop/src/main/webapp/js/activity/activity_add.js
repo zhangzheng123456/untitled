@@ -2004,7 +2004,7 @@ $("#target_vip_all").click(function () {
             time: 1,
             lock: true,
             cancel: false,
-            content: "分配的会员不能超过500个"
+            content: "选择的会员不能超过500个"
         });
         return ;
     }else {

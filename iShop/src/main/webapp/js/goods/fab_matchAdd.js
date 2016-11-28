@@ -55,7 +55,7 @@ var swip_image = [];
         $(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
             function getContent() {
                 var arr = [];
-                arr.push(UE.getEditor('editor').getContent());
+                //arr.push(UE.getEditor('editor').getContent());
                 return arr.join("\n");
             }
             function getPlainTxt() {
@@ -72,46 +72,51 @@ var swip_image = [];
                 }
             }
             var img_c=imge_change();
-            var nr= getContent().replace(reg,function () {
-                var i=img_c();
-                return getPlainTxt().match(reg)[i-1];
-            });
-            console.log(nr);
+            //var nr= getContent().replace(reg,function () {
+            //    var i=img_c();
+            //    return getPlainTxt().match(reg)[i-1];
+            //});
+            //console.log(nr);
             if(fabjs.firstStep()){
-                var OWN_CORP=$("#OWN_CORP").val();//公司编号
-                var GOODS_CODE=$("#GOODS_CODE").val().trim();//商品编号
-                var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
-                var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格
-                var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
-                var GOODS_BAND=$("#GOODS_BAND").val();//波段
-                var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
-                var GOODS_BUYPOINT= nr;//商品卖点
-                var ISACTIVE="";//是否可用
-                var brand_code=$("#OWN_BRAND").val();//品牌编号
+                //var OWN_CORP=$("#OWN_CORP").val();//公司编号
+                var GOODS_CODE='';
+               $(".conpany_msg .goods_code").each(function(){
+                    var nowVal =  this.text();
+                   GOODS_CODE +=nowVal;
+                });;//商品编号
+                console.log('商品编号是：'+GOODS_CODE)
+                //var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
+                //var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格
+                //var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
+                //var GOODS_BAND=$("#GOODS_BAND").val();//波段
+                //var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
+                //var GOODS_BUYPOINT= nr;//商品卖点
+                //var ISACTIVE="";//是否可用
+                //var brand_code=$("#OWN_BRAND").val();//品牌编号
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(input.checked==true){
                     ISACTIVE="Y";
                 }else if(input.checked==false){
                     ISACTIVE="N";
                 }
-                if(brand_code==""||brand_code==null){
-                    art.dialog({
-                        time: 1,
-                        lock:true,
-                        cancel: false,
-                        content:"品牌不能为空"
-                    });
-                    return;
-                }
-                if(GOODS_RELEASETIME==""){
-                    art.dialog({
-                        time: 1,
-                        lock:true,
-                        cancel: false,
-                        content:"发布时间不能为空"
-                    });
-                    return;
-                }
+                //if(brand_code==""||brand_code==null){
+                //    art.dialog({
+                //        time: 1,
+                //        lock:true,
+                //        cancel: false,
+                //        content:"品牌不能为空"
+                //    });
+                //    return;
+                //}
+                //if(GOODS_RELEASETIME==""){
+                //    art.dialog({
+                //        time: 1,
+                //        lock:true,
+                //        cancel: false,
+                //        content:"发布时间不能为空"
+                //    });
+                //    return;
+                //}
                 /*
                  获取上传的图片地址
                  */
@@ -167,25 +172,24 @@ var swip_image = [];
                         matchgoods+=r;
                     }
                 }
-                var _command="/goods/fab/add";//接口名
+                var _command="/defmatch/addMatch";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
-
                     }
                 };
                 var _params = {
-                    "corp_code": OWN_CORP,
+                    //"corp_code": OWN_CORP,
                     "goods_code": GOODS_CODE,
-                    "goods_name": GOODS_NAME,
-                    "brand_code":brand_code,
-                    "goods_price": GOODS_PRICE,
-                    "goods_image": img_list_json,
-                    "goods_quarter": GOODS_QUARTER,
-                    "goods_wave": GOODS_BAND,
-                    "goods_time": GOODS_RELEASETIME,
-                    "goods_description": GOODS_BUYPOINT,
-                    "isactive": ISACTIVE,
-                    "match_goods":matchgoods
+                    //"goods_name": GOODS_NAME,
+                    //"brand_code":brand_code,
+                    //"goods_price": GOODS_PRICE,
+                    //"goods_image": img_list_json,
+                    //"goods_quarter": GOODS_QUARTER,
+                    //"goods_wave": GOODS_BAND,
+                    //"goods_time": GOODS_RELEASETIME,
+                    //"goods_description": GOODS_BUYPOINT,
+                    //"isactive": ISACTIVE,
+                    //"match_goods":matchgoods
                 };
                 console.log(_params);
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -343,20 +347,20 @@ var swip_image = [];
                     }
                 };
                 var _params = {
-                    "id": ID,
-                    "corp_code": OWN_CORP,
+                    //"id": ID,
+                    //"corp_code": OWN_CORP,
                     "goods_code": GOODS_CODE,
-                    "goods_name": GOODS_NAME,
-                    "goods_price": GOODS_PRICE,
-                    "brand_code":brand_code,
-                    "goods_image": img_list_json,
-                    "goods_quarter": GOODS_QUARTER,
-                    "goods_wave": GOODS_BAND,
-                    "goods_time": GOODS_RELEASETIME,
-                    "goods_description": GOODS_BUYPOINT,
-                    "isactive": ISACTIVE,
-                    "match_goods":matchgoods,
-                    'delImgPath':delete_image.join('')
+                    //"goods_name": GOODS_NAME,
+                    //"goods_price": GOODS_PRICE,
+                    //"brand_code":brand_code,
+                    //"goods_image": img_list_json,
+                    //"goods_quarter": GOODS_QUARTER,
+                    //"goods_wave": GOODS_BAND,
+                    //"goods_time": GOODS_RELEASETIME,
+                    //"goods_description": GOODS_BUYPOINT,
+                    //"isactive": ISACTIVE,
+                    //"match_goods":matchgoods,
+                    //'delImgPath':delete_image.join('')
                 };
                 fabjs.ajaxSubmit(_command,_params,opt);
 
@@ -369,9 +373,9 @@ var swip_image = [];
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
-                if(_command=="/goods/fab/add"){
+                if(_command=="/defmatch/addMatch"){
                     sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_edit.html");
+                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_match.html");
                 }
                 if(_command=="/goods/fab/edit"){
                     art.dialog({
@@ -605,13 +609,13 @@ jQuery(document).ready(function(){
     //  }
     // })
     $(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
     });
     $("#edit_close").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
     });
     $("#back_goods_fab").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html")
     });
 
 });
@@ -624,58 +628,58 @@ var next=false;
 function getcorplist(a,b){
     //获取所属企业列表
     var corp_command="/user/getCorpByUser";
-    oc.postRequire("post", corp_command,"", "", function(data){
-        if(data.code=="0"){
-            var msg=JSON.parse(data.message);
-            var index=0;
-            var corp_html='';
-            var c=null;
-            for(index in msg.corps){
-                c=msg.corps[index];
-                corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-            }
-            $("#OWN_CORP").append(corp_html);
-            if(a!==""){
-                $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
-            }
-            $("#OWN_CORP").searchableSelect();
-            var c=$("#OWN_CORP").val();//公司编号
-            getvarbrandlist(c,b);
-            $('.corp_select .searchable-select-input').keydown(function(event){
-                var event=window.event||arguments[0];
-                if(event.keyCode == 13){
-                    var c=$("#OWN_CORP").val();//公司编号
-                    getvarbrandlist(c,b);
-                    $("#GOODS_CODE").val("");
-                    $("#GOODS_CODE").attr("data-mark","");
-                    // $(".good_imgs .parentFileBox .fileBoxUl").empty();
-                    $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
-                    $("#search_match_goods ul").empty();
-                    $("#search").empty();
-                    $(".match_goods ul").empty();
-
-                }
-            })
-            $('.searchable-select-item').click(function(){
-                var c=$(this).attr("data-value");
-                getvarbrandlist(c,b);
-                $("#GOODS_CODE").val("");
-                $("#GOODS_CODE").attr("data-mark","");
-                // $(".good_imgs .parentFileBox .fileBoxUl").empty();
-                $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
-                $("#search_match_goods ul").empty();
-                $("#search").empty();
-                $(".match_goods ul").empty();
-            })
-        }else if(data.code=="-1"){
-            art.dialog({
-                time: 1,
-                lock:true,
-                cancel: false,
-                content: data.message
-            });
-        }
-    });
+    //oc.postRequire("post", corp_command,"", "", function(data){
+    //    if(data.code=="0"){
+    //        var msg=JSON.parse(data.message);
+    //        var index=0;
+    //        var corp_html='';
+    //        var c=null;
+    //        for(index in msg.corps){
+    //            c=msg.corps[index];
+    //            corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+    //        }
+    //        $("#OWN_CORP").append(corp_html);
+    //        if(a!==""){
+    //            $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+    //        }
+    //        $("#OWN_CORP").searchableSelect();
+    //        var c=$("#OWN_CORP").val();//公司编号
+    //        getvarbrandlist(c,b);
+    //        $('.corp_select .searchable-select-input').keydown(function(event){
+    //            var event=window.event||arguments[0];
+    //            if(event.keyCode == 13){
+    //                var c=$("#OWN_CORP").val();//公司编号
+    //                getvarbrandlist(c,b);
+    //                $("#GOODS_CODE").val("");
+    //                $("#GOODS_CODE").attr("data-mark","");
+    //                // $(".good_imgs .parentFileBox .fileBoxUl").empty();
+    //                $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
+    //                $("#search_match_goods ul").empty();
+    //                $("#search").empty();
+    //                $(".match_goods ul").empty();
+    //
+    //            }
+    //        })
+    //        $('.searchable-select-item').click(function(){
+    //            var c=$(this).attr("data-value");
+    //            getvarbrandlist(c,b);
+    //            $("#GOODS_CODE").val("");
+    //            $("#GOODS_CODE").attr("data-mark","");
+    //            // $(".good_imgs .parentFileBox .fileBoxUl").empty();
+    //            $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
+    //            $("#search_match_goods ul").empty();
+    //            $("#search").empty();
+    //            $(".match_goods ul").empty();
+    //        })
+    //    }else if(data.code=="-1"){
+    //        art.dialog({
+    //            time: 1,
+    //            lock:true,
+    //            cancel: false,
+    //            content: data.message
+    //        });
+    //    }
+    //});
 }
 function getvarbrandlist(c,d){
     var _params={};
@@ -724,7 +728,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
     var li=$(this).parent("li").html();
     var goods_code=$(this).parent().find(".goods_code").html();
     var goods_code2=$("#GOODS_CODE").val();
-    var len=$(".match_goods ul li").length;
+    var len=$(".conpany_msg li").length;
     if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
         art.dialog({
             time: 1,
@@ -741,10 +745,10 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $(".match_goods ul").append('<li id="'+goods_code+'">'+li+'</li>');
+        $(".conpany_msg").append('<li id="'+goods_code+'">'+li+'</li>');
     }
 
-    $(".match_goods ul li i").click(function () {
+    $(".conpany_msg li i").click(function () {
         $(this).parent("li").remove();
     })
 })
@@ -889,4 +893,3 @@ $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
 })
-

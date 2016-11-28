@@ -5,12 +5,10 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-
 var _param={};//筛选定义的内容
 var list="";
 var cout="";
-//var filtrate="";//筛选的定义的值
-
+var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
@@ -49,6 +47,8 @@ if(return_jump==null){
     }else if(value!==""){
         $("#search").val(value);
         POST(inx,pageSize);
+    }else if(filtrate!==""){
+        filtrates(inx,pageSize);
     }
 }
 
@@ -65,15 +65,23 @@ $(function(){
                   
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
-                pageSize=$(this).attr('id');  
-                if(value==""){
+                pageSize=$(this).attr('id');
+                if(value==""&&filtrate==""){
+                    inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
+                    inx=1;
                     param["pageSize"]=pageSize;
+                    param["pageNumber"]=inx;
                     POST(inx,pageSize);
-                } 
-                $("#page_row").val($(this).html());  
-                hideLi();  
+                }else if(filtrate!==""){
+                    inx=1;
+                    _param["pageNumber"]=inx;
+                    _param["pageSize"]=pageSize;
+                    filtrates(inx,pageSize);
+                }
+                $("#page_row").val($(this).html());
+                hideLi();
             });    
         });      
         $("#page_row").blur(function(){  
@@ -99,7 +107,13 @@ $("#empty").click(function(){
     for(var i=0;i<input.length;i++){
         input[i].value="";
     }
-})
+    value="";
+    filtrate="";
+    inx=1;
+    $('#search').val("");
+    $(".table p").remove();
+    GET(inx,pageSize);
+});
 function setPage(container, count, pageindex,pageSize,funcCode,value) {
     console.log('调用');
     count==0?count=1:'';
@@ -186,48 +200,18 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             return false;
         }
     }()
-    function dian(a,b){//
-        if(value==""){
-            GET(a,b);
-            //oc.postRequire("get","/validatecode/list?pageNumber="+inx+"&pageSize="+pageSize
-            //    +"&funcCode="+funcCode+"","","",function(data){
-            //        console.log(data);
-            //        if(data.code=="0"){
-            //            $(".table tbody").empty();
-            //            var message=JSON.parse(data.message);
-            //            var list=JSON.parse(message.list);
-            //            var cout=list.pages;
-            //            var list=list.list;
-            //            superaddition(list,inx);
-            //            jumpBianse();
-            //        }else if(data.code=="-1"){
-            //            // alert(data.message);
-            //        }
-            //});
-        }else if(value!==""){
-            param["pageNumber"]=a;
-            param["pageSize"]=b;
-            POST(a,b);
-            //oc.postRequire("post","/validatecode/search","0",param,function(data){
-            //    if(data.code=="0"){
-            //        var message=JSON.parse(data.message);
-            //        var list=JSON.parse(message.list);
-            //        var cout=list.pages;
-            //        var list=list.list;
-            //        $(".table tbody").empty();
-            //        if(list.length<=0){
-            //            $(".table p").remove();
-            //            $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
-            //        }else if(list.length>0){
-            //            $(".table p").remove();
-            //            superaddition(list,inx);
-            //            jumpBianse();
-            //        }
-            //    }else if(data.code=="-1"){
-            //        alert(data.message);
-            //    }
-            //})
-        }
+}
+function dian(a,b){
+    if (value==""&&filtrate=="") {
+        GET(a,b);
+    }else if (value!==""){
+        param["pageNumber"] = a;
+        param["pageSize"] = b;
+        POST(a,b);
+    }else if (filtrate!=="") {
+        _param["pageNumber"] = a;
+        _param["pageSize"] = b;
+        filtrates(a,b);
     }
 }
 function superaddition(data,num){//页面加载循环
@@ -310,7 +294,7 @@ function GET(inx,pageSize){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                var cout=list.pages;
+                cout=list.pages;
                 var list=list.list;
                 superaddition(list,inx); 
                 jumpBianse();
@@ -438,7 +422,7 @@ function POST(inx,pageSize){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -480,23 +464,31 @@ $("#delete").click(function(){
              ID+=r;
         }     
     }
-    var param={};
-    param["id"]=ID;
-    console.log(param);
-    oc.postRequire("post","/validatecode/delete","0",param,function(data){
+    var params={};
+    params["id"]=ID;
+    console.log(params);
+    oc.postRequire("post","/validatecode/delete","0",params,function(data){
         if(data.code=="0"){
-            if(value==""){
-               frame();
-               $('.frame').html('删除成功');
-               GET(); 
-            }else if(value!==""){
-               frame();
-               $('.frame').html('删除成功');
-               POST();
-            }else if(data.code=="-1"){
+            if(value==""&&filtrate==""){
                 frame();
-                $('.frame').html(data.message);
+                $('.frame').html('删除成功');
+                GET(pageNumber,pageSize);
+            }else if(value!==""){
+                frame();
+                $('.frame').html('删除成功');
+                param["pageNumber"]=pageNumber;
+                POST(pageNumber,pageSize);
+            }else if(filtrate!==""){
+                frame();
+                $('.frame').html('删除成功');
+                _param["pageNumber"]=pageNumber;
+                filtrates(pageNumber,pageSize);
             }
+            var thinput=$("thead input")[0];
+            thinput.checked =false;
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
         }
     })
 })
@@ -536,7 +528,180 @@ function clearAll(name){
               el[i].checked = false;
             }
         }
-};
+}
+//筛选按钮
+oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+    if(data.code=="0"){
+        var message=JSON.parse(data.message);
+        var filter=message.filter;
+        $("#sxk .inputs ul").empty();
+        var li="";
+        for(var i=0;i<filter.length;i++){
+            if(filter[i].type=="text"){
+                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+            }else if(filter[i].type=="select"){
+                var msg=filter[i].value;
+                console.log(msg);
+                var ul="<ul class='isActive_select_down'>";
+                for(var j=0;j<msg.length;j++){
+                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                }
+                ul+="</ul>";
+                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }else if(filter[i].type=="date"){
+                li+="<li class='created_date' id='"
+                    +filter[i].col_name
+                    +"'><label>"
+                    +filter[i].show_name
+                    +"</label>"
+                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<label class='tm20'>至</label>"
+                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"</li>";
+            }
+
+        }
+        $("#sxk .inputs ul").html(li);
+        if(filtrate!==""){
+            $(".sxk").slideDown();
+            for(var i=0;i<list.length;i++){
+                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
+                    $("#"+list[i].screen_key).val(list[i].screen_value);
+                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+                    var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
+                    $("#"+list[i].screen_key).val(svalue);
+                }
+            }
+        }
+        filtrateDown();
+        //筛选的keydow事件
+        $('#sxk .inputs input').keydown(function(){
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                getInputValue();
+            }
+        })
+    }
+});
+function filtrateDown(){
+    //筛选select框
+    $(".isActive_select input").click(function (){
+        var ul=$(this).next(".isActive_select_down");
+        if(ul.css("display")=="none"){
+            ul.show();
+        }else{
+            ul.hide();
+        }
+    })
+    $(".isActive_select input").blur(function(){
+        var ul=$(this).next(".isActive_select_down");
+        setTimeout(function(){
+            ul.hide();
+        },200);
+    })
+    $(".isActive_select_down li").click(function () {
+        var html=$(this).text();
+        var code=$(this).attr("data-code");
+        $(this).parents("li").find("input").val(html);
+        $(this).parents("li").find("input").attr("data-code",code);
+        $(".isActive_select_down").hide();
+    })
+}
+//筛选查找
+$("#find").click(function(){
+    getInputValue();
+})
+function getInputValue(){
+    var input=$('#sxk .inputs>ul>li');
+    inx=1;
+    _param["pageNumber"]=inx;
+    _param["pageSize"]=pageSize;
+    _param["funcCode"]=funcCode;
+    var num=0;
+    var screen_key="";
+    var screen_value={};
+    list=[];//定义一个list
+    for(var i=0;i<input.length;i++){
+        if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input").attr("id")
+            screen_value=$(input[i]).find("input").attr("data-code");
+        }else if($(input[i]).attr("class")=="created_date"){
+            var start=$('#start').val();
+            var end=$('#end').val();
+            screen_key=$(input[i]).attr("id");
+            screen_value={"start":start,"end":end};
+        }else{
+            screen_key=$(input[i]).find("input").attr("id");
+            screen_value=$(input[i]).find("input").val().trim();
+        }
+        if(screen_value!=""){
+            num++;
+        }
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    _param["list"]=list;
+    value="";//把搜索滞空
+    $("#search").val("");
+    if(num>0){
+        filtrate="sucess";
+        filtrates(inx,pageSize);
+    }else if(num<=0){
+        GET(inx,pageSize);
+        filtrate="";
+    }
+}
+//筛选发送请求
+function filtrates(a,b){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/validatecode/screen","0",_param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
+            var pageNum = list.pageNum;
+            cout=list.pages;
+            var list=list.list;
+            $(".table tbody").empty();
+            if(list.length<=0){
+                $(".table p").remove();
+                $(".table").append("<p>没有找到信息,请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+                $(".table p").remove();
+                superaddition(list,pageNum);
+                jumpBianse();
+            }
+            setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();//移除加载框
+    });
+}
+//跳转页面的键盘按下事件
+$("#input-txt").keydown(function() {
+    var event=window.event||arguments[0];
+    var inx= this.value.replace(/[^0-9]/g, '');
+    var inx=parseInt(inx);
+    if (inx > cout) {
+        inx = cout
+    }
+    if (inx > 0) {
+        if (event.keyCode == 13) {
+            if (value == "" && filtrate == "") {
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
+                filtrates(inx, pageSize);
+            }
+        };
+    }
+});
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();

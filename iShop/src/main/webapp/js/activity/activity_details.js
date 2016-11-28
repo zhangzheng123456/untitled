@@ -311,6 +311,7 @@ function getExecuteDetail(vip_count){
 }
 //获取活动详情
 function getSelect(id){
+    whir.loading.add("",0.5);//加载等待框
     var _params={
         "id":"",
         "message":{
@@ -337,6 +338,7 @@ function getSelect(id){
             var endTime = activityVip.end_time;
             getExecuteDetail(target_vips_count);
             activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
+            whir.loading.remove();//移除加载框
             var corp_code = activityVip.corp_code;
             sessionStorage.setItem("corp_code",corp_code);//存储的方法
         },
