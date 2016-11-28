@@ -605,13 +605,13 @@ jQuery(document).ready(function(){
     //  }
     // })
     $(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+        $(window.parent.document).find('#iframepage').attr("src","fab_match.html");
     });
     $("#edit_close").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+        $(window.parent.document).find('#iframepage').attr("src","fab_match.html");
     });
     $("#back_goods_fab").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
+        $(window.parent.document).find('#iframepage').attr("src","fab_match.html");
     });
 
 });
@@ -624,58 +624,58 @@ var next=false;
 function getcorplist(a,b){
     //获取所属企业列表
     var corp_command="/user/getCorpByUser";
-    oc.postRequire("post", corp_command,"", "", function(data){
-        if(data.code=="0"){
-            var msg=JSON.parse(data.message);
-            var index=0;
-            var corp_html='';
-            var c=null;
-            for(index in msg.corps){
-                c=msg.corps[index];
-                corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-            }
-            $("#OWN_CORP").append(corp_html);
-            if(a!==""){
-                $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
-            }
-            $("#OWN_CORP").searchableSelect();
-            var c=$("#OWN_CORP").val();//公司编号
-            getvarbrandlist(c,b);
-            $('.corp_select .searchable-select-input').keydown(function(event){
-                var event=window.event||arguments[0];
-                if(event.keyCode == 13){
-                    var c=$("#OWN_CORP").val();//公司编号
-                    getvarbrandlist(c,b);
-                    $("#GOODS_CODE").val("");
-                    $("#GOODS_CODE").attr("data-mark","");
-                    // $(".good_imgs .parentFileBox .fileBoxUl").empty();
-                    $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
-                    $("#search_match_goods ul").empty();
-                    $("#search").empty();
-                    $(".match_goods ul").empty();
-
-                }
-            })
-            $('.searchable-select-item').click(function(){
-                var c=$(this).attr("data-value");
-                getvarbrandlist(c,b);
-                $("#GOODS_CODE").val("");
-                $("#GOODS_CODE").attr("data-mark","");
-                // $(".good_imgs .parentFileBox .fileBoxUl").empty();
-                $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
-                $("#search_match_goods ul").empty();
-                $("#search").empty();
-                $(".match_goods ul").empty();
-            })
-        }else if(data.code=="-1"){
-            art.dialog({
-                time: 1,
-                lock:true,
-                cancel: false,
-                content: data.message
-            });
-        }
-    });
+    //oc.postRequire("post", corp_command,"", "", function(data){
+    //    if(data.code=="0"){
+    //        var msg=JSON.parse(data.message);
+    //        var index=0;
+    //        var corp_html='';
+    //        var c=null;
+    //        for(index in msg.corps){
+    //            c=msg.corps[index];
+    //            corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+    //        }
+    //        $("#OWN_CORP").append(corp_html);
+    //        if(a!==""){
+    //            $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+    //        }
+    //        $("#OWN_CORP").searchableSelect();
+    //        var c=$("#OWN_CORP").val();//公司编号
+    //        getvarbrandlist(c,b);
+    //        $('.corp_select .searchable-select-input').keydown(function(event){
+    //            var event=window.event||arguments[0];
+    //            if(event.keyCode == 13){
+    //                var c=$("#OWN_CORP").val();//公司编号
+    //                getvarbrandlist(c,b);
+    //                $("#GOODS_CODE").val("");
+    //                $("#GOODS_CODE").attr("data-mark","");
+    //                // $(".good_imgs .parentFileBox .fileBoxUl").empty();
+    //                $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
+    //                $("#search_match_goods ul").empty();
+    //                $("#search").empty();
+    //                $(".match_goods ul").empty();
+    //
+    //            }
+    //        })
+    //        $('.searchable-select-item').click(function(){
+    //            var c=$(this).attr("data-value");
+    //            getvarbrandlist(c,b);
+    //            $("#GOODS_CODE").val("");
+    //            $("#GOODS_CODE").attr("data-mark","");
+    //            // $(".good_imgs .parentFileBox .fileBoxUl").empty();
+    //            $(".good_imgs .parentFileBox .fileBoxUl li:not('li.add_li')").remove();
+    //            $("#search_match_goods ul").empty();
+    //            $("#search").empty();
+    //            $(".match_goods ul").empty();
+    //        })
+    //    }else if(data.code=="-1"){
+    //        art.dialog({
+    //            time: 1,
+    //            lock:true,
+    //            cancel: false,
+    //            content: data.message
+    //        });
+    //    }
+    //});
 }
 function getvarbrandlist(c,d){
     var _params={};
@@ -889,4 +889,3 @@ $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
 })
-
