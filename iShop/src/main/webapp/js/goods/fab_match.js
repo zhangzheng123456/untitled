@@ -16,6 +16,7 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+
 /*
  抛开瀑布流布局各种乱七八糟的算法，基于masonry的瀑布流，很是简单的，而且通过扩展animate,能实现瀑布流布局的晃动、弹球等效果。
  masonry还有很多参数我这里注解了常用的参数
@@ -218,6 +219,50 @@ function pageVal(){
         html += nowHTML3;
         $(".waterfull ul").append(html);
     }
+}
+//点击放大镜触发搜索
+$("#d_search").click(function () {
+    value = $("#search").val().replace(/\s+/g, "");
+    inx = 1;
+    param["searchValue"] = value;
+    param["pageNumber"] = inx;
+    param["pageSize"] = pageSize;
+    param["funcCode"] = funcCode;
+    POST(inx, pageSize);
+})
+//搜索的请求函数
+function POST(a, b) {
+    whir.loading.add("", 0.5);//加载等待框
+    oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
+        if (data.code == "0") {
+            var message = JSON.parse(data.message);
+            var list = JSON.parse(message.list);
+            cout = list.pages;
+            var pageNum = list.pageNum;
+            var list = list.list;
+            var actions = message.actions;
+            $(".table tbody").empty();
+            if (list.length <= 0) {
+                $(".table p").remove();
+                $(".table").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            } else if (list.length > 0) {
+                $(".table p").remove();
+                superaddition(list, pageNum);
+                jumpBianse();
+            }
+            var input = $(".inputs input");
+            for (var i = 0; i < input.length; i++) {
+                input[i].value = "";
+            }
+            filtrate = "";
+            list = "";
+            $(".sxk").slideUp();
+            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+        } else if (data.code == "-1") {
+            alert(data.message);
+        }
+    })
 }
 window.onload =function() {
     getVal();
