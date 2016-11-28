@@ -16,7 +16,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -295,14 +294,11 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/errorLog/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","",param,function(data){
-        // console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-                cout=list.pages;
-                list=list.list;
-            console.log(list)
+            var cout=message.pages
+            var list=message.list;
             superaddition(list,a);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
@@ -330,7 +326,6 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/system/errorlog_edit.html");
 })
     //点击tr input是选择状态  tr增加class属性
@@ -338,7 +333,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -362,7 +356,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -395,10 +388,8 @@ function POST(a,b){
     oc.postRequire("post","/errorLog/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var list=list.list;
-            var actions=message.actions;
+            var cout=message.pages
+            var list=message.list;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -528,7 +519,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -618,7 +608,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -704,11 +693,12 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
+        filtrates(inx,pageSize)
     }else if(num<=0){
         filtrate="";
+        GET(inx,pageSize);
     }
 }
 //筛选发送请求
@@ -717,10 +707,8 @@ function filtrates(a,b){
     oc.postRequire("post","/errorLog/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var list=list.list;
-            var actions=message.actions;
+            var cout=message.pages
+            var list=message.list;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();

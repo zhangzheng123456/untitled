@@ -20,6 +20,7 @@ import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -124,7 +125,7 @@ public class VIPLabelController {
 //            System.out.println("======会员标签mongeDB===== ");
 //
 //            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-      //     DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+//           DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
 //
 //            DBCursor dbCursor = null;
 //            // 读取数据
@@ -132,7 +133,7 @@ public class VIPLabelController {
 //                DBCursor dbCursor1 = cursor.find();
 //
 //                pages = MongoUtils.getPages(dbCursor1, page_size);
-//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "modified_date", -1);
 //            } else {
 //                Map keyMap = new HashMap();
 //                keyMap.put("corp_code", corp_code);
@@ -141,7 +142,7 @@ public class VIPLabelController {
 //                DBCursor dbCursor1 = cursor.find(ref);
 //
 //                pages = MongoUtils.getPages(dbCursor1, page_size);
-//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "time", -1);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "modified_date", -1);
 //            }
 //
 //            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
@@ -223,154 +224,7 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
-    /***
-     * Execl增加
-     */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    @ResponseBody
-    @Transactional()
-    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
-        DataBean dataBean = new DataBean();
-        File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_code").toString();
-        String role_code = request.getSession(false).getAttribute("role_code").toString();
-        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-        String result = "";
-        Workbook rwb=null;
-        try {
-            rwb = Workbook.getWorkbook(targetFile);
-            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = 3;//得到所有的列
-            int rows = rs.getRows();//得到所有的行
-//            int actualRows = LuploadHelper.getRightRows(rs);
-//            if(actualRows != rows){
-//                if(rows-actualRows==1){
-//                    result = "：第"+rows+"行存在空白行,请删除";
-//                }else{
-//                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
-//                }
-//                int i = 5 / 0;
-//            }
-            if(rows<4){
-                result="：请从模板第4行开始插入正确数据";
-                int i=5/0;
-            }
-            if (rows > 9999) {
-                result = "：数据量过大，导入失败";
-                int i = 5 / 0;
-            }
-            Cell[] column3 = rs.getColumn(0);
-            Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)) {
-                for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
-                        continue;
-                    }
-                    if (!column3[i].getContents().toString().trim().equals(corp_code)) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                }
-            }
-                for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
-                        continue;
-                    }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
 
-                }
-            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
-            if(onlyCell1.equals("存在重复值")){
-                result = "：Execl中会员标签名称存在重复值";
-                int b = 5 / 0;
-            }
-            Cell[] column = rs.getColumn(1);
-            for (int i = 3; i < column.length; i++) {
-                if(column[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
-                List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
-                if (existInfo.size()>0) {
-                    result = "：第" + (i + 1) + "列的会员标签名称已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
-            ArrayList<VipLabel> vipLabels=new ArrayList<VipLabel>();
-            for (int i = 3; i < rows; i++) {
-                for (int j = 0; j < clos; j++) {
-                    VipLabel vipLabel = new VipLabel();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
-                    String label_name = rs.getCell(j++, i).getContents().toString().trim();
-                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("")&&label_name.equals("")){
-                       continue;
-                    }
-                    if(cellCorp.equals("")||label_name.equals("")){
-                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
-                        int a=5/0;
-                    }
-                    if(!role_code.equals(Common.ROLE_SYS)){
-                        vipLabel.setCorp_code(corp_code);
-                    }else{
-                        vipLabel.setCorp_code(cellCorp);
-                    }
-                    vipLabel.setLabel_name(label_name);
-                    if (role_code.equals(Common.ROLE_SYS)) {
-                        vipLabel.setLabel_type("sys");
-                    } else {
-                        vipLabel.setLabel_type("org");
-                    }
-                    if (isactive.toUpperCase().equals("N")) {
-                        vipLabel.setIsactive("N");
-                    } else {
-                        vipLabel.setIsactive("Y");
-                    }
-                    Date now = new Date();
-                    vipLabel.setCreater(user_id);
-                    vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    vipLabel.setModifier(user_id);
-                    vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    vipLabels.add(vipLabel);
-                }
-            }
-            for (VipLabel vipLabel:vipLabels) {
-                result = String.valueOf(vipLabelService.insert(vipLabel));
-            }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
-                rwb.close();
-            }
-            System.gc();
-        }
-        return dataBean.getJsonStr();
-    }
 
     /**
      * 会员标签管理
@@ -646,6 +500,69 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
+//    /**
+//     *
+//     * 页面查找
+//     */
+//    @RequestMapping(value = "/find", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String getsearch(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+//        int pages = 0;
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+//            String search_value = jsonObject.get("searchValue").toString();
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+//
+//            String[] column_names = new String[]{"app_platform","corp_code","version"};
+//            BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
+//
+//            DBCursor dbCursor = null;
+//            // 读取数据
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                DBCursor dbCursor1 = cursor.find(queryCondition);
+//                pages = MongoUtils.getPages(dbCursor1,page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"modified_date",-1);
+//
+//            } else {
+//                BasicDBList value = new BasicDBList();
+//                value.add(new BasicDBObject("corp_code", corp_code));
+//                value.add(queryCondition);
+//                BasicDBObject queryCondition1 = new BasicDBObject();
+//                queryCondition1.put("$and", value);
+//                DBCursor dbCursor2 = cursor.find(queryCondition1);
+//
+//                pages = MongoUtils.getPages(dbCursor2,page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"modified_date",-1);
+//            }
+//            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
+//            result.put("list", list);
+//            result.put("pages", pages);
+//            result.put("page_number", page_number);
+//            result.put("page_size", page_size);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//
+//        }
+//        return dataBean.getJsonStr();
+//    }
     /**
      * 会员标签管理
      * 查找

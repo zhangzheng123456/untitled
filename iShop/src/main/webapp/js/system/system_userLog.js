@@ -749,7 +749,7 @@ function getInputValue(){
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");
         }
-        if(screen_value!=""){
+        if(screen_value!=""&&(start!==""||end!=="")){
             num++;
         }
         var param1={"screen_key":screen_key,"screen_value":screen_value};
@@ -759,11 +759,12 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
+        filtrates(inx,pageSize)
     }else if(num<=0){
         filtrate="";
+        GET(inx, pageSize);
     }
 }
 //筛选发送请求
