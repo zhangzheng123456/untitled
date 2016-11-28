@@ -81,7 +81,7 @@ var swip_image = [];
                 //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
                $(".conpany_msg .goods_code").each(function(){
-                    var nowVal =  this.text();
+                    var nowVal =  $(this).text();
                    GOODS_CODE +=nowVal;
                 });;//商品编号
                 console.log('商品编号是：'+GOODS_CODE)
