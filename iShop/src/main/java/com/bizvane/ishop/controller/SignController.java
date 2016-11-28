@@ -5,11 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.Sign;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.SignService;
 import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -149,29 +149,43 @@ public class SignController {
                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                String store_code = "";
+               BasicDBList value = new BasicDBList();
+
                for (int i = 0; i < stores.size(); i++) {
-                   store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                   store_code = stores.get(i).getStore_code().toString();
+                   value.add(store_code);
                }
-               Map keyMap = new HashMap();
-       //        keyMap.put("role_code", role_code);
-               keyMap.put("corp_code", corp_code);
-               keyMap.put("store_code",store_code);
-               BasicDBObject ref = new BasicDBObject();
-               ref.putAll(keyMap);
-               DBCursor dbCursor1 = cursor.find(ref);
+               BasicDBObject ba=new BasicDBObject();
+               BasicDBList values = new BasicDBList();
+               values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+               values.add(new BasicDBObject("corp_code", corp_code));
+                ba.put("$and",values);
+               DBCursor dbCursor1 = cursor.find(ba);
+
                pages = MongoUtils.getPages(dbCursor1,page_size);
                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
 
            }else if (role_code.equals(Common.ROLE_SM)) {
                //店长
                String store_code = request.getSession().getAttribute("store_code").toString();
-               Map keyMap = new HashMap();
-           //    keyMap.put("role_code", role_code);
-               keyMap.put("corp_code", corp_code);
-               keyMap.put("store_code",store_code);
-               BasicDBObject ref = new BasicDBObject();
-               ref.putAll(keyMap);
-               DBCursor dbCursor1 = cursor.find(ref);
+               String[] stores = null;
+               if (!store_code.equals("")) {
+                   store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                   stores = store_code.split(",");
+               }
+               BasicDBList value = new BasicDBList();
+
+               for (int i = 0; i < stores.length; i++) {
+                   //       store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                   store_code = stores[i].toString();
+                   value.add(store_code);
+               }
+               BasicDBObject ba=new BasicDBObject();
+               BasicDBList values = new BasicDBList();
+               values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+               values.add(new BasicDBObject("corp_code", corp_code));
+               ba.put("$and",values);
+               DBCursor dbCursor1 = cursor.find(ba);
 
                pages = MongoUtils.getPages(dbCursor1,page_size);
                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
@@ -180,19 +194,37 @@ public class SignController {
                //区经
                String area_code = request.getSession().getAttribute("area_code").toString();
                String store_code = request.getSession().getAttribute("store_code").toString();
-               Map keyMap = new HashMap();
-               keyMap.put("corp_code", corp_code);
-            //   keyMap.put("area_code",area_code);
-              keyMap.put("store_code",store_code);
-          //     keyMap.put("role_code", role_code);
-               BasicDBObject ref = new BasicDBObject();
-               ref.putAll(keyMap);
-               DBCursor dbCursor1 = cursor.find(ref);
+               //添加.......
+               BasicDBList value = new BasicDBList();
+               BasicDBObject ref=new BasicDBObject();
+               //......
+               if (!area_code.equals("")) {
+                   area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                   String[] areas = area_code.split(",");
+                   String[] storeCodes = null;
+                   if (!store_code.equals("")){
+                       store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                       storeCodes = store_code.split(",");
+                   }
+                   List<Store> store = storeService.selectByAreaBrand(corp_code, areas,storeCodes,null, "");
+                   for (int i = 0; i < store.size(); i++) {
+                       store_code = store.get(i).getStore_code().toString();
+                       value.add(store_code);
+                   }
+                   BasicDBList values = new BasicDBList();
+                   values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   ref.put("$and",values);
+               }else{
 
+               }
+
+               DBCursor dbCursor1 = cursor.find(ref);
                pages = MongoUtils.getPages(dbCursor1,page_size);
                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
 
            } else if (role_code.equals(Common.ROLE_STAFF)) {
+
                Map keyMap = new HashMap();
                keyMap.put("corp_code", corp_code);
                keyMap.put("user_code",user_code);
@@ -316,8 +348,8 @@ public class SignController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
 
-            String[] column_names = new String[]{"phone","diatance","modified_date","user_name","creater_date","modifier",
-                    "isactive","store_id_list", "status","creater","user_id","crop_name","store_name","corp_code","sign_time", "location"};
+            String[] column_names = new String[]{"phone","distance","modified_date","user_name","creater_date","modifier",
+                    "creater_date", "isactive", "status","creater","user_code","corp_name","store_name","corp_code","sign_time", "location"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
             DBCursor dbCursor = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -331,85 +363,135 @@ public class SignController {
                     //企业管理员
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
-           //         value.add(new BasicDBObject("role_code", role_code));
+                    //         value.add(new BasicDBObject("role_code", role_code));
                     value.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
 
-                    pages = MongoUtils.getPages(dbCursor2,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                    pages = MongoUtils.getPages(dbCursor2, page_size);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "time", -1);
 
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
-                    String store_code = "";
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
-                    }
-                    BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-                    value.add(new BasicDBObject("store_code", store_code));
-             //       value.add(new BasicDBObject("role_code", role_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    DBCursor dbCursor2 = cursor.find(queryCondition1);
+                    List<Store> stores = null;
 
-                    pages = MongoUtils.getPages(dbCursor2,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                    stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "", "");
+
+                    //添加.......
+                    BasicDBList value = new BasicDBList();
+                    //  BasicDBObject ref=new BasicDBObject();
+                    String store_code = "";
+                    //...
+                    for (int i = 0; i < stores.size(); i++) {
+                        //       store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                        store_code = stores.get(i).getStore_code().toString();
+                        value.add(store_code);
+                    }
+                    BasicDBObject ba = new BasicDBObject();
+                    BasicDBList values = new BasicDBList();
+                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(queryCondition);
+                    ba.put("$and", values);
+                    //.......
+                    //     for (int i = 0; i < stores.size(); i++) {
+                    //             store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                    //         }
+                    //        BasicDBList value = new BasicDBList();
+                    //         value.add(new BasicDBObject("corp_code", corp_code));
+                    //         value.add(new BasicDBObject("store_code", store_code));
+                    //       value.add(new BasicDBObject("role_code", role_code));
+                    //          value.add(queryCondition);
+                    //           BasicDBObject queryCondition1 = new BasicDBObject();
+                    //          queryCondition1.put("$and", value);
+                    DBCursor dbCursor2 = cursor.find(ba);
+
+                    pages = MongoUtils.getPages(dbCursor2, page_size);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "time", -1);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
+                    BasicDBList values = new BasicDBList();
+                  //  value.add(new BasicDBObject("store_code", store_code));
+
+                    String[] stores = null;
+                    if (!store_code.equals("")) {
+                        store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                        stores = store_code.split(",");
+                    }
                     BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-                    value.add(new BasicDBObject("store_code", store_code));
-                 //   value.add(new BasicDBObject("role_code", role_code));
-                    value.add(queryCondition);
+
+                    for (int i = 0; i < stores.length; i++) {
+                        //       store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                        store_code = stores[i].toString();
+                        value.add(store_code);
+                    }
+                    //   value.add(new BasicDBObject("role_code", role_code));
+                    values.add(queryCondition);
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
                     BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
+                    queryCondition1.put("$and", values);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
 
-                    pages = MongoUtils.getPages(dbCursor2,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                    pages = MongoUtils.getPages(dbCursor2, page_size);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "time", -1);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-                    value.add(new BasicDBObject("store_code", store_code));
-             //       value.add(new BasicDBObject("area_code", area_code));
-              //      value.add(new BasicDBObject("role_code", role_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    DBCursor dbCursor2 = cursor.find(queryCondition1);
+                     //.....
+                    if (!area_code.equals("")) {
+                        area_code = area_code.replace(Common.SPECIAL_HEAD, "");
+                        String[] areas = area_code.split(",");
+                        String[] storeCodes = null;
+                        if (!store_code.equals("")) {
+                            store_code = store_code.replace(Common.SPECIAL_HEAD, "");
+                            storeCodes = store_code.split(",");
+                        }
+                        List<Store> store = null;
+                        store = storeService.selectByAreaBrand(corp_code, areas, storeCodes, null, "");
+                        BasicDBList value = new BasicDBList();
+                        BasicDBObject ba = new BasicDBObject();
 
-                    pages = MongoUtils.getPages(dbCursor2,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
-                } else if (role_code.equals(Common.ROLE_STAFF)) {
-                    BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-             //       value.add(new BasicDBObject("user_code", user_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    DBCursor dbCursor2 = cursor.find(queryCondition1);
-                    pages = MongoUtils.getPages(dbCursor2,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"time",-1);
+                        for (int i = 0; i < store.size(); i++) {
+                            store_code = store.get(i).getStore_code().toString();
+                            value.add(store_code);
+                        }
+                        BasicDBList values = new BasicDBList();
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(queryCondition);
+                        ba.put("$and", values);
+                        DBCursor dbCursor2 = cursor.find(ba);
+                        pages = MongoUtils.getPages(dbCursor2, page_size);
+                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "time", -1);
+                     }
+
+                    } else if (role_code.equals(Common.ROLE_STAFF)) {
+                        BasicDBList value = new BasicDBList();
+                        value.add(new BasicDBObject("corp_code", corp_code));
+                        value.add(new BasicDBObject("user_code", user_code));
+                        value.add(queryCondition);
+                        BasicDBObject queryCondition1 = new BasicDBObject();
+                        queryCondition1.put("$and", value);
+                        DBCursor dbCursor2 = cursor.find(queryCondition1);
+                        pages = MongoUtils.getPages(dbCursor2, page_size);
+                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "time", -1);
+                    }
                 }
-            }
-            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
-            result.put("list", list);
-            result.put("pages", pages);
-            result.put("page_number", page_number);
-            result.put("page_size", page_size);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
+                ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
+                result.put("list", list);
+                result.put("pages", pages);
+                result.put("page_number", page_number);
+                result.put("page_size", page_size);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result.toString());
+
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -496,12 +578,13 @@ public class SignController {
             String inter_id = jsonObject.get("id").toString();
             String[] ids = inter_id.split(",");
 
+
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
 
             for (int i = 0; i < ids.length; i++) {
                 //logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-                Sign sign = signService.selSignById(Integer.valueOf(ids[i]));
+         //       Sign sign = signService.selSignById(Integer.valueOf(ids[i]));
                 //signService.delSignById(Integer.valueOf(ids[i]));
 
                 DBObject deleteRecord = new BasicDBObject();
@@ -524,16 +607,18 @@ public class SignController {
                  * @param name 被操作name
                  * @throws Exception
                  */
-                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
-                String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                String function = "员工管理_签到管理";
-                String action = Common.ACTION_DEL;
-                String t_corp_code = sign.getCorp_code();
-                String t_code = sign.getUser_code();
-                String t_name = sign.getUser_name();
-                String remark = sign.getSign_time()+"("+sign.getStatus()+")";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+  //              String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+  //              String operation_user_code = request.getSession().getAttribute("user_code").toString();
+  //              String function = "员工管理_签到管理";
+  //              String action = Common.ACTION_DEL;
+  //              String t_corp_code = sign.getCorp_code();
+  //              String t_code = sign.getUser_code();
+  //              String t_name = sign.getUser_name();
+  //              String remark = sign.getSign_time()+"("+sign.getStatus()+")";
+ //               baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             }
+
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -684,7 +769,7 @@ public class SignController {
             if (screen.equals("")) {
 
                 String[] column_names = new String[]{"phone","diatance","modified_date","user_name","creater_date","modifier",
-                        "isactive","store_id_list", "status","creater","user_id","crop_name","store_name","corp_code","sign_time", "location"};
+                        "isactive","store_id_list", "status","creater","user_id","corp_name","store_name","corp_code","sign_time", "location"};
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
 
                 DBCursor dbCursor = null;
@@ -696,7 +781,6 @@ public class SignController {
                     //系统管理员
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
-             //       value.add(new BasicDBObject("role_code", role_code));
                     value.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
@@ -707,41 +791,74 @@ public class SignController {
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                     String store_code = "";
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
-                    }
                     BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-            //        value.add(new BasicDBObject("role_code", role_code));
-                    value.add(new BasicDBObject("store_code", store_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    dbCursor = cursor.find(queryCondition1).sort(sort_obj);
+                    for (int i = 0; i < stores.size(); i++) {
+
+                        store_code = stores.get(i).getStore_code().toString();
+                        value.add(store_code);
+                    }
+                    BasicDBObject ba=new BasicDBObject();
+                    BasicDBList values = new BasicDBList();
+                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(queryCondition);
+                    ba.put("$and",values);
+
+                    dbCursor = cursor.find(ba).sort(sort_obj);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
+                    BasicDBList values = new BasicDBList();
+
+                    String[] stores = null;
+                    if (!store_code.equals("")) {
+                        store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                        stores = store_code.split(",");
+                    }
                     BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-          //          value.add(new BasicDBObject("role_code", role_code));
-                    value.add(new BasicDBObject("store_code", store_code));
-                    value.add(queryCondition);
+
+                    for (int i = 0; i < stores.length; i++) {
+
+                        store_code = stores[i].toString();
+                        value.add(store_code);
+                    }
+
+                    values.add(queryCondition);
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
                     BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
+                    queryCondition1.put("$and", values);
+
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-        //            value.add(new BasicDBObject("role_code", role_code));
-                    value.add(new BasicDBObject("store_code", store_code));
-        //            value.add(new BasicDBObject("area_code", area_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    dbCursor = cursor.find(queryCondition1).sort(sort_obj);
+
+                    if (!area_code.equals("")) {
+                        area_code = area_code.replace(Common.SPECIAL_HEAD, "");
+                        String[] areas = area_code.split(",");
+                        String[] storeCodes = null;
+                        if (!store_code.equals("")) {
+                            store_code = store_code.replace(Common.SPECIAL_HEAD, "");
+                            storeCodes = store_code.split(",");
+                        }
+
+                        BasicDBList value=new BasicDBList();
+                        List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes, null, "");
+                        for (int i = 0; i < store.size(); i++) {
+                            store_code = store.get(i).getStore_code().toString();
+                            value.add(store_code);
+                        }
+                        BasicDBList values = new BasicDBList();
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(queryCondition);
+                        BasicDBObject queryCondition1 = new BasicDBObject();
+                        queryCondition1.put("$and", values);
+                        dbCursor = cursor.find(queryCondition1).sort(sort_obj);
+                    }
+
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
@@ -773,38 +890,73 @@ public class SignController {
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                     List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
-                    String store_code = "";
+                   String store_code = "";
+                    BasicDBList value=new BasicDBList();
                     for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                        //       store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                        store_code = stores.get(i).getStore_code().toString();
+                        value.add(store_code);
                     }
-                    BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code",corp_code));
-                   value.add(new BasicDBObject("store_code",store_code));
-        //            value.add(new BasicDBObject("role_code", role_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    dbCursor = cursor.find(queryCondition1).sort(sort_obj);
+                    BasicDBObject ba=new BasicDBObject();
+                    BasicDBList values = new BasicDBList();
+                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(queryCondition);
+                    ba.put("$and",values);
+                    dbCursor = cursor.find(ba).sort(sort_obj);
                 }else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("corp_code", corp_code));
-        //            value.add(new BasicDBObject("area_code", area_code));
-       //             value.add(new BasicDBObject("role_code", role_code));
-                    value.add(new BasicDBObject("store_code",store_code));
-                    value.add(queryCondition);
-                    BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
-                    dbCursor = cursor.find(queryCondition1).sort(sort_obj);
+                    //....
+                    if (!area_code.equals("")) {
+                        area_code = area_code.replace(Common.SPECIAL_HEAD, "");
+                        String[] areas = area_code.split(",");
+                        String[] storeCodes = null;
+                        if (!store_code.equals("")) {
+                            store_code = store_code.replace(Common.SPECIAL_HEAD, "");
+                            storeCodes = store_code.split(",");
+                        }
+
+                        BasicDBList value=new BasicDBList();
+                        List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes, null, "");
+                        //  String a = "";
+                        for (int i = 0; i < store.size(); i++) {
+                            //      a = a + store.get(i).getStore_code() + ",";
+                            store_code = store.get(i).getStore_code().toString();
+                            value.add(store_code);
+                        }
+                        BasicDBList values = new BasicDBList();
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(queryCondition);
+                        BasicDBObject queryCondition1 = new BasicDBObject();
+                        queryCondition1.put("$and", value);
+                        dbCursor = cursor.find(queryCondition1).sort(sort_obj);
+                    }
+
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    BasicDBList values = new BasicDBList();
+                    String[] stores = null;
+                    if (!store_code.equals("")) {
+                        store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                        stores = store_code.split(",");
+                    }
                     BasicDBList value = new BasicDBList();
-                    value.add(new BasicDBObject("store_code", store_code));
-                    value.add(new BasicDBObject("role_code", role_code));
-                    value.add(queryCondition);
+
+                    for (int i = 0; i < stores.length; i++) {
+
+                        store_code = stores[i].toString();
+                        value.add(store_code);
+                    }
+
+                    values.add(queryCondition);
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
                     BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and", value);
+                    queryCondition1.put("$and", values);
+
+
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     BasicDBList value = new BasicDBList();
@@ -931,16 +1083,12 @@ public class SignController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
             JSONArray array = JSONArray.parseArray(lists);
-            BasicDBObject queryCondition = MongoUtils.andOperation(array);
-
+            BasicDBObject queryCondition = MongoHelperServiceImpl.andSignScreen(array);
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
 
             DBCursor dbCursor = null;
 
-         //   Map<String, String> map = WebUtils.Json2Map(jsonObject2);
-
-        //    PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
 
                 DBCursor dbCursor1 = cursor.find(queryCondition);
@@ -950,7 +1098,6 @@ public class SignController {
             } else if (role_code.equals(Common.ROLE_GM)) {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
-    //            value.add(new BasicDBObject("role_code", role_code));
                 value.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
@@ -962,18 +1109,23 @@ public class SignController {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+
                 List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "","");
                 String store_code = "";
-                for (int i = 0; i < stores.size(); i++) {
-                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
-                }
                 BasicDBList value = new BasicDBList();
-                value.add(new BasicDBObject("corp_code", corp_code));
-   //             value.add(new BasicDBObject("role_code", role_code));
-                value.add(new BasicDBObject("store_code", store_code));
-                value.add(queryCondition);
+
+                for (int i = 0; i < stores.size(); i++) {
+
+                    store_code = stores.get(i).getStore_code().toString();
+                    value.add(store_code);
+                }
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                values.add(new BasicDBObject("corp_code", corp_code));
+
+                values.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
-                queryCondition1.put("$and", value);
+                queryCondition1.put("$and", values);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
@@ -981,29 +1133,55 @@ public class SignController {
             }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                BasicDBList value = new BasicDBList();
-                value.add(new BasicDBObject("corp_code", corp_code));
-      //          value.add(new BasicDBObject("role_code", role_code));
-                value.add(new BasicDBObject("store_code", store_code));
-       //         value.add(new BasicDBObject("area_code", area_code));
-                value.add(queryCondition);
-                BasicDBObject queryCondition1 = new BasicDBObject();
-                queryCondition1.put("$and", value);
-                DBCursor dbCursor1 = cursor.find(queryCondition1);
 
-                pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                if (!area_code.equals("")) {
+                    area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                    String[] areas = area_code.split(",");
+                    String[] storeCodes = null;
+                    if (!store_code.equals("")){
+                        store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                        storeCodes = store_code.split(",");
+                    }
+                    BasicDBList value = new BasicDBList();
+                    List<Store> store = storeService.selectByAreaBrand(corp_code, areas,storeCodes,null, "");
+
+                    for (int i = 0; i < store.size(); i++) {
+                        store_code = store.get(i).getStore_code().toString();
+                        value.add(store_code);
+                    }
+                    BasicDBList values = new BasicDBList();
+                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and", values);
+                    DBCursor dbCursor1 = cursor.find(queryCondition1);
+                    pages = MongoUtils.getPages(dbCursor1,page_size);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
+                }
+
+
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
+                //....
+                String[] stores = null;
+                if (!store_code.equals("")) {
+                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                    stores = store_code.split(",");
+                }
                 BasicDBList value = new BasicDBList();
-                value.add(new BasicDBObject("corp_code", corp_code));
-     //           value.add(new BasicDBObject("role_code", role_code));
-                value.add(new BasicDBObject("store_code", store_code));
-                value.add(queryCondition);
-                BasicDBObject queryCondition1 = new BasicDBObject();
-                queryCondition1.put("$and", value);
-                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                for (int i = 0; i < stores.length; i++) {
 
+                    store_code = stores[i].toString();
+                    value.add(store_code);
+                }
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                values.add(new BasicDBObject("corp_code", corp_code));
+                values.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", values);
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"time",-1);
             } else if (role_code.equals(Common.ROLE_STAFF)) {
