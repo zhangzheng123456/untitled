@@ -651,7 +651,7 @@ public class AppLoginLogController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
             String json = mapper.writeValueAsString(list);
-            if (list.size() >= Common.EXPORTEXECLCOUNT) {
+            if (list.size() >= 50000) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
