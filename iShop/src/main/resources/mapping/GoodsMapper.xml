@@ -215,12 +215,8 @@
         WHERE g.corp_code=cp.corp_code
         AND g.corp_code=db.corp_code
         AND g.brand_code=db.brand_code
-        <if test="corp_code!=null and corp_code!=''">
-            AND g.corp_code=#{corp_code}
-        </if>
-        <if test="goods_code!=null and goods_code!=''">
-            AND g.goods_code NOT IN (#{goods_code})
-        </if>
+        AND g.corp_code=#{corp_code}
+        AND g.goods_code != #{goods_code}
         <if test="brand_code!=null and brand_code!=''">
             AND g.brand_code = #{brand_code}
         </if>
@@ -570,11 +566,11 @@
     </select>
     <select id="getMatchFab" resultType="com.bizvane.ishop.entity.Goods">
         SELECT
-         dg.goods_code,
-         dg.goods_name,
-         dg.goods_image
-         FROM def_goods dg
-         WHERE 1=1
+        dg.goods_code,
+        dg.goods_name,
+        dg.goods_image
+        FROM def_goods dg
+        WHERE 1=1
         <if test="corp_code!=null and corp_code!=''">
             AND dg.corp_code=#{corp_code}
         </if>
