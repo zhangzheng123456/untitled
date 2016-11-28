@@ -584,8 +584,22 @@ $("#screen_shopl").click(function(){
     $("#screen_wrapper").hide();
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
-    getarealist(shop_num);
-})
+    getstorelist(shop_num);
+});
+//点击弹框的导购按钮弹出导购框
+$("#screen_staffl").click(function(){
+	var staff_num=1;
+	isscroll=false;
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_staff").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#screen_staff").show();
+    $("#screen_wrapper").hide();
+    $("#screen_staff .screen_content_l").unbind("scroll");
+    $("#screen_staff .screen_content_l ul").empty();
+    getstafflist(staff_num);
+});
 /*************获取vip的接口***************/
 var inx=1;//默认是第一页
 var pageNumber=1;//删除默认第一页
