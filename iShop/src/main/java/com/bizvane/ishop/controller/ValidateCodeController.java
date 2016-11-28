@@ -212,7 +212,7 @@ public class ValidateCodeController {
             String t_corp_code = "";
             String t_code = action_json.get("phone").toString();
             String t_name = action_json.get("platform").toString();
-            String remark = user_id+"("+Common.DATETIME_FORMAT.format(date)+")";
+            String remark = "";
             baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             //-------------------行为日志结束-----------------------------------------------------------------------------------
         } catch (Exception ex) {
@@ -359,7 +359,7 @@ public class ValidateCodeController {
             String t_corp_code = "";
             String t_code = action_json.get("phone").toString();
             String t_name = action_json.get("platform").toString();
-            String remark = user_id+"("+Common.DATETIME_FORMAT.format(date)+")";
+            String remark = "";
             baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
             //-------------------行为日志结束----------------------------------------------------------------------------------
         } catch (Exception ex) {

@@ -47,7 +47,8 @@ public class OutExeclHelper {
                        // System.out.println("key= "+ key + " and value= " + cols.get(key));
                         String aa=String.valueOf(array.getJSONObject(i).get(key)+"");
                         String bb = aa.replaceAll("null", "");
-                        temp.add(bb);
+                        String replaceStr = WebUtils.StringFilter(bb);
+                        temp.add(replaceStr);
                     }
                 lists.add(temp);
             }

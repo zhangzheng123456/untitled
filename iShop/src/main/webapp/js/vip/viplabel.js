@@ -244,12 +244,12 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
+                        + "</td><td><span title="+data[i].label_name+">"
                         + data[i].label_name
-                        + "</td><td><span>"
+                        + "</span></td><td><span>"
                         + data[i].label_type
-                        + "</td><td><span title='"+data[i].corp.corp_name+"'>"
-                        + data[i].corp.corp_name
+                        + "</td><td><span title='"+data[i].corp_name+"'>"
+                        + data[i].corp_name
                         + "</span></td><td>"
                         + data[i].label_group_name
                         + "</td><td>"
@@ -298,10 +298,9 @@ function GET(a,b){
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var list=JSON.parse(message.list);
-                cout=list.pages;
-                var pageNum = list.pageNum;
-                var list=list.list;
+                var list=message.list;
+                cout=message.pages;
+                var pageNum = message.page_number;
                 superaddition(list,pageNum);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
@@ -400,9 +399,13 @@ $("#search").keydown(function() {
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        value=this.value.trim();
-        param["searchValue"]=value;
-        POST(inx,pageSize);
+        if(value == ""){
+            GET(inx,pageSize);
+        }else {
+            value=this.value.trim();
+            param["searchValue"]=value;
+            POST(inx,pageSize);
+        }
     }
 });
 //点击放大镜触发搜索
@@ -413,19 +416,21 @@ $("#d_search").click(function(){
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
-    POST(inx,pageSize);
-})
+    if(value == ""){
+        GET(inx,pageSize);
+    }else {
+        POST(inx,pageSize);
+    }
+});
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/VIP/label/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
-            var actions=message.actions;
+            var list=message.list;
+            cout=message.pages;
+            var pageNum = message.page_number;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -777,11 +782,12 @@ function getInputValue(){
    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
+        filtrates(inx,pageSize);
     }else if(num<=0){
         filtrate="";
+        GET(inx,pageSize);
     }
 }
 //筛选发送请求
@@ -790,11 +796,9 @@ function filtrates(a,b){
     oc.postRequire("post","/VIP/label/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var pageNum = list.pageNum;
-            var list=list.list;
-            var actions=message.actions;
+            var list=message.list;
+            cout=message.pages;
+            var pageNum = message.page_number;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();

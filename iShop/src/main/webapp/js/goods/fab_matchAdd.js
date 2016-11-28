@@ -81,9 +81,11 @@ var swip_image = [];
                 //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
                $(".conpany_msg .goods_code").each(function(){
-                    var nowVal =  this.text();
-                   GOODS_CODE +=nowVal;
+                    var nowVal =  $(this).text();
+                   GOODS_CODE +=nowVal+',';
                 });;//商品编号
+                var reg=/,$/gi;
+                GOODS_CODE=GOODS_CODE.replace(reg,"");
                 console.log('商品编号是：'+GOODS_CODE)
                 //var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
                 //var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格

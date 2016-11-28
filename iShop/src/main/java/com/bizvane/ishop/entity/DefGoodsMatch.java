@@ -18,6 +18,15 @@ public class DefGoodsMatch {
     private String creater;
     //是否可用
     private String isactive;
+    private String goods_image;
+
+    public String getGoods_image() {
+        return goods_image;
+    }
+
+    public void setGoods_image(String goods_image) {
+        this.goods_image = goods_image;
+    }
 
     public int getId() {
         return id;
