@@ -2,13 +2,30 @@
 var moreDetail={};//更多详情
 var staffData=[];//页面的数据
 function stop(){
-        $.get("/api/produceActivityUrl?code="+sessionStorage.getItem('corp_code'),function (data) {
-            if(data.code==0){
-                window.location.href = 'activity.html';
-            }else if(data.code==-1){
-                alert(data.message);
-            }
-        })
+    whir.loading.add("",0.5);//加载等待框
+    var _params={
+        "id":"",
+        "message":{
+            "id":sessionStorage.getItem('id')
+        }
+    };
+    $.ajax({
+        url: '/activity/changeState',
+        type: 'POST',
+        dataType: "JSON",
+        data:{
+            param:JSON.stringify(_params)
+        },
+        success: function (data) {
+            $('#stop').html()=='中止活动'?$('#stop').html('恢复活动'):$('#stop').html('中止活动');
+            getSelect(sessionStorage.getItem('id'));
+            whir.loading.remove();//移除加载框
+        },
+        error: function (data) {
+            alert(data.message);
+            whir.loading.remove();//移除加载框
+        }
+    });
 }
 //通知相关人
 function notice(){
@@ -114,15 +131,21 @@ function search(name,num,area,shop){
         arguments[i]==''?'':param.push(i);
     }
     console.log(param)
-    console.log(param.length)
+    console.log(param.length==1)
     if(param.length==0){
         data=staffData;
     }else if(param.length==1){
         staffData.map(function (val,index,arr) {
             //           0                  1                      2                3
-            if(val.user_name==name||val.user_code==num||val.area_name==area||val.store_name==shop){
-                data.push(val)
-            }
+            // if(val.user_name==name||val.user_code==num||val.area_name==area||val.store_name==shop){
+            //     data.push(val)
+            // }
+            console.log(param[0]);
+            if((param.indexOf(0)!=-1)&&(val.user_name==name)){data.push(val)};
+            if((param.indexOf(1)!=-1)&&(val.user_code==num)){data.push(val)};
+            if((param.indexOf(2)!=-1)&&(val.area_name==area)){data.push(val)};
+            if((param.indexOf(3)!=-1)&&(val.store_name==shop)){data.push(val)};
+
         });
     }else if(param.length==2){
         if((param.indexOf(0)!=-1) && (param.indexOf(1)!=-1)){ // 0 1
@@ -251,7 +274,7 @@ function search(name,num,area,shop){
 }
 
 //获取活动执行情况
-function getExecuteDetail(){
+function getExecuteDetail(vip_count){
     var id=sessionStorage.getItem("id");//获取
     var _params={
         "id":"",
@@ -267,15 +290,19 @@ function getExecuteDetail(){
             param:JSON.stringify(_params)
         },
         success: function (data) {
-            var message = JSON.parse(data.message);
-            // console.log('获取活动执行情况'+JSON.stringify(message));
-            getSelect(id);
-            var complete_vips_count = message.complete_vips_count;
-            var userList =message.userList;
-            var target_vips_count = message.target_vips_count;
-            staffData=userList;
-            listShow(userList);
-            check(target_vips_count,complete_vips_count);
+            if(data.message==''){
+                $('.btnSecond').hide();
+                $('.people_head').hide();
+                $('.people').hide();
+                check(vip_count,vip_count);
+            }else {
+                var message = JSON.parse(data.message);
+                var complete_vips_count = message.complete_vips_count;
+                var userList =message.userList;
+                staffData=userList;
+                listShow(userList);
+                check(vip_count,complete_vips_count);
+            }
         },
         error: function (data) {
             console.log('获取活动执行情况失败');
@@ -302,11 +329,13 @@ function getSelect(id){
             var message = JSON.parse(data.message);
             var activityVip = JSON.parse(message.activityVip);
             moreDetail=activityVip;
+            var target_vips_count=activityVip.target_vips_count;
             var activity_state = activityVip.activity_state;
             var activity_theme = activityVip.activity_theme;
             var runMode = activityVip.run_mode;
             var beiginTime = activityVip.start_time;
             var endTime = activityVip.end_time;
+            getExecuteDetail(target_vips_count);
             activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
             var corp_code = activityVip.corp_code;
             sessionStorage.setItem("corp_code",corp_code);//存储的方法
@@ -341,11 +370,11 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
     $('#activityState2').text(runMode);
     $('#beiginTime').text(beiginTime);
     $('#endTime').text(endTime);
+    $('#activityState').text()=='执行中'?$('#stop').html('中止活动'):$('#stop').html('恢复活动');
 }
 
 //加载员工列表
 function listShow(userList){
-    console.log(userList);
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
     var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis">${name}</div> <div class="people_title_num ellipsis">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
@@ -361,10 +390,10 @@ function listShow(userList){
         nowHTML1 = nowHTML1.replace("${area}", userList[i].area_name);
         nowHTML1 = nowHTML1.replace("${title}", userList[i].area_name);
         nowHTML1 = nowHTML1.replace("${shop}", userList[i].store_name);
-        $('.done').css('width', percent+'%');
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
         $("#peopleContent").append(html);
+        $('.done').css('width', percent+'%');
         //判断进度颜色
         if(percent<100&&percent>0){
             $('.percent_percent').css('color','#42a0a8');
@@ -379,7 +408,6 @@ function listShow(userList){
         }
     }
 }
-
 //插件-饼图
 function table(TheTarget,TheCover) {
     $('#TheTarget').text(TheTarget);
@@ -517,7 +545,8 @@ $('#get_more .head_span_r').click(function () {
 //页面加载数据
 window.onload = function(){
     //获取活动执行情况
-    getExecuteDetail();
+    // getExecuteDetail();
+    getSelect(sessionStorage.getItem('id'));
     //加载统计模块
     // check();
     //加载活动状态
