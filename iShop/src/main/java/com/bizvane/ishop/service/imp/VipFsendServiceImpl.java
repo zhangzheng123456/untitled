@@ -87,7 +87,7 @@ public class VipFsendServiceImpl implements VipFsendService{
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String phone = "13776410320";
+        String phone = "13776410320,";
         if (type.equals("1")){
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
@@ -167,12 +167,12 @@ public class VipFsendServiceImpl implements VipFsendService{
             if (!dataBox.status.toString().equals("SUCCESS")){
                 status = "发送失败";
             }
-            return status;
+
         }else{
             status= "发送失败";
             return status;
         }
-
+        return status;
     }
 
     @Override
