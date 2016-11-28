@@ -561,7 +561,7 @@ $("#screen_areal").click(function(){
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
     getarealist(area_num);
-})
+});
 //点击弹框的筛选按钮弹出品牌框
 $("#screen_brandl").click(function(){
     var arr=whir.loading.getPageSize();
@@ -571,6 +571,20 @@ $("#screen_brandl").click(function(){
     $("#screen_brand").show();
     $("#screen_wrapper").hide();
     getbrandlist();
+});
+//点击弹框的筛选按钮弹出区域框
+$("#screen_shopl").click(function(){
+	var shop_num=1;
+	isscroll=false;
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#screen_shop").show();
+    $("#screen_wrapper").hide();
+    $("#screen_shop .screen_content_l").unbind("scroll");
+    $("#screen_shop .screen_content_l ul").empty();
+    getarealist(shop_num);
 })
 /*************获取vip的接口***************/
 var inx=1;//默认是第一页
@@ -803,15 +817,12 @@ function GET(a,b){
     param["pageSize"]=b;
     param["corp_code"]=corp_code;
     oc.postRequire("post","/vipAnalysis/allVip","",param,function(data){
-        console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            console.log(message);
             var list=message.all_vip_list;
             cout=message.pages;
             var pageNum = message.pageNum;
-            //var list=list.list;
             superaddition(list,pageNum);
             jumpBianse();
             filtrate="";
@@ -826,7 +837,6 @@ $("#search").keydown(function() {
     var event=window.event||arguments[0];
     if(event.keyCode==13){
         value=this.value.trim();
-        console.log(value);
         if(value!==""){
             inx=1;
             param["searchValue"]=value;
@@ -939,7 +949,6 @@ $("#save").click(function(){
     $("#sendee_r").val("已选"+tr.length+"个");
     $("#page-wrapper").show();
 	$(".content").hide();
-	console.log(message.cache.vip_id);
 });
 $("#send").click(function(){
 	var param={};
@@ -953,23 +962,22 @@ $("#send").click(function(){
 	param["sms_vips"]=sms_vips;
 	if(message.cache.vip_id==""){
 		art.dialog({
-				time: 1,
-				lock: true,
-				cancel: false,
-				content: "接收会员不能为空"
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "接收会员不能为空"
 		});
 		return;
 	};
 	if(content==""){
 		art.dialog({
-				time: 1,
-				lock: true,
-				cancel: false,
-				content: "群发内容不能为空"
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "群发内容不能为空"
 		});
 		return;
-	}
-	console.log(param);
+	};
 	oc.postRequire("post","/vipFsend/add","",param,function(data){
 		console.log(data);
 	});
