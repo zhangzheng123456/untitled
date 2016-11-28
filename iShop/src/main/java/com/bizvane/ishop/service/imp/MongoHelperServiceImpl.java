@@ -126,6 +126,7 @@ public class MongoHelperServiceImpl {
             for (int i = 0; i < users.size(); i++) {
                 if (user_id.equals(users.get(i).getUser_code())) {
                     obj.put("user_can_login", "离职");
+                    break;
                 } else {
                     obj.put("user_can_login", "在职");
                 }
@@ -141,16 +142,17 @@ public class MongoHelperServiceImpl {
     public static BasicDBObject andSignScreen(JSONArray array) {
         BasicDBObject queryCondition = new BasicDBObject();
         BasicDBList values = new BasicDBList();
+        //...
         for (int i = 0; i < array.size(); i++) {
             String info = array.get(i).toString();
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
+            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("sign_time")) {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
-            if (screen_key.equals("creater_date")) {
+            if (screen_key.equals("sign_time")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();
 
@@ -164,42 +166,6 @@ public class MongoHelperServiceImpl {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
                 }
             }
-            if (screen_key.equals("count")) {
-                JSONObject time_count = JSON.parseObject(screen_value);
-                String type = time_count.get("type").toString();
-                String value = time_count.get("value").toString();
-                System.out.println("=========count:" + value);
-                if (type.equals("gt")) {
-                    //大于
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(value))));
-                } else if (type.equals("lt")) {
-                    //小于
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(value))));
-                } else if (type.equals("between")) {
-                    //介于
-                    JSONObject values2 = JSONObject.parseObject(value);
-                    String start = values2.get("start").toString();
-                    String end = values2.get("end").toString();
-                    if (!start.equals("") && start != null) {
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(start))));
-                    }
-                    if (!end.equals("") && end != null) {
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(end))));
-                    }
-                } else if (type.equals("eq")) {
-                    //等于
-                    values.add(new BasicDBObject(screen_key, Integer.parseInt(value)));
-                } else if (type.equals("all")) {
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, 0)));
-                }
-            }
-
-            values.add(new BasicDBObject("store_code",json.get("screen_value").toString()));
-            values.add(new BasicDBObject("user_name",json.get("user_name").toString()));
-            values.add(new BasicDBObject("corp_name",json.get("corp_name").toString()));
-            values.add(new BasicDBObject("user_code",json.get("user_code").toString()));
-            values.add(new BasicDBObject("status",json.get("status").toString()));
-
 
         }
         queryCondition.put("$and", values);
@@ -231,6 +197,28 @@ public class MongoHelperServiceImpl {
             list.add(obj.toMap());
         }
         return list;
+    }
+
+    //DBCursor数据集转换status类型（签到管理）
+    public  static  ArrayList dbCursorToList_status(DBCursor dbCursor){
+
+        ArrayList list=new ArrayList();
+        while(dbCursor.hasNext()){
+
+            DBObject object=dbCursor.next();
+            String status=object.get("status").toString();
+            if(status==null||status.equals("")){
+                object.put("status","");
+            }else if(status.equals("0")){
+                object.put("status","签到");
+            }
+            else if(status.equals("-1")){
+                object.put("status","签退");
+            }
+            list.add(object.toMap());
+        }
+
+        return  list;
     }
 
 }

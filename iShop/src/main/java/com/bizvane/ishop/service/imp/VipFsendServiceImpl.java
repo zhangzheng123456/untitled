@@ -167,7 +167,6 @@ public class VipFsendServiceImpl implements VipFsendService{
 //            if (!dataBox.status.toString().equals("SUCCESS")){
 //                status = "发送失败";
 //            }
-            
 
         }else{
             status= "发送失败";

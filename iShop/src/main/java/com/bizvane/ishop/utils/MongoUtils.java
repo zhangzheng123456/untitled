@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.User;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
+import com.bizvane.sun.common.utils.SpringUtil;
 import com.mongodb.*;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -231,6 +234,16 @@ public class MongoUtils {
         deletePig.put("name", "pig");
         collection.remove(deletePig);
     }
-
-
+//获取会员标签的自增ID
+    public static String getNextId(String tabel,String field,String values,String increment)throws  Exception{
+        MongoDBClient client= SpringUtil.getBean("mongodbClient");
+        MongoTemplate mongoTemplate = client.getMongoTemplate();//获取模板
+        DBCollection cursor_content = mongoTemplate.getCollection(tabel);//获取操作表
+        BasicDBObject queryDBObject=new BasicDBObject();
+        queryDBObject.put(field,values);
+        BasicDBObject updateDBObject=new BasicDBObject();
+        updateDBObject.put("$inc",new BasicDBObject(increment,1));
+        DBObject dbCursor=cursor_content.findAndModify(queryDBObject,(DBObject)null,(DBObject)null,false,updateDBObject,true,false);
+        return dbCursor.get(increment).toString();
+    }
 }

@@ -10,7 +10,15 @@ var  message={
 	cache:{//缓存变量
     	"vip_id":"",
     	"area_codes":"",
-    	"area_names":""
+    	"area_names":"",
+    	"brand_codes":"",
+    	"brand_names":"",
+    	"store_codes":"",
+    	"store_names":"",
+    	"user_codes":"",
+    	"user_names":"",
+    	"type":"",
+    	"count":""
     },
 	init:function(){
 		this.getCorplist();
@@ -514,7 +522,7 @@ $("#staff_search_f").click(function(){
     $("#screen_staff .screen_content_l ul").empty();
 	getstafflist(staff_num);
 })
-//并排放大镜收索
+//品牌放大镜收索
 $("#brand_search_f").click(function(){
 	$("#screen_brand .screen_content_l ul").empty();
 	getbrandlist();
@@ -621,8 +629,78 @@ $("#screen_que_area").click(function(){
     message.cache.area_names=area_names;
     $("#screen_area").hide();
     $("#screen_wrapper").show();
-    $("#screen_area_num").val("已选"+li.length+"个")
-
+    $("#screen_area_num").val("已选"+li.length+"个");
+    $(".area_num").val("已选"+li.length+"个");
+});
+//点击品牌确定按钮
+$("#screen_que_brand").click(function(){
+	var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
+	var brand_codes="";
+	var brand_names="";
+	for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            brand_codes+=r+",";
+            brand_names+=p+",";
+        }else{
+            brand_codes+=r;
+            brand_names+=p;
+        }
+    };
+    message.cache.brand_codes=brand_codes;
+    message.cache.brand_names=brand_names;
+    $("#screen_brand").hide();
+    $("#screen_wrapper").show();
+    $("#screen_brand_num").val("已选"+li.length+"个");
+    $(".brand_num").val("已选"+li.length+"个");
+    console.log(message.cache.brand_codes);
+    console.log(message.cache.brand_names);
+});
+//点击店铺确定按钮
+$("#screen_que_shop").click(function(){
+	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
+	var store_codes="";
+	var store_names="";
+	for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            store_codes+=r+",";
+            store_names+=p+",";
+        }else{
+            store_codes+=r;
+            store_names+=p;
+        }
+    };
+    message.cache.store_codes=store_codes;
+    message.cache.store_names=store_names;
+    $("#screen_shop").hide();
+    $("#screen_wrapper").show();
+    $("#screen_shop_num").val("已选"+li.length+"个");
+    $("#staff_shop_num").val("已选"+li.length+"个");
+});
+//点击员工确定按钮
+$("#screen_que_staff").click(function(){
+	var li=$("#screen_staff .screen_content_r input[type='checkbox']").parents("li");
+	var user_codes="";
+	var user_names="";
+	for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            user_codes+=r+",";
+            user_names+=p+",";
+        }else{
+            user_codes+=r;
+            user_names+=p;
+        }
+    };
+    message.cache.user_codes=user_codes;
+    message.cache.user_names=user_names;
+    $("#screen_staff").hide();
+    $("#screen_wrapper").show();
+    $("#screen_stff_num").val("已选"+li.length+"个");
 });
 /*************获取vip的接口***************/
 var inx=1;//默认是第一页
@@ -984,29 +1062,64 @@ $("#save").click(function(){
         }
     };
     message.cache.vip_id=vip_id;
+    message.cache.type="2";
     $("#sendee_r").val("已选"+tr.length+"个");
     $("#page-wrapper").show();
 	$(".content").hide();
 });
+//点击保存全部
+$("#save_all").click(function(){
+	message.cache.type="1";
+	if(message.cache.count>500){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "选择的会员不能大于500个"
+		});
+		return;
+	};
+	$("#sendee_r").val("已选"+message.cache.count+"个");
+	$("#page-wrapper").show();
+	$(".content").hide();
+})
+//点击发送按钮
 $("#send").click(function(){
 	var param={};
 	var sms_vips={};
-	sms_vips["type"]="2";
-	sms_vips["vips"]=message.cache.vip_id;
+	sms_vips["type"]=message.cache.type;
+	if(message.cache.type=="1"){
+		sms_vips["area_code"]=message.cache.area_codes;
+		sms_vips["brand_code"]=message.cache.brand_codes;
+		sms_vips["store_code"]=message.cache.store_codes;
+		sms_vips["user_code"]=message.cache.user_codes;
+		if(message.cache.count==""){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "接收会员不能为空"
+			});
+			return;
+		};
+	};
+	if(message.cache.type=="2"){
+		sms_vips["vips"]=message.cache.vip_id;
+		if(message.cache.vip_id==""){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "接收会员不能为空"
+			});
+			return;
+		};
+	};
 	var corp_code=$("#OWN_CORP").val();
 	var content=$("#message_content").val();
 	param["corp_code"]=corp_code;
 	param["content"]=content;
 	param["sms_vips"]=sms_vips;
-	if(message.cache.vip_id==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content: "接收会员不能为空"
-		});
-		return;
-	};
 	if(content==""){
 		art.dialog({
 			time: 1,
@@ -1016,10 +1129,76 @@ $("#send").click(function(){
 		});
 		return;
 	};
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/vipFsend/add","",param,function(data){
-		console.log(data);
+		if(data.code=="0"){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "发送成功"
+		    });
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "发送失败"
+		    });
+		}
+		whir.loading.remove();//移除加载框
 	});
+});
+//点击会员确定
+$("#screen_vip_que").click(function(){
+    inx=1;
+    _param["corp_code"]=$("#OWN_CORP").val();
+    _param["brand_code"]=message.cache.brand_codes;
+    _param["store_code"]=message.cache.store_codes;
+    _param["area_code"]=message.cache.area_codes;
+    _param["user_code"]=message.cache.user_codes;
+    _param["pageNumber"] = inx;
+    _param["pageSize"] = pageSize;
+    if(message.cache.area_codes==""&&message.cache.brand_codes==""&&message.cache.store_codes==""&&message.cache.user_codes==""){
+        GET(inx,pageSize);
+        $("#save_all").hide();
+    }
+    if(message.cache.area_codes!==""||message.cache.brand_codes!==""||message.cache.store_codes!==""||message.cache.user_codes!==""){
+        filtrate="sucess";
+        filtrates(inx,pageSize);
+    }
+    $("#search").val("");
+    $("#screen_wrapper").hide();
+    $("#p").hide();
 })
+//筛选调接口
+function filtrates(a,b){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/vip/vipScreen","", _param, function(data) {
+        if(data.code=="0"){
+            var messages=JSON.parse(data.message);
+            var list=messages.all_vip_list;
+            cout=messages.pages;
+            $(".table tbody").empty();
+            if(list.length<=0){
+                $(".table p").remove();
+                $(".table").append("<p>没有找到信息,请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+            	message.cache.count=messages.count;
+                $(".table p").remove();
+                superaddition(list,a);
+                jumpBianse();
+                $("#save_all").show();
+                console.log(message.cache.count);
+            }
+            setPage($("#foot-num")[0],cout,a,b);
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+    })
+}
+//关闭按钮回到列表页
 $("#send_close").click(function(){
 	 $(window.parent.document).find('#iframepage').attr("src", "/vip/message.html");
 })
