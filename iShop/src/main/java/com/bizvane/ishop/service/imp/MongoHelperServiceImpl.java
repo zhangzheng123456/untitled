@@ -126,6 +126,7 @@ public class MongoHelperServiceImpl {
             for (int i = 0; i < users.size(); i++) {
                 if (user_id.equals(users.get(i).getUser_code())) {
                     obj.put("user_can_login", "离职");
+                    break;
                 } else {
                     obj.put("user_can_login", "在职");
                 }

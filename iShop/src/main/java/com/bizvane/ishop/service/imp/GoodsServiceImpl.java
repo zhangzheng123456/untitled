@@ -378,6 +378,9 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.getMatchFab(corp_code,search_value);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            transterGoods(list.get(i));
+        }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
     }

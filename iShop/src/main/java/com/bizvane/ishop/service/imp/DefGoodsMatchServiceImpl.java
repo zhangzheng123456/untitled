@@ -1,7 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.dao.DefGoodsMatchMapper;
 import com.bizvane.ishop.entity.DefGoodsMatch;
+import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.service.DefGoodsMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,17 +20,57 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     private DefGoodsMatchMapper defGoodsMatchMapper;
     @Override
     public List<DefGoodsMatch> selectMatchGoods(String corp_code) {
-        return defGoodsMatchMapper.selectMatchGoods(corp_code);
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchGoods(corp_code);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            String goods_image = list.get(i).getGoods_image();
+            String new_image = transterGoods(goods_image);
+            list.get(i).setGoods_image(new_image);
+        }
+        return list;
     }
-
+    /**
+     * 将商品列表，只显示一张图片
+     *
+     * @param goodsImage
+     */
+    private String transterGoods(String goodsImage) {
+        String image = "";
+        if (goodsImage != null && !goodsImage.equals("")) {
+            if (goodsImage.startsWith("[")) {
+                JSONArray array = JSONArray.parseArray(goodsImage);
+                if (array.size() > 0) {
+                    String jstring = array.get(0).toString();
+                    JSONObject object = JSONObject.parseObject(jstring);
+                    image = object.get("image").toString();
+                } else {
+                    image = "";
+                }
+            } else {
+                image = goodsImage.split(",")[0];
+            }
+        }
+        return image;
+    }
     @Override
     public List<DefGoodsMatch> selMatchBySeach(String corp_code, String search_value) {
-        return defGoodsMatchMapper.selMatchBySeach(corp_code,search_value);
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selMatchBySeach(corp_code, search_value);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            String goods_image = list.get(i).getGoods_image();
+            String new_image = transterGoods(goods_image);
+            list.get(i).setGoods_image(new_image);
+        }
+        return list;
     }
 
     @Override
     public List<DefGoodsMatch> selectMatchByCode(String corp_code, String goods_match_code) {
-        return defGoodsMatchMapper.selectMatchByCode(corp_code,goods_match_code);
+        List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchByCode(corp_code, goods_match_code);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            String goods_image = list.get(i).getGoods_image();
+            String new_image = transterGoods(goods_image);
+            list.get(i).setGoods_image(new_image);
+        }
+        return list;
     }
 
     @Override

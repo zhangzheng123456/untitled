@@ -579,6 +579,43 @@ public class VIPLabelController {
 
 
 
+//    /**
+//     * 会员标签管理
+//     * 判断企业内标签名称是否唯一
+//     */
+//    @RequestMapping(value = "/VipLabelNameExist")
+//    @ResponseBody
+//    public String VipLabelNameExist(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObject1 = JSONObject.parseObject(jsString);
+//            String message = jsonObject1.get("message").toString();
+//            JSONObject jsonObject2 = JSONObject.parseObject(message);
+//            String label_name = jsonObject2.getString("label_name");
+//            String corp_code = jsonObject2.getString("corp_code");
+//            List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(corp_code, label_name);
+//
+//            if (existInfo.size() == 0) {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("标签名称未被使用");
+//            } else {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage("标签名称已被使用");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+
+
     /**
      * 会员标签管理
      * 判断企业内标签名称是否唯一
@@ -589,15 +626,23 @@ public class VIPLabelController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_label_def);
+
             String jsString = request.getParameter("param");
             JSONObject jsonObject1 = JSONObject.parseObject(jsString);
             String message = jsonObject1.get("message").toString();
             JSONObject jsonObject2 = JSONObject.parseObject(message);
             String label_name = jsonObject2.getString("label_name");
             String corp_code = jsonObject2.getString("corp_code");
-            List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(corp_code, label_name);
-
-            if (existInfo.size() == 0) {
+            Map keyMap = new HashMap();
+            keyMap.put("corp_code", corp_code);
+            keyMap.put("label_name", label_name);
+            BasicDBObject ref = new BasicDBObject();
+            ref.putAll(keyMap);
+            DBCursor dbCursor = cursor.find(ref);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_labelType(dbCursor);
+            if (list.size() == 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("标签名称未被使用");
@@ -614,7 +659,6 @@ public class VIPLabelController {
         }
         return dataBean.getJsonStr();
     }
-
     /**
      *
      * 页面查找
