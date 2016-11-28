@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -182,7 +183,7 @@ public class UserOperationController {
             String lists = jsonObject.get("list").toString();
 
             JSONArray array = JSONArray.parseArray(lists);
-            BasicDBObject queryCondition = MongoUtils.andUserOperScreen(array);
+            BasicDBObject queryCondition = MongoHelperServiceImpl.andUserOperScreen(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
@@ -265,7 +266,7 @@ public class UserOperationController {
                 list = MongoUtils.dbCursorToList_id(dbCursor);
             } else {
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andUserOperScreen(array);
+                BasicDBObject queryCondition = MongoHelperServiceImpl.andUserOperScreen(array);
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {

@@ -135,6 +135,81 @@ public class MongoHelperServiceImpl {
         return list;
     }
 
+
+    //多个“与”查询(筛选)签到管理
+
+    public static BasicDBObject andSignScreen(JSONArray array) {
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        for (int i = 0; i < array.size(); i++) {
+            String info = array.get(i).toString();
+            JSONObject json = JSONObject.parseObject(info);
+            String screen_key = json.get("screen_key").toString();
+            String screen_value = json.get("screen_value").toString();
+            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
+                Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
+                values.add(new BasicDBObject(screen_key, pattern));
+            }
+            if (screen_key.equals("creater_date")) {
+                JSONObject date = JSON.parseObject(screen_value);
+                String start = date.get("start").toString();
+
+                String end = date.get("end").toString();
+                if (!start.equals("") && start != null) {
+                    System.out.println("=========start:" + start);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start)));
+                }
+                if (!end.equals("") && end != null) {
+                    System.out.println("=========end:" + end);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
+                }
+            }
+            if (screen_key.equals("count")) {
+                JSONObject time_count = JSON.parseObject(screen_value);
+                String type = time_count.get("type").toString();
+                String value = time_count.get("value").toString();
+                System.out.println("=========count:" + value);
+                if (type.equals("gt")) {
+                    //大于
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(value))));
+                } else if (type.equals("lt")) {
+                    //小于
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(value))));
+                } else if (type.equals("between")) {
+                    //介于
+                    JSONObject values2 = JSONObject.parseObject(value);
+                    String start = values2.get("start").toString();
+                    String end = values2.get("end").toString();
+                    if (!start.equals("") && start != null) {
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(start))));
+                    }
+                    if (!end.equals("") && end != null) {
+                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(end))));
+                    }
+                } else if (type.equals("eq")) {
+                    //等于
+                    values.add(new BasicDBObject(screen_key, Integer.parseInt(value)));
+                } else if (type.equals("all")) {
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, 0)));
+                }
+            }
+
+            values.add(new BasicDBObject("store_code",json.get("screen_value").toString()));
+            values.add(new BasicDBObject("user_name",json.get("user_name").toString()));
+            values.add(new BasicDBObject("corp_name",json.get("corp_name").toString()));
+            values.add(new BasicDBObject("user_code",json.get("user_code").toString()));
+            values.add(new BasicDBObject("status",json.get("status").toString()));
+
+
+        }
+        queryCondition.put("$and", values);
+        return queryCondition;
+    }
+
+
+
+
+
     //DBCursor数据集转arrayList+id+标签类型(会员标签)
     public static ArrayList dbCursorToList_labelType(DBCursor dbCursor) {
         ArrayList list = new ArrayList();
@@ -157,4 +232,5 @@ public class MongoHelperServiceImpl {
         }
         return list;
     }
+
 }

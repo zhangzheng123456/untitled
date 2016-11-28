@@ -132,65 +132,6 @@
             background: #6cc1cb;
             color: #fff;
         }
-        .tk {
-            display: none;
-            width: 280px;
-            height: 180px;
-            border-radius: 5px;
-            background: #fff;
-            position: absolute;
-            top: 300px;
-            left: 30%;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
-        }
-
-        .tk span {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .tk .tip {
-            padding: 50px 20px;
-            height: 140px;
-            text-align: center;
-            font-size: 14px;
-            color: #888888;
-        }
-
-        .tk .btn {
-            padding: 0;
-            margin-left: 30px;
-        }
-
-        .tk em {
-            float: left;
-            display: inline-block;
-            font-style: normal;
-            width: 100px;
-            height: 30px;
-            line-height: 30px;
-            cursor: pointer;
-        }
-
-        .tk .cancel {
-            background-color: #e8e8e8;
-            color: #888;
-            font-size: 14px;
-            border-radius: 5px;
-        }
-
-        .tk .enter {
-            background-color: #cd706e;
-            color: #fff;
-            font-size: 14px;
-            border-radius: 5px;
-            margin-left: 20px;
-        }
-
         .box_shadow {
             display: none;
             width: 100%;
@@ -424,7 +365,7 @@
                 </ul>
             </div>
             <div>
-                <span><label style="color:#c26555;">活动主题*</label><input type="text" id="activity_theme" autocomplete="off"/></span>
+                <span><label style="color:#c26555;">活动主题*</label><input type="text" id="activity_theme" autocomplete="off" maxlength="25"/></span>
             </div>
             <div>
                 <ul style="display:inline-flex;position: relative">
@@ -435,7 +376,7 @@
                         <li>(任务)短信通知顾客</li>
                         <li>系统短信通知顾客</li>
                         <li>(任务)分享链接到社交平台</li>
-                        <li>微信公众号推送</li>
+                        <!--<li>微信公众号推送</li>-->
                     </ul>
                 </ul>
             </div>
@@ -468,15 +409,15 @@
                       id="summary"  placeholder="请输入活动简介"></textarea></span></span>
             </div>
             <div class="task_title">
-                <span><label>任务标题</label><input type="text" id="task_title"/></span>
+                <span><label>任务标题</label><input type="text" id="task_title" maxlength="50"/></span>
             </div>
             <div class="task_dec">
                 <span style="display: inline-flex;width:100%"><label>任务描述</label><span class="abstract"><textarea
-                      id="task_dec"  placeholder="未选择"></textarea></span></span>
+                      id="task_dec" maxlength="200"></textarea></span></span>
             </div>
             <div class="short_msg" style="display: none">
                 <span style="display: inline-flex;width:100%"><label>短信正文</label><span class="abstract"><textarea
-                       id="short_msg" placeholder="请输入活动简介"></textarea></span></span>
+                       id="short_msg" placeholder="请输入活动简介" maxlength="200"></textarea></span></span>
             </div>
             <div>
                 <span><label>外部链接</label><input type="text" id="outer_link"/></span>

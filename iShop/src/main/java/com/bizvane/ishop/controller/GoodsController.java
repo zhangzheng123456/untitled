@@ -935,55 +935,13 @@ public class GoodsController {
     }
 
 
+
     /**
      * 获取企业商品（用于商品搭配）
      */
     @RequestMapping(value = "/getMatchFab", method = RequestMethod.POST)
     @ResponseBody
     public String getMatchFab(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String goods_code = jsonObject.get("goods_code").toString();
-            String brand_code = "";
-            if (jsonObject.has("brand_code")) {
-                brand_code = jsonObject.get("brand_code").toString();
-            }
-            String search_value = jsonObject.get("searchValue").toString();
-            PageInfo<Goods> list=null;
-            if(role_code.equals(Common.ROLE_SYS)) {
-                list   = goodsService.matchGoodsList(page_number, page_size, "", search_value, goods_code, brand_code);
-            }else {
-                list   = goodsService.matchGoodsList(page_number, page_size, corp_code, search_value, goods_code, brand_code);
-            }
-            JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 获取企业商品（用于商品搭配）
-     */
-    @RequestMapping(value = "/getMatchFab2", method = RequestMethod.POST)
-    @ResponseBody
-    public String getMatchFab2(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {

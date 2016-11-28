@@ -2004,7 +2004,7 @@ $("#target_vip_all").click(function () {
             time: 1,
             lock: true,
             cancel: false,
-            content: "分配的会员不能超过500个"
+            content: "选择的会员不能超过500个"
         });
         return ;
     }else {
@@ -2380,8 +2380,11 @@ $("#screen_vip_que").click(function () {
 });
 //点击执行
 $("#performance").click(function () {
+    var left=($(window).width()-$("#tk").width())/2-200;//弹框定位的left值
+    var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
     $("#edit_save").trigger("click");
     setTimeout(function () {
+        $("#tk").css({"left":+left+"px","top":+tp+"px"});
         $(".box_shadow").show();
         $(".tk").show();
     },1000);
