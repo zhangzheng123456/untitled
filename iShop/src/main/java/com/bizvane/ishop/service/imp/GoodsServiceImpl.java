@@ -32,30 +32,30 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods getGoodsById(int id) throws Exception {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
-        List<Goods> matchgoods = new ArrayList<Goods>();
-
-        String corp_code = goods.getCorp_code();
-        String goods_code = goods.getGoods_code();
-        List<GoodsMatch> matches1 = goodsMapper.selectMatchGoods1(corp_code,goods_code);
-        List<GoodsMatch> matches2 = goodsMapper.selectMatchGoods2(corp_code,goods_code);
-
-        for (int i = 0; i < matches1.size(); i++) {
-            String goods_code_match = matches1.get(i).getGoods_code_match();
-            Goods match = getGoodsByCode(corp_code,goods_code_match,Common.IS_ACTIVE_Y);
-            if (match != null) {
-                transterGoods(match);
-                matchgoods.add(match);
-            }
-        }
-        for (int i = 0; i < matches2.size(); i++) {
-            String good_code = matches2.get(i).getGoods_code();
-            Goods match = getGoodsByCode(corp_code,good_code,Common.IS_ACTIVE_Y);
-            if (match != null) {
-                transterGoods(match);
-                matchgoods.add(match);
-            }
-        }
-        goods.setMatchgoods(matchgoods);
+//        List<Goods> matchgoods = new ArrayList<Goods>();
+//
+//        String corp_code = goods.getCorp_code();
+//        String goods_code = goods.getGoods_code();
+//        List<GoodsMatch> matches1 = goodsMapper.selectMatchGoods1(corp_code,goods_code);
+//        List<GoodsMatch> matches2 = goodsMapper.selectMatchGoods2(corp_code,goods_code);
+//
+//        for (int i = 0; i < matches1.size(); i++) {
+//            String goods_code_match = matches1.get(i).getGoods_code_match();
+//            Goods match = getGoodsByCode(corp_code,goods_code_match,Common.IS_ACTIVE_Y);
+//            if (match != null) {
+//                transterGoods(match);
+//                matchgoods.add(match);
+//            }
+//        }
+//        for (int i = 0; i < matches2.size(); i++) {
+//            String good_code = matches2.get(i).getGoods_code();
+//            Goods match = getGoodsByCode(corp_code,good_code,Common.IS_ACTIVE_Y);
+//            if (match != null) {
+//                transterGoods(match);
+//                matchgoods.add(match);
+//            }
+//        }
+//        goods.setMatchgoods(matchgoods);
 
         transterGoodsImg(goods);
         return goods;
@@ -68,22 +68,22 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public int insertGoods(Goods goods,String match_goods) throws Exception {
-        Date now = new Date();
-        if (!match_goods.equals("")) {
-            String[] matches = match_goods.split(",");
-            for (int i = 0; i < matches.length; i++) {
-                String goods_code_match = matches[i];
-                GoodsMatch match = new GoodsMatch();
-                match.setCorp_code(goods.getCorp_code().trim());
-                match.setGoods_code(goods.getGoods_code().trim());
-                match.setGoods_code_match(goods_code_match);
-                match.setModified_date(Common.DATETIME_FORMAT.format(now));
-                match.setModifier(goods.getCreater());
-                match.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                match.setCreater(goods.getCreater());
-                goodsMapper.insertMatch(match);
-            }
-        }
+//        Date now = new Date();
+//        if (!match_goods.equals("")) {
+//            String[] matches = match_goods.split(",");
+//            for (int i = 0; i < matches.length; i++) {
+//                String goods_code_match = matches[i];
+//                GoodsMatch match = new GoodsMatch();
+//                match.setCorp_code(goods.getCorp_code().trim());
+//                match.setGoods_code(goods.getGoods_code().trim());
+//                match.setGoods_code_match(goods_code_match);
+//                match.setModified_date(Common.DATETIME_FORMAT.format(now));
+//                match.setModifier(goods.getCreater());
+//                match.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//                match.setCreater(goods.getCreater());
+//                goodsMapper.insertMatch(match);
+//            }
+//        }
 
         return goodsMapper.insert(goods);
     }
@@ -96,24 +96,24 @@ public class GoodsServiceImpl implements GoodsService {
             if (new_goods != null && old_goods.getId() != new_goods.getId()) {
                 return "编号已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-                goodsMapper.deleteMatch(goods.getCorp_code().trim(),old_goods.getGoods_code().trim());
-                Date now = new Date();
-                if (!match_goods.equals("")) {
-                    String[] matches = match_goods.split(",");
-                    for (int i = 0; i < matches.length; i++) {
-                        String goods_code_match = matches[i];
-                        GoodsMatch match = new GoodsMatch();
-                        match.setCorp_code(goods.getCorp_code().trim());
-                        match.setGoods_code(goods.getGoods_code().trim());
-                        match.setGoods_code_match(goods_code_match);
-                        match.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        match.setModifier(goods.getModifier());
-                        match.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                        match.setCreater(goods.getModifier());
-                        match.setIsactive(Common.IS_ACTIVE_Y);
-                        goodsMapper.insertMatch(match);
-                    }
-                }
+//                goodsMapper.deleteMatch(goods.getCorp_code().trim(),old_goods.getGoods_code().trim());
+//                Date now = new Date();
+//                if (!match_goods.equals("")) {
+//                    String[] matches = match_goods.split(",");
+//                    for (int i = 0; i < matches.length; i++) {
+//                        String goods_code_match = matches[i];
+//                        GoodsMatch match = new GoodsMatch();
+//                        match.setCorp_code(goods.getCorp_code().trim());
+//                        match.setGoods_code(goods.getGoods_code().trim());
+//                        match.setGoods_code_match(goods_code_match);
+//                        match.setModified_date(Common.DATETIME_FORMAT.format(now));
+//                        match.setModifier(goods.getModifier());
+//                        match.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//                        match.setCreater(goods.getModifier());
+//                        match.setIsactive(Common.IS_ACTIVE_Y);
+//                        goodsMapper.insertMatch(match);
+//                    }
+//                }
                 return Common.DATABEAN_CODE_SUCCESS;
             }
         }
@@ -122,10 +122,10 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public int delete(int id) throws Exception {
-        Goods goods = getGoodsById(id);
-        if (goods != null){
-            goodsMapper.deleteMatch(goods.getCorp_code(),goods.getGoods_code());
-        }
+//        Goods goods = getGoodsById(id);
+//        if (goods != null){
+//            goodsMapper.deleteMatch(goods.getCorp_code(),goods.getGoods_code());
+//        }
         return goodsMapper.deleteByPrimaryKey(id);
     }
 
@@ -142,7 +142,6 @@ public class GoodsServiceImpl implements GoodsService {
         list = goodsMapper.selectAllGoods(map);
         for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
-//            transter(goods);
             transterGoods(goods);
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
@@ -161,7 +160,6 @@ public class GoodsServiceImpl implements GoodsService {
         list = goodsMapper.selectAllGoodsByBrand(map);
         for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
-//            transter(goods);
             transterGoods(goods);
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
@@ -315,7 +313,7 @@ public class GoodsServiceImpl implements GoodsService {
                     }
                 }
             }
-            if (!image.equals("")){
+            if (image.endsWith(",")){
                 goods.setGoods_image(image.substring(0,image.length()-1));
                 goodsList.add(goods);
             }
@@ -383,5 +381,9 @@ public class GoodsServiceImpl implements GoodsService {
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
+    }
+
+    public List<Goods> selectGoodsMatchList(String corp_code, String goods_code, String isactive) throws Exception{
+        return goodsMapper.selectGoodsMatchList(corp_code, goods_code, isactive);
     }
 }

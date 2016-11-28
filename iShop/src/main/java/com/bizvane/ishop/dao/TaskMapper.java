@@ -40,5 +40,6 @@ public interface TaskMapper {
         int updTaskBycode(@Param("task_type_code_old")String task_type_code_old,@Param("corp_code")String corp_code,@Param("task_type_code_new")String task_type_code_new);
 
         List<Task> selectTaskByTaskType(@Param("corp_code")String corp_code,@Param("task_type_code")String task_type_code);
-        Task getTaskForId(@Param("corp_code")String corp_code,@Param("task_type_code")String task_type_code,@Param("task_code")String task_code);
+
+        Task getTaskForId(@Param("corp_code")String corp_code,@Param("task_code")String task_code);
 }

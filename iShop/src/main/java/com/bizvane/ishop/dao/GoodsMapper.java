@@ -32,13 +32,13 @@ public interface GoodsMapper {
 
     Goods getGoodsByName(@Param("corp_code") String corp_code,@Param("goods_name") String goods_name, @Param("isactive") String isactive) throws SQLException;
 
-    List<GoodsMatch> selectMatchGoods1(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
-
-    List<GoodsMatch> selectMatchGoods2(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
-
-    int insertMatch(GoodsMatch goodsMatch);
-
-    int deleteMatch(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
+//    List<GoodsMatch> selectMatchGoods1(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
+//
+//    List<GoodsMatch> selectMatchGoods2(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
+//
+//    int insertMatch(GoodsMatch goodsMatch);
+//
+//    int deleteMatch(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
 
     //获取企业FAB季度
     List<Goods> selectCorpGoodsQuarter(@Param("corp_code") String corp_code) throws SQLException;
@@ -46,4 +46,7 @@ public interface GoodsMapper {
     List<Goods> selectCorpGoodsWave(@Param("corp_code") String corp_code) throws SQLException;
 
     List<Goods> getMatchFab(@Param("corp_code")String corp_code,@Param("search_value") String search_value) throws SQLException;
+
+    List<Goods> selectGoodsMatchList(@Param("corp_code")String corp_code,@Param("goods_code") String goods_code, @Param("isactive") String isactive) throws SQLException;
+
 }
