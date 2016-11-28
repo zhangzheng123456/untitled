@@ -90,7 +90,7 @@ public class VipFsendController {
             if (result.equals("0")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(result);
+                dataBean.setMessage("发送成功");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -36,8 +36,16 @@
                     <!--图表区域-->
                 </li>
                 <li class="left_bottom">
-                    <span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>
-                    <span class="the_target_content">目标会员数</span><span class="the_tover_content">已覆盖会员数</span>
+                    <div style="width: 49%;display: inline-block;">
+                        <span id="TheTarget" class="the_target" style=" display: block;text-align: center;width: 100px;margin-left: 7px;"></span>
+                        <span class="the_target_content" style="display: block;width: 100px;text-align: center;">目标会员数</span>
+                    </div>
+                    <div style="width: 49%;display: inline-block;">
+                        <span id="TheCover" class="the_tover" style=" display: block;text-align: center;width: 100px;margin-left: 7px;"></span>
+                        <span class="the_tover_content"style="display: block;width: 100px;text-align: center;">已覆盖会员数</span>
+                    </div>
+                    <!--<span id="TheTarget" class="the_target"></span><span id="TheCover"class="the_tover"></span>-->
+                    <!--<span class="the_target_content">目标会员数</span><span class="the_tover_content">已覆盖会员数</span>-->
                 </li>
             </ul>
             <ul class="right">
@@ -50,9 +58,24 @@
         </div>
         <!--二级按钮-->
         <div class="btnSecond">
-            <span class="do" id="showDone">仅显示已完成</span>
-            <span class="do" id="showDoing">仅显示未完成</span>
-            <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4"></span>筛选</span>
+            <!--<span class="do" id="showDone">仅显示已完成</span>-->
+            <!--<span class="do" id="showDoing">仅显示未完成</span>-->
+             <span style="margin-right: 5px">
+                 <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
+                 <b class="radio_b"></b>
+                 <label for="ck_1">仅显示已完成</label>
+             </span>
+            <span style="margin-right: 5px">
+                 <input type="radio" name="ck" class="check"style="display: none" id="ck_2">
+                 <b class="radio_b"></b>
+                 <label for="ck_2">仅显示未完成</label>
+            </span>
+            <span style="margin-right: 5px">
+                 <input type="radio" name="ck"class="check" style="display: none" id="ck_3">
+                 <b class="radio_b"></b>
+                 <label for="ck_3" >显示全部</label>
+            </span>
+            <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4;font-size: 16px;position: relative;top: 2px;left:-5px"></span>筛选</span>
         </div>
         <div id="screening">
             <div class="sxk" id="sxk">
