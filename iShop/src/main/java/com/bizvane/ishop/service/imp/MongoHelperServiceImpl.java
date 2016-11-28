@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * Created by PC on 2016/11/28.
  */
 public class MongoHelperServiceImpl {
-    //多个“与”查询(筛选)
+    //多个“与”查询(筛选)（操作日志）
     public static BasicDBObject andUserOperScreen(JSONArray array) {
         BasicDBObject queryCondition = new BasicDBObject();
         BasicDBList values = new BasicDBList();
@@ -111,7 +111,7 @@ public class MongoHelperServiceImpl {
         return queryCondition;
     }
 
-    //DBCursor数据集转arrayList+id+can_login+品牌名
+    //DBCursor数据集转arrayList+id+can_login+品牌名(登录日志)
     public static ArrayList dbCursorToList_canLogin(DBCursor dbCursor, List<User> users) {
         ArrayList list = new ArrayList();
         while (dbCursor.hasNext()) {
