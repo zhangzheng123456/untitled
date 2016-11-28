@@ -8,7 +8,9 @@ var staff_next=false;
 var isscroll=false;
 var  message={
 	cache:{//缓存变量
-    	"vip_id":""
+    	"vip_id":"",
+    	"area_codes":"",
+    	"area_names":""
     },
 	init:function(){
 		this.getCorplist();
@@ -521,27 +523,26 @@ $("#brand_search_f").click(function(){
 $("#screen_close_area").click(function(){
 	$("#screen_area").hide();
 	$("#p").hide();
+	$("#screen_wrapper").show();
 })
 //员工关闭
 $("#screen_close_staff").click(function(){
 	$("#screen_staff").hide();
 	$("#p").hide();
+	$("#screen_wrapper").show();
 })
 //店铺关闭
 $("#screen_close_shop").click(function(){
 	$("#screen_shop").hide();
+	$("#screen_wrapper").show();
 	$("#p").hide();
 	$("#screen_shop .screen_content_l").unbind("scroll");
 })
 //品牌关闭
 $("#screen_close_brand").click(function(){
 	$("#screen_brand").hide();
+	$("#screen_wrapper").show();
 	$("#p").hide();
-})
-//弹框关闭
-$("#screen_wrapper_close").click(function(){
-    $("#screen_wrapper").hide();
-    $("#p").hide();
 })
 //弹框关闭
 $("#screen_wrapper_close").click(function(){
@@ -599,6 +600,29 @@ $("#screen_staffl").click(function(){
     $("#screen_staff .screen_content_l").unbind("scroll");
     $("#screen_staff .screen_content_l ul").empty();
     getstafflist(staff_num);
+});
+//点击区域确定按钮
+$("#screen_que_area").click(function(){
+	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
+    var area_codes="";
+    var area_names="";
+    for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            area_codes+=r+",";
+            area_names+=p+",";
+        }else{
+            area_codes+=r;
+            area_names+=p;
+        }
+    };
+    message.cache.area_codes=area_codes;
+    message.cache.area_names=area_names;
+    $("#screen_area").hide();
+    $("#screen_wrapper").show();
+    $("#screen_area_num").val("已选"+li.length+"个")
+
 });
 /*************获取vip的接口***************/
 var inx=1;//默认是第一页

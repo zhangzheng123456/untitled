@@ -377,7 +377,7 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
 function listShow(userList){
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
-    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis">${name}</div> <div class="people_title_num ellipsis">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
+    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
     for(var i=0;i<userList.length;i++){
         //随机进度
         var html = '';
@@ -386,10 +386,13 @@ function listShow(userList){
         var percent = userList[i].complete_rate;
         nowHTML1 = nowHTML1.replace("${order}", order);
         nowHTML1 = nowHTML1.replace("${name}", userList[i].user_name);
+        nowHTML1 = nowHTML1.replace("${title_name}", userList[i].user_name);
         nowHTML1 = nowHTML1.replace("${num}", userList[i].user_code);
+        nowHTML1 = nowHTML1.replace("${title_num}", userList[i].user_code);
         nowHTML1 = nowHTML1.replace("${area}", userList[i].area_name);
         nowHTML1 = nowHTML1.replace("${title}", userList[i].area_name);
         nowHTML1 = nowHTML1.replace("${shop}", userList[i].store_name);
+        nowHTML1 = nowHTML1.replace("${title_shop}", userList[i].store_name);
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
         $("#peopleContent").append(html);
@@ -514,13 +517,14 @@ function getVal(name){
 $('#rightMore').click(function () {
     whir.loading.add("",0.5);//加载等待框
     $('#loading').remove();
+    $('#fab_describe').empty();
     //赋值
     $('#content .content_r ').each(function(a,obj){
         switch (a){
             case 0:active();break;
             case 1:  $(obj).html(moreDetail.activity_theme);;break;
-            case 2: $('#beiginTime_1').html(moreDetail.start_time);$('#endTime_1').html(moreDetail.end_time);break;
-            case 3:  $(obj).html(moreDetail.run_mode);;break;
+            case 3: $('#beiginTime_1').html(moreDetail.start_time);$('#endTime_1').html(moreDetail.end_time);break;
+            case 2:  $(obj).html(moreDetail.run_mode);break;
             case 4:  $(obj).html('已选'+JSON.parse(moreDetail.operators).length+'个');;break;
             case 5:  $(obj).html('已选'+moreDetail.target_vips_count+'个');break;
         }
