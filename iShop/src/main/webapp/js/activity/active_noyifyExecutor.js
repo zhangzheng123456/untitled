@@ -12,6 +12,9 @@ var close_role='';
 $('#send_close').click(function () {
     window.location.href = 'activity_details.html';    ///未获得具体地址
 });
+$('#sendee_r').click(function () {
+    $('#add_sendee').trigger('click');
+});
 //区域点击
 $("#staff_area").click(function(){
     console.log(close_role);
