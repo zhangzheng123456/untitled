@@ -395,7 +395,7 @@ function jumpBianse(){
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
             sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_edit.html");
-        }else if(state == "执行中"){
+        }else if(state == "执行中"||state == "已中止"){
             sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
         }

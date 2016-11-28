@@ -182,6 +182,9 @@ a, a:link,a:hover,a:visited,a:active{
     border-radius: 5px;
     z-index: 99999;
 }
+#rightMore:hover,#showDone:hover,#showDoing:hover,#choose:hover{
+    cursor: pointer;
+}
 #get_more .head_span_l{
     padding-left: 5px;
     padding-top: 5px;
