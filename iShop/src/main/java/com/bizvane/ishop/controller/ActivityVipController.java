@@ -434,12 +434,13 @@ public class ActivityVipController {
             if (activityVip != null) {
                 String activity_state = activityVip.getActivity_state();
                 if (activity_state.equals("执行中")) {
-                    activityVip.setActivity_state("已中止");
-                    activityVipService.updateActivityVip(activityVip);
-                } else if (activity_state.equals("已中止")) {
-                    activityVip.setActivity_state("执行中");
+                    activityVip.setActivity_state("已结束");
                     activityVipService.updateActivityVip(activityVip);
                 }
+//                else if (activity_state.equals("已中止")) {
+//                    activityVip.setActivity_state("执行中");
+//                    activityVipService.updateActivityVip(activityVip);
+//                }
             }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
