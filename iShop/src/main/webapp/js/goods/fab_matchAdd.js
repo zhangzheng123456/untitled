@@ -605,13 +605,13 @@ jQuery(document).ready(function(){
     //  }
     // })
     $(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","fab_match.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
     });
     $("#edit_close").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","fab_match.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
     });
     $("#back_goods_fab").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","fab_match.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html")
     });
 
 });
