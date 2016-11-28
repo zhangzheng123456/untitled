@@ -250,6 +250,8 @@ function superaddition(data,num){//页面加载循环
             + "</span></td><td><span title='"+data[i].end_time+"'>"
             +data[i].end_time
             + "</span></td><td>"
+            + data[i].creater
+            + "</td><td>"    
             +data[i].created_date
             +"</td></tr>");
     }

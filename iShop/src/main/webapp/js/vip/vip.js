@@ -92,7 +92,7 @@ function showLi(){
 function hideLi(){
     $("#liebiao").hide();
 }
-function setPage(container, count, pageindex,pageSize,funcCode){
+function setPage(container, count, pageindex,pageSize){
     count==0?count=1:'';
     var container = container;
     var count = count;

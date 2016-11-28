@@ -83,14 +83,11 @@ public class VipFsendServiceImpl implements VipFsendService{
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String sms_code = "Fsend"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
          VipFsend vipFsend= WebUtils.JSON2Bean(jsonObject, VipFsend.class);
-
-        //VipFsend vipFsend1=this.getVipFsendForId(corp_code,sms_code);
-
         String sms_vips = vipFsend.getSms_vips();
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String phone = "";
+        String phone = "13776410320";
         if (type.equals("1")){
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
@@ -131,7 +128,6 @@ public class VipFsendServiceImpl implements VipFsendService{
             }
         }else {
             String vips = sms_vips_obj.get("vips").toString();
-
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
@@ -145,16 +141,20 @@ public class VipFsendServiceImpl implements VipFsendService{
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
                 phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
             }
-
         }
+        sms_vips_obj.put("vips",phone);
+        sms_vips_obj.put("type",type);
+        sms_vips=sms_vips_obj.toString();
         vipFsend.setSms_code(sms_code);
         vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipFsend.setCreater(user_id);
         vipFsend.setSms_vips(sms_vips);
+        vipFsend.setContent(content);
         vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
-        int num=vipFsendMapper.insertFsend(vipFsend);
+        int num=0;
+        num= vipFsendMapper.insertFsend(vipFsend);
+        System.out.print(num);
         if(num>0){
-
             Data data_channel = new Data("channel", "santong", ValueType.PARAM);
             Data data_phone = new Data("phone", phone, ValueType.PARAM);
             Data data_text = new Data("text", content, ValueType.PARAM);
@@ -165,7 +165,7 @@ public class VipFsendServiceImpl implements VipFsendService{
             datalist.put(data_text.key, data_text);
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
             if (!dataBox.status.toString().equals("SUCCESS")){
-                status = Common.DATABEAN_CODE_ERROR;
+                status = "发送失败";
             }
             return status;
         }else{

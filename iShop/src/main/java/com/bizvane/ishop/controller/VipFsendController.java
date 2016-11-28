@@ -87,7 +87,7 @@ public class VipFsendController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
 
             String result = this.vipFsendService.insert(message, user_id);
-            if (result.equals("新增失败")) {
+            if (result.equals("发送失败")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);

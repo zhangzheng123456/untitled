@@ -258,9 +258,9 @@ function superaddition(data,num){//页面加载循环
             + data[i].name
             + "</td><td>"
             + data[i].operation_time
-            + "</td><td>"
+            + "</td><td title="+data[i].remark+"><span>"
             + data[i].remark
-            + "</td></tr>");
+            + "</span></td></tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");

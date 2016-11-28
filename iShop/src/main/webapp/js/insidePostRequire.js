@@ -19,7 +19,6 @@ ObjectControl.prototype = {
 				}
 			},
 			error:function(data){
-				alert(data);
 				var str=data.responseText.trim().substring(252,257);
 				if(str=="iShop"){
 					location.href=data;
