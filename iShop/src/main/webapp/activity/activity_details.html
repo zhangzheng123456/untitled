@@ -22,7 +22,7 @@
         <div class="editor_detail animated fadeInRight">
             <div class="corpadd_oper_btn">
                 <ul>
-                    <li style="letter-spacing: 1px;" onclick="stop()" id="stop" >中止活动</li>
+                    <li style="letter-spacing: 1px;" id="stop" >终止活动</li>
                     <li style="letter-spacing: 2px;" onclick="closePage()"><i class="icon-ishop_6-12"></i>关闭</li>
                     <li style="letter-spacing: 1px;" onclick="notice()">通知相关人</li>
                 </ul>
@@ -63,17 +63,17 @@
              <span style="margin-right: 5px">
                  <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
                  <b class="radio_b"></b>
-                 <label for="ck_1">仅显示已完成</label>
+                 <label for="ck_1"id="showDone">仅显示已完成</label>
              </span>
             <span style="margin-right: 5px">
                  <input type="radio" name="ck" class="check"style="display: none" id="ck_2">
                  <b class="radio_b"></b>
-                 <label for="ck_2">仅显示未完成</label>
+                 <label for="ck_2"id="showDoing">仅显示未完成</label>
             </span>
             <span style="margin-right: 5px">
                  <input type="radio" name="ck"class="check" style="display: none" id="ck_3">
                  <b class="radio_b"></b>
-                 <label for="ck_3" >显示全部</label>
+                 <label for="ck_3" id="showAll">显示全部</label>
             </span>
             <span class="do" id="choose"><span class="icon-ishop_6-05" style="color: #50acb4;font-size: 16px;position: relative;top: 2px;left:-5px"></span>筛选</span>
         </div>
@@ -181,7 +181,15 @@
         </ul>
     </div>
 </div>
-
+<!--弹框提示-->
+<div class="tk" id="tk">
+    <span class="icon-ishop_6-12" id="delete_tk"></span>
+    <p><i class="icon-ishop_6-14"></i>是否确认终止活动?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="delete" id="complete">确定</em>
+    </div>
+</div>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
 <script src="../js/loading.js"></script>

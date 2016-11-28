@@ -1,8 +1,9 @@
 //停止活动
 var moreDetail={};//更多详情
 var staffData=[];//页面的数据
+var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 function stop(){
-    whir.loading.add("",0.5);//加载等待框
     var _params={
         "id":"",
         "message":{
@@ -17,9 +18,8 @@ function stop(){
             param:JSON.stringify(_params)
         },
         success: function (data) {
-            $('#stop').html()=='中止活动'?$('#stop').html('恢复活动'):$('#stop').html('中止活动');
+            // $('#stop').html()=='中止活动'?$('#stop').html('恢复活动'):$('#stop').html('中止活动');
             getSelect(sessionStorage.getItem('id'));
-            whir.loading.remove();//移除加载框
         },
         error: function (data) {
             alert(data.message);
@@ -27,6 +27,26 @@ function stop(){
         }
     });
 }
+$('#stop').click(function () {
+    whir.loading.add("",0.5);//加载等待框
+    $('#loading').remove();
+    $("#tk").show();
+    $("#tk").css({"left":+left+"px","top":+tp+"px"});
+});
+$('#cancel').click(function () {
+    $("#tk").hide();
+    whir.loading.remove();//移除加载框
+});
+$('#complete').click(function () {
+    stop();
+    $('#stop').remove();
+    $("#tk").hide();
+    whir.loading.remove();//移除加载框
+});
+$('#delete_tk').click(function () {
+    $("#tk").hide();
+    whir.loading.remove();//移除加载框
+});
 //通知相关人
 function notice(){
     window.location.href = 'activity_noyifyTheExecutor.html';
@@ -77,7 +97,15 @@ $('#showDoing').click(function(){
         $('#peopleError').show();
     }
     data=null;
-})
+});
+//显示全部
+$('#showAll').click(function(){
+    listShow(staffData);
+});
+//点击radio时
+$('.btnSecond .radio_b').click(function () {
+    $(this).next().trigger('click');
+});
 //筛选按钮
 $('#choose').click(function(){
     $('#screening').slideToggle(600);
@@ -86,6 +114,7 @@ $('#choose').click(function(){
 //清空筛选
 $('#empty').click(function(){
     $('.inputs input').val('');
+    listShow(staffData);
 });
 //收起
 $('#pack_up').click(function(){
@@ -140,47 +169,65 @@ function search(name,num,area,shop){
             // if(val.user_name==name||val.user_code==num||val.area_name==area||val.store_name==shop){
             //     data.push(val)
             // }
-            console.log(param[0]);
-            if((param.indexOf(0)!=-1)&&(val.user_name==name)){data.push(val)};
-            if((param.indexOf(1)!=-1)&&(val.user_code==num)){data.push(val)};
-            if((param.indexOf(2)!=-1)&&(val.area_name==area)){data.push(val)};
-            if((param.indexOf(3)!=-1)&&(val.store_name==shop)){data.push(val)};
-
+            // console.log(param[0])
+            console.log(val.user_name.search(name));
+            if((param.indexOf(0)!=-1)&&(val.user_name.search(name)!=-1)){data.push(val)};
+            if((param.indexOf(1)!=-1)&&(val.user_code.search(num)!=-1)){data.push(val)};
+            if((param.indexOf(2)!=-1)&&(val.area_name.search(area)!=-1)){data.push(val)};
+            if((param.indexOf(3)!=-1)&&(val.store_name.search(shop)!=-1)){data.push(val)};
         });
     }else if(param.length==2){
         if((param.indexOf(0)!=-1) && (param.indexOf(1)!=-1)){ // 0 1
             staffData.map(function (val,index,arr) {
-                if ((val.user_name == name) && (val.user_code == num)) {
+                // if ((val.user_name == name) && (val.user_code == num)) {
+                //     data.push(val)
+                // }
+                if ((val.user_name.search(name)!=-1) && (val.user_code.search(num)!=-1)) {
                     data.push(val)
                 }
             });
         }else if((param.indexOf(0)!=-1) && (param.indexOf(2)!=-1)){ //0  2
             staffData.map(function (val,index,arr) {
-                if ((val.user_name == name) && (val.area_name==area)) {
+                // if ((val.user_name == name) && (val.area_name==area)) {
+                //     data.push(val)
+                // }
+                if ((val.user_name.search(name)!=-1) && (val.area_name.search(area)!=-1)) {
                     data.push(val)
                 }
             })
         }else if((param.indexOf(0)!=-1) && (param.indexOf(3)!=-1)){  //0  3
             staffData.map(function (val,index,arr) {
-                if ((val.user_name == name) && (val.store_name==shop)) {
+                // if ((val.user_name == name) && (val.store_name==shop)) {
+                //     data.push(val)
+                // }
+                if ((val.user_name.search(name)!=-1) && (val.store_name.search(shop)!=-1)) {
                     data.push(val)
                 }
             })
         }else if((param.indexOf(1)!=-1) && (param.indexOf(2)!=-1)){    //1  2
             staffData.map(function (val,index,arr) {
-                if ((val.user_code==num) && (val.area_name==area)) {
+                // if ((val.user_code==num) && (val.area_name==area)) {
+                //     data.push(val)
+                // }
+                if ((val.user_code.search(num)!=-1) && (val.area_name.search(area)!=-1)) {
                     data.push(val)
                 }
             })
         }else if((param.indexOf(1)!=-1) && (param.indexOf(3)!=-1)){   //1  3
             staffData.map(function (val,index,arr) {
-                if ((val.user_code==num) && (val.store_name==shop)) {
+                // if ((val.user_code==num) && (val.store_name==shop)) {
+                //         data.push(val)
+                // }
+                if ((val.user_code.search(num)!=-1) && (val.store_name.search(shop)!=-1)) {
                     data.push(val)
                 }
             })
         }else if((param.indexOf(2)!=-1) && (param.indexOf(3)!=-1)){  //2  3
             staffData.map(function (val,index,arr) {
-                if ((val.area_name==area) && (val.store_name==shop)) {
+                // if ((val.area_name==area) && (val.store_name==shop)) {
+                //     data.push(val)
+                // }
+                if ((val.area_name.search(area)!=-1) && (val.store_name.search(shop)!=-1)) {
                     data.push(val)
                 }
             })
@@ -188,32 +235,32 @@ function search(name,num,area,shop){
     }else if(param.length==3){
         if((param.indexOf(0)!=-1) && (param.indexOf(1)!=-1)&&  (param.indexOf(2)!=-1) ){   // 012
             staffData.map(function (val,index,arr) {
-                if( (val.user_name==name)&&(val.user_code==num)&&(val.area_name==area) ){
+                if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.area_name.search(area)!=-1) ){
                     data.push(val)
                 }
             });
         }else if((param.indexOf(0)!=-1) && (param.indexOf(1)!=-1)&&  (param.indexOf(3)!=-1)){ //013
             staffData.map(function (val,index,arr) {
-                if( (val.user_name==name)&&(val.user_code==num)&&(val.store_name==shop) ){
+                if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.store_name.search(shop)!=-1) ){
                     data.push(val)
                 }
             });
         }else if((param.indexOf(0)!=-1) && (param.indexOf(2)!=-1)&&  (param.indexOf(3)!=-1)){ //023
             staffData.map(function (val,index,arr) {
-                if( (val.user_name==name)&&(val.area_name==area)&&(val.store_name==shop) ){
+                if( (val.user_name.search(name)!=-1)&&(val.area_name.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
                     data.push(val)
                 }
             });
         }else if((param.indexOf(1)!=-1) && (param.indexOf(2)!=-1)&&  (param.indexOf(3)!=-1)){  //123
             staffData.map(function (val,index,arr) {
-                if( (val.user_code==num)&&(val.area_name==area)&&(val.store_name==shop) ){
+                if( (val.user_code.search(num)!=-1)&&(val.area_name.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
                     data.push(val)
                 }
             });
         }
     }else if(param.length==4){
         staffData.map(function (val,index,arr) {
-            if( (val.user_name==name)&&(val.user_code==num)&&(val.area_name==area)&&(val.store_name==shop) ){
+            if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.area_name.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
                 data.push(val)
             }
         });
@@ -372,7 +419,7 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
     $('#activityState2').text(runMode);
     $('#beiginTime').text(beiginTime);
     $('#endTime').text(endTime);
-    $('#activityState').text()=='执行中'?$('#stop').html('中止活动'):$('#stop').html('恢复活动');
+    $('#activityState').text()=='已结束'?$('#stop').hide():'';
 }
 
 //加载员工列表

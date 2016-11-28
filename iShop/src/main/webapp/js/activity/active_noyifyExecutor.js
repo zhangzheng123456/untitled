@@ -7,12 +7,14 @@ var shop_next=false;
 var staff_num=1;
 var staff_next=false;
 var isscroll=false;
+var close_role='';
 //关闭页面
 $('#send_close').click(function () {
     window.location.href = 'activity_details.html';    ///未获得具体地址
 });
 //区域点击
 $("#staff_area").click(function(){
+    console.log(close_role);
     isscroll=false;
     area_num=1;
     var arr=whir.loading.getPageSize();
@@ -41,6 +43,7 @@ $("#staff_shop").click(function(){
 })
 //品牌点击
 $("#staff_brand").click(function(){
+    console.log(close_role);
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_staff").width())/2;
     var tp=(arr[3]-$("#screen_staff").height())/2+40;
@@ -49,24 +52,48 @@ $("#staff_brand").click(function(){
     $("#screen_brand").show();
     $("#screen_staff").hide();
     getbrandlist();
-})
-//添加执行人关闭
+});
+//点击品牌下的区域按钮
+$('#shop_area').click(function () {
+  close_role='shop';
+  $('#screen_shop').hide();
+  $('#staff_area').trigger('click');
+});
+//点击品牌下的品牌按钮
+$('#shop_brand').click(function () {
+    close_role='shop';
+    $('#screen_shop').hide();
+    $('#staff_brand').trigger('click');
+});
+//区域关闭
 $("#screen_close_area").click(function(){
-    $("#screen_area").hide();
-    $("#screen_staff").show();
+    if(close_role=='shop'){
+        $("#screen_area").hide();
+        $("#screen_shop").show();
+        close_role='';
+    }else{
+        $("#screen_area").hide();
+        $("#screen_staff").show();
+    }
     // whir.loading.remove();//移除遮罩层
 })
 //店铺关闭
 $("#screen_close_shop").click(function(){
-    $("#screen_shop").hide();
-    $("#screen_staff").show();
+        $("#screen_shop").hide();
+        $("#screen_staff").show();
     // whir.loading.remove();//移除遮罩层
     $("#screen_shop .screen_content_l").unbind("scroll");
 })
 //品牌关闭
 $("#screen_close_brand").click(function(){
-    $("#screen_brand").hide();
-    $("#screen_staff").show();
+    if(close_role=='shop'){
+        $("#screen_brand").hide();
+        $("#screen_shop").show();
+        close_role='';
+    }else{
+        $("#screen_brand").hide();
+        $("#screen_staff").show();
+    }
     // whir.loading.remove();//移除遮罩层
 });
 //点击区域的确定
@@ -87,15 +114,24 @@ $("#screen_que_area").click(function(){
     }
     isscroll=false;
     staff_num=1;
+    var a=1;
     $("#staff_area_num").attr("data-areacode",area_code);
     $("#staff_area_num").val("已选"+li.length+"个");
     $("#area_num").attr("data-areacode",area_code);
     $("#area_num").val("已选"+li.length+"个");
     $("#screen_staff .screen_content_l ul").empty();
     $("#screen_staff .screen_content_l").unbind("scroll");
-    $("#screen_area").hide();
-    $("#screen_staff").show();
-    getstafflist(staff_num);
+    if(close_role=='shop'){
+        $("#screen_area").hide();
+        $("#screen_shop").show();
+        close_role='';
+        getstorelist(a)
+    }else{
+        $("#screen_area").hide();
+        $("#screen_staff").show();
+        getstafflist(staff_num);
+    }
+
 })
 //点击店铺的确定
 $("#screen_que_shop").click(function(){
@@ -149,6 +185,7 @@ $("#screen_que_staff").click(function(){
     $("#screen_staff").hide();
     $("#sendee_r").val("已选"+li.length+"个");
     $("#sendee_r").attr("data-type","staff");
+    $("#sendee_r").css("background","#dfdfdf");
     // whir.loading.remove();//移除遮罩层
 })
 //点击品牌的确定
@@ -165,15 +202,23 @@ $("#screen_que_brand").click(function(){
     }
     isscroll=false;
     staff_num=1;
+    a=1;
     $("#staff_brand_num").attr("data-brandcode",brand_code);
     $("#staff_brand_num").val("已选"+li.length+"个");
     $("#brand_num").attr("data-brandcode",brand_code);
     $("#brand_num").val("已选"+li.length+"个");
     $("#screen_staff .screen_content_l ul").empty();
     $("#screen_staff .screen_content_l").unbind("scroll");
-    $("#screen_brand").hide();
-    $("#screen_staff").show();
-    getstafflist(staff_num);
+    if(close_role=='shop'){
+        $("#screen_brand").hide();
+        $("#screen_shop").show();
+        close_role='';
+        getstorelist(a);
+    }else{
+        $("#screen_brand").hide();
+        $("#screen_staff").show();
+        getstafflist(staff_num);
+    }
 })
 //添加执行人
 $('#add_sendee').click(function(){

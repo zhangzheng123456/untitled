@@ -269,4 +269,65 @@ a, a:link,a:hover,a:visited,a:active{
     border-radius: 50%;
     position: relative;
     top: 1px;
+    cursor: pointer;
+}
+.btnSecond label{
+    cursor: pointer;
+}
+.tk {
+    width: 280px;
+    height: 180px;
+    background-color: #fff;
+    position: absolute;
+    z-index:10001;
+    text-align: center;
+    color: #888;
+    display: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.35);
+}
+.tk span {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.tk p {
+    height: 140px;
+    line-height: 140px;
+    text-align: center;
+    font-size: 14px;
+    margin:0px;
+}
+.tk p i {
+    color: #cd706e;
+    font-size: 17px;
+    vertical-align: middle;
+    line-height: 140px;
+    margin-right: 10px;
+}
+.tk .btn {
+    height: 30px;
+    line-height: 30px;
+}
+.tk .btn em {
+    display: inline-block;
+    font-style: normal;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+}
+.tk .btn .cancel {
+    background-color: #e8e8e8;
+    color: #888;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.tk .btn .delete {
+    background-color: #cd706e;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-left: 20px;
 }
