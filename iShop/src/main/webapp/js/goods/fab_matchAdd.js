@@ -776,7 +776,7 @@ function getmatchgoodsList(a) {
     var param={};
     //var corp_code='F0043';
     //console.log(corp_code);
-    var searchValue=$("#search").val();
+    var search_value=$("#search").val();
     var goods_code=''; //新增的时候goods_code传''，编辑传goods_code，多个以逗号分隔
     var pageNumber=a;
     var pageSize=20;
@@ -784,7 +784,7 @@ function getmatchgoodsList(a) {
     param["goods_code"]=goods_code;
     param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
-    param["searchValue"]=searchValue;
+    param["search_value"]=search_value;
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post", "/goods/getMatchFab","",param, function(data){
         if(data.code=="0"){
