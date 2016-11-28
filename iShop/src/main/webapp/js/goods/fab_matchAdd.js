@@ -78,16 +78,16 @@ var swip_image = [];
             });
             console.log(nr);
             if(fabjs.firstStep()){
-                var OWN_CORP=$("#OWN_CORP").val();//公司编号
+                //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE=$("#GOODS_CODE").val().trim();//商品编号
-                var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
-                var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格
-                var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
-                var GOODS_BAND=$("#GOODS_BAND").val();//波段
-                var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
+                //var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
+                //var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格
+                //var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
+                //var GOODS_BAND=$("#GOODS_BAND").val();//波段
+                //var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
                 var GOODS_BUYPOINT= nr;//商品卖点
-                var ISACTIVE="";//是否可用
-                var brand_code=$("#OWN_BRAND").val();//品牌编号
+                //var ISACTIVE="";//是否可用
+                //var brand_code=$("#OWN_BRAND").val();//品牌编号
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(input.checked==true){
                     ISACTIVE="Y";
@@ -167,25 +167,25 @@ var swip_image = [];
                         matchgoods+=r;
                     }
                 }
-                var _command="/goods/fab/add";//接口名
+                var _command="/defmatch/addMatch";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
 
                     }
                 };
                 var _params = {
-                    "corp_code": OWN_CORP,
+                    //"corp_code": OWN_CORP,
                     "goods_code": GOODS_CODE,
-                    "goods_name": GOODS_NAME,
-                    "brand_code":brand_code,
-                    "goods_price": GOODS_PRICE,
-                    "goods_image": img_list_json,
-                    "goods_quarter": GOODS_QUARTER,
-                    "goods_wave": GOODS_BAND,
-                    "goods_time": GOODS_RELEASETIME,
-                    "goods_description": GOODS_BUYPOINT,
-                    "isactive": ISACTIVE,
-                    "match_goods":matchgoods
+                    //"goods_name": GOODS_NAME,
+                    //"brand_code":brand_code,
+                    //"goods_price": GOODS_PRICE,
+                    //"goods_image": img_list_json,
+                    //"goods_quarter": GOODS_QUARTER,
+                    //"goods_wave": GOODS_BAND,
+                    //"goods_time": GOODS_RELEASETIME,
+                    //"goods_description": GOODS_BUYPOINT,
+                    //"isactive": ISACTIVE,
+                    //"match_goods":matchgoods
                 };
                 console.log(_params);
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -369,7 +369,7 @@ var swip_image = [];
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
-                if(_command=="/goods/fab/add"){
+                if(_command=="/defmatch/addMatch"){
                     sessionStorage.setItem("id",data.message);
                     $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_edit.html");
                 }
@@ -724,7 +724,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
     var li=$(this).parent("li").html();
     var goods_code=$(this).parent().find(".goods_code").html();
     var goods_code2=$("#GOODS_CODE").val();
-    var len=$(".match_goods ul li").length;
+    var len=$(".conpany_msg li").length;
     if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
         art.dialog({
             time: 1,
@@ -741,10 +741,10 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $(".match_goods ul").append('<li id="'+goods_code+'">'+li+'</li>');
+        $(".conpany_msg").append('<li id="'+goods_code+'">'+li+'</li>');
     }
 
-    $(".match_goods ul li i").click(function () {
+    $(".conpany_msg li i").click(function () {
         $(this).parent("li").remove();
     })
 })
