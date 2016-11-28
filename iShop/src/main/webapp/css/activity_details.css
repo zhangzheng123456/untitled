@@ -106,6 +106,7 @@ a, a:link,a:hover,a:visited,a:active{
 .btnSecond{
     width: 100%;
     overflow: hidden;
+    line-height: 60px;
 }
 #showDone{
     margin-left: 0px;
@@ -114,12 +115,14 @@ a, a:link,a:hover,a:visited,a:active{
     float: right;
     width: 80px;
     height: 30px;
+    margin-top: 15px;
     background-color: white;
     color: black;
+    line-height: 30px;
 }
 /*ɸѡ����*/
 #screening {
-    width: 98%;
+    width: 100%;
     clear: both;
     display: none;
 }
@@ -193,6 +196,7 @@ a, a:link,a:hover,a:visited,a:active{
     float:right;
     padding-right: 2px;
     padding-top: 5px;
+    cursor: pointer;
 }
 #content{
     margin-top:10px;
@@ -252,4 +256,17 @@ a, a:link,a:hover,a:visited,a:active{
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
+}
+.btnSecond .check:checked + b{
+    background: url(../img/radio_chicked.png) no-repeat center center;
+    background-size: 15px 15px;
+}
+.radio_b{
+    display:inline-block;
+    width: 15px;
+    height:15px;
+    background:#fff;
+    border-radius: 50%;
+    position: relative;
+    top: 1px;
 }
