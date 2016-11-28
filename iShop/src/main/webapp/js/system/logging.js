@@ -767,7 +767,7 @@ function getInputValue(){
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");
         }
-        if(screen_valuse!=""&&(start!==""||end!=="")){
+        if(screen_value!=""&&(start!==""||end!=="")){
             num++;
         }
         var param1={"screen_key":screen_key,"screen_value":screen_value};
