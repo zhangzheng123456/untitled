@@ -155,18 +155,19 @@ public class VipFsendServiceImpl implements VipFsendService{
         num= vipFsendMapper.insertFsend(vipFsend);
         System.out.print(num);
         if(num>0){
-            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-            Data data_phone = new Data("phone", phone, ValueType.PARAM);
-            Data data_text = new Data("text", content, ValueType.PARAM);
-
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_channel.key, data_channel);
-            datalist.put(data_phone.key, data_phone);
-            datalist.put(data_text.key, data_text);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
-            if (!dataBox.status.toString().equals("SUCCESS")){
-                status = "发送失败";
-            }
+//            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+//            Data data_phone = new Data("phone", phone, ValueType.PARAM);
+//            Data data_text = new Data("text", content, ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_channel.key, data_channel);
+//            datalist.put(data_phone.key, data_phone);
+//            datalist.put(data_text.key, data_text);
+//            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
+//            if (!dataBox.status.toString().equals("SUCCESS")){
+//                status = "发送失败";
+//            }
+            
 
         }else{
             status= "发送失败";
