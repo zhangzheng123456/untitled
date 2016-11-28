@@ -79,7 +79,6 @@ public class MongoUtils {
             if (screen_key.equals("created_date")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();
-
                 String end = date.get("end").toString();
                 if (!start.equals("") && start != null) {
                     System.out.println("=========start:" + start);
@@ -95,10 +94,10 @@ public class MongoUtils {
                 String type = time_count.get("type").toString();
                 String value = time_count.get("value").toString();
                 System.out.println("=========count:" + value);
-                if (type.equals("gt")) {
+                if (type.equals("gt") && !value.equals("")) {
                     //大于
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(value))));
-                } else if (type.equals("lt")) {
+                } else if (type.equals("lt") && !value.equals("")) {
                     //小于
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(value))));
                 } else if (type.equals("between")) {
@@ -112,14 +111,13 @@ public class MongoUtils {
                     if (!end.equals("") && end != null) {
                         values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(end))));
                     }
-                } else if (type.equals("eq")) {
+                } else if (type.equals("eq") && !value.equals("")) {
                     //等于
                     values.add(new BasicDBObject(screen_key, Integer.parseInt(value)));
                 } else if (type.equals("all")) {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, 0)));
                 }
             }
-
         }
         queryCondition.put("$and", values);
         return queryCondition;

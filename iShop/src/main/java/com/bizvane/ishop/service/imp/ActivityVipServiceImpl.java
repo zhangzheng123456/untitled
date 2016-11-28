@@ -356,7 +356,9 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             String area_name = "";
             while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
-                if (obj.containsField("complete_rate")){
+                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))){
+                    complete_rate = "100";
+                } else if (obj.containsField("complete_rate")){
                     complete_rate = obj.get("complete_rate").toString();
                 }
                 if (obj.containsField("complete_vip_count")){
@@ -563,7 +565,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         if (!dataBox.status.toString().equals("SUCCESS")){
             status = "执行失败";
         }else {
-            activityVip.setActivity_state("执行中");
+            activityVip.setActivity_state("已完成");
             activityVip.setModified_date(Common.DATETIME_FORMAT.format(now));
             activityVip.setModifier(user_code);
             updateActivityVip(activityVip);
