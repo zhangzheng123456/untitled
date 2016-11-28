@@ -135,6 +135,7 @@ public class MongoHelperServiceImpl {
         return list;
     }
 
+
     //多个“与”查询(筛选)签到管理
 
     public static BasicDBObject andSignScreen(JSONArray array) {
@@ -207,5 +208,29 @@ public class MongoHelperServiceImpl {
 
 
 
+
+
+    //DBCursor数据集转arrayList+id+标签类型(会员标签)
+    public static ArrayList dbCursorToList_labelType(DBCursor dbCursor) {
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            obj.put("id", id);
+            obj.removeField("_id");
+            String label_type = obj.get("label_type").toString();
+            if(label_type==null||label_type.equals("")){
+                obj.put("label_type", "");
+            }else if(label_type.equals("user")){
+                obj.put("label_type", "用户");
+            }else if(label_type.equals("sys")){
+                obj.put("label_type", "系统");
+            }else if(label_type.equals("org")){
+                obj.put("label_type", "企业");
+            }
+            list.add(obj.toMap());
+        }
+        return list;
+    }
 
 }
