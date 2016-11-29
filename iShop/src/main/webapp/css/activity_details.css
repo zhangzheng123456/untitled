@@ -147,6 +147,7 @@ a, a:link,a:hover,a:visited,a:active{
     width: 100%;
     overflow-x: hidden;
     padding-left: 5px;
+    padding-right: 9px;
 }
 .people::-webkit-scrollbar{
     width: 9px;
