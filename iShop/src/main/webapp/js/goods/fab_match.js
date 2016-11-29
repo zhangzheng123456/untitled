@@ -139,7 +139,9 @@ function jumpBianse(){
         if(val.length==1){
             var id=$(val).find('input').attr("id");
             console.log('id是'+id);
+            var corp_code = $(val).attr("data-code");
             var goods_match_code = id;
+            sessionStorage.setItem("corp_code",corp_code);//存储的方法
             sessionStorage.setItem("goods_match_code",goods_match_code);//存储的方法
             $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchEditor.html");
     }
@@ -274,12 +276,25 @@ function POST(a, b) {
             } else if (forLength > 0) {
                 whir.loading.remove();//移除加载框
                 $(".masonry p").remove();
-                //superaddition(list, pageNum);
-                for(i=0;i<forLength;i++){
-                    var goods_code = list[i].goods_code;
-                    var goods_image = list[i].goods_image;
-                    pageVal(goods_code,goods_image);
+                var arr=[];
+                var unqiuearr=[];
+                var hash={};
+                //获取所有搭配id
+                for(i=0;i< list.length;i++){
+                    arr.push(list[i].goods_match_code);
                 }
+                console.log(arr);
+                //搭配id去重
+                for(var i=0;i<arr.length;i++){
+                    if(!hash[arr[i]]){
+                        hash[arr[i]] = true; //存入hash表
+                        unqiuearr.push(arr[i]);
+                    }
+                }
+                console.log(unqiuearr);
+                //var goods_code = list[i].goods_code;
+                //var goods_image = list[i].goods_image;
+                pageVal(arr,unqiuearr,list);
                 jumpBianse();
             }
 
