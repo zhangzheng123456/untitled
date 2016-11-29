@@ -831,7 +831,7 @@ $("#send").click(function(){
     }
 
     whir.loading.add("",0.5);//加载等待框
-    $('#loading').html('消息发送中......');
+    $('#loading').html('消息发送中...');
     oc.postRequire("post","/message/add","",param, function(data){
         if(data.code=="0"){
             art.dialog({

@@ -1198,6 +1198,7 @@ div.edui-box {
 }
 
 .edui-default .edui-dialog-shadow {
+    display: none;
     position: absolute;
     z-index: -1;
     left: 0;
