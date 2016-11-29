@@ -1,10 +1,11 @@
-package com.bizvane.ishop.controller;
+package com.bizvane.ishop.controller_V2;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.controller.InterfaceController;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.SignService;
@@ -768,9 +769,9 @@ public class SignController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = new JSONObject(message);
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
 
@@ -991,7 +992,7 @@ public class SignController {
             }
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
-            org.json.JSONObject result = new org.json.JSONObject();
+            JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
@@ -1084,7 +1085,7 @@ public class SignController {
         int pages=0;
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            JSONObject jsonObject1 = new JSONObject(jsString);
             id = jsonObject1.getString("id");
             String message = jsonObject1.get("message").toString();
             JSONObject jsonObject2 = new JSONObject(message);
