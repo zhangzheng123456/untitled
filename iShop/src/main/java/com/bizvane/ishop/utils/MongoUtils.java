@@ -36,67 +36,6 @@ public class MongoUtils {
         return queryCondition;
     }
 
-    //多个“与”查询(筛选)登录日志
-    public static BasicDBObject andLoginlogScreen(JSONArray array) {
-        BasicDBObject queryCondition = new BasicDBObject();
-        BasicDBList values = new BasicDBList();
-        for (int i = 0; i < array.size(); i++) {
-            String info = array.get(i).toString();
-            JSONObject json = JSONObject.parseObject(info);
-            String screen_key = json.get("screen_key").toString();
-            String screen_value = json.get("screen_value").toString();
-            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
-                Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
-                values.add(new BasicDBObject(screen_key, pattern));
-            }
-            if (screen_key.equals("created_date")) {
-                JSONObject date = JSON.parseObject(screen_value);
-                String start = date.get("start").toString();
-                String end = date.get("end").toString();
-                if (!start.equals("") && start != null) {
-                    System.out.println("=========start:" + start);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start)));
-                }
-                if (!end.equals("") && end != null) {
-                    System.out.println("=========end:" + end);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
-                }
-            }
-            if (screen_key.equals("count")) {
-                JSONObject time_count = JSON.parseObject(screen_value);
-                String type = time_count.get("type").toString();
-                String value = time_count.get("value").toString();
-                System.out.println("=========count:" + value);
-                if (type.equals("gt") && !value.equals("")) {
-                    //大于
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(value))));
-                } else if (type.equals("lt") && !value.equals("")) {
-                    //小于
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(value))));
-                } else if (type.equals("between")) {
-                    //介于
-                    JSONObject values2 = JSONObject.parseObject(value);
-                    String start = values2.get("start").toString();
-                    String end = values2.get("end").toString();
-                    if (!start.equals("") && start != null) {
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, Integer.parseInt(start))));
-                    }
-                    if (!end.equals("") && end != null) {
-                        values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, Integer.parseInt(end))));
-                    }
-                } else if (type.equals("eq") && !value.equals("")) {
-                    //等于
-                    values.add(new BasicDBObject(screen_key, Integer.parseInt(value)));
-                } else if (type.equals("all")) {
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, 0)));
-                }
-            }
-        }
-        queryCondition.put("$and", values);
-        return queryCondition;
-    }
-
-
     //多个“或”查询(搜索)
     public static BasicDBObject orOperation(String[] column_names, String search_value) {
         Pattern pattern = Pattern.compile("^.*" + search_value + ".*$", Pattern.CASE_INSENSITIVE);

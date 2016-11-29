@@ -21,9 +21,9 @@ public interface BaseService {
 
     String storeCodeConvertStoreId(String corp_code,String store_code)throws Exception;
 
-    String userIdConvertUserCode(String corp_code,String user_id)throws Exception;
-
-    String userCodeConvertUserId(String corp_code,String user_code)throws Exception;
+//    String userIdConvertUserCode(String corp_code,String user_id)throws Exception;
+//
+//    String userCodeConvertUserId(String corp_code,String user_code)throws Exception;
 
     void insertUserOperation(String operation_corp_code,String operation_user_code,String function,String action,String corp_code, String code,String name,String remark)throws Exception;
 
