@@ -58,7 +58,6 @@ public class MongoHelperServiceImpl {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-
             if (!screen_value.equals("") && !screen_key.equals("user_can_login") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
 
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
