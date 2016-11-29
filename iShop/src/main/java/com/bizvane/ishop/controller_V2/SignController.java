@@ -102,8 +102,13 @@ public class SignController {
                }
                BasicDBObject ba=new BasicDBObject();
                BasicDBList values = new BasicDBList();
-               values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-               values.add(new BasicDBObject("corp_code", corp_code));
+               if(value!=null&&value.size()>0) {
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+               }else{
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   values.add(new BasicDBObject("user_code", user_code));
+               }
                 ba.put("$and",values);
                DBCursor dbCursor1 = cursor.find(ba);
 
@@ -127,8 +132,14 @@ public class SignController {
                }
                BasicDBObject ba=new BasicDBObject();
                BasicDBList values = new BasicDBList();
-               values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-               values.add(new BasicDBObject("corp_code", corp_code));
+               if(value!=null&&value.size()>0) {
+                   values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                   values.add(new BasicDBObject("corp_code",corp_code));
+               }else{
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   values.add(new BasicDBObject("user_code", user_code));
+               }
+
                ba.put("$and",values);
                DBCursor dbCursor1 = cursor.find(ba);
 
@@ -157,8 +168,15 @@ public class SignController {
                        value.add(store_code);
                    }
                    BasicDBList values = new BasicDBList();
-                   values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                   values.add(new BasicDBObject("corp_code", corp_code));
+                   if(value!=null&&value.size()>0) {
+                       values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                       values.add(new BasicDBObject("corp_code", corp_code));
+                   }else{
+
+                       values.add(new BasicDBObject("corp_code", corp_code));
+                       values.add(new BasicDBObject("user_code", user_code));
+                   }
+
                    ref.put("$and",values);
                    DBCursor dbCursor1 = cursor.find(ref);
                    pages = MongoUtils.getPages(dbCursor1,page_size);
@@ -273,8 +291,15 @@ public class SignController {
                     }
                     BasicDBObject ba = new BasicDBObject();
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
+
                     values.add(queryCondition);
                     ba.put("$and", values);
                     DBCursor dbCursor2 = cursor.find(ba);
@@ -301,8 +326,14 @@ public class SignController {
                     }
                     //   value.add(new BasicDBObject("role_code", role_code));
                     values.add(queryCondition);
-                    values.add(new BasicDBObject("corp_code", corp_code));
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
@@ -332,8 +363,13 @@ public class SignController {
                             value.add(store_code);
                         }
                         BasicDBList values = new BasicDBList();
-                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                        values.add(new BasicDBObject("corp_code", corp_code));
+                        if(value.size()>0&&value!=null) {
+                            values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                        }else{
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                            values.add(new BasicDBObject("user_code", user_code));
+                        }
                         values.add(queryCondition);
                         ba.put("$and", values);
                         DBCursor dbCursor2 = cursor.find(ba);
@@ -404,6 +440,8 @@ public class SignController {
 
                 DBObject deleteRecord = new BasicDBObject();
                 deleteRecord.put("_id", new ObjectId(ids[i]));
+
+               //插入日志
                 DBCursor dbObjects = cursor.find(deleteRecord);
                 String t_corp_code = "";
                 String t_code = "";
@@ -411,7 +449,6 @@ public class SignController {
                 String sign_time = "";
                 String status = "";
 
-                //
                 while (dbObjects.hasNext()) {
                     DBObject sign = dbObjects.next();
                     if (sign.containsField("corp_code")) {
@@ -430,12 +467,6 @@ public class SignController {
                         status = sign.get("status").toString();
                     }
                 }
-
-                cursor.remove(deleteRecord);
-
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
 
 //----------------行为日志开始------------------------------------------
                 /**
@@ -458,7 +489,13 @@ public class SignController {
             //    String t_name = sign.getUser_name();
                 String remark = sign_time+"("+status+")";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+
+                cursor.remove(deleteRecord);
             }
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("success");
 
 
         } catch (Exception ex) {
@@ -532,8 +569,13 @@ public class SignController {
                     }
                     BasicDBObject ba=new BasicDBObject();
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     values.add(queryCondition);
                     ba.put("$and",values);
 
@@ -542,7 +584,6 @@ public class SignController {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     BasicDBList values = new BasicDBList();
-
                     String[] stores = null;
                     if (!store_code.equals("")) {
                         store_code = store_code.replace(Common.SPECIAL_HEAD,"");
@@ -557,8 +598,13 @@ public class SignController {
                     }
 
                     values.add(queryCondition);
-                    values.add(new BasicDBObject("corp_code", corp_code));
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
 
@@ -584,8 +630,13 @@ public class SignController {
                             value.add(store_code);
                         }
                         BasicDBList values = new BasicDBList();
-                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                        values.add(new BasicDBObject("corp_code", corp_code));
+                        if(value!=null&&value.size()>0) {
+                            values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                        }else{
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                            values.add(new BasicDBObject("user_code", user_code));
+                        }
                         values.add(queryCondition);
                         BasicDBObject queryCondition1 = new BasicDBObject();
                         queryCondition1.put("$and", values);
@@ -632,8 +683,13 @@ public class SignController {
                     }
                     BasicDBObject ba=new BasicDBObject();
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     values.add(queryCondition);
                     ba.put("$and",values);
                     dbCursor = cursor.find(ba).sort(sort_obj);
@@ -659,11 +715,16 @@ public class SignController {
                             value.add(store_code);
                         }
                         BasicDBList values = new BasicDBList();
-                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                        values.add(new BasicDBObject("corp_code", corp_code));
+                        if(value!=null&&value.size()>0) {
+                            values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                        }else{
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                            values.add(new BasicDBObject("user_code", user_code));
+                        }
                         values.add(queryCondition);
                         BasicDBObject queryCondition1 = new BasicDBObject();
-                        queryCondition1.put("$and", value);
+                        queryCondition1.put("$and", values);
                         dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                     }
 
@@ -684,8 +745,13 @@ public class SignController {
                     }
 
                     values.add(queryCondition);
-                    values.add(new BasicDBObject("corp_code", corp_code));
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
 
@@ -702,6 +768,8 @@ public class SignController {
                 }
                 list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
             }
+
+            //导出......
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
             String json = mapper.writeValueAsString(list);
@@ -792,8 +860,13 @@ public class SignController {
                     value.add(store_code);
                 }
                 BasicDBList values = new BasicDBList();
-                values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                values.add(new BasicDBObject("corp_code", corp_code));
+                if(value.size()>0&&value!=null) {
+                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                }else{
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("user_code", user_code));
+                }
 
                 values.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
@@ -822,8 +895,13 @@ public class SignController {
                         value.add(store_code);
                     }
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     values.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
@@ -848,8 +926,13 @@ public class SignController {
                     value.add(store_code);
                 }
                 BasicDBList values = new BasicDBList();
-                values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                values.add(new BasicDBObject("corp_code", corp_code));
+                if(value!=null&&value.size()>0) {
+                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                }else{
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("user_code", user_code));
+                }
                 values.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", values);
