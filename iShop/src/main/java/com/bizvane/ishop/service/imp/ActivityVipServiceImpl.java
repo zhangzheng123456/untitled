@@ -72,6 +72,12 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("user_code", user_code);
+
+        JSONObject date = JSONObject.parseObject(map.get("created_date"));
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString() + " 23:59:59");
+        map.remove("created_date");
+
         params.put("map", map);
         PageHelper.startPage(page_num, page_size);
         List<ActivityVip> list1 = activityVipMapper.selectActivityScreen(params);
@@ -342,8 +348,9 @@ public class ActivityVipServiceImpl implements ActivityVipService {
         List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
         BasicDBObject dbObject = new BasicDBObject();
         dbObject.put("corp_code", corp_code);
+        dbObject.put("task_code", task_code);
         JSONArray task_array = new JSONArray();
-        int complete_vip_count = 0;
+        Double complete_vip_count = 0d;
         for (int i = 0; i < taskAllocations.size(); i++) {
             JSONObject task_obj = new JSONObject();
             String user_code = taskAllocations.get(i).getUser_code();
@@ -363,7 +370,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 }
                 if (obj.containsField("complete_vip_count")){
                     String user_complete_vip_count = obj.get("complete_vip_count").toString();
-                    complete_vip_count = complete_vip_count + Integer.parseInt(user_complete_vip_count);
+                    complete_vip_count = complete_vip_count + Double.parseDouble(user_complete_vip_count);
                 }
             }
             //目标店铺

@@ -81,9 +81,8 @@
             (
             def_activity_vip.activity_theme LIKE concat('%', #{search_value},'%')
             OR def_activity_vip.run_mode LIKE concat('%', #{search_value},'%')
-            OR def_activity_vip.start_time LIKE concat('%', #{search_value},'%')
-            OR def_activity_vip.end_time LIKE concat('%', #{search_value},'%')
             OR def_activity_vip.activity_state LIKE concat('%', #{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY def_activity_vip.id DESC
@@ -358,6 +357,12 @@
         </if>
         <if test="user_code!=null and user_code!=''">
             AND def_activity_vip.creater = #{user_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  def_activity_vip.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  def_activity_vip.created_date &lt;= #{created_date_end}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">

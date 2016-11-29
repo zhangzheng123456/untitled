@@ -81,7 +81,7 @@ public class VipFsendServiceImpl implements VipFsendService{
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
-        String sms_code = "Fsend"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
+        String sms_code = "Fs"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
          VipFsend vipFsend= WebUtils.JSON2Bean(jsonObject, VipFsend.class);
         String sms_vips = vipFsend.getSms_vips();
         String content = vipFsend.getContent();
@@ -148,25 +148,27 @@ public class VipFsendServiceImpl implements VipFsendService{
         vipFsend.setSms_code(sms_code);
         vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipFsend.setCreater(user_id);
+        vipFsend.setModifier(user_id);
         vipFsend.setSms_vips(sms_vips);
         vipFsend.setContent(content);
+        vipFsend.setIsactive(Common.IS_ACTIVE_Y);
         vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
         int num=0;
         num= vipFsendMapper.insertFsend(vipFsend);
         System.out.print(num);
         if(num>0){
-//            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-//            Data data_phone = new Data("phone", phone, ValueType.PARAM);
-//            Data data_text = new Data("text", content, ValueType.PARAM);
-//
-//            Map datalist = new HashMap<String, Data>();
-//            datalist.put(data_channel.key, data_channel);
-//            datalist.put(data_phone.key, data_phone);
-//            datalist.put(data_text.key, data_text);
-//            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
-//            if (!dataBox.status.toString().equals("SUCCESS")){
-//                status = "发送失败";
-//            }
+            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+            Data data_phone = new Data("phone", phone, ValueType.PARAM);
+            Data data_text = new Data("text", content, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_channel.key, data_channel);
+            datalist.put(data_phone.key, data_phone);
+            datalist.put(data_text.key, data_text);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
+            if (!dataBox.status.toString().equals("SUCCESS")){
+                status = "发送失败";
+            }
 
         }else{
             status= "发送失败";

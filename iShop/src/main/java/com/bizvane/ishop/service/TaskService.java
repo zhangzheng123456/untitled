@@ -26,7 +26,7 @@ public interface TaskService {
 
     Task selectTaskById(String id) throws Exception;
 
-    Task getTaskForId(String corp_code, String task_type_code, String task_code) throws Exception;
+    Task getTaskForId(String corp_code, String task_code) throws Exception;
 
     TaskAllocation selTaskAllocationById(String id) throws Exception;
 

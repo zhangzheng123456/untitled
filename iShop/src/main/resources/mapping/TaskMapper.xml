@@ -478,7 +478,6 @@
         AND def_corp.corp_code = def_task_type.corp_code
         AND def_task.corp_code = #{corp_code}
        AND def_task.task_code = #{task_code}
-        AND def_task.task_type_code = #{task_type_code}
     </select>
 
 </mapper>
