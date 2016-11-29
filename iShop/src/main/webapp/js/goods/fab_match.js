@@ -33,8 +33,8 @@ $(function(){
         if(tmpWid>1280){
             tmpWid=1280;
         }else{
-            var column=Math.floor(tmpWid/400);
-            tmpWid=column*400;
+            var column=Math.floor(tmpWid/340);
+            tmpWid=column*340;
         }
         $('.waterfull').width(tmpWid);
     }
@@ -52,8 +52,7 @@ $(function(){
             isResizable: true,//是否自动布局默认true
             animationOptions: {
                 duration: 800,
-                easing: 'easeInOutBack',//如果你引用了jQeasing这里就可以添加对应的动态动画效果，如果没引用删除这行，默认是匀速变化
-                queue: false//是否队列，从一点填充瀑布流
+                queue: true//是否队列，从一点填充瀑布流
             }
         });
     });
