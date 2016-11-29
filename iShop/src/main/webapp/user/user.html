@@ -20,30 +20,10 @@
     		<div class="action">
     			<div class="action_l">
     				<ul id="jurisdiction">
-    					<!-- <li id="add">
-                            <a href="javascript:void(0);">
-        						<span class="icon-ishop_6-01"></span>
-        						新增
-                            </a>
-    					</li>
-    					<li class="bg" id="remove">
-    						<span class="icon-ishop_6-02"></span>
-    						删除
-    					</li>
-    					<li id="compile">
-                            <a href="javascript:void(0);">
-        						<span class="icon-ishop_6-03"></span>
-        						编辑
-                            </a>
-    					</li> -->
-    					<!-- <li class="bg">
-    						<span class="icon-ishop_6-04"></span>
-    						保存
-    					</li> -->
     				</ul>
                     <ul>
                         <li class="li">
-                            <input type="text" class="input" id="search" placeholder="员工编号/员工ID/姓名/手机/所属企业/群组">
+                            <input type="text" class="input" id="search" placeholder="员工编号/姓名/手机/所属企业/群组">
                             <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
                     </ul>
@@ -54,10 +34,6 @@
     						<span class="icon-ishop_6-05"></span>
     						筛选
     					</li>
-    					<!--<li class="bg">-->
-    						<!--<span class="icon-ishop_6-06"></span>-->
-    						<!--配置-->
-    					<!--</li>-->
     					<li class="bg" id="reload">
     						<span class="icon-ishop_6-07"></span>
     						刷新
@@ -146,7 +122,7 @@
                  			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                  			<th style="text-align: left;">序号</th>
                             <th>员工编号</th>
-                            <th title="客户业务系统下的员工ID">员工ID</th>
+                           <!--  <th title="客户业务系统下的员工ID">员工ID</th> -->
                             <th>头像</th>
                  			<th>姓名</th>
 							<th>性别</th>
@@ -160,27 +136,7 @@
                  		</tr>
                  	</thead>
                     <tbody>
-                    	<!-- <tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput10"/><label for="checkboxTwoInput10"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">10</td>
-                            <td>MOOO12</td>
-                            <td>MOOO12</td>
-                            <td>陈磊</td>
-                            <td>男</td>
-                            <td>15894622336</td>
-                            <td>N893120</td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>高级店长</td>
-                            <td>陈磊</td>
-                            <td class='switch'>
-                                <div class='bg'>
-                                    <span class='ON'></span>
-                                </div>
-                            </td>
-                            <td width="50px">是</td>
-                    	</tr>       					 -->							
+                    							
                     </tbody>
     			</table>
     		</div>
@@ -358,11 +314,11 @@
     </div>
 </body>
 <script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
-<script type="text/javascript" src="/js/user/user.js?20161117"></script>
+<script type="text/javascript" src="/js/user/user.js?20161129"></script>
 <script type="text/javascript" src="/js/silide.js?20161116"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
 <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
-<script type="text/javascript" src="/js/user/screen.js"></script>
+<script type="text/javascript" src="/js/user/screen.js?20161129"></script>
 <script>
     $("#reload").click(function () {
         window.location.reload();

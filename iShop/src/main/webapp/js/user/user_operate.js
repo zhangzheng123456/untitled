@@ -69,16 +69,16 @@ var oc = new ObjectControl();
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
 			var codeMark=$("#USERID").attr("data-mark");//编号是唯一的标志
-			var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
+			// var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
 			var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
 			var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 			if(useroperatejs.firstStep()){
-				if(idMark=="N"){
-					var div=$("#user_id").next('.hint').children();
-					div.html("员工ID已经存在！");
-					div.addClass("error_tips");
-					return;
-				}
+				// if(idMark=="N"){
+				// 	var div=$("#user_id").next('.hint').children();
+				// 	div.html("员工ID已经存在！");
+				// 	div.addClass("error_tips");
+				// 	return;
+				// }
 				if(phoneMark=="N"){
 					var div=$("#USER_PHONE").next('.hint').children();
 					div.html("该手机号码已经存在！");
@@ -98,7 +98,7 @@ var oc = new ObjectControl();
 		            return;
 				}
 				var USERID=$("#USERID").val();//员工编号
-				var user_id=$("#user_id").val();
+				// var user_id=$("#user_id").val();
 				var USER_NAME=$("#USER_NAME").val();//员工名称
 				var USER_PHONE=$("#USER_PHONE").val();//手机
 				var USER_EMAIL=$("#USER_EMAIL").val();//邮箱
@@ -203,7 +203,7 @@ var oc = new ObjectControl();
 				};
 				var _params={};
 				_params["user_code"]=USERID;//员工编号
-				_params["user_id"]=user_id;//员工ID
+				// _params["user_id"]=user_id;//员工ID
 				_params["username"]=USER_NAME;//员工名称
 				_params["avatar"]="";//新增的时候头像字段先设置为空
 				_params["phone"]=USER_PHONE;//手机
@@ -249,16 +249,16 @@ var oc = new ObjectControl();
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
 			var codeMark=$("#USERID").attr("data-mark");//编号是唯一的标志
-			var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
+			// var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
 			var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
 			var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 			if(useroperatejs.firstStep()){
-				if(idMark=="N"){
-					var div=$("#user_id").next('.hint').children();
-					div.html("员工ID已经存在！");
-					div.addClass("error_tips");
-					return;
-				}
+				// if(idMark=="N"){
+				// 	var div=$("#user_id").next('.hint').children();
+				// 	div.html("员工ID已经存在！");
+				// 	div.addClass("error_tips");
+				// 	return;
+				// }
 				if(phoneMark=="N"){
 					var div=$("#USER_PHONE").next('.hint').children();
 					div.html("该手机号码已经存在！");
@@ -279,7 +279,7 @@ var oc = new ObjectControl();
 				}
 				var ID=sessionStorage.getItem("id");
 				var USERID=$("#USERID").val();
-				var user_id=$("#user_id").val();
+				// var user_id=$("#user_id").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var USER_PHONE=$("#USER_PHONE").val();
 				var USER_EMAIL=$("#USER_EMAIL").val();
@@ -384,7 +384,7 @@ var oc = new ObjectControl();
 				};
 				var _params={};
 				_params["user_code"]=USERID;//员工编号
-				_params["user_id"]=user_id;//员工ID
+				// _params["user_id"]=user_id;//员工ID
 				_params["username"]=USER_NAME;//员工名称
 				_params["avatar"]=avatar;//头像
 				_params["position"]=position;//职务

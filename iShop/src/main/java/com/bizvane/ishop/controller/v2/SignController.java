@@ -429,7 +429,6 @@ public class SignController {
             String inter_id = jsonObject.get("id").toString();
             String[] ids = inter_id.split(",");
 
-
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
 
@@ -438,69 +437,66 @@ public class SignController {
          //       Sign sign = signService.selSignById(Integer.valueOf(ids[i]));
                 //signService.delSignById(Integer.valueOf(ids[i]));
 
-                DBObject deleteRecord = new BasicDBObject();
+                BasicDBObject deleteRecord = new BasicDBObject();
                 deleteRecord.put("_id", new ObjectId(ids[i]));
 
                //插入日志
-                DBCursor dbObjects = cursor.find(deleteRecord);
-                String t_corp_code = "";
-                String t_code = "";
-                String t_name = "";
-                String sign_time = "";
-                String status = "";
-
-                while (dbObjects.hasNext()) {
-                    DBObject sign = dbObjects.next();
-                    if (sign.containsField("corp_code")) {
-                        t_corp_code = sign.get("corp_code").toString();
-                    }
-                    if (sign.containsField("user_code")) {
-                        t_code = sign.get("user_code").toString();
-                    }
-                    if (sign.containsField("user_name")) {
-                        t_name = sign.get("user_name").toString();
-                    }
-                    if (sign.containsField("sign_time")) {
-                        sign_time = sign.get("sign_time").toString();
-                    }
-                    if (sign.containsField("status")) {
-                        status = sign.get("status").toString();
-                    }
-                }
-
-//----------------行为日志开始------------------------------------------
-                /**
-                 * mongodb插入用户操作记录
-                 * @param operation_corp_code 操作者corp_code
-                 * @param operation_user_code 操作者user_code
-                 * @param function 功能
-                 * @param action 动作
-                 * @param corp_code 被操作corp_code
-                 * @param code 被操作code
-                 * @param name 被操作name
-                 * @throws Exception
-                 */
-                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
-                String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                String function = "员工管理_签到管理";
-                String action = Common.ACTION_DEL;
-             //   String t_corp_code = sign.getCorp_code();
-             //   String t_code = sign.getUser_code();
-            //    String t_name = sign.getUser_name();
-                String remark = sign_time+"("+status+")";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
-
+//                DBCursor dbObjects = cursor.find(deleteRecord);
+//                String t_corp_code = "";
+//                String t_code = "";
+//                String t_name = "";
+//                String sign_time = "";
+//                String status = "";
+//
+//                while (dbObjects.hasNext()) {
+//                    DBObject sign = dbObjects.next();
+//                    if (sign.containsField("corp_code")) {
+//                        t_corp_code = sign.get("corp_code").toString();
+//                    }
+//                    if (sign.containsField("user_code")) {
+//                        t_code = sign.get("user_code").toString();
+//                    }
+//                    if (sign.containsField("user_name")) {
+//                        t_name = sign.get("user_name").toString();
+//                    }
+//                    if (sign.containsField("sign_time")) {
+//                        sign_time = sign.get("sign_time").toString();
+//                    }
+//                    if (sign.containsField("status")) {
+//                        status = sign.get("status").toString();
+//                    }
+//                }
+//
+////----------------行为日志开始------------------------------------------
+//                /**
+//                 * mongodb插入用户操作记录
+//                 * @param operation_corp_code 操作者corp_code
+//                 * @param operation_user_code 操作者user_code
+//                 * @param function 功能
+//                 * @param action 动作
+//                 * @param corp_code 被操作corp_code
+//                 * @param code 被操作code
+//                 * @param name 被操作name
+//                 * @throws Exception
+//                 */
+//                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+//                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+//                String function = "员工管理_签到管理";
+//                String action = Common.ACTION_DEL;
+//             //   String t_corp_code = sign.getCorp_code();
+//             //   String t_code = sign.getUser_code();
+//            //    String t_name = sign.getUser_name();
+//                String remark = sign_time+"("+status+")";
+//                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 cursor.remove(deleteRecord);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage("success");
             }
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("success");
-
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
+            dataBean.setId("0");
             dataBean.setMessage(ex.getMessage());
             return dataBean.getJsonStr();
         }
