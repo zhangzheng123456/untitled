@@ -467,7 +467,8 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $("#add").before('<li id="'+goods_code+'">'+li+'</li>');
+        $("#add").before('<li onmousemove="overShow(this)" onmouseout="outHide(this)" id="'+goods_code+'">'+li+'</li>');
+        $(".conpany_msg li i").css('display','none');
     }
 
     $(".conpany_msg li i").click(function () {
@@ -480,15 +481,19 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         }
         $(this).parent("li").remove();
     });
+    $(".conpany_msg li i").hover(function () {
+        console.log('禁止消失');
+        $(this).css("display","inline");
+    })
 });
 //hover显示关闭按钮
-$('.conpany_msg li').ready(function(){
-    console.log('li加载完毕');
-    $('.conpany_msg li').hover(function(){
-        console.log('hover事件');
-        $(".conpany_msg li").children('i').css("display","inline");
-    });
-});
+function overShow(dom){
+    $(dom).children('i').css("display","inline");
+}
+function outHide(dom){
+    $(dom).children('i').css("display","none");
+}
+
 //叉号取消添加商品
 $("#search_match_goods ul").on("click","li i",function () {
     $(this).prev().show();

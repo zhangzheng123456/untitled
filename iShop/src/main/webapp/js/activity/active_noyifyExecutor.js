@@ -17,7 +17,6 @@ $('#sendee_r').click(function () {
 });
 //区域点击
 $("#staff_area").click(function(){
-    console.log(close_role);
     isscroll=false;
     area_num=1;
     var arr=whir.loading.getPageSize();
@@ -46,7 +45,6 @@ $("#staff_shop").click(function(){
 })
 //品牌点击
 $("#staff_brand").click(function(){
-    console.log(close_role);
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_staff").width())/2;
     var tp=(arr[3]-$("#screen_staff").height())/2+40;
@@ -84,6 +82,7 @@ $("#screen_close_area").click(function(){
 $("#screen_close_shop").click(function(){
         $("#screen_shop").hide();
         $("#screen_staff").show();
+        $('#screen_que_shop').trigger('click');
     // whir.loading.remove();//移除遮罩层
     $("#screen_shop .screen_content_l").unbind("scroll");
 })
@@ -832,6 +831,7 @@ $("#send").click(function(){
     }
 
     whir.loading.add("",0.5);//加载等待框
+    $('#loading').html('消息发送中......');
     oc.postRequire("post","/message/add","",param, function(data){
         if(data.code=="0"){
             art.dialog({

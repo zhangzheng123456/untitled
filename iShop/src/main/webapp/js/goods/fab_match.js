@@ -164,15 +164,12 @@ function getVal(){
         success: function (data) {
             //console.log('获取数据成功'+JSON.stringify(data));
             var message =JSON.parse(data.message);
-            console.log('message是'+message);
             var list = JSON.parse(message.list);
-            console.log('list是'+list);
-            var forLength = list.length;
-            console.log('长度是'+forLength);
+            var forLength = list.length;     //显示盒子数量
             for(i=0;i<forLength;i++){
                 var goods_code = list[i].goods_code;
-                console.log('商品id是'+goods_code);
-                pageVal(goods_code);
+                var goods_image = list[i].goods_image;
+                pageVal(goods_code,goods_image);
             }
         },
         error: function (data) {
@@ -181,19 +178,20 @@ function getVal(){
     });
 }
 //数据模板
-function pageVal(goods_code){
+function pageVal(goods_code,goods_image){
     //盒子上部分+复选框
     var tempHTML1='<li class="item"><div class="boxArea"><input type="checkbox"/>';
     //内容（图片+文字）迭代生成
-    var tempHTML2='<div class="oneArea"> <img src="" alt=""/> <div>${goods_code}</div> </div>';
+    var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
     var tempHTML3='</div></li>';
     var html = '';
-
         var nowHTML1 = tempHTML1;
         //var k = '单独模块里商品的数量';
         //for(a=0;a<k;a++) {
         var nowHTML2 = tempHTML2;
+        nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
+        nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
         nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
         //}
         var nowHTML3 = tempHTML3;
@@ -209,9 +207,9 @@ $("#d_search").click(function () {
     value = $("#search").val().replace(/\s+/g, "");
     inx = 1;
     param["searchValue"] = value;
-    param["pageNumber"] = inx;
+    //param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
-    param["funcCode"] = funcCode;
+    //param["funcCode"] = funcCode;
     POST(inx, pageSize);
 })
 //搜索的请求函数
@@ -221,20 +219,28 @@ function POST(a, b) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
-            cout = list.pages;
-            var pageNum = list.pageNum;
-            var list = list.list;
-            var actions = message.actions;
-            $(".table tbody").empty();
-            if (list.length <= 0) {
-                $(".table p").remove();
-                $(".table").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
+            //cout = list.pages;
+            //var pageNum = list.pageNum;
+            //var list = list.list;
+            //var actions = message.actions;
+            var forLength = list.length;     //显示盒子数量
+            $(".masonry").empty();
+            if (forLength <= 0) {
+                $(".masonry p").remove();
+                $(".masonry").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
-            } else if (list.length > 0) {
-                $(".table p").remove();
-                superaddition(list, pageNum);
+            } else if (forLength > 0) {
+                whir.loading.remove();//移除加载框
+                $(".masonry p").remove();
+                //superaddition(list, pageNum);
+                for(i=0;i<forLength;i++){
+                    var goods_code = list[i].goods_code;
+                    var goods_image = list[i].goods_image;
+                    pageVal(goods_code,goods_image);
+                }
                 jumpBianse();
             }
+
             var input = $(".inputs input");
             for (var i = 0; i < input.length; i++) {
                 input[i].value = "";
