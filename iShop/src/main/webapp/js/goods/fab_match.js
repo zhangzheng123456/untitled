@@ -136,7 +136,8 @@ function jumpBianse(){
     $("#remove").click(function(){
         var l=$(window).width();
         var h=$(document.body).height();
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var tr=$("#waterfull .item").find("input:checked");
+        console.log(tr.length);
         if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -146,7 +147,7 @@ function jumpBianse(){
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
-    })
+    });
 }
 //获取数据
 function getVal(){
@@ -194,7 +195,7 @@ function getVal(){
 //数据模板
 function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
-    var tempHTML1='<li class="item"><div class="boxArea"><input type="checkbox"/>';
+    var tempHTML1='<li data-code="${corp_code}" class="item"><div class="boxArea"><input id="${code}" type="checkbox"/>';
     //内容（图片+文字）迭代生成
     var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
@@ -203,6 +204,7 @@ function pageVal(arr,unqiuearr,list){
     for(i=0;i<unqiuearr.length;i++){
         var html = '';
         var nowHTML1 = tempHTML1;
+            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
         var nowHTML2 = "";
         for(k=0;k<list.length;k++){
             if(list[k].goods_match_code ==unqiuearr[i]){
@@ -212,6 +214,7 @@ function pageVal(arr,unqiuearr,list){
                 nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
                 nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
                 nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+                nowHTML1 = nowHTML1.replace("${corp_code}", list[k].corp_code);
         }
         }
         var nowHTML3 = tempHTML3;
@@ -274,21 +277,35 @@ function POST(a, b) {
         }
     })
 }
+//弹框关闭
+$("#X").click(function () {
+    $("#p").hide();
+    $("#tk").hide();
+});
+//取消关闭
+$("#cancel").click(function () {
+    $("#p").hide();
+    $("#tk").hide();
+});
 //弹框删除关闭
 $("#delete").click(function () {
     $("#p").hide();
     $("#tk").hide();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=tr.length-1,ID="";i>=0;i--){
+    var tr=$("#waterfull .item").find("input:checked");
+    var goods_code = "";
+    var corp_code = "";
+    for(var i=0;i<tr.length;i++){
         var r=$(tr[i]).attr("id");
-        if(i>0){
-            ID+=r+",";
+        var h=$(tr[i]).parents("li").attr("data-code");
+        if(i<tr.length-1){
+            goods_code+=r+",";
         }else{
             ID+=r;
         }
     }
     var params = {};
     params["id"] = ID;
+    params["corp_code"] = corp_code;
     console.log(param);
     oc.postRequire("post", "/defmatch/delete", "0", params, function (data) {
         if (data.code == "0") {
@@ -339,7 +356,6 @@ function checkAll(name) {
         }
     }
 };
-
 //取消全选
 function clearAll(name) {
     var el = $("tbody input");
@@ -382,7 +398,7 @@ $("#leading_out").click(function () {
         }
         whir.loading.remove();//移除加载框
     })
-})
+});
 function bianse(){
     $("#file_list_l li:odd").css("backgroundColor","#fff");
     $("#file_list_l li:even").css("backgroundColor","#ededed");
