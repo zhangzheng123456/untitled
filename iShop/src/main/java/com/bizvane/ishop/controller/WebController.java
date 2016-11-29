@@ -276,6 +276,10 @@ public class WebController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int goods_id = Integer.parseInt(jsonObject.getString("id"));
             Goods goods = this.goodsService.getGoodsById(goods_id);
+            String corp_code = goods.getCorp_code();
+            String goods_code = goods.getGoods_code();
+            List<Goods> matchgoods = goodsService.selectGoodsMatchList(corp_code,goods_code,Common.IS_ACTIVE_Y);
+            goods.setMatchgoods(matchgoods);
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("goods", JSON.toJSONString(goods));
             dataBean.setId(id);
@@ -367,10 +371,6 @@ public class WebController {
             String corp_code = jsonObj.getString("corp_code");
             String user_code = jsonObj.getString("user_code");
             String search_value = jsonObj.getString("search_value");
-//            String corp_code = request.getParameter("corp_code");
-//            String user_code = request.getParameter("user_code");
-//            String search_value = request.getParameter("search_value");
-
             logger.info("--------corp_code:"+corp_code+"user_code:"+user_code+"search_value:"+search_value+"----------- ");
 
             List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
@@ -403,6 +403,7 @@ public class WebController {
         System.out.print("222");
         return dataBean.getJsonStr();
     }
+
 
     /**
      * app获取商品列表（微盟桃花季）
@@ -445,8 +446,6 @@ public class WebController {
         }
         return dataBean.getJsonStr();
     }
-
-
 
     /**
      * app获取商品列表（微盟桃花季）

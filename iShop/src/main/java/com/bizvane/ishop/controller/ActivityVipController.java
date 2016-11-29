@@ -31,6 +31,9 @@ import java.util.*;
 public class ActivityVipController {
     @Autowired
     private ActivityVipService activityVipService;
+    @Autowired
+    private TaskService taskService;
+
 
     private static final Logger logger = Logger.getLogger(ActivityVipController.class);
 
@@ -220,16 +223,31 @@ public class ActivityVipController {
                 if (activityVip != null) {
                     String activity_state = activityVip.getActivity_state();
                     if (activity_state.equals("执行中")) {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId(id);
-                        dataBean.setMessage("执行中活动，不可删除");
+                        msg = "执行中活动，不可删除";
                         break;
+                    }else {
+                        String task_code = activityVip.getTask_code();
+                        if (task_code != null && !task_code.equals("")){
+                            Task task = taskService.getTaskForId(activityVip.getCorp_code(),task_code);
+                            if (task != null){
+                                msg = "请先删除活动对应的任务，再删除活动";
+                                break;
+                            }
+                        }
                     }
                 }
-                activityVipService.delete(Integer.parseInt(ids[i]));
+            }
+            if (msg.equals("")){
+                for (int i = 0; i < ids.length; i++) {
+                    activityVipService.delete(Integer.parseInt(ids[i]));
+                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -414,7 +432,7 @@ public class ActivityVipController {
     }
 
     /**
-     * 终止/恢复活动
+     * 终止活动
      *
      * @param request
      * @return

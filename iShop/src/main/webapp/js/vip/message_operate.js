@@ -690,6 +690,135 @@ $("#screen_staffl").click(function(){
     $("#screen_staff .screen_content_l ul").empty();
     getstafflist(staff_num);
 });
+//店铺里面的区域点击
+$("#shop_area").click(function(){
+	if(message.cache.area_codes!==""){
+		var area_codes=message.cache.area_codes.split(',');
+		var area_names=message.cache.area_names.split(',');
+		var area_html_right="";
+	    for(var h=0;h<area_codes.length;h++){
+			area_html_right+="<li id='"+area_codes[h]+"'>\
+			<div class='checkbox1'><input type='checkbox' value='"+area_codes[h]+"'  data-storename='"+area_names[h]+"' name='test' class='check'>\
+			<label></div><span class='p16'>"+area_names[h]+"</span>\
+			\</li>"
+		}
+		$("#screen_area .s_pitch span").html(h);
+		$("#screen_area .screen_content_r ul").html(area_html_right);
+	}
+	isscroll=false;
+	area_num=1;
+	var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#screen_area .screen_content_l").unbind("scroll");
+	$("#screen_area .screen_content_l ul").empty();
+	$("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+	$("#screen_area").show();
+	$("#screen_shop").hide();
+	getarealist(area_num);
+})
+//店铺里面的品牌点击
+$("#shop_brand").click(function(){
+	if(message.cache.brand_codes!==""){
+		var brand_codes=message.cache.brand_codes.split(',');
+		var brand_names=message.cache.brand_names.split(',');
+		var brand_html_right="";
+	    for(var h=0;h<brand_codes.length;h++){
+			brand_html_right+="<li id='"+brand_codes[h]+"'>\
+			<div class='checkbox1'><input type='checkbox' value='"+brand_codes[h]+"'  data-storename='"+brand_names[h]+"' name='test' class='check'>\
+			<label></div><span class='p16'>"+brand_names[h]+"</span>\
+			\</li>"
+		}
+		$("#screen_brand .s_pitch span").html(h);
+		$("#screen_brand .screen_content_r ul").html(brand_html_right);
+	}
+	var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#screen_brand .screen_content_l ul").empty();
+	$("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+	$("#screen_brand").show();
+	$("#screen_shop").hide();
+	getbrandlist();
+})
+//员工里面的区域点击
+$("#staff_area").click(function(){
+	if(message.cache.area_codes!==""){
+		var area_codes=message.cache.area_codes.split(',');
+		var area_names=message.cache.area_names.split(',');
+		var area_html_right="";
+	    for(var h=0;h<area_codes.length;h++){
+			area_html_right+="<li id='"+area_codes[h]+"'>\
+			<div class='checkbox1'><input type='checkbox' value='"+area_codes[h]+"'  data-storename='"+area_names[h]+"' name='test' class='check'>\
+			<label></div><span class='p16'>"+area_names[h]+"</span>\
+			\</li>"
+		}
+		$("#screen_area .s_pitch span").html(h);
+		$("#screen_area .screen_content_r ul").html(area_html_right);
+	}
+	isscroll=false;
+	area_num=1;
+	var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#screen_area .screen_content_l").unbind("scroll");
+	$("#screen_area .screen_content_l ul").empty();
+	$("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+	$("#screen_area").show();
+	$("#screen_staff").hide();
+	getarealist(area_num);
+})
+//员工里面的店铺点击
+$("#staff_shop").click(function(){
+	if(message.cache.store_codes!==""){
+		var store_codes=message.cache.store_codes.split(',');
+		var store_names=message.cache.store_names.split(',');
+		var shop_html_right="";
+	    for(var h=0;h<store_codes.length;h++){
+			shop_html_right+="<li id='"+store_codes[h]+"'>\
+			<div class='checkbox1'><input type='checkbox' value='"+store_codes[h]+"'  data-storename='"+store_names[h]+"' name='test' class='check'>\
+			<label></div><span class='p16'>"+store_names[h]+"</span>\
+			\</li>"
+		}
+		$("#screen_shop .s_pitch span").html(h);
+		$("#screen_shop .screen_content_r ul").html(shop_html_right);
+	}
+	isscroll=false;
+	shop_num=1;
+	var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#screen_shop .screen_content_l").unbind("scroll");
+	$("#screen_shop .screen_content_l ul").empty();
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+	$("#screen_shop").show();
+	$("#screen_staff").hide();
+	getstorelist(shop_num);
+})
+//员工里面的品牌点击
+$("#staff_brand").click(function(){
+	if(message.cache.brand_codes!==""){
+		var brand_codes=message.cache.brand_codes.split(',');
+		var brand_names=message.cache.brand_names.split(',');
+		var brand_html_right="";
+	    for(var h=0;h<brand_codes.length;h++){
+			brand_html_right+="<li id='"+brand_codes[h]+"'>\
+			<div class='checkbox1'><input type='checkbox' value='"+brand_codes[h]+"'  data-storename='"+brand_names[h]+"' name='test' class='check'>\
+			<label></div><span class='p16'>"+brand_names[h]+"</span>\
+			\</li>"
+		}
+		$("#screen_brand .s_pitch span").html(h);
+		$("#screen_brand .screen_content_r ul").html(brand_html_right);
+	}
+	var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#screen_brand .screen_content_l ul").empty();
+	$("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+	$("#screen_brand").show();
+	$("#screen_staff").hide();
+	getbrandlist();
+})
 //点击区域确定按钮
 $("#screen_que_area").click(function(){
 	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
@@ -1007,6 +1136,12 @@ function superaddition(data,num){//页面加载循环
         + "'></label></div>"
         + "</td></tr>");
     }
+    if(message.cache.vip_id!==""){
+    	var vip_id=message.cache.vip_id.split(",");
+    	for(var i=0;i<vip_id.length;i++){
+    		$("#"+vip_id[i]).find("input").attr("checked","true");
+    	}
+    }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
@@ -1022,13 +1157,24 @@ function GET(a,b){
     oc.postRequire("post","/vipAnalysis/allVip","",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
-            var message=JSON.parse(data.message);
-            var list=message.all_vip_list;
-            cout=message.pages;
-            var pageNum = message.pageNum;
+            var messages=JSON.parse(data.message);
+            var list=messages.all_vip_list;
+            cout=messages.pages;
+            var pageNum = messages.pageNum;
             superaddition(list,pageNum);
             jumpBianse();
             filtrate="";
+            $('.contion .input').val("");
+			message.cache.area_codes="";
+    		message.cache.area_names="";
+    		message.cache.brand_codes="";
+    		message.cache.brand_names="";
+    		message.cache.store_codes="";
+    		message.cache.store_names="";
+    		message.cache.user_codes="";
+    		message.cache.user_names="";
+    		message.cache.type="";
+    		message.cache.count=""
             setPage($("#foot-num")[0],cout,pageNum,b);
         }else if(data.code=="-1"){
             alert(data.message);
@@ -1072,11 +1218,11 @@ function POST(a,b){
     $("#save_all").hide();
     oc.postRequire("post","/vip/vipSearch","0",param,function(data){
         if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var list=message.all_vip_list;
-            cout=message.pages;
-            var pageNum = message.pageNum;
-            var actions=message.actions;
+            var messages=JSON.parse(data.message);
+            var list=messages.all_vip_list;
+            cout=messages.pages;
+            var pageNum = messages.pageNum;
+            var actions=messages.actions;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -1088,6 +1234,17 @@ function POST(a,b){
                 jumpBianse();
             }
             filtrate="";
+            $('.contion .input').val("");
+			message.cache.area_codes="";
+    		message.cache.area_names="";
+    		message.cache.brand_codes="";
+    		message.cache.brand_names="";
+    		message.cache.store_codes="";
+    		message.cache.store_names="";
+    		message.cache.user_codes="";
+    		message.cache.user_names="";
+    		message.cache.type="";
+    		message.cache.count=""
             setPage($("#foot-num")[0],cout,pageNum,b);
         }else if(data.code=="-1"){
             alert(data.message);

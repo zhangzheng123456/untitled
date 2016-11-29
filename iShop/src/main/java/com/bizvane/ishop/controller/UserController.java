@@ -198,10 +198,13 @@ public class UserController {
                 }else {
                     if(!area_code.equals("") || !brand_code.equals("")){
                         //拉取区域下所有员工（包括区经）
-                        String[] areas = area_code.split(",");
+                        String[] areas = null;
+                        if (!area_code.equals("")){
+                            areas = area_code.split(",");
+                        }
                         List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
                         for (int i = 0; i < stores.size(); i++) {
-                            store_code = store_code + stores.get(i).getStore_code();
+                            store_code = store_code + stores.get(i).getStore_code() + ",";
                         }
                         list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
                     }else {
@@ -217,7 +220,7 @@ public class UserController {
                         String[] areas = area_code.split(",");
                         List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code,brand_code,searchValue,"");
                         for (int i = 0; i < stores.size(); i++) {
-                            store_code = store_code + stores.get(i).getStore_code();
+                            store_code = store_code + stores.get(i).getStore_code() + ",";
                         }
                         list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",areas, "");
                     }else {
