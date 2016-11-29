@@ -35,7 +35,7 @@ public interface GoodsService {
      * @return
      * @throws SQLException
      */
-    String update(Goods goods,String match_goods) throws Exception;
+    String update(Goods goods) throws Exception;
 
     /**
      * 删除企业，通过编号区分

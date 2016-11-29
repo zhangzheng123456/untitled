@@ -89,7 +89,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public String update(Goods goods,String match_goods) throws Exception {
+    public String update(Goods goods) throws Exception {
         Goods old_goods = goodsMapper.selectByPrimaryKey(goods.getId());
         Goods new_goods = getGoodsByCode(goods.getCorp_code().trim(), goods.getGoods_code().trim(),Common.IS_ACTIVE_Y);
         if (goods.getCorp_code().trim().equals(old_goods.getCorp_code().trim())) {

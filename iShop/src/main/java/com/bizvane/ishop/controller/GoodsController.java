@@ -1,26 +1,23 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Goods;
-import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +34,6 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -716,7 +712,6 @@ public class GoodsController {
             dataBean.setId(id);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String match_goods = jsonObject.get("match_goods").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             String delImgPath = jsonObject.get("delImgPath").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
@@ -752,7 +747,7 @@ public class GoodsController {
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
-            String result = goodsService.update(goods,match_goods);
+            String result = goodsService.update(goods);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("商品更改成功");
@@ -898,9 +893,9 @@ public class GoodsController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("search_value").toString();
