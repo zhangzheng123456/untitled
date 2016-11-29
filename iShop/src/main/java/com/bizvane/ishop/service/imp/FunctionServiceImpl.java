@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/5/24.
@@ -154,19 +151,20 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 按功能获取user动作权限
      */
-    public JSONArray selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
+    public List<Map<String,String>> selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
         List<Privilege> act_info;
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
+        List<Map<String,String>> actionList = new ArrayList<Map<String,String>>();
         act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
-        JSONArray actions = new JSONArray();
         for (int i = 0; i < act_info.size(); i++) {
             String act = act_info.get(i).getAction_name();
-            JSONObject obj = new JSONObject();
-            obj.put("act_name", act);
-            actions.add(obj);
+            Map<String,String> action = new HashMap<String, String>();
+            action.put("act_name", act);
+            if (!actionList.contains(action))
+                actionList.add(action);
         }
-        return actions;
+        return actionList;
     }
 
     /**
