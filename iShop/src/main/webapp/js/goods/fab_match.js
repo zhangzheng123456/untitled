@@ -310,22 +310,26 @@ $("#cancel").click(function () {
 $("#delete").click(function () {
     $("#p").hide();
     $("#tk").hide();
-    var tr=$("#waterfull .item").find("input:checked");
-    var goods_code = "";
-    var corp_code = "";
-    for(var i=0;i<tr.length;i++){
-        var r=$(tr[i]).attr("id");
-        var h=$(tr[i]).parents("li").attr("data-code");
-        if(i<tr.length-1){
-            goods_code+=r+",";
-        }else{
-            ID+=r;
-        }
-    }
+    var list=[];
     var params = {};
-    params["id"] = ID;
-    params["corp_code"] = corp_code;
-    console.log(param);
+    var tr=$("#waterfull .item").find("input:checked");
+    for(var i=0;i<tr.length;i++){
+        var goods_match_code=$(tr[i]).attr("id");
+        var corp_code=$(tr[i]).parents("li").attr("data-code");
+        var param = {
+            "corp_code":corp_code,
+            "goods_match_code":goods_match_code
+        };
+        list.push(param);
+        // if(i<tr.length-1){
+        //     goods_code+=r+",";
+        //     corp_code+=h+",";
+        // }else{
+        //     goods_code+=r;
+        //     corp_code+=h;
+        // }
+    }
+    params["list"] = list;
     oc.postRequire("post", "/defmatch/delete", "0", params, function (data) {
         if (data.code == "0") {
             if (value == "" && filtrate == "") {
