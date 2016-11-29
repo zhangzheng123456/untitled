@@ -412,6 +412,8 @@ public class AppLoginLogController {
                 int i = 9 / 0;
             }
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            if (corp_code.equals("C10016"))
+                map.put("flg_tob","经销商");
             String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
