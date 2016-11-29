@@ -1,6 +1,7 @@
 //停止活动
 var moreDetail={};//更多详情
 var staffData=[];//页面的数据
+var role=1;
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 function stop(){
@@ -70,11 +71,12 @@ $('#showDone').click(function(){
             nowLength -=1;
         }
     })
-    if(nowLength <=0) {
+    if(nowLength <=1) {
         $('#peopleError').show();
         $('#peopleError div').text('未发现已完成');
     }
     data=null;
+    $('#screening').slideUp(600);
 });
 //显示未完成
 $('#showDoing').click(function(){
@@ -84,7 +86,6 @@ $('#showDoing').click(function(){
     })
     listShow(data);
     var nowLength = $('.people_title').length;
-    console.log(nowLength);
     $(".percent_percent").each(function(){
         var nowVal=($(this).text().replace('%',''));
         if(nowVal==100){
@@ -92,15 +93,22 @@ $('#showDoing').click(function(){
             nowLength -=1;
         }
     })
-    if(nowLength <=0) {
+    if(nowLength <=1) {
         $('#peopleError div').text('未发未完成')
         $('#peopleError').show();
     }
     data=null;
+    $('#screening').slideUp(600);
 });
 //显示全部
 $('#showAll').click(function(){
     listShow(staffData);
+    var nowLength = $('.people_title').length;
+    if(nowLength <=1) {
+        $('#peopleError div').text('暂无数据');
+        $('#peopleError').show();
+    }
+    $('#screening').slideUp(600);
 });
 //点击radio时
 $('.btnSecond .radio_b').click(function () {
@@ -113,8 +121,14 @@ $('#choose').click(function(){
 });
 //清空筛选
 $('#empty').click(function(){
+    $('.btnSecond input:checked').removeAttr('checked');
     $('.inputs input').val('');
     listShow(staffData);
+    var nowLength = $('.people_title').length;
+    if(nowLength <=0) {
+        $('#peopleError div').text('暂无数据');
+        $('#peopleError').show();
+    }
 });
 //收起
 $('#pack_up').click(function(){
@@ -122,12 +136,17 @@ $('#pack_up').click(function(){
 })
 //查找
 $('#find').click(function(){
-    // var nowLength = $('.people_title').length;
+    $('.btnSecond input:checked').removeAttr('checked');
     var name = $('#p1').val();
     var num = $('#p2').val();
     var area = $('#p3').val();
     var shop = $('#p4').val();
     search(name,num,area,shop);
+    var nowLength = $('.people_title').length;
+    if(nowLength <=1) {
+        $('#peopleError div').text('暂无匹配数据');
+        $('#peopleError').show();
+    }
 });
 $("#p1").keydown(function(){
     var event=window.event||arguments[0];
@@ -159,8 +178,6 @@ function search(name,num,area,shop){
     for(var i=0;i<arguments.length;i++){
         arguments[i]==''?'':param.push(i);
     }
-    console.log(param)
-    console.log(param.length==1)
     if(param.length==0){
         data=staffData;
     }else if(param.length==1){
@@ -170,7 +187,6 @@ function search(name,num,area,shop){
             //     data.push(val)
             // }
             // console.log(param[0])
-            console.log(val.user_name.search(name));
             if((param.indexOf(0)!=-1)&&(val.user_name.search(name)!=-1)){data.push(val)};
             if((param.indexOf(1)!=-1)&&(val.user_code.search(num)!=-1)){data.push(val)};
             if((param.indexOf(2)!=-1)&&(val.area_name.search(area)!=-1)){data.push(val)};
@@ -265,7 +281,6 @@ function search(name,num,area,shop){
             }
         });
     }
-    console.log(data);
     listShow(data)
     // if(name!=''){
     //     $('.people_title_name').each(function(){
@@ -427,10 +442,10 @@ function listShow(userList){
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
     var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
-    for(var i=0;i<userList.length;i++){
+    for(var i=0;i<userList.length;i++) {
         //随机进度
         var html = '';
-        var order = i+1;
+        var order = i + 1;
         var nowHTML1 = tempHTML;
         var percent = userList[i].complete_rate;
         nowHTML1 = nowHTML1.replace("${order}", order);
@@ -445,17 +460,17 @@ function listShow(userList){
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
         $("#peopleContent").append(html);
-        $('.done').css('width', percent+'%');
+        $('.done').css('width', percent + '%');
         //判断进度颜色
-        if(percent<100&&percent>0){
-            $('.percent_percent').css('color','#42a0a8');
-        }else if(percent==100){
-            $('.percent_percent').css('color','blue');
-        }else if(percent==0){
-            $('.percent_percent').css('color','red');
+        if (percent < 100 && percent > 0) {
+            $('.percent_percent').css('color', '#42a0a8');
+        } else if (percent == 100) {
+            $('.percent_percent').css('color', '#42a0a8');
+        } else if (percent == 0) {
+            $('.percent_percent').css('color', '#42a0a8');
         }
         var nowLength = $('.people_title').length;
-        if(nowLength >1) {
+        if (nowLength > 1) {
             $('#peopleError').hide();
         }
     }
