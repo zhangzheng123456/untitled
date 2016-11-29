@@ -75,7 +75,10 @@ public class ActivityVipServiceImpl implements ActivityVipService {
 
         JSONObject date = JSONObject.parseObject(map.get("created_date"));
         params.put("created_date_start", date.get("start").toString());
-        params.put("created_date_end", date.get("end").toString() + " 23:59:59");
+        String end = date.get("end").toString();
+        if (!end.equals(""))
+            end = end + " 23:59:59";
+        params.put("created_date_end", end);
         map.remove("created_date");
 
         params.put("map", map);

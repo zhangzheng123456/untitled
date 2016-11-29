@@ -25,7 +25,7 @@ public class MongoHelperServiceImpl {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("operation_time")) {
+            if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("operation_time")) {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -43,9 +43,9 @@ public class MongoHelperServiceImpl {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end + " 23:59:59")));
                 }
             }
-
         }
-        queryCondition.put("$and", values);
+        if (values.size()>0)
+            queryCondition.put("$and", values);
         return queryCondition;
     }
 
@@ -58,7 +58,9 @@ public class MongoHelperServiceImpl {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("user_can_login") && !screen_key.equals("created_date") && !screen_key.equals("count")) {
+
+            if (!screen_value.equals("") && !screen_key.equals("user_can_login") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
+
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -105,9 +107,9 @@ public class MongoHelperServiceImpl {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, 0)));
                 }
             }
-
         }
-        queryCondition.put("$and", values);
+        if (values.size()>0)
+            queryCondition.put("$and", values);
         return queryCondition;
     }
 
@@ -150,7 +152,7 @@ public class MongoHelperServiceImpl {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("sign_time")) {
+            if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("sign_time")) {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -168,9 +170,9 @@ public class MongoHelperServiceImpl {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
                 }
             }
-
         }
-        queryCondition.put("$and", values);
+        if (values.size()>0)
+            queryCondition.put("$and", values);
         return queryCondition;
     }
 

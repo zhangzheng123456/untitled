@@ -838,7 +838,7 @@ function getbrandlist(){
 //获取城市列表
 function getcitylist(){
 	var corp_code = $('#OWN_CORP').val();
-	var searchValue=$("#brand_search").val();
+	var searchValue=$("#city_search").val();
 	var _param={};
 	if(corp_code==undefined){
 		_param['corp_code']="C10000";

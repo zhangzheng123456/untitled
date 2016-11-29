@@ -26,13 +26,15 @@ public class MongoUtils {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
-            values.add(new BasicDBObject(screen_key, pattern));
+            if (!screen_value.equals("")){
+                Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
+                values.add(new BasicDBObject(screen_key, pattern));
+            }
         }
+        if (values.size() > 0)
         queryCondition.put("$and", values);
         return queryCondition;
     }
-
 
     //多个“与”查询(筛选)登录日志
     public static BasicDBObject andLoginlogScreen(JSONArray array) {
