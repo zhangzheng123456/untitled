@@ -645,6 +645,14 @@ function filtrates(a, b) {
         }
     });
 }
+//编辑
+$('#compile').click(function () {
+    //获取选中的id，存储
+    sessionStorage.setItem("corp_code",corp_code);//存储的方法
+    //页面跳转
+    $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchEditor.html");
+
+})
 window.onload =function() {
     getVal();
 }
