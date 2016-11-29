@@ -185,7 +185,7 @@ var swip_image = [];
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
 					"isactive": ISACTIVE,
-					"match_goods":matchgoods
+					// "match_goods":matchgoods
 				};
 				console.log(_params);
 				fabjs.ajaxSubmit(_command,_params,opt);
@@ -355,7 +355,7 @@ var swip_image = [];
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
 					"isactive": ISACTIVE,
-					"match_goods":matchgoods,
+					// "match_goods":matchgoods,
 					'delImgPath':delete_image.join('')
 				};
 				fabjs.ajaxSubmit(_command,_params,opt);
@@ -526,15 +526,15 @@ jQuery(document).ready(function(){
 				$("#GOODS_BAND").val(msg.goods_wave);
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
 				$("#edit .froala-element").html(msg.goods_description);
-				var list=msg.matchgoods;
-				for(var i=0;i<list.length;i++){
-					jQuery('.match_goods ul').append('<li id="'+list[i].goods_code+'"><img class="goodsImg" src="'
-						+ list[i].goods_image
-						+ '"><span class="goods_code">'
-						+ list[i].goods_code + '</span><span>'
-						+ list[i].goods_name
-						+'</span><i class="icon-ishop_6-12"></i></li>');
-				}
+				// var list=msg.matchgoods;
+				// for(var i=0;i<list.length;i++){
+				// 	jQuery('.match_goods ul').append('<li id="'+list[i].goods_code+'"><img class="goodsImg" src="'
+				// 		+ list[i].goods_image
+				// 		+ '"><span class="goods_code">'
+				// 		+ list[i].goods_code + '</span><span>'
+				// 		+ list[i].goods_name
+				// 		+'</span><i class="icon-ishop_6-12"></i></li>');
+				// }
 				$("#match_goods ul li i").click(function (){
 					$(this).parent("li").remove();
 				});

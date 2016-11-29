@@ -176,7 +176,7 @@ var funcCode=key_val.func_code;
                 }
                 var outer_link = $("#outer_link").val();
                 var activity_content = nr;
-                var create_link = $("#creat_link").val();
+                var create_link = $("#src_input").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (input.checked == true) {
@@ -341,7 +341,7 @@ var funcCode=key_val.func_code;
                 }
                 var outer_link = $("#outer_link").val();
                 var activity_content = nr;
-                var create_link = $("#creat_link").val();
+                var create_link = $("#src_input").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (input.checked == true) {
@@ -396,6 +396,9 @@ var funcCode=key_val.func_code;
                         cancel: false,
                         content: "保存成功"
                     });
+                    setTimeout(function () {
+                        window.location.reload();
+                    },500);
                 }
                 // $(window.parent.document).find('#iframepage').attr("src","/area/area.html");
             } else if (data.code == "-1") {
