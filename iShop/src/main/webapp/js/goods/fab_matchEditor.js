@@ -645,3 +645,28 @@ $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
 })
+
+function pageVal(){
+    var _param={};
+    var corp_code='';
+    var searchValue='';
+    _param["corp_code"]=corp_code;
+    _param["searchValue"] =searchValue;  //goods_code
+    //whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post", "/defmatch/getMatchByCode","",_param, function(data){
+        if(data.code='0'){
+            var goods_code ='';
+            var goods_image ='';
+            var corp_code ='';
+            console.log('获取成功');
+
+        }else if(data.code='-1'){
+            console.log('获取失败');
+        }
+        //whir.loading.remove();//移除加载框
+    });
+
+}
+window.onload=function(){
+    pageVal();
+}
