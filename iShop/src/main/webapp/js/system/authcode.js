@@ -12,7 +12,6 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
@@ -472,17 +471,17 @@ $("#delete").click(function(){
             if(value==""&&filtrate==""){
                 frame();
                 $('.frame').html('删除成功');
-                GET(pageNumber,pageSize);
+                GET(inx,pageSize);
             }else if(value!==""){
                 frame();
                 $('.frame').html('删除成功');
                 param["pageNumber"]=pageNumber;
-                POST(pageNumber,pageSize);
+                POST(inx,pageSize);
             }else if(filtrate!==""){
                 frame();
                 $('.frame').html('删除成功');
                 _param["pageNumber"]=pageNumber;
-                filtrates(pageNumber,pageSize);
+                filtrates(inx,pageSize);
             }
             var thinput=$("thead input")[0];
             thinput.checked =false;
@@ -500,6 +499,9 @@ $("#delete").click(function(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+     setTimeout(function(){
+         $(".frame").hide();
+     },2000);
 } 
 //全选
 function checkAll(name){
