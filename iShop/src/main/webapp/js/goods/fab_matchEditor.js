@@ -649,7 +649,7 @@ $(".good_imgs").on("click","div img",function () {
 function pageVal(){
     var _param={};
     var corp_code='';
-    //var searchValue='';
+    //var searchValue='';       
     var goods_match_code = sessionStorage.getItem("goods_match_code");
     _param["corp_code"]=corp_code;
     //_param["searchValue"] =searchValue;  //goods_code 商品id
