@@ -56,9 +56,9 @@ var swip_image = [];
             if(fabjs.firstStep()){
                 //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
-               $(".conpany_msg .goods_code").each(function(){
+                $(".conpany_msg .goods_code").each(function(){
                     var nowVal =  $(this).text();
-                   GOODS_CODE +=nowVal+',';
+                    GOODS_CODE +=nowVal+',';
                 });;//商品编号
                 var reg=/,$/gi;
                 GOODS_CODE=GOODS_CODE.replace(reg,"");
@@ -476,7 +476,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         var len = $("#search_match_goods ul li").length;
         console.log(len);
         for(var i=0;i<len;i++){
-         var code_l = $($("#search_match_goods ul li")[i]).find(".goods_code").html();
+            var code_l = $($("#search_match_goods ul li")[i]).find(".goods_code").html();
             console.log(code_l);
             if(code_l == code){
                 $($("#search_match_goods ul li")[i]).css("background","");
@@ -645,3 +645,55 @@ $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
 })
+
+function pageVal(){
+    var _param={};
+    var corp_code='';
+    //var searchValue='';       
+    var goods_match_code = sessionStorage.getItem("goods_match_code");
+    _param["corp_code"]=corp_code;
+    //_param["searchValue"] =searchValue;  //goods_code 商品id
+    _param["goods_match_code"] =goods_match_code;  //goods_code 商品id
+    //whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post", "/defmatch/getMatchByCode","",_param, function(data){
+        if(data.code='0'){
+            console.log('获取成功');
+            //var corp_code ='';
+            var message= JSON.parse(data.message);
+            var list =JSON.parse(message.list);
+            for(i=0;i<list.length;i++){
+                console.log(list.length)
+                var goods_image =list[i].goods_image;
+                var goods_code =list[i].goods_code;
+                console.log(goods_image+'________'+goods_code);
+                pageShow(goods_image,goods_code);
+
+            }
+
+
+        }else if(data.code='-1'){
+            console.log('获取失败');
+        }
+        //whir.loading.remove();//移除加载框
+    });
+
+}
+function  pageShow(goods_image,goods_code){
+    var tempHTML='<li onmousemove="overShow(this)" onmouseout="outHide(this)" id="${goods_code}"><img class="goodsImg" src="${goods_image}"><span class="goods_code">${goods_code}</span><span>呀土豆</span><span class="goods_add" style="display: none;">+</span><i onclick="deleteThis(this)" class="icon-ishop_6-12" style="display: none;"></i></li>';
+    var html = '';
+    var nowHTML1 = tempHTML;
+    nowHTML1 = nowHTML1.replace("${goods_image}", goods_image);
+    nowHTML1 = nowHTML1.replace("${goods_code}", goods_code);
+    nowHTML1 = nowHTML1.replace("${goods_code}", goods_code);
+    html += nowHTML1;
+    $("#add").before(html);
+    $(".conpany_msg li i").css('display','none');
+}
+//点击删除
+function deleteThis(dom){
+    $(dom).parent("li").remove();
+    console.log('删除ing');
+}
+window.onload=function(){
+    pageVal();
+}

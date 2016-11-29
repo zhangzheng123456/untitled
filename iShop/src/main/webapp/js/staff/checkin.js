@@ -702,7 +702,7 @@ function getInputValue(){
            screen_key=$(input[i]).find("input").attr("id");
            screen_value=$(input[i]).find("input").val().trim();
         }
-        if(screen_value!=""||(start!==""||end!=="")){
+        if(screen_value!=""){
             num++;
         }
         var param1={"screen_key":screen_key,"screen_value":screen_value};
@@ -711,9 +711,9 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
+    filtrates(inx,pageSize);
     if(num>0){
         filtrate="sucess";
-        filtrates(inx,pageSize);
     }else if(num<=0){
         GET(inx,pageSize);
         filtrate="";

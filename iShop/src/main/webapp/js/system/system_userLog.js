@@ -281,7 +281,6 @@ function jurisdiction(actions){
 }
 //页面加载调权限接口
 function qjia(){
-    console.log('权限接口调用');
     var param={};
     param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
@@ -307,9 +306,6 @@ function GET(a,b){
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
             setPage($("#foot-num")[0],cout,page_number,b,funcCode);
-            // console.log('页面是：'+page_number+  '  '   +"list是："+JSON.stringify(list));
-            // console.log('message是:'+JSON.stringify(list));
-            // console.log('message是:'+JSON.stringify(message));
         }else if(data.code=="-1"){
              alert(data.message);
         }
@@ -603,7 +599,6 @@ $('#file_close').click(function(){
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
         var message=JSON.parse(data.message);
-        // console.log(JSON.stringify(message));
         var filter=message.filter;
         $("#sxk .inputs ul").empty();
         var li="";
@@ -712,9 +707,7 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    // var input=$('#sxk .inputs li');
     var input=$('#sxk .inputs>ul>li');
-    console.log(input);
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
@@ -749,22 +742,20 @@ function getInputValue(){
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");
         }
-        if(screen_value!=""&&(start!==""||end!=="")){
+        if(screen_value!=""){
             num++;
         }
         var param1={"screen_key":screen_key,"screen_value":screen_value};
         list.push(param1);
     }
-    console.log( _param);
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
+    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
-        filtrates(inx,pageSize)
     }else if(num<=0){
         filtrate="";
-        GET(inx, pageSize);
     }
 }
 //筛选发送请求

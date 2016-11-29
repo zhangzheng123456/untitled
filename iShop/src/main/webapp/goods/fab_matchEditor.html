@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>新增搭配</title>
+    <title>编辑搭配</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
@@ -65,9 +65,9 @@
         .match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
         .match_goods .icon-ishop_6-12{float:right;margin:10px;font-size: 20px;color: #c26555;}
         .goodsImg{width:40px;height:40px;margin:0 10px;border-radius:5px;border: 1px solid #dbdbdb; }
-        #search_match_goods .icon-ishop_6-12{float: right;font-size: 16px;padding: 5px;cursor:pointer;}
+        #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 5px;cursor:pointer;}
         #search_match_goods{width:450px;min-height:460px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;position: absolute;top:50px;left:250px;z-index: 1000;display: none;}
-        #search{width:400px;height:30px;border-radius:30px;outline: none;padding-left: 15px;border: 1px solid #EAE2E2;margin: 20px 20px ;}
+        #search{width:400px;height:30px;border-radius:30px;border: 1px solid #EAE2E2;margin: 20px 20px ;}
         #d_search{float: right;position: relative;  top: -48px;  left: -37px;  font-size: 25px;}
         #goods_box{width:100%;height:1200px;position:absolute;top:45%;left: 20%;z-index: 100;display: none;}
         #search_match_goods .li{margin-bottom: 0;height:100px;}
@@ -89,19 +89,19 @@
         .conpany_msg  span:nth-of-type(1){display:block; width: 150px;height: 30px;margin-top: 10px;font-size: 14px;color: #888888;text-align: center;margin-right: 20px}
         /*文字*/
         .conpany_msg span:nth-of-type(2){display: none;}
-       /*删除*/
+        /*删除*/
         .conpany_msg i{display:none;background-color: #e58080;color: white;border-radius: 300px;width: 17px;height: 17px;position: absolute;top: -7px;right: -7px;text-align: center;line-height: 17px;}
     </style>
 </head>
 <body style="margin-right: 200px">
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="changePage()">搭配管理</span><i class="icon-ishop_8-03"></i><label>新增搭配</label></div>
+    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="changePage()">搭配管理</span><i class="icon-ishop_8-03"></i><label>编辑搭配</label></div>
     <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
         <form class="conpany_msg" style="margin-left:0px">
             <!--商品模板-->
             <!--<div class="itembox" style="width: 150px;height: 190px;margin-bottom: 20px;margin-right:20px;float: left">-->
-                <!--<div class="itemArea"></div>-->
-                <!--<div class="itemText">AJEL55598</div>-->
+            <!--<div class="itemArea"></div>-->
+            <!--<div class="itemText">AJEL55598</div>-->
             <!--</div>-->
             <!--添加模板-->
             <div id="add">
@@ -132,16 +132,16 @@
         </div>
         <form class="msg_detail">
             <!--<div>-->
-                <!--<span><label>创建时间</label><input type="text" id="created_time" readonly=""></span>-->
+            <!--<span><label>创建时间</label><input type="text" id="created_time" readonly=""></span>-->
             <!--</div>-->
             <!--<div>-->
-                <!--<span><label>创建人</label><input type="text" id="creator" readonly=""></span>-->
+            <!--<span><label>创建人</label><input type="text" id="creator" readonly=""></span>-->
             <!--</div>-->
             <!--<div>-->
-                <!--<span><label>修改时间</label><input type="text" id="modify_time" readonly=""></span>-->
+            <!--<span><label>修改时间</label><input type="text" id="modify_time" readonly=""></span>-->
             <!--</div>-->
             <!--<div>-->
-                <!--<span><label>修改人</label><input type="text" id="modifier" readonly=""></span>-->
+            <!--<span><label>修改人</label><input type="text" id="modifier" readonly=""></span>-->
             <!--</div>-->
             <div>
                 <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
@@ -157,7 +157,7 @@
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <!--匹配js文件-->
-<script type="text/javascript" src="../js/goods/fab_matchAdd.js"></script>
+<script type="text/javascript" src="../js/goods/fab_matchEditor.js"></script>
 <script>
     function changePage(){
         window.location.href="fab_match.html";

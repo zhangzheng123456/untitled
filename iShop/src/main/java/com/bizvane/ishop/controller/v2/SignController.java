@@ -1,4 +1,4 @@
-package com.bizvane.ishop.controller_V2;
+package com.bizvane.ishop.controller.v2;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -75,7 +75,7 @@ public class SignController {
                //系统管理员
                DBCursor  dbCursor1=cursor.find();
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            } else if (role_code.equals(Common.ROLE_GM)) {
                //企业管理员
@@ -86,7 +86,7 @@ public class SignController {
                BasicDBObject ref = new BasicDBObject();
                ref.putAll(keyMap);
                DBCursor dbCursor1 = cursor.find(ref);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            } else if (role_code.equals(Common.ROLE_BM)) {
                //品牌管理员
@@ -102,13 +102,18 @@ public class SignController {
                }
                BasicDBObject ba=new BasicDBObject();
                BasicDBList values = new BasicDBList();
-               values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-               values.add(new BasicDBObject("corp_code", corp_code));
+               if(value!=null&&value.size()>0) {
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+               }else{
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   values.add(new BasicDBObject("user_code", user_code));
+               }
                 ba.put("$and",values);
                DBCursor dbCursor1 = cursor.find(ba);
 
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            }else if (role_code.equals(Common.ROLE_SM)) {
                //店长
@@ -127,13 +132,19 @@ public class SignController {
                }
                BasicDBObject ba=new BasicDBObject();
                BasicDBList values = new BasicDBList();
-               values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-               values.add(new BasicDBObject("corp_code", corp_code));
+               if(value!=null&&value.size()>0) {
+                   values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                   values.add(new BasicDBObject("corp_code",corp_code));
+               }else{
+                   values.add(new BasicDBObject("corp_code", corp_code));
+                   values.add(new BasicDBObject("user_code", user_code));
+               }
+
                ba.put("$and",values);
                DBCursor dbCursor1 = cursor.find(ba);
 
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            } else if (role_code.equals(Common.ROLE_AM)) {
                //区经
@@ -157,12 +168,19 @@ public class SignController {
                        value.add(store_code);
                    }
                    BasicDBList values = new BasicDBList();
-                   values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                   values.add(new BasicDBObject("corp_code", corp_code));
+                   if(value!=null&&value.size()>0) {
+                       values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                       values.add(new BasicDBObject("corp_code", corp_code));
+                   }else{
+
+                       values.add(new BasicDBObject("corp_code", corp_code));
+                       values.add(new BasicDBObject("user_code", user_code));
+                   }
+
                    ref.put("$and",values);
                    DBCursor dbCursor1 = cursor.find(ref);
                    pages = MongoUtils.getPages(dbCursor1,page_size);
-                   dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                   dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
                }
 
 
@@ -177,7 +195,7 @@ public class SignController {
 
                DBCursor dbCursor1 = cursor.find(ref);
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            }
            //  System.out.println(list.getList().get(0).getSign_time()+"---"+list.getList().get(0).getUser_code());
@@ -237,7 +255,7 @@ public class SignController {
                 //系统管理员
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
@@ -251,7 +269,7 @@ public class SignController {
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                     pages = MongoUtils.getPages(dbCursor2, page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
 
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
@@ -273,14 +291,21 @@ public class SignController {
                     }
                     BasicDBObject ba = new BasicDBObject();
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
+
                     values.add(queryCondition);
                     ba.put("$and", values);
                     DBCursor dbCursor2 = cursor.find(ba);
 
                     pages = MongoUtils.getPages(dbCursor2, page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
@@ -301,14 +326,20 @@ public class SignController {
                     }
                     //   value.add(new BasicDBObject("role_code", role_code));
                     values.add(queryCondition);
-                    values.add(new BasicDBObject("corp_code", corp_code));
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                     pages = MongoUtils.getPages(dbCursor2, page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
@@ -332,13 +363,18 @@ public class SignController {
                             value.add(store_code);
                         }
                         BasicDBList values = new BasicDBList();
-                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                        values.add(new BasicDBObject("corp_code", corp_code));
+                        if(value.size()>0&&value!=null) {
+                            values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                        }else{
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                            values.add(new BasicDBObject("user_code", user_code));
+                        }
                         values.add(queryCondition);
                         ba.put("$and", values);
                         DBCursor dbCursor2 = cursor.find(ba);
                         pages = MongoUtils.getPages(dbCursor2, page_size);
-                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                      }
 
                     } else if (role_code.equals(Common.ROLE_STAFF)) {
@@ -350,7 +386,7 @@ public class SignController {
                         queryCondition1.put("$and", value);
                         DBCursor dbCursor2 = cursor.find(queryCondition1);
                         pages = MongoUtils.getPages(dbCursor2, page_size);
-                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                     }
                 }
                 ArrayList list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
@@ -383,6 +419,7 @@ public class SignController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String id = "";
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
@@ -393,7 +430,6 @@ public class SignController {
             String inter_id = jsonObject.get("id").toString();
             String[] ids = inter_id.split(",");
 
-
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
 
@@ -402,8 +438,10 @@ public class SignController {
          //       Sign sign = signService.selSignById(Integer.valueOf(ids[i]));
                 //signService.delSignById(Integer.valueOf(ids[i]));
 
-                DBObject deleteRecord = new BasicDBObject();
+                BasicDBObject deleteRecord = new BasicDBObject();
                 deleteRecord.put("_id", new ObjectId(ids[i]));
+
+               //插入到用户操作日志
                 DBCursor dbObjects = cursor.find(deleteRecord);
                 String t_corp_code = "";
                 String t_code = "";
@@ -411,7 +449,6 @@ public class SignController {
                 String sign_time = "";
                 String status = "";
 
-                //
                 while (dbObjects.hasNext()) {
                     DBObject sign = dbObjects.next();
                     if (sign.containsField("corp_code")) {
@@ -430,12 +467,6 @@ public class SignController {
                         status = sign.get("status").toString();
                     }
                 }
-
-                cursor.remove(deleteRecord);
-
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
 
 //----------------行为日志开始------------------------------------------
                 /**
@@ -458,8 +489,12 @@ public class SignController {
             //    String t_name = sign.getUser_name();
                 String remark = sign_time+"("+status+")";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
-            }
+                cursor.remove(deleteRecord);
 
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -498,7 +533,7 @@ public class SignController {
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
-            DBObject sort_obj = new BasicDBObject("creater_date", -1);
+            DBObject sort_obj = new BasicDBObject("created_date", -1);
 
             if (screen.equals("")) {
 
@@ -532,8 +567,13 @@ public class SignController {
                     }
                     BasicDBObject ba=new BasicDBObject();
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     values.add(queryCondition);
                     ba.put("$and",values);
 
@@ -542,7 +582,6 @@ public class SignController {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     BasicDBList values = new BasicDBList();
-
                     String[] stores = null;
                     if (!store_code.equals("")) {
                         store_code = store_code.replace(Common.SPECIAL_HEAD,"");
@@ -557,8 +596,13 @@ public class SignController {
                     }
 
                     values.add(queryCondition);
-                    values.add(new BasicDBObject("corp_code", corp_code));
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
 
@@ -584,8 +628,13 @@ public class SignController {
                             value.add(store_code);
                         }
                         BasicDBList values = new BasicDBList();
-                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                        values.add(new BasicDBObject("corp_code", corp_code));
+                        if(value!=null&&value.size()>0) {
+                            values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                        }else{
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                            values.add(new BasicDBObject("user_code", user_code));
+                        }
                         values.add(queryCondition);
                         BasicDBObject queryCondition1 = new BasicDBObject();
                         queryCondition1.put("$and", values);
@@ -604,10 +653,9 @@ public class SignController {
                 list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
 
             }
-            //.........................
             else {
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andOperation(array);
+                BasicDBObject queryCondition = MongoHelperServiceImpl.andSignScreen(array);
                 DBCursor dbCursor = null;
                 if (role_code.equals(Common.ROLE_SYS)) {
                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
@@ -632,8 +680,13 @@ public class SignController {
                     }
                     BasicDBObject ba=new BasicDBObject();
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     values.add(queryCondition);
                     ba.put("$and",values);
                     dbCursor = cursor.find(ba).sort(sort_obj);
@@ -659,11 +712,16 @@ public class SignController {
                             value.add(store_code);
                         }
                         BasicDBList values = new BasicDBList();
-                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
-                        values.add(new BasicDBObject("corp_code", corp_code));
+                        if(value!=null&&value.size()>0) {
+                            values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                        }else{
+                            values.add(new BasicDBObject("corp_code", corp_code));
+                            values.add(new BasicDBObject("user_code", user_code));
+                        }
                         values.add(queryCondition);
                         BasicDBObject queryCondition1 = new BasicDBObject();
-                        queryCondition1.put("$and", value);
+                        queryCondition1.put("$and", values);
                         dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                     }
 
@@ -684,8 +742,13 @@ public class SignController {
                     }
 
                     values.add(queryCondition);
-                    values.add(new BasicDBObject("corp_code", corp_code));
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
 
@@ -702,6 +765,8 @@ public class SignController {
                 }
                 list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
             }
+
+            //导出......
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
             String json = mapper.writeValueAsString(list);
@@ -765,7 +830,7 @@ public class SignController {
 
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
             } else if (role_code.equals(Common.ROLE_GM)) {
                 BasicDBList value = new BasicDBList();
@@ -776,7 +841,7 @@ public class SignController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
@@ -792,8 +857,13 @@ public class SignController {
                     value.add(store_code);
                 }
                 BasicDBList values = new BasicDBList();
-                values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                values.add(new BasicDBObject("corp_code", corp_code));
+                if(value.size()>0&&value!=null) {
+                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                }else{
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("user_code", user_code));
+                }
 
                 values.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
@@ -801,7 +871,7 @@ public class SignController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);;
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);;
             }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
@@ -822,14 +892,19 @@ public class SignController {
                         value.add(store_code);
                     }
                     BasicDBList values = new BasicDBList();
-                    values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                    values.add(new BasicDBObject("corp_code", corp_code));
+                    if(value!=null&&value.size()>0) {
+                        values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                    }else{
+                        values.add(new BasicDBObject("corp_code", corp_code));
+                        values.add(new BasicDBObject("user_code", user_code));
+                    }
                     values.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", values);
                     DBCursor dbCursor1 = cursor.find(queryCondition1);
                     pages = MongoUtils.getPages(dbCursor1,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
                 }
 
 
@@ -848,14 +923,19 @@ public class SignController {
                     value.add(store_code);
                 }
                 BasicDBList values = new BasicDBList();
-                values.add(new BasicDBObject("store_code",new BasicDBObject("$in", value)));
-                values.add(new BasicDBObject("corp_code", corp_code));
+                if(value!=null&&value.size()>0) {
+                    values.add(new BasicDBObject("store_code", new BasicDBObject("$in", value)));
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                }else{
+                    values.add(new BasicDBObject("corp_code", corp_code));
+                    values.add(new BasicDBObject("user_code", user_code));
+                }
                 values.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", values);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -865,7 +945,7 @@ public class SignController {
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             }
             ArrayList list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
             result.put("list", list);

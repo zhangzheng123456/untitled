@@ -655,17 +655,17 @@ public class UserController {
                     break;
                 }
             }
-            for (int i = 3; i < column2.length; i++) {
-                if (column2[i].getContents().toString().trim().equals("")) {
-                    continue;
-                }
-                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
-                if (user11.size() != 0) {
-                    result = "：第" + (i + 1) + "行的用户ID已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
+//            for (int i = 3; i < column2.length; i++) {
+//                if (column2[i].getContents().toString().trim().equals("")) {
+//                    continue;
+//                }
+//                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
+//                if (user11.size() != 0) {
+//                    result = "：第" + (i + 1) + "行的用户ID已存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
 
             Pattern pattern = Pattern.compile("G\\d{4}");
             //Pattern pattern7 = Pattern.compile("A\\d{4}");
@@ -785,7 +785,7 @@ public class UserController {
                         user.setCorp_code(cellCorp);
                     }
                     user.setUser_code(user_code);
-                    user.setUser_id(user_id2);
+//                    user.setUser_id(user_id2);
                     user.setUser_name(user_name);
                     user.setAvatar("../img/head.png");//头像
                     user.setPhone(phone);
@@ -971,12 +971,12 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String user_code = jsonObject.get("user_code").toString().trim();
-            String user_id = jsonObject.get("user_id").toString().trim();
+//            String user_id = jsonObject.get("user_id").toString().trim();
             String corp_code = jsonObject.get("corp_code").toString().trim();
             String phone = jsonObject.get("phone").toString().trim();
             User user = new User();
             user.setUser_code(user_code);
-            user.setUser_id(user_id);
+//            user.setUser_id(user_id);
             user.setUser_name(jsonObject.get("username").toString());
             user.setAvatar(jsonObject.get("avatar").toString());
             user.setPosition(jsonObject.get("position").toString());
@@ -1146,11 +1146,11 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String user_code1 = jsonObject.get("user_code").toString().trim();
-            String user_id = jsonObject.get("user_id").toString().trim();
+//            String user_id = jsonObject.get("user_id").toString().trim();
             User user = new User();
             user.setId(Integer.parseInt(jsonObject.get("id").toString().trim()));
             user.setUser_code(user_code1);
-            user.setUser_id(user_id);
+//            user.setUser_id(user_id);
             user.setUser_name(jsonObject.get("username").toString().trim());
             user.setPosition(jsonObject.get("position").toString().trim());
             user.setAvatar(jsonObject.get("avatar").toString().trim());

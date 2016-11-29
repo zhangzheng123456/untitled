@@ -131,12 +131,32 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchAdd.html");
-    })
+    });
+    //点击编辑时页面进行的跳转
+    $('#compile').click(function(){
+        var val=$(".masonry input[type='checkbox']:checked").parents("li");
+        console.log('val是'+val);
+        if(val.length==1){
+            var id=$(val).find('input').attr("id");
+            console.log('id是'+id);
+            var goods_match_code = id;
+            sessionStorage.setItem("goods_match_code",goods_match_code);//存储的方法
+            $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchEditor.html");
+    }
+         if(val.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(val.length>1){
+            frame();
+            $('.frame').html("不能选择多个");
+        }
+    });
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
         var h=$(document.body).height();
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var tr=$("#waterfull .item").find("input:checked");
+        console.log(tr.length);
         if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -146,7 +166,7 @@ function jumpBianse(){
         $("#tk").show();
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
-    })
+    });
 }
 //获取数据
 function getVal(){
@@ -165,12 +185,26 @@ function getVal(){
             //console.log('获取数据成功'+JSON.stringify(data));
             var message =JSON.parse(data.message);
             var list = JSON.parse(message.list);
-            var forLength = list.length;     //显示盒子数量
-            for(i=0;i<forLength;i++){
-                var goods_code = list[i].goods_code;
-                var goods_image = list[i].goods_image;
-                pageVal(goods_code,goods_image);
+            var arr=[];
+            var unqiuearr=[];
+            var hash={};
+            //获取所有搭配id
+            for(i=0;i< list.length;i++){
+                arr.push(list[i].goods_match_code);
             }
+            console.log(arr);
+            //搭配id去重
+            for(var i=0;i<arr.length;i++){
+                if(!hash[arr[i]]){
+                    hash[arr[i]] = true; //存入hash表
+                    unqiuearr.push(arr[i]);
+                }
+            }
+            console.log(unqiuearr);
+            //var goods_code = list[i].goods_code;
+            //var goods_image = list[i].goods_image;
+            pageVal(arr,unqiuearr,list);
+
         },
         error: function (data) {
             console.log('获取数据失败')
@@ -178,28 +212,36 @@ function getVal(){
     });
 }
 //数据模板
-function pageVal(goods_code,goods_image){
+function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
-    var tempHTML1='<li class="item"><div class="boxArea"><input type="checkbox"/>';
+    var tempHTML1='<li data-code="${corp_code}" class="item"><div class="boxArea"><input id="${code}" type="checkbox"/>';
     //内容（图片+文字）迭代生成
     var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
     var tempHTML3='</div></li>';
-    var html = '';
-        var nowHTML1 = tempHTML1;
-        //var k = '单独模块里商品的数量';
-        //for(a=0;a<k;a++) {
-        var nowHTML2 = tempHTML2;
-        nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
-        nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
-        nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
-        //}
-        var nowHTML3 = tempHTML3;
 
+    for(i=0;i<unqiuearr.length;i++){
+        var html = '';
+        var nowHTML1 = tempHTML1;
+            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+        var nowHTML2 = "";
+        for(k=0;k<list.length;k++){
+            if(list[k].goods_match_code ==unqiuearr[i]){
+                nowHTML2 += tempHTML2;
+                var goods_image = list[k].goods_image;
+                var goods_code = list[k].goods_code;
+                nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
+                nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+                nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+                nowHTML1 = nowHTML1.replace("${corp_code}", list[k].corp_code);
+        }
+        }
+        var nowHTML3 = tempHTML3;
         html += nowHTML1;
         html += nowHTML2;
         html += nowHTML3;
         $(".waterfull ul").append(html);
+    }
 
 }
 //点击放大镜触发搜索
@@ -254,22 +296,40 @@ function POST(a, b) {
         }
     })
 }
+//弹框关闭
+$("#X").click(function () {
+    $("#p").hide();
+    $("#tk").hide();
+});
+//取消关闭
+$("#cancel").click(function () {
+    $("#p").hide();
+    $("#tk").hide();
+});
 //弹框删除关闭
 $("#delete").click(function () {
     $("#p").hide();
     $("#tk").hide();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=tr.length-1,ID="";i>=0;i--){
-        var r=$(tr[i]).attr("id");
-        if(i>0){
-            ID+=r+",";
-        }else{
-            ID+=r;
-        }
-    }
+    var list=[];
     var params = {};
-    params["id"] = ID;
-    console.log(param);
+    var tr=$("#waterfull .item").find("input:checked");
+    for(var i=0;i<tr.length;i++){
+        var goods_match_code=$(tr[i]).attr("id");
+        var corp_code=$(tr[i]).parents("li").attr("data-code");
+        var param = {
+            "corp_code":corp_code,
+            "goods_match_code":goods_match_code
+        };
+        list.push(param);
+        // if(i<tr.length-1){
+        //     goods_code+=r+",";
+        //     corp_code+=h+",";
+        // }else{
+        //     goods_code+=r;
+        //     corp_code+=h;
+        // }
+    }
+    params["list"] = list;
     oc.postRequire("post", "/defmatch/delete", "0", params, function (data) {
         if (data.code == "0") {
             if (value == "" && filtrate == "") {
@@ -319,7 +379,6 @@ function checkAll(name) {
         }
     }
 };
-
 //取消全选
 function clearAll(name) {
     var el = $("tbody input");
@@ -362,7 +421,7 @@ $("#leading_out").click(function () {
         }
         whir.loading.remove();//移除加载框
     })
-})
+});
 function bianse(){
     $("#file_list_l li:odd").css("backgroundColor","#fff");
     $("#file_list_l li:even").css("backgroundColor","#ededed");

@@ -44,7 +44,6 @@ $("#screen_add").click(function(){
 		$("#city_num").attr("data-citycode","");
 		$(".s_pitch span").html("0");
 		getstorelist(shop_num);
-		bianse();
 	}
 	if(r_code=="R4000"){
 		isscroll=false;
@@ -64,7 +63,6 @@ $("#screen_add").click(function(){
 		$("#screen_city .screen_content_r ul").empty();
 		$(".s_pitch span").html("0");
 		getarealist(area_num);
-		bianse();
 	}
 	if(r_code=="R4800"){
 		whir.loading.add("",0.5);
@@ -108,7 +106,6 @@ $("#shop_add").click(function(){
 	$("#city_num").attr("data-citycode","");
 	$(".s_pitch span").html("0");
 	getstorelist(shop_num);
-	bianse();
 });
 //点击同步显示列表内容
 $("#more_down").on("click","#synchronization",function(){
@@ -213,7 +210,6 @@ function removeRight(a,b){
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
 	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-	bianse();
 }
 //移到左边
 function removeLeft(a,b){
@@ -242,7 +238,6 @@ function removeLeft(a,b){
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
 	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-	bianse();
 }
 //点击右移
 $(".shift_right").click(function(){
@@ -354,12 +349,6 @@ $("#screen_close_city").click(function(){
 	$("#screen_city").hide();
 	whir.loading.remove();//移除遮罩层
 })
-function bianse(){
-    $(".screen_content_l li:odd").css("backgroundColor","#fff");
-    $(".screen_content_l li:even").css("backgroundColor","#ededed");
-    $(".screen_content_r li:odd").css("backgroundColor","#fff");
-    $(".screen_content_r li:even").css("backgroundColor","#ededed");
-}
 //点击区域确定追加节点
 $("#screen_que_area").click(function(){
 	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
@@ -662,7 +651,6 @@ function getarealist(a){
 			for(var k=0;k<li.length;k++){
 				$("#screen_area .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -755,7 +743,6 @@ function getstorelist(a){
 			for(var k=0;k<li.length;k++){
 				$("#screen_shop .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -791,30 +778,15 @@ function getbrandlist(){
 				for(var h=0;h<9;h++){
 					brand_html_left+="<li></li>"
 				}
-			} else {
-				if(list.length<9){
-					for (var i = 0; i < list.length; i++) {
-					    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'/><label for='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
-					}
-					for(var j=0;j<9-list.length;j++){
-						brand_html_left+="<li></li>"
-					}
-				}else if(list.length>=9){
-					for (var i = 0; i < list.length; i++) {
-					    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'/><label for='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
-					}
+			} else if(list.length>0){
+				for (var i = 0; i < list.length; i++) {
+					brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
+	                + i
+	                + 1
+	                + "'/><label for='checkboxThreeInput"
+	                + i
+	                + 1
+	                + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
 				}
 			}
 			$("#screen_brand .screen_content_l ul").append(brand_html_left);
@@ -822,7 +794,6 @@ function getbrandlist(){
 			for(var k=0;k<li.length;k++){
 				$("#screen_brand .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -862,7 +833,6 @@ function getcitylist(){
 		for(var k=0;k<li.length;k++){
 			$("#screen_city .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 		}
-		bianse();
 		whir.loading.remove();
 	})
 };

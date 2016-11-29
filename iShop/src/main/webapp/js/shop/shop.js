@@ -119,6 +119,7 @@ var isscroll=false;
                 }
                 if (AREA_CODE == "") {
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -128,6 +129,7 @@ var isscroll=false;
                 }
                 if (BRAND_CODE == "") {
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -260,6 +262,7 @@ var isscroll=false;
 
                 if (AREA_CODE == "") {
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -269,6 +272,7 @@ var isscroll=false;
                 }
                 if(a>20){
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -278,6 +282,7 @@ var isscroll=false;
                 }
                 if (BRAND_CODE == "") {
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -287,6 +292,7 @@ var isscroll=false;
                 }
                 if(b>10){
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -347,6 +353,7 @@ var isscroll=false;
                 }
                 if(_command=="/shop/edit"){
                     art.dialog({
+                        zIndex:10003,
                         time: 1,
                         lock: true,
                         cancel: false,
@@ -355,6 +362,7 @@ var isscroll=false;
                 }
             } else if (data.code == "-1") {
                 art.dialog({
+                    zIndex:10003,
                     time: 1,
                     lock: true,
                     cancel: false,
@@ -524,6 +532,7 @@ jQuery(document).ready(function () {
                 getcorplist(msg.corp.corp_code);
             } else if (data.code == "-1") {
                 art.dialog({
+                    zIndex:10003,
                     time: 1,
                     lock: true,
                     cancel: false,
@@ -601,18 +610,6 @@ jQuery(document).ready(function () {
     });
 
     $(".xingming").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
-    //提示弹框
-    function frame(){
-        var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
-        var tp=($(window).height()-$(".frame").height())/2;//弹框定位的top值
-        $('.frame').remove();
-        $('body').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;position:fixed;"></div>');
-        $(".frame").animate({opacity:"1"},1000);
-        $(".frame").animate({opacity:"0"},1000);
-        setTimeout(function(){
-            $(".frame").hide();
-        },2000);
-    }
     $("#screen_close_area").click(function(){
         $("#screen_area").hide();
     });
@@ -623,6 +620,7 @@ jQuery(document).ready(function () {
         $("#screen_area .screen_content_l").unbind("scroll");
         var arr=whir.loading.getPageSize();
         area_num=1;
+        $("#screen_area .s_pitch span").html("0");
         $("#area_search").val("");
         $("#screen_area .screen_content_l ul").empty();
         $("#screen_area .screen_content_r ul").empty();
@@ -639,6 +637,7 @@ jQuery(document).ready(function () {
         var arr=whir.loading.getPageSize();
         area_num=1;
         $("#brand_search").val("");
+        $("#screen_brand .s_pitch span").html("0");
         $("#screen_brand .screen_content_l ul").empty();
         $("#screen_brand .screen_content_r ul").empty();
         $("#screen_brand").show();
@@ -684,8 +683,13 @@ jQuery(document).ready(function () {
             li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
         }
         if(li.length=="0"){
-            frame();
-            $('.frame').html("请先选择");
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "请先选择"
+            });
             return;
         }
         if(li.length>0){
@@ -705,7 +709,6 @@ jQuery(document).ready(function () {
         }
         var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
         $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-        bianse();
     }
     //移到左边
     function removeLeft(a,b){
@@ -717,8 +720,13 @@ jQuery(document).ready(function () {
             li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
         }
         if(li.length=="0"){
-            frame();
-            $('.frame').html("请先选择");
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "请先选择"
+            });
             return;
         }
         if(li.length>0){
@@ -729,7 +737,6 @@ jQuery(document).ready(function () {
         }
         var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
         $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-        bianse();
     }
     //点击列表显示选中状态
     $(".screen_content").on("click","li",function(){
@@ -787,7 +794,6 @@ jQuery(document).ready(function () {
                     area_next=true;
                 }
                 $("#screen_area .screen_content_l ul").append(area_html);
-                bianse();
                 if(!isscroll){
                         $("#screen_area .screen_content_l").bind("scroll",function () {
                             console.log("滚动了吗");
@@ -810,6 +816,7 @@ jQuery(document).ready(function () {
                 }
             } else if (data.code == "-1") {
                 art.dialog({
+                    zIndex:10003,
                     time: 1,
                     lock: true,
                     cancel: false,
@@ -881,7 +888,6 @@ jQuery(document).ready(function () {
 
                 }
                 $("#screen_brand .screen_content_l ul").append(area_html);
-                bianse();
                 if(!isscroll){
                         $("#screen_brand .screen_content_l").bind("scroll",function () {
                             var nScrollHight = $(this)[0].scrollHeight;
@@ -902,6 +908,7 @@ jQuery(document).ready(function () {
                 }
             } else if (data.code == "-1") {
                 art.dialog({
+                    zIndex:10003,
                     time: 1,
                     lock: true,
                     cancel: false,
@@ -956,6 +963,7 @@ $("#screen_que_area").click(function(){
     var a=$('#OWN_AREA_All input');
     if((li.length+hasli.length)>20){
         art.dialog({
+            zIndex:10003,
             time: 1,
             lock: true,
             cancel: false,
@@ -982,6 +990,7 @@ $("#screen_que_area").click(function(){
     var a=$('#OWN_BRAND_All input');
     if((li.length+hasli.length)>10){
             art.dialog({
+                zIndex:10003,
                 time: 1,
                 lock: true,
                 cancel: false,
@@ -1006,13 +1015,6 @@ $("#screen_que_area").click(function(){
     $(".xingming").on("click",".remove_app_id",function(){
         $(this).parent().remove();
     });
-    function bianse(){
-        $(".screen_content_l li:odd").css("backgroundColor","#fff");
-        $(".screen_content_l li:even").css("backgroundColor","#ededed");
-        $(".screen_content_r li:odd").css("backgroundColor","#fff");
-        $(".screen_content_r li:even").css("backgroundColor","#ededed");
-    }
-
     $(".shopadd_oper_btn ul li:nth-of-type(2)").click(function () {//点击关闭按钮跳转到列表页面
         $(window.parent.document).find('#iframepage').attr("src", "/shop/shop.html");
     });
@@ -1113,6 +1115,7 @@ function getcorplist(a) {
             })
         } else if (data.code == "-1") {
             art.dialog({
+                zIndex:10003,
                 time: 1,
                 lock: true,
                 cancel: false,
@@ -1144,6 +1147,7 @@ function getAppName(a) {
             })
         } else if (data.code == "-1") {
             art.dialog({
+                zIndex:10003,
                 time: 1,
                 lock: true,
                 cancel: false,

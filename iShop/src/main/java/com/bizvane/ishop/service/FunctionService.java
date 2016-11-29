@@ -7,6 +7,7 @@ import com.bizvane.ishop.entity.TableManager;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/5/24.
@@ -15,7 +16,7 @@ public interface FunctionService {
 
     JSONArray selectAllFunctions(String corp_code,String user_code,String group_code, String role_code)throws Exception;
 
-    JSONArray selectActionByFun(String corp_code,String user_code,String group_code, String role_code,String function_code)throws Exception;
+    List<Map<String,String>> selectActionByFun(String corp_code, String user_code, String group_code, String role_code, String function_code)throws Exception;
 
     List<TableManager> selectColumnByFun(String corp_code, String user_code, String group_code, String role_code, String function_code) throws Exception;
 
