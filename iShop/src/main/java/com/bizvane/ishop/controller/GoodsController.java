@@ -903,7 +903,7 @@ public class GoodsController {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             PageInfo<Goods> list=null;
             if(role_code.equals(Common.ROLE_SYS)){
-                list = goodsService.getMatchFab(page_number,page_size,"",search_value);
+                list = goodsService.getMatchFab(page_number,page_size,"C10000",search_value);
             }else{
                 list = goodsService.getMatchFab(page_number,page_size,corp_code,search_value);
             }

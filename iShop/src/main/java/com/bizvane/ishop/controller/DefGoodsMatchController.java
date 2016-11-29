@@ -1,15 +1,13 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.DefGoodsMatch;
-import com.bizvane.ishop.entity.Group;
-import com.bizvane.ishop.entity.Task;
-import com.bizvane.ishop.entity.TaskAllocation;
+
 import com.bizvane.ishop.service.DefGoodsMatchService;
-import com.bizvane.ishop.service.FunctionService;
-import com.github.pagehelper.PageInfo;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -137,11 +135,12 @@ public class DefGoodsMatchController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String list = jsonObject.get("list").toString();
-            String[] split = list.split(",");
+            JSONArray jsonArray = JSON.parseArray(list);
             int msg = 0;
-            for (int i = 0; i < split.length; i++) {
-                String str = split[i].toString();
-                com.alibaba.fastjson.JSONObject object = com.alibaba.fastjson.JSONObject.parseObject(str);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                String str = jsonArray.get(i).toString();
+                System.out.println("=========split========"+str);
+                com.alibaba.fastjson.JSONObject object = JSON.parseObject(str);
                 System.out.println("=========object========"+object.toJSONString());
                 String corp_code = object.get("corp_code").toString();
                 String goods_match_code = object.get("goods_match_code").toString();
