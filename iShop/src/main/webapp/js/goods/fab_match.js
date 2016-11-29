@@ -255,6 +255,7 @@ $("#d_search").click(function () {
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
 })
+
 //搜索的请求函数
 function POST(a, b) {
     whir.loading.add("", 0.5);//加载等待框
@@ -604,6 +605,7 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
             var event = window.event || arguments[0];
             if (event.keyCode == 13) {
                 getInputValue();
+
             }
         })
     }
@@ -696,6 +698,21 @@ function filtrates(a, b) {
         }
     });
 }
+$(function(){
+    document.onkeydown = function(e){
+        var ev = document.all ? window.event : e;
+        if(ev.keyCode==13) {
+            value = $("#search").val().replace(/\s+/g, "");
+            inx = 1;
+            param["searchValue"] = value;
+            param["pageNumber"] = inx;
+            param["pageSize"] = pageSize;
+            param["funcCode"] = funcCode;
+            POST(inx, pageSize);
+
+        }
+    }
+});
 window.onload =function() {
     getVal();
 }
