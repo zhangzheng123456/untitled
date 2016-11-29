@@ -266,12 +266,6 @@ $(".screen_content").on("click","li",function(){
         input.checked = false;
     }
 });
-function bianse(){
-    $(".screen_content_l li:odd").css("backgroundColor","#fff");
-    $(".screen_content_l li:even").css("backgroundColor","#ededed");
-    $(".screen_content_r li:odd").css("backgroundColor","#fff");
-    $(".screen_content_r li:even").css("backgroundColor","#ededed");
-}
 //区域搜索
 $("#area_search").keydown(function(){
     var event=window.event||arguments[0];
@@ -411,7 +405,6 @@ function getbrandlist(){
 			for(var k=0;k<li.length;k++){
 				$("#screen_brand .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -489,7 +482,6 @@ function getarealist(a){
 			for(var k=0;k<li.length;k++){
 				$("#screen_area .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -570,7 +562,6 @@ function getstorelist(a){
 			for(var k=0;k<li.length;k++){
 				$("#screen_shop .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
 			}
-			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -913,7 +904,6 @@ function removeRight(a,b){
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
 	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-	bianse();
 	$("#screen_staff .screen_content_l li:odd").css("backgroundColor","#fff");
     $("#screen_staff .screen_content_l li:even").css("backgroundColor","#ededed");
     $("#screen_staff .screen_content_r li:odd").css("backgroundColor","#fff");
@@ -946,7 +936,6 @@ function removeLeft(a,b){
 	}
 	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
 	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-	bianse();
 }
 //点击右移
 $(".shift_right").click(function(){

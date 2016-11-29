@@ -122,9 +122,9 @@ $("#more_down").on("click","#synchronization",function(){
 	$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_area").hide();
 	getstorelist(shop_num);
+	$(".input_search input").val("");
 	shop_num=1;
 	isscroll=false;
-
 })
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){

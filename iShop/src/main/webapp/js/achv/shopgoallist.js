@@ -516,6 +516,9 @@ $("#delete").click(function(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+         $(".frame").hide();
+    },2000);
 } 
 //全选
 function checkAll(name){
