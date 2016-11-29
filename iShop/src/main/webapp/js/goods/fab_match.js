@@ -33,8 +33,8 @@ $(function(){
         if(tmpWid>1280){
             tmpWid=1280;
         }else{
-            var column=Math.floor(tmpWid/340);
-            tmpWid=column*340;
+            var column=Math.floor(tmpWid/400);
+            tmpWid=column*400;
         }
         $('.waterfull').width(tmpWid);
     }
