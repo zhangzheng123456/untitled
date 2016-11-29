@@ -371,7 +371,7 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String function_code = jsonObject.get("funcCode").toString();
             //获取动作权限
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
+            List<Map<String,String>> actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             //获取列表显示字段权限
             List<TableManager> tableManagers = functionService.selectColumnByFun(corp_code, user_code, group_code, role_code, function_code);
 
@@ -403,17 +403,15 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String function_code = request.getParameter("funcCode");
-            JSONArray actions_detail = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, "D" + function_code);
+            List<Map<String,String>> actions_detail = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, "D" + function_code);
 
-            JSONArray actions_fun = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
+            List<Map<String,String>> actions_fun = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             for (int i = 0; i < actions_fun.size(); i++) {
-                String act = actions_fun.get(i).toString();
-                JSONObject obj = new JSONObject(act);
-                if (obj.get("act_name").equals("edit")) {
-                    actions_detail.add(obj);
+                Map<String,String> act = actions_fun.get(i);
+                if (act.get("act_name").equals("edit")) {
+                    actions_detail.add(act);
                 }
             }
-
             menus.put("actions", actions_detail);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

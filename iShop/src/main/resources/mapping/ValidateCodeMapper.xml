@@ -10,7 +10,6 @@
             AND
             (
             phone LIKE concat('%', #{search_value},'%')
-            OR validate_code LIKE concat('%', #{search_value},'%')
             )
         </if>
         GROUP BY id
@@ -166,7 +165,6 @@
             AND
             (
             phone LIKE concat('%', #{search_value},'%')
-            OR validate_code LIKE concat('%', #{search_value},'%')
             )
         </if>
         GROUP BY id
