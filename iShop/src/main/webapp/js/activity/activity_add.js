@@ -175,6 +175,15 @@ var funcCode=key_val.func_code;
                     return ;
                 }
                 var outer_link = $("#outer_link").val();
+                if(execution_input.indexOf("社交")>-1&& outer_link == ""){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "外部链接不能为空"
+                    });
+                    return ;
+                }
                 var activity_content = nr;
                 var create_link = $("#src_input").val();
                 var ISACTIVE = "";
@@ -318,17 +327,17 @@ var funcCode=key_val.func_code;
                     });
                     return ;
                 }
-                var task_title = $("#task_title").val();
-                var task_dec = $("#task_dec").val();
-                if(execution_input.indexOf("任务")>-1&&(task_title==""||task_dec=="")){
+                if(execution_input.indexOf("微信")>-1&&(send_title==""||summary=="")){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content: "任务标题和描述不能为空"
+                        content: "推送标题和简介不能为空"
                     });
                     return ;
                 }
+                var task_title = $("#task_title").val();
+                var task_dec = $("#task_dec").val();
                 var short_msg = $("#short_msg").val();
                 if(execution_input.indexOf("系统")>-1&&short_msg==""){
                     art.dialog({
@@ -340,6 +349,15 @@ var funcCode=key_val.func_code;
                     return ;
                 }
                 var outer_link = $("#outer_link").val();
+                if(execution_input.indexOf("社交")>-1&&outer_link == ""){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "外部链接不能为空"
+                    });
+                    return ;
+                }
                 var activity_content = nr;
                 var create_link = $("#src_input").val();
                 var ISACTIVE = "";

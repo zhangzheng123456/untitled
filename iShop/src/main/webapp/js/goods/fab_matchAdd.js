@@ -476,15 +476,19 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         var len = $("#search_match_goods ul li").length;
         console.log(len);
         for(var i=0;i<len;i++){
-         var code_l = $("#search_match_goods ul li")[i].find(".goods_code").html();
+         var code_l = $($("#search_match_goods ul li")[i]).find(".goods_code").html();
             console.log(code_l);
+            if(code_l == code){
+                $($("#search_match_goods ul li")[i]).css("background","");
+                $($("#search_match_goods ul li")[i]).find("i").hide();
+                $($("#search_match_goods ul li")[i]).find(".goods_add").show();
+            }
         }
         $(this).parent("li").remove();
     });
     $(".conpany_msg li i").hover(function () {
-        console.log('禁止消失');
         $(this).css("display","inline");
-    })
+    });
 });
 //hover显示关闭按钮
 function overShow(dom){
@@ -520,13 +524,10 @@ $(".good_imgs").on("click",".diyCancel",function(){
 function getmatchgoodsList(a) {
     //获取相关商品搭配列表
     var param={};
-    //var corp_code='F0043';
-    //console.log(corp_code);
     var search_value=$("#search").val();
     var goods_code=''; //新增的时候goods_code传''，编辑传goods_code，多个以逗号分隔
     var pageNumber=a;
     var pageSize=20;
-    //param["corp_code"]=corp_code;
     param["goods_code"]=goods_code;
     param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
@@ -543,6 +544,7 @@ function getmatchgoodsList(a) {
             if(list.length<=0){
                 jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>");
             }else{
+                var len = $(".conpany_msg li").length;
                 for(var i=0;i<list.length;i++){
                     jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
                         + list[i].goods_image
@@ -550,6 +552,15 @@ function getmatchgoodsList(a) {
                         + list[i].goods_code + '</span><span>'
                         + list[i].goods_name + '</span><span class="goods_add">'
                         +'+</span><i class="icon-ishop_6-12"></i></li>');
+                    if(len>0){
+                        for(var j=0;j<len;j++){
+                            var code = $($(".conpany_msg li")[j]).find(".goods_code").html();
+                            if(code == list[i].goods_code){
+                                $($("#search_match_goods ul li")[i]).find("i").show();
+                                $($("#search_match_goods ul li")[i]).find(".goods_add").hide();
+                            }
+                        }
+                    }
                 }
             }
             if(hasNextPage==true){
