@@ -698,6 +698,7 @@ function filtrates(a, b) {
         }
     });
 }
+//键盘事件
 $(function(){
     document.onkeydown = function(e){
         var ev = document.all ? window.event : e;
@@ -712,6 +713,10 @@ $(function(){
 
         }
     }
+});
+//刷新
+$('#reload').click(function(){
+    location.reload();
 });
 window.onload =function() {
     getVal();
