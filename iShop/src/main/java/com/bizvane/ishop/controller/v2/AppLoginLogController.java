@@ -1,4 +1,4 @@
-package com.bizvane.ishop.controller_V2;
+package com.bizvane.ishop.controller.v2;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -6,7 +6,8 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.BaseService;
+import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;

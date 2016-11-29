@@ -1,4 +1,4 @@
-//package com.bizvane.ishop.controller_V2;
+package com.bizvane.ishop.controller.v2;//package com.bizvane.ishop.v2;
 //
 //import com.alibaba.fastjson.JSON;
 //import com.alibaba.fastjson.JSONArray;

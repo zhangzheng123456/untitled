@@ -201,7 +201,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
     }()
 }
 function dian(a,b){//点击分页的时候调什么接口
-    if (value=="") {
+    if (value==""&&filtrate=="") {
         GET(a,b);
     }else if (value!==""){
         param["pageNumber"] = a;
