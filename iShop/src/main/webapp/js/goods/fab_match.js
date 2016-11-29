@@ -199,12 +199,14 @@ function pageVal(arr,unqiuearr,list){
     var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
     var tempHTML3='</div></li>';
-    var html = '';
+
     for(i=0;i<unqiuearr.length;i++){
+        var html = '';
         var nowHTML1 = tempHTML1;
+        var nowHTML2 = "";
         for(k=0;k<list.length;k++){
             if(list[k].goods_match_code ==unqiuearr[i]){
-                var nowHTML2 = tempHTML2;
+                nowHTML2 += tempHTML2;
                 var goods_image = list[k].goods_image;
                 var goods_code = list[k].goods_code;
                 nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
