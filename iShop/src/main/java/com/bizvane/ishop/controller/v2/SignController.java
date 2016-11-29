@@ -75,7 +75,7 @@ public class SignController {
                //系统管理员
                DBCursor  dbCursor1=cursor.find();
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            } else if (role_code.equals(Common.ROLE_GM)) {
                //企业管理员
@@ -86,7 +86,7 @@ public class SignController {
                BasicDBObject ref = new BasicDBObject();
                ref.putAll(keyMap);
                DBCursor dbCursor1 = cursor.find(ref);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            } else if (role_code.equals(Common.ROLE_BM)) {
                //品牌管理员
@@ -113,7 +113,7 @@ public class SignController {
                DBCursor dbCursor1 = cursor.find(ba);
 
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            }else if (role_code.equals(Common.ROLE_SM)) {
                //店长
@@ -144,7 +144,7 @@ public class SignController {
                DBCursor dbCursor1 = cursor.find(ba);
 
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            } else if (role_code.equals(Common.ROLE_AM)) {
                //区经
@@ -180,7 +180,7 @@ public class SignController {
                    ref.put("$and",values);
                    DBCursor dbCursor1 = cursor.find(ref);
                    pages = MongoUtils.getPages(dbCursor1,page_size);
-                   dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                   dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
                }
 
 
@@ -195,7 +195,7 @@ public class SignController {
 
                DBCursor dbCursor1 = cursor.find(ref);
                pages = MongoUtils.getPages(dbCursor1,page_size);
-               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+               dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
            }
            //  System.out.println(list.getList().get(0).getSign_time()+"---"+list.getList().get(0).getUser_code());
@@ -255,7 +255,7 @@ public class SignController {
                 //系统管理员
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
@@ -269,7 +269,7 @@ public class SignController {
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                     pages = MongoUtils.getPages(dbCursor2, page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
 
                 } else if (role_code.equals(Common.ROLE_BM)) {
                     //品牌管理员
@@ -305,7 +305,7 @@ public class SignController {
                     DBCursor dbCursor2 = cursor.find(ba);
 
                     pages = MongoUtils.getPages(dbCursor2, page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
@@ -339,7 +339,7 @@ public class SignController {
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
 
                     pages = MongoUtils.getPages(dbCursor2, page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
@@ -374,7 +374,7 @@ public class SignController {
                         ba.put("$and", values);
                         DBCursor dbCursor2 = cursor.find(ba);
                         pages = MongoUtils.getPages(dbCursor2, page_size);
-                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                      }
 
                     } else if (role_code.equals(Common.ROLE_STAFF)) {
@@ -386,7 +386,7 @@ public class SignController {
                         queryCondition1.put("$and", value);
                         DBCursor dbCursor2 = cursor.find(queryCondition1);
                         pages = MongoUtils.getPages(dbCursor2, page_size);
-                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "creater_date", -1);
+                        dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                     }
                 }
                 ArrayList list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
@@ -419,6 +419,7 @@ public class SignController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String id = "";
         try {
             String jsString = request.getParameter("param");
             logger.info("json--delete-------------" + jsString);
@@ -440,63 +441,64 @@ public class SignController {
                 BasicDBObject deleteRecord = new BasicDBObject();
                 deleteRecord.put("_id", new ObjectId(ids[i]));
 
-               //插入日志
-//                DBCursor dbObjects = cursor.find(deleteRecord);
-//                String t_corp_code = "";
-//                String t_code = "";
-//                String t_name = "";
-//                String sign_time = "";
-//                String status = "";
-//
-//                while (dbObjects.hasNext()) {
-//                    DBObject sign = dbObjects.next();
-//                    if (sign.containsField("corp_code")) {
-//                        t_corp_code = sign.get("corp_code").toString();
-//                    }
-//                    if (sign.containsField("user_code")) {
-//                        t_code = sign.get("user_code").toString();
-//                    }
-//                    if (sign.containsField("user_name")) {
-//                        t_name = sign.get("user_name").toString();
-//                    }
-//                    if (sign.containsField("sign_time")) {
-//                        sign_time = sign.get("sign_time").toString();
-//                    }
-//                    if (sign.containsField("status")) {
-//                        status = sign.get("status").toString();
-//                    }
-//                }
-//
-////----------------行为日志开始------------------------------------------
-//                /**
-//                 * mongodb插入用户操作记录
-//                 * @param operation_corp_code 操作者corp_code
-//                 * @param operation_user_code 操作者user_code
-//                 * @param function 功能
-//                 * @param action 动作
-//                 * @param corp_code 被操作corp_code
-//                 * @param code 被操作code
-//                 * @param name 被操作name
-//                 * @throws Exception
-//                 */
-//                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
-//                String operation_user_code = request.getSession().getAttribute("user_code").toString();
-//                String function = "员工管理_签到管理";
-//                String action = Common.ACTION_DEL;
-//             //   String t_corp_code = sign.getCorp_code();
-//             //   String t_code = sign.getUser_code();
-//            //    String t_name = sign.getUser_name();
-//                String remark = sign_time+"("+status+")";
-//                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+               //插入到用户操作日志
+                DBCursor dbObjects = cursor.find(deleteRecord);
+                String t_corp_code = "";
+                String t_code = "";
+                String t_name = "";
+                String sign_time = "";
+                String status = "";
+
+                while (dbObjects.hasNext()) {
+                    DBObject sign = dbObjects.next();
+                    if (sign.containsField("corp_code")) {
+                        t_corp_code = sign.get("corp_code").toString();
+                    }
+                    if (sign.containsField("user_code")) {
+                        t_code = sign.get("user_code").toString();
+                    }
+                    if (sign.containsField("user_name")) {
+                        t_name = sign.get("user_name").toString();
+                    }
+                    if (sign.containsField("sign_time")) {
+                        sign_time = sign.get("sign_time").toString();
+                    }
+                    if (sign.containsField("status")) {
+                        status = sign.get("status").toString();
+                    }
+                }
+
+//----------------行为日志开始------------------------------------------
+                /**
+                 * mongodb插入用户操作记录
+                 * @param operation_corp_code 操作者corp_code
+                 * @param operation_user_code 操作者user_code
+                 * @param function 功能
+                 * @param action 动作
+                 * @param corp_code 被操作corp_code
+                 * @param code 被操作code
+                 * @param name 被操作name
+                 * @throws Exception
+                 */
+                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                String function = "员工管理_签到管理";
+                String action = Common.ACTION_DEL;
+             //   String t_corp_code = sign.getCorp_code();
+             //   String t_code = sign.getUser_code();
+            //    String t_name = sign.getUser_name();
+                String remark = sign_time+"("+status+")";
+                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 cursor.remove(deleteRecord);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId("1");
-                dataBean.setMessage("success");
+
             }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("0");
+            dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             return dataBean.getJsonStr();
         }
@@ -531,7 +533,7 @@ public class SignController {
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
-            DBObject sort_obj = new BasicDBObject("creater_date", -1);
+            DBObject sort_obj = new BasicDBObject("created_date", -1);
 
             if (screen.equals("")) {
 
@@ -651,10 +653,9 @@ public class SignController {
                 list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
 
             }
-            //.........................
             else {
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andOperation(array);
+                BasicDBObject queryCondition = MongoHelperServiceImpl.andSignScreen(array);
                 DBCursor dbCursor = null;
                 if (role_code.equals(Common.ROLE_SYS)) {
                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
@@ -829,7 +830,7 @@ public class SignController {
 
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
 
             } else if (role_code.equals(Common.ROLE_GM)) {
                 BasicDBList value = new BasicDBList();
@@ -840,7 +841,7 @@ public class SignController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else if (role_code.equals(Common.ROLE_BM)) {
                 //品牌管理员
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
@@ -870,7 +871,7 @@ public class SignController {
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
 
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);;
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);;
             }else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
@@ -903,7 +904,7 @@ public class SignController {
                     queryCondition1.put("$and", values);
                     DBCursor dbCursor1 = cursor.find(queryCondition1);
                     pages = MongoUtils.getPages(dbCursor1,page_size);
-                    dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                    dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
                 }
 
 
@@ -934,7 +935,7 @@ public class SignController {
                 queryCondition1.put("$and", values);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 BasicDBList value = new BasicDBList();
                 value.add(new BasicDBObject("corp_code", corp_code));
@@ -944,7 +945,7 @@ public class SignController {
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"creater_date",-1);
+                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"created_date",-1);
             }
             ArrayList list = MongoHelperServiceImpl.dbCursorToList_status(dbCursor);
             result.put("list", list);

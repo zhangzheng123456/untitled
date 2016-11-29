@@ -209,7 +209,11 @@ public class MongoHelperServiceImpl {
         while(dbCursor.hasNext()){
 
             DBObject object=dbCursor.next();
+            String id = object.get("_id").toString();
+            object.put("id", id);
+            object.removeField("_id");
             String status=object.get("status").toString();
+            String  corp_name=object.get("corp_name").toString();
             if(status==null||status.equals("")){
                 object.put("status","");
             }else if(status.equals("0")){
@@ -217,6 +221,9 @@ public class MongoHelperServiceImpl {
             }
             else if(status.equals("-1")){
                 object.put("status","签退");
+            }
+            else if(corp_name.equals("")&&corp_name==null){
+                 continue;
             }
             list.add(object.toMap());
         }
