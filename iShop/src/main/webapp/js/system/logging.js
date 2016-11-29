@@ -211,6 +211,7 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -610,6 +611,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
     if(data.code=="0"){
         var message=JSON.parse(data.message);
         var filter=message.filter;
+        console.log(filter);
         $("#sxk .inputs ul").empty();
         var li="";
         for(var i=0;i<filter.length;i++){
@@ -727,6 +729,7 @@ $("#find").click(function(){
 function getInputValue(){
     // var input=$('#sxk .inputs li');
     var input=$('#sxk .inputs>ul>li');
+    console.log(input);
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
@@ -751,34 +754,26 @@ function getInputValue(){
                 var between_value=$(input[i]).find("input").nextAll();
                 screen_value['value'].start=$(between_value[0]).val();
                 screen_value['value'].end=$(between_value[1]).val();
-                if(screen_value['value'].start!==""||screen_value['value'].end!==""){
-                    num++;
-                }
             }
         }else if($(input[i]).attr("class")=="created_date"){
             var start=$('#start').val();
             var end=$('#end').val();
             screen_key=$(input[i]).attr("id");
             screen_value={"start":start,"end":end};
-            if(start!==""||end!==""){
-                num++;
-            }
         }else if($(input[i]).attr("class")=="isActive_select"){
             screen_key=$(input[i]).find("input").attr("id");
             screen_value=$(input[i]).find("input").attr("data-code");
-            if(screen_value!==""){
-                num++;
-            }
         }else{
             screen_value=$(input[i]).find("input").val().trim();
             screen_key=$(input[i]).find("input").attr("id");
-            if(screen_value!==""){
-                num++;
-            }
+        }
+        if(screen_value!=""){
+            num++;
         }
         var param1={"screen_key":screen_key,"screen_value":screen_value};
         list.push(param1);
     }
+    console.log( _param);
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
@@ -800,6 +795,7 @@ function filtrates(a,b){
             // var pageNum = list.pageNum;
             // var list=list.list;
             var message=JSON.parse(data.message);
+            console.log(message);
             var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;
