@@ -16,7 +16,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -302,7 +301,6 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/shop/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -338,7 +336,6 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);//把id好保存到本地
-        console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
@@ -346,7 +343,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");  
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -448,7 +444,6 @@ function jumpBianse(){
         var corp_code1=$(tr[length]).find(".staff").attr("data-code");
         param1["corp_code"]=corp_code1;
         oc.postRequire("post","/corp/selectWx","0",param1,function(data){
-            console.log(data);
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
                 var list=msg.list;
@@ -549,7 +544,6 @@ $("#d_search").click(function(){
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/shop/search","0",param,function(data){
-        console.log(data);
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -689,7 +683,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -788,7 +781,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/shop/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -841,7 +833,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"

@@ -1577,11 +1577,6 @@ input::-webkit-input-placeholder{
 	border-radius: 5px;
 	cursor: pointer;
 }
-.table tr td:last-child span{
-	overflow: visible;
-	line-height: 0;
-	max-width: 30px;
-}
 .drop{
 	position: absolute;
 	z-index: 100;

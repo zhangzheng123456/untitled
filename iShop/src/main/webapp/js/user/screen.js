@@ -778,30 +778,15 @@ function getbrandlist(){
 				for(var h=0;h<9;h++){
 					brand_html_left+="<li></li>"
 				}
-			} else {
-				if(list.length<9){
-					for (var i = 0; i < list.length; i++) {
-					    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'/><label for='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
-					}
-					for(var j=0;j<9-list.length;j++){
-						brand_html_left+="<li></li>"
-					}
-				}else if(list.length>=9){
-					for (var i = 0; i < list.length; i++) {
-					    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'/><label for='checkboxThreeInput"
-	                        + i
-	                        + 1
-	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
-					}
+			} else if(list.length>0){
+				for (var i = 0; i < list.length; i++) {
+					brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
+	                + i
+	                + 1
+	                + "'/><label for='checkboxThreeInput"
+	                + i
+	                + 1
+	                + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
 				}
 			}
 			$("#screen_brand .screen_content_l ul").append(brand_html_left);

@@ -715,7 +715,7 @@ function getInputValue(){
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){
-        // GET(inx,pageSize);
+        GET(inx,pageSize);
         filtrate="";
     }
 }
