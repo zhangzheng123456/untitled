@@ -747,13 +747,21 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $(".conpany_msg").append('<li id="'+goods_code+'">'+li+'</li>');
+        $("#add").before('<li id="'+goods_code+'">'+li+'</li>');
     }
 
     $(".conpany_msg li i").click(function () {
         $(this).parent("li").remove();
     })
 })
+//hover显示关闭按钮
+$('.conpany_msg li').ready(function(){
+    console.log('li加载完毕');
+    $('.conpany_msg li').hover(function(){
+        console.log('hover事件');
+        $(".conpany_msg li").children('i').css("display","inline");
+    });
+});
 //叉号取消添加商品
 $("#search_match_goods ul").on("click","li i",function () {
     $(this).prev().show();
