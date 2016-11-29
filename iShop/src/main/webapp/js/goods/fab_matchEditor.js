@@ -650,7 +650,7 @@ function pageVal(){
     var _param={};
     var corp_code='';
     //var searchValue='';
-    var goods_match_code = '';
+    var goods_match_code = sessionStorage.getItem("goods_match_code");
     _param["corp_code"]=corp_code;
     //_param["searchValue"] =searchValue;  //goods_code 商品id
     _param["goods_match_code"] =goods_match_code;  //goods_code 商品id
