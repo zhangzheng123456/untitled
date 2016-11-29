@@ -651,7 +651,7 @@ function pageVal(){
     var corp_code='';
     var searchValue='';
     _param["corp_code"]=corp_code;
-    _param["searchValue"] =searchValue;  //goods_code
+    _param["searchValue"] =searchValue;  //goods_code 商品id
     //whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post", "/defmatch/getMatchByCode","",_param, function(data){
         if(data.code='0'){
