@@ -693,12 +693,11 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
+    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
-        filtrates(inx,pageSize)
     }else if(num<=0){
         filtrate="";
-        GET(inx,pageSize);
     }
 }
 //筛选发送请求
