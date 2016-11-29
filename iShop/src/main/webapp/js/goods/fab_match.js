@@ -168,85 +168,23 @@ function getVal(){
             var arr=[];
             var unqiuearr=[];
             var hash={};
+            //获取所有搭配id
             for(i=0;i< list.length;i++){
                 arr.push(list[i].goods_match_code);
-                console.log(list[i].goods_match_code);
-
-                //var goods_code = list[i].goods_code;
-                //var goods_image = list[i].goods_image;
-                //pageVal(goods_code,goods_image);
             }
             console.log(arr);
+            //搭配id去重
             for(var i=0;i<arr.length;i++){
                 if(!hash[arr[i]]){
                     hash[arr[i]] = true; //存入hash表
                     unqiuearr.push(arr[i]);
                 }
             }
-            for(var i=0;i<unqiuearr.length;i++){
-                //var TR="";
-                //var total_money="0.0";
-                //var total_sug ="0.0";
-                //var discount = "";
-                //var date="";
-                for(var j=0;j<list.length;j++){
-                    if(list[j].goods_match_code==unqiuearr[i]){
-                        var n=$(TR).length+1;
-                        date=consumnlistData[j].buy_time;
-                        total_money = parseFloat(total_money)+parseFloat(consumnlistData[j].goods_price);
-                        total_sug = parseFloat(total_sug)+parseFloat(consumnlistData[j].goods_sug)
-                        TR+='<tr>'
-                            +'<td style="width:5%">'+n+'</td>'
-                            +'<td style="width:10%"><img src="'+consumnlistData[j].goods_img+'" onerror="imgError(this);" /></td>'
-                            +'<td class="product_name">'+consumnlistData[j].goods_name+'</td>'
-                            +'<td class="product_name">'+consumnlistData[j].goods_id+'</td>'
-                            +'<td>'+consumnlistData[j].goods_num+'</td>'
-                            +'<td class="money">￥'+consumnlistData[j].goods_price+'</td>'
-                            +'</tr>'
-                    }
-                }
-                discount = parseFloat(total_money/total_sug*10);
-                discount = discount.toFixed(1);
-                var tr=$(TR).length; //统计单数
-                consumnHtml+='<tr>'
-                    +'<td >'+date+'</td>'
-                    +'<td>'+tr+'</td>'
-                    +'<td>'+discount+'</td>'
-                    +'<td>'+total_money+'<i class="icon-ishop_8-03 style"></i></td>'
-                    +'</tr>';
-                consumnHtmlall+='<div class="record_list">'
-                    +'<div class="order_list">'
-                    +'<div class="list_head"><span class="black_font">日期:</span> '+date+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
-                    +'<div class="list_head"><span class="black_font">订单号:</span> '+unqiuearr[i]+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
-                    +'</div>'
-                    +'<hr/>'
-                    +'<table class="list_table">'
-                    +'<thead>'
-                    +'<tr>'
-                    +'<th>序号</th>'
-                    +'<th>商品图片</th>'
-                    +'<th class="product_name">商品名称</th>'
-                    +'<th class="product_name">商品编号</th>'
-                    +'<th>件数</th>'
-                    +'<th>价格</th>'
-                    +'</tr>'
-                    +'</thead>'
-                    +'<tbody>'
-                    +TR
-                    +'</tbody>'
-                    +'</table>'
-                    +'</div>'
-            }
-            if(consumnHtml.length!==0){
-                $("#consum tbody").html(consumnHtml);
-            }else {
-                $("#consum tbody").html('<span>暂无数据</span>');
-            }
-            if(consumnHtmlall.length==0){
-                $("#consum_all").html("<p>暂无相关消费记录</p>");
-            }else {
-                $("#consum_all").html(consumnHtmlall);
-            }
+            console.log(unqiuearr);
+            //var goods_code = list[i].goods_code;
+            //var goods_image = list[i].goods_image;
+            pageVal(arr,unqiuearr,list);
+
         },
         error: function (data) {
             console.log('获取数据失败')
@@ -254,7 +192,7 @@ function getVal(){
     });
 }
 //数据模板
-function pageVal(goods_code,goods_image){
+function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
     var tempHTML1='<li class="item"><div class="boxArea"><input type="checkbox"/>';
     //内容（图片+文字）迭代生成
@@ -262,20 +200,24 @@ function pageVal(goods_code,goods_image){
     //盒子下部分
     var tempHTML3='</div></li>';
     var html = '';
+    for(i=0;i<unqiuearr.length;i++){
         var nowHTML1 = tempHTML1;
-        //var k = '单独模块里商品的数量';
-        //for(a=0;a<k;a++) {
-        var nowHTML2 = tempHTML2;
-        nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
-        nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
-        nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
-        //}
+        for(k=0;k<list.length;k++){
+            if(list[k].goods_match_code ==unqiuearr[i]){
+                var nowHTML2 = tempHTML2;
+                var goods_image = list[k].goods_image;
+                var goods_code = list[k].goods_code;
+                nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
+                nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+                nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
+        }
+        }
         var nowHTML3 = tempHTML3;
-
         html += nowHTML1;
         html += nowHTML2;
         html += nowHTML3;
         $(".waterfull ul").append(html);
+    }
 
 }
 //点击放大镜触发搜索
