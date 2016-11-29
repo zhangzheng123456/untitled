@@ -337,7 +337,7 @@ $("#delete").click(function () {
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
-                GET(pageNumber, pageSize);
+               window.location.reload();
             } else if (value !== "") {
                 frame();
                 $('.frame').html('删除成功');
@@ -349,8 +349,6 @@ $("#delete").click(function () {
                 _param["pageNumber"] = pageNumber;
                 filtrates(pageNumber, pageSize);
             }
-            var thinput = $("thead input")[0];
-            thinput.checked = false;
         } else if (data.code == "-1") {
             frame();
             $('.frame').html(data.message);
