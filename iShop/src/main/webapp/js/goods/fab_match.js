@@ -139,7 +139,9 @@ function jumpBianse(){
         if(val.length==1){
             var id=$(val).find('input').attr("id");
             console.log('id是'+id);
+            var corp_code = $(val).attr("data-code");
             var goods_match_code = id;
+            sessionStorage.setItem("corp_code",corp_code);//存储的方法
             sessionStorage.setItem("goods_match_code",goods_match_code);//存储的方法
             $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchEditor.html");
     }
