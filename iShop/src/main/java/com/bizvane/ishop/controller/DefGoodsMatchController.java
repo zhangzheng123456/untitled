@@ -158,6 +158,7 @@ public class DefGoodsMatchController {
                 dataBean.setMessage("删除失败");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -213,6 +214,7 @@ public class DefGoodsMatchController {
                 dataBean.setMessage("新增失败");
             }
         }catch (Exception ex){
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage("新增失败");
@@ -270,6 +272,7 @@ public class DefGoodsMatchController {
                 dataBean.setMessage("编辑失败");
             }
         }catch (Exception ex){
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage("新增失败");
