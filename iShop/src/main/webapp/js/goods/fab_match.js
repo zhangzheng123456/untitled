@@ -131,7 +131,26 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchAdd.html");
-    })
+    });
+    //点击编辑时页面进行的跳转
+    $('#compile').click(function(){
+        var val=$(".boxArea input[type='checkbox']:checked").parents("li");
+        console.log('val是'+val);
+        if(val.length==1){
+            var id=$('li').children('input').attr("id");
+            console.log('id是'+id);
+            var goods_match_code = id;
+            sessionStorage.setItem("goods_match_code",goods_match_code);//存储的方法
+            $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchEditor.html");
+    }
+         if(val.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(val.length>1){
+            frame();
+            $('.frame').html("不能选择多个");
+        }
+    });
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
