@@ -41,7 +41,7 @@
             AND dgm.corp_code=#{corp_code}
         </if>
         <if test="goods_match_code!=null and goods_match_code!=''">
-            dgm.goods_match_code = #{goods_match_code}
+           AND dgm.goods_match_code = #{goods_match_code}
         </if>
         ORDER BY dgm.goods_match_code DESC
     </select>

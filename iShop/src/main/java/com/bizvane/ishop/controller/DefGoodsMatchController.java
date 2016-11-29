@@ -136,12 +136,17 @@ public class DefGoodsMatchController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            String area_id = jsonObject.get("goods_match_code").toString();
-            String[] ids = area_id.split(",");
+            String list = jsonObject.get("list").toString();
+            String[] split = list.split(",");
             int msg = 0;
-            for (int i = 0; i < ids.length; i++) {
-                msg+=  defGoodsMatchService.delMatchByCode(corp_code,ids[i]);
+            for (int i = 0; i < split.length; i++) {
+                String str = split[i].toString();
+                com.alibaba.fastjson.JSONObject object = com.alibaba.fastjson.JSONObject.parseObject(str);
+                System.out.println("=========object========"+object.toJSONString());
+                String corp_code = object.get("corp_code").toString();
+                String goods_match_code = object.get("goods_match_code").toString();
+                System.out.println("=============商品搭配============="+corp_code+"--------------------"+goods_match_code);
+                msg+=  defGoodsMatchService.delMatchByCode(corp_code,goods_match_code);
             }
             if (msg >0) {
                 dataBean.setId(id);
