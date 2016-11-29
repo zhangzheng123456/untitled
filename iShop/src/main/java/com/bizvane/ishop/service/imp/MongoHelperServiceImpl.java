@@ -58,7 +58,7 @@ public class MongoHelperServiceImpl {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
+            if (CheckUtils.checkJson(screen_value) == false && !screen_key.equals("user_can_login") && !screen_key.equals("created_date") && !screen_key.equals("count")) {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -112,7 +112,7 @@ public class MongoHelperServiceImpl {
     }
 
     //DBCursor数据集转arrayList+id+can_login+品牌名(登录日志)
-    public static ArrayList dbCursorToList_canLogin(DBCursor dbCursor, List<User> users) {
+    public static ArrayList dbCursorToList_canLogin(DBCursor dbCursor, List<User> users,String user_can_login) {
         ArrayList list = new ArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
@@ -131,6 +131,8 @@ public class MongoHelperServiceImpl {
                     obj.put("user_can_login", "在职");
                 }
             }
+            String user_can_login2 = obj.get("user_can_login").toString();
+         
             list.add(obj.toMap());
         }
         return list;

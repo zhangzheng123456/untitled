@@ -44,8 +44,6 @@ public class AppLoginLogController {
     String id;
 
 
-
-
     /**
      * 用户登录日志（mongodb）
      * 列表展示
@@ -89,7 +87,7 @@ public class AppLoginLogController {
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
 
-            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode,"");
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -105,7 +103,6 @@ public class AppLoginLogController {
         }
         return dataBean.getJsonStr();
     }
-
 
 
     /**
@@ -155,7 +152,7 @@ public class AppLoginLogController {
                 dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
-            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode,"");
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -172,7 +169,6 @@ public class AppLoginLogController {
         }
         return dataBean.getJsonStr();
     }
-
 
 
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
@@ -194,6 +190,16 @@ public class AppLoginLogController {
             String lists = jsonObject.get("list").toString();
 
             JSONArray array = JSONArray.parseArray(lists);
+            String user_can_login = "";
+            for (int i = 0; i < array.size(); i++) {
+                String info = array.get(i).toString();
+                com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(info);
+                String screen_key = json.get("screen_key").toString();
+                String screen_value = json.get("screen_value").toString();
+                if (screen_key.equals("user_can_login")) {
+                    user_can_login = screen_value;
+                }
+            }
             BasicDBObject queryCondition = MongoHelperServiceImpl.andLoginlogScreen(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -219,7 +225,7 @@ public class AppLoginLogController {
                 dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
                 canloginByCode = userService.getCanloginByCode(corp_code);
             }
-            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode,user_can_login);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -236,7 +242,6 @@ public class AppLoginLogController {
         }
         return dataBean.getJsonStr();
     }
-
 
 
     /**
@@ -326,8 +331,6 @@ public class AppLoginLogController {
     }
 
 
-
-
     /***
      * 导出数据
      */
@@ -369,9 +372,19 @@ public class AppLoginLogController {
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                     canloginByCode = userService.getCanloginByCode(corp_code);
                 }
-                list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
+                list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode,"");
             } else {
                 JSONArray array = JSONArray.parseArray(screen);
+                String user_can_login = "";
+                for (int i = 0; i < array.size(); i++) {
+                    String info = array.get(i).toString();
+                    com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(info);
+                    String screen_key = json.get("screen_key").toString();
+                    String screen_value = json.get("screen_value").toString();
+                    if (screen_key.equals("user_can_login")) {
+                        user_can_login = screen_value;
+                    }
+                }
                 BasicDBObject queryCondition = MongoHelperServiceImpl.andLoginlogScreen(array);
                 DBCursor dbCursor = null;
                 List<User> canloginByCode = null;
@@ -388,7 +401,7 @@ public class AppLoginLogController {
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                     canloginByCode = userService.getCanloginByCode(corp_code);
                 }
-                list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode);
+                list = MongoHelperServiceImpl.dbCursorToList_canLogin(dbCursor, canloginByCode,user_can_login);
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
