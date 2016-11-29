@@ -88,28 +88,28 @@ public class BaseServiceImpl implements BaseService{
      * @return user_code
      * @throws Exception
      */
-    public String userIdConvertUserCode(String corp_code,String user_id)throws Exception{
-        String user_code = "";
-        List<User> user = userMapper.selUserByUserId(user_id,corp_code,Common.IS_ACTIVE_Y);
-        if (user.size()>0)
-            user_code = user.get(0).getUser_code();
-        return user_code;
-    }
-
-    /**
-     * user_code转user_id
-     * @param corp_code
-     * @param user_code
-     * @return user_id
-     * @throws Exception
-     */
-    public String userCodeConvertUserId(String corp_code,String user_code)throws Exception{
-        String user_id = "";
-        List<User> user = userMapper.selectUserCode(user_code,corp_code,Common.IS_ACTIVE_Y);
-        if (user.size()>0)
-            user_id = user.get(0).getUser_id();
-        return user_id;
-    }
+//    public String userIdConvertUserCode(String corp_code,String user_id)throws Exception{
+//        String user_code = "";
+//        List<User> user = userMapper.selUserByUserId(user_id,corp_code,Common.IS_ACTIVE_Y);
+//        if (user.size()>0)
+//            user_code = user.get(0).getUser_code();
+//        return user_code;
+//    }
+//
+//    /**
+//     * user_code转user_id
+//     * @param corp_code
+//     * @param user_code
+//     * @return user_id
+//     * @throws Exception
+//     */
+//    public String userCodeConvertUserId(String corp_code,String user_code)throws Exception{
+//        String user_id = "";
+//        List<User> user = userMapper.selectUserCode(user_code,corp_code,Common.IS_ACTIVE_Y);
+//        if (user.size()>0)
+//            user_id = user.get(0).getUser_id();
+//        return user_id;
+//    }
 
     /**
      * mongodb插入用户操作记录

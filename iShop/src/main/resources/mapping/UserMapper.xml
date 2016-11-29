@@ -5,7 +5,7 @@
     <resultMap type="com.bizvane.ishop.entity.User" id="BaseMap">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <!--<result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>-->
         <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sex" property="sex" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -35,7 +35,7 @@
     <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <!--<result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>-->
         <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sex" property="sex" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -61,6 +61,7 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
+
     <select id="getCanloginByCode" resultType="com.bizvane.ishop.entity.User">
         SELECT * FROM def_user
         WHERE 1=1
@@ -99,7 +100,6 @@
         <if test="search_value != null and search_value !=''">
             AND
             (user_name LIKE concat('%',#{search_value},'%')
-            OR user_id LIKE concat('%',#{search_value},'%')
             OR user_code LIKE concat('%',#{search_value},'%')
             OR phone LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
@@ -151,7 +151,6 @@
         <if test="search_value != null and search_value !=''">
             AND
             (def_user.user_name LIKE concat('%',#{search_value},'%')
-            OR def_user.user_id LIKE concat('%',#{search_value},'%')
             OR def_user.user_code LIKE concat('%',#{search_value},'%')
             OR def_user.phone LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
@@ -462,9 +461,9 @@
             <if test="area_code != null">
                 area_code,
             </if>
-            <if test="user_id != null">
-                user_id,
-            </if>
+            <!--<if test="user_id != null">-->
+                <!--user_id,-->
+            <!--</if>-->
             <if test="isonline != null">
                 isonline,
             </if>
@@ -533,9 +532,9 @@
             <if test="area_code != null">
                 #{area_code},
             </if>
-            <if test="user_id != null">
-                #{user_id},
-            </if>
+            <!--<if test="user_id != null">-->
+                <!--#{user_id},-->
+            <!--</if>-->
             <if test="isonline != null">
                 #{isonline},
             </if>
@@ -551,9 +550,9 @@
             <if test="user_code!=null ">
                 user_code = #{user_code},
             </if>
-            <if test="user_id!=null ">
-                user_id = #{user_id},
-            </if>
+            <!--<if test="user_id!=null ">-->
+                <!--user_id = #{user_id},-->
+            <!--</if>-->
             <if test="avatar!=null ">
                 avatar = #{avatar},
             </if>

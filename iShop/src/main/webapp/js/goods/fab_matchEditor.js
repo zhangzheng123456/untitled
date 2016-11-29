@@ -56,9 +56,9 @@ var swip_image = [];
             if(fabjs.firstStep()){
                 //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
-               $(".conpany_msg .goods_code").each(function(){
+                $(".conpany_msg .goods_code").each(function(){
                     var nowVal =  $(this).text();
-                   GOODS_CODE +=nowVal+',';
+                    GOODS_CODE +=nowVal+',';
                 });;//商品编号
                 var reg=/,$/gi;
                 GOODS_CODE=GOODS_CODE.replace(reg,"");
@@ -476,7 +476,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         var len = $("#search_match_goods ul li").length;
         console.log(len);
         for(var i=0;i<len;i++){
-         var code_l = $($("#search_match_goods ul li")[i]).find(".goods_code").html();
+            var code_l = $($("#search_match_goods ul li")[i]).find(".goods_code").html();
             console.log(code_l);
             if(code_l == code){
                 $($("#search_match_goods ul li")[i]).css("background","");
@@ -645,3 +645,28 @@ $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
 })
+
+function pageVal(){
+    var _param={};
+    var corp_code='';
+    var searchValue='';
+    _param["corp_code"]=corp_code;
+    _param["searchValue"] =searchValue;  //goods_code
+    //whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post", "/defmatch/getMatchByCode","",_param, function(data){
+        if(data.code='0'){
+            var goods_code ='';
+            var goods_image ='';
+            var corp_code ='';
+            console.log('获取成功');
+
+        }else if(data.code='-1'){
+            console.log('获取失败');
+        }
+        //whir.loading.remove();//移除加载框
+    });
+
+}
+window.onload=function(){
+    pageVal();
+}
