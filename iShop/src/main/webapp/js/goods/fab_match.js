@@ -23,52 +23,6 @@ var funcCode=key_val.func_code;
  */
 $(function(){
     /*瀑布流开始*/
-    var container = $('.waterfull ul');
-    var loading=$('#imloading');
-    // 初始化loading状态
-    loading.data("on",false);
-    /*判断瀑布流最大布局宽度，最大为1280*/
-    function tores(){
-        var tmpWid=$(window).width();
-        if(tmpWid>1280){
-            tmpWid=1280;
-        }else{
-            var column=Math.floor(tmpWid/340);
-            tmpWid=column*340;
-        }
-        $('.waterfull').width(tmpWid);
-    }
-    tores();
-    $(window).resize(function(){
-        tores();
-    });
-    container.imagesLoaded(function(){
-        container.masonry({
-            columnWidth: 340,
-            itemSelector : '.item',
-            isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
-            isAnimated: false,//是否采用jquery动画进行重拍版
-            isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
-            isResizable: true,//是否自动布局默认true
-            animationOptions: {
-                duration: 800,
-                queue: true//是否队列，从一点填充瀑布流
-            }
-        });
-    });
-
-    function loadImage(url) {
-        var img = new Image();
-        //创建一个Image对象，实现图片的预下载
-        img.src = url;
-        if (img.complete) {
-            return img.src;
-        }
-        img.onload = function () {
-            return img.src;
-        };
-    };
-    loadImage('images/one.jpeg');
 //        /*item hover效果*/
 //        var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
 //        $('#waterfull').on('mouseover','.item',function(){
@@ -243,6 +197,51 @@ function pageVal(arr,unqiuearr,list){
         html += nowHTML3;
         $(".waterfull ul").append(html);
     }
+     var container = $('.waterfull ul');
+    var loading=$('#imloading');
+    // 初始化loading状态
+    loading.data("on",false);
+    /*判断瀑布流最大布局宽度，最大为1280*/
+    function tores(){
+        var tmpWid=$(window).width();
+        if(tmpWid>1280){
+            tmpWid=1280;
+        }else{
+            var column=Math.floor(tmpWid/360);
+            tmpWid=column*360;
+        }
+        $('.waterfull').width(tmpWid);
+    }
+    tores();
+    $(window).resize(function(){
+        tores();
+    });
+    container.imagesLoaded(function(){
+        container.masonry({
+            columnWidth: 360,
+            itemSelector : '.item',
+            isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
+            isAnimated: false,//是否采用jquery动画进行重拍版
+            isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
+            isResizable: true,//是否自动布局默认true
+            animationOptions: {
+                duration: 800,
+                queue: true//是否队列，从一点填充瀑布流
+            }
+        });
+    });
+    function loadImage(url) {
+        var img = new Image();
+        //创建一个Image对象，实现图片的预下载
+        img.src = url;
+        if (img.complete) {
+            return img.src;
+        }
+        img.onload = function () {
+            return img.src;
+        };
+    };
+    loadImage('images/one.jpeg');
 
 }
 //点击放大镜触发搜索
