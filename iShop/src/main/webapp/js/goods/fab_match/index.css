@@ -251,7 +251,9 @@
 	border-radius: 8px 4px 4px 8px;
 }
 .waterfull{
-	margin: 0 auto;
+	margin: 0;
+	overflow: hidden;
+	margin-right: 20px;
 }
 .waterfull ul li{
 	width: 350px;

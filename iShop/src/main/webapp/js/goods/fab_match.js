@@ -28,13 +28,13 @@ function waterFull(){
     loading.data("on",false);
     /*判断瀑布流最大布局宽度，最大为1280*/
     function tores(){
-        var tmpWid=$(window).width();
-        if(tmpWid>1280){
-            tmpWid=1280;
-        }else{
+        var tmpWid=$(window).width()-220;
+        //if(tmpWid>1280){
+        //    tmpWid=tmpWid;
+        //}else{
             var column=Math.floor(tmpWid/360);
             tmpWid=column*360;
-        }
+        //}
         $('.waterfull').width(tmpWid);
     }
     tores();
@@ -45,7 +45,7 @@ function waterFull(){
         container.masonry({
             columnWidth: 360,
             itemSelector : '.item',
-            isFitWidth: true,//是否根据浏览器窗口大小自动适应默认false
+            isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
             isAnimated: false,//是否采用jquery动画进行重拍版
             isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
             isResizable: true,//是否自动布局默认true
