@@ -46,7 +46,7 @@ function waterFull(){
             columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
-            isAnimated: true,//是否采用jquery动画进行重拍版
+            isAnimated: false,//是否采用jquery动画进行重拍版
             isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
             isResizable: true,//是否自动布局默认true
             animationOptions: {
@@ -261,7 +261,7 @@ $("#d_search").click(function () {
 
 //搜索的请求函数
 function POST(a, b) {
-    whir.loading.add("", 0.5);//加载等待框
+    whir.loading.add("", 1);//加载等待框
     oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -273,12 +273,11 @@ function POST(a, b) {
             var forLength = list.length;     //显示盒子数量
             $(".masonry").empty();
             if (forLength <= 0) {
-                $(".masonry p").remove();
-                $(".masonry").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
+                $("#waterfull p").remove();
+                $("#waterfull").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
             } else if (forLength > 0) {
-                whir.loading.remove();//移除加载框
-                $(".masonry p").remove();
+                $("#waterfull p").remove();
                 var arr=[];
                 var unqiuearr=[];
                 var hash={};
@@ -297,6 +296,7 @@ function POST(a, b) {
                 console.log(unqiuearr);
                 //var goods_code = list[i].goods_code;
                 //var goods_image = list[i].goods_image;
+                whir.loading.remove();//移除加载框
                 pageVal(arr,unqiuearr,list);
                 jumpBianse();
             }

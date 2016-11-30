@@ -56,43 +56,53 @@ var swip_image = [];
             if(fabjs.firstStep()){
                 //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
-               $(".conpany_msg .goods_code").each(function(){
-                    var nowVal =  $(this).text();
-                   GOODS_CODE +=nowVal+',';
-                });;//商品编号
-                var reg=/,$/gi;
-                GOODS_CODE=GOODS_CODE.replace(reg,"");
-                console.log('商品编号是：'+GOODS_CODE);
-                var ISACTIVE="";//是否可用
-                var input=$(".checkbox_isactive").find("input")[0];
-                if(input.checked==true){
-                    ISACTIVE="Y";
-                }else if(input.checked==false) {
-                    ISACTIVE = "N";
-                }
-                var li=$(".match_goods ul").find("li");
-                for(var i=0,matchgoods="";i<li.length;i++){
-                    var r=$(li[i]).attr("id");
-                    if(i<li.length-1){
-                        matchgoods+=r+",";
-                    }else{
-                        matchgoods+=r;
-                    }
-                }
-                var _command="/defmatch/addMatch";//接口名
-                var opt = {//返回成功后的操作
-                    success:function(){
-                    }
-                };
-                var _params = {
-                    //"corp_code": OWN_CORP,
-                    "goods_code": GOODS_CODE,
-                    //"isactive": ISACTIVE,
-                };
-                console.log(_params);
-                fabjs.ajaxSubmit(_command,_params,opt);
+                var nowValLength = $(".conpany_msg .goods_code").length;
+                if(nowValLength<1){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"未添加商品"
+                    });
+                }else {
+                    $(".conpany_msg .goods_code").each(function () {
+                        var nowVal = $(this).text();
+                        GOODS_CODE += nowVal + ',';
+                    });
+                    console.log('添加的商品id是' + GOODS_CODE);
 
-            }else{
+                    var reg = /,$/gi;
+                    GOODS_CODE = GOODS_CODE.replace(reg, "");
+                    var ISACTIVE = "";//是否可用
+                    var input = $(".checkbox_isactive").find("input")[0];
+                    if (input.checked == true) {
+                        ISACTIVE = "Y";
+                    } else if (input.checked == false) {
+                        ISACTIVE = "N";
+                    }
+                    var li = $(".match_goods ul").find("li");
+                    for (var i = 0, matchgoods = ""; i < li.length; i++) {
+                        var r = $(li[i]).attr("id");
+                        if (i < li.length - 1) {
+                            matchgoods += r + ",";
+                        } else {
+                            matchgoods += r;
+                        }
+                    }
+                    var _command = "/defmatch/addMatch";//接口名
+                    var opt = {//返回成功后的操作
+                        success: function () {
+                        }
+                    };
+                    var _params = {
+                        //"corp_code": OWN_CORP,
+                        "goods_code": GOODS_CODE,
+                        //"isactive": ISACTIVE,
+                    };
+                    console.log(_params);
+                    fabjs.ajaxSubmit(_command, _params, opt);
+
+                } }else{
                 return;
             }
         });
@@ -147,7 +157,7 @@ var swip_image = [];
                 }
                 if(_command=="/goods/fab/edit"){
                     art.dialog({
-                        time: 3,
+                        time: 2,
                         lock: true,
                         cancel: false,
                         content:"保存成功"
