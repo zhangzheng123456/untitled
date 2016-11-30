@@ -140,8 +140,10 @@ var swip_image = [];
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
                 if(_command=="/defmatch/addMatch"){
-                    sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_match.html");
+                    var message=JSON.parse(data.message);
+                    sessionStorage.setItem("goods_match_code",message.goods_match_code);
+                    sessionStorage.setItem("corp_code",message.corp_code);
+                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
                 }
                 if(_command=="/goods/fab/edit"){
                     art.dialog({
