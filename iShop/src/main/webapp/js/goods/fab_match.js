@@ -28,13 +28,13 @@ function waterFull(){
     loading.data("on",false);
     /*判断瀑布流最大布局宽度，最大为1280*/
     function tores(){
-        var tmpWid=$(window).width();
-        if(tmpWid>1280){
-            tmpWid=1280;
-        }else{
+        var tmpWid=$(window).width()-220;
+        //if(tmpWid>1280){
+        //    tmpWid=tmpWid;
+        //}else{
             var column=Math.floor(tmpWid/360);
             tmpWid=column*360;
-        }
+        //}
         $('.waterfull').width(tmpWid);
     }
     tores();
