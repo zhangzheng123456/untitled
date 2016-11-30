@@ -7,9 +7,9 @@
         dgm.goods_code,
         dgm.corp_code,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg,def_corp dc
-        WHERE dgm.goods_code= dg.goods_code
-        AND dc.corp_code=dgm.corp_code
+        FROM def_goods_match dgm,def_goods dg
+        WHERE dgm.corp_code = dg.corp_code
+        AND dgm.goods_code = dg.goods_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
@@ -21,9 +21,9 @@
         dgm.goods_code,
         dgm.corp_code,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg,def_corp dc
-        WHERE dgm.goods_code= dg.goods_code
-        AND dc.corp_code=dgm.corp_code
+        FROM def_goods_match dgm,def_goods dg
+        WHERE dgm.corp_code = dg.corp_code
+        AND dgm.goods_code = dg.goods_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
@@ -34,14 +34,14 @@
     <select id="selectMatchByCode" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
         SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg,def_corp dc
-        WHERE dgm.goods_code= dg.goods_code
-        AND dc.corp_code=dgm.corp_code
+        FROM def_goods_match dgm,def_goods dg
+        WHERE dgm.corp_code = dg.corp_code
+        AND dgm.goods_code = dg.goods_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
         <if test="goods_match_code!=null and goods_match_code!=''">
-           AND dgm.goods_match_code = #{goods_match_code}
+            AND dgm.goods_match_code = #{goods_match_code}
         </if>
         ORDER BY dgm.goods_match_code DESC
     </select>
