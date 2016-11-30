@@ -570,8 +570,10 @@
         dg.goods_code,
         dg.goods_name,
         dg.goods_image
-        FROM def_goods dg
-        WHERE 1=1
+        FROM def_goods dg,def_corp cp,def_brand db
+        WHERE dg.corp_code=cp.corp_code
+        AND dg.corp_code=db.corp_code
+        AND dg.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dg.corp_code=#{corp_code}
         </if>
@@ -591,15 +593,7 @@
         g.goods_name,
         g.goods_image,
         g.goods_price,
-        g.goods_time,
-        g.goods_quarter,
         g.goods_wave,
-        g.modified_date,
-        g.modifier,
-        g.isactive,
-        g.created_date,
-        g.creater,
-        g.goods_description,
         g.corp_code,
         cp.corp_name,
         g.brand_code,

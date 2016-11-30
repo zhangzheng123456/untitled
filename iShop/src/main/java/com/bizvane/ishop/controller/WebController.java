@@ -280,7 +280,7 @@ public class WebController {
             String goods_code = goods.getGoods_code();
             List<Goods> matchgoods = goodsService.selectGoodsMatchList(corp_code,goods_code,Common.IS_ACTIVE_Y);
             goods.setMatchgoods(matchgoods);
-            org.json.JSONObject result = new org.json.JSONObject();
+            JSONObject result = new JSONObject();
             result.put("goods", JSON.toJSONString(goods));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
