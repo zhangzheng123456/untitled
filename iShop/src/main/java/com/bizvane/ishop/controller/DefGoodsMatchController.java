@@ -206,7 +206,14 @@ public class DefGoodsMatchController {
             if (count >0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("新增成功");
+                com.alibaba.fastjson.JSONObject object=new com.alibaba.fastjson.JSONObject();
+                if(role_code.equals(Common.ROLE_SYS)) {
+                    object.put("corp_code","C10000");
+                }else{
+                    object.put("corp_code",corp_code);
+                }
+                object.put("goods_match_code",goods_match_code);
+                dataBean.setMessage(object.toJSONString());
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -236,7 +243,7 @@ public class DefGoodsMatchController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
           //  String goods_match_code =sdf.format(new Date()) + Math.round(Math.random() * 9);
             String corp_code_json = jsonObject.get("corp_code").toString();
             String goods_match_code = jsonObject.get("goods_match_code").toString();
@@ -246,11 +253,7 @@ public class DefGoodsMatchController {
             String[] split = goods_code.split(",");
             for (int i=0;i<split.length;i++){
                 DefGoodsMatch defGoodsMatch=new DefGoodsMatch();
-                if(role_code.equals(Common.ROLE_SYS)) {
-                    defGoodsMatch.setCorp_code("C10000");
-                }else{
-                    defGoodsMatch.setCorp_code(corp_code);
-                }
+                defGoodsMatch.setCorp_code(corp_code_json);
                 defGoodsMatch.setGoods_match_code(goods_match_code);
                 defGoodsMatch.setGoods_code(split[i]);
                 Date date = new Date();
