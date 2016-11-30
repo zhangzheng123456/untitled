@@ -21,7 +21,8 @@ $("#staff_area").click(function(){
     area_num=1;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_staff").width())/2;
-    var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    // var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    var tp=88;
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
     $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
@@ -35,7 +36,8 @@ $("#staff_shop").click(function(){
     shop_num=1;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_staff").width())/2;
-    var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    // var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    var tp=88;
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
     $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
@@ -47,7 +49,8 @@ $("#staff_shop").click(function(){
 $("#staff_brand").click(function(){
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_staff").width())/2;
-    var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    // var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    var tp=88;
     $("#screen_brand .screen_content_l ul").empty();
     $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_brand").show();
@@ -188,7 +191,7 @@ $("#screen_que_staff").click(function(){
     $("#sendee_r").val("已选"+li.length+"个");
     $("#sendee_r").attr("data-type","staff");
     $("#sendee_r").css("background","#dfdfdf");
-    // whir.loading.remove();//移除遮罩层
+    whir.loading.remove();//移除遮罩层
 })
 //点击品牌的确定
 $("#screen_que_brand").click(function(){
@@ -224,13 +227,16 @@ $("#screen_que_brand").click(function(){
 })
 //添加执行人
 $('#add_sendee').click(function(){
+    whir.loading.add("",0.5);//加载等待框
+    $('#loading').remove();
     var a=1;
     //清空
     $("#screen_staff .screen_content_l ul").empty();
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_staff").width())/2;
-    var tp=(arr[3]-$("#screen_staff").height())/2+40;
-    $("#screen_staff").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    // var tp=(arr[3]-$("#screen_staff").height())/2+40;
+    var tp=88;
+    $("#screen_staff").css({"left":+left+"px","top":+tp+"px","position":"absolute"});
     $("#screen_staff").show();
     //请求当前企业的所员工
     getstafflist(a);
@@ -238,6 +244,7 @@ $('#add_sendee').click(function(){
 //关闭筛选数据
 $('#screen_close_staff').click(function () {
     $("#screen_staff").hide();
+    whir.loading.remove();//移除遮罩层
 });
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){

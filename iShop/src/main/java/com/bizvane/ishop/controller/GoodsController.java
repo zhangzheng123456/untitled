@@ -588,7 +588,7 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             // String user_code = jsonObject.get("user_code").toString();
-            String match_goods = jsonObject.get("match_goods").toString();
+//            String match_goods = jsonObject.get("match_goods").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             String goods_description = goods.getGoods_description();

@@ -625,4 +625,5 @@ window.onload = function(){
    //activityType();
     //加载员工列表
     //listShow();
+    $($('.btnSecond input')[2]).attr('checked','true');
 }

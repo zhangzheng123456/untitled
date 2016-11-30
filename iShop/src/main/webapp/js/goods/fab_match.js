@@ -46,7 +46,7 @@ function waterFull(){
             columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
-            isAnimated: false,//是否采用jquery动画进行重拍版
+            isAnimated: true,//是否采用jquery动画进行重拍版
             isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
             isResizable: true,//是否自动布局默认true
             animationOptions: {
@@ -204,7 +204,7 @@ function getVal(){
 //数据模板
 function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
-    var tempHTML1='<li data-code="${corp_code}" class="item"><div class="boxArea"><input id="${code}" type="checkbox"/>';
+    var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
     //内容（图片+文字）迭代生成
     var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
@@ -214,11 +214,24 @@ function pageVal(arr,unqiuearr,list){
         var html = '';
         var nowHTML1 = tempHTML1;
             nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
         var nowHTML2 = "";
         for(k=0;k<list.length;k++){
             if(list[k].goods_match_code ==unqiuearr[i]){
                 nowHTML2 += tempHTML2;
-                var goods_image = list[k].goods_image;
+                var goods_image="";
+                if(list[k].goods_image.indexOf("http")!==-1){
+                    goods_image = list[k].goods_image;
+                }
+                if(list[k].goods_image.indexOf("http")==-1){
+                    goods_image="../img/goods_default_image.png";
+                }
+                //console.log(goods_image);
+                //
+                //if(goods_image ==''){
+                //    console.log('null')
+                //    goods_image = '../img/goods_default_image.png';
+                //}
                 var goods_code = list[k].goods_code;
                 nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
                 nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
@@ -704,6 +717,14 @@ $(function(){
         }
     }
 });
+function dblclick(dom) {
+    var goods_match_code = $(dom).find('.check').attr('id');
+    var corp_code = $(dom).attr("data-code");
+    sessionStorage.setItem("corp_code", corp_code);//存储的方法
+    sessionStorage.setItem("goods_match_code", goods_match_code);//存储的方法
+    console.log('双击跳转搭配编辑页面');
+    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
+}
 //刷新
 $('#reload').click(function(){
     location.reload();

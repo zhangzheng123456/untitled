@@ -140,8 +140,10 @@ var swip_image = [];
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
                 if(_command=="/defmatch/addMatch"){
-                    sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_match.html");
+                    var message=JSON.parse(data.message);
+                    sessionStorage.setItem("goods_match_code",message.goods_match_code);
+                    sessionStorage.setItem("corp_code",message.corp_code);
+                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
                 }
                 if(_command=="/goods/fab/edit"){
                     art.dialog({
@@ -548,8 +550,15 @@ function getmatchgoodsList(a) {
             }else{
                 var len = $(".conpany_msg li").length;
                 for(var i=0;i<list.length;i++){
+                    var imgUrl="";
+                    if(list[i].goods_image.indexOf("http")!==-1){
+                        imgUrl = list[i].goods_image;
+                    }
+                    if(list[i].goods_image.indexOf("http")==-1){
+                        imgUrl="../img/goods_default_image.png";
+                    }
                     jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
-                        + list[i].goods_image
+                        + imgUrl
                         + '"><span class="goods_code">'
                         + list[i].goods_code + '</span><span>'
                         + list[i].goods_name + '</span><span class="goods_add">'

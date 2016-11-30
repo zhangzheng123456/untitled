@@ -554,8 +554,15 @@ function getmatchgoodsList(a) {
             }else{
                 var len = $(".conpany_msg li").length;
                 for(var i=0;i<list.length;i++){
+                    var imgUrl="";
+                    if(list[i].goods_image.indexOf("http")!==-1){
+                        imgUrl = list[i].goods_image;
+                    }
+                    if(list[i].goods_image.indexOf("http")==-1){
+                        imgUrl="../img/goods_default_image.png";
+                    }
                     jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
-                        + list[i].goods_image
+                        + imgUrl
                         + '"><span class="goods_code">'
                         + list[i].goods_code + '</span><span>'
                         + list[i].goods_name + '</span><span class="goods_add">'
@@ -670,11 +677,15 @@ function pageVal(){
             var message= JSON.parse(data.message);
             var list =JSON.parse(message.list);
             for(i=0;i<list.length;i++){
-                console.log(list.length)
-                var goods_image =list[i].goods_image;
+                var imgUrl="";
+                if(list[i].goods_image.indexOf("http")!==-1){
+                    imgUrl = list[i].goods_image;
+                }
+                if(list[i].goods_image.indexOf("http")==-1){
+                    imgUrl="../img/goods_default_image.png";
+                }
                 var goods_code =list[i].goods_code;
-                console.log(goods_image+'________'+goods_code);
-                pageShow(goods_image,goods_code);
+                pageShow(imgUrl,goods_code);
 
             }
 
@@ -686,11 +697,11 @@ function pageVal(){
     });
 
 }
-function  pageShow(goods_image,goods_code){
+function  pageShow(imgUrl,goods_code){
     var tempHTML='<li onmousemove="overShow(this)" onmouseout="outHide(this)" id="${goods_code}"><img class="goodsImg" src="${goods_image}"><span class="goods_code">${goods_code}</span><span>呀土豆</span><span class="goods_add" style="display: none;">+</span><i onclick="deleteThis(this)" class="icon-ishop_6-12" style="display: none;"></i></li>';
     var html = '';
     var nowHTML1 = tempHTML;
-    nowHTML1 = nowHTML1.replace("${goods_image}", goods_image);
+    nowHTML1 = nowHTML1.replace("${goods_image}", imgUrl);
     nowHTML1 = nowHTML1.replace("${goods_code}", goods_code);
     nowHTML1 = nowHTML1.replace("${goods_code}", goods_code);
     html += nowHTML1;
