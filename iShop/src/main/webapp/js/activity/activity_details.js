@@ -474,6 +474,10 @@ function listShow(userList){
             $('#peopleError').hide();
         }
     }
+    var el=$('.people')[0];
+    if(!(el.scrollHeight > el.clientHeight)){
+        $('.people').css('padding-right','9px');
+    };
 }
 //插件-饼图
 function table(TheTarget,TheCover) {

@@ -139,12 +139,12 @@ public class DefGoodsMatchController {
             int msg = 0;
             for (int i = 0; i < jsonArray.size(); i++) {
                 String str = jsonArray.get(i).toString();
-                System.out.println("=========split========"+str);
+         //       System.out.println("=========split========"+str);
                 com.alibaba.fastjson.JSONObject object = JSON.parseObject(str);
-                System.out.println("=========object========"+object.toJSONString());
+           //     System.out.println("=========object========"+object.toJSONString());
                 String corp_code = object.get("corp_code").toString();
                 String goods_match_code = object.get("goods_match_code").toString();
-                System.out.println("=============商品搭配============="+corp_code+"--------------------"+goods_match_code);
+             //   System.out.println("=============商品搭配============="+corp_code+"--------------------"+goods_match_code);
                 msg+=  defGoodsMatchService.delMatchByCode(corp_code,goods_match_code);
             }
             if (msg >0) {
@@ -274,7 +274,7 @@ public class DefGoodsMatchController {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
-            dataBean.setMessage("新增失败");
+            dataBean.setMessage("编辑失败");
         }
         return  dataBean.getJsonStr();
     }

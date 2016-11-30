@@ -21,8 +21,7 @@ var funcCode=key_val.func_code;
  抛开瀑布流布局各种乱七八糟的算法，基于masonry的瀑布流，很是简单的，而且通过扩展animate,能实现瀑布流布局的晃动、弹球等效果。
  masonry还有很多参数我这里注解了常用的参数
  */
-$(function(){
-    /*瀑布流开始*/
+function waterFull(){
     var container = $('.waterfull ul');
     var loading=$('#imloading');
     // 初始化loading状态
@@ -33,8 +32,8 @@ $(function(){
         if(tmpWid>1280){
             tmpWid=1280;
         }else{
-            var column=Math.floor(tmpWid/340);
-            tmpWid=column*340;
+            var column=Math.floor(tmpWid/360);
+            tmpWid=column*360;
         }
         $('.waterfull').width(tmpWid);
     }
@@ -44,7 +43,7 @@ $(function(){
     });
     container.imagesLoaded(function(){
         container.masonry({
-            columnWidth: 340,
+            columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
             isAnimated: false,//是否采用jquery动画进行重拍版
@@ -56,7 +55,6 @@ $(function(){
             }
         });
     });
-
     function loadImage(url) {
         var img = new Image();
         //创建一个Image对象，实现图片的预下载
@@ -69,16 +67,7 @@ $(function(){
         };
     };
     loadImage('images/one.jpeg');
-//        /*item hover效果*/
-//        var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
-//        $('#waterfull').on('mouseover','.item',function(){
-//            var random=Math.floor(Math.random() * 4);
-//            $(this).stop(true).animate({'backgroundColor':rbgB[random]},1000);
-//        });
-//        $('#waterfull').on('mouseout','.item',function(){
-//            $(this).stop(true).animate({'backgroundColor':'#fff'},1000);
-//        });
-});
+}
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
@@ -243,6 +232,7 @@ function pageVal(arr,unqiuearr,list){
         html += nowHTML3;
         $(".waterfull ul").append(html);
     }
+    waterFull();
 
 }
 //点击放大镜触发搜索

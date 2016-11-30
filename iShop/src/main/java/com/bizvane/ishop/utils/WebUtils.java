@@ -164,6 +164,19 @@ public class WebUtils {
         return str;
     }
 
+    public static String El2Str1(String el) {
+        String str = "";
+        str = el.replace("$", "");
+        str = str.replace("*", "\\*");
+        str = str.replace("(", "\\(");
+        str = str.replace(")", "\\)");
+        str = str.replace("[", "\\[");
+        str = str.replace("]", "\\]");
+        str = str.replace("+", "\\+");
+        str = str.replace("?", "\\?");
+        return str;
+    }
+
     public static Map Json2Map(JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;

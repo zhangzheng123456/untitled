@@ -176,11 +176,12 @@ function dian(a,b){//点击分页的时候调什么接口
 }
 //页面加载循环
 function superaddition(data,num){//页面加载循环
-    if(data.length==1&&num>1){
-        pageNumber=num-1;
-    }else{
-        pageNumber=num;
-    }
+    // if(data.length==1&&num>1){
+    //     pageNumber=num-1;
+    // }else{
+    //     pageNumber=num;
+    // }
+    pageNumber=num;
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -489,14 +490,14 @@ $("#delete").click(function(){
                $('.frame').html('删除成功');
                param["pageNumber"]=pageNumber;
                POST(pageNumber,pageSize);
-            }else if(filtrate==""){
+            }else if(filtrate!==""){
                frame();
                $('.frame').html('删除成功');
                _param["pageNumber"]=pageNumber;
                filtrates(pageNumber,pageSize);
             }
-        var thinput=$("#table thead input")[0];
-        thinput.checked =false;
+            var thinput=$("#table thead input")[0];
+            thinput.checked =false;
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
