@@ -84,6 +84,10 @@
         .conpany_msg span:nth-of-type(2){display: none;}
        /*删除*/
         .conpany_msg i{display:none;background-color: #e58080;color: white;border-radius: 300px;width: 17px;height: 17px;position: absolute;top: -7px;right: -7px;text-align: center;line-height: 17px;}
+        #d_search:hover{
+            cursor:hand;
+            cursor:pointer
+        }
     </style>
 </head>
 <body style="margin-right: 200px">
@@ -109,7 +113,7 @@
          onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">
         <i class="icon-ishop_6-12" id="close_match_goods"></i>
         <div class="li">
-            <input type="text" class="input" id="search" placeholder="名称">
+            <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
             <i class="icon-ishop_3-05" id="d_search"></i>
         </div>
         <ul>

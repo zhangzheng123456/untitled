@@ -257,11 +257,11 @@ $("#d_search").click(function () {
     param["pageSize"] = pageSize;
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
-})
+});
 
 //搜索的请求函数
 function POST(a, b) {
-    whir.loading.add("", 0.5);//加载等待框
+    whir.loading.add("", 1);//加载等待框
     oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -273,12 +273,11 @@ function POST(a, b) {
             var forLength = list.length;     //显示盒子数量
             $(".masonry").empty();
             if (forLength <= 0) {
-                $(".masonry p").remove();
-                $(".masonry").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
+                $("#waterfull p").remove();
+                $("#waterfull").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
             } else if (forLength > 0) {
-                whir.loading.remove();//移除加载框
-                $(".masonry p").remove();
+                $("#waterfull p").remove();
                 var arr=[];
                 var unqiuearr=[];
                 var hash={};
@@ -297,6 +296,7 @@ function POST(a, b) {
                 console.log(unqiuearr);
                 //var goods_code = list[i].goods_code;
                 //var goods_image = list[i].goods_image;
+                whir.loading.remove();//移除加载框
                 pageVal(arr,unqiuearr,list);
                 jumpBianse();
             }

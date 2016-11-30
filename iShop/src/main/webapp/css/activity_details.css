@@ -140,6 +140,7 @@ a, a:link,a:hover,a:visited,a:active{
     overflow-x: hidden;
     /* padding: 0 20px 20px 0px; */
     padding-left: 5px;
+    padding-right: 9px;
 }
 .people_head{
     clear: both;
@@ -149,17 +150,17 @@ a, a:link,a:hover,a:visited,a:active{
     padding-left: 5px;
     padding-right: 9px;
 }
-.people::-webkit-scrollbar{
-    width: 9px;
-    background-color: white;
-    border-radius: 5px;
-}
-.people::-webkit-scrollbar-thumb{
-    width: 10px;
-    height: 200px;
-    border-radius: 10px;
-    background-color: #dfdfdf;
-}
+/*.people::-webkit-scrollbar{*/
+    /*width: 9px;*/
+    /*background-color: white;*/
+    /*border-radius: 5px;*/
+/*}*/
+/*.people::-webkit-scrollbar-thumb{*/
+    /*width: 10px;*/
+    /*height: 200px;*/
+    /*border-radius: 10px;*/
+    /*background-color: #dfdfdf;*/
+/*}*/
 .people div,.people_head div{line-height: 40px; color: #434960;font-size: 14px;float: left;}
 /*����*/
 .people_title{ float:left;border-bottom: 1px solid #d7d7d7;width: 100%}
@@ -180,7 +181,7 @@ a, a:link,a:hover,a:visited,a:active{
     position: fixed;
     top:50%;
     left:50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,-45%);
     width: 570px;
     background: #fff;
     border-radius: 5px;
@@ -240,17 +241,17 @@ a, a:link,a:hover,a:visited,a:active{
     color:#888;
     overflow: hidden;
 }
-#content::-webkit-scrollbar{
-    width: 9px;
-    background-color: white;
-    border-radius: 5px;
-}
-#content::-webkit-scrollbar-thumb{
-    width: 10px;
-    height: 200px;
-    border-radius: 10px;
-    background-color: #dfdfdf;
-}
+/*#content::-webkit-scrollbar{*/
+    /*width: 9px;*/
+    /*background-color: white;*/
+    /*border-radius: 5px;*/
+/*}*/
+/*#content::-webkit-scrollbar-thumb{*/
+    /*width: 10px;*/
+    /*height: 200px;*/
+    /*border-radius: 10px;*/
+    /*background-color: #dfdfdf;*/
+/*}*/
 .ellipsis{
     height: 40px;
     line-height: 39px;

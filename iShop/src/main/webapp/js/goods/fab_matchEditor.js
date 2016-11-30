@@ -570,6 +570,7 @@ function getmatchgoodsList(a) {
                     if(len>0){
                         for(var j=0;j<len;j++){
                             var code = $($(".conpany_msg li")[j]).find(".goods_code").html();
+                            sonsole.log('获取页面的商品code'+code);
                             if(code == list[i].goods_code){
                                 $($("#search_match_goods ul li")[i]).find("i").show();
                                 $($("#search_match_goods ul li")[i]).find(".goods_add").hide();
