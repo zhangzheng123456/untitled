@@ -316,7 +316,7 @@ public class TaskController {
             task.setIsactive(jsonObject.get("isactive").toString());
             String user_codes = jsonObject.get("user_codes").toString();
             String phone = jsonObject.get("phone").toString();
-            String add = taskService.addTask(task,phone,user_codes,user_code);
+            String add = taskService.addTask(task,phone,user_codes,user_code,"");
             count=Integer.parseInt(add);
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
