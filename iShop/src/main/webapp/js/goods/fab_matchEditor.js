@@ -87,19 +87,19 @@ var swip_image = [];
                 var corp_code=sessionStorage.getItem("corp_code");
                 //var searchValue='';
                 var goods_match_code = sessionStorage.getItem("goods_match_code");
-                var ischeck = $('#is_active').attr("checked");
-                console.log(ischeck);
-                if(ischeck == 'true'){
-                    var isactive = 'Y';
-                }else{
-                    var isactive = 'N';
+                var a = $('#is_active')[0];
+                console.log(a);
+                var input=$("#is_active")[0];
+                if(input.checked==true){
+                    ISACTIVE="Y";
+                }else if(input.checked==false){
+                    ISACTIVE="N";
                 }
-
                 var _params = {
                     "goods_match_code": goods_match_code,
                     "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
-                    "isactive": isactive,
+                    "isactive": ISACTIVE,
                 };
                 console.log(_params);
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -142,6 +142,7 @@ var swip_image = [];
                     "goods_match_code": goods_match_code,
                     "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
+                    "isactive": ISACTIVE,
                 };
                 fabjs.ajaxSubmit(_command,_params,opt);
 
