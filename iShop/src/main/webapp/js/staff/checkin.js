@@ -258,7 +258,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].distance
                         + "</td><td>"
                         + data[i].sign_time
-                        + "</td><td>"
+                        + "</td><td style='width:50px;'>"
                         + data[i].status
                         +"</td><td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 1000px;'></td></tr>");
     }
@@ -622,9 +622,9 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                     +"'><label>"
                     +filter[i].show_name
                     +"</label>"
-                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})\">"
                     +"<label class='tm20'>至</label>"
-                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})\">"
                     +"</li>";
             }
 
@@ -651,6 +651,12 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         })
     }
 });
+function checkStart(data){
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
+function checkEnd(data){
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+};
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
