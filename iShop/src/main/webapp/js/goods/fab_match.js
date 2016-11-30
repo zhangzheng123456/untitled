@@ -42,6 +42,7 @@ function waterFull(){
         tores();
     });
     container.imagesLoaded(function(){
+        container.masonry('destroy');
         container.masonry({
             columnWidth: 360,
             itemSelector : '.item',
