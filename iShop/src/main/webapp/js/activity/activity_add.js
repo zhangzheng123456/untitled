@@ -2411,6 +2411,7 @@ $("#performance").click(function () {
     },1000);
 });
 $("#enter").click(function () {
+    whir.loading.add("",0.5);//加载等待框
     var id = sessionStorage.getItem("id");
     var param = {
         "id":id
@@ -2423,10 +2424,12 @@ $("#enter").click(function () {
                 time: 1,
                 lock: true,
                 cancel: false,
-                content: "执行失败"
+                content: data.message
             });
+            whir.loading.remove();
             return ;
         }
+        whir.loading.remove();
     })
 });
 //点击生成链接

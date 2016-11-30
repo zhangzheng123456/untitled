@@ -899,11 +899,16 @@ public class GoodsController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("search_value").toString();
+            String corp_code_json = jsonObject.get("corp_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             PageInfo<Goods> list=null;
-            if(role_code.equals(Common.ROLE_SYS)){
+            //sys新增
+            if(role_code.equals(Common.ROLE_SYS) && corp_code_json.equals("")){
                 list = goodsService.getMatchFab(page_number,page_size,"C10000",search_value);
+             //sys编辑
+            }else if(role_code.equals(Common.ROLE_SYS) && !corp_code_json.equals("")){
+                list = goodsService.getMatchFab(page_number,page_size,corp_code_json,search_value);
             }else{
                 list = goodsService.getMatchFab(page_number,page_size,corp_code,search_value);
             }

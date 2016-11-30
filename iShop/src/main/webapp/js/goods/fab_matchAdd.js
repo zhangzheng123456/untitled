@@ -528,10 +528,12 @@ function getmatchgoodsList(a) {
     var goods_code=''; //新增的时候goods_code传''，编辑传goods_code，多个以逗号分隔
     var pageNumber=a;
     var pageSize=20;
+    var corp_code = '';
     param["goods_code"]=goods_code;
     param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
     param["search_value"]=search_value;
+    param["corp_code"]=corp_code;
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post", "/goods/getMatchFab","",param, function(data){
         if(data.code=="0"){
