@@ -1,15 +1,13 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.DefGoodsMatch;
-import com.bizvane.ishop.entity.Group;
-import com.bizvane.ishop.entity.Task;
-import com.bizvane.ishop.entity.TaskAllocation;
+
 import com.bizvane.ishop.service.DefGoodsMatchService;
-import com.bizvane.ishop.service.FunctionService;
-import com.github.pagehelper.PageInfo;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -136,12 +134,18 @@ public class DefGoodsMatchController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            String area_id = jsonObject.get("goods_match_code").toString();
-            String[] ids = area_id.split(",");
+            String list = jsonObject.get("list").toString();
+            JSONArray jsonArray = JSON.parseArray(list);
             int msg = 0;
-            for (int i = 0; i < ids.length; i++) {
-                msg+=  defGoodsMatchService.delMatchByCode(corp_code,ids[i]);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                String str = jsonArray.get(i).toString();
+         //       System.out.println("=========split========"+str);
+                com.alibaba.fastjson.JSONObject object = JSON.parseObject(str);
+           //     System.out.println("=========object========"+object.toJSONString());
+                String corp_code = object.get("corp_code").toString();
+                String goods_match_code = object.get("goods_match_code").toString();
+             //   System.out.println("=============商品搭配============="+corp_code+"--------------------"+goods_match_code);
+                msg+=  defGoodsMatchService.delMatchByCode(corp_code,goods_match_code);
             }
             if (msg >0) {
                 dataBean.setId(id);
@@ -153,6 +157,7 @@ public class DefGoodsMatchController {
                 dataBean.setMessage("删除失败");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -201,13 +206,21 @@ public class DefGoodsMatchController {
             if (count >0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("新增成功");
+                com.alibaba.fastjson.JSONObject object=new com.alibaba.fastjson.JSONObject();
+                if(role_code.equals(Common.ROLE_SYS)) {
+                    object.put("corp_code","C10000");
+                }else{
+                    object.put("corp_code",corp_code);
+                }
+                object.put("goods_match_code",goods_match_code);
+                dataBean.setMessage(object.toJSONString());
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("新增失败");
             }
         }catch (Exception ex){
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage("新增失败");
@@ -230,7 +243,7 @@ public class DefGoodsMatchController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
           //  String goods_match_code =sdf.format(new Date()) + Math.round(Math.random() * 9);
             String corp_code_json = jsonObject.get("corp_code").toString();
             String goods_match_code = jsonObject.get("goods_match_code").toString();
@@ -240,11 +253,7 @@ public class DefGoodsMatchController {
             String[] split = goods_code.split(",");
             for (int i=0;i<split.length;i++){
                 DefGoodsMatch defGoodsMatch=new DefGoodsMatch();
-                if(role_code.equals(Common.ROLE_SYS)) {
-                    defGoodsMatch.setCorp_code("C10000");
-                }else{
-                    defGoodsMatch.setCorp_code(corp_code);
-                }
+                defGoodsMatch.setCorp_code(corp_code_json);
                 defGoodsMatch.setGoods_match_code(goods_match_code);
                 defGoodsMatch.setGoods_code(split[i]);
                 Date date = new Date();
@@ -265,9 +274,10 @@ public class DefGoodsMatchController {
                 dataBean.setMessage("编辑失败");
             }
         }catch (Exception ex){
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
-            dataBean.setMessage("新增失败");
+            dataBean.setMessage("编辑失败");
         }
         return  dataBean.getJsonStr();
     }

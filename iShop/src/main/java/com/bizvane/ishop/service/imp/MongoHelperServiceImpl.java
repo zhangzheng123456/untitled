@@ -26,6 +26,9 @@ public class MongoHelperServiceImpl {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("operation_time")) {
+                screen_value = screen_value.replaceAll(",", "|");
+                screen_value = screen_value.replaceAll("，", "|");
+                screen_value = WebUtils.El2Str1(screen_value);
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -59,7 +62,9 @@ public class MongoHelperServiceImpl {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("") && !screen_key.equals("user_can_login") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
-
+                screen_value = screen_value.replaceAll(",", "|");
+                screen_value = screen_value.replaceAll("，", "|");
+                screen_value = WebUtils.El2Str1(screen_value);
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -152,6 +157,9 @@ public class MongoHelperServiceImpl {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("sign_time")) {
+                screen_value = screen_value.replaceAll(",", "|");
+                screen_value = screen_value.replaceAll("，", "|");
+                screen_value = WebUtils.El2Str1(screen_value);
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }

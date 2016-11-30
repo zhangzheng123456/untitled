@@ -1,7 +1,7 @@
-.content{
-	width: 1280px;
-	/*margin: 0 auto;*/
-}
+/*.content{*/
+	/*width: 1280px;*/
+	/*/!*margin: 0 auto;*!/*/
+/*}*/
 .content .rec_con ul li{
 	float: left;
 	width: 320px;
@@ -251,13 +251,13 @@
 	border-radius: 8px 4px 4px 8px;
 }
 .waterfull{
-	margin: 0 auto;
+	margin: 0;
+	overflow: hidden;
+	margin-right: 20px;
 }
 .waterfull ul li{
-	width: 330px;
+	width: 350px;
 	height: auto;
-	/*padding-top: 40px;*/
-	/*padding-left: 10px;*/
 	background-color: #ffffff;
 	position: relative;
 	float: left;

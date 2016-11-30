@@ -160,7 +160,7 @@ a, a:link,a:hover,a:visited,a:active{
     border-radius: 10px;
     background-color: #dfdfdf;
 }
-.people div,.people_head div{line-height: 50px; color: #434960;font-size: 14px;float: left;}
+.people div,.people_head div{line-height: 40px; color: #434960;font-size: 14px;float: left;}
 /*����*/
 .people_title{ float:left;border-bottom: 1px solid #d7d7d7;width: 100%}
 .people_title_order{    width: 34px;margin-right: 4%;padding-left: 5px;}
@@ -204,7 +204,7 @@ a, a:link,a:hover,a:visited,a:active{
     padding-top: 10px;
     padding-right: 20px;
     overflow-y: auto;
-    height: 400px;
+    height: 430px;
 }
 #content .content_l{
     float:left;

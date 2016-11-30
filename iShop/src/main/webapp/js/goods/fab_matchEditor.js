@@ -79,15 +79,18 @@ var swip_image = [];
                         matchgoods+=r;
                     }
                 }
-                var _command="/defmatch/addMatch";//接口名
+                var _command="/defmatch/editMatch";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
                 };
+                var corp_code=sessionStorage.getItem("corp_code");
+                //var searchValue='';
+                var goods_match_code = sessionStorage.getItem("goods_match_code");
                 var _params = {
-                    //"corp_code": OWN_CORP,
+                    "goods_match_code": goods_match_code,
+                    "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
-                    //"isactive": ISACTIVE,
                 };
                 console.log(_params);
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -117,15 +120,18 @@ var swip_image = [];
                         matchgoods+=r;
                     }
                 }
-                var _command="/goods/fab/edit";//接口名
+                var _command="/defmatch/editMatch";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
 
                     }
                 };
+                var corp_code=sessionStorage.getItem("corp_code");
+                //var searchValue='';
+                var goods_match_code = sessionStorage.getItem("goods_match_code");
                 var _params = {
-                    //"id": ID,
-                    //"corp_code": OWN_CORP,
+                    "goods_match_code": goods_match_code,
+                    "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
                 };
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -139,18 +145,18 @@ var swip_image = [];
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
-                if(_command=="/defmatch/addMatch"){
-                    sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_match.html");
-                }
-                if(_command=="/goods/fab/edit"){
+                //if(_command=="/defmatch/addMatch"){
+                //    sessionStorage.setItem("id",data.message);
+                //    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_match.html");
+                //}
+                if(_command=="/defmatch/editMatch"){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
                         content:"保存成功"
                     });
-                    window.location.reload();
+                    //window.location.reload();
                 }
             }else if(data.code=="-1"){
                 art.dialog({
@@ -528,10 +534,12 @@ function getmatchgoodsList(a) {
     var goods_code=''; //新增的时候goods_code传''，编辑传goods_code，多个以逗号分隔
     var pageNumber=a;
     var pageSize=20;
+    var corp_code=sessionStorage.getItem("corp_code");
     param["goods_code"]=goods_code;
     param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
     param["search_value"]=search_value;
+    param["corp_code"]=corp_code;
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post", "/goods/getMatchFab","",param, function(data){
         if(data.code=="0"){
@@ -648,8 +656,8 @@ $(".good_imgs").on("click","div img",function () {
 
 function pageVal(){
     var _param={};
-    var corp_code='';
-    //var searchValue='';       
+    var corp_code=sessionStorage.getItem("corp_code");
+    //var searchValue='';
     var goods_match_code = sessionStorage.getItem("goods_match_code");
     _param["corp_code"]=corp_code;
     //_param["searchValue"] =searchValue;  //goods_code 商品id

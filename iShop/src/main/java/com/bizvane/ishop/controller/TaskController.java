@@ -211,7 +211,7 @@ public class TaskController {
                 if (task != null){
                     if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
                         del= taskService.delTask(id, corp_code, task_code);
-                        count = Integer.parseInt(del);
+//                        count = Integer.parseInt(del);
 
                         //----------------行为日志开始------------------------------------------
                         /**
@@ -237,10 +237,11 @@ public class TaskController {
                         //-------------------行为日志结束-----------------------------------------------------------------------------------
                     }else{
                         if(!user_code.equals(task.getCreater())){
+                            count = 2;
                             del="无法删除他人创建的任务";
                         }else{
                             del= taskService.delTask(id, corp_code, task_code);
-                            count = Integer.parseInt(del);
+//                            count = Integer.parseInt(del);
 
                             //----------------行为日志开始------------------------------------------
                             /**
@@ -268,7 +269,7 @@ public class TaskController {
                     }
                 }
             }
-            if(count>0){
+            if(count == 0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("删除成功");
