@@ -145,7 +145,7 @@ var swip_image = [];
                 }
                 if(_command=="/goods/fab/edit"){
                     art.dialog({
-                        time: 1,
+                        time: 3,
                         lock: true,
                         cancel: false,
                         content:"保存成功"
