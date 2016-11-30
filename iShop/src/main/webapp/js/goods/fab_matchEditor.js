@@ -156,7 +156,7 @@ var swip_image = [];
                         cancel: false,
                         content:"保存成功"
                     });
-                    window.location.reload();
+                    //window.location.reload();
                 }
             }else if(data.code=="-1"){
                 art.dialog({
