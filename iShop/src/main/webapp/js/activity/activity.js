@@ -297,20 +297,19 @@ function operate() {
         if(tr.length==1){
             var state = $(tr).children("td:nth-child(5)").text();
             var id=$(tr).attr("id");
+            var return_jump={};//定义一个对象
+            return_jump["inx"]=inx;//跳转到第几页
+            return_jump["value"]=value;//搜索的值;
+            return_jump["filtrate"]=filtrate;//筛选的值
+            return_jump["param"]=JSON.stringify(param);//搜索定义的值
+            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+            return_jump["list"]=list;//筛选的请求的list;
+            return_jump["pageSize"]=pageSize;//每页多少行
+            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+            sessionStorage.setItem("id",id);
             if(state == "未执行"){
-                var return_jump={};//定义一个对象
-                return_jump["inx"]=inx;//跳转到第几页
-                return_jump["value"]=value;//搜索的值;
-                return_jump["filtrate"]=filtrate;//筛选的值
-                return_jump["param"]=JSON.stringify(param);//搜索定义的值
-                return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-                return_jump["list"]=list;//筛选的请求的list;
-                return_jump["pageSize"]=pageSize;//每页多少行
-                sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-                sessionStorage.setItem("id",id);
                 $(window.parent.document).find('#iframepage').attr("src","activity/activity_edit.html");
             }else if(state == "执行中"){
-                sessionStorage.setItem("id",id);
                 $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
             }
         }else if(tr.length==0){
@@ -385,20 +384,19 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var state = $(this).children("td:nth-child(5)").text();
         var id=$(this).attr("id");
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+        sessionStorage.setItem("id",id);
         if(state == "未执行"){
-            var return_jump={};//定义一个对象
-            return_jump["inx"]=inx;//跳转到第几页
-            return_jump["value"]=value;//搜索的值;
-            return_jump["filtrate"]=filtrate;//筛选的值
-            return_jump["param"]=JSON.stringify(param);//搜索定义的值
-            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-            return_jump["list"]=list;//筛选的请求的list;
-            return_jump["pageSize"]=pageSize;//每页多少行
-            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-            sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_edit.html");
         }else if(state == "执行中"||state == "已中止"){
-            sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
         }
     });
