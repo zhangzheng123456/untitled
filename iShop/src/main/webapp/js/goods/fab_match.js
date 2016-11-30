@@ -46,7 +46,7 @@ function waterFull(){
             columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
-            isAnimated: true,//是否采用jquery动画进行重拍版
+            isAnimated: false,//是否采用jquery动画进行重拍版
             isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
             isResizable: true,//是否自动布局默认true
             animationOptions: {
@@ -246,7 +246,6 @@ function pageVal(arr,unqiuearr,list){
         $(".waterfull ul").append(html);
     }
     waterFull();
-
 }
 //点击放大镜触发搜索
 $("#d_search").click(function () {
@@ -296,8 +295,8 @@ function POST(a, b) {
                 console.log(unqiuearr);
                 //var goods_code = list[i].goods_code;
                 //var goods_image = list[i].goods_image;
-                whir.loading.remove();//移除加载框
                 pageVal(arr,unqiuearr,list);
+                whir.loading.remove();//移除加载框
                 jumpBianse();
             }
 
@@ -308,7 +307,7 @@ function POST(a, b) {
             filtrate = "";
             list = "";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            //setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
         } else if (data.code == "-1") {
             alert(data.message);
         }

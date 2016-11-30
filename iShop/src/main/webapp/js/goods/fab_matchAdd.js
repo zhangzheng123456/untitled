@@ -94,9 +94,18 @@ var swip_image = [];
                         success: function () {
                         }
                     };
+                    var ischeck = $('#is_active').attr("checked");
+                    console.log(ischeck);
+                    if(ischeck == 'true'){
+                        var isactive = 'Y';
+                    }else{
+                        var isactive = 'N';
+                    }
+                    console.log(isactive)
                     var _params = {
                         //"corp_code": OWN_CORP,
                         "goods_code": GOODS_CODE,
+                        "isactive": isactive,
                         //"isactive": ISACTIVE,
                     };
                     console.log(_params);
@@ -666,3 +675,6 @@ $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
 })
+//window.onload=function(){
+//    $('#is_active').attr("checked",false);
+//}
