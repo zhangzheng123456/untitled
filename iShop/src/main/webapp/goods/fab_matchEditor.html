@@ -59,7 +59,7 @@
         .match_goods .icon-ishop_6-12{float:right;margin:10px;font-size: 20px;color: #c26555;}
         .goodsImg{width:40px;height:40px;margin:0 10px;border-radius:5px;border: 1px solid #dbdbdb; }
         #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 5px;cursor:pointer;}
-        #search_match_goods{width:450px;min-height:460px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;position: absolute;top:50px;left:250px;z-index: 1000;display: none;}
+        #search_match_goods{width:450px;min-height:460px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;display:none}
         #search{width:400px;height:30px;border-radius:30px;border: 1px solid #EAE2E2;margin: 20px 20px ;}
         #d_search{float: right;position: relative;  top: -48px;  left: -37px;  font-size: 25px;}
         #goods_box{width:100%;height:1200px;position:absolute;top:45%;left: 20%;z-index: 100;display: none;}
@@ -109,7 +109,8 @@
         </form>
 
     </div>
-    <div id="search_match_goods">
+    <div id="search_match_goods" style="top:50px;left:250px;position: absolute;z-index: 1000;" onmousedown="mouseDown(this,event)"
+         onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">
         <i class="icon-ishop_6-12" id="close_match_goods"></i>
         <div class="li">
             <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
@@ -156,6 +157,40 @@
 <!--匹配js文件-->
 <script type="text/javascript" src="../js/goods/fab_matchEditor.js"></script>
 <script>
+    var mouseX, mouseY;
+    var objX, objY;
+    var isDowm = false;  //是否按下鼠标
+    function mouseDown(obj, e) {
+        obj.style.cursor = "move";
+        objX = obj.style.left;
+        console.log();
+        objY = obj.style.top;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        isDowm = true;
+    }
+    function mouseMove(e) {
+        var div = document.getElementById("search_match_goods");
+        var x = e.clientX;
+        var y = e.clientY;
+        if (isDowm) {
+            div.style.left = parseInt(objX) + parseInt(x) - parseInt(mouseX) + "px";
+            div.style.top = parseInt(objY) + parseInt(y) - parseInt(mouseY) + "px";
+        }
+    }
+    function mouseUp(e) {
+        if (isDowm) {
+            var x = e.clientX;
+            var y = e.clientY;
+            var div = document.getElementById("search_match_goods");
+            div.style.left = (parseInt(x) - parseInt(mouseX) + parseInt(objX)) + "px";
+            div.style.top = (parseInt(y) - parseInt(mouseY) + parseInt(objY)) + "px";
+            mouseX = x;
+            rewmouseY = y;
+            div.style.cursor = "default";
+            isDowm = false;
+        }
+    }
     function changePage(){
         window.location.href="fab_match.html";
     }
