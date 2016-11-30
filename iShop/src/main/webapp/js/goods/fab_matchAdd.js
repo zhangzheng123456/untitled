@@ -94,19 +94,16 @@ var swip_image = [];
                         success: function () {
                         }
                     };
-                    var ischeck = $('#is_active').attr("checked");
-                    console.log(ischeck);
-                    if(ischeck == 'true'){
-                        var isactive = 'Y';
-                    }else{
-                        var isactive = 'N';
+                    var input=$("#is_active")[0];
+                    if(input.checked==true){
+                        ISACTIVE="Y";
+                    }else if(input.checked==false){
+                        ISACTIVE="N";
                     }
-                    console.log(isactive)
                     var _params = {
                         //"corp_code": OWN_CORP,
                         "goods_code": GOODS_CODE,
-                        "isactive": isactive,
-                        //"isactive": ISACTIVE,
+                        "isactive": ISACTIVE,
                     };
                     console.log(_params);
                     fabjs.ajaxSubmit(_command, _params, opt);
