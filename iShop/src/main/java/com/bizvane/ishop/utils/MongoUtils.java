@@ -27,6 +27,11 @@ public class MongoUtils {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("")){
+                screen_value = screen_value.replaceAll(",", "|");
+                screen_value = screen_value.replaceAll("，", "|");
+                screen_value = WebUtils.El2Str1(screen_value);
+                System.out.println("========screen_value1:"+screen_value);
+
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
@@ -38,6 +43,7 @@ public class MongoUtils {
 
     //多个“或”查询(搜索)
     public static BasicDBObject orOperation(String[] column_names, String search_value) {
+        search_value = WebUtils.El2Str1(search_value);
         Pattern pattern = Pattern.compile("^.*" + search_value + ".*$", Pattern.CASE_INSENSITIVE);
         BasicDBObject queryCondition = new BasicDBObject();
         BasicDBList values = new BasicDBList();

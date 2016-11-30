@@ -28,6 +28,7 @@ $("#screen_add").click(function(){
 		$("#screen_area").hide();
 		shop_num=1;
 		isscroll=false;
+		$("#store_search").val("");
 		$("#screen_shop .screen_content_l").unbind("scroll");
 		$("#screen_shop .screen_content_l ul").empty();
 		$("#screen_shop .screen_content_r ul").empty();
@@ -49,6 +50,7 @@ $("#screen_add").click(function(){
 		isscroll=false;
 	    $("#screen_area .screen_content_l").unbind("scroll");
 		whir.loading.add("",0.5);
+		$("#area_search").val("");
 		$("#loading").remove();
 		$("#screen_area").show();
 		$("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
@@ -68,6 +70,7 @@ $("#screen_add").click(function(){
 		whir.loading.add("",0.5);
 		$("#loading").remove();
 		$("#screen_brand").show();
+		$("#brand_search").val("");
 		$("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 		$("#screen_shop").hide();
 		$("#screen_area").hide();
@@ -90,6 +93,7 @@ $("#shop_add").click(function(){
 	$("#screen_area").hide();
 	shop_num=1;
 	isscroll=false;
+	$("#store_search").val("");
 	$("#screen_shop .screen_content_l").unbind("scroll");
 	$("#screen_shop .screen_content_l ul").empty();
 	$("#screen_shop .screen_content_r ul").empty();
@@ -118,9 +122,9 @@ $("#more_down").on("click","#synchronization",function(){
 	$("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
 	$("#screen_area").hide();
 	getstorelist(shop_num);
+	$(".input_search input").val("");
 	shop_num=1;
 	isscroll=false;
-
 })
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){
@@ -138,6 +142,7 @@ $("#shop_area").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
 	var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#area_search").val("");
 	$("#screen_shop").hide();
 	$("#screen_area").show();
 	$("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
@@ -156,6 +161,7 @@ $("#shop_brand").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
 	var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#brand_search").val("");
 	$("#screen_shop").hide();
 	$("#screen_brand").show();
 	$("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
@@ -168,6 +174,7 @@ $("#shop_city").click(function(){
 	var arr=whir.loading.getPageSize();
 	var left=(arr[0]-$("#screen_shop").width())/2;
 	var tp=(arr[3]-$("#screen_shop").height())/2+50;
+	$("#city_search").val("");
 	$("#screen_shop").hide();
 	$("#screen_city").show();
 	$("#screen_city").css({"left":+left+"px","top":+tp+"px","position":"fixed"});

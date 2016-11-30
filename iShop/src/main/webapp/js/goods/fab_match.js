@@ -21,8 +21,7 @@ var funcCode=key_val.func_code;
  抛开瀑布流布局各种乱七八糟的算法，基于masonry的瀑布流，很是简单的，而且通过扩展animate,能实现瀑布流布局的晃动、弹球等效果。
  masonry还有很多参数我这里注解了常用的参数
  */
-$(function(){
-    /*瀑布流开始*/
+function waterFull(){
     var container = $('.waterfull ul');
     var loading=$('#imloading');
     // 初始化loading状态
@@ -33,8 +32,8 @@ $(function(){
         if(tmpWid>1280){
             tmpWid=1280;
         }else{
-            var column=Math.floor(tmpWid/340);
-            tmpWid=column*340;
+            var column=Math.floor(tmpWid/360);
+            tmpWid=column*360;
         }
         $('.waterfull').width(tmpWid);
     }
@@ -44,7 +43,7 @@ $(function(){
     });
     container.imagesLoaded(function(){
         container.masonry({
-            columnWidth: 340,
+            columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
             isAnimated: false,//是否采用jquery动画进行重拍版
@@ -52,12 +51,10 @@ $(function(){
             isResizable: true,//是否自动布局默认true
             animationOptions: {
                 duration: 800,
-                easing: 'easeInOutBack',//如果你引用了jQeasing这里就可以添加对应的动态动画效果，如果没引用删除这行，默认是匀速变化
-                queue: false//是否队列，从一点填充瀑布流
+                queue: true//是否队列，从一点填充瀑布流
             }
         });
     });
-
     function loadImage(url) {
         var img = new Image();
         //创建一个Image对象，实现图片的预下载
@@ -70,16 +67,7 @@ $(function(){
         };
     };
     loadImage('images/one.jpeg');
-//        /*item hover效果*/
-//        var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
-//        $('#waterfull').on('mouseover','.item',function(){
-//            var random=Math.floor(Math.random() * 4);
-//            $(this).stop(true).animate({'backgroundColor':rbgB[random]},1000);
-//        });
-//        $('#waterfull').on('mouseout','.item',function(){
-//            $(this).stop(true).animate({'backgroundColor':'#fff'},1000);
-//        });
-});
+}
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
@@ -139,7 +127,9 @@ function jumpBianse(){
         if(val.length==1){
             var id=$(val).find('input').attr("id");
             console.log('id是'+id);
+            var corp_code = $(val).attr("data-code");
             var goods_match_code = id;
+            sessionStorage.setItem("corp_code",corp_code);//存储的方法
             sessionStorage.setItem("goods_match_code",goods_match_code);//存储的方法
             $(window.parent.document).find('#iframepage').attr("src","/goods/fab_matchEditor.html");
     }
@@ -242,6 +232,7 @@ function pageVal(arr,unqiuearr,list){
         html += nowHTML3;
         $(".waterfull ul").append(html);
     }
+    waterFull();
 
 }
 //点击放大镜触发搜索
@@ -254,6 +245,7 @@ $("#d_search").click(function () {
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
 })
+
 //搜索的请求函数
 function POST(a, b) {
     whir.loading.add("", 0.5);//加载等待框
@@ -274,12 +266,25 @@ function POST(a, b) {
             } else if (forLength > 0) {
                 whir.loading.remove();//移除加载框
                 $(".masonry p").remove();
-                //superaddition(list, pageNum);
-                for(i=0;i<forLength;i++){
-                    var goods_code = list[i].goods_code;
-                    var goods_image = list[i].goods_image;
-                    pageVal(goods_code,goods_image);
+                var arr=[];
+                var unqiuearr=[];
+                var hash={};
+                //获取所有搭配id
+                for(i=0;i< list.length;i++){
+                    arr.push(list[i].goods_match_code);
                 }
+                console.log(arr);
+                //搭配id去重
+                for(var i=0;i<arr.length;i++){
+                    if(!hash[arr[i]]){
+                        hash[arr[i]] = true; //存入hash表
+                        unqiuearr.push(arr[i]);
+                    }
+                }
+                console.log(unqiuearr);
+                //var goods_code = list[i].goods_code;
+                //var goods_image = list[i].goods_image;
+                pageVal(arr,unqiuearr,list);
                 jumpBianse();
             }
 
@@ -335,7 +340,7 @@ $("#delete").click(function () {
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
-                GET(pageNumber, pageSize);
+               window.location.reload();
             } else if (value !== "") {
                 frame();
                 $('.frame').html('删除成功');
@@ -347,8 +352,6 @@ $("#delete").click(function () {
                 _param["pageNumber"] = pageNumber;
                 filtrates(pageNumber, pageSize);
             }
-            var thinput = $("thead input")[0];
-            thinput.checked = false;
         } else if (data.code == "-1") {
             frame();
             $('.frame').html(data.message);
@@ -592,6 +595,7 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
             var event = window.event || arguments[0];
             if (event.keyCode == 13) {
                 getInputValue();
+
             }
         })
     }
@@ -684,6 +688,26 @@ function filtrates(a, b) {
         }
     });
 }
+//键盘事件
+$(function(){
+    document.onkeydown = function(e){
+        var ev = document.all ? window.event : e;
+        if(ev.keyCode==13) {
+            value = $("#search").val().replace(/\s+/g, "");
+            inx = 1;
+            param["searchValue"] = value;
+            param["pageNumber"] = inx;
+            param["pageSize"] = pageSize;
+            param["funcCode"] = funcCode;
+            POST(inx, pageSize);
+
+        }
+    }
+});
+//刷新
+$('#reload').click(function(){
+    location.reload();
+});
 window.onload =function() {
     getVal();
 }
