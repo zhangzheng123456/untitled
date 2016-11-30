@@ -41,6 +41,7 @@ jQuery(function () {
     oc.postRequire("post", "/api/fab/select", "", query, function (data) {
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
+        console.log(list);
         var goods_image=JSON.parse(list.goods_image);
         // if(list.goods_image.indexOf("http")!==-1){
         //     var goodsImage = list.goods_image.split(",");
