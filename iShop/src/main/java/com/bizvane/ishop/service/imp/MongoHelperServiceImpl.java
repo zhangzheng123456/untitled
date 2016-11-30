@@ -213,7 +213,6 @@ public class MongoHelperServiceImpl {
             object.put("id", id);
             object.removeField("_id");
             String status=object.get("status").toString();
-            String  corp_name=object.get("corp_name").toString();
             if(status==null||status.equals("")){
                 object.put("status","");
             }else if(status.equals("0")){
@@ -222,13 +221,46 @@ public class MongoHelperServiceImpl {
             else if(status.equals("-1")){
                 object.put("status","签退");
             }
-            else if(corp_name.equals("")&&corp_name==null){
-                 continue;
-            }
             list.add(object.toMap());
         }
 
         return  list;
     }
+
+
+    //DBCursor数据集过滤没有店铺的员工（签到管理）
+    public  static  DBCursor dbCursor_sign_filter(DBCollection dbCollection,DBCursor dbCursor,BasicDBList valuse){
+
+        DBCursor db=null;
+        BasicDBObject deleteRecord;
+        BasicDBObject basicDBObject=new BasicDBObject();
+
+
+        if(dbCursor!=null&&dbCursor.count()>0) {
+            while (dbCursor.hasNext()) {
+
+                DBObject dbObject = dbCursor.next();
+                String store_name = dbObject.get("store_name").toString();
+
+                if (store_name.equals("")) {
+
+                    deleteRecord = new BasicDBObject();
+                    deleteRecord.put("store_name", new BasicDBObject("$ne", ""));
+                    valuse.add(deleteRecord);
+                    basicDBObject.put("$and", valuse);
+                   // db = dbCollection.find(basicDBObject);
+                    break;
+                }
+            }
+        }else {
+            basicDBObject.put("$and", valuse);
+            //   db = dbCollection.find(basicDBObject);
+        }
+        db = dbCollection.find(basicDBObject);
+
+        return  db;
+    }
+
+
 
 }
