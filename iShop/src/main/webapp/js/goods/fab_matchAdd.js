@@ -550,8 +550,15 @@ function getmatchgoodsList(a) {
             }else{
                 var len = $(".conpany_msg li").length;
                 for(var i=0;i<list.length;i++){
+                    var imgUrl="";
+                    if(list[i].goods_image.indexOf("http")!==-1){
+                        imgUrl = list[i].goods_image;
+                    }
+                    if(list[i].goods_image.indexOf("http")==-1){
+                        imgUrl="../img/goods_default_image.png";
+                    }
                     jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
-                        + list[i].goods_image
+                        + imgUrl
                         + '"><span class="goods_code">'
                         + list[i].goods_code + '</span><span>'
                         + list[i].goods_name + '</span><span class="goods_add">'
