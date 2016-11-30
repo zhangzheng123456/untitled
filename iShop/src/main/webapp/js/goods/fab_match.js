@@ -257,7 +257,7 @@ $("#d_search").click(function () {
     param["pageSize"] = pageSize;
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
-})
+});
 
 //搜索的请求函数
 function POST(a, b) {
