@@ -26,6 +26,12 @@ public class MongoHelperServiceImpl {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("operation_time")) {
+                if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
+                    screen_value = screen_value.substring(1);
+                }
+                if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
+                    screen_value = screen_value.substring(0, screen_value.length() - 1);
+                }
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value = WebUtils.El2Str1(screen_value);
@@ -62,6 +68,12 @@ public class MongoHelperServiceImpl {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("") && !screen_key.equals("user_can_login") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("created_date") && !screen_key.equals("count")) {
+                if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
+                    screen_value = screen_value.substring(1);
+                }
+                if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
+                    screen_value = screen_value.substring(0, screen_value.length() - 1);
+                }
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value = WebUtils.El2Str1(screen_value);
@@ -157,6 +169,12 @@ public class MongoHelperServiceImpl {
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("sign_time")) {
+                if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
+                    screen_value = screen_value.substring(1);
+                }
+                if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
+                    screen_value = screen_value.substring(0, screen_value.length() - 1);
+                }
                 screen_value = screen_value.replaceAll(",", "|");
                 screen_value = screen_value.replaceAll("，", "|");
                 screen_value = WebUtils.El2Str1(screen_value);

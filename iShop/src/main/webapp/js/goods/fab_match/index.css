@@ -1,6 +1,6 @@
 /*.content{*/
 	/*width: 1280px;*/
-	/*/!*margin: 0 auto;*!/*/
+	/*margin: 0 auto;*/
 /*}*/
 .content .rec_con ul li{
 	float: left;
@@ -253,7 +253,7 @@
 .waterfull{
 	margin: 0;
 	overflow: hidden;
-	margin-right: 20px;
+	/*margin-right: 20px;*/
 }
 .waterfull ul li{
 	width: 350px;

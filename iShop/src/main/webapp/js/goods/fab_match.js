@@ -204,7 +204,7 @@ function getVal(){
 //数据模板
 function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
-    var tempHTML1='<li data-code="${corp_code}" class="item"><div class="boxArea"><input id="${code}" type="checkbox"/>';
+    var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
     //内容（图片+文字）迭代生成
     var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
@@ -214,11 +214,24 @@ function pageVal(arr,unqiuearr,list){
         var html = '';
         var nowHTML1 = tempHTML1;
             nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
         var nowHTML2 = "";
         for(k=0;k<list.length;k++){
             if(list[k].goods_match_code ==unqiuearr[i]){
                 nowHTML2 += tempHTML2;
-                var goods_image = list[k].goods_image;
+                var goods_image="";
+                if(list[k].goods_image.indexOf("http")!==-1){
+                    goods_image = list[k].goods_image;
+                }
+                if(list[k].goods_image.indexOf("http")==-1){
+                    goods_image="../img/goods_default_image.png";
+                }
+                //console.log(goods_image);
+                //
+                //if(goods_image ==''){
+                //    console.log('null')
+                //    goods_image = '../img/goods_default_image.png';
+                //}
                 var goods_code = list[k].goods_code;
                 nowHTML2 = nowHTML2.replace("${goods_image}", goods_image);
                 nowHTML2 = nowHTML2.replace("${goods_code}", goods_code);
@@ -248,7 +261,7 @@ $("#d_search").click(function () {
 
 //搜索的请求函数
 function POST(a, b) {
-    whir.loading.add("", 0.5);//加载等待框
+    whir.loading.add("", 1);//加载等待框
     oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -260,12 +273,11 @@ function POST(a, b) {
             var forLength = list.length;     //显示盒子数量
             $(".masonry").empty();
             if (forLength <= 0) {
-                $(".masonry p").remove();
-                $(".masonry").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
+                $("#waterfull p").remove();
+                $("#waterfull").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
             } else if (forLength > 0) {
-                whir.loading.remove();//移除加载框
-                $(".masonry p").remove();
+                $("#waterfull p").remove();
                 var arr=[];
                 var unqiuearr=[];
                 var hash={};
@@ -284,6 +296,7 @@ function POST(a, b) {
                 console.log(unqiuearr);
                 //var goods_code = list[i].goods_code;
                 //var goods_image = list[i].goods_image;
+                whir.loading.remove();//移除加载框
                 pageVal(arr,unqiuearr,list);
                 jumpBianse();
             }
@@ -704,6 +717,14 @@ $(function(){
         }
     }
 });
+function dblclick(dom) {
+    var goods_match_code = $(dom).find('.check').attr('id');
+    var corp_code = $(dom).attr("data-code");
+    sessionStorage.setItem("corp_code", corp_code);//存储的方法
+    sessionStorage.setItem("goods_match_code", goods_match_code);//存储的方法
+    console.log('双击跳转搭配编辑页面');
+    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
+}
 //刷新
 $('#reload').click(function(){
     location.reload();
