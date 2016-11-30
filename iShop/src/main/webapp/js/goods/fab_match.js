@@ -46,7 +46,7 @@ function waterFull(){
             columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
-            isAnimated: false,//是否采用jquery动画进行重拍版
+            isAnimated: true,//是否采用jquery动画进行重拍版
             isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
             isResizable: true,//是否自动布局默认true
             animationOptions: {
@@ -257,7 +257,7 @@ $("#d_search").click(function () {
     param["pageSize"] = pageSize;
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
-})
+});
 
 //搜索的请求函数
 function POST(a, b) {
