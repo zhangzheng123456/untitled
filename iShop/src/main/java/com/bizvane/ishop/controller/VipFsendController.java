@@ -226,4 +226,45 @@ public class VipFsendController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 查看选择接收短信的会员信息
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/checkVipInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public String findById(HttpServletRequest request) {
+        DataBean bean = new DataBean();
+        String data = null;
+        try {
+            String jsString = request.getParameter("param");
+
+           // logger.info("json-select-------------" + jsString);
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String vipFsend_id = jsonObject.get("id").toString();
+            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id));
+            if (info != null) {
+                bean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                bean.setId("1");
+                bean.setMessage(info);
+            } else {
+                bean.setCode(Common.DATABEAN_CODE_ERROR);
+                bean.setId("1");
+                bean.setMessage("查看失败");
+            }
+
+        } catch (Exception e) {
+            bean.setCode(Common.DATABEAN_CODE_ERROR);
+            bean.setId("1");
+            bean.setMessage("信息异常");
+        }
+        logger.info("info-----" + bean.getJsonStr());
+        return bean.getJsonStr();
+    }
+
 }

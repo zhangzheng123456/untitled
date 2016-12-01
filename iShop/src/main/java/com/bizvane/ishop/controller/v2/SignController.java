@@ -260,7 +260,7 @@ public class SignController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
 
-            String[] column_names = new String[]{"user_code","user_name","corp_name", "location"};
+            String[] column_names = new String[]{"user_code","user_name","corp_name"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
             DBCursor dbCursor = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -390,7 +390,6 @@ public class SignController {
                         DBCursor dbCursor2 = cursor.find(ba);
                             pages = MongoUtils.getPages(dbCursor2,page_size);
                             dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"sign_time",-1);
-
 
                      }
 
@@ -555,7 +554,7 @@ public class SignController {
 
             if (screen.equals("")) {
 
-                String[] column_names = new String[]{"user_code","user_name","corp_name", "location"};
+                String[] column_names = new String[]{"user_code","user_name","corp_name"};
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
 
                 DBCursor dbCursor = null;

@@ -100,10 +100,15 @@ var swip_image = [];
                     }else if(input.checked==false){
                         ISACTIVE="N";
                     }
+                    var goods_match_title = $('#goodsTitle').val();
+                    console.log('商品标题是'+goods_match_title);
+                    var goods_match_desc = $('#goodsDescribe').val();
                     var _params = {
                         //"corp_code": OWN_CORP,
                         "goods_code": GOODS_CODE,
                         "isactive": ISACTIVE,
+                        "goods_match_title": goods_match_title,
+                        "goods_match_desc": goods_match_desc,
                     };
                     console.log(_params);
                     fabjs.ajaxSubmit(_command, _params, opt);
