@@ -13,11 +13,11 @@ if(group_corp!==null){
   role_code=group_corp.role_code;
   var role_names=group_corp.role_name;
   $('#role_id').val(role_code);
-  $('#role_name').val(role_name);
+  $('#role_name').val(role_names);
   $("#page-wrapper").hide();
   $(".content").show();
   GET();  
-}
+};
 //编辑页面点击弹出角色权限的框
 $('#edit_power').click(function(){
     role_code=$("#ROLE_NUM").val();

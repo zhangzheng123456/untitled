@@ -304,6 +304,8 @@ function GET(a,b){
             cout=message.pages;
             superaddition(list,page_number);
             jumpBianse();
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             setPage($("#foot-num")[0],cout,a,b,funcCode);
             setPage($("#foot-num")[0],cout,page_number,b,funcCode);
         }else if(data.code=="-1"){
@@ -400,6 +402,8 @@ function POST(a,b){
             for(var i=0;i<input.length;i++){
                 input[i].value="";
             }
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             filtrate="";
             list="";
             $(".sxk").slideUp();
