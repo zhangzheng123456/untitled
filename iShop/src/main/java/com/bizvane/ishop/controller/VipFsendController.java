@@ -241,7 +241,7 @@ public class VipFsendController {
         try {
             String jsString = request.getParameter("param");
 
-            logger.info("json-select-------------" + jsString);
+           // logger.info("json-select-------------" + jsString);
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();

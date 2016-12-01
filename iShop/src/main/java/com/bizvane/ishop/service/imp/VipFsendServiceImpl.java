@@ -66,20 +66,27 @@ public class VipFsendServiceImpl implements VipFsendService{
                         store_code = store_code + storeList.get(i).getStore_code() + ",";
                     }
                 }
+
+
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_vip_id = new Data("vip_ids", "", ValueType.PARAM);
                 Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
 
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_vip_id.key, data_vip_id);
                 datalist.put(data_store_code.key, data_store_code);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
-                message = dataBox.data.get("message").value;
-
+                 message = dataBox.data.get("message").value;
             }else {
-                DataBox dataBox = iceInterfaceService.vipScreenMethod("1","500",corp_code,"","","",user_code);
-                message = dataBox.data.get("message").value;}
+
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_user_code.key, data_user_code);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+               message = dataBox.data.get("message").value;
+            }
         }else if (type.equals("2")){
             String vips = vips_obj.get("vips").toString();
           //  System.out.print(vips+"=======");
@@ -126,6 +133,9 @@ public class VipFsendServiceImpl implements VipFsendService{
             String brand_code = sms_vips_obj.get("brand_code").toString();
             String store_code = sms_vips_obj.get("store_code").toString();
             String vip_user_code = sms_vips_obj.get("user_code").toString();
+            String count = sms_vips_obj.get("count").toString();
+            vipFsend.setTarget_vips_count(count);
+
             if (vip_user_code.equals("")){
                 if (store_code.equals("")) {
                     List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
