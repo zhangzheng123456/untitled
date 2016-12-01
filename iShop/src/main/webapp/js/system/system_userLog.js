@@ -822,3 +822,6 @@ $("#input-txt").keydown(function() {
 function reload(){
     document.location.reload();
 }
+$(".icon-ishop_6-07").parent().click(function () {
+    window.location.reload();
+});

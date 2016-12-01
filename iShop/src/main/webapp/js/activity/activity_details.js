@@ -441,7 +441,7 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
 function listShow(userList){
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
-    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
+    var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done" style="width: ${percent}%"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
     for(var i=0;i<userList.length;i++) {
         //随机进度
         var html = '';
@@ -458,9 +458,9 @@ function listShow(userList){
         nowHTML1 = nowHTML1.replace("${shop}", userList[i].store_name);
         nowHTML1 = nowHTML1.replace("${title_shop}", userList[i].store_name);
         nowHTML1 = nowHTML1.replace("${percent}", percent);
+        nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
         $("#peopleContent").append(html);
-        $('.done').css('width', percent + '%');
         //判断进度颜色
         if (percent < 100 && percent > 0) {
             $('.percent_percent').css('color', '#42a0a8');
@@ -484,9 +484,9 @@ function table(TheTarget,TheCover) {
     $('#TheTarget').text(TheTarget);
     $('#TheCover').text(TheCover);
     var NoCover = ((TheTarget - TheCover)/TheTarget*100).toFixed(2);
-    // console.log('未覆盖'+NoCover+'%');
+    console.log(NoCover);
     var TheCover = (TheCover/TheTarget*100).toFixed(2);
-    // console.log('已覆盖'+TheCover+'%');
+    console.log(TheCover);
     require.config({
         paths: {
             echarts: '../js/dist'

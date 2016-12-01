@@ -185,6 +185,8 @@ public class DefGoodsMatchController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String goods_match_code =sdf.format(new Date()) + Math.round(Math.random() * 9);
             String goods_code = jsonObject.get("goods_code").toString();
+            String isactive = jsonObject.get("isactive").toString();
+            System.out.println("---------111isactive1111-------"+isactive);
             String[] split = goods_code.split(",");
             for (int i=0;i<split.length;i++){
                 DefGoodsMatch defGoodsMatch=new DefGoodsMatch();
@@ -200,7 +202,7 @@ public class DefGoodsMatchController {
                 defGoodsMatch.setCreater(user_code);
                 defGoodsMatch.setModified_date(Common.DATETIME_FORMAT.format(date));
                 defGoodsMatch.setModifier(user_code);
-                defGoodsMatch.setIsactive("Y");
+                defGoodsMatch.setIsactive(isactive);
                 count+= defGoodsMatchService.addMatch(defGoodsMatch);
             }
             if (count >0) {
@@ -250,19 +252,24 @@ public class DefGoodsMatchController {
              int delCount=defGoodsMatchService.delMatchByCode(corp_code_json,goods_match_code);
             System.out.println("======删除关联商品========="+delCount);
             String goods_code = jsonObject.get("goods_code").toString();
-            String[] split = goods_code.split(",");
-            for (int i=0;i<split.length;i++){
-                DefGoodsMatch defGoodsMatch=new DefGoodsMatch();
-                defGoodsMatch.setCorp_code(corp_code_json);
-                defGoodsMatch.setGoods_match_code(goods_match_code);
-                defGoodsMatch.setGoods_code(split[i]);
-                Date date = new Date();
-                defGoodsMatch.setCreated_date(Common.DATETIME_FORMAT.format(date));
-                defGoodsMatch.setCreater(user_code);
-                defGoodsMatch.setModified_date(Common.DATETIME_FORMAT.format(date));
-                defGoodsMatch.setModifier(user_code);
-                defGoodsMatch.setIsactive("Y");
-                count+= defGoodsMatchService.addMatch(defGoodsMatch);
+            String isactive = jsonObject.get("isactive").toString();
+            if(!goods_code.equals("")) {
+                String[] split = goods_code.split(",");
+                for (int i = 0; i < split.length; i++) {
+                    DefGoodsMatch defGoodsMatch = new DefGoodsMatch();
+                    defGoodsMatch.setCorp_code(corp_code_json);
+                    defGoodsMatch.setGoods_match_code(goods_match_code);
+                    defGoodsMatch.setGoods_code(split[i]);
+                    Date date = new Date();
+                    defGoodsMatch.setCreated_date(Common.DATETIME_FORMAT.format(date));
+                    defGoodsMatch.setCreater(user_code);
+                    defGoodsMatch.setModified_date(Common.DATETIME_FORMAT.format(date));
+                    defGoodsMatch.setModifier(user_code);
+                    defGoodsMatch.setIsactive(isactive);
+                    count += defGoodsMatchService.addMatch(defGoodsMatch);
+                }
+            }else{
+                count=1;
             }
             if (count >0) {
                 dataBean.setId(id);
