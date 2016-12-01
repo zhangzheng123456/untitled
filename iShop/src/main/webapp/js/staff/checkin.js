@@ -306,6 +306,8 @@ function GET(a,b){
                 superaddition(list,pageNum);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
+                $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+                $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
@@ -401,6 +403,8 @@ function POST(a,b){
             for(var i=0;i<input.length;i++){
                 input[i].value="";
             }
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             filtrate="";
             list="";
             $(".sxk").slideUp();
