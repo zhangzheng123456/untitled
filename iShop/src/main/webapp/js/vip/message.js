@@ -340,33 +340,38 @@ function jumpBianse() {
             event.cancelBubble=true;
         }
         var param={};
-        var message_code=$(this).parents('tr').find(".message_code").attr("data-code");
-        param["message_code"]=message_code;
+        var id=$(this).parents('tr').attr("id");
+        param["id"]=id;
         whir.loading.add("",0.5);//加载等待框
-        oc.postRequire("post","/message/detailInfo","0",param,function(data){
+        oc.postRequire("post","/vipFsend/checkVipInfo","0",param,function(data){
             if(data.code=="0"){
                 $('#details').show();
                 $('#content').hide();
                 var message=JSON.parse(data.message);
-                var list=message;
+                var list=message.vip_info;
                 console.log(list);
                 $(".table #table_r tbody").empty();
+                if(list.length == 0){
+                    var len = $(".table #table_r thead tr th").length;
+                    var i;
+                    for(i=0;i<10;i++){
+                        $(".table tbody").append("<tr></tr>");
+                        for(var j=0;j<len;j++){
+                            $($(".table #table_r tbody tr")[i]).append("<td></td>");
+                        }
+                    }
+                    $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+                }
                 for(var i=0;i<list.length;i++){
                     var a=i+1;
-                    var status="";
-                    if(list[i].status=="Y"){
-                        status="已读"
-                    }else if(list[i].status=="N"){
-                        status="未读"
-                    }
                     $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
                         + a
                         + "</td><td>"
-                        + list[i].message_receiver
+                        + list[i].NAME_VIP
                         + "</td><td>"
-                        // + list[i].receiver_type
-                        // + "</td><td>"
-                        + status
+                        + list[i].CARD_NO_VIP
+                        + "</td><td>"
+                        + list[i].MOBILE_VIP
                         + "</td></tr>");
                 }
             }
