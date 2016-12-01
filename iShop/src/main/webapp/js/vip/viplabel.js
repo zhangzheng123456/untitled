@@ -298,9 +298,10 @@ function GET(a,b){
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
+                var message=JSON.parse(message.list);
                 var list=message.list;
                 cout=message.pages;
-                var pageNum = message.page_number;
+                var pageNum = message.pageNum;
                 superaddition(list,pageNum);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
@@ -428,9 +429,10 @@ function POST(a,b){
     oc.postRequire("post","/VIP/label/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
+            var message=JSON.parse(message.list);
             var list=message.list;
             cout=message.pages;
-            var pageNum = message.page_number;
+            var pageNum = message.pageNum;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -796,9 +798,10 @@ function filtrates(a,b){
     oc.postRequire("post","/VIP/label/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
+            var message=JSON.parse(message.list);
             var list=message.list;
             cout=message.pages;
-            var pageNum = message.page_number;
+            var pageNum = message.pageNum;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
