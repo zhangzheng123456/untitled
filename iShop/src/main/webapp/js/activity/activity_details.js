@@ -64,14 +64,15 @@ $('#showDone').click(function(){
     });
     listShow(data);
     var nowLength = $('.people .people_title').length;
-    $(".percent_percent").each(function(){
-        var nowVal=($(this).text().replace('%',''));
-        if(nowVal<100){
-            $(this).parents('.people_title ').hide();
-            nowLength -=1;
-        }
-    })
-    if(nowLength <=1) {
+    // $(".percent_percent").each(function(){
+    //     var nowVal=($(this).text().replace('%',''));
+    //     if(nowVal<100){
+    //         $(this).parents('.people_title ').hide();
+    //         nowLength -=1;
+    //     }
+    // })
+    console.log(nowLength);
+    if(nowLength <1) {
         $('#peopleError').show();
         $('#peopleError div').text('未发现已完成');
     }
@@ -86,13 +87,13 @@ $('#showDoing').click(function(){
     })
     listShow(data);
     var nowLength = $('.people_title').length;
-    $(".percent_percent").each(function(){
-        var nowVal=($(this).text().replace('%',''));
-        if(nowVal==100){
-            $(this).parents('.people_title ').hide();
-            nowLength -=1;
-        }
-    })
+    // $(".percent_percent").each(function(){
+    //     var nowVal=($(this).text().replace('%',''));
+    //     if(nowVal==100){
+    //         $(this).parents('.people_title ').hide();
+    //         nowLength -=1;
+    //     }
+    // })
     if(nowLength <=1) {
         $('#peopleError div').text('未发未完成')
         $('#peopleError').show();
@@ -413,7 +414,25 @@ function getSelect(id){
 function check(a,b){
     var TheTarget = a;
     var TheCover = b;
+    // $('#TheTarget').text(TheTarget);
+    // $('#TheCover').text(TheCover);
     table(TheTarget,TheCover);
+    //canvas
+   // var wd=parseFloat(window.getComputedStyle($('#c1').parent()[0]).width);
+   //  var ht=parseFloat(window.getComputedStyle($('#c1').parent()[0]).height);
+   //  $('#c1').attr('width',wd);
+   //  $('#c1').attr('height',wd);
+   //  // var ctx= $('#c1')[0].getContext('2d')
+   //  // ctx.beginPath();
+   //  // ctx.strokeStyle='red';
+   //  // ctx.arc(wd/2,ht/2,wd/2,0,2*Math.PI);
+   //  // ctx.fill();
+   //  console.log();
+   //  var c=document.getElementById("c1");
+   //  var ctx=c.getContext("2d");
+   //  ctx.beginPath();
+   //  ctx.arc(wd/2,wd/2,50,0,2*Math.PI);
+   //  ctx.stroke();
 }
 //加载活动状态
 function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
@@ -484,9 +503,10 @@ function table(TheTarget,TheCover) {
     $('#TheTarget').text(TheTarget);
     $('#TheCover').text(TheCover);
     var NoCover = ((TheTarget - TheCover)/TheTarget*100).toFixed(2);
-    console.log(NoCover);
+    // console.log(NoCover);
     var TheCover = (TheCover/TheTarget*100).toFixed(2);
-    console.log(TheCover);
+    TheCover=TheCover>100?100:TheCover;
+    // console.log('已覆盖'+TheCover+'%');
     require.config({
         paths: {
             echarts: '../js/dist'
@@ -523,7 +543,11 @@ function table(TheTarget,TheCover) {
                 normal : {
                     label : {
                         formatter : function (params){
-                            return 100 - params.value + '%'
+                            console.log((100 - params.value).toString().length);
+                            var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
+
+                            data=data>100?100:data;
+                            return data+ '%'
                         },
                         textStyle: {
                             color:'#7bc7cd',

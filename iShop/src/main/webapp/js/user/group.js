@@ -353,6 +353,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
+        sessionStorage.removeItem('group_corp');
         $(window.parent.document).find('#iframepage').attr("src","/user/group_add.html");
     })
     //点击编辑时页面进行的跳转
