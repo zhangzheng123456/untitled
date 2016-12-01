@@ -3,6 +3,7 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.DefGoodsMatch;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -22,4 +23,7 @@ public interface DefGoodsMatchMapper {
     int addMatch(DefGoodsMatch defGoodsMatch);
 
     int updMatch(DefGoodsMatch defGoodsMatch);
+
+    List<DefGoodsMatch> selectGoodsMatchList(@Param("corp_code")String corp_code, @Param("goods_code") String goods_code, @Param("isactive") String isactive) throws SQLException;
+
 }

@@ -88,6 +88,4 @@ public interface GoodsService {
 
     PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code,String search_value) throws SQLException;
 
-    List<Goods> selectGoodsMatchList(String corp_code, String goods_code,String isactive)throws Exception;
-
 }

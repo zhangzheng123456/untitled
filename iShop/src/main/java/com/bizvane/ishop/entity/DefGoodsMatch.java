@@ -7,7 +7,7 @@ public class DefGoodsMatch {
     private int id;
     private String goods_match_code;
     private String goods_match_title;
-    private String goods_match_depict;
+    private String goods_match_desc;
     private String corp_code;
     private String goods_code;
     //修改时间
@@ -30,12 +30,12 @@ public class DefGoodsMatch {
         this.goods_match_title = goods_match_title;
     }
 
-    public String getGoods_match_depict() {
-        return goods_match_depict;
+    public String getGoods_match_desc() {
+        return goods_match_desc;
     }
 
-    public void setGoods_match_depict(String goods_match_depict) {
-        this.goods_match_depict = goods_match_depict;
+    public void setGoods_match_desc(String goods_match_desc) {
+        this.goods_match_desc = goods_match_desc;
     }
 
     public String getGoods_image() {
