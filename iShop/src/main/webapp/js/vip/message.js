@@ -222,7 +222,9 @@ function superaddition(data, num) {//页面加载循环
             + data[i].sms_code
             + "</span></td><td><span title='"+data[i].content+"'>"
             + data[i].content
-            + "</span></td><td>"
+            + "</span></td><td class='details'><a href='javascript:void(0)'>"
+            + "查看"
+            + "</a></span></td><td>"
             + data[i].corp_name
             + "</td><td><span title='" + data[i].creater + "'>"
             + data[i].creater
