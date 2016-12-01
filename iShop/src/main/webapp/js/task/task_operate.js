@@ -69,9 +69,9 @@ function getasktypelist(a, b) {
                     cancel: false,
                     content: "请先定义任务类型"
                 });
-            }
-            if (b !== "") {
-                $("#task_type_code option[value='" + b + "']").attr("selected", "true")
+            };
+            if(b !== "") {
+                $("#task_type_code option[value='"+b+"']").attr("selected","true");
             }
             $("#task_type_code").searchableSelect();
         }
