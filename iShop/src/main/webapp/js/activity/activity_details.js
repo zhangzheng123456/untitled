@@ -503,7 +503,7 @@ function table(TheTarget,TheCover) {
     $('#TheTarget').text(TheTarget);
     $('#TheCover').text(TheCover);
     var NoCover = ((TheTarget - TheCover)/TheTarget*100).toFixed(2);
-    // console.log('未覆盖'+NoCover+'%');
+    // console.log(NoCover);
     var TheCover = (TheCover/TheTarget*100).toFixed(2);
     TheCover=TheCover>100?100:TheCover;
     // console.log('已覆盖'+TheCover+'%');
