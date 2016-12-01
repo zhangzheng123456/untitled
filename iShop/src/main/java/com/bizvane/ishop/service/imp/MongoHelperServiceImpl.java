@@ -25,7 +25,7 @@ public class MongoHelperServiceImpl {
             JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
-            if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("operation_time")) {
+            if (!screen_value.equals("") && CheckUtils.checkJson(screen_value) == false && !screen_key.equals("operation_time")&& !screen_key.equals("created_date")) {
                 if (screen_value.startsWith("|") || screen_value.startsWith(",") || screen_value.startsWith("，")) {
                     screen_value = screen_value.substring(1);
                 }
@@ -39,6 +39,20 @@ public class MongoHelperServiceImpl {
                 values.add(new BasicDBObject(screen_key, pattern));
             }
             if (screen_key.equals("operation_time")) {
+                JSONObject date = JSON.parseObject(screen_value);
+                String start = date.get("start").toString();//2016-11-25 14:43:15
+
+                String end = date.get("end").toString();
+                if (!start.equals("") && start != null) {
+                    System.out.println("=========start:" + start);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start + " 00:00:00")));
+                }
+                if (!end.equals("") && end != null) {
+                    System.out.println("=========end:" + end);
+                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end + " 23:59:59")));
+                }
+            }
+            if (screen_key.equals("created_date")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();//2016-11-25 14:43:15
 
