@@ -136,11 +136,11 @@ var oc = new ObjectControl();
         console.log(_params);
         oc.postRequire("post", _command, "", _params, function (data) {
             if (data.code == "0") {
-                if(_command=="/param/edit/add"){
+                if(_command=="/param/add"){
                     sessionStorage.setItem("id",data.message);
                     $(window.parent.document).find('#iframepage').attr("src", "/system/param_edit.html");
                 }
-                if(_command=="/param/edit/edit"){
+                if(_command=="/param/edit"){
                     art.dialog({
                         time: 1,
                         lock: true,

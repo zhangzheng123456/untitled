@@ -341,17 +341,20 @@ public class MessageController {
                  * @param name 被操作name
                  * @throws Exception
                  */
-                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
-                String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
-                String operation_user_code = request.getSession().getAttribute("user_code").toString();
-                String function = "消息管理_通知管理";
-                String action = Common.ACTION_DEL;
-                String t_corp_code = action_json.get("corp_code").toString();
-                String t_code = messageById.getMessage_sender();
-                String t_name = messageById.getReceiver_type();
-                String remark ="";
-                baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
-                //-------------------行为日志结束--------------------------------------------------------------------------------
+                if (messageById != null){
+                    com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+                    String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
+                    String operation_user_code = request.getSession().getAttribute("user_code").toString();
+                    String function = "消息管理_通知管理";
+                    String action = Common.ACTION_DEL;
+                    String t_corp_code = messageById.getCorp_code();
+                    String t_code = messageById.getMessage_sender();
+                    String t_name = messageById.getReceiver_type();
+                    String remark ="";
+                    baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
+
+                }
+                   //-------------------行为日志结束--------------------------------------------------------------------------------
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
