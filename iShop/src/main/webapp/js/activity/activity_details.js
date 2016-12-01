@@ -543,7 +543,6 @@ function table(TheTarget,TheCover) {
                 normal : {
                     label : {
                         formatter : function (params){
-                            console.log((100 - params.value).toString().length);
                             var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
 
                             data=data>100?100:data;
