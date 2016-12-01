@@ -478,7 +478,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             task.setModifier(user_code);
             task.setIsactive(Common.IS_ACTIVE_Y);
             task.setActivity_vip_code(activity_vip_code);
-            taskService.addTask(task, phones, user_codes, user_code);
+            taskService.addTask(task, phones, user_codes, user_code,activity_vip_code);
 
             //更新活动表中task_code
             activityVip.setTask_code(task_code);

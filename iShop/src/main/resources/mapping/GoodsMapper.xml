@@ -605,7 +605,7 @@
         AND g.corp_code=#{corp_code}
         AND g.goods_code IN (SELECT goods_code FROM def_goods_match
             WHERE goods_match_code IN (SELECT goods_match_code from def_goods_match
-                WHERE goods_code = #{goods_code}))
+                WHERE goods_code = #{goods_code}) AND def_goods_match.isactive = 'Y')
         AND g.goods_code != #{goods_code}
         <if test="isactive!=null and isactive!=''">
             AND g.isactive=#{isactive}

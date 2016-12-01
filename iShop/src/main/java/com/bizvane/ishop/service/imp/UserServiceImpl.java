@@ -183,6 +183,11 @@ public class UserServiceImpl implements UserService {
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             stores = store_code.split(",");
         }
+        if (stores != null){
+            for (int i = 0; i < stores.length; i++) {
+                stores[i] = Common.SPECIAL_HEAD + stores[i] + ",";
+            }
+        }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);
         params.put("search_value", search_value);
@@ -204,6 +209,11 @@ public class UserServiceImpl implements UserService {
         if (!store_code.equals("")) {
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             stores = store_code.split(",");
+        }
+        if (stores != null){
+            for (int i = 0; i < stores.length; i++) {
+                stores[i] = Common.SPECIAL_HEAD + stores[i] + ",";
+            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);

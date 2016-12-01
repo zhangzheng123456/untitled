@@ -211,7 +211,6 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    console.log(data);
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -611,7 +610,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
     if(data.code=="0"){
         var message=JSON.parse(data.message);
         var filter=message.filter;
-        console.log(filter);
         $("#sxk .inputs ul").empty();
         var li="";
         for(var i=0;i<filter.length;i++){
@@ -680,11 +678,11 @@ $('#sxk .inputs').on("keydown","input",function(){
     }
 })
 function checkStart(data){
-    console.log(data);
-}
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
 function checkEnd(data){
-     console.log(data);
-}
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+};
 function filtrateDown(){
     //筛选select框
     $(".isActive_select2 input").click(function (){
@@ -735,7 +733,6 @@ $("#find").click(function(){
 function getInputValue(){
     // var input=$('#sxk .inputs li');
     var input=$('#sxk .inputs>ul>li');
-    console.log(input);
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
@@ -779,7 +776,6 @@ function getInputValue(){
         var param1={"screen_key":screen_key,"screen_value":screen_value};
         list.push(param1);
     }
-    console.log( _param);
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
@@ -801,7 +797,6 @@ function filtrates(a,b){
             // var pageNum = list.pageNum;
             // var list=list.list;
             var message=JSON.parse(data.message);
-            console.log(message);
             var list=message.list;
             cout=message.pages;
             var pageNum = message.page_number;

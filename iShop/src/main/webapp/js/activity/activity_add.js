@@ -1163,9 +1163,9 @@ $("#screen_close_brand").click(function(){
 function getbrandlist(a){
     var corp_code = $('#OWN_CORP').val();
     if(a="brand"){
-        var searchValue=$("#brand_search").val().trim();
-    }else {
         var searchValue=$("#search_brand").val().trim();
+    }else {
+        var searchValue=$("#brand_search").val().trim();
     }
     var _param={};
     _param["corp_code"]=corp_code;
@@ -1818,7 +1818,7 @@ $("#executor").click(function () {
         name = name.split(",");
         var store_html = "";
         for(var i=0;i<code.length;i++){
-            store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-storename='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+            store_html+="<li id="+code[i]+"><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-storename='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
                 + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
         }
         $("#screen_shop .screen_content_r ul").append(store_html);
@@ -1845,7 +1845,7 @@ $("#executor_icon").click(function () {
         name = name.split(",");
         var store_html = "";
         for(var i=0;i<code.length;i++){
-            store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-storename='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
+            store_html+="<li id="+code[i]+"><div class='checkbox1'><input  type='checkbox' value='"+code[i]+"' data-storename='"+name[i]+"' name='test'  class='check'  id='checkboxTowInput"+ i
                 + "'/><label for='checkboxTowInput"+i+ "'></label></div><span class='p16'>"+name[i]+"</span></li>";
         }
         $("#screen_shop .screen_content_r ul").append(store_html);
@@ -2209,8 +2209,8 @@ $("#search_brand").keydown(function () {
     var a="brand";
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
-        $("#vip_screen_area .screen_content_l").unbind("scroll");
-        $("#vip_screen_area .screen_content_l ul").empty();
+        $("#vip_screen_brand .screen_content_l").unbind("scroll");
+        $("#vip_screen_brand .screen_content_l ul").empty();
         getbrandlist(a);
     }
 });
@@ -2262,7 +2262,7 @@ $("#close_shop").click(function () {
     $("#screen_wrapper").show();
 });
 //店铺搜索，确定
-$("#search_shop_f").click(function () {
+$("#search_store_f").click(function () {
     shop_num=1;
     isscroll=false;
     var b="shop";
@@ -2270,14 +2270,14 @@ $("#search_shop_f").click(function () {
     $("#vip_screen_shop .screen_content_l ul").empty();
     getstorelist(shop_num,b)
 });
-$("#search_shop").keydown(function () {
+$("#search_store").keydown(function () {
     shop_num=1;
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
         var b="shop";
         isscroll=false;
-        $("#vip_screen_area .screen_content_l").unbind("scroll");
-        $("#vip_screen_area .screen_content_l ul").empty();
+        $("#vip_screen_shop .screen_content_l").unbind("scroll");
+        $("#vip_screen_shop .screen_content_l ul").empty();
         getstorelist(shop_num,b);
     }
 });

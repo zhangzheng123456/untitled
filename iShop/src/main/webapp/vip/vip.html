@@ -53,21 +53,6 @@
     				</ul>
     			</div>
     		</div>
-			<!-- 导出-->
-			<!--<div class="file">-->
-				<!--<div class="file_content">-->
-					<!--<div id="download"></div>-->
-					<!--<div  class="icon-ishop_6-12" id="file_close"></div>-->
-				<!--</div>-->
-				<!--<div id="file_list">-->
-					<!--<ul>-->
-
-					<!--</ul>-->
-				<!--</div>-->
-				<!--<div class="file_btn">-->
-					<!--<div class="file_submit" id="file_submit">提交</div>-->
-				<!--</div>-->
-			<!--</div>-->
              <div class="sxk" id="sxk">
                 <div class="sbtn">
                     <div class="empty" id="empty">
@@ -218,11 +203,11 @@
             <h4>筛选店铺</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="" readonly="true" id="area_num" data-areacode="">
+                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num" data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
                 </div>
                 <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="" id="brand_num" data-brandcode="">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
             </div>
@@ -268,8 +253,8 @@
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索" id="brand_search" readonly="true">
-                <!-- <span class="icon-ishop_3-05" id="brand_search_f"></span> -->
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
             </div>
             <div class="s_center"></div>
             <div class="s_pitch">
@@ -302,15 +287,15 @@
             <h4>筛选</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="" readonly="true" id="staff_area_num" data-areacode="">
+                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num" data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
                 </div>
                 <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="" id="staff_brand_num" data-brandcode="">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num" data-brandcode="">
                     <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
                 </div>
                 <div class="xuanzhong_p">
-                    <label>已选店铺</label><input type="text" value="" id="staff_shop_num" data-storecode="">
+                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
                     <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
                 </div>
             </div>
@@ -424,130 +409,10 @@
         </div>
         <div class="screen_que" >确定</div>
     </div>
-    <!-- 筛选区域 -->
-    <!--<div id="choose_area" class="screen_area">-->
-        <!--<div class="screen_title">-->
-            <!--<h4>选择区域</h4>-->
-            <!--<div class="screen_close" id="close_area"><span class="icon-ishop_6-12"></span></div>-->
-            <!--<div class="xian"></div>-->
-        <!--</div>-->
-        <!--<div class="input_s">-->
-            <!--<div class="input_search">-->
-                <!--<input type="text" placeholder="搜索" id="search_area">-->
-                <!--<span class="icon-ishop_3-05" id="search_area_f"></span>-->
-            <!--</div>-->
-            <!--<div class="s_center"></div>-->
-            <!--<div class="s_pitch">-->
-                <!--已添加&nbsp;<span>0</span>&nbsp;个-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="screen_content">-->
-            <!--<div class="screen_content_l">-->
-                <!--<ul>-->
-                <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="screen_content_z">-->
-                <!--<div class="shift shift_right" title="右移">&gt;</div>-->
-                <!--<div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>-->
-                <!--<div class="shift shift_left" title="左移">&lt;</div>-->
-                <!--<div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>-->
-            <!--</div>-->
-            <!--<div class="screen_content_r">-->
-                <!--<ul>-->
-
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="screen_que">确定</div>-->
-    <!--</div>-->
-    <!-- 筛选店铺 -->
-    <!--<div id="choose_shop" class="screen_area" >-->
-        <!--<div class="screen_title">-->
-            <!--<h4>选择店铺</h4>-->
-            <!--<div class="xuanzhong">-->
-                <!--<div class="xuanzhong_p">-->
-                    <!--<label>已选区域</label><input type="text" value="" readonly="true" id="shop_choose_area" data-areacode="">-->
-                    <!--<span class="icon_r icon-ishop_8-03"></span>-->
-                <!--</div>-->
-                <!--<div class="xuanzhong_p">-->
-                    <!--<label>已选品牌</label><input type="text" value="" id="shop_choose_brand" data-brandcode="">-->
-                    <!--<span class="icon_r icon-ishop_8-03"></span>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="screen_close" id="close_shop"><span class="icon-ishop_6-12"></span></div>-->
-            <!--<div class="xian"></div>-->
-        <!--</div>-->
-        <!--<div class="input_s">-->
-            <!--<div class="input_search">-->
-                <!--<input type="text" placeholder="搜索" id="search_shop">-->
-                <!--<span class="icon-ishop_3-05" id="search_shop_f"></span>-->
-            <!--</div>-->
-            <!--<div class="s_center"></div>-->
-            <!--<div class="s_pitch">-->
-                <!--已添加&nbsp;<span>0</span>&nbsp;个-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="screen_content">-->
-            <!--<div class="screen_content_l">-->
-                <!--<ul>-->
-
-                <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="screen_content_z">-->
-                <!--<div class="shift shift_right" title="右移">&gt;</div>-->
-                <!--<div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>-->
-                <!--<div class="shift shift_left" title="左移">&lt;</div>-->
-                <!--<div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>-->
-            <!--</div>-->
-            <!--<div class="screen_content_r">-->
-                <!--<ul>-->
-
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="screen_que" id="screen_que_shop">确定</div>-->
-    <!--</div>-->
-    <!-- 筛选品牌 -->
-    <!--<div id="choose_brand" class="screen_area" >-->
-        <!--<div class="screen_title">-->
-            <!--<h4>选择品牌</h4>-->
-            <!--<div class="screen_close" id="close_brand"><span class="icon-ishop_6-12"></span></div>-->
-            <!--<div class="xian"></div>-->
-        <!--</div>-->
-        <!--<div class="input_s">-->
-            <!--<div class="input_search">-->
-                <!--<input type="text" placeholder="搜索" id="search_brand">-->
-                <!--<span class="icon-ishop_3-05" id="search_brand_f"></span>-->
-            <!--</div>-->
-            <!--<div class="s_center"></div>-->
-            <!--<div class="s_pitch">-->
-                <!--已添加&nbsp;<span>0</span>&nbsp;个-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="screen_content">-->
-            <!--<div class="screen_content_l">-->
-                <!--<ul>-->
-
-                <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="screen_content_z">-->
-                <!--<div class="shift shift_right" title="右移">&gt;</div>-->
-                <!--<div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>-->
-                <!--<div class="shift shift_left" title="左移">&lt;</div>-->
-                <!--<div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>-->
-            <!--</div>-->
-            <!--<div class="screen_content_r">-->
-                <!--<ul>-->
-
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="screen_que">确定</div>-->
-    <!--</div>-->
     <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 	<script src="/js/loading.js"></script>
 	<script type="text/javascript" src="../js/insidePostRequire.js"></script>
-	<script src="../js/vip/vip.js"></script>
+	<script src="../js/vip/vip.js?20161130"></script>
     <script>
     $(function(){
         $(window).scroll(function() {

@@ -13,6 +13,11 @@
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link href="../table/css/inner.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/activity_details.css"/>
+    <style>
+        #main>div{
+            width: 153.2px !important;
+        }
+    </style>
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -32,7 +37,7 @@
         <div class="main">
             <ul class="left">
                 <li class="left_top">
-                    <div id="main" style="height:140px;height: 140px"></div>
+                    <div id="main" style="height: 140px"></div>
                     <!--图表区域-->
                 </li>
                 <li class="left_bottom">
@@ -193,6 +198,7 @@
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
 <script src="../js/loading.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!-- ajax -->
 <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
 <!--匹配js文件-->
@@ -203,7 +209,30 @@
 <script type="text/javascript" src="../js/dist/chart/bar.js"></script>
 <script type="text/javascript" src="../js/dist/echarts.js"></script>
 <script>
-
+    /*width: 10px;*/
+    /*height: 200px;*/
+    /*border-radius: 10px;*/
+    /*background-color: #dfdfdf;*/
+    $(".people").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:false,
+        cursorwidth:"9px",
+        cursorborder:"0",
+        cursorborderradius:"10px"});
+    $("#content").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:250,
+        autohidemode:false,
+        cursorwidth:"9px",
+        cursorborder:"0",
+        cursorborderradius:"10px"});
 </script>
 
 </body>

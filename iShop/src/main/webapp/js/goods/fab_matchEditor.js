@@ -87,10 +87,19 @@ var swip_image = [];
                 var corp_code=sessionStorage.getItem("corp_code");
                 //var searchValue='';
                 var goods_match_code = sessionStorage.getItem("goods_match_code");
+                var a = $('#is_active')[0];
+                console.log(a);
+                var input=$("#is_active")[0];
+                if(input.checked==true){
+                    ISACTIVE="Y";
+                }else if(input.checked==false){
+                    ISACTIVE="N";
+                }
                 var _params = {
                     "goods_match_code": goods_match_code,
                     "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
+                    "isactive": ISACTIVE,
                 };
                 console.log(_params);
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -133,6 +142,7 @@ var swip_image = [];
                     "goods_match_code": goods_match_code,
                     "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
+                    "isactive": ISACTIVE,
                 };
                 fabjs.ajaxSubmit(_command,_params,opt);
 
@@ -570,6 +580,7 @@ function getmatchgoodsList(a) {
                     if(len>0){
                         for(var j=0;j<len;j++){
                             var code = $($(".conpany_msg li")[j]).find(".goods_code").html();
+                            console.log('获取页面的商品code'+code);
                             if(code == list[i].goods_code){
                                 $($("#search_match_goods ul li")[i]).find("i").show();
                                 $($("#search_match_goods ul li")[i]).find(".goods_add").hide();
@@ -676,7 +687,26 @@ function pageVal(){
             //var corp_code ='';
             var message= JSON.parse(data.message);
             var list =JSON.parse(message.list);
+
             for(i=0;i<list.length;i++){
+                if(i=='0'){
+                    var created_date = list[0].created_date;
+                    var creater = list[0].creater;
+                    var isactive = list[0].isactive;  //是否可用
+                    console.log(isactive);
+                    var modified_date = list[0].modified_date;
+                    var modifier = list[0].modifier;
+                    console.log(modifier);
+                    $('#created_time').val(created_date);
+                    $('#creator').val(creater);
+                    $('#modify_time').val(modified_date);
+                    $('#modifier').val(modifier);
+                    if(isactive=="Y"){
+                        $('#is_active').attr("checked",true);
+                    }else if(isactive=="N"){
+                        $('#is_active').attr("checked",false);
+                    }
+                }
                 var imgUrl="";
                 if(list[i].goods_image.indexOf("http")!==-1){
                     imgUrl = list[i].goods_image;
@@ -688,7 +718,6 @@ function pageVal(){
                 pageShow(imgUrl,goods_code);
 
             }
-
 
         }else if(data.code='-1'){
             console.log('获取失败');
@@ -712,6 +741,18 @@ function  pageShow(imgUrl,goods_code){
 function deleteThis(dom){
     $(dom).parent("li").remove();
     console.log('删除ing');
+        var code = $(dom).parents("li").find(".goods_code").html();
+        var len = $("#search_match_goods ul li").length;
+        console.log(len);
+        for(var i=0;i<len;i++){
+            var code_l = $($("#search_match_goods ul li")[i]).find(".goods_code").html();
+            console.log(code_l);
+            if(code_l == code){
+                $($("#search_match_goods ul li")[i]).css("background","");
+                $($("#search_match_goods ul li")[i]).find("i").hide();
+                $($("#search_match_goods ul li")[i]).find(".goods_add").show();
+            }
+        }
 }
 window.onload=function(){
     pageVal();

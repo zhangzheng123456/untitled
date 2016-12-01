@@ -22,7 +22,7 @@ var funcCode=key_val.func_code;
  masonry还有很多参数我这里注解了常用的参数
  */
 function waterFull(){
-    var container = $('.waterfull ul');
+    var container = $('#waterfull ul');
     var loading=$('#imloading');
     // 初始化loading状态
     loading.data("on",false);
@@ -42,11 +42,12 @@ function waterFull(){
         tores();
     });
     container.imagesLoaded(function(){
+        container.masonry('destroy');
         container.masonry({
             columnWidth: 360,
             itemSelector : '.item',
             isFitWidth: false,//是否根据浏览器窗口大小自动适应默认false
-            isAnimated: true,//是否采用jquery动画进行重拍版
+            isAnimated: false,//是否采用jquery动画进行重拍版
             isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
             isResizable: true,//是否自动布局默认true
             animationOptions: {
@@ -195,6 +196,7 @@ function getVal(){
             //var goods_image = list[i].goods_image;
             pageVal(arr,unqiuearr,list);
 
+
         },
         error: function (data) {
             console.log('获取数据失败')
@@ -246,7 +248,6 @@ function pageVal(arr,unqiuearr,list){
         $(".waterfull ul").append(html);
     }
     waterFull();
-
 }
 //点击放大镜触发搜索
 $("#d_search").click(function () {
@@ -257,11 +258,11 @@ $("#d_search").click(function () {
     param["pageSize"] = pageSize;
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
-})
+});
 
 //搜索的请求函数
 function POST(a, b) {
-    whir.loading.add("", 0.5);//加载等待框
+    whir.loading.add("", 1);//加载等待框
     oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -273,12 +274,11 @@ function POST(a, b) {
             var forLength = list.length;     //显示盒子数量
             $(".masonry").empty();
             if (forLength <= 0) {
-                $(".masonry p").remove();
-                $(".masonry").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
+                $("#waterfull p").remove();
+                $("#waterfull").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
             } else if (forLength > 0) {
-                whir.loading.remove();//移除加载框
-                $(".masonry p").remove();
+                $("#waterfull p").remove();
                 var arr=[];
                 var unqiuearr=[];
                 var hash={};
@@ -298,6 +298,8 @@ function POST(a, b) {
                 //var goods_code = list[i].goods_code;
                 //var goods_image = list[i].goods_image;
                 pageVal(arr,unqiuearr,list);
+                whir.loading.remove();//移除加载框
+
                 jumpBianse();
             }
 
@@ -308,7 +310,7 @@ function POST(a, b) {
             filtrate = "";
             list = "";
             $(".sxk").slideUp();
-            setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
+            //setPage($("#foot-num")[0], cout, pageNum, b, funcCode);
         } else if (data.code == "-1") {
             alert(data.message);
         }

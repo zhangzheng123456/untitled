@@ -1452,7 +1452,31 @@ function filtrates(a,b){
             alert(data.message);
         }
     })
-}
+};
+//跳转页面的键盘按下事件
+$("#input-txt").keydown(function() {
+    var event=window.event||arguments[0];
+    var inx= this.value.replace(/[^0-9]/g, '');
+    var inx=parseInt(inx);
+    if (inx > cout) {
+        inx = cout
+    };
+    if (inx > 0) {
+        if (event.keyCode == 13) {
+            if (value == "" && filtrate == "") {
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
+                filtrates(inx, pageSize);
+            }
+        };
+    }
+})
 //关闭按钮回到列表页
 $("#send_close").click(function(){
 	 $(window.parent.document).find('#iframepage').attr("src", "/vip/message.html");
