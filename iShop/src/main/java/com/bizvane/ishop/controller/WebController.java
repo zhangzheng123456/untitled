@@ -49,6 +49,8 @@ public class WebController {
     @Autowired
     GoodsService goodsService;
     @Autowired
+    DefGoodsMatchService defGoodsMatchService;
+    @Autowired
     GroupService groupService;
     @Autowired
     StoreService storeService;
@@ -278,7 +280,7 @@ public class WebController {
             Goods goods = this.goodsService.getGoodsById(goods_id);
             String corp_code = goods.getCorp_code();
             String goods_code = goods.getGoods_code();
-            List<Goods> matchgoods = goodsService.selectGoodsMatchList(corp_code,goods_code,Common.IS_ACTIVE_Y);
+            List<DefGoodsMatch> matchgoods = defGoodsMatchService.selectGoodsMatchList(corp_code,goods_code,Common.IS_ACTIVE_Y);
             goods.setMatchgoods(matchgoods);
             JSONObject result = new JSONObject();
             result.put("goods", JSON.toJSONString(goods));

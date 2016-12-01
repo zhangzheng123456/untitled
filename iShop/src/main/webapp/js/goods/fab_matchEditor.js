@@ -95,11 +95,16 @@ var swip_image = [];
                 }else if(input.checked==false){
                     ISACTIVE="N";
                 }
+                var goods_match_title = $('#goodsTitle').val();
+                console.log('商品标题是'+goods_match_title);
+                var goods_match_desc = $('#goodsDescribe').val();
                 var _params = {
                     "goods_match_code": goods_match_code,
                     "corp_code": corp_code,
                     "goods_code": GOODS_CODE,
                     "isactive": ISACTIVE,
+                    "goods_match_title": goods_match_title,
+                    "goods_match_desc": goods_match_desc,
                 };
                 console.log(_params);
                 fabjs.ajaxSubmit(_command,_params,opt);
@@ -687,7 +692,6 @@ function pageVal(){
             //var corp_code ='';
             var message= JSON.parse(data.message);
             var list =JSON.parse(message.list);
-
             for(i=0;i<list.length;i++){
                 if(i=='0'){
                     var created_date = list[0].created_date;
@@ -696,11 +700,15 @@ function pageVal(){
                     console.log(isactive);
                     var modified_date = list[0].modified_date;
                     var modifier = list[0].modifier;
+                    var goods_match_title = list[0].goods_match_title;  //商品标题
+                    var goods_match_desc = list[0].goods_match_desc;  //商品内容
                     console.log(modifier);
                     $('#created_time').val(created_date);
                     $('#creator').val(creater);
                     $('#modify_time').val(modified_date);
                     $('#modifier').val(modifier);
+                    $('#goodsTitle').val(goods_match_title);
+                    $('#goodsDescribe').val(goods_match_desc);
                     if(isactive=="Y"){
                         $('#is_active').attr("checked",true);
                     }else if(isactive=="N"){

@@ -22,4 +22,6 @@ public interface DefGoodsMatchService {
     int addMatch(DefGoodsMatch defGoodsMatch);
 
     int updMatch(DefGoodsMatch defGoodsMatch);
+
+    List<DefGoodsMatch> selectGoodsMatchList(String corp_code, String goods_code, String isactive) throws Exception;
 }

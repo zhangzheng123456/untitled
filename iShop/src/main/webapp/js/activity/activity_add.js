@@ -666,6 +666,13 @@ function getcorplist(a) {
 //执行方式变化页面变化
 function execution_change(val) {
     if (val == "(任务)电话通知顾客" || val == "(任务)短信通知顾客" || val == "(任务)分享链接到社交平台") {
+        if(val == "(任务)分享链接到社交平台"){
+            $("#outer_link").prev().css("color","#c26555");
+            $("#outer_link").prev().html("外部链接*");
+        }else {
+            $("#outer_link").prev().css("color","");
+            $("#outer_link").prev().html("外部链接");
+        }
         $(".task_dec").show();
         $(".executor").show();
         $(".task_title").show();
@@ -673,6 +680,8 @@ function execution_change(val) {
         $(".summary").hide();
         $(".short_msg").hide();
     } else if (val == "系统短信通知顾客") {
+        $("#outer_link").prev().css("color","");
+        $("#outer_link").prev().html("外部链接");
         $(".task_dec").hide();
         $(".executor").hide();
         $(".task_title").hide();
@@ -680,6 +689,8 @@ function execution_change(val) {
         $(".summary").hide();
         $(".short_msg").show();
     } else if (val == "微信公众号推送") {
+        $("#outer_link").prev().css("color","");
+        $("#outer_link").prev().html("外部链接");
         $(".task_dec").hide();
         $(".task_title").hide();
         $(".executor").hide();
@@ -1418,15 +1429,14 @@ function getstorelist(a,b){
 //获取员工列表
 function getstafflist(a,b){
     if(b=="staff"){
-        var searchValue=$('#staff_search').val().trim();
+        var searchValue=$('#search_staff').val().trim();
         var area_code =$("#screen_area_num").attr("data-code");
         var brand_code=$("#screen_brand_num").attr("data-code");
         var store_code=$("#screen_shop_num").attr("data-code");
     }else {
-        var searchValue=$('#search_staff').val().trim();
-        var area_code =$("#staff_area_num").attr("data-code");
-        var brand_code=$("#staff_brand_num").attr("data-code");
-        var store_code=$("#staff_shop_num").attr("data-code");
+        var searchValue=$('#staff_search').val().trim();
+        var area_code =$("#area_num").attr("data-code");
+        var brand_code=$("#brand_num").attr("data-code");
     }
     var corp_code = $('#OWN_CORP').val();
     var pageSize=20;
