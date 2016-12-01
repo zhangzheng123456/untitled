@@ -225,7 +225,6 @@ function superaddition(data,num){//页面加载循环
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -256,6 +255,7 @@ function superaddition(data,num){//页面加载循环
                         +data[i].isactive
                         +"</td></tr>");
     }
+    whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
     $(".th th:first-child input").removeAttr("checked");
 };
@@ -276,16 +276,19 @@ function jurisdiction(actions){
 function qjia(){
     var param={};
     param["funcCode"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
         jurisdiction(actions);
         jumpBianse();
+        whir.loading.remove();//移除加载框
     })
 }
 qjia();
 //页面加载时list请求
 function GET(inx,pageSize){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/validatecode/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             // console.log(data);
@@ -417,6 +420,7 @@ $("#d_search").click(function(){
 })
 //搜索的请求函数
 function POST(inx,pageSize){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/validatecode/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -428,6 +432,7 @@ function POST(inx,pageSize){
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);
@@ -465,7 +470,6 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(params);
     oc.postRequire("post","/validatecode/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
@@ -677,7 +681,6 @@ function filtrates(a,b){
         }else if(data.code=="-1"){
             alert(data.message);
         }
-        whir.loading.remove();//移除加载框
     });
 }
 //跳转页面的键盘按下事件

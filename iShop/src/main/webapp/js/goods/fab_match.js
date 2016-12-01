@@ -22,7 +22,7 @@ var funcCode=key_val.func_code;
  masonry还有很多参数我这里注解了常用的参数
  */
 function waterFull(){
-    var container = $('.waterfull ul');
+    var container = $('#waterfull ul');
     var loading=$('#imloading');
     // 初始化loading状态
     loading.data("on",false);
@@ -42,6 +42,7 @@ function waterFull(){
         tores();
     });
     container.imagesLoaded(function(){
+        container.masonry('destroy');
         container.masonry({
             columnWidth: 360,
             itemSelector : '.item',
@@ -195,6 +196,7 @@ function getVal(){
             //var goods_image = list[i].goods_image;
             pageVal(arr,unqiuearr,list);
 
+
         },
         error: function (data) {
             console.log('获取数据失败')
@@ -297,6 +299,7 @@ function POST(a, b) {
                 //var goods_image = list[i].goods_image;
                 pageVal(arr,unqiuearr,list);
                 whir.loading.remove();//移除加载框
+
                 jumpBianse();
             }
 

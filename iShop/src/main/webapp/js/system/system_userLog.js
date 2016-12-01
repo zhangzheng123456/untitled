@@ -619,9 +619,9 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 +"'><label>"
                 +filter[i].show_name
                 +"</label>"                                                         
-                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                +"<input type='text' id='start' class='time_data laydate-icon' autocomplete='off' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})\">"
                 +"<label class='tm20'>至</label>"
-                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                +"<input type='text' id='end' class='time_data laydate-icon' autocomplete='off' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})\">"
                 +"</li>";
             }else if(filter[i].type=='number'){
                 li+="<li class='isActive_select' id='"
@@ -691,6 +691,12 @@ function filtrateDown(){
         $(".isActive_select_down").hide();
     })
 }
+function checkStart(data){
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
+function checkEnd(data){
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+};
 //筛选查找
 $("#find").click(function(){
     var test_input=$('#isactive').nextAll('input');

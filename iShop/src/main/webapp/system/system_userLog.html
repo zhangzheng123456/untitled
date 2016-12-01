@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>用户操作日志</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?20161130">
     <link rel="stylesheet" href="../table/css/style.css?20161116">
     <style>
         #sxk .isActive_select_down li {
@@ -36,10 +36,6 @@
                         <span class="icon-ishop_6-05"></span>
                         筛选
                     </li>
-                    <!--<li class="bg">-->
-                    <!--<span class="icon-ishop_6-06"></span>-->
-                    <!--配置-->
-                    <!--</li>-->
                     <li class="bg">
                         <span class="icon-ishop_6-07"></span>
                         刷新
@@ -105,18 +101,6 @@
             </div>
             <div class="inputs">
                 <ul></ul>
-                <!--<li>-->
-                    <!--<label>企业编号</label><input type="text" id="p1">-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<label>功能</label><input type="text" id="p2">-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<label>动作</label><input type="text" id="p3">-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<label>修改人</label><input type="text" id="p4">-->
-                <!--</li>-->
             </div>
         </div>
         <div class="table">
@@ -194,79 +178,8 @@
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script src="../js/insidePostRequire.js?20161116"></script>
 <!--js控制文件-->
-<script src="../js/system/system_userLog.js"></script>
+<script src="../js/system/system_userLog.js?20161130"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="../js/silide.js?20161116"></script>
-<script>
-//    //页面加载时list请求
-//    var oc = new ObjectControl();
-//    var funcCode=key_val.func_code;
-//    function GET(a,b){
-////        whir.loading.add("",0.5);//加载等待框
-//        oc.postRequire("get","/userOperation/list?pageNumber="+a+"&pageSize="+b
-//                +"&funcCode="+funcCode+"","","",function(data){
-//            if(data.code=="0"){
-//                console.log(data);
-//                $(".table tbody").empty();
-//                var message=JSON.parse(data.message);
-//                var list=JSON.parse(message.list);
-//                cout=list.pages;
-//                var pageNum = list.pageNum;
-//                var list=list.list;
-//                superaddition(list,pageNum);
-//                jumpBianse();
-//                setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
-//            }else if(data.code=="-1"){
-//                 alert(data.message);
-//            }
-//        });
-//    }
-//    //搜索
-//    function search(pageNumber,pageSize,searchValue){
-//        var _params={
-//            pageNumber:pageNumber,
-//            pageSize:pageSize,
-//            searchValue:searchValue
-//        }
-//        $.ajax({
-//            url: '/userOperation/search',
-//            type: "POST",
-//            dataType: "JSON",
-//            data:{
-//                param:JSON.stringify(_params)
-//            },
-//            success: function (data) {
-//                console.log('搜索成功：'+data);
-//    },
-//            error: function (data) {
-//                console.log('搜索失败：'+data);
-//            }
-//        });
-//
-//    }
-//    //删除
-//    function remove(id){
-//        var _params={
-//            id:id
-//        }
-//        $.ajax({
-//            url: '/userOperation/delete',
-//            type: "POST",
-//            dataType: "JSON",
-//            data:{
-//                param:JSON.stringify(_params)
-//            },
-//            success: function (data) {
-//                console.log('搜索成功：'+data);
-//            },
-//            error: function (data) {
-//                console.log('搜索失败：'+data);
-//            }
-//        });
-//    }
-//    window.onload = function(){
-//        GET(1,10);
-//    }
-</script>
 </body>
 </html>
