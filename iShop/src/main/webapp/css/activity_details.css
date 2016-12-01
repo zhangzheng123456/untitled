@@ -38,7 +38,12 @@ a, a:link,a:hover,a:visited,a:active{
     height: 222px;
     padding: 20px 61px 23px 61px;
 }
-.left_top{margin-right: 80px;margin-left: 80px;height: 120px;text-align:center;}
+.left_top{
+    /*margin-right: 80px;*/
+    /*margin-left: 80px;*/
+    height: 120px;
+    /*text-align:center;*/
+}
 .left_bottom{margin-top: 18px;}
 #TheTarget,#TheCover{
     font-size: 22px;
@@ -333,4 +338,10 @@ a, a:link,a:hover,a:visited,a:active{
     font-size: 14px;
     border-radius: 5px;
     margin-left: 20px;
+}
+.gotop:hover{
+    cursor: pointer;
+}
+.gobottom:hover{
+    cursor: pointer;
 }
