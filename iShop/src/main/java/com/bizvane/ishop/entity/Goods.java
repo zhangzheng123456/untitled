@@ -43,7 +43,7 @@ public class Goods {
     private Corp corp;
     private String corp_name;
     private String brand_name;
-    private List<Goods> matchgoods;
+    private List<DefGoodsMatch> matchgoods;
     private String match_goods;
 
     public String getMatch_goods() {
@@ -217,11 +217,11 @@ public class Goods {
         this.corp = corp;
     }
 
-    public List<Goods> getMatchgoods() {
+    public List<DefGoodsMatch> getMatchgoods() {
         return matchgoods;
     }
 
-    public void setMatchgoods(List<Goods> matchgoods) {
+    public void setMatchgoods(List<DefGoodsMatch> matchgoods) {
         this.matchgoods = matchgoods;
     }
 }

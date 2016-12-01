@@ -2,57 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.DefGoodsMatchMapper">
     <select id="selectMatchGoods" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
-        SELECT dgm.id,
-        dgm.goods_match_code,
-        dgm.goods_code,
-        dgm.corp_code,
+        SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg
+        FROM def_goods_match dgm,def_goods dg,def_brand db
         WHERE dgm.corp_code = dg.corp_code
         AND dgm.goods_code = dg.goods_code
+        AND dg.corp_code = db.corp_code
+        AND dg.brand_code = db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
+        AND dg.isactive ='Y'
         ORDER BY dgm.goods_match_code DESC
     </select>
+
     <select id="selMatchBySeach" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
-        SELECT dgm.id,
-        dgm.goods_match_code,
-        dgm.goods_code,
-        dgm.corp_code,
+        SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg
+        FROM def_goods_match dgm,def_goods dg,def_brand db
         WHERE dgm.corp_code = dg.corp_code
         AND dgm.goods_code = dg.goods_code
+        AND dg.corp_code = db.corp_code
+        AND dg.brand_code = db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
         AND dgm.goods_match_code in
-        (SELECT goods_match_code FROM def_goods_match WHERE goods_code like concat('%',#{search_value},'%'))
+        (SELECT goods_match_code FROM def_goods_match
+        WHERE 1=1 AND (
+        goods_code like concat('%',#{search_value},'%')
+        OR goods_match_title LIKE concat ('%',#{search_value},'%')
+        ))
+        AND dg.isactive ='Y'
         ORDER BY dgm.goods_match_code DESC
     </select>
+
     <select id="selectMatchByCode" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
         SELECT dgm.*,
         dg.goods_image
-        FROM def_goods_match dgm,def_goods dg
+        FROM def_goods_match dgm,def_goods dg,def_brand db
         WHERE dgm.corp_code = dg.corp_code
         AND dgm.goods_code = dg.goods_code
+        AND dg.corp_code = db.corp_code
+        AND dg.brand_code = db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND dgm.corp_code=#{corp_code}
         </if>
         <if test="goods_match_code!=null and goods_match_code!=''">
             AND dgm.goods_match_code = #{goods_match_code}
         </if>
+        AND dg.isactive ='Y'
         ORDER BY dgm.goods_match_code DESC
     </select>
+
     <delete id="delMatchByCode">
         DELETE FROM def_goods_match
         WHERE corp_code = #{corp_code} AND goods_match_code= #{goods_match_code}
     </delete>
+
     <delete id="delMatchById">
         DELETE FROM def_goods_match
         WHERE id = #{id}
     </delete>
+
     <insert id="addMatch" parameterType="com.bizvane.ishop.entity.DefGoodsMatch">
         INSERT INTO def_goods_match
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,6 +92,12 @@
             <if test="isactive!=null ">
                 isactive,
             </if>
+            <if test="goods_match_title!=null ">
+                goods_match_title,
+            </if>
+            <if test="goods_match_desc!=null ">
+                goods_match_desc,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="goods_match_code!=null ">
@@ -106,8 +124,15 @@
             <if test="isactive!=null ">
                 #{isactive},
             </if>
+            <if test="goods_match_title!=null ">
+                #{goods_match_title},
+            </if>
+            <if test="goods_match_desc!=null ">
+                #{goods_match_desc},
+            </if>
         </trim>
     </insert>
+
     <update id="updMatch" parameterType="com.bizvane.ishop.entity.DefGoodsMatch">
         update def_goods_match
         <trim prefix="set" suffixOverrides=",">
@@ -135,7 +160,31 @@
             <if test="isactive!=null ">
                 isactive = #{isactive},
             </if>
+            <if test="goods_match_title!=null ">
+                goods_match_title = #{goods_match_title},
+            </if>
+            <if test="goods_match_desc!=null ">
+                goods_match_desc =  #{goods_match_desc},
+            </if>
         </trim>
         where id=#{id}
     </update>
+
+    <select id="selectGoodsMatchList" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
+        SELECT dgm.*,
+        dg.goods_image
+        FROM def_goods_match dgm, def_goods dg, def_corp dc,def_brand db
+        WHERE dgm.corp_code = dg.corp_code
+        AND dgm.corp_code = dc.corp_code
+        AND dgm.corp_code = db.corp_code
+        AND dgm.goods_code = dg.goods_code
+        AND dg.brand_code = db.brand_code
+        AND goods_match_code IN (SELECT goods_match_code from def_goods_match
+        WHERE goods_code = #{goods_code})
+        AND def_goods_match.isactive = 'Y'
+        AND dg.isactive = 'Y'
+        AND dc.isactive = 'Y'
+        AND db.isactive = 'Y'
+        ORDER BY dgm.id DESC
+    </select>
 </mapper>

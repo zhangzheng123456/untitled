@@ -383,13 +383,4 @@ public class GoodsServiceImpl implements GoodsService {
         return page;
     }
 
-    public List<Goods> selectGoodsMatchList(String corp_code, String goods_code, String isactive) throws Exception{
-        List<Goods> old_goods = goodsMapper.selectGoodsMatchList(corp_code, goods_code, isactive);
-        List<Goods> new_goods = new ArrayList<Goods>();
-        for (int i = 0; i < old_goods.size(); i++) {
-            Goods goods = transterGoods(old_goods.get(i));
-            new_goods.add(goods);
-        }
-        return new_goods;
-    }
 }
