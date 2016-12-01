@@ -37,11 +37,21 @@ public class VipFsendServiceImpl implements VipFsendService{
     private StoreService storeService;
     @Autowired
     private ValidateCodeService validateService;
+
+    /**
+     * 查看选择接收群发消息的会员信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @Override
-    public VipFsend getVipFsendById(int id) throws Exception {
+    public String getVipFsendById(int id) throws Exception {
+        String message="";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
+       // System.out.println(corp_code);
+       // System.out.println(sms_vips);
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
         String type = vips_obj.get("type").toString();
         if (type.equals("1")) {
@@ -49,17 +59,40 @@ public class VipFsendServiceImpl implements VipFsendService{
             String brand_code = vips_obj.get("brand_code").toString();
             String store_code = vips_obj.get("store_code").toString();
             String user_code = vips_obj.get("user_code").toString();
-            DataBox dataBox = iceInterfaceService.vipScreenMethod("1","3",corp_code,area_code,brand_code,store_code,user_code);
-            String result = dataBox.data.get("message").value;
-            JSONObject result_obj = JSONObject.parseObject(result);
-            String count = result_obj.get("count").toString();
-            vipFsend.setTarget_vips_count(count);
+            if (user_code.equals("")){
+                if (store_code.equals("")) {
+                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                    for (int i = 0; i < storeList.size(); i++) {
+                        store_code = store_code + storeList.get(i).getStore_code() + ",";
+                    }
+                }
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_vip_id = new Data("vip_ids", "", ValueType.PARAM);
+                Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_vip_id.key, data_vip_id);
+                datalist.put(data_store_code.key, data_store_code);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+                message = dataBox.data.get("message").value;
+
+            }else {
+                DataBox dataBox = iceInterfaceService.vipScreenMethod("1","500",corp_code,"","","",user_code);
+                message = dataBox.data.get("message").value;}
         }else if (type.equals("2")){
             String vips = vips_obj.get("vips").toString();
-            String[] vips_array = vips.split(",");
-            vipFsend.setTarget_vips_count(String.valueOf(vips_array.length));
+          //  System.out.print(vips+"=======");
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_vip_id.key, data_vip_id);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+            message = dataBox.data.get("message").value;
+
         }
-        return vipFsend;
+        return message;
     }
 
     @Override
