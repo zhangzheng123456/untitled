@@ -27,7 +27,11 @@
             AND dgm.corp_code=#{corp_code}
         </if>
         AND dgm.goods_match_code in
-        (SELECT goods_match_code FROM def_goods_match WHERE goods_code like concat('%',#{search_value},'%'))
+        (SELECT goods_match_code FROM def_goods_match
+        WHERE 1=1 AND (
+        goods_code like concat('%',#{search_value},'%')
+        OR goods_match_title LIKE concat ('%',#{search_value},'%')
+        ))
         AND dg.isactive ='Y'
         ORDER BY dgm.goods_match_code DESC
     </select>
@@ -151,10 +155,10 @@
                 isactive = #{isactive},
             </if>
             <if test="goods_match_title!=null ">
-                goods_match_title =  #{goods_match_title},
+                goods_match_title = #{goods_match_title},
             </if>
             <if test="goods_match_depict!=null ">
-                goods_match_depict =  #{goods_match_depict},
+                goods_match_depict = #{goods_match_depict},
             </if>
         </trim>
         where id=#{id}
