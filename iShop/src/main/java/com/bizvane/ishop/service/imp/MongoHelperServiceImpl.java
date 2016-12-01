@@ -205,6 +205,7 @@ public class MongoHelperServiceImpl {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start)));
                 }
                 if (!end.equals("") && end != null) {
+                    end = end + " 23:59:59";
                     System.out.println("=========end:" + end);
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end)));
                 }
