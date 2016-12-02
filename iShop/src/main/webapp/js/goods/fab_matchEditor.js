@@ -96,18 +96,43 @@ var swip_image = [];
                     ISACTIVE="N";
                 }
                 var goods_match_title = $('#goodsTitle').val();
-                console.log('商品标题是'+goods_match_title);
                 var goods_match_desc = $('#goodsDescribe').val();
-                var _params = {
-                    "goods_match_code": goods_match_code,
-                    "corp_code": corp_code,
-                    "goods_code": GOODS_CODE,
-                    "isactive": ISACTIVE,
-                    "goods_match_title": goods_match_title,
-                    "goods_match_desc": goods_match_desc,
-                };
-                console.log(_params);
-                fabjs.ajaxSubmit(_command,_params,opt);
+                if(goods_match_title.trim() ==''){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"搭配名称不能为空"
+                    });
+                }
+                if(goods_match_desc.trim() ==''){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"搭配描述不能为空"
+                    });
+                }
+                if(goods_match_code.trim() ==''){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"搭配商品不能为空"
+                    });
+                }
+
+                    var _params = {
+                        "goods_match_code": goods_match_code,
+                        "corp_code": corp_code,
+                        "goods_code": GOODS_CODE,
+                        "isactive": ISACTIVE,
+                        "goods_match_title": goods_match_title,
+                        "goods_match_desc": goods_match_desc,
+                    };
+                    console.log(_params);
+                    fabjs.ajaxSubmit(_command, _params, opt);
+                
 
             }else{
                 return;
