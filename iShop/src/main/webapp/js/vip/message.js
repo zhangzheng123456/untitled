@@ -355,12 +355,12 @@ function jumpBianse() {
                     var len = $(".table #table_r thead tr th").length;
                     var i;
                     for(i=0;i<10;i++){
-                        $(".table tbody").append("<tr></tr>");
+                        $(".table #table_r tbody").append("<tr></tr>");
                         for(var j=0;j<len;j++){
                             $($(".table #table_r tbody tr")[i]).append("<td></td>");
                         }
                     }
-                    $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+                    $(".table #table_r tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
                 }
                 for(var i=0;i<list.length;i++){
                     var a=i+1;

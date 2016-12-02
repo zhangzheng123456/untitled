@@ -117,7 +117,9 @@ $('.btnSecond .radio_b').click(function () {
 });
 //筛选按钮
 $('#choose').click(function(){
-    $('#screening').slideToggle(600);
+    $('#screening').slideToggle(600,function () {
+        $(".people").getNiceScroll().resize();
+    });
     // listShow();
 });
 //清空筛选
