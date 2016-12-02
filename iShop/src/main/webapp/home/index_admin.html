@@ -237,7 +237,7 @@
                 if (remote_ip_info.ret == '1') {
                     $.ajax({
                         type: "GET",
-                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+remote_ip_info.city,
+                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+encodeURI(remote_ip_info.city),
                         data: "",
                         success: function(msg){
                             var w_type=JSON.parse(msg)["data"]["forecast"];
