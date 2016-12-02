@@ -190,6 +190,12 @@ public class DefGoodsMatchController {
             String isactive = jsonObject.get("isactive").toString();
             System.out.println("---------111isactive1111-------"+isactive);
             String[] split = goods_code.split(",");
+            if (split.length > 10){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("最多只能添加10个商品");
+                return dataBean.getJsonStr();
+            }
             for (int i=0;i<split.length;i++){
                 DefGoodsMatch defGoodsMatch=new DefGoodsMatch();
                 if(role_code.equals(Common.ROLE_SYS)) {
@@ -262,6 +268,12 @@ public class DefGoodsMatchController {
             String isactive = jsonObject.get("isactive").toString();
             if(!goods_code.equals("")) {
                 String[] split = goods_code.split(",");
+                if (split.length > 10){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("最多只能添加10个商品");
+                    return dataBean.getJsonStr();
+                }
                 for (int i = 0; i < split.length; i++) {
                     DefGoodsMatch defGoodsMatch = new DefGoodsMatch();
                     defGoodsMatch.setCorp_code(corp_code_json);
