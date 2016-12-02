@@ -50,8 +50,6 @@ public class VipFsendServiceImpl implements VipFsendService{
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
-       // System.out.println(corp_code);
-       // System.out.println(sms_vips);
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
         String type = vips_obj.get("type").toString();
         if (type.equals("1")) {
@@ -89,7 +87,6 @@ public class VipFsendServiceImpl implements VipFsendService{
             }
         }else if (type.equals("2")){
             String vips = vips_obj.get("vips").toString();
-          //  System.out.print(vips+"=======");
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
@@ -135,8 +132,6 @@ public class VipFsendServiceImpl implements VipFsendService{
             String store_code = sms_vips_obj.get("store_code").toString();
             String vip_user_code = sms_vips_obj.get("user_code").toString();
 
-            String count = sms_vips_obj.get("count").toString();
-            vipFsend.setTarget_vips_count(count);
             if (vip_user_code.equals("")){
                 if (store_code.equals("")) {
                     List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
@@ -190,12 +185,7 @@ public class VipFsendServiceImpl implements VipFsendService{
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
                 phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
             }
-
-
-        sms_vips_obj.put("vips",vips);
         }
-        sms_vips_obj.put("type",type);
-        sms_vips=sms_vips_obj.toString();
         vipFsend.setSms_code(sms_code);
         vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipFsend.setCreater(user_id);
@@ -207,7 +197,7 @@ public class VipFsendServiceImpl implements VipFsendService{
         int num=0;
         num= vipFsendMapper.insertFsend(vipFsend);
         System.out.print(num);
-        if(num>0){
+       if(num>0){
 //            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
 //            Data data_phone = new Data("phone", phone, ValueType.PARAM);
 //            Data data_text = new Data("text", content, ValueType.PARAM);
@@ -220,7 +210,7 @@ public class VipFsendServiceImpl implements VipFsendService{
 //            if (!dataBox.status.toString().equals("SUCCESS")){
 //                status = "发送失败";
 //            }
-
+           status = Common.DATABEAN_CODE_SUCCESS;
         }else{
             status= "发送失败";
             return status;
