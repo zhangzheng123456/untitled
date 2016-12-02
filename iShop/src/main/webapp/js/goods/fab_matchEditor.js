@@ -108,6 +108,8 @@ var swip_image = [];
                     }else if(input.checked==false){
                         ISACTIVE="N";
                     }
+                    var goods_match_code = sessionStorage.getItem("goods_match_code");//取页面的function_code
+                    var corp_code = sessionStorage.getItem("corp_code");//取页面的function_code
                     var _params = {
                         "goods_match_code": goods_match_code,
                         "corp_code": corp_code,
