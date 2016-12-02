@@ -97,30 +97,30 @@ var swip_image = [];
                 }
                 var goods_match_title = $('#goodsTitle').val();
                 var goods_match_desc = $('#goodsDescribe').val();
-                if(goods_match_title.trim() ==''){
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content:"搭配名称不能为空"
-                    });
-                }
-                if(goods_match_desc.trim() ==''){
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content:"搭配描述不能为空"
-                    });
-                }
-                if(goods_match_code.trim() ==''){
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content:"搭配商品不能为空"
-                    });
-                }
+                //if(goods_match_title.trim() ==''){
+                //    art.dialog({
+                //        time: 1,
+                //        lock: true,
+                //        cancel: false,
+                //        content:"搭配名称不能为空"
+                //    });
+                //}
+                //if(goods_match_desc.trim() ==''){
+                //    art.dialog({
+                //        time: 1,
+                //        lock: true,
+                //        cancel: false,
+                //        content:"搭配描述不能为空"
+                //    });
+                //}
+                //if(goods_match_code.trim() ==''){
+                //    art.dialog({
+                //        time: 1,
+                //        lock: true,
+                //        cancel: false,
+                //        content:"搭配商品不能为空"
+                //    });
+                //}
 
                     var _params = {
                         "goods_match_code": goods_match_code,
@@ -703,6 +703,7 @@ $(".good_imgs").on("click","div img",function () {
 })
 
 function pageVal(){
+    console.log('编辑页面加载');
     var _param={};
     var corp_code=sessionStorage.getItem("corp_code");
     //var searchValue='';
