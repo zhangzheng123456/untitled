@@ -224,24 +224,6 @@
     /*height: 200px;*/
     /*border-radius: 10px;*/
     /*background-color: #dfdfdf;*/
-    $(".people").niceScroll({
-        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-        cursorcolor:" #dfdfdf",
-        cursoropacitymax:1,
-        touchbehavior:false,
-        cursorminheight:200,
-        autohidemode:true,
-        cursorwidth:"9px",
-        cursorborderradius:"10px"});
-    $("#content").niceScroll({
-        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-        cursorcolor:" #dfdfdf",
-        cursoropacitymax:1,
-        touchbehavior:false,
-        cursorminheight:250,
-        autohidemode:true,
-        cursorwidth:"9px",
-        cursorborderradius:"10px"});
     $(function () {
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
@@ -261,6 +243,24 @@
         $(".icon-ishop_6-07").parent().click(function () {
             window.location.reload();
         });
+        $(".people").niceScroll({
+            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+            cursorcolor:" #dfdfdf",
+            cursoropacitymax:1,
+            touchbehavior:false,
+            cursorminheight:200,
+            autohidemode:true,
+            cursorwidth:"9px",
+            cursorborderradius:"10px"});
+        $("#content").niceScroll({
+            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+            cursorcolor:" #dfdfdf",
+            cursoropacitymax:1,
+            touchbehavior:false,
+            cursorminheight:250,
+            autohidemode:true,
+            cursorwidth:"9px",
+            cursorborderradius:"10px"});
     });
 </script>
 
