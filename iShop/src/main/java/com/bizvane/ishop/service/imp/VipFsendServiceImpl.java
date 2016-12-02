@@ -127,7 +127,7 @@ public class VipFsendServiceImpl implements VipFsendService{
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String phone = "";
+        String phone = "13776410320,";
         if (type.equals("1")){
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
@@ -135,7 +135,6 @@ public class VipFsendServiceImpl implements VipFsendService{
             String vip_user_code = sms_vips_obj.get("user_code").toString();
             String count = sms_vips_obj.get("count").toString();
             vipFsend.setTarget_vips_count(count);
-
             if (vip_user_code.equals("")){
                 if (store_code.equals("")) {
                     List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
@@ -144,12 +143,10 @@ public class VipFsendServiceImpl implements VipFsendService{
                     }
                 }
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_vip_id = new Data("vip_ids", "", ValueType.PARAM);
                 Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
 
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_vip_id.key, data_vip_id);
                 datalist.put(data_store_code.key, data_store_code);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
                 String message1 = dataBox.data.get("message").value;
@@ -160,17 +157,24 @@ public class VipFsendServiceImpl implements VipFsendService{
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                 }
             }else {
-                DataBox dataBox = iceInterfaceService.vipScreenMethod("1","500",corp_code,"","","",vip_user_code);
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_user_code = new Data("user_codes", user_id, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_user_code.key, data_user_code);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    phone = phone + vip_obj.getString("PHONE_VIP") + ",";
+                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                 }
             }
         }else {
             String vips = sms_vips_obj.get("vips").toString();
+
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
@@ -200,18 +204,18 @@ public class VipFsendServiceImpl implements VipFsendService{
         num= vipFsendMapper.insertFsend(vipFsend);
         System.out.print(num);
         if(num>0){
-            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-            Data data_phone = new Data("phone", phone, ValueType.PARAM);
-            Data data_text = new Data("text", content, ValueType.PARAM);
-
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_channel.key, data_channel);
-            datalist.put(data_phone.key, data_phone);
-            datalist.put(data_text.key, data_text);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
-            if (!dataBox.status.toString().equals("SUCCESS")){
-                status = "发送失败";
-            }
+//            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+//            Data data_phone = new Data("phone", phone, ValueType.PARAM);
+//            Data data_text = new Data("text", content, ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_channel.key, data_channel);
+//            datalist.put(data_phone.key, data_phone);
+//            datalist.put(data_text.key, data_text);
+//            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
+//            if (!dataBox.status.toString().equals("SUCCESS")){
+//                status = "发送失败";
+//            }
 
         }else{
             status= "发送失败";

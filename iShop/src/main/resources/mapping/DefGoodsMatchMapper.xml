@@ -181,7 +181,7 @@
         AND dg.brand_code = db.brand_code
         AND goods_match_code IN (SELECT goods_match_code from def_goods_match
         WHERE goods_code = #{goods_code})
-        AND def_goods_match.isactive = 'Y'
+        AND dgm.isactive = 'Y'
         AND dg.isactive = 'Y'
         AND dc.isactive = 'Y'
         AND db.isactive = 'Y'
