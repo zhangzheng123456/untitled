@@ -1664,12 +1664,13 @@ function filtrates(a, b, c) {
             if (list.length <= 0) {
                 $(".table p").remove();
                 $(".table").append("<p>没有找到信息,请重新搜索</p>");
-                $(".foot ul").empty();
+                // $(".foot ul").empty();
                 whir.loading.remove();//移除加载框
             } else if (list.length > 0) {
                 $(".table p").remove();
                 superaddition(list, a, c);
                 jumpBianse();
+                console.log($("#foot-num")[0]);
                 setPage($("#foot-num")[0], cout, a, b, c);
                 whir.loading.remove();//移除加载框
             }
