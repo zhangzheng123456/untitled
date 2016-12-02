@@ -71,7 +71,7 @@ var swip_image = [];
                         time: 2,
                         lock: true,
                         cancel: false,
-                        content:"商品标题或描述未填写"
+                        content:"商品标题或商品描述未填写"
                     });
                 }else{
                     $(".conpany_msg .goods_code").each(function () {
