@@ -171,7 +171,11 @@
     </update>
 
     <select id="selectGoodsMatchList" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
-        SELECT dgm.*,
+        SELECT dgm.goods_match_title,
+        dgm.goods_code,
+        dgm.corp_code,
+        dgm.goods_match_code,
+        dg.id,
         dg.goods_image
         FROM def_goods_match dgm, def_goods dg, def_corp dc,def_brand db
         WHERE dgm.corp_code = dg.corp_code
@@ -179,8 +183,9 @@
         AND dgm.corp_code = db.corp_code
         AND dgm.goods_code = dg.goods_code
         AND dg.brand_code = db.brand_code
+        AND dgm.corp_code = #{corp_code}
         AND goods_match_code IN (SELECT goods_match_code from def_goods_match
-        WHERE goods_code = #{goods_code})
+        WHERE goods_code = #{goods_code} AND corp_code = #{corp_code})
         AND dgm.isactive = 'Y'
         AND dg.isactive = 'Y'
         AND dc.isactive = 'Y'
