@@ -125,7 +125,8 @@ public class VipFsendServiceImpl implements VipFsendService{
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String phone = "13776410320,";
+       // String phone = "13776410320,";
+        String phone = "";
         if (type.equals("1")){
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
@@ -198,18 +199,18 @@ public class VipFsendServiceImpl implements VipFsendService{
         num= vipFsendMapper.insertFsend(vipFsend);
         System.out.print(num);
        if(num>0){
-//            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-//            Data data_phone = new Data("phone", phone, ValueType.PARAM);
-//            Data data_text = new Data("text", content, ValueType.PARAM);
-//
-//            Map datalist = new HashMap<String, Data>();
-//            datalist.put(data_channel.key, data_channel);
-//            datalist.put(data_phone.key, data_phone);
-//            datalist.put(data_text.key, data_text);
-//            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
-//            if (!dataBox.status.toString().equals("SUCCESS")){
-//                status = "发送失败";
-//            }
+            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+            Data data_phone = new Data("phone", phone, ValueType.PARAM);
+            Data data_text = new Data("text", content, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_channel.key, data_channel);
+            datalist.put(data_phone.key, data_phone);
+            datalist.put(data_text.key, data_text);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
+            if (!dataBox.status.toString().equals("SUCCESS")){
+                status = "发送失败";
+            }
            status = Common.DATABEAN_CODE_SUCCESS;
         }else{
             status= "发送失败";

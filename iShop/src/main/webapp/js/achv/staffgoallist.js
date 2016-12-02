@@ -248,9 +248,9 @@ function superaddition(data,num){//页面加载循环
                         + data[i].user.user_code
                         + "</td><td>"
                         + data[i].user.user_name
-                        + "</td><td>"
+                        + "</td><td><span title="+data[i].store.store_name+">"
                         + data[i].store.store_name
-                        +"</td><td>"
+                        +"</span></td><td>"
                         + data[i].store.corp_name
                         +"</td><td>"
                         + data[i].user_target
@@ -723,7 +723,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                if(filter[i].show_name=="时间段"){
+                if(filter[i].show_name=="目标日期"){
                     li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "' class='laydate-icon' onclick='laydate({istime: true, format: \"YYYY-MM-DD\"})' ></li>";
                 }else {
                     li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>";

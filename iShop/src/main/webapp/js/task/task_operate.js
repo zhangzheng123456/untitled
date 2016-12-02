@@ -50,6 +50,7 @@ function getasktypelist(a, b) {
     var corp_command = "/task/selectAllTaskType";
     var _param = {};
     _param["corp_code"] = a;
+    var task_type_code=b;
     oc.postRequire("post", corp_command, "0", _param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -57,7 +58,7 @@ function getasktypelist(a, b) {
             var type_html = "";
             $("#task_type_code").empty();
             $('#task_type_list .searchable-select').remove();
-            if (list.length > 0) {
+            if (list.length>0) {
                 for (var i = 0; i < list.length; i++) {
                     type_html += '<option value="' + list[i].task_type_code + '">' + list[i].task_type_name + '</option>';
                 }
@@ -70,8 +71,9 @@ function getasktypelist(a, b) {
                     content: "请先定义任务类型"
                 });
             };
-            if(b !== "") {
-                $("#task_type_code option[value='"+b+"']").attr("selected","true");
+            if(task_type_code!=="") {
+               console.log(task_type_code);
+               $("#task_type_list option[value='"+task_type_code+"']").attr("selected","true");
             }
             $("#task_type_code").searchableSelect();
         }
@@ -660,6 +662,7 @@ function nssignment() {//加载list的文件
         var msg = JSON.parse(msg.task);
         var corp_code = msg.corp_code;//公司编号
         var task_code = msg.task_code;//任务编号
+        var task_type_code=msg.task_type_code;//类型编号
         var ul = "";
         for (var i = 0; i < list.length; i++) {
             //ul+="<li data-code='"+list[i].user_code+"' data-phone='"+list[i].phone+"'>"+list[i].user_name+"<div class='delectxing' onclick='deleteName(this)'></div></li>"
@@ -680,7 +683,7 @@ function nssignment() {//加载list的文件
         $("#creator").val(msg.creater);//创建人
         $("#modify_time").val(msg.modified_date);//修改时间
         $("#modifier").val(msg.modifier);//修改人
-        getcorplist(corp_code, task_code);//
+        getcorplist(corp_code, task_type_code);//
         whir.loading.remove();//移除加载框
     });
 }

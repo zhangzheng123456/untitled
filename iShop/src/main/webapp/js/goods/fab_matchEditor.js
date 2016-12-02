@@ -54,74 +54,62 @@ var swip_image = [];
     fabjs.bindbutton=function(){
         $(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
             if(fabjs.firstStep()){
-                //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
-                $(".conpany_msg .goods_code").each(function(){
-                    var nowVal =  $(this).text();
-                    GOODS_CODE +=nowVal+',';
-                });;//商品编号
-                var reg=/,$/gi;
-                GOODS_CODE=GOODS_CODE.replace(reg,"");
-                console.log('商品编号是：'+GOODS_CODE);
-                var ISACTIVE="";//是否可用
-                var input=$(".checkbox_isactive").find("input")[0];
-                if(input.checked==true){
-                    ISACTIVE="Y";
-                }else if(input.checked==false) {
-                    ISACTIVE = "N";
-                }
-                var li=$(".match_goods ul").find("li");
-                for(var i=0,matchgoods="";i<li.length;i++){
-                    var r=$(li[i]).attr("id");
-                    if(i<li.length-1){
-                        matchgoods+=r+",";
-                    }else{
-                        matchgoods+=r;
-                    }
-                }
-                var _command="/defmatch/editMatch";//接口名
-                var opt = {//返回成功后的操作
-                    success:function(){
-                    }
-                };
-                var corp_code=sessionStorage.getItem("corp_code");
-                //var searchValue='';
-                var goods_match_code = sessionStorage.getItem("goods_match_code");
-                var a = $('#is_active')[0];
-                console.log(a);
-                var input=$("#is_active")[0];
-                if(input.checked==true){
-                    ISACTIVE="Y";
-                }else if(input.checked==false){
-                    ISACTIVE="N";
-                }
+                var nowValLength = $(".conpany_msg .goods_code").length;
                 var goods_match_title = $('#goodsTitle').val();
+                console.log('商品标题是'+goods_match_title);
                 var goods_match_desc = $('#goodsDescribe').val();
-                //if(goods_match_title.trim() ==''){
-                //    art.dialog({
-                //        time: 1,
-                //        lock: true,
-                //        cancel: false,
-                //        content:"搭配名称不能为空"
-                //    });
-                //}
-                //if(goods_match_desc.trim() ==''){
-                //    art.dialog({
-                //        time: 1,
-                //        lock: true,
-                //        cancel: false,
-                //        content:"搭配描述不能为空"
-                //    });
-                //}
-                //if(goods_match_code.trim() ==''){
-                //    art.dialog({
-                //        time: 1,
-                //        lock: true,
-                //        cancel: false,
-                //        content:"搭配商品不能为空"
-                //    });
-                //}
-
+                if(nowValLength<1){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"未添加商品"
+                    });
+                }else if(goods_match_title.trim()=='' || goods_match_desc.trim()==''){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"商品标题或商品描述未填写"
+                    });
+                }else{
+                    $(".conpany_msg .goods_code").each(function () {
+                        var nowVal = $(this).text();
+                        GOODS_CODE += nowVal + ',';
+                    });
+                    console.log('添加的商品id是' + GOODS_CODE);
+                    var reg = /,$/gi;
+                    GOODS_CODE = GOODS_CODE.replace(reg, "");
+                    var ISACTIVE = "";//是否可用
+                    var input = $(".checkbox_isactive").find("input")[0];
+                    if (input.checked == true) {
+                        ISACTIVE = "Y";
+                    } else if (input.checked == false) {
+                        ISACTIVE = "N";
+                    }
+                    var li = $(".match_goods ul").find("li");
+                    for (var i = 0, matchgoods = ""; i < li.length; i++) {
+                        var r = $(li[i]).attr("id");
+                        if (i < li.length - 1) {
+                            matchgoods += r + ",";
+                        } else {
+                            matchgoods += r;
+                        }
+                    }
+                var _command="/defmatch/editMatch";//接口名
+                    var opt = {//返回成功后的操作
+                        success: function () {
+                        }
+                    };
+                    var input=$("#is_active")[0];
+                    if(input.checked==true){
+                        ISACTIVE="Y";
+                    }else if(input.checked==false){
+                        ISACTIVE="N";
+                    }
+                    var goods_match_code = sessionStorage.getItem("goods_match_code");//取页面的function_code
+                    var corp_code = sessionStorage.getItem("corp_code");//取页面的function_code
                     var _params = {
                         "goods_match_code": goods_match_code,
                         "corp_code": corp_code,
@@ -134,7 +122,7 @@ var swip_image = [];
                     fabjs.ajaxSubmit(_command, _params, opt);
                 
 
-            }else{
+            }}else{
                 return;
             }
         });
@@ -788,6 +776,26 @@ function deleteThis(dom){
             }
         }
 }
-window.onload=function(){
+function changePage(){
+    window.location.href="fab_match.html";
+}
+//点击隐藏提醒
+function msgHide(){
+    $('#areaTemp').css('display','none');
+
+}
+//失去焦点判断是否显示提醒
+$('#goodsDescribe').blur(function(){
+    if($('#goodsDescribe').val()==''){
+        setTimeout(function(){
+            $('#areaTemp').css('display','block');
+        },500);
+    }else{
+        $('#areaTemp').css('display','none');
+    }
+});
+window.onload = function(){
+    console.log('页面加载');
+    $('#areaTemp').css('display','none');
     pageVal();
 }

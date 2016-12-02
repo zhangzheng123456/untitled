@@ -162,6 +162,7 @@ function jumpBianse(){
 }
 //获取数据
 function getVal(){
+    whir.loading.add("", 0.5);//加载等待框
     var _params= {
         "id":"0",
         "message":""
@@ -196,11 +197,12 @@ function getVal(){
             //var goods_code = list[i].goods_code;
             //var goods_image = list[i].goods_image;
             pageVal(arr,unqiuearr,list);
-
+            whir.loading.remove();
 
         },
         error: function (data) {
             console.log('获取数据失败')
+            whir.loading.remove();
         }
     });
 }
