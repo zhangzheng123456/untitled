@@ -279,7 +279,6 @@ public class SignController {
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and", value);
                     DBCursor dbCursor2 = cursor.find(queryCondition1);
-
                     pages = MongoUtils.getPages(dbCursor2, page_size);
                     dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "sign_time", -1);
 

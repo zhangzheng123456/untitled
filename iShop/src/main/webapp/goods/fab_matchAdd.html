@@ -89,7 +89,7 @@
         #add{border: 2px dashed #c3c3c3;width: 150px;height: 150px;line-height: 150px;text-align: center;position: relative;margin-bottom: 60px;float: left;margin-right: 20px;}
         .addAdd{color: #c3c3c3;font-size:26px;position: absolute;top:0px;}
         .addText{position: absolute;top:23px;font-size:14px;color: #c3c3c3;}
-        .conpany_msg li{width: 150px;height: 190px;margin-bottom: 20px;float: left;margin-right:20px;position: relative;}
+        .conpany_msg li{width: 150px;height: 190px;margin-bottom: 10px;float: left;margin-right:15px;position: relative;}
         .conpany_msg img{width:150px;height:150px;border-radius: 5px;background-color: #ffffff;margin:0 auto;}
         .conpany_msg  span:nth-of-type(1){display:block; width: 150px;height: 30px;margin-top: 10px;font-size: 14px;color: #888888;text-align: center;margin-right: 20px}
         /*文字*/
@@ -106,21 +106,22 @@
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="changePage()">搭配管理</span><i class="icon-ishop_8-03"></i><label>新增搭配</label></div>
     <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
-            <div style="margin-top: 50px;margin-bottom: 100px;margin-left: -41px">
+            <div style="margin-top: 50px;margin-bottom: 95px;margin-left: 60px">
                 <span style="position: relative">
                     <label style="font-size:14px;color:#c26555;float: left;width: 105px;height: 30px;text-align: right;margin-right: 18px;line-height: 30px;font-size: 14px;text-indent: 10px;">搭配名称*</label>
-                    <input type="text" id="goodsTitle"  verify="Empty"  style="float: left;width: 420px;height: 30px;border-radius: 4px;border: none;text-indent: 10px;outline: none;color: #888888"/>
+                    <input type="text" id="goodsTitle"  verify="Empty"  style="float: left;width: 480px;height: 30px;border-radius: 4px;border: none;text-indent: 10px;outline: none;color: #888888"/>
                     <!--<div style="padding-left:122px" class="hint"> </div>-->
                     <!--<div hintinfo="内容标题不能为空！"></div>-->
 
                 </span>
             </div>
             <div>
-                <span style="display: inline-flex;width:100%;margin-left: -41px">
+                <span style="display: inline-flex;width:100%;margin-left: 60px">
                      <label style="font-size:14px;color:#c26555;float: left;width: 105px;height: 30px;text-align: right;margin-right: 18px;line-height: 30px;font-size: 14px;">搭配描述*</label>
-                    <textarea id="goodsDescribe" maxlength="200" style="width: 420px;height: 100px;padding: 8px;outline:none;resize: none;border: none; border-radius: 4px;font-family: inherit;font-size: inherit;line-height: inherit;" id="message_content" ></textarea></span></span>
+                    <textarea id="goodsDescribe" maxlength="400" style="width: 480px;height: 180px;padding: 8px;outline:none;resize: none;border: none; border-radius: 4px;font-family: inherit;font-size: inherit;line-height: inherit;" id="message_content" ></textarea></span></span>
             </div>
-        <form class="conpany_msg" style="margin-left:0px">
+        <span style="clear:both;float: left;font-size: 14px;color: #888888;margin-left:100px;margin-top: 10px;">商品搭配</span>
+        <form class="conpany_msg" style="float: left;margin-top: 15px;margin-left: 27px;width: 495px">
             <!--商品模板-->
             <!--<div class="itembox" style="width: 150px;height: 190px;margin-bottom: 20px;margin-right:20px;float: left">-->
                 <!--<div class="itemArea"></div>-->

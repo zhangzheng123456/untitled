@@ -58,16 +58,51 @@ jQuery(function () {
         jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         jQuery('#content').html(list.goods_description);
         list=list.matchgoods;
-        for (var i = 0; i < list.length; i++) {
-            jQuery('#match-con ul').append('<a href="goods.html?corp_code='
-                + corp_code
-                + '&id='
-                + list[i].id
-                + '"><li class="ti_img_wrap"><div class="ti_img"><img src="'
-                + list[i].goods_image
-                + '" alt="暂无图片"></div><p>'
-                + list[i].goods_code
-                + '</p></li></a>');
+        if(list.length>0){
+            var arr=[];
+            var unqiuearr=[];
+            var hash={};
+            //获取所有搭配id
+            for(var a=0;a< list.length;a++){
+                arr.push(list[a].goods_match_code);
+            }
+            console.log(arr);
+                //搭配id去重
+            for(var b=0;b<arr.length;b++){
+                if(!hash[arr[b]]){
+                    hash[arr[b]] = true; //存入hash表
+                    unqiuearr.push(arr[b]);
+                }
+            }
+            console.log(unqiuearr);
+            var html="";
+            var title="";
+            for(var c=0;c<unqiuearr.length;c++){
+                var li="";
+                for(var k=0;k<list.length;k++){
+                    if(list[k].goods_match_code ==unqiuearr[c]){
+                        title=list[k].goods_match_title;
+                        var goods_image="";
+                        if(list[k].goods_image.indexOf("http")!==-1){
+                            goods_image=list[k].goods_image;
+                        }
+                        if(list[k].goods_image.indexOf("http")==-1){
+                            goods_image="image/goods_default_image.png";
+                        }
+                        li+='<a href="goods.html?corp_code='
+                            + corp_code
+                            + '&id='
+                            + list[k].id
+                            + '"><li class="ti_img_wrap"><div class="ti_img"><img src="'
+                            + goods_image
+                            + '" alt="暂无图片"></div><p>'
+                            + list[k].goods_code
+                            + '</p></li></a>'
+                    }
+                }
+                html+="<div class='footer'><h4 class='biaoti'>"+title+"</h4><div class='goods_list_p'><div class='goods_list'>"+li+"</div></div></div>";
+            }
+            jQuery('#match-con ul').append(html);
         }
         var width=$(".swiper-slide").width();
         var height=$(".swiper-slide").height();

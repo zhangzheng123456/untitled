@@ -160,6 +160,25 @@ a {
     padding: 0 0.36232rem 0 0.36232rem; }
     .buy-match .match-con a {
       text-decoration: none; }
+    .buy-match .match-con .footer .goods_list_p {
+      overflow: hidden; }
+      .buy-match .match-con .footer .goods_list_p .goods_list {
+        margin-left: -0.24155rem; }
+    .buy-match .match-con .footer .biaoti {
+      height: 0.72464rem;
+      color: #6E6E6E; }
+      [data-dpr="1"] .buy-match .match-con .footer .biaoti {
+        line-height: 31px; }
+      [data-dpr="2"] .buy-match .match-con .footer .biaoti {
+        line-height: 62px; }
+      [data-dpr="3"] .buy-match .match-con .footer .biaoti {
+        line-height: 93px; }
+      [data-dpr="1"] .buy-match .match-con .footer .biaoti {
+        font-size: 14px; }
+      [data-dpr="2"] .buy-match .match-con .footer .biaoti {
+        font-size: 28px; }
+      [data-dpr="3"] .buy-match .match-con .footer .biaoti {
+        font-size: 42px; }
     .buy-match .match-con li {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -169,13 +188,14 @@ a {
       width: 50%;
       float: left; }
       .buy-match .match-con li .ti_img {
+        border: 1px solid #e5e5e5;
         position: relative;
         background-color: #F7F7F7; }
       .buy-match .match-con li p {
         height: 0.48309rem;
         line-height: 0.48309rem;
         text-align: center;
-        color: #333; }
+        color: #888888; }
         [data-dpr="1"] .buy-match .match-con li p {
           font-size: 14px; }
         [data-dpr="2"] .buy-match .match-con li p {

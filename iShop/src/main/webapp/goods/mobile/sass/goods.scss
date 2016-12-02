@@ -161,6 +161,20 @@ a{
 		& a{
 			text-decoration: none;
 		}
+		.footer{
+			.goods_list_p{
+				overflow: hidden;
+				.goods_list{
+					margin-left: rem(-10);
+				}
+			}
+			.biaoti{
+				height:rem(30);
+				@include line-height(31);
+				@include font(14);
+				color: #6E6E6E;
+			}
+		}
 		& li{
 			-webkit-box-sizing: border-box;
 	        -moz-box-sizing: border-box;
@@ -170,6 +184,7 @@ a{
 			width: 50%;
 			float: left;
 			.ti_img{
+				border: 1px solid #e5e5e5;
 				position: relative;
 				background-color: #F7F7F7;
 			}
@@ -177,7 +192,7 @@ a{
 				height: rem(20);
 				line-height: rem(20);
 				text-align: center;
-				color: #333;
+				color: #888888;
 				@include font(14);
 			}
 		}
