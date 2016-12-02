@@ -41,7 +41,6 @@ jQuery(function () {
     oc.postRequire("post", "/api/fab/select", "", query, function (data) {
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
-        console.log(list);
         var goods_image=JSON.parse(list.goods_image);
         // if(list.goods_image.indexOf("http")!==-1){
         //     var goodsImage = list.goods_image.split(",");
@@ -66,15 +65,13 @@ jQuery(function () {
             for(var a=0;a< list.length;a++){
                 arr.push(list[a].goods_match_code);
             }
-            console.log(arr);
-                //搭配id去重
+            //搭配id去重
             for(var b=0;b<arr.length;b++){
                 if(!hash[arr[b]]){
                     hash[arr[b]] = true; //存入hash表
                     unqiuearr.push(arr[b]);
                 }
             }
-            console.log(unqiuearr);
             var html="";
             var title="";
             for(var c=0;c<unqiuearr.length;c++){
@@ -106,8 +103,6 @@ jQuery(function () {
         }
         var width=$(".swiper-slide").width();
         var height=$(".swiper-slide").height();
-        console.log(width);
-        console.log(height);
         $(".swiper-slide").css({"height":+width+"px"});
         $('#swipe').swiper({
             pagination: '#swipe .swiper-pagination',
