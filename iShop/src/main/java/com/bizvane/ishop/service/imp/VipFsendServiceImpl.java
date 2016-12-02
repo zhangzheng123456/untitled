@@ -127,12 +127,13 @@ public class VipFsendServiceImpl implements VipFsendService{
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String phone = "13776410320,";
+        String phone = "";
         if (type.equals("1")){
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
             String store_code = sms_vips_obj.get("store_code").toString();
             String vip_user_code = sms_vips_obj.get("user_code").toString();
+
             String count = sms_vips_obj.get("count").toString();
             vipFsend.setTarget_vips_count(count);
             if (vip_user_code.equals("")){
@@ -188,8 +189,10 @@ public class VipFsendServiceImpl implements VipFsendService{
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
                 phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
             }
+
+
+        sms_vips_obj.put("vips",vips);
         }
-        sms_vips_obj.put("vips",phone);
         sms_vips_obj.put("type",type);
         sms_vips=sms_vips_obj.toString();
         vipFsend.setSms_code(sms_code);
