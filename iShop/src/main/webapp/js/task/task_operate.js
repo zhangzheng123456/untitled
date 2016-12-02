@@ -340,7 +340,6 @@ function getstafflist(a) {
             var list = JSON.parse(message.list);
             var cout = list.pages;
             var list = list.list;
-            console.log(list);
             var staff_html = '';
             if (list.length == 0) {
                 $("#staff_code ul").html("<li class='search_c'>没有内容</li>");
@@ -467,9 +466,6 @@ $("#staff_code_drop").click(function (e) {
     user_names = user_names.split(',');
     user_codes = user_codes.split(',');
     phone = phone.split(',');
-    console.log(user_names);
-    console.log(user_codes);
-    console.log(phone);
     var ul = "";
     for (var i = 0; i < user_names.length; i++) {
         var a = $('.xingming input');
@@ -662,8 +658,6 @@ function nssignment() {//加载list的文件
         var msg = JSON.parse(msg);
         var list = JSON.parse(msg.list);
         var msg = JSON.parse(msg.task);
-        console.log(list);
-        console.log(msg);
         var corp_code = msg.corp_code;//公司编号
         var task_code = msg.task_code;//任务编号
         var ul = "";

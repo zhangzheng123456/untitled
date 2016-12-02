@@ -207,25 +207,26 @@ function getVal(){
 //数据模板
 function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
-    var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
-   //标题区域
+    var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" title="${titleShow}" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
+   //搭配标题
     var tempTitle='<div class="box_title">${msg}</div>'
     //内容（图片+文字）迭代生成
     var tempHTML2='<div class="oneArea" id="${goods_code}"> <img src="${goods_image}" alt=""/> <div>${goods_code}</div> </div>';
     //盒子下部分
     var tempHTML3='</div></li>';
-
     for(i=0;i<unqiuearr.length;i++){
         var html = '';
         var nowHTML1 = tempHTML1;
-            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
-            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+        nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+        nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
         var nowHTML2 = "";
         var nowTitle = '';
         for(k=0;k<list.length;k++){
             if(list[k].goods_match_code ==unqiuearr[i]){
                 nowHTML2 += tempHTML2;
                 nowTitle += tempTitle;
+                var titleShow = list[k].goods_match_desc;
+                nowHTML1 = nowHTML1.replace("${titleShow}",titleShow);
                 var goods_image="";
                 if(list[k].goods_image.indexOf("http")!==-1){
                     goods_image = list[k].goods_image;
@@ -233,12 +234,6 @@ function pageVal(arr,unqiuearr,list){
                 if(list[k].goods_image.indexOf("http")==-1){
                     goods_image="../img/goods_default_image.png";
                 }
-                //console.log(goods_image);
-                //
-                //if(goods_image ==''){
-                //    console.log('null')
-                //    goods_image = '../img/goods_default_image.png';
-                //}
                 var  goods_match_title =list[k].goods_match_title;
                 var goods_code = list[k].goods_code;
                 nowTitle = nowTitle.replace("${msg}", goods_match_title);
@@ -268,7 +263,6 @@ $("#d_search").click(function () {
     //param["funcCode"] = funcCode;
     POST(inx, pageSize);
 });
-
 //搜索的请求函数
 function POST(a, b) {
     whir.loading.add("", 0.5);//加载等待框
