@@ -788,6 +788,26 @@ function deleteThis(dom){
             }
         }
 }
-window.onload=function(){
+function changePage(){
+    window.location.href="fab_match.html";
+}
+//点击隐藏提醒
+function msgHide(){
+    $('#areaTemp').css('display','none');
+
+}
+//失去焦点判断是否显示提醒
+$('#goodsDescribe').blur(function(){
+    if($('#goodsDescribe').val()==''){
+        setTimeout(function(){
+            $('#areaTemp').css('display','block');
+        },500);
+    }else{
+        $('#areaTemp').css('display','none');
+    }
+});
+window.onload = function(){
+    console.log('页面加载');
+    $('#areaTemp').css('display','none');
     pageVal();
 }
