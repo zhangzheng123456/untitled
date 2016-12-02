@@ -271,7 +271,7 @@ $("#d_search").click(function () {
 
 //搜索的请求函数
 function POST(a, b) {
-    whir.loading.add("", 1);//加载等待框
+    whir.loading.add("", 0.5);//加载等待框
     oc.postRequire("post", "/defmatch/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
