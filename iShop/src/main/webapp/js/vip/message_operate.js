@@ -63,6 +63,7 @@ var  message={
 				$('.searchable-select-item').click(function(){
 					var corp_code1=$("#OWN_CORP").val();
 					if(corp_code!==corp_code1){
+						console.log(123123);
 						self.cache.vip_id="";
 						self.cache.area_codes="";
     					self.cache.area_names="";
@@ -929,6 +930,11 @@ $("#add_sendee").bind("click",function(){
 	if(corp_code!==message.cache.corp_code){
 		message.cache.corp_code=corp_code;
 		$('.contion .input').val("");
+		$('.screen_content_r ul').empty();
+		$('.s_pitch span').html("0");
+		$('.area_num').val("全部");
+		$('.brand_num').val("全部");
+		$("#staff_shop_num").val("全部");
 		GET(inx,pageSize);
 	}
 })

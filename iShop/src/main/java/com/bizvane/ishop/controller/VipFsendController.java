@@ -263,7 +263,7 @@ public class VipFsendController {
             bean.setId("1");
             bean.setMessage("信息异常");
         }
-        logger.info("info-----" + bean.getJsonStr());
+//        logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
     }
 

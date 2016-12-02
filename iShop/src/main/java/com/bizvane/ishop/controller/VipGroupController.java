@@ -599,18 +599,14 @@ public class VipGroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-//            String corp_code = jsonObject.get("corp_code").toString();
             String vip_group_id = jsonObject.get("vip_group_id").toString();
-
             String vip_ids = "";
             VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(vip_group_id));
-
 //            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
             if (vipGroup != null && vipGroup.getVip_ids() != null && !vipGroup.getVip_ids().equals("")){
                 vip_ids = vipGroup.getVip_ids();
                 vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
             }
-
             //获取会员列表
             Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
@@ -633,6 +629,66 @@ public class VipGroupController {
         }
         return dataBean.getJsonStr();
     }
+
+    /***
+     * 根据所选导购
+     * 获取会员列表
+     */
+    @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String vip_group_id = jsonObject.get("vip_group_id").toString();
+            String user_code = jsonObject.get("user_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String brand_code = jsonObject.get("brand_code").toString();
+            String area_code = jsonObject.get("area_code").toString();
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+            String vip_ids = "";
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(vip_group_id));
+//            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            if (vipGroup != null && vipGroup.getVip_ids() != null && !vipGroup.getVip_ids().equals("")){
+                vip_ids = vipGroup.getVip_ids();
+                vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
+            }
+            //获取会员列表
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            logger.info("json--------------corp_code-" + corp_code);
+            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
+
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+
+            JSONObject obj = JSON.parseObject(result);
+            String vipLists = obj.get("all_vip_list").toString();
+            JSONArray array = JSONArray.parseArray(vipLists);
+            //获取会员的分组标识
+            JSONArray new_array = vipGroupService.checkVipsGroup(array,vip_ids);
+            obj.put("all_vip_list",new_array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 
     /**
      * 会员分组批量分配会员
