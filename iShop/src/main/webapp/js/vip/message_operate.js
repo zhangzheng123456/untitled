@@ -600,6 +600,9 @@ $("#screen_areal").click(function(){
 		}
 		$("#screen_area .s_pitch span").html(h);
 		$("#screen_area .screen_content_r ul").html(area_html_right);
+	}else{
+		$("#screen_area .s_pitch span").html("0");
+		$("#screen_area .screen_content_r ul").empty();
 	}
 	var area_num=1;
 	isscroll=false;
@@ -627,6 +630,9 @@ $("#screen_brandl").click(function(){
 		}
 		$("#screen_brand .s_pitch span").html(h);
 		$("#screen_brand .screen_content_r ul").html(brand_html_right);
+	}else{
+		$("#screen_brand .s_pitch span").html("0");
+		$("#screen_brand .screen_content_r ul").empty();
 	}
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -651,6 +657,9 @@ $("#screen_shopl").click(function(){
 		}
 		$("#screen_shop .s_pitch span").html(h);
 		$("#screen_shop .screen_content_r ul").html(shop_html_right);
+	}else{
+		$("#screen_shop .s_pitch span").html("0");
+		$("#screen_shop .screen_content_r ul").empty();
 	}
 	var shop_num=1;
 	isscroll=false;
@@ -678,6 +687,9 @@ $("#screen_staffl").click(function(){
 		}
 		$("#screen_staff .s_pitch span").html(h);
 		$("#screen_staff .screen_content_r ul").html(staff_html_right);
+	}else{
+		$("#screen_staff .s_pitch span").html("0");
+		$("#screen_staff .screen_content_r ul").empty();
 	}
 	var staff_num=1;
 	isscroll=false;
@@ -705,6 +717,9 @@ $("#shop_area").click(function(){
 		}
 		$("#screen_area .s_pitch span").html(h);
 		$("#screen_area .screen_content_r ul").html(area_html_right);
+	}else{
+		$("#screen_area .s_pitch span").html("0");
+		$("#screen_area .screen_content_r ul").empty();
 	}
 	isscroll=false;
 	area_num=1;
@@ -732,6 +747,9 @@ $("#shop_brand").click(function(){
 		}
 		$("#screen_brand .s_pitch span").html(h);
 		$("#screen_brand .screen_content_r ul").html(brand_html_right);
+	}else{
+		$("#screen_brand .s_pitch span").html("0");
+		$("#screen_brand .screen_content_r ul").empty();
 	}
 	var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -756,6 +774,9 @@ $("#staff_area").click(function(){
 		}
 		$("#screen_area .s_pitch span").html(h);
 		$("#screen_area .screen_content_r ul").html(area_html_right);
+	}else{
+		$("#screen_area .s_pitch span").html("0");
+		$("#screen_area .screen_content_r ul").empty();
 	}
 	isscroll=false;
 	area_num=1;
@@ -783,6 +804,9 @@ $("#staff_shop").click(function(){
 		}
 		$("#screen_shop .s_pitch span").html(h);
 		$("#screen_shop .screen_content_r ul").html(shop_html_right);
+	}else{
+		$("#screen_shop .s_pitch span").html("0");
+		$("#screen_shop .screen_content_r ul").empty();
 	}
 	isscroll=false;
 	shop_num=1;
@@ -810,6 +834,9 @@ $("#staff_brand").click(function(){
 		}
 		$("#screen_brand .s_pitch span").html(h);
 		$("#screen_brand .screen_content_r ul").html(brand_html_right);
+	}else{
+		$("#screen_brand .s_pitch span").html("0");
+		$("#screen_brand .screen_content_r ul").empty();
 	}
 	var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
