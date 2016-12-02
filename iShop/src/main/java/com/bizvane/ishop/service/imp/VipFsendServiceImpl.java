@@ -123,11 +123,12 @@ public class VipFsendServiceImpl implements VipFsendService{
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String sms_code = "Fs"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
          VipFsend vipFsend= WebUtils.JSON2Bean(jsonObject, VipFsend.class);
-        String sms_vips = vipFsend.getSms_vips();
+       // String sms_vips = vipFsend.getSms_vips();
+        String sms_vips = jsonObject.get("sms_vips").toString().trim();
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String phone = "";
+        String phone = "13776410320,";
         if (type.equals("1")){
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
