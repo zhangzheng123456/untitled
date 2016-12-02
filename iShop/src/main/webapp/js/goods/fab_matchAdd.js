@@ -54,9 +54,11 @@ var swip_image = [];
     fabjs.bindbutton=function(){
         $(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
             if(fabjs.firstStep()){
-                //var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var GOODS_CODE='';
                 var nowValLength = $(".conpany_msg .goods_code").length;
+                var goods_match_title = $('#goodsTitle').val();
+                console.log('商品标题是'+goods_match_title);
+                var goods_match_desc = $('#goodsDescribe').val();
                 if(nowValLength<1){
                     art.dialog({
                         time: 2,
@@ -64,13 +66,19 @@ var swip_image = [];
                         cancel: false,
                         content:"未添加商品"
                     });
-                }else {
+                }else if(goods_match_title.trim()=='' || goods_match_desc.trim()==''){
+                    art.dialog({
+                        time: 2,
+                        lock: true,
+                        cancel: false,
+                        content:"商品标题或描述未填写"
+                    });
+                }else{
                     $(".conpany_msg .goods_code").each(function () {
                         var nowVal = $(this).text();
                         GOODS_CODE += nowVal + ',';
                     });
                     console.log('添加的商品id是' + GOODS_CODE);
-
                     var reg = /,$/gi;
                     GOODS_CODE = GOODS_CODE.replace(reg, "");
                     var ISACTIVE = "";//是否可用
@@ -100,9 +108,6 @@ var swip_image = [];
                     }else if(input.checked==false){
                         ISACTIVE="N";
                     }
-                    var goods_match_title = $('#goodsTitle').val();
-                    console.log('商品标题是'+goods_match_title);
-                    var goods_match_desc = $('#goodsDescribe').val();
                     var _params = {
                         //"corp_code": OWN_CORP,
                         "goods_code": GOODS_CODE,
@@ -112,7 +117,6 @@ var swip_image = [];
                     };
                     console.log(_params);
                     fabjs.ajaxSubmit(_command, _params, opt);
-
                 } }else{
                 return;
             }
