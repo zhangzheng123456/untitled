@@ -263,7 +263,6 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/task/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
             if(data.code=="0"){
                 $("#table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -293,7 +292,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("#table thead input")[0];
         $(this).toggleClass("tr");  
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -336,7 +334,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -360,7 +357,6 @@ function jumpBianse(){
                 $('#content').hide();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                console.log(list);
                 $(".table #table_r tbody").empty();
                 for(var i=0;i<list.length;i++){
                     var a=i+1;
@@ -560,7 +556,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -655,7 +650,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/corp/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -708,7 +702,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 }
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -858,8 +851,6 @@ $("#edit_save").click(function(){
              phone+=p;
         }     
     }
-    console.log(user_codes);
-    console.log(phone);
     var corp_code = $('#OWN_CORP').val();//公司编号
     var task_type_code = $('#task_type_code').val();//公司类型
     var task_title=$('#task_title_e').val();//任务名称
