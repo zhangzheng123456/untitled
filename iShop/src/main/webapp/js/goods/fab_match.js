@@ -207,7 +207,7 @@ function getVal(){
 //数据模板
 function pageVal(arr,unqiuearr,list){
     //盒子上部分+复选框
-    var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
+    var tempHTML1='<li data-code="${corp_code}" class="item" ondblclick="dblclick(this)" title="${titleShow}" ><div class="boxArea"><div class="checkbox"><input id="${code}" type="checkbox" class="check"/><label for="${code}"></label></div>';
    //标题区域
     var tempTitle='<div class="box_title">${msg}</div>'
     //内容（图片+文字）迭代生成
@@ -218,14 +218,16 @@ function pageVal(arr,unqiuearr,list){
     for(i=0;i<unqiuearr.length;i++){
         var html = '';
         var nowHTML1 = tempHTML1;
-            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
-            nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+        nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
+        nowHTML1 = nowHTML1.replace("${code}", unqiuearr[i]);
         var nowHTML2 = "";
         var nowTitle = '';
         for(k=0;k<list.length;k++){
             if(list[k].goods_match_code ==unqiuearr[i]){
                 nowHTML2 += tempHTML2;
                 nowTitle += tempTitle;
+                var titleShow = list[k].goods_match_desc;
+                nowHTML1 = nowHTML1.replace("${titleShow}",titleShow);
                 var goods_image="";
                 if(list[k].goods_image.indexOf("http")!==-1){
                     goods_image = list[k].goods_image;
