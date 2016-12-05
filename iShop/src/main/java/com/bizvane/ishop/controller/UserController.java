@@ -540,9 +540,9 @@ public class UserController {
         try {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = 1;//得到所有的列
+            int clos = 12;//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            int actualRows = LuploadHelper.getRightRows(rs);
+ //           int actualRows = LuploadHelper.getRightRows(rs);
 //            if (actualRows != rows) {
 //                if (rows - actualRows == 1) {
 //                    result = "：第" + rows + "行存在空白行,请删除";
