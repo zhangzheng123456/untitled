@@ -795,11 +795,6 @@ function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/apploginlog/screen","0",_param,function(data){
         if(data.code=="0"){
-            // var message=JSON.parse(data.message);
-            // var list=JSON.parse(message.list);
-            // cout=list.pages;
-            // var pageNum = list.pageNum;
-            // var list=list.list;
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;

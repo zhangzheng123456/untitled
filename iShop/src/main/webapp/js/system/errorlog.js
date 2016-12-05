@@ -301,6 +301,9 @@ function GET(a,b){
             var list=message.list;
             superaddition(list,a);
             jumpBianse();
+            filtrate="";
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             // alert(data.message);
@@ -404,6 +407,8 @@ function POST(a,b){
             for(var i=0;i<input.length;i++){
                 input[i].value="";
             }
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
             filtrate="";
             list="";
             $(".sxk").slideUp();
@@ -503,7 +508,6 @@ function clearAll(name){
         }
     }
 };
-
 //导出拉出list
 $("#leading_out").click(function(){
     var l=$(window).width();
@@ -614,8 +618,26 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 }
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }else if(filter[i].type=="date"){
+                li+="<li class='created_date' id='"
+                +filter[i].col_name
+                +"'><label>"
+                +filter[i].show_name
+                +"</label>"                                                         
+                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})\">"
+                +"<label class='tm20'>至</label>"
+                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})\">"
+                +"</li>";
+            }else if(filter[i].type=='number'){
+                li+="<li class='isActive_select2' id='"
+                    +filter[i].col_name
+                    +"'><label>"
+                    +filter[i].show_name
+                    +"</label>"
+                +"<input style='width: 66px' type='text' id='isactive' readonly>"
+                +" <ul class='isActive_select_down'style='display:none;width:41px;left:65px'><li style='text-indent: 5px'>>=</li><li  style='text-indent: 5px'><=</li><li  style='text-indent: 5px'>介于</li><li style='text-indent: 5px'>等于</li><li style='text-indent: 5px'>全部</li></ul>"
+                +"</li>";
             }
-
         }
         $("#sxk .inputs ul").html(li);
         if(filtrate!==""){
@@ -630,15 +652,47 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             }
         }
         filtrateDown();
-        //筛选的keydow事件
-        $('#sxk .inputs input').keydown(function(){
-            var event=window.event||arguments[0];
-            if(event.keyCode == 13){
-                getInputValue();
-            }
-        })
     }
 });
+//筛选的keydow事件
+$('#sxk .inputs').on("keydown","input",function(){
+    var event=window.event||arguments[0];
+    if(event.keyCode == 13){
+        var test_input=$('#isactive').nextAll('input');
+        for(var i=0;i<test_input.length;i++){
+            var reg=/^[0-9]*$/g;
+            var input_value=$(test_input[i]).val().trim();
+            var test_value=reg.test(input_value);
+            if(!test_value){
+                frame();
+                $('.frame').html('请输入数字');
+                return
+            }
+        }
+        getInputValue();
+    }
+})
+function checkStart(data){
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
+function checkEnd(data){
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+};
+//筛选查找
+$("#find").click(function(){
+    var test_input=$('#isactive').nextAll('input');
+    for(var i=0;i<test_input.length;i++){
+        var reg=/^[0-9]*$/g;
+        var input_value=$(test_input[i]).val().trim();
+        var test_value=reg.test(input_value);
+        if(!test_value){
+            frame();
+            $('.frame').html('请输入数字');
+            return
+        }
+    }
+    getInputValue();
+})
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
@@ -668,21 +722,44 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
+    // var input=$('#sxk .inputs li');
+    var input=$('#sxk .inputs>ul>li');
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
-    //_param["funcCode"]=funcCode;
+    _param["funcCode"]=funcCode;
     var num=0;
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
-        var screen_value="";
-        if($(input[i]).parent("li").attr("class")=="isActive_select"){
-            screen_value=$(input[i]).attr("data-code");
+        var screen_key="";
+        var screen_value={};
+        if($(input[i]).attr("class")=="isActive_select2"){
+            screen_key=$(input[i]).attr("id");
+            switch ($(input[i]).find("input").val()){
+              case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
+              case '介于':screen_value['type']='between';_value();break;
+              case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
+              case '全部':screen_value['type']='all';screen_value['value']='';;break;
+              case '':screen_value['type']='all';screen_value['value']='';;break;
+            }
+            function _value(){
+                screen_value['value']={};
+                var between_value=$(input[i]).find("input").nextAll();
+                screen_value['value'].start=$(between_value[0]).val();
+                screen_value['value'].end=$(between_value[1]).val();
+            }
+        }else if($(input[i]).attr("class")=="created_date"){
+            var start=$('#start').val();
+            var end=$('#end').val();
+            screen_key=$(input[i]).attr("id");
+            screen_value={"start":start,"end":end};
+        }else if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input").attr("id");
+            screen_value=$(input[i]).find("input").attr("data-code");
         }else{
-            screen_value=$(input[i]).val().trim();
+            screen_value=$(input[i]).find("input").val().trim();
+            screen_key=$(input[i]).find("input").attr("id");
         }
         if(screen_value!=""){
             num++;

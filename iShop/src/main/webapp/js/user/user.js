@@ -264,6 +264,8 @@ function superaddition(data,num){
                         + a
                         +"</td><td><span style='max-width:120px' title="+data[i].user_code+">"
                         + data[i].user_code
+                        +"</span><td><span title='"+data[i].user_id+"'>"
+                        + data[i].user_id
                         +"</span></td><td>"
                         +"<img src='"+avatar+"' alt=''>"
                         + "</td><td><span style='max-width:120px' title='"+data[i].user_name+"'>"
