@@ -931,17 +931,21 @@ $("#filtrate").click(function () {
 })
 //点击筛选会员的所属区域
 $("#screen_areal").click(function () {
-    if($('#screen_area .screen_content_r ul li').length!=0){
-        $('#screen_area .screen_content_r ul li').each(function () {
-            ar.indexOf(this.id)==-1&&($(this).remove());
-        })
-    }else if($('#screen_area .screen_content_r ul li').length==0&&(ar.length!=0)){
-        $('#screen_area .screen_content_l ul li').each(function () {
-            if(ar.indexOf(this.id)!=-1){
-                $('#screen_area .screen_content_r ul').append(this)
-            }
-        })
-    }
+    // if($('#screen_area .screen_content_r ul li').length!=0){
+    //     console.log(1);
+    //     $('#screen_area .screen_content_r ul li').each(function () {
+    //         ar.indexOf(this.id)==-1&&($(this).remove());
+    //     })
+    // }else if($('#screen_area .screen_content_r ul li').length==0&&(ar.length!=0)){
+    //     console.log(2)
+    //     $('#screen_area .screen_content_l ul li').each(function () {
+    //         if(ar.indexOf(this.id)!=-1){
+    //             $('#screen_area .screen_content_r ul').append($(this).clone())
+    //         }
+    //     })
+    // }
+    nodeSave($('#screen_area .screen_content_r ul li'),$('#screen_area .screen_content_l ul li'),ar, $('#screen_area .screen_content_r ul'));
+    $('#screen_area .s_pitch span').html($('#screen_area .screen_content_r ul li').length);
     var arr = whir.loading.getPageSize();
     var left = (arr[0] - $("#screen_area").width()) / 2;
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
@@ -958,17 +962,8 @@ $("#screen_areal").click(function () {
 })
 //点击筛选会员的所属品牌
 $("#screen_brandl").click(function () {
-    if($('#screen_brand .screen_content_r ul li').length!=0){
-        $('#screen_brand .screen_content_r ul li').each(function () {
-            bd.indexOf(this.id)==-1&&($(this).remove());
-        })
-    }else if($('#screen_brand .screen_content_r ul li').length==0&&(bd.length!=0)){
-        $('#screen_brand .screen_content_l ul li').each(function () {
-            if(bd.indexOf(this.id)!=-1){
-                $('#screen_brand .screen_content_r ul').append(this)
-            }
-        })
-    }
+    nodeSave($('#screen_brand .screen_content_r ul li'),$('#screen_brand .screen_content_l ul li'),bd, $('#screen_brand .screen_content_r ul'));
+    $('#screen_brand .s_pitch span').html($('#screen_brand .screen_content_r ul li').length);
     var arr = whir.loading.getPageSize();
     var left = (arr[0] - $("#screen_area").width()) / 2;
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
@@ -983,17 +978,8 @@ $("#screen_brandl").click(function () {
 })
 //点击筛选会员的所属店铺
 $("#screen_shopl").click(function () {
-    if($('#screen_shop .screen_content_r ul li').length!=0){
-        $('#screen_shop .screen_content_r ul li').each(function () {
-            sp.indexOf(this.id)==-1&&($(this).remove());
-        })
-    }else if($('#screen_shop .screen_content_r ul li').length==0&&(sp.length!=0)){
-        $('#screen_shop .screen_content_l ul li').each(function () {
-            if(sp.indexOf(this.id)!=-1){
-                $('#screen_shop .screen_content_r ul').append(this)
-            }
-        })
-    }
+    nodeSave($('#screen_shop .screen_content_r ul li'),$('#screen_shop .screen_content_l ul li'),sp, $('#screen_shop .screen_content_r ul'));
+    $('#screen_shop .s_pitch span').html($('#screen_shop .screen_content_r ul li').length);
     var arr = whir.loading.getPageSize();
     var left = (arr[0] - $("#screen_area").width()) / 2;
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
@@ -1008,17 +994,8 @@ $("#screen_shopl").click(function () {
 })
 //点击筛选会员的所属员工
 $("#screen_staffl").click(function () {
-    if($('#screen_staff .screen_content_r ul li').length!=0){
-        $('#screen_staff .screen_content_r ul li').each(function () {
-            sf.indexOf(this.id)==-1&&($(this).remove());
-        })
-    }else if($('#screen_staff .screen_content_r ul li').length==0&&(sf.length!=0)){
-        $('#screen_staff .screen_content_l ul li').each(function () {
-            if(sf.indexOf(this.id)!=-1){
-                $('#screen_staff .screen_content_r ul').append(this)
-            }
-        })
-    }
+    nodeSave($('#screen_staff .screen_content_r ul li'),$('#screen_staff .screen_content_l ul li'),sf, $('#screen_staff .screen_content_r ul'));
+    $('#screen_staff .s_pitch span').html($('#screen_staff .screen_content_r ul li').length);
     var arr = whir.loading.getPageSize();
     var left = (arr[0] - $("#screen_area").width()) / 2;
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
@@ -1031,6 +1008,20 @@ $("#screen_staffl").click(function () {
     var staff_num = 1;
     getstafflist(staff_num);
 })
+//节点状态保存
+function nodeSave(node_r,node_l,arr,node_container) {
+    if(node_r.length!=0){
+        node_r.each(function () {
+            arr.indexOf(this.id)==-1&&($(this).remove());
+        })
+    }else if(node_r.length==0&&(arr.length!=0)){
+        node_l.each(function () {
+            if(arr.indexOf(this.id)!=-1){
+                node_container.append($(this).clone())
+            }
+        })
+    }
+}
 //点击列表显示选中状态
 $(".screen_content").on("click", "li", function () {
     var input = $(this).find("input")[0];
