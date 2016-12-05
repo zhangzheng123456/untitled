@@ -357,6 +357,7 @@ $(function(){
     $("#label_user").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
     $("#label_org").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
     $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
+    $("#label_box").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
 });
 //回到会员列表
 $("#VIP_LIST_info").click(function(){
@@ -444,10 +445,16 @@ function labelDelete(obj) {
         }
     }
 }
-function addViplabel(obj) {
+function addViplabel(obj,ev) {
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
     var that="";//获取贴上标签的名字
+    var total=parseInt($(".span_total").html())+1;
+    if(total>50){
+        frame();
+        $('.frame').html('亲，最多添加50个标签');
+        return ;
+    }
     param["corp_code"]=sessionStorage.getItem("corp_code");
     param['vip_code']=id;
     param['label_id']="";
@@ -456,15 +463,14 @@ function addViplabel(obj) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             var rid=JSON.parse(msg.list);
-            var html=""
+            var html="";
             if(cls==""||cls==undefined){
                 html='<span class="label_u" data-rid="'+rid+'">'+val+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
             }else{
                 html='<span class='+cls+' data-rid="'+rid+'">'+txt+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
             }
-            $("#label_box").append(html);
-            var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
+            $("#label_box").append(html);
             if(obj=="btn"){
                 that = val;
             }else if(obj=="li"){
@@ -494,6 +500,11 @@ function addViplabel(obj) {
                     $($("#label_user span")[i]).removeClass().addClass("label_u_active")
                 }
             }
+            if($(ev).attr("class")=="label_u"){
+                $(ev).addClass("label_u_active").removeClass("label_u");
+            }else if($(ev).attr("class")=="label_g") {
+                $(ev).addClass("label_g_active").removeClass("label_g");
+            }
         }else if(data.code=="-1"){
             frame();
             $('.frame').html('请勿重复添加');
@@ -517,33 +528,21 @@ function clickLabeladd() {
     $("#hotlabel span").click(function () {
         val= $(this).html()
         param['label_name'] = val;
-        addViplabel();
-        if($(this).attr("class")=="label_u"){
-            $(this).addClass("label_u_active").removeClass("label_u");
-        }else if($(this).attr("class")=="label_g") {
-            $(this).addClass("label_g_active").removeClass("label_g");
-        }
-    })
+        var b= $(this);
+        addViplabel("",b);
+    });
     $("#label_org span").click(function () {
         val= $(this).html()
         param['label_name'] = val;
-        addViplabel();
-        if($(this).attr("class")=="label_u"){
-            $(this).addClass("label_u_active").removeClass("label_u");
-        }else {
-            $(this).addClass("label_g_active").removeClass("label_g");
-        }
-    })
+        var b= $(this);
+        addViplabel("",b);
+    });
     $("#label_user span").click(function () {
         val= $(this).html()
         param['label_name'] = val;
-        addViplabel();
-        if($(this).attr("class")=="label_u"){
-            $(this).addClass("label_u_active").removeClass("label_u");
-        }else {
-            $(this).addClass("label_g_active").removeClass("label_g");
-        }
-    })
+        var b= $(this);
+        addViplabel("",b);
+});
 }
 //拖拽
 //阻止拖拽默认事件
@@ -564,6 +563,12 @@ function drop(ev)
     //调用借口
     var id = sessionStorage.getItem("id");
     var store_id = sessionStorage.getItem("store_id");
+    var total = parseInt($(".span_total").html()) + 1;
+    if(total>50){
+        frame();
+        $('.frame').html('亲，最多添加50个标签');
+        return ;
+    }
     param["corp_code"] = sessionStorage.getItem("corp_code");
     param['label_name'] = val;
     param['vip_code'] = id;
@@ -577,7 +582,6 @@ function drop(ev)
             clone = $(clone).append(html);
             $(clone).attr("data-rid", rid);
             $("#label_box").append(clone);
-            var total = parseInt($(".span_total").html()) + 1;
             $(".span_total").html(total);
             if(span.attr("class")=="label_u"){
                 $(span).addClass("label_u_active").removeClass("label_u");
