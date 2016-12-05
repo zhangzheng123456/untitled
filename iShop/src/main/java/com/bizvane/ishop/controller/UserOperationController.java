@@ -125,7 +125,7 @@ public class UserOperationController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
 
-            String[] column_names = new String[]{"function","action","corp_name","code","name","operation_user_code","remark","operation_time"};
+            String[] column_names = new String[]{"function","action","corp_name","code","name","operation_user_code"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
 
             DBCursor dbCursor = null;
