@@ -5,7 +5,7 @@
     <resultMap type="com.bizvane.ishop.entity.User" id="BaseMap">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <!--<result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>-->
+        <result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sex" property="sex" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -35,7 +35,7 @@
     <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <!--<result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>-->
+        <result column="user_id" property="user_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sex" property="sex" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
