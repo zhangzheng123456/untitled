@@ -2269,8 +2269,8 @@ public class UserController {
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("DataBackup", datalist);
             String  message_info=dataBox.data.get("message").value.toString();
             com.alibaba.fastjson.JSONObject info= JSON.parseObject(message_info);
-            String store_count=info.get("store_count").toString();
-            if(Integer.parseInt(store_count)>0){
+           // String store_count=info.get("store_count").toString();
+
                 String hbase_user_count=info.get("hbase_user_count").toString();
                 if(Integer.parseInt(hbase_user_count)>0){
                     dataBean.setId(id);
@@ -2280,14 +2280,9 @@ public class UserController {
                 }else{
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setMessage("同步成功");
+                    dataBean.setMessage("数据已是最新，无需同步");
                 }
-            }else{
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("数据已是最新，无需同步");
 
-            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
