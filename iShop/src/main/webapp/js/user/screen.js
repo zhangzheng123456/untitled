@@ -645,6 +645,9 @@ function getarealist(a){
 					var nScrollHight = $(this)[0].scrollHeight;
 				    var nScrollTop = $(this)[0].scrollTop;
 				    var nDivHight=$(this).height();
+				    console.log(nScrollHight);
+				    console.log(nScrollTop);
+				    console.log(nDivHight);
 				    if(nScrollTop + nDivHight >= nScrollHight){
 				    	if(area_next){
 				    		return;
