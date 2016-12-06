@@ -236,6 +236,7 @@ div.edui-box {
 }
 .edui-default .edui-editor-breadcrumb {
     margin: 2px 0 0 3px;
+    display: none;
 }
 
 .edui-default .edui-editor-breadcrumb span {
