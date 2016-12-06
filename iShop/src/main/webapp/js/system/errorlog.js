@@ -297,7 +297,7 @@ function GET(a,b){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            var cout=message.pages
+             cout=message.pages;
             var list=message.list;
             superaddition(list,a);
             jumpBianse();
@@ -391,7 +391,7 @@ function POST(a,b){
     oc.postRequire("post","/errorLog/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var cout=message.pages
+             cout=message.pages
             var list=message.list;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -783,7 +783,7 @@ function filtrates(a,b){
     oc.postRequire("post","/errorLog/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var cout=message.pages
+             cout=message.pages
             var list=message.list;
             $(".table tbody").empty();
             if(list.length<=0){
