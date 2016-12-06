@@ -52,15 +52,27 @@ var swip_image = [];
 		return true;
 	};
 	fabjs.bindbutton=function(){
+		//新增保存
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			console.log('新增');
 			function getContent() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getContent());
 				return arr.join("\n");
 			}
+			function getContent_show() {
+				var arr = [];
+				arr.push(UE.getEditor('editor_show').getContent());
+				return arr.join("\n");
+			}
 			function getPlainTxt() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getPlainTxt());
+				return arr.join("\n");
+			}
+			function getPlainTxt_show() {
+				var arr = [];
+				arr.push(UE.getEditor('editor_show').getPlainTxt());
 				return arr.join("\n");
 			}
 			var reg = /<img[^>]*>/gi;;
@@ -71,12 +83,25 @@ var swip_image = [];
 					return i;
 				}
 			}
+			function imge_change_show() {
+				var  i=0;
+				return function img_change(){
+					i++;
+					return i;
+				}
+			}
 			var img_c=imge_change();
+			var img_show=imge_change_show();
 			var nr= getContent().replace(reg,function () {
 				var i=img_c();
 				return getPlainTxt().match(reg)[i-1];
 			});
+			var nr_show= getContent_show().replace(reg,function () {
+				var i=img_show();
+				return getPlainTxt_show().match(reg)[i-1];
+			});
 			console.log(nr);
+			console.log(nr_show);
 			if(fabjs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var GOODS_CODE=$("#GOODS_CODE").val().trim();//商品编号
@@ -86,6 +111,7 @@ var swip_image = [];
 				var GOODS_BAND=$("#GOODS_BAND").val();//波段
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
 				var GOODS_BUYPOINT= nr;//商品卖点
+				var SHOW_POINT=nr_show//分享内容
 				var ISACTIVE="";//是否可用
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -184,6 +210,7 @@ var swip_image = [];
 					"goods_wave": GOODS_BAND,
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
+					"share_description": SHOW_POINT,
 					"isactive": ISACTIVE,
 					// "match_goods":matchgoods
 				};
@@ -194,30 +221,50 @@ var swip_image = [];
 				return;
 			}
 		});
+		//编辑保存
 		$("#edit_save").click(function(){
 			// $('#close_match_goods').trigger("click");
 			var delete_image=[];//需要删除的数据
-			console.log(sessionStorage.getItem('goods_description'));
-			console.log(getContent()==sessionStorage.getItem('goods_description'))
-			console.log('抓取图片');
 			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
+			var load_image2=sessionStorage.getItem('share_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
 			var save_image=getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
-			// console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
-			// console.log('保存时的图片'+getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
-			if(load_image==!null){
-				for(var i=0;i<load_image.length;i++){
-					load_image[i]=save_image[i]?"":delete_image.push(load_image[i]);
-				}
+			var save_image2=getContent_show().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
+			if(load_image!==null&&save_image!==null){
+				save_image.forEach(function (val,index,arr) {
+					return val.indexOf('/image/upload')!=-1?arr.splice(index,1):arr[index];
+				})
+				load_image.map(function (val,index,arr) {
+					var reg= /src=[\'\"]?([^\'\"]*)[\'\"]?/;
+					var test=val.match(reg)[0];
+					save_image.join('').indexOf(test)==-1?delete_image.push(val):'';
+				})
+			}else if(load_image!==null&&save_image==null){
+				load_image.forEach(function (val) {
+					delete_image.push(val);
+				})
 			}
-			//如果有内容则进行比较
-			// function getContent() {
-			// 	var arr = [];
-			// 	arr.push(UE.getEditor('editor').getPlainTxt());
-			// 	return arr.join("\n");
-			// }
+			if(load_image2!==null&&save_image2!==null){
+				save_image2.forEach(function (val,index,arr) {
+					return val.indexOf('/image/upload')!=-1?arr.splice(index,1):arr[index];
+				})
+				load_image2.map(function (val,index,arr) {
+					var reg= /src=[\'\"]?([^\'\"]*)[\'\"]?/;
+					var test=val.match(reg)[0];
+					save_image2.join('').indexOf(test)==-1?delete_image.push(val):'';
+				})
+			}else if(load_image2!==null&&save_image2==null){
+				load_image2.forEach(function (val) {
+					delete_image.push(val);
+				})
+			}
 			function getContent() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getContent());
+				return arr.join("\n");
+			}
+			function getContent_show() {
+				var arr = [];
+				arr.push(UE.getEditor('editor2').getContent());
 				return arr.join("\n");
 			}
 			function getPlainTxt() {
@@ -225,9 +272,12 @@ var swip_image = [];
 				arr.push(UE.getEditor('editor').getPlainTxt());
 				return arr.join("\n");
 			}
+			function getPlainTxt_show() {
+				var arr = [];
+				arr.push(UE.getEditor('editor2').getPlainTxt());
+				return arr.join("\n");
+			}
 			var reg = /<img[^>]*>/gi;;
-			// var nr= getContent().replace(reg,getPlainTxt().match(reg));
-
 			function imge_change() {
 				var  i=0;
 				return function img_change(){
@@ -235,12 +285,23 @@ var swip_image = [];
 					return i;
 				}
 			}
+			function imge_change_show() {
+				var  i=0;
+				return function img_change(){
+					i++;
+					return i;
+				}
+			}
 			var img_c=imge_change();
+			var img_show=imge_change_show();
 			var nr= getContent().replace(reg,function () {
 				var i=img_c();
 				return getPlainTxt().match(reg)[i-1];
 			});
-			console.log(nr);
+			var nr_show= getContent_show().replace(reg,function () {
+				var i=img_show();
+				return getPlainTxt_show().match(reg)[i-1];
+			});
 			if(fabjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -250,7 +311,8 @@ var swip_image = [];
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
-				var GOODS_BUYPOINT=nr;
+				var GOODS_BUYPOINT=nr;//编辑卖点
+				var SHARE_POINT=nr_show;//编辑分享
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
 				var input=$("#is_active")[0];
@@ -354,6 +416,7 @@ var swip_image = [];
 					"goods_wave": GOODS_BAND,
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
+					"share_description": SHARE_POINT,
 					"isactive": ISACTIVE,
 					// "match_goods":matchgoods,
 					'delImgPath':delete_image.join('')
@@ -462,13 +525,19 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				console.log(msg.goods_description);
+				// console.log(msg);
+				// console.log(msg.share_description);
 				//将读取到的卖点信息保存在本地
-				sessionStorage.setItem('goods_description',msg.goods_description)
+				sessionStorage.setItem('goods_description',msg.goods_description);
+				sessionStorage.setItem('share_description',msg.share_description);
 				var goods_arr=msg.goods_image==''?'':JSON.parse(msg.goods_image);
 				ue.ready(function() {
 					// ue.setContent(msg.goods_description);
 					ue.body.innerHTML=msg.goods_description;
+
+				});
+				ue2.ready(function() {
+					ue2.body.innerHTML=msg.share_description;
 				});
 				console.log(goods_arr);
 				// var goods_arr=[];

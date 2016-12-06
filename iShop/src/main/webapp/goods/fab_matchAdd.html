@@ -116,7 +116,7 @@
         <div style="margin-top: 50px;margin-left: 60px">
            <span>
                <label style="font-size:14px;color:#c26555;float: left;width: 105px;height: 30px;text-align: right;margin-right: 18px;line-height: 30px;font-size: 14px;text-indent: 10px;">搭配名称*</label>
-                <input type="text" id="goodsTitle"  verify="Empty"  style="margin-bottom:15px;float: left;width: 480px;height: 30px;border-radius: 4px;border: none;text-indent: 10px;outline: none;color: #888888"/>
+                <input type="text" id="goodsTitle"  verify="Empty"  style="margin-bottom:15px;float: left;width: 480px;height: 30px;border-radius: 4px;border: none;text-indent: 10px;outline: none;color: #888888" maxlength="200"/>
                 <div style="padding-left:125px" class="hint">
                     <div hintinfo="商品名称不能为空！"></div>
                 </div>
@@ -126,7 +126,7 @@
         <div style="clear:both;">
             <span style="display: inline-flex;width:100%;margin-left: 60px">
                 <label style="font-size:14px;color:#c26555;float: left;width: 105px;height: 30px;text-align: right;margin-right: 18px;line-height: 30px;font-size: 14px;">搭配描述*</label>
-                <textarea id="goodsDescribe" maxlength="400" style="width: 480px;height: 180px;padding: 8px;outline:none;resize: none;border: none; border-radius: 4px;font-family: inherit;font-size: inherit;line-height: inherit;" id="message_content" ></textarea></span></span>
+                <textarea id="goodsDescribe" maxlength="600" style="width: 480px;height: 180px;padding: 8px;outline:none;resize: none;border: none; border-radius: 4px;font-family: inherit;font-size: inherit;line-height: inherit;" id="message_content" ></textarea></span></span>
         </div>
         <div style="margin-left: 60px;padding-bottom: 10px" class="hint" id="areaTemp">
             <div hintinfo="搭配描述不能为空！" class="error_tips"style="">搭配描述不能为空！</div>
@@ -152,7 +152,7 @@
             <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
             <i class="icon-ishop_3-05" id="d_search"></i>
         </div>
-        <ul>
+        <ul id="stop"  onmousedown=" stopBubble(this.id)" onmousemove=" stopBubble(this.id)" onmouseup=" stopBubble(this.id)">
 
         </ul>
         <div id="more" class="more">加载更多<i class="icon-ishop_6-18"></i></div>
@@ -178,7 +178,7 @@
                 <!--<span><label>修改人</label><input type="text" id="modifier" readonly=""></span>-->
             <!--</div>-->
             <div>
-                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check"  id="is_active"><label for="is_active"></label></em></span>
             </div>
         </form>
     </div>
@@ -226,26 +226,13 @@
             isDowm = false;
         }
     }
-    function changePage(){
-        window.location.href="fab_match.html";
-    }
-    //点击隐藏提醒
-    function msgHide(){
-        $('#areaTemp').css('display','none');
-
-    }
-    //失去焦点判断是否显示提醒
-    $('#goodsDescribe').blur(function(){
-        if($('#goodsDescribe').val()==''){
-            setTimeout(function(){
-                $('#areaTemp').css('display','block');
-            },500);
-        }else{
-            $('#areaTemp').css('display','none');
+    function stopBubble(e) {
+        if (e && e.stopPropagation) {//非IE浏览器
+            e.stopPropagation();
         }
-    });
-    window.onload = function(){
-        $('#areaTemp').css('display','none');
+        else {//IE浏览器
+            window.event.cancelBubble = true;
+        }
     }
 
 </script>
