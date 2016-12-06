@@ -178,7 +178,7 @@
                 <!--<span><label>修改人</label><input type="text" id="modifier" readonly=""></span>-->
             <!--</div>-->
             <div>
-                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check"  id="is_active"><label for="is_active"></label></em></span>
             </div>
         </form>
     </div>
@@ -226,27 +226,7 @@
             isDowm = false;
         }
     }
-    function changePage(){
-        window.location.href="fab_match.html";
-    }
-    //点击隐藏提醒
-    function msgHide(){
-        $('#areaTemp').css('display','none');
 
-    }
-    //失去焦点判断是否显示提醒
-    $('#goodsDescribe').blur(function(){
-        if($('#goodsDescribe').val()==''){
-            setTimeout(function(){
-                $('#areaTemp').css('display','block');
-            },500);
-        }else{
-            $('#areaTemp').css('display','none');
-        }
-    });
-    window.onload = function(){
-        $('#areaTemp').css('display','none');
-    }
 
 </script>
 </body>
