@@ -5,6 +5,7 @@
     <title>会员列表</title>
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161202">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <script src="../js/laydate/laydate.js"></script>
@@ -14,7 +15,6 @@
         width: 100%;
         height: 60px;
     }
-
     .filter_condition ul li {
         width: 16.6666%;
         height: 50px;
@@ -27,17 +27,14 @@
         -moz-box-sizing: border-box; /* Firefox */
         -webkit-box-sizing: border-box; /* Safari */
     }
-
     .filter_condition ul a {
         display: block;
         color: #888888;
     }
-
     .filter_condition .condition_active {
         color: #6dc1c8;
         border-top: 2px solid #6dc1c8;
     }
-
     .sex_select {
         display: none;
         position: relative;
@@ -47,16 +44,82 @@
         margin-left: 93px;
         border: 1px solid #ddd;
     }
-
     .sex_select li {
         text-indent: 10px;
         height: 30px;
         line-height: 30px;
     }
-
     .sex_select li:hover {
         color: #FFFFFF;
         background: #4a5f7c;
+    }
+    .age_l{
+        display: none;
+        height: 100px;
+        overflow-y: scroll;
+        position: absolute;
+        top:30px;
+        left: 93px;
+        z-index: 100;
+        width: 150px;
+        text-indent: 10px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+    }
+    .age_r{
+        display: none;
+        height: 100px;
+        overflow-y: scroll;
+        position: absolute;
+        top:30px;
+        right: 5px;
+        z-index: 100;
+        text-indent: 10px;
+        width: 150px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+    }
+    .age_r li:hover,.age_l li:hover{
+        background: #6dc1c8;
+        color: #FFFFFF;
+    }
+    .filter_group{
+        display: none;
+        position: absolute;
+        top:30px;
+        left: 93px;
+        width: 340px;
+        background:#f5f5f5;
+        border: 1px solid #ddd;
+    }
+    .filter_group input{
+        width: 94%;
+        height: 30px;
+        color: #888888;
+        padding-left: 10px;
+        border-radius: 5px;
+        border: 1px solid #EAE2E2;
+        margin: 3px 3px;
+        outline: none;
+    }
+    .filter_group ul li{
+        cursor: pointer;
+        text-indent: 10px;
+        height: 30px;
+        line-height: 30px;
+    }
+    .filter_group ul {
+        width: 100%;
+        height: 120px;
+        overflow-y: scroll;
+    }
+    .filter_group ul li:hover{
+        background: #6dc1c8;
+        color: #FFFFFF;
+    }
+    .filter_group .group_active{
+        background: #4a5f7c;
+        color: #FFFFFF;
     }
 </style>
 <body>
@@ -392,7 +455,7 @@
     <div class="screen_que" id="screen_que_staff">确定</div>
 </div>
 <!-- 会员弹框 -->
-<div class="screen_wrapper" id="screen_wrapper" style="display: block">
+<div class="screen_wrapper" id="screen_wrapper">
     <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
     <div class="filter_condition" id="filter_condition">
         <ul>
@@ -427,12 +490,12 @@
                     <li>男</li>
                 </ul>
             </div>
-            <div class="contion_input"><label>年龄</label><input class="short_input"><label class="jian">~</label><input
-                    class="short_input"></div>
+            <div class="contion_input"><label>年龄</label><input class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
+                    class="short_input" id="age_r" readonly/><ul class="age_r"></ul></div>
             <div class="contion_input"><label>生日</label><input id="start" class="input laydate-icon"
                                                                onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})">
             </div>
-            <div class="contion_input"><label>手机号</label><input class="input" type="text" readonly="readonly"></div>
+            <div class="contion_input"><label>手机号</label><input class="input" type="text"></div>
         </div>
         <div id="vip_attribute" style="display: none">
             <div class="contion_input"><label>卡号</label><input class="input" type="text"></div>
@@ -450,14 +513,20 @@
         </div>
         <div id="expend_attribute" style="display: none">
             <div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>
-            <div class="contion_input"><label>分组</label><input class="select" type="text" readonly="readonly"></div>
+            <div class="contion_input">
+                <label>分组</label><input id="filter_group" class="select" type="text" readonly="readonly">
+                <div class="filter_group">
+                    <input type="text">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="ticket" style="display: none">
             <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
             <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
         </div>
-        <!-- <div class="contion_input"><label>积分余额</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
-        </div> -->
     </div>
     <div class="ensure"><span id="screen_vip_que">确定</span></div>
 </div>
@@ -515,8 +584,10 @@
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
 <script src="../js/vip/vip.js?20161202"></script>
 <script>
+    //筛选的下拉模拟事件
     $("#filter_condition ul li").click(function () {
         var index = $(this).index();
         $(this).children("a").addClass("condition_active");
@@ -536,14 +607,72 @@
         $("#sex").val($(this).html());
         $("#sex_select").hide();
     });
-    $(document).click(function (e) {
-        if ($(e.target).is("#sex_select")||$(e.target).is("#sex")) {
+    $("#age_l").click(function () {
+        $(".age_l").toggle();
+    });
+    $("#age_r").click(function () {
+        $(".age_r").toggle();
+    });
+    $(".age_l").on("click","li",function () {
+        var max = $("#age_r").val();
+        var val = parseInt($(this).html());
+        if(val >= max && max !== ""){
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能大于右边的年龄哦"
+            });
             return;
-        } else {
+        }
+        $("#age_l").val($(this).html());
+        $(".age_l").hide();
+    });
+    $(".age_r").on("click","li",function () {
+        var min = $("#age_l").val();
+        var val = parseInt($(this).html());
+        if(val <= min  && min !== ""){
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能小于右边的年龄哦"
+            });
+            return;
+        }
+        $("#age_r").val($(this).html());
+        $(".age_r").hide();
+    });
+    $("#filter_group").click(function () {
+       $(".filter_group").toggle();
+        getGroup();
+    });
+    $(".filter_group ul").on("click","li",function () {
+        $("#filter_group").val($(this).html());
+        $("#filter_group").attr("data-code",$(this).attr("id"));
+    });
+    $(document).click(function (e) {
+        if (!($(e.target).is("#sex_select")||$(e.target).is("#sex"))) {
             $("#sex_select").hide();
+        }
+        if(!($(e.target).is(".age_l")||$(e.target).is("#age_l"))) {
+            $(".age_l").hide()
+        }
+        if(!($(e.target).is(".age_r")||$(e.target).is("#age_r"))){
+            $(".age_r").hide();
+        }
+        if(!($(e.target).is("#filter_group")||$(e.target).is(".filter_group input"))){
+            $(".filter_group").hide();
         }
     });
     $(function () {
+        //给年龄赋值
+        for(var i=1;i<101;i++){
+            $(".age_l").append('<li>'+i+'</li>');
+            $(".age_r").append('<li>'+i+'</li>')
+        }
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
                 $("#side_bar .gotop").fadeIn();
