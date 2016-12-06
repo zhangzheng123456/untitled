@@ -152,7 +152,7 @@
             <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
             <i class="icon-ishop_3-05" id="d_search"></i>
         </div>
-        <ul>
+        <ul id="stop"  onmousedown=" stopBubble(this.id)" onmousemove=" stopBubble(this.id)" onmouseup=" stopBubble(this.id)">
 
         </ul>
         <div id="more" class="more">加载更多<i class="icon-ishop_6-18"></i></div>
@@ -226,7 +226,14 @@
             isDowm = false;
         }
     }
-
+    function stopBubble(e) {
+        if (e && e.stopPropagation) {//非IE浏览器
+            e.stopPropagation();
+        }
+        else {//IE浏览器
+            window.event.cancelBubble = true;
+        }
+    }
 
 </script>
 </body>
