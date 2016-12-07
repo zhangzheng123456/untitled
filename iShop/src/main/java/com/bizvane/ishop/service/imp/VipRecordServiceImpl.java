@@ -29,9 +29,10 @@ public class VipRecordServiceImpl implements VipRecordService {
     UserService userService;
 
     public JSONArray transRecord(DBCursor dbCursor) throws Exception{
+      //  System.out.println("---进入查询---");
         JSONArray array = new JSONArray();
         while (dbCursor.hasNext()) {
-
+           // System.out.println("---有值---");
             DBObject obj = dbCursor.next();
             JSONObject object = new JSONObject();
             String id = obj.get("_id").toString();

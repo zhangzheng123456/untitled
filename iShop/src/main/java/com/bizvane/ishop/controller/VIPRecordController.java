@@ -456,11 +456,12 @@ public class VIPRecordController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String errorLog_id = jsonObject.get("id").toString();
+     //       System.out.println("----id-----"+errorLog_id);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
             DBObject deleteRecord = new BasicDBObject();
-            deleteRecord.put("_id",errorLog_id);
+            deleteRecord.put("_id",new ObjectId(errorLog_id));
             DBCursor dbObjects = cursor.find(deleteRecord);
             JSONArray array = vipRecordService.transRecord(dbObjects);
 //            DBObject record=null;
