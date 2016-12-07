@@ -373,10 +373,10 @@ public class LoginController {
             //获取动作权限
             List<Map<String,String>> actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             //获取列表显示字段权限
-            List<TableManager> tableManagers = functionService.selectColumnByFun(corp_code, user_code, group_code, role_code, function_code);
+            List<Map<String,String>> columns = functionService.selectColumnByFun(corp_code, user_code, group_code, role_code, function_code);
 
             menus.put("actions", actions);
-            menus.put("columns", JSON.toJSONString(tableManagers));
+            menus.put("columns", columns);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());

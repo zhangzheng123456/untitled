@@ -878,14 +878,15 @@ public class VipGroupController {
             String user_code = request.getSession().getAttribute("user_code").toString();
 
             String search_value = "";
-            if (jsonObject.containsKey("searchValue"))
-                search_value = jsonObject.get("searchValue").toString();
+            if (jsonObject.containsKey("search_value"))
+                search_value = jsonObject.get("search_value").toString();
 
             JSONObject result = new JSONObject();
             List<VipGroup> vipGroups ;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                vipGroups = vipGroupService.selectCorpVipGroups("","",search_value);
+                corp_code = jsonObject.getString("corp_code");
+                vipGroups = vipGroupService.selectCorpVipGroups(corp_code,"",search_value);
             } else if (role_code.equals(Common.ROLE_GM)){
                 vipGroups = vipGroupService.selectCorpVipGroups(corp_code,"",search_value);
             }else {
