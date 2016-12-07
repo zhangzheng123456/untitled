@@ -89,12 +89,12 @@ var funcCode=key_val.func_code;
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
-                if(execution_input.indexOf("任务")>-1&&(start_time==""||end_time=="")){
+                if(execution_input.indexOf("任务")>-1&&start_time==""){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content: "活动时间不能为空"
+                        content: "活动开始时间不能为空"
                     });
                     return ;
                 }
@@ -263,12 +263,12 @@ var funcCode=key_val.func_code;
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
-                if(execution_input.indexOf("任务")>-1&&(start_time==""||end_time=="")){
+                if(execution_input.indexOf("任务")>-1&&start_time==""){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content: "活动时间不能为空"
+                        content: "活动开始时间不能为空"
                     });
                     return ;
                 }
@@ -574,22 +574,22 @@ jQuery(document).ready(function () {
 //日期插件调用
 var start = {
     elem: '#start',
-    format: 'YYYY-MM-DD',
+    format: 'YYYY-MM-DD hh:mm:ss',
+    istime: true,
     min: laydate.now(), //设定最小日期为当前日期
     max: '2099-06-16 23:59:59', //最大日期
-    istime: true,
     istoday: false,
     choose: function (datas) {
         end.min = datas; //开始日选好后，重置结束日的最小日期
-        end.start = datas //将结束日的初始值设定为开始日
+        end.start = datas; //将结束日的初始值设定为开始日
     }
 };
 var end = {
     elem: '#end',
-    format: 'YYYY-MM-DD',
+    format: 'YYYY-MM-DD hh:mm:ss',
+    istime: true,
     min: laydate.now(),
     max: '2099-06-16 23:59:59',
-    istime: true,
     istoday: false,
     choose: function (datas) {
         start.max = datas; //结束日选好后，重置开始日的最大日期

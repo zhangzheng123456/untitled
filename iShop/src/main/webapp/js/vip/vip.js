@@ -1817,6 +1817,40 @@ function filtrates(a,b){
         }
     })
 }
+//获取分组
+function getGroup() {
+    var corp_command = "/vipGroup/getCorpGroups";
+    var _param = {};
+    _param["corp_code"] = "C10000";
+    _param["search_value"] = $("#search_filter_group").val();
+    oc.postRequire("post", corp_command, "0", _param, function (data) {
+        if (data.code == "0") {
+            var message = JSON.parse(data.message);
+            var list = JSON.parse(message.list);
+            var html = "";
+            var code = $("#filter_group").attr("data-code");
+            $(".filter_group ul").empty();
+            if (list.length>0) {
+                for (var i = 0; i < list.length; i++) {
+                    if(code == list[i].vip_group_code){
+                        html += '<li class="group_active" id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
+                    }else {
+                        html += '<li id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
+                    }
+                }
+                $(".filter_group ul").append(html);
+            } else if (list.length <= 0) {
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        }
+    })
+}
+
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();

@@ -29,9 +29,10 @@ public class VipRecordServiceImpl implements VipRecordService {
     UserService userService;
 
     public JSONArray transRecord(DBCursor dbCursor) throws Exception{
+      //  System.out.println("---进入查询---");
         JSONArray array = new JSONArray();
         while (dbCursor.hasNext()) {
-
+           // System.out.println("---有值---");
             DBObject obj = dbCursor.next();
             JSONObject object = new JSONObject();
             String id = obj.get("_id").toString();
@@ -71,6 +72,12 @@ public class VipRecordServiceImpl implements VipRecordService {
                 object.put("vip_name",vip_name);
             }else {
                 object.put("vip_name","");
+            }
+            if (obj.containsField("message_content") && obj.get("message_content") != null){
+                String message_content = obj.get("message_content").toString();
+                object.put("message_content",message_content);
+            }else {
+                object.put("message_content","");
             }
             if (obj.containsField("message_date")){
                 String created_date = obj.get("message_date").toString();

@@ -1,4 +1,5 @@
 var oc = new ObjectControl();
+var titleArray=[];
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
@@ -139,7 +140,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
-    }()
+    }();
     function dian(inx){//
         if(value==""){
             oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+pageSize
@@ -187,7 +188,7 @@ function superaddition(data,num){//页面加载循环
         var len = $(".table thead tr th").length;
         var i;
         for(i=0;i<10;i++){
-            $(".table tbody").append("<tr></tr>")
+            $(".table tbody").append("<tr></tr>");
             for(var j=0;j<len;j++){
                 $($(".table tbody tr")[i]).append("<td></td>")
             }
@@ -197,12 +198,18 @@ function superaddition(data,num){//页面加载循环
 
 
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
-        
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_code;
+                TD+="<td>"+data[i][code]+"</td>";
+            })(c)
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -212,17 +219,20 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
-                        + data[i].version
-                        + "</td><td>"
-                        + data[i].corp_code
-                        + "</td><td><span>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
+                        + "</td>" 
+                        +TD
+                        //+ "<td>"
+                        //+ data[i].version
+                        //+ "</td><td>"
+                        //+ data[i].corp_code
+                        //+ "</td><td><span>"
+                        //+data[i].modifier
+                        //+ "</td><td>"
+                        //+data[i].modified_date
+                        //+ "</td><td>"
+                        //+data[i].isactive
+                        //+"</td>"
+                        +"</tr>");
     }
     $(".th th:first-child input").removeAttr("checked");
 };
@@ -246,8 +256,10 @@ function qjia(){
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
+        titleArray=JSON.parse(message.columns);
         jurisdiction(actions);
         jumpBianse();
+        GET();
     })
 }
 qjia();
@@ -270,13 +282,13 @@ function GET(){
             }
     });
 }
-GET();
+//GET();
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
+    });
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];

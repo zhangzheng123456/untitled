@@ -1390,11 +1390,18 @@ input::-webkit-input-placeholder{
     max-height: 410px;
     margin-top: 20px;
     padding: 0 85px;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 	position: relative;
     box-sizing:border-box;
     -moz-box-sizing:border-box;
     -webkit-box-sizing:border-box;
+}
+.contion:after{
+	content: ",";
+	height: 0;
+	visibility: hidden;
+	display: block;
+	clear: both;
 }
 .contion label{
     width: 84px;
@@ -1456,6 +1463,8 @@ input::-webkit-input-placeholder{
     padding-left: 10px;
     border: 1px solid #d7d7d7;
     border-radius: 5px;
+	background:url("../../img/btn_dropmenu.png")no-repeat 100% 50%;
+	background-size: 30px;
     outline: none;
     color: #888888;
     box-sizing:border-box;
