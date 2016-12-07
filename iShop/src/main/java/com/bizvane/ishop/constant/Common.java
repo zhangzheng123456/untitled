@@ -1,5 +1,7 @@
 package com.bizvane.ishop.constant;
 
+import okhttp3.MediaType;
+
 import java.text.SimpleDateFormat;
 
 public class Common {
@@ -76,4 +78,7 @@ public class Common {
 
     public static  final String ACTION_UPD ="编辑";
 
+   //微信模板消息
+    public static final String SENDTEMPLATE_URL = "http://wechat.dev.bizvane.com/app/wechat/sendTemplate";
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 }

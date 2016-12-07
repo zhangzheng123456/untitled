@@ -420,6 +420,51 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+    /**
+     * 会员列表
+     * 筛选
+     */
+    @RequestMapping(value = "/vipNewScreen", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipNewScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String user_code = jsonObject.get("user_code").toString();
+//            String store_code = jsonObject.get("store_code").toString();
+//            String brand_code = jsonObject.get("brand_code").toString();
+//            String area_code = jsonObject.get("area_code").toString();
+//            String page_num = jsonObject.get("pageNumber").toString();
+//            String page_size = jsonObject.get("pageSize").toString();
+//
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                corp_code = jsonObject.get("corp_code").toString();
+//            }
+//            logger.info("json--------------corp_code-" + corp_code);
+//            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
+//
+//            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+//            String result = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 
     /**
