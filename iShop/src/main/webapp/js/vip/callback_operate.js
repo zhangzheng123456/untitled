@@ -181,7 +181,11 @@ jQuery(document).ready(function() {
 			$("#creator").val(msg.creater);
 			$("#modify_time").val(msg.modified_date);
 			$("#modifier").val(msg.modifier);
-
+            if(msg.type_name.trim()=='电话'){
+				$("#task_dec_content").hide();
+			}else{
+				$("#task_dec_content").show();
+			}
 			var input = $(".checkbox_isactive").find("input")[0];
 			if (msg.isactive == "Y") {
 				input.checked = true;
