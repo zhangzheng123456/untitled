@@ -17,6 +17,22 @@
         body{
             margin-top:81px;
         }
+        #task_dec{
+            width: 420px;
+            /* width: 70%; */
+            /* border-style: none; */
+            border: none;
+            border-radius: 4px;
+            height:150px;
+            text-indent: 10px;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            color: #888888;
+            /* float: right; */
+        }
     </style>
 </head>
 <body>
@@ -30,21 +46,26 @@
                 </div> -->
                 <form class="conpany_msg">
                     <div>
-                        <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="所属企业必填项，不能为空！"></div></div></span>
+                        <span><label>所属企业</label><input type="text" readonly id="OWN_CORP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="所属企业必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>回访员工</label><input type="text" id="CALLBACK_STUFF" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访员工为必填项，不能为空！"></div></div></span>
+                        <span><label>回访员工</label><input type="text"readonly id="CALLBACK_STUFF" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访员工为必填项，不能为空！"></div></div></span>
                     </div>
                      <div>
-                        <span><label>会员名称</label><input type="text" id="VIP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="会员为必填项，不能为空！"></div></div></span>
+                        <span><label>会员名称</label><input type="text"readonly id="VIP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="会员为必填项，不能为空！"></div></div></span>
                     </div>
                     <div id="day">
-                        <span><label>回访时间</label><input type="text" id="CALLBACK_DATE" /></span>
+                        <span><label>回访时间</label><input type="text"readonly id="CALLBACK_DATE" /></span>
                         <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
                     </div>
                     <div>
-                        <span><label>回访类型</label><input type="text" id="CALLBACK_TYPE" /></span>
+                        <span><label>回访类型</label><input type="text"readonly id="CALLBACK_TYPE" /></span>
                         <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
+                    </div>
+                    <div>
+                       <span style="display: inline-flex;width:100%"><label >任务描述</label><span class="abstract">
+                           <textarea id="task_dec"readonly maxlength="500"></textarea>
+                       </span></span>
                     </div>
                 </form>
             </div>

@@ -175,6 +175,7 @@ jQuery(document).ready(function() {
 			$("#CALLBACK_DATE").val(msg.message_date);//回访日期
 			$("#CALLBACK_TYPE").val(msg.type_name);//回访类型
 			$("#VIP").val(msg.vip_name)//会员名称
+			$("#task_dec").val(msg.message_content)//会员名称
 			$("#CALLBACK_STUFF").val(msg.user_name)//回访员工
 			$("#created_time").val(msg.created_date);
 			$("#creator").val(msg.creater);
