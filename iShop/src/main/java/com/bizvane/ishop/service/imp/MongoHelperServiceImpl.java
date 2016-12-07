@@ -151,6 +151,8 @@ public class MongoHelperServiceImpl {
             String id = obj.get("_id").toString();
             String user_id="";
             String brand_name="";
+            System.out.println("====id======="+id);
+            System.out.println("====user_id======="+String.valueOf(obj.get("user_id").toString()));
             if(obj.containsField("user_id") && !String.valueOf(obj.get("user_id").toString()).equals("null")){
                 user_id =obj.get("user_id").toString();
             }else{
