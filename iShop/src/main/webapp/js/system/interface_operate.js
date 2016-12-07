@@ -86,7 +86,6 @@ var oc = new ObjectControl();
 	interfacejs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
-		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				// art.dialog({
@@ -148,11 +147,10 @@ jQuery(document).ready(function(){
 		var _params={"id":id};
 		var _command="/interfacers/selectById";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				// msg=JSON.parse(msg.appversion);
-				console.log(msg);
+				msg=JSON.parse(msg.interfacers);
 				$('#INTERFACE_VERSION').val(msg.version);
 				$("#CORP_ID").val(msg.corp_code);
 
@@ -179,8 +177,7 @@ jQuery(document).ready(function(){
 	}
 	//change 事件
 	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
+	});
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/interface.html");
 	});
