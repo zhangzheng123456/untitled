@@ -7891,7 +7891,7 @@ li.select_index>a>label>i{
   right: 51px;
 }
 .conpany_msg .area_shop{
-  width:310px;
+  width:320px;
 }
 .edit_shop_icon{
   width: 100px;
@@ -7900,7 +7900,7 @@ li.select_index>a>label>i{
   display: inline-block;
   border-radius: 0 5px 5px 0;
   line-height: 30px;
-  margin-left: 5px;
+  margin-left: -5px;
   padding-left: 10px;
   color: #ffffff;
 }

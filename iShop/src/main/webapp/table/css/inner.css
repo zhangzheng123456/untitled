@@ -1354,7 +1354,7 @@ input::-webkit-input-placeholder{
 }
 /********会员筛选首页弹出框********/
 .screen_wrapper{
-    width:500px;
+    width:640px;
     // height: 330px;
     font-size: 14px;
     color: #888888;
@@ -1389,19 +1389,27 @@ input::-webkit-input-placeholder{
 .contion{
     max-height: 410px;
     margin-top: 20px;
-    padding: 0 30px;
-    overflow-y: auto;
+    padding: 0 85px;
+    /*overflow-y: auto;*/
+	position: relative;
     box-sizing:border-box;
     -moz-box-sizing:border-box;
     -webkit-box-sizing:border-box;
 }
+.contion:after{
+	content: ",";
+	height: 0;
+	visibility: hidden;
+	display: block;
+	clear: both;
+}
 .contion label{
-    width: 70px;
+    width: 84px;
     text-align: right;
     display:inline-block;
 }
 .contion .contion_input{
-	width: 420px!important;
+	width: 440px!important;
 	height: 30px!important;
 	margin-bottom: 20px;
 	position: relative;
@@ -1420,12 +1428,26 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 }
 .contion .input{
+	width: 340px!important;
+	height: 30px!important;
+	margin-left: 10px;
+	padding-left: 10px;
+	border: 1px solid #d7d7d7;
+	border-radius:5px;
+	outline: none;
+	color: #888888;
+	background-size: 30px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+.contion .select{
     width: 340px!important;
     height: 30px!important;
     margin-left: 10px;
     padding-left: 10px;
     border: 1px solid #d7d7d7;
-    border-radius:3px 5px 5px 3px;
+    border-radius:5px;
     outline: none;
     color: #888888;
     background:url("../../img/btn_dropmenu.png")no-repeat 100% 50%;
@@ -1435,12 +1457,14 @@ input::-webkit-input-placeholder{
     -webkit-box-sizing:border-box;
 }
 .contion .short_input{
-    width:148px;
-    height: 25px;
+    width:150px;
+    height: 30px;
     margin-left: 10px;
     padding-left: 10px;
     border: 1px solid #d7d7d7;
-    border-radius: 6px;
+    border-radius: 5px;
+	background:url("../../img/btn_dropmenu.png")no-repeat 100% 50%;
+	background-size: 30px;
     outline: none;
     color: #888888;
     box-sizing:border-box;
@@ -1452,6 +1476,12 @@ input::-webkit-input-placeholder{
 	text-align: center;
 	height: 30px;
 	line-height: 30px;
+	margin-left: 10px;
+}
+.contion span{
+	position: absolute;
+	right: 15px;
+	top: 5px;
 }
 .text_l{
     position: absolute;
@@ -1478,7 +1508,7 @@ input::-webkit-input-placeholder{
     width: 100%;
     height: 30px;
     line-height: 30px;
-    margin-top: 30px;
+    margin-top: 20px;
     text-align: center;
 }
 .ensure span{

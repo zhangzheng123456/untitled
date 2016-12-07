@@ -43,8 +43,8 @@
         body{
             margin-top:81px;
         }
-        #edit div{margin-bottom: 0px;}
-        #edit{ margin-left: 120px;width: 420px; margin-top: -20px;}
+        #edit div,#edit_show div{margin-bottom: 0px;}
+        #edit,#edit_show{ margin-left: 120px;width: 420px; margin-top: -20px;}
         #add{margin-top: -35px;
             margin-left: 120px;
             margin-bottom: 0;
@@ -97,13 +97,13 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">商品编号*</label><input type="text" id="GOODS_CODE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品编号不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">商品编号*</label><input type="text" id="GOODS_CODE" verify="Empty" maxlength="20"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品编号不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">商品名称*</label><input type="text" id="GOODS_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品名称不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">商品名称*</label><input type="text" id="GOODS_NAME" verify="Empty" maxlength="50"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品名称不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">价格*</label><input type="text" id="GOODS_PRICE" verify="Number"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品价格不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">价格*</label><input type="text" id="GOODS_PRICE" verify="Number" maxlength="8"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品价格不能为空！"></div></div></span>
                     </div>
                     <div style="padding-left: 126px;position: relative;margin-bottom: 10px">
                         <span><label style="margin-right:14px;position: absolute;top:12px;left:0px;display:inline-block">商品图片</label></span>
@@ -132,10 +132,10 @@
                         </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">季度*</label><input type="text" value="" id="GOODS_QUARTER" verify="Empty" /><div class="hint"><div  hintinfo="季度不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">季度*</label><input type="text" value="" id="GOODS_QUARTER" verify="Empty" maxlength="20"/><div class="hint"><div  hintinfo="季度不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">波段*</label><input type="text" id="GOODS_BAND" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="波段不能为空！"></div></div></span>
+                        <span><label style="color:#c26555;">波段*</label><input type="text" id="GOODS_BAND" verify="Empty" maxlength="20"/><div style="padding-left:125px" class="hint"><div  hintinfo="波段不能为空！"></div></div></span>
                     </div>
                     <div>
                         <ul style="display:inline-flex;">
@@ -159,6 +159,14 @@
                         <section >
                             <div id='edit'>
                                 <script id="editor" type="text/plain" style="width:420px;height:286px;"></script>
+                            </div>
+                        </section>
+                    </div>
+                    <div>
+                        <label>分享内容</label>
+                        <section >
+                            <div id='edit_show'>
+                                <script id="editor_show" type="text/plain" style="width:420px;height:286px;"></script>
                             </div>
                         </section>
                     </div>
@@ -240,6 +248,7 @@
         //实例化编辑器
         //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
         var ue = UE.getEditor('editor');
+        var ue_show = UE.getEditor('editor_show');
     </script>
 </body>
 

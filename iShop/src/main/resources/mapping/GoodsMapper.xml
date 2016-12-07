@@ -9,17 +9,15 @@
         <result column="goods_image" property="goods_image" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="goods_price" property="goods_price" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="goods_time" property="goods_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="goods_quarter" property="goods_quarter"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_quarter" property="goods_quarter" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="goods_wave" property="goods_wave" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="goods_description" property="goods_description"
-                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="goods_description" property="goods_description" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="share_description" property="share_description" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
         <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -47,7 +45,6 @@
         g.isactive,
         g.created_date,
         g.creater,
-        g.goods_description,
         g.corp_code,
         g.brand_code,
         cp.corp_name,
@@ -96,9 +93,6 @@
         g.modified_date,
         g.modifier,
         g.isactive,
-        g.created_date,
-        g.creater,
-        g.goods_description,
         g.corp_code,
         g.brand_code,
         cp.corp_name,
@@ -164,6 +158,7 @@
         g.created_date,
         g.creater,
         g.goods_description,
+        g.share_description,
         g.corp_code,
         g.brand_code,
         cp.corp_name,
@@ -249,7 +244,6 @@
         g.isactive,
         g.created_date,
         g.creater,
-        g.goods_description,
         g.corp_code,
         g.brand_code,
         cp.corp_name,
@@ -300,9 +294,11 @@
         g.goods_wave,
         g.modified_date,
         g.modifier,
-        g.isactive,g.created_date,
+        g.isactive,
+        g.created_date,
         g.creater,
         g.goods_description,
+        g.share_description,
         g.corp_code,
         cp.corp_name,
         g.brand_code,
@@ -358,6 +354,9 @@
             <if test="goods_description!=null">
                 goods_description,
             </if>
+            <if test="share_description!=null">
+                share_description,
+            </if>
             <if test="corp_code!=null">
                 corp_code,
             </if>
@@ -404,6 +403,9 @@
             </if>
             <if test="goods_description!=null">
                 #{goods_description},
+            </if>
+            <if test="share_description!=null">
+                #{share_description},
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
@@ -456,6 +458,9 @@
             <if test="goods_description!=null">
                 goods_description=#{goods_description},
             </if>
+            <if test="share_description!=null">
+                share_description=#{share_description},
+            </if>
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
@@ -488,6 +493,7 @@
         g.created_date,
         g.creater,
         g.goods_description,
+        g.share_description,
         g.corp_code,
         cp.corp_name,
         g.brand_code,

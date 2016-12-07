@@ -480,6 +480,9 @@ hr{
     border-radius: 4px;
     outline: none;
 }
+.record_input li {
+    width: 20%;
+}
 .record_date span{
     margin: 0 10px 0 0;
 }
@@ -499,7 +502,7 @@ hr{
     cursor: pointer;
 }
 .record_input input{
-    width: 160px;
+    width: 60%;
     height: 30px;
     text-indent: 10px;
     margin: 0 10px;
@@ -742,6 +745,7 @@ hr{
     overflow: hidden;
 }
 .labeladd_box{
+    width: 100%;
     position: relative;
     padding: 10px;
     margin-top: 20px;
@@ -772,7 +776,7 @@ hr{
     margin-left:10px;
 }
 .own_label{
-    width: 510px;
+    width: 100%;
     min-height:375px;
     margin-bottom: 20px;
     padding: 10px;
@@ -807,7 +811,7 @@ hr{
 }
 .label_box{
     /*width: 470px;*/
-    height: 200px;
+    height: 285px;
     margin: 20px 10px;
 }
 .label_u_active{
@@ -827,13 +831,11 @@ hr{
     color: #fff;
 }
 .all_label{
-    width: 50%;
     min-height:435px;
     margin-bottom: 20px;
-    float: left;
+    float: right;
     padding: 0 20px;
     margin-top: 20px;
-    margin-left: 20px;
     background: #fff;
 }
 .label_nav{

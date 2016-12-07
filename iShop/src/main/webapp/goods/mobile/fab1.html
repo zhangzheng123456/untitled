@@ -32,7 +32,7 @@
 </head>
 <body>
 	<div class="down_load_file">
-		<div onclick="getAppUserInfo();">测试</div>
+		<div onclick="doAppWebRefresh();">测试</div>
 	</div>
 </body>
 <script>
@@ -63,12 +63,15 @@ function getWebOSType(){
 	
 	}
 	function doAppWebRefresh(){
+		var param="你好";
 		var osType = getWebOSType();
 		if(osType=="iOS"){
-			userInfo = NSRefreshWebView();
+			window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+			// NSJumpToWebViewForWeb(param);
 		}else if(osType == "Android"){
-			userInfo = iShop.RefreshWebView();
+			iShop.jumpToWebViewForWeb(param);
 		}
+		
 	}
 
 

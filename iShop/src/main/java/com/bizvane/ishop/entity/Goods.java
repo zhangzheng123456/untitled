@@ -32,8 +32,10 @@ public class Goods {
     private String created_date;
     //创建者
     private String creater;
-    //商品描述
+    //商品卖点
     private String goods_description;
+    //分享内容
+    private String share_description;
     //商品品牌
     private String brand_code;
     //企业编号
@@ -183,6 +185,14 @@ public class Goods {
 
     public void setGoods_description(String goods_description) {
         this.goods_description = goods_description;
+    }
+
+    public String getShare_description() {
+        return share_description;
+    }
+
+    public void setShare_description(String share_description) {
+        this.share_description = share_description;
     }
 
     public String getBrand_code() {

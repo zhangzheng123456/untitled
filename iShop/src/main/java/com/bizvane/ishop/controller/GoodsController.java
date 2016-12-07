@@ -592,15 +592,17 @@ public class GoodsController {
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             String goods_description = goods.getGoods_description();
-            //String goods_description = "<p><img src=\"/image/upload/20160923/1474624297069083036.jpg\" title=\"1474624297069083036.jpg\" alt=\"lovely.jpg\"/></p><p><img src=\"/image/upload/20160923/1474624387054042981.jpg\" title=\"1474624387054042981.jpg\"/></p><p>这是一段文本</p>";
+            String share_description = goods.getShare_description();
 
             List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
+            List<String> htmlImageSrcList1 = OssUtils.getHtmlImageSrcList(share_description);
+
             OssUtils ossUtils=new OssUtils();
             String bucketName="products-image";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+
              path = request.getSession().getServletContext().getRealPath("/");
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
-                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
+                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date())+".jpg";
                 if(!htmlImageSrcList.get(k).contains("image/upload")){
                     continue;
                 }
@@ -608,7 +610,18 @@ public class GoodsController {
                 goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
                 LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
             }
+            for (int k = 0; k < htmlImageSrcList1.size(); k++) {
+                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date())+".jpg";
+                if(!htmlImageSrcList1.get(k).contains("image/upload")){
+                    continue;
+                }
+                ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList1.get(k));
+                share_description = share_description.replace(htmlImageSrcList1.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
+                LuploadHelper.deleteFile(path+"/"+htmlImageSrcList1.get(k));
+            }
             goods.setGoods_description(goods_description);
+            goods.setShare_description(share_description);
+
             Date now = new Date();
             goods.setGoods_price(jsonObject.getString("goods_price"));
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -715,35 +728,41 @@ public class GoodsController {
             String corp_code = jsonObject.get("corp_code").toString();
             String delImgPath = jsonObject.get("delImgPath").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
-            //goods.setGoods_time(sdf.parse);
             String goods_description = goods.getGoods_description();
-            //String goods_description = "<p><img src=\"/image/upload/20160923/1474624297069083036.jpg\" title=\"1474624297069083036.jpg\" alt=\"lovely.jpg\"/></p><p><img src=\"/image/upload/20160923/1474624387054042981.jpg\" title=\"1474624387054042981.jpg\"/></p><p>这是一段文本</p>";
+            String share_description= goods.getShare_description();
 
             List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
+            List<String> htmlImageSrcList1 = OssUtils.getHtmlImageSrcList(share_description);
+
             List<String> delImgPaths = OssUtils.getHtmlImageSrcList(delImgPath);
             OssUtils ossUtils=new OssUtils();
             String bucketName="products-image";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             path =   request.getSession().getServletContext().getRealPath("/");
             for (int i = 0; i < delImgPaths.size(); i++) {
-              //  System.out.println("------------path-----------------:"+delImgPaths.get(i));
                 String replace = delImgPaths.get(i).replace("http://" + bucketName + ".oss-cn-hangzhou.aliyuncs.com/", "");
-               // System.out.println("------------replace-----------------:"+replace);
                 ossUtils.deleteObject(bucketName,replace);
             }
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
-                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
+                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date())+".jpg";
                 if(!htmlImageSrcList.get(k).contains("image/upload")){
                     continue;
                 }
-//                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
-//                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
                 goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
                 LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
-
+            }
+            for (int k = 0; k < htmlImageSrcList1.size(); k++) {
+                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date())+".jpg";
+                if(!htmlImageSrcList1.get(k).contains("image/upload")){
+                    continue;
+                }
+                ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList1.get(k));
+                share_description = share_description.replace(htmlImageSrcList1.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
+                LuploadHelper.deleteFile(path+"/"+htmlImageSrcList1.get(k));
             }
             goods.setGoods_description(goods_description);
+            goods.setShare_description(share_description);
+
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);

@@ -1,439 +1,714 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>会员列表</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20161116">
-     <link rel="stylesheet" href="../css/font_style.css?20161202">
+    <meta charset="UTF-8">
+    <title>会员列表</title>
+    <link rel="stylesheet" href="../table/css/inner.css?20161116">
+    <link rel="stylesheet" href="../css/font_style.css?20161202">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
+    <script src="../js/laydate/laydate.js"></script>
 </head>
+<style>
+    .filter_condition {
+        width: 100%;
+        height: 60px;
+    }
+    .filter_condition ul li {
+        width: 16.6666%;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 10px;
+        float: left;
+        cursor: pointer;
+        text-align: center;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box; /* Firefox */
+        -webkit-box-sizing: border-box; /* Safari */
+    }
+    .filter_condition ul a {
+        display: block;
+        color: #888888;
+    }
+    .filter_condition .condition_active {
+        color: #6dc1c8;
+        border-top: 2px solid #6dc1c8;
+    }
+    .sex_select {
+        display: none;
+        position: relative;
+        z-index: 100;
+        width: 340px;
+        background: #f5f5f5;
+        margin-left: 93px;
+        border: 1px solid #ddd;
+    }
+    .sex_select li {
+        text-indent: 10px;
+        height: 30px;
+        line-height: 30px;
+    }
+    .sex_select li:hover {
+        color: #FFFFFF;
+        background: #4a5f7c;
+    }
+    .age_l{
+        display: none;
+        height: 100px;
+        overflow-y: scroll;
+        position: absolute;
+        top:30px;
+        left: 93px;
+        z-index: 100;
+        width: 150px;
+        text-indent: 10px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+    }
+    .age_r{
+        display: none;
+        height: 100px;
+        overflow-y: scroll;
+        position: absolute;
+        top:30px;
+        right: 5px;
+        z-index: 100;
+        text-indent: 10px;
+        width: 150px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+    }
+    .age_r li:hover,.age_l li:hover{
+        background: #6dc1c8;
+        color: #FFFFFF;
+    }
+    .filter_group{
+        display: none;
+        position: absolute;
+        top:30px;
+        left: 93px;
+        width: 340px;
+        background:#f5f5f5;
+        border: 1px solid #ddd;
+    }
+    .filter_group input{
+        width: 94%;
+        height: 30px;
+        color: #888888;
+        padding-left: 10px;
+        border-radius: 5px;
+        border: 1px solid #EAE2E2;
+        margin: 3px 3px;
+        outline: none;
+    }
+    .filter_group ul li{
+        cursor: pointer;
+        text-indent: 10px;
+        height: 30px;
+        line-height: 30px;
+    }
+    .filter_group ul {
+        width: 100%;
+        height: 120px;
+        overflow-y: scroll;
+    }
+    .filter_group ul li:hover{
+        background: #6dc1c8;
+        color: #FFFFFF;
+    }
+    .filter_group .group_active{
+        background: #4a5f7c;
+        color: #FFFFFF;
+    }
+</style>
 <body>
-    <div class="content">
-    	<div class="con_table" id="con_table">
-    		<div class="title">
-                <span>会员管理</span>
-                <span class="icon-ishop_8-03"></span>
-    			<span>会员列表</span>
-    		</div>
-    		<div class="action">
-    			<div class="action_l">
-					<ul id="jurisdiction">
-					</ul>
-					<ul>
-                        <li class="li">
-                            <input type="text" id="search" class="input" placeholder="姓名/手机号/会员卡号">
-                            <i id="d_search" class="icon-ishop_3-05"></i>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>会员管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>会员列表</span>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul id="jurisdiction">
+                </ul>
+                <ul>
+                    <li class="li">
+                        <input type="text" id="search" class="input" placeholder="姓名/手机号/会员卡号">
+                        <i id="d_search" class="icon-ishop_3-05"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="filtrate">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                    <!--<li class="bg">-->
+                    <!--<span class="icon-ishop_6-06"></span>-->
+                    <!--配置-->
+                    <!--</li>-->
+                    <li class="bg">
+                        <span class="icon-ishop_6-07"></span>
+                        刷新
+                    </li>
+                    <li id="more">
+                        <span class="icon-ishop_6-08"></span>
+                        更多
+                        <div class="more_down">
+                            <div id="album_leadingout" style="font-size: 10px">导出会员相册</div>
+                            <!--<div id="leading_out">导出</div>-->
+                            <!--<div id="guide_into">导入</div>-->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sxk" id="sxk">
+            <div class="sbtn">
+                <div class="empty" id="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <span class="screen_tip">支持多个条件精确查找,以逗号分隔.</span>
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                <li>
+                    <label>公司名称</label>
+                    <input type="text" id="p1">
+                </li>
+                <li>
+                    <label>联系人</label>
+                    <input type="text" id="p2">
+                </li>
+                <li>
+                    <label>修改人</label>
+                    <input type="text" id="p3">
+                </li>
+                <li>
+                    <label>联系电话</label>
+                    <input type="text" id="p4">
+                </li>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;">
+                        <div class="checkbox"><input
+                                onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }"
+                                type="checkbox" value="" name="test" title="全选/取消" class="check"
+                                id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div>
+                    </th>
+                    <th style="text-align: left;">序号</th>
+                    <th>会员编号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>手机号</th>
+                    <th>会员卡类型</th>
+                    <th>会员卡号</th>
+                    <th>所属导购</th>
+                    <th>所属店铺</th>
+                    <th>生日</th>
+                    <th>开卡日期</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num">
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
                         </li>
-    				</ul>
-    			</div>
-    			<div class="action_r">
-    				<ul>
-    					<li id="filtrate">
-    						<span class="icon-ishop_6-05"></span>
-    						筛选
-    					</li>
-    					<!--<li class="bg">-->
-    						<!--<span class="icon-ishop_6-06"></span>-->
-    						<!--配置-->
-    					<!--</li>-->
-    					<li class="bg">
-    						<span class="icon-ishop_6-07"></span>
-    						刷新
-    					</li>
-    					<li id="more">
-    						<span class="icon-ishop_6-08"></span>
-    						更多
-							<div class="more_down">
-                                <div id="album_leadingout" style="font-size: 10px">导出会员相册</div>
-								<!--<div id="leading_out">导出</div>-->
-								<!--<div id="guide_into">导入</div>-->
-							</div>
-    					</li>
-    				</ul>
-    			</div>
-    		</div>
-             <div class="sxk" id="sxk">
-                <div class="sbtn">
-                    <div class="empty" id="empty">
-                        <i class="icon-ishop_6-16"></i>清空筛选
+                        <li class="icon-ishop_4-02">
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
                     </div>
-                    <span class="screen_tip">支持多个条件精确查找,以逗号分隔.</span>
-                    <div class="r_btn">
-                        <div class="pack_up" id="pack_up">
-                            <i class="icon-ishop_6-18"></i>
-                            收起
-                        </div>
-                        <div class="find" id="find">
-                            <i class="icon-ishop_6-19"></i>
-                            查找
-                        </div>
-                    </div>
-                </div>
-                <div class="inputs">
-                    <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
-                    </li>
-                    <li>
-                        <label>联系人</label>
-                        <input type="text" id="p2">
-                    </li>
-                    <li>
-                        <label>修改人</label>
-                        <input type="text" id="p3">
-                    </li>
-                    <li>
-                        <label>联系电话</label>
-                        <input type="text" id="p4">
-                    </li>
-                </div>
-            </div>
-    		<div class="table">
-    			<table id="table" cellpadding="0" cellspacing="0" width="100%">
-                 	<thead>
-                 		<tr class="th">
-                 			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
-                 			<th style="text-align: left;">序号</th>
-                 			<th>会员编号</th>
-                 			<th>姓名</th>
-							<th>性别</th>
-							<th>手机号</th>
-							<th>会员卡类型</th>
-                            <th>会员卡号</th>
-							<th>所属导购</th>
-							<th>所属店铺</th>
-							<th>生日</th>
-							<th>开卡日期</th>
-                 		</tr>
-                 	</thead>
-                    <tbody>
+                    <span class="zy">共 0 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div class="tk" id="tk">
+    <span class="icon-ishop_6-12" id="X"></span>
+    <p>是否导出会员相册地址?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="album_enter" id="enter">确认</em>
+    </div>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<!-- 拉取区域 -->
+<div id="screen_area" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选区域</h4>
+        <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="area_search">
+            <span class="icon-ishop_3-05" id="area_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
 
-                    </tbody>
-    			</table>
-    		</div>
-    		<div class="foot">
-    			<ul>
-    				<li class="foot-jum">
-    					<span>跳转至</span>
-    					<input class="input-txt" value="" id="input-txt">
-    					<em>页</em>
-    				</li>
-    				<li class="foot-num" >
-    					<ul id="foot-num">
-                            <li class="icon-ishop_4-01" style="color: #afafaf">
-                            </li>
-                            <li class="icon-ishop_4-02">
-                            </li>
-    					</ul>
-    				</li>
-    				<li class="foot-sum">
-    					<div class="page_p">
-    						<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
-                            <ul class="liebiao" style="display:none;" id="liebiao">
-                                <li id="10">10行/页</li>
-                                <li id="30">30行/页</li>
-                                <li id="50">50行/页</li>
-                                <li id="100">100行/页</li>
-                            </ul>
-						    <span class="icon-ishop_8-02 icon"></span>
-    					</div>
-						<span class="zy">共 0 页</span>
-    				</li>
-    			</ul>
-    		</div>
-    	</div>
-    </div>
-    <div class="p" id="p"></div>
-    <div class="tk" id="tk">
-        <span class="icon-ishop_6-12" id="X"></span>
-        <p>是否导出会员相册地址?</p>
-        <div class="btn">
-            <em class="cancel" id="cancel">取消</em>
-            <em class="album_enter" id="enter">确认</em>
+            </ul>
         </div>
     </div>
-    <div id="side_bar">
-        <div class="gotop">
-            <span class="icon-ishop_4-03"></span>
+    <div class="screen_que" id="screen_que_area">确定</div>
+</div>
+<!-- 拉取店铺 -->
+<div id="screen_shop" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选店铺</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+            </div>
         </div>
-        <div class="gobottom">
-            <span class="icon-ishop_4-04"></span>
+        <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="store_search">
+            <span class="icon-ishop_3-05" id="store_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
         </div>
     </div>
-    <!-- 拉取区域 -->
-    <div id="screen_area" class="screen_area">
-        <div class="screen_title">
-            <h4>筛选区域</h4>
-            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="area_search">
-                <span class="icon-ishop_3-05" id="area_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                    
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_area">确定</div>
-    </div>
-    <!-- 拉取店铺 -->
-    <div id="screen_shop" class="screen_area" >
-        <div class="screen_title">
-            <h4>筛选店铺</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num" data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
-                </div>
-            </div>
-            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="store_search">
-                <span class="icon-ishop_3-05" id="store_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                   
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_shop">确定</div>
-    </div>
-    <!-- 拉取品牌 -->
-    <div id="screen_brand" class="screen_area" >
-        <div class="screen_title">
-            <h4>筛选品牌</h4>
-            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="brand_search">
-                <span class="icon-ishop_3-05" id="brand_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                   
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_brand">确定</div>
-    </div>
-    <!-- 拉取导购  -->
-    <div id="screen_staff" class="screen_area">
-        <div class="screen_title">
-            <h4>筛选</h4>
-            <div class="xuanzhong">
-                <div class="xuanzhong_p">
-                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num" data-areacode="">
-                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
-                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
-                </div>
-            </div>
-            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="staff_search">
-                <span class="icon-ishop_3-05" id="staff_search_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
-                
-                </ul>   
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
-                   
-                </ul>
-            </div>
-        </div>
-        <div class="screen_que" id="screen_que_staff">确定</div>
-    </div>
-    <!-- 会员弹框 -->
-    <div class="screen_wrapper" id="screen_wrapper">
-        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
-        <div class="contion">
-            <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
-            <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
-            <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text" readonly="true"
-            data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
-            <div class="contion_input"><label>所属导购</label><input id="screen_stff_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
-           <!--  <div class="contion_input"><label>会员等级</label><input class="input" type="text" readonly="true"><span class="icon_r icon-ishop_8-03" id=""></span></div> -->
-            <!-- <div class="contion_input"><label>加入时间</label><input id="start" class="short_input laydate-icon" onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})"><label class="jian">~</label><input id="end" class="short_input laydate-icon" onclick="laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})">
-            </div> -->
-           <!--  <div class="contion_input"><label>性别</label><input class="input" type="text" value="女" readonly="readonly"></div> -->
-            <!-- <div class="contion_input"><label>年龄</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input laydate-icon">
-            </div> -->
-            <!-- <div class="contion_input"><label>距上次消费</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
-            </div> -->
-            <!-- <div class="contion_input"><label>消费次数</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
-            </div> -->
-            <!-- <div class="contion_input"><label>消费金额</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
-            </div> -->
-            <!-- <div class="contion_input"><label>积分余额</label><input id="start" class="short_input laydate-icon"><label class="jian">~</label><input id="end" class="short_input">
-            </div> -->
-            </div>
-        <div class="ensure"><span id="screen_vip_que">确定</span></div>
-    </div>
-    <!-- 选择导购  -->
-    <div id="choose_staff" class="screen_area">
-        <div class="screen_title">
-            <h4>选择导购</h4>
-            <!--<div class="xuanzhong">-->
-                <!--<div class="xuanzhong_p">-->
-                    <!--<label>选择区域</label><input type="text" value="" readonly="true" id="staff_choose_area" data-areacode="">-->
-                    <!--<span class="icon_r icon-ishop_8-03"></span>-->
-                <!--</div>-->
-                <!--<div class="xuanzhong_p">-->
-                    <!--<label>选择品牌</label><input type="text" value="" id="staff_choose_brand" data-brandcode="">-->
-                    <!--<span class="icon_r icon-ishop_8-03"></span>-->
-                <!--</div>-->
-                <!--<div class="xuanzhong_p">-->
-                    <!--<label>选择店铺</label><input type="text" value="" id="staff_choose_shop" data-storecode="">-->
-                    <!--<span class="icon_r icon-ishop_8-03"></span>-->
-                <!--</div>-->
-            <!--</div>-->
-            <div class="screen_close" id="close_choose_staff"><span class="icon-ishop_6-12"></span></div>
-            <div class="xian"></div>
-        </div>
-        <div class="input_s">
-            <div class="input_search">
-                <input type="text" placeholder="搜索" id="search_staff">
-                <span class="icon-ishop_3-05" id="search_staff_f"></span>
-            </div>
-            <div class="s_center"></div>
-            <div class="s_pitch">
-                已添加&nbsp;<span>0</span>&nbsp;个
-            </div>
-        </div>
-        <div class="screen_content">
-            <div class="screen_content_l">
-                <ul>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
 
-                </ul>
-            </div>
-            <div class="screen_content_z">
-                <div class="shift shift_right" title="右移">&gt;</div>
-                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
-                <div class="shift shift_left" title="左移">&lt;</div>
-                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
-            </div>
-            <div class="screen_content_r">
-                <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
 
-                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_shop">确定</div>
+</div>
+<!-- 拉取品牌 -->
+<div id="screen_brand" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选品牌</h4>
+        <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="brand_search">
+            <span class="icon-ishop_3-05" id="brand_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_brand">确定</div>
+</div>
+<!-- 拉取导购  -->
+<div id="screen_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选</h4>
+        <div class="xuanzhong">
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                          data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
             </div>
         </div>
-        <div class="screen_que" >确定</div>
+        <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
     </div>
-    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-	<script src="/js/loading.js"></script>
-	<script type="text/javascript" src="../js/insidePostRequire.js"></script>
-	<script src="../js/vip/vip.js?20161202"></script>
-    <script>
-    $(function(){
-        $(window).scroll(function() {
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="staff_search">
+            <span class="icon-ishop_3-05" id="staff_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_staff">确定</div>
+</div>
+<!-- 会员弹框 -->
+<div class="screen_wrapper" id="screen_wrapper">
+    <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+    <div class="filter_condition" id="filter_condition">
+        <ul>
+            <li><a href="####" class="condition_active">按所属关系</a></li>
+            <li><a href="####">按基本属性</a></li>
+            <li><a href="####">按会员属性</a></li>
+            <li><a href="####">按消费属性</a></li>
+            <li><a href="####">按拓展属性</a></li>
+            <li><a href="####">按券查询</a></li>
+        </ul>
+    </div>
+    <div class="contion" id="contion">
+        <div id="relation">
+            <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
+                                                                 readonly="true" data-code=""><span
+                    class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+            <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text"
+                                                                 readonly="true" data-code=""><span
+                    class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+            <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text"
+                                                                 readonly="true" data-code=""><span
+                    class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+            <div class="contion_input"><label>所属导购</label><input id="screen_stff_num" class="input" type="text"
+                                                                 readonly="true" data-code=""><span
+                    class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+        </div>
+        <div id="basic_message" style="display: none">
+            <div class="contion_input"><label>姓名</label><input class="input" type="text"></div>
+            <div class="contion_input">
+                <label>性别</label><input class="select" type="text" value="女" readonly="readonly" id="sex">
+                <ul class="sex_select" id="sex_select">
+                    <li>男</li>
+                </ul>
+            </div>
+            <div class="contion_input"><label>年龄</label><input class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
+                    class="short_input" id="age_r" readonly/><ul class="age_r"></ul></div>
+            <div class="contion_input"><label>生日</label><input id="start" class="input laydate-icon"
+                                                               onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})">
+            </div>
+            <div class="contion_input"><label>手机号</label><input class="input" type="text"></div>
+        </div>
+        <div id="vip_attribute" style="display: none">
+            <div class="contion_input"><label>卡号</label><input class="input" type="text"></div>
+            <div class="contion_input"><label>卡类型</label><input class="input" type="text"></div>
+            <div class="contion_input"><label>开卡日期</label><input id="activate_card" class="input laydate-icon" type="text" onclick="laydate({elem: '#activate_card',istime: true, format: 'YYYY-MM-DD'})" readonly/></div>
+            <div class="contion_input"><label>剩余积分</label><input class="input" type="text"></div>
+            <div class="contion_input"><label>会员有效状态</label><input class="input" type="text"></div>
+        </div>
+        <div id="consume_attribute" style="display: none">
+            <div class="contion_input"><label>最近消费日期</label><input id="recent" class="input laydate-icon"
+                                                                   onclick="laydate({elem: '#recent',istime: true, format: 'YYYY-MM-DD'})" readonly/>
+            </div>
+            <div class="contion_input"><label>消费次数</label><input class="input"><span>次</span></div>
+            <div class="contion_input"><label>消费总额</label><input class="input"><span>元</span></div>
+        </div>
+        <div id="expend_attribute" style="display: none">
+            <div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>
+            <div class="contion_input">
+                <label>分组</label><input id="filter_group" class="select" type="text" readonly="readonly">
+                <div class="filter_group">
+                    <input type="text" id="search_filter_group">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="ticket" style="display: none">
+            <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
+            <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
+        </div>
+    </div>
+    <div class="ensure"><span id="screen_vip_que">确定</span></div>
+</div>
+<!-- 选择导购  -->
+<div id="choose_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>选择导购</h4>
+        <!--<div class="xuanzhong">-->
+        <!--<div class="xuanzhong_p">-->
+        <!--<label>选择区域</label><input type="text" value="" readonly="true" id="staff_choose_area" data-areacode="">-->
+        <!--<span class="icon_r icon-ishop_8-03"></span>-->
+        <!--</div>-->
+        <!--<div class="xuanzhong_p">-->
+        <!--<label>选择品牌</label><input type="text" value="" id="staff_choose_brand" data-brandcode="">-->
+        <!--<span class="icon_r icon-ishop_8-03"></span>-->
+        <!--</div>-->
+        <!--<div class="xuanzhong_p">-->
+        <!--<label>选择店铺</label><input type="text" value="" id="staff_choose_shop" data-storecode="">-->
+        <!--<span class="icon_r icon-ishop_8-03"></span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="screen_close" id="close_choose_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="search_staff">
+            <span class="icon-ishop_3-05" id="search_staff_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que">确定</div>
+</div>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script src="/js/loading.js"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
+<script src="../js/vip/vip.js?20161202"></script>
+<script>
+    //筛选的下拉模拟事件
+    $("#filter_condition ul li").click(function () {
+        var index = $(this).index();
+        $(this).children("a").addClass("condition_active");
+        $(this).siblings("li").children("a").removeClass("condition_active");
+        $("#contion").children("div").eq(index).css("display", "block");
+        $("#contion").children("div").eq(index).siblings("div").css("display", "none");
+    });
+    $("#sex").click(function () {
+        $("#sex_select").toggle();
+        if ($("#sex").val() == "女") {
+            $("#sex_select li").html("男");
+        } else {
+            $("#sex_select li").html("女");
+        }
+    });
+    $("#sex_select li").click(function () {
+        $("#sex").val($(this).html());
+        $("#sex_select").hide();
+    });
+    $("#age_l").click(function () {
+        $(".age_l").toggle();
+    });
+    $("#age_r").click(function () {
+        $(".age_r").toggle();
+    });
+    $(".age_l").on("click","li",function () {
+        var max = $("#age_r").val();
+        var val = parseInt($(this).html());
+        if(val >= max && max !== ""){
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能大于右边的年龄哦"
+            });
+            return;
+        }
+        $("#age_l").val($(this).html());
+        $(".age_l").hide();
+    });
+    $(".age_r").on("click","li",function () {
+        var min = $("#age_l").val();
+        var val = parseInt($(this).html());
+        if(val <= min  && min !== ""){
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能小于右边的年龄哦"
+            });
+            return;
+        }
+        $("#age_r").val($(this).html());
+        $(".age_r").hide();
+    });
+    $(".filter_group ul").on("click","li",function () {
+        $("#filter_group").val($(this).html());
+        $("#filter_group").attr("data-code",$(this).attr("id"));
+    });
+    //获取分组
+    $("#filter_group").click(function () {
+       $(".filter_group").toggle();
+        getGroup();
+    });
+    $("#search_filter_group").keydown(function () {
+        var event=window.event||arguments[0];
+        if(event.keyCode==13){
+            getGroup();
+        }
+    });
+
+    $(document).click(function (e) {
+        if (!($(e.target).is("#sex_select")||$(e.target).is("#sex"))) {
+            $("#sex_select").hide();
+        }
+        if(!($(e.target).is(".age_l")||$(e.target).is("#age_l"))) {
+            $(".age_l").hide()
+        }
+        if(!($(e.target).is(".age_r")||$(e.target).is("#age_r"))){
+            $(".age_r").hide();
+        }
+        if(!($(e.target).is("#filter_group")||$(e.target).is(".filter_group input"))){
+            $(".filter_group").hide();
+        }
+    });
+    $(function () {
+        //给年龄赋值
+        for(var i=1;i<101;i++){
+            $(".age_l").append('<li>'+i+'</li>');
+            $(".age_r").append('<li>'+i+'</li>')
+        }
+        //引用滚动样式插件
+        $(".filter_group ul").niceScroll({
+            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+            cursorcolor:" rgba(0,0,0,0.2)",
+            cursoropacitymax:1,
+            touchbehavior:false,
+            cursorminheight:30,
+            autohidemode:true
+           });
+        $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
                 $("#side_bar .gotop").fadeIn();
             } else {
                 $("#side-bar .gotop").hide();
             }
         });
-        $("#side_bar .gotop").click(function() {
+        $("#side_bar .gotop").click(function () {
             $('html,body').animate({
                 'scrollTop': 0
             }, 500);
         });
-        $("#side_bar .gobottom").click(function() {
+        $("#side_bar .gobottom").click(function () {
             var btm = $('html,body').height();
             $('html,body').animate({
                 'scrollTop': btm
             }, 500);
         })
     });
-    </script>
+</script>
 </body>
 </html>
