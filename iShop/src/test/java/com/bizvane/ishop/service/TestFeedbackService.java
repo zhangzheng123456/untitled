@@ -63,24 +63,24 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            String user_id = "ABC123";
-            String corp_code = "C10141";
-            String pageNumber = "4";
-            String vip_id = "";
-
-            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
-            Data data_corp_id = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_number = new Data("row_num", pageNumber, ValueType.PARAM);
-            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_user_id.key, data_user_id);
-            datalist.put(data_corp_id.key, data_corp_id);
-            datalist.put(data_number.key, data_number);
-            datalist.put(data_vip_id.key, data_vip_id);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("ChatView", datalist);
-            String result = dataBox.data.get("message").value;
-            System.out.println(result);
+//            String user_id = "ABC123";
+//            String corp_code = "C10141";
+//            String pageNumber = "4";
+//            String vip_id = "";
+//
+//            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+//            Data data_corp_id = new Data("corp_code", corp_code, ValueType.PARAM);
+//            Data data_number = new Data("row_num", pageNumber, ValueType.PARAM);
+//            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_id.key, data_corp_id);
+//            datalist.put(data_number.key, data_number);
+//            datalist.put(data_vip_id.key, data_vip_id);
+//            DataBox dataBox = iceInterfaceService.iceInterfaceV3("ChatView", datalist);
+//            String result = dataBox.data.get("message").value;
+//            System.out.println(result);
 //            HashMap<String, Data> paramList=new HashMap<String, Data>();
 //            paramList.put("start",new Data("start","1", ValueType.PARAM));
 //            paramList.put("limit",new Data("limit","10", ValueType.PARAM));

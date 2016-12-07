@@ -149,8 +149,14 @@ public class MongoHelperServiceImpl {
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
-            String user_id = obj.get("user_id").toString();
-            String brand_name = obj.get("brand_name").toString();
+            String user_id="";
+            String brand_name="";
+            if(obj.containsField("user_id")){
+                user_id =obj.get("user_id").toString();
+            }
+            if(obj.containsField("brand_name")){
+                brand_name =obj.get("brand_name").toString();
+            }
             String replaceStr = WebUtils.StringFilter(brand_name);
             obj.put("brand_name", replaceStr);
             obj.put("id", id);
