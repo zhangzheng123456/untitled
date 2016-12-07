@@ -12,6 +12,7 @@ jQuery(function () {
         $('.ti_img').css({"height":+h+"px"});
         jQuery(this).css({backgroundColor: "#fff", color: "#dd6c5e"});
         jQuery('#buy').css({backgroundColor: "#dfdfdf", color: "#8d8d8d"});
+        doAppWebRefresh();
     });
     function GetRequest(){
         var url = location.search; //获取url中"?"符后的字串
@@ -28,6 +29,8 @@ jQuery(function () {
     var a = GetRequest();
     var id = a.id;
     var corp_code = a.corp_code;
+    var type=a.type;
+    var goodsImage=[];
     var oc = new ObjectControl();
     var query = {
         "id": id,
@@ -42,20 +45,27 @@ jQuery(function () {
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
         var goods_image=JSON.parse(list.goods_image);
-        // if(list.goods_image.indexOf("http")!==-1){
-        //     var goodsImage = list.goods_image.split(",");
-        //     for (var i = 0; i < goodsImage.length; i++){
-        //         jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goodsImage[i] + '"></div>');
-        //     }
-        // }
-        for(var i=0;i<goods_image.length;i++){
-            if(goods_image[i].image.indexOf("http")!==-1){
-                jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goods_image[i].image+ '"></div>');
+        if(type=="share"){
+            for(var i=0;i<goods_image.length;i++){
+                if(goods_image[i].image.indexOf("http")!==-1&&goods_image[i].is_public=="Y"){
+                    jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goods_image[i].image+ '"></div>');
+                }
             }
+            jQuery('#buy').html("详情");
+            jQuery('#content').html(list.share_description);
+        }else if(type=="app"){
+            for(var i=0;i<goods_image.length;i++){
+                if(goods_image[i].image.indexOf("http")!==-1){
+                    if(goods_image[i].is_public=="Y"){
+                        goodsImage.push(goods_image[i].image);
+                    }
+                    jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><span class="item"></span><img src="' + goods_image[i].image+ '"></div>');
+                }
+            }
+            jQuery('#content').html(list.goods_description);
         }
         document.title = list.goods_name;
         jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
-        jQuery('#content').html(list.goods_description);
         list=list.matchgoods;
         if(list.length>0){
             var arr=[];
@@ -115,8 +125,48 @@ jQuery(function () {
             autoplayDisableOnInteraction: false
         });
     })
-    window.onresize=function(){  
+    window.onresize=function(){ 
         var h=$('.ti_img_wrap').width();
         $('.ti_img').css({"height":+h+"px"});
-    }  
+    }
+    //获取手机系统
+    function getWebOSType(){
+        var browser = navigator.userAgent;
+        var browser = navigator.userAgent;
+        var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端 
+        var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+            return "Android";
+        }else if (isiOS) {
+            return "iOS";
+        }else{
+            return "Unknown"
+        }
+    }
+    //获取iShop用户信息
+    function getAppUserInfo(){
+        var osType = getWebOSType();
+        var userInfo = null;
+        if(osType=="iOS"){
+            userInfo = NSReturnUserInfo();
+        }else if(osType == "Android"){
+            userInfo = iShop.ReturnUserInfo();
+        }
+        return userInfo;
+    }
+    //调用APP方法传参 param 格式 type：** ;url:**
+    function doAppWebRefresh(){
+        var param={};
+        param["goodsImage"]=goodsImage[0];
+        param["url"]="http://"+window.location.host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"&type=share";
+        console.log(param);
+        console.log(goodsImage);
+        var param=JSON.stringify(param);
+        var osType = getWebOSType();
+        if(osType=="iOS"){
+            NSJumpToWebViewForWeb(param);
+        }else if(osType == "Android"){
+            iShop.jumpToWebViewForWeb(param);
+        }
+    }
 });
