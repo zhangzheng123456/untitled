@@ -10,6 +10,8 @@ public class Action {
     private String action_code;
     //动作名
     private String action_name;
+    //动作中文名
+    private String action_show_name;
     //功能名
     private String function_code;
     //修改时间
@@ -37,6 +39,14 @@ public class Action {
 
     public void setAction_code(String action_code) {
         this.action_code = action_code;
+    }
+
+    public String getAction_show_name() {
+        return action_show_name;
+    }
+
+    public void setAction_show_name(String action_show_name) {
+        this.action_show_name = action_show_name;
     }
 
     public String getAction_name() {

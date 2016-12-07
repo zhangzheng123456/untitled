@@ -6,6 +6,7 @@
         <id column="id" property="id"/>
         <result column="action_code" property="action_code" />
         <result column="action_name" property="action_name" />
+        <result column="action_show_name" property="action_show_name" />
         <result column="function_code" property="function_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="master_code" property="master_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="show_name" property="show_name" />
