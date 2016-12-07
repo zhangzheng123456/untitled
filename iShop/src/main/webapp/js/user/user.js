@@ -310,6 +310,10 @@ function jurisdiction(actions){
             $('#more_down').append("<div id='signOut'>签退</div>");
         }else if(actions[i].act_name=="synchronization"){
             $('#more_down').append("<div id='synchronization'>同步</div>");
+        }else if(actions[i].act_name=="output"){
+            $("#more_down").append("<div id='leading_out'>导出</div>");
+        }else if(actions[i].act_name=="input"){
+            $("#more_down").append("<div id='guide_into'>导入</div>");
         }
     }
     quanXian();
@@ -738,7 +742,7 @@ function clearAll(name){
         }
 };
 //导出拉出list
-$("#leading_out").click(function(){
+$("#more_down").on("click","#leading_out",function(){
     var l=$(window).width();
     var h=$(document.body).height();
     var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
@@ -833,7 +837,7 @@ $('#file_close').click(function(){
     $('#download').hide();
 })
 //点击导入
-$("#guide_into").click(function(){
+$("#more_down").on("click","#guide_into",function(){
     var l=$(window).width();
     var h=$(document.body).height();
     var left=($(window).width()-$(".into_frame").width())/2;//弹框定位的left值
