@@ -2,19 +2,17 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.FunctionMapper;
 import com.bizvane.ishop.dao.PrivilegeMapper;
 import com.bizvane.ishop.dao.TableManagerMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.FunctionService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -156,7 +154,7 @@ public class FunctionServiceImpl implements FunctionService {
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         List<Map<String,String>> actionList = new ArrayList<Map<String,String>>();
-        act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
+        act_info = privilegeMapper.selectActionByFun(user_code, group_code, role_code, function_code);
         for (int i = 0; i < act_info.size(); i++) {
             String act = act_info.get(i).getAction_name();
             Map<String,String> action = new HashMap<String, String>();
@@ -167,27 +165,28 @@ public class FunctionServiceImpl implements FunctionService {
         return actionList;
     }
 
+
     /**
      * 按功能获取user列表显示字段
      */
-    public List<TableManager> selectColumnByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
-        List<Privilege> act_info;
-        String column_code = "";
+    public List<Map<String,String>> selectColumnByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
-        act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
-        for (int i = 0; i < act_info.size(); i++) {
-            String act = act_info.get(i).getAction_name();
-            if (act.equals("show")){
-                column_code = act_info.get(i).getColumn_code();
-            }
+        List<Map<String,String>> columnList = new ArrayList<Map<String,String>>();
+
+        List<Privilege> column_info = privilegeMapper.selectColumnByFun(user_code, group_code, role_code, function_code);
+        for (int i = 0; i < column_info.size(); i++) {
+            String column_name = column_info.get(i).getColumn_name();
+            String show_name = column_info.get(i).getShow_name();
+
+            Map<String,String> column = new HashMap<String, String>();
+            column.put("column_name", column_name);
+            column.put("show_name", show_name);
+
+            if (!columnList.contains(column))
+                columnList.add(column);
         }
-        String[] columns = column_code.split(",");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("function_code",function_code);
-        params.put("column_codes",columns);
-        List<TableManager> tableManagers = tableManagerMapper.selColumnsByFunc(params);
-        return tableManagers;
+        return columnList;
     }
 
 
@@ -279,18 +278,17 @@ public class FunctionServiceImpl implements FunctionService {
             //再插入画面选择的权限
             for (int i = 0; i < array.size(); i++) {
                 String info = array.get(i).toString();
-                JSONObject json = new JSONObject(info);
+                JSONObject json = JSONObject.parseObject(info);
                 String action_code = json.get("action_code").toString();
                 String function_code = json.get("function_code").toString();
                 String column_code = "";
-                if (json.has("column_code") && !json.get("column_code").equals("")){
+                if (json.containsKey("column_code") && !json.get("column_code").equals("")){
                     column_code = json.get("column_code").toString();
                 }
                 Privilege privilege = new Privilege();
                 privilege.setAction_code(action_code);
                 privilege.setFunction_code(function_code);
                 privilege.setMaster_code(master_code);
-                privilege.setColumn_code(column_code);
 
                 privilege.setEnable(Common.IS_ACTIVE_Y);
                 privilege.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -304,5 +302,173 @@ public class FunctionServiceImpl implements FunctionService {
         } catch (Exception ex) {
             return ex.getMessage();
         }
+    }
+
+
+
+    //============================================
+
+    /**
+     * 列出登录用户的所有权限
+     */
+    public JSONArray selectLoginPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) throws Exception{
+        user_code = corp_code +"U"+user_code;
+        group_code = corp_code +"G"+group_code;
+        List<Privilege> privilege_act = privilegeMapper.selectPrivilegeAct(user_code, group_code, role_code);
+        List<Privilege> privilege_col = privilegeMapper.selectPrivilegeCol(user_code, group_code, role_code);
+        List<Privilege> privilege_func = privilegeMapper.selectPrivilegeFunc(user_code, group_code, role_code, search_value);
+
+        JSONArray privilege_array = new JSONArray();
+        for (int i = 0; i < privilege_func.size(); i++) {
+            String function_code = privilege_func.get(i).getFunction_code();
+            String function_name = privilege_func.get(i).getFunction_name();
+            JSONObject obj = new JSONObject();
+            obj.put("function_code",function_code);
+            obj.put("function_name",function_name);
+            JSONArray action_array = new JSONArray();
+            JSONArray column_array = new JSONArray();
+            for (int j = 0; j < privilege_act.size(); j++) {
+                String function_code1 = privilege_act.get(j).getFunction_code();
+                if (function_code.equals(function_code1)){
+                    int id = privilege_act.get(j).getId();
+                    String action_code = privilege_act.get(j).getAction_code();
+                    String action_name = privilege_act.get(j).getAction_name();
+                    JSONObject actions_obj = new JSONObject();
+                    actions_obj.put("action_id",id);
+                    actions_obj.put("action_code",action_code);
+                    actions_obj.put("action_name",action_name);
+                    actions_obj.put("is_live","N");
+                    actions_obj.put("is_die","N");
+                    action_array.add(actions_obj);
+                }
+            }
+            for (int j = 0; j < privilege_col.size(); j++) {
+                String function_code1 = privilege_col.get(j).getFunction_code();
+                if (function_code.equals(function_code1)){
+                    int id = privilege_col.get(j).getId();
+                    String column_name = privilege_col.get(j).getColumn_name();
+                    String show_name = privilege_col.get(j).getShow_name();
+                    JSONObject column_obj = new JSONObject();
+                    column_obj.put("column_id",id);
+                    column_obj.put("column_name",column_name);
+                    column_obj.put("show_name",show_name);
+                    column_obj.put("is_live","N");
+                    column_obj.put("is_die","N");
+                    column_array.add(column_obj);
+                }
+            }
+            obj.put("actions",action_array);
+            obj.put("columns",column_array);
+            privilege_array.add(obj);
+        }
+        return privilege_array;
+    }
+
+    /**
+     * 列出所选角色的权限
+     * 返回action id
+     */
+    public JSONArray selectPrivilegeStatus(String user_code,String group_code,String role_code,String live_status,String die_status,JSONArray privilege_array) throws Exception{
+        List<Privilege> act_info = privilegeMapper.selectPrivilegeAct(user_code,group_code,role_code);
+        List<Privilege> col_info = privilegeMapper.selectPrivilegeCol(user_code,group_code,role_code);
+
+        for (int i = 0; i < privilege_array.size(); i++) {
+            JSONObject func = privilege_array.getJSONObject(i);
+            String function_code = func.getString("function_code");
+            JSONArray actions = func.getJSONArray("actions");
+            JSONArray columns = func.getJSONArray("columns");
+            for (int j = 0; j < act_info.size(); j++) {
+                String function_code1 = act_info.get(j).getFunction_code();
+                String action_code1 = act_info.get(j).getAction_code();
+                if (function_code1.equals(function_code)){
+                    for (int k = 0; k < actions.size(); k++) {
+                        JSONObject act_obj = actions.getJSONObject(k);
+                        if (action_code1.equals(act_obj.getString("action_code"))){
+                            act_obj.put("is_die",die_status);
+                            act_obj.put("is_live",live_status);
+                        }
+                    }
+                }else {
+                    continue;
+                }
+            }
+            for (int j = 0; j < col_info.size(); j++) {
+                String function_code1 = col_info.get(j).getFunction_code();
+                String column_name1 = col_info.get(j).getColumn_name();
+                if (function_code1.equals(function_code)){
+                    for (int k = 0; k < columns.size(); k++) {
+                        JSONObject col_obj = columns.getJSONObject(k);
+                        if (column_name1.equals(col_obj.getString("column_name"))){
+                            col_obj.put("is_die",die_status);
+                            col_obj.put("is_live",live_status);
+                        }
+                    }
+                }else {
+                    continue;
+                }
+            }
+        }
+        return privilege_array;
+    }
+
+    /**
+     * 更新（用户/群组/角色）的权限
+     *
+     */
+    @Transactional
+    public String updateACPrivilege(String master_code, String user_code, String del_act_id, JSONArray add_act,String del_col_id,JSONArray add_col) throws Exception{
+        Date now = new Date();
+        //先删除
+        System.out.println("-------begin delete group---------");
+        if (!del_act_id.equals("")){
+            String[] del_act = del_act_id.split(",");
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("ids",del_act);
+            privilegeMapper.deleteActPrivileges(map);
+        }
+        if (!del_col_id.equals("")){
+            String[] del_col = del_col_id.split(",");
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("ids",del_col);
+            privilegeMapper.deleteColPrivileges(map);
+        }
+        //再插入画面选择的权限
+        for (int i = 0; i < add_act.size(); i++) {
+            String info = add_act.get(i).toString();
+            JSONObject json = JSONObject.parseObject(info);
+            String action_code = json.get("action_code").toString();
+            String function_code = json.get("function_code").toString();
+
+            Privilege privilege = new Privilege();
+            privilege.setAction_code(action_code);
+            privilege.setFunction_code(function_code);
+            privilege.setMaster_code(master_code);
+            privilege.setEnable(Common.IS_ACTIVE_Y);
+            privilege.setModified_date(Common.DATETIME_FORMAT.format(now));
+            privilege.setModifier(user_code);
+            privilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            privilege.setCreater(user_code);
+            privilege.setIsactive(Common.IS_ACTIVE_Y);
+            privilegeMapper.insert(privilege);
+        }
+        for (int i = 0; i < add_col.size(); i++) {
+            String info = add_col.get(i).toString();
+            JSONObject json = JSONObject.parseObject(info);
+            String column_name = json.get("column_name").toString();
+            String function_code = json.get("function_code").toString();
+
+            TablePrivilege privilege = new TablePrivilege();
+            privilege.setColumn_name(column_name);
+            privilege.setFunction_code(function_code);
+            privilege.setMaster_code(master_code);
+            privilege.setEnable(Common.IS_ACTIVE_Y);
+            privilege.setModified_date(Common.DATETIME_FORMAT.format(now));
+            privilege.setModifier(user_code);
+            privilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            privilege.setCreater(user_code);
+            privilege.setIsactive(Common.IS_ACTIVE_Y);
+            privilegeMapper.insertColPrivilege(privilege);
+        }
+        return Common.DATABEAN_CODE_SUCCESS;
     }
 }

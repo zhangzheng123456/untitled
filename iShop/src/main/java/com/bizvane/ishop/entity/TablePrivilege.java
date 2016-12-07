@@ -6,7 +6,7 @@ package com.bizvane.ishop.entity;
 public class TablePrivilege {
     private int id;
     //编号
-    private String table_code;
+    private String column_name;
     //功能编号
     private String function_code;
     //用户，角色或群组编号
@@ -24,9 +24,6 @@ public class TablePrivilege {
     //是否可用
     private String isactive;
 
-    private Function function;
-
-    private TableManager action;
 
     public int getId() {
         return id;
@@ -36,12 +33,12 @@ public class TablePrivilege {
         this.id = id;
     }
 
-    public String getTable_code() {
-        return table_code;
+    public String getColumn_name() {
+        return column_name;
     }
 
-    public void setTable_code(String table_code) {
-        this.table_code = table_code;
+    public void setColumn_name(String column_name) {
+        this.column_name = column_name;
     }
 
     public String getFunction_code() {
@@ -108,19 +105,4 @@ public class TablePrivilege {
         this.isactive = isactive;
     }
 
-    public Function getFunction() {
-        return function;
-    }
-
-    public void setFunction(Function function) {
-        this.function = function;
-    }
-
-    public TableManager getAction() {
-        return action;
-    }
-
-    public void setAction(TableManager action) {
-        this.action = action;
-    }
 }

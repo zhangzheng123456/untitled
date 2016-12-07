@@ -22,6 +22,8 @@ public interface TableManagerMapper {
 
     int insert(TablePrivilege tablePrivilege);
 
-    List<TableManager> selColumnsByFunc(Map<String, Object> params) throws SQLException;
+    List<TableManager> selFuncColumns(Map<String, Object> params) throws SQLException;
+
+    List<TableManager> selByFunc(@Param("function_code")String function_code) throws SQLException;
 
 }

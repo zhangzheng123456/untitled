@@ -1,8 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.sun.common.service.http.HttpClient;
 import com.bizvane.ishop.dao.VipFsendMapper;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.VipFsend;
@@ -14,6 +16,9 @@ import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +30,9 @@ import java.util.Map;
 
 /**
  * Created by nanji on 2016/11/24.
- */@Service
-public class VipFsendServiceImpl implements VipFsendService{
+ */
+@Service
+public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     VipFsendMapper vipFsendMapper;
     @Autowired
@@ -38,15 +44,19 @@ public class VipFsendServiceImpl implements VipFsendService{
     @Autowired
     private ValidateCodeService validateService;
 
+
+    private static HttpClient httpClient = new HttpClient();
+
     /**
      * 查看选择接收群发消息的会员信息
+     *
      * @param id
      * @return
      * @throws Exception
      */
     @Override
     public String getVipFsendById(int id) throws Exception {
-        String message="";
+        String message = "";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
@@ -57,7 +67,7 @@ public class VipFsendServiceImpl implements VipFsendService{
             String brand_code = vips_obj.get("brand_code").toString();
             String store_code = vips_obj.get("store_code").toString();
             String user_code = vips_obj.get("user_code").toString();
-            if (user_code.equals("")){
+            if (user_code.equals("")) {
                 if (store_code.equals("")) {
                     List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
                     for (int i = 0; i < storeList.size(); i++) {
@@ -72,9 +82,9 @@ public class VipFsendServiceImpl implements VipFsendService{
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_store_code.key, data_store_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
-                 message = dataBox.data.get("message").value;
-            }else {
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                message = dataBox.data.get("message").value;
+            } else {
 
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
                 Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
@@ -82,17 +92,17 @@ public class VipFsendServiceImpl implements VipFsendService{
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_user_code.key, data_user_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
-               message = dataBox.data.get("message").value;
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                message = dataBox.data.get("message").value;
             }
-        }else if (type.equals("2")){
+        } else if (type.equals("2")) {
             String vips = vips_obj.get("vips").toString();
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_vip_id.key, data_vip_id);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
             message = dataBox.data.get("message").value;
 
         }
@@ -117,23 +127,25 @@ public class VipFsendServiceImpl implements VipFsendService{
         String status = Common.DATABEAN_CODE_SUCCESS;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
+        //群发消息的发送类型
+        String send_type = jsonObject.get("send_type").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
-        String sms_code = "Fs"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
-         VipFsend vipFsend= WebUtils.JSON2Bean(jsonObject, VipFsend.class);
-       // String sms_vips = vipFsend.getSms_vips();
+        String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
+        VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
+        // String sms_vips = vipFsend.getSms_vips();
         String sms_vips = jsonObject.get("sms_vips").toString().trim();
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-       // String phone = "13776410320,";
+        // String phone = "13776410320,";
         String phone = "";
-        if (type.equals("1")){
+        if (type.equals("1")) {
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
             String store_code = sms_vips_obj.get("store_code").toString();
             String vip_user_code = sms_vips_obj.get("user_code").toString();
 
-            if (vip_user_code.equals("")){
+            if (vip_user_code.equals("")) {
                 if (store_code.equals("")) {
                     List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
                     for (int i = 0; i < storeList.size(); i++) {
@@ -146,7 +158,7 @@ public class VipFsendServiceImpl implements VipFsendService{
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_store_code.key, data_store_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -154,14 +166,14 @@ public class VipFsendServiceImpl implements VipFsendService{
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                 }
-            }else {
+            } else {
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
                 Data data_user_code = new Data("user_codes", user_id, ValueType.PARAM);
 
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_user_code.key, data_user_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -170,7 +182,7 @@ public class VipFsendServiceImpl implements VipFsendService{
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                 }
             }
-        }else {
+        } else {
             String vips = sms_vips_obj.get("vips").toString();
 
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -178,7 +190,7 @@ public class VipFsendServiceImpl implements VipFsendService{
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_vip_id.key, data_vip_id);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
             String message1 = dataBox.data.get("message").value;
             JSONObject msg_obj = JSONObject.parseObject(message1);
             JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -195,33 +207,50 @@ public class VipFsendServiceImpl implements VipFsendService{
         vipFsend.setContent(content);
         vipFsend.setIsactive(Common.IS_ACTIVE_Y);
         vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
-        int num=0;
-        num= vipFsendMapper.insertFsend(vipFsend);
+        int num = 0;
+        num = vipFsendMapper.insertFsend(vipFsend);
         System.out.print(num);
-       if(num>0){
-            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-            Data data_phone = new Data("phone", phone, ValueType.PARAM);
-            Data data_text = new Data("text", content, ValueType.PARAM);
+        if (num > 0) {
+            //插表成功后调用接口
+            if (send_type.equals("sms")) {
+                //发送类型：短信
+                Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+                Data data_phone = new Data("phone", phone, ValueType.PARAM);
+                Data data_text = new Data("text", content, ValueType.PARAM);
 
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_channel.key, data_channel);
-            datalist.put(data_phone.key, data_phone);
-            datalist.put(data_text.key, data_text);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS",datalist);
-            if (!dataBox.status.toString().equals("SUCCESS")){
-                status = "发送失败";
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_channel.key, data_channel);
+                datalist.put(data_phone.key, data_phone);
+                datalist.put(data_text.key, data_text);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS", datalist);
+                if (!dataBox.status.toString().equals("SUCCESS")) {
+                    status = "发送失败";
+                    return status;
+                }
+                status = Common.DATABEAN_CODE_SUCCESS;
+                return status;
+            } else {
+                //发送类型：微信模板消息
+                JSONObject template_content = JSONObject.parseObject(content);
+                String result = sendTemplate(template_content);
+                JSONObject info = JSONObject.parseObject(result);
+                if ("0".equals(info.getString("errcode"))) {
+                    return status;
+                } else {
+                    status = "发送失败";
+                    return status;
+                }
             }
-           status = Common.DATABEAN_CODE_SUCCESS;
-        }else{
-            status= "发送失败";
+
+        } else {
+            status = "发送失败";
             return status;
         }
-        return status;
     }
 
     @Override
     public String update(String message, String user_id) throws Exception {
-       return "";
+        return "";
     }
 
     @Override
@@ -245,6 +274,18 @@ public class VipFsendServiceImpl implements VipFsendService{
 
     @Override
     public VipFsend getVipFsendForId(String corp_code, String sms_code) throws Exception {
-        return vipFsendMapper.selectForId(corp_code,sms_code);
+
+        return vipFsendMapper.selectForId(corp_code, sms_code);
+    }
+
+
+    //微信模板
+    public static String sendTemplate(JSONObject extras) throws Exception {
+
+        RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
+        Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();
+        Response response = httpClient.post(request);
+        String result = response.body().string();
+        return result;
     }
 }

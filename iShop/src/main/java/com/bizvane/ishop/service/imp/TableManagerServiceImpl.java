@@ -19,10 +19,10 @@ public class TableManagerServiceImpl implements TableManagerService {
     private TableManagerMapper managerMapper;
     @Override
     public List<TableManager> selAllByCode(String function_code) throws Exception{
-        List<TableManager> tableManagers = managerMapper.selAllByCode(function_code);
-        for (TableManager manager: tableManagers) {
-            System.out.println(manager.getColumn_name()+"---"+manager.getShow_name());
-        }
+//        List<TableManager> tableManagers = managerMapper.selAllByCode(function_code);
+//        for (TableManager manager: tableManagers) {
+//            System.out.println(manager.getColumn_name()+"---"+manager.getShow_name());
+//        }
         return managerMapper.selAllByCode(function_code);
     }
 

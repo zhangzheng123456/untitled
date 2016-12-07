@@ -92,14 +92,22 @@
         </trim>
     </insert>
 
-    <select id="selColumnsByFunc" resultType="com.bizvane.ishop.entity.TableManager">
-        SELECT *
+    <select id="selFuncColumns" resultType="com.bizvane.ishop.entity.TableManager">
+        SELECT column_name,
+        show_name
         FROM def_table_manager
         WHERE function_code = #{function_code}
-        AND column_code IN
-        <foreach collection="column_codes" index="index" item="item" separator="," open="(" close=")">
+        AND column_name IN
+        <foreach collection="column_names" index="index" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>
     </select>
 
+    <select id="selByFunc" resultType="com.bizvane.ishop.entity.TableManager">
+        SELECT column_name,
+        show_name
+        FROM def_table_manager
+        WHERE function_code = #{function_code}
+        AND isactive = 'Y'
+    </select>
 </mapper>
