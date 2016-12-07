@@ -41,7 +41,6 @@ if(return_jump==null){
         $("#page_row").val("100行/页");
     }
     if(value==""){
-        console.log(inx);
         GET(inx,pageSize);
     }else if(value!==""){
         $("#search").val(value);
@@ -114,14 +113,13 @@ $("#empty").click(function(){
     GET(inx,pageSize);
 });
 function setPage(container, count, pageindex,pageSize,funcCode,value) {
-    console.log('调用');
     count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
     var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
@@ -177,8 +175,8 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                 return false;
             }
             inx--;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            dian(inx,pageSize);
+            // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
@@ -291,7 +289,6 @@ function GET(inx,pageSize){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/validatecode/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
-            // console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -318,7 +315,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");  
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -364,7 +360,6 @@ function jumpBianse(){
      //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
-        console.log(inx)
         sessionStorage.setItem("id",id);
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
@@ -390,7 +385,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -444,7 +438,6 @@ function POST(inx,pageSize){
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -547,7 +540,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"

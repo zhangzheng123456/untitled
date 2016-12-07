@@ -216,7 +216,7 @@ jQuery(function(){
     	var id=$(this).attr("data-id");
  		var param={};
  		param["type"]="FAB";
- 		param["url"]="http://"+host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"";
+ 		param["url"]="http://"+host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"&type=app";
     	doAppWebRefresh(param);
 	})
 	//获取手机系统
@@ -253,7 +253,6 @@ jQuery(function(){
 		}else if(osType == "Android"){
 			iShop.jumpToWebViewForWeb(param);
 		}
-		
 	}
 });
 
