@@ -13,6 +13,43 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
+return_jump=JSON.parse(return_jump);
+if(return_jump!==null){
+    inx=return_jump.inx;
+    pageSize=return_jump.pageSize;
+    value=return_jump.value;
+    filtrate=return_jump.filtrate;
+    list=return_jump.list;
+    param=JSON.parse(return_jump.param);
+    _param=JSON.parse(return_jump._param);
+}
+if(return_jump==null){
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }
+}else if(return_jump!==null){
+    if(pageSize==10){
+        $("#page_row").val("10行/页");
+    }
+    if(pageSize==30){
+        $("#page_row").val("30行/页");
+    }
+    if(pageSize==50){
+        $("#page_row").val("50行/页");
+    }
+    if(pageSize==100){
+        $("#page_row").val("100行/页");
+    }
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }else if(value!==""){
+        $("#search").val(value);
+        POST(inx,pageSize);
+    }else if(filtrate!==""){
+        filtrates(inx,pageSize);
+    }
+}
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -174,6 +211,7 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -224,6 +262,7 @@ function superaddition(data,num){//页面加载循环
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
+    sessionStorage.removeItem("return_jump");
 };
 //权限配置
 function jurisdiction(actions){
@@ -276,6 +315,20 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    })
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+        sessionStorage.setItem("id",id);
+        $(window.parent.document).find('#iframepage').attr("src","/vip/callback_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){

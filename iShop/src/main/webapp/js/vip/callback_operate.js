@@ -168,15 +168,14 @@ jQuery(document).ready(function() {
 	};
 	var _command = "/VIP/callback/select";
 	oc.postRequire("post", _command, "", _params, function(data) {
-		console.log(data);
 		if (data.code == "0") {
-			var msg = JSON.parse(data.message);
+			var msg = JSON.parse(data.message)[0];
 			console.log(msg);
-			$("#OWN_CORP").val(msg.corp.corp_name);//赋值给所属企业
-			$("#CALLBACK_DATE").val(msg.created_date);//回访日期
-			$("#CALLBACK_TYPE").val(msg.vipRecordType.type_name);//回访类型
-			$("#VIP").val(msg.vipInfo.vip_name)//会员名称
-			$("#CALLBACK_STUFF").val(msg.user.user_name)//回访员工
+			$("#OWN_CORP").val(msg.corp_name);//赋值给所属企业
+			$("#CALLBACK_DATE").val(msg.message_date);//回访日期
+			$("#CALLBACK_TYPE").val(msg.type_name);//回访类型
+			$("#VIP").val(msg.vip_name)//会员名称
+			$("#CALLBACK_STUFF").val(msg.user_name)//回访员工
 			$("#created_time").val(msg.created_date);
 			$("#creator").val(msg.creater);
 			$("#modify_time").val(msg.modified_date);
@@ -200,7 +199,7 @@ jQuery(document).ready(function() {
 	$(".operadd_btn ul li:nth-of-type(2)").click(function() {
 		$(window.parent.document).find('#iframepage').attr("src", "/vip/callback.html");
 	});
-	$(".operedit_btn ul li:nth-of-type(2)").click(function() {
+	$(".operedit_btn ul li").click(function() {
 		$(window.parent.document).find('#iframepage').attr("src", "/vip/callback.html");
 	});
 });
