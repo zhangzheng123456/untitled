@@ -1822,7 +1822,7 @@ function getGroup() {
     var corp_command = "/vipGroup/getCorpGroups";
     var _param = {};
     _param["corp_code"] = "C10000";
-    _param["search_value"] = "";
+    _param["search_value"] = $("#search_filter_group").val();
     oc.postRequire("post", corp_command, "0", _param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);

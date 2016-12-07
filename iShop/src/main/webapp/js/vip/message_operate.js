@@ -94,7 +94,7 @@ var  message={
 };
 $(function(){
 	message.init();
-})
+});
 //点击列表显示选中状态
 $(".screen_content").on("click","li",function(){
     var input=$(this).find("input")[0];

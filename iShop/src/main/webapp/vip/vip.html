@@ -500,13 +500,13 @@
         <div id="vip_attribute" style="display: none">
             <div class="contion_input"><label>卡号</label><input class="input" type="text"></div>
             <div class="contion_input"><label>卡类型</label><input class="input" type="text"></div>
-            <div class="contion_input"><label>开卡日期</label><input class="input" type="text"></div>
+            <div class="contion_input"><label>开卡日期</label><input id="activate_card" class="input laydate-icon" type="text" onclick="laydate({elem: '#activate_card',istime: true, format: 'YYYY-MM-DD'})" readonly/></div>
             <div class="contion_input"><label>剩余积分</label><input class="input" type="text"></div>
             <div class="contion_input"><label>会员有效状态</label><input class="input" type="text"></div>
         </div>
         <div id="consume_attribute" style="display: none">
             <div class="contion_input"><label>最近消费日期</label><input id="recent" class="input laydate-icon"
-                                                                   onclick="laydate({elem: '#recent',istime: true, format: 'YYYY-MM-DD'})">
+                                                                   onclick="laydate({elem: '#recent',istime: true, format: 'YYYY-MM-DD'})" readonly/>
             </div>
             <div class="contion_input"><label>消费次数</label><input class="input"><span>次</span></div>
             <div class="contion_input"><label>消费总额</label><input class="input"><span>元</span></div>
@@ -516,7 +516,7 @@
             <div class="contion_input">
                 <label>分组</label><input id="filter_group" class="select" type="text" readonly="readonly">
                 <div class="filter_group">
-                    <input type="text">
+                    <input type="text" id="search_filter_group">
                     <ul>
 
                     </ul>
@@ -645,14 +645,22 @@
         $("#age_r").val($(this).html());
         $(".age_r").hide();
     });
-    $("#filter_group").click(function () {
-       $(".filter_group").toggle();
-        getGroup();
-    });
     $(".filter_group ul").on("click","li",function () {
         $("#filter_group").val($(this).html());
         $("#filter_group").attr("data-code",$(this).attr("id"));
     });
+    //获取分组
+    $("#filter_group").click(function () {
+       $(".filter_group").toggle();
+        getGroup();
+    });
+    $("#search_filter_group").keydown(function () {
+        var event=window.event||arguments[0];
+        if(event.keyCode==13){
+            getGroup();
+        }
+    });
+
     $(document).click(function (e) {
         if (!($(e.target).is("#sex_select")||$(e.target).is("#sex"))) {
             $("#sex_select").hide();
@@ -673,6 +681,15 @@
             $(".age_l").append('<li>'+i+'</li>');
             $(".age_r").append('<li>'+i+'</li>')
         }
+        //引用滚动样式插件
+        $(".filter_group ul").niceScroll({
+            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+            cursorcolor:" rgba(0,0,0,0.2)",
+            cursoropacitymax:1,
+            touchbehavior:false,
+            cursorminheight:30,
+            autohidemode:true
+           });
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
                 $("#side_bar .gotop").fadeIn();
