@@ -1405,9 +1405,16 @@ $("#send").click(function(){
 	}
 	var corp_code=$("#OWN_CORP").val();
 	var content=$("#message_content").val();
+	var send_type="";
+	if($("#MESSAGE_TYPE").val() == "短信"){
+		send_type = "sms";
+	}else if($("#MESSAGE_TYPE").val() == "模板消息"){
+		send_type = "template";
+	}
 	param["corp_code"]=corp_code;
 	param["content"]=content;
 	param["sms_vips"]=sms_vips;
+	param["send_type"]=send_type;
 	if(content==""){
 		art.dialog({
 			time: 1,
@@ -1416,7 +1423,16 @@ $("#send").click(function(){
 			content: "群发内容不能为空"
 		});
 		return;
-	};
+	}
+	if(send_type == ""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "发送类型不能为空"
+		});
+		return;
+	}
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/vipFsend/add","",param,function(data){
 		if(data.code=="0"){
