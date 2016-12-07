@@ -462,13 +462,14 @@ public class VIPRecordController {
             DBObject deleteRecord = new BasicDBObject();
             deleteRecord.put("_id",errorLog_id);
             DBCursor dbObjects = cursor.find(deleteRecord);
-            DBObject record=null;
-            while (dbObjects.hasNext()) {
-                record  = dbObjects.next();
-            }
+            JSONArray array = vipRecordService.transRecord(dbObjects);
+//            DBObject record=null;
+//            while (dbObjects.hasNext()) {
+//                record  = dbObjects.next();
+//            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(record.toString());
+            dataBean.setMessage(array.toString());
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

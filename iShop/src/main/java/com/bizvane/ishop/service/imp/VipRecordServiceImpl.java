@@ -72,6 +72,12 @@ public class VipRecordServiceImpl implements VipRecordService {
             }else {
                 object.put("vip_name","");
             }
+            if (obj.containsField("message_content") && obj.get("message_content") != null){
+                String message_content = obj.get("message_content").toString();
+                object.put("message_content",message_content);
+            }else {
+                object.put("message_content","");
+            }
             if (obj.containsField("message_date")){
                 String created_date = obj.get("message_date").toString();
                 object.put("message_date",created_date);
