@@ -151,10 +151,10 @@ public class MongoHelperServiceImpl {
             String id = obj.get("_id").toString();
             String user_id="";
             String brand_name="";
-            if(obj.containsField("user_id")){
+            if(obj.containsField("user_id") && !String.valueOf(obj.get("user_id").toString()).equals("null")){
                 user_id =obj.get("user_id").toString();
             }
-            if(obj.containsField("brand_name")){
+            if(obj.containsField("brand_name")&&!String.valueOf(obj.get("brand_name").toString()).equals("null")){
                 brand_name =obj.get("brand_name").toString();
             }
             String replaceStr = WebUtils.StringFilter(brand_name);
