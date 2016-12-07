@@ -153,9 +153,13 @@ public class MongoHelperServiceImpl {
             String brand_name="";
             if(obj.containsField("user_id") && !String.valueOf(obj.get("user_id").toString()).equals("null")){
                 user_id =obj.get("user_id").toString();
+            }else{
+                user_id="";
             }
             if(obj.containsField("brand_name")&&!String.valueOf(obj.get("brand_name").toString()).equals("null")){
                 brand_name =obj.get("brand_name").toString();
+            }else{
+                brand_name="";
             }
             String replaceStr = WebUtils.StringFilter(brand_name);
             obj.put("brand_name", replaceStr);
@@ -169,8 +173,6 @@ public class MongoHelperServiceImpl {
                     obj.put("user_can_login", "在职");
                 }
             }
-            String user_can_login2 = obj.get("user_can_login").toString();
-         
             list.add(obj.toMap());
         }
         return list;
