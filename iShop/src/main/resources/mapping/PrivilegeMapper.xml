@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.PrivilegeMapper">
 
+    <resultMap id="privilege" type="com.bizvane.ishop.entity.Privilege">
+        <id column="id" property="id"/>
+        <result column="action_code" property="action_code" />
+        <result column="action_name" property="action_name" />
+        <result column="function_code" property="function_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="master_code" property="master_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="show_name" property="show_name" />
+        <result column="column_name" property="column_name" />
+    </resultMap>
+
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Privilege">
         INSERT INTO def_privilege
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -112,5 +122,181 @@
         DELETE FROM
         def_privilege
         WHERE master_code = #{master_code}
+    </delete>
+
+    <delete id="deleteActPrivileges">
+        DELETE FROM
+        def_privilege
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" separator="," open="(" close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectActionByFun" resultMap="privilege">
+        SELECT *
+        FROM def_action a, def_privilege p
+        WHERE a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.function_code = #{function_code}
+        AND (p.master_code = #{user_code}
+        OR p.master_code = #{role_code}
+        OR p.master_code = #{group_code})
+        AND p.enable = 'Y'
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        ORDER BY a.action_code
+    </select>
+
+    <select id="selectColumnByFun" resultMap="privilege">
+        SELECT *
+        FROM def_table_manager a, def_table_privilege p
+        WHERE a.column_name = p.column_name
+        AND a.function_code = p.function_code
+        AND p.function_code = #{function_code}
+        AND (p.master_code = #{user_code}
+        OR p.master_code = #{role_code}
+        OR p.master_code = #{group_code})
+        AND p.enable = 'Y'
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        ORDER BY a.column_name
+    </select>
+
+    <!--获取登陆人的权限动作-->
+    <select id="selectPrivilegeAct" resultType="com.bizvane.ishop.entity.Privilege">
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND (master_code = #{group_code}
+        OR master_code = #{role_code}
+        <if test="user_code!=''">
+            OR master_code = #{user_code}
+        </if>
+        )
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        ORDER BY b.show_order
+    </select>
+
+    <!--获取登陆人的权限列-->
+    <select id="selectPrivilegeCol" resultType="com.bizvane.ishop.entity.Privilege">
+        SELECT *
+        FROM def_table_manager a,def_function b, def_table_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.function_code = p.function_code
+        AND a.column_name = p.column_name
+        AND (master_code = #{group_code}
+        OR master_code = #{role_code}
+        <if test="user_code!=''">
+            OR master_code = #{user_code}
+        </if>
+        )
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        ORDER BY b.show_order
+    </select>
+
+    <!--获取登陆人的权限功能-->
+    <select id="selectPrivilegeFunc" resultType="com.bizvane.ishop.entity.Privilege">
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND (master_code = #{group_code}
+        OR master_code = #{role_code}
+        <if test="user_code!=''">
+            OR master_code = #{user_code}
+        </if>
+        )
+        AND p.isactive = 'Y'
+        <if test="search_value!=''">
+            AND (
+            b.module_name LIKE concat('%',#{search_value},'%')
+            OR  b.function_name LIKE concat('%',#{search_value},'%')
+            OR  a.action_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        GROUP BY p.function_code
+        ORDER BY b.show_order
+    </select>
+
+
+    <insert id="insertColPrivilege" parameterType="com.bizvane.ishop.entity.Privilege">
+        INSERT INTO def_table_privilege
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="column_name!=null">
+                column_name,
+            </if>
+            <if test="function_code!=null">
+                function_code,
+            </if>
+            <if test="master_code!=null">
+                master_code,
+            </if>
+            <if test="enable!=null">
+                enable,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="column_name!=null">
+                #{column_name},
+            </if>
+            <if test="function_code!=null">
+                #{function_code},
+            </if>
+            <if test="master_code!=null">
+                #{master_code},
+            </if>
+            <if test="enable!=null">
+                #{enable},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteColPrivileges">
+        DELETE FROM
+        def_table_privilege
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" separator="," open="(" close=")" >
+            #{item}
+        </foreach>
     </delete>
 </mapper>
