@@ -436,4 +436,45 @@ public class VIPRecordController {
         }
         return dataBean.getJsonStr();
     }
+
+
+ /**
+  * 编辑前，获取数据
+  *
+  * @param request
+  * @return
+  */
+    @RequestMapping(value = "/callback/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String getfindById(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+
+        try {
+            String jsString = request.getParameter("param");
+
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String errorLog_id = jsonObject.get("id").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+            DBObject deleteRecord = new BasicDBObject();
+            deleteRecord.put("_id",errorLog_id);
+            DBCursor dbObjects = cursor.find(deleteRecord);
+            DBObject record=null;
+            while (dbObjects.hasNext()) {
+                record  = dbObjects.next();
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(record.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage("信息异常");
+        }
+        return dataBean.getJsonStr();
+    }
 }
