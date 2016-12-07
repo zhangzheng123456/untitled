@@ -11,6 +11,7 @@ public class Privilege {
     private String action_code;
     //动作名称
     private String action_name;
+    private String action_show_name;
     //列名
     private String column_name;
     //列显示中文名
@@ -66,6 +67,14 @@ public class Privilege {
 
     public void setColumn_name(String column_name) {
         this.column_name = column_name;
+    }
+
+    public String getAction_show_name() {
+        return action_show_name;
+    }
+
+    public void setAction_show_name(String action_show_name) {
+        this.action_show_name = action_show_name;
     }
 
     public String getShow_name() {

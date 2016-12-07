@@ -331,12 +331,15 @@ public class FunctionServiceImpl implements FunctionService {
                 String function_code1 = privilege_act.get(j).getFunction_code();
                 if (function_code.equals(function_code1)){
                     int id = privilege_act.get(j).getId();
-                    String action_code = privilege_act.get(j).getAction_code();
+                    String action_show_name = privilege_act.get(j).getAction_show_name();
                     String action_name = privilege_act.get(j).getAction_name();
+                    String action_code = privilege_act.get(j).getAction_code();
+
                     JSONObject actions_obj = new JSONObject();
                     actions_obj.put("action_id",id);
-                    actions_obj.put("action_code",action_code);
+                    actions_obj.put("show_name",action_show_name);
                     actions_obj.put("action_name",action_name);
+                    actions_obj.put("action_code",action_code);
                     actions_obj.put("is_live","N");
                     actions_obj.put("is_die","N");
                     action_array.add(actions_obj);
