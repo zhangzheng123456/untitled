@@ -1471,6 +1471,19 @@ input::-webkit-input-placeholder{
     -moz-box-sizing:border-box;
     -webkit-box-sizing:border-box;
 }
+.contion .short_input_date{
+	width:150px;
+	height: 30px;
+	margin-left: 10px;
+	padding-left: 10px;
+	border: 1px solid #d7d7d7;
+	border-radius: 5px;
+	outline: none;
+	color: #888888;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
 .contion .jian{
 	width: 20px;
 	text-align: center;

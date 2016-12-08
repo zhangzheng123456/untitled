@@ -531,16 +531,14 @@
         <div id="vip_attribute" style="display: none">
             <div class="contion_input"><label>卡号</label><input class="input" type="text"></div>
             <div class="contion_input"><label>卡类型</label><input class="input" type="text"></div>
-            <div class="contion_input"><label>开卡日期</label><input id="activate_card" class="input laydate-icon" type="text" onclick="laydate({elem: '#activate_card',istime: true, format: 'YYYY-MM-DD'})" readonly/></div>
-            <div class="contion_input"><label>剩余积分</label><input class="input" type="text"></div>
+            <div class="contion_input"><label>开卡日期</label><input id="activate_card_start" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end" class="short_input_date laydate-icon" type="text" readonly/></div>
+            <div class="contion_input"><label>剩余积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
             <div class="contion_input"><label>会员有效状态</label><input class="input" type="text"></div>
         </div>
         <div id="consume_attribute" style="display: none">
-            <div class="contion_input"><label>最近消费日期</label><input id="recent" class="input laydate-icon"
-                                                                   onclick="laydate({elem: '#recent',istime: true, format: 'YYYY-MM-DD'})" readonly/>
-            </div>
-            <div class="contion_input"><label>消费次数</label><input class="input"><span>次</span></div>
-            <div class="contion_input"><label>消费总额</label><input class="input"><span>元</span></div>
+            <div class="contion_input"><label>最近消费日期</label><input id="recent_start" class="short_input_date laydate-icon" readonly/><label class="jian">~</label><input id="recent_end" class="short_input_date laydate-icon" readonly/></div>
+            <div class="contion_input"><label>消费次数</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
+            <div class="contion_input"><label>消费总额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
         </div>
         <div id="expend_attribute" style="display: none">
             <div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>
@@ -619,6 +617,57 @@
 <script src="/js/silide.js?20161206"></script>
 <script src="../js/vip/vip.js?20161202"></script>
 <script>
+    //日期调用插件
+    var activity_start={
+        elem: '#activate_card_start',
+        format: 'YYYY-MM-DD',
+        istime: true,
+        max: '2099-06-16 23:59:59', //最大日期
+        istoday: false,
+        fixed:true,
+        choose: function (datas) {
+            activity_end.min = datas; //开始日选好后，重置结束日的最小日期
+            activity_end.start = datas; //将结束日的初始值设定为开始日
+        }
+    };
+    var activity_end={
+        elem: '#activate_card_end',
+        format: 'YYYY-MM-DD',
+        istime: true,
+        max: '2099-06-16 23:59:59',
+        istoday: false,
+        fixed:true,
+        choose: function (datas) {
+            activity_start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    var recent_start={
+        elem: '#recent_start',
+        format: 'YYYY-MM-DD',
+        istime: true,
+        max: '2099-06-16 23:59:59', //最大日期
+        istoday: false,
+        fixed:true,
+        choose: function (datas) {
+            recent_end.min = datas; //开始日选好后，重置结束日的最小日期
+            recent_end.start = datas; //将结束日的初始值设定为开始日
+        }
+    };
+    var recent_end={
+        elem: '#recent_end',
+        format: 'YYYY-MM-DD',
+        istime: true,
+        max: '2099-06-16 23:59:59',
+        istoday: false,
+        fixed:true,
+        choose: function (datas) {
+            activity_start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    laydate(activity_start);
+    laydate(activity_end);
+    laydate(recent_start);
+    laydate(recent_end);
     //筛选的下拉模拟事件
     $("#filter_condition ul li").click(function () {
         var index = $(this).index();
