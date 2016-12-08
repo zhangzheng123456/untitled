@@ -247,6 +247,8 @@ function superaddition(data,num){//页面加载循环
                         + data[i].vip_id
                         + "</td><td>"
                         + data[i].vip_name
+                        + "</td><td>"
+                        + data[i].user_code
                         + "</td><td><span>"
                         + data[i].user_name
                         +"</td><td>"

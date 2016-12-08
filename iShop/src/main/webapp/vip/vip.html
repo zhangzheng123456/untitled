@@ -489,13 +489,23 @@
 <div class="screen_wrapper" id="screen_wrapper">
     <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
     <div id="simple_filter">
-        <div class="contion">
+        <div class="filter_condition" id="simple_filter_condition">
+            <ul>
+                <li><a href="####" class="condition_active">按生日</a></li>
+                <li><a href="####">按纪念日</a></li>
+                <li><a href="####">按消费频次</a></li>
+                <li><a href="####">按消费金额</a></li>
+                <li><a href="####">按可用积分</a></li>
+                <li><a href="####">冻结会员</a></li>
+            </ul>
+        </div>
+        <div class="contion" id="simple_contion">
             <div class="contion_input"><label>生日</label><input id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input"><label>纪念日</label><input id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input"><label>消费次数</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
-            <div class="contion_input"><label>消费金额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
-            <div class="contion_input"><label>剩余积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
-            <div class="contion_input"><label>冻结会员</label><input class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+            <div class="contion_input" style="display: none"><label>纪念日</label><input id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
+            <div class="contion_input" style="display: none"><label>消费频次</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
+            <div class="contion_input" style="display: none"><label>消费金额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
+            <div class="contion_input" style="display: none"><label>剩余积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+            <div class="contion_input" style="display: none"><label>冻结会员</label><input class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
                 <li>已冻结</li>
                 <li>未冻结</li>
                 <li>全部</li>
@@ -567,7 +577,7 @@
                     <label>分组</label><input id="filter_group" class="select" type="text" data-code="" readonly="readonly">
                     <div class="filter_group">
                         <input type="text" id="search_filter_group">
-                        <ul>
+                        <ul id="ul">
 
                         </ul>
                     </div>
@@ -579,7 +589,7 @@
             </div>
         </div>
         <div class="ensure"><span id="screen_vip_que">确定</span></div>
-        <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">返回</a>
+        <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
     </div>
 </div>
 <!-- 选择导购  -->
@@ -766,6 +776,13 @@
     laydate(activity_end);
     laydate(recent_start);
     laydate(recent_end);
+    //定义remove
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
     //高级筛选弹窗
     $("#more_filter").click(function () {
         $("#simple_filter").hide();
@@ -776,6 +793,13 @@
         $("#senior_filter").hide();
     });
     //筛选的下拉模拟事件
+    $("#simple_filter_condition ul li").click(function () {
+        var index = $(this).index();
+        $(this).children("a").addClass("condition_active");
+        $(this).siblings("li").children("a").removeClass("condition_active");
+        $("#simple_contion").children("div").eq(index).css("display", "block");
+        $("#simple_contion").children("div").eq(index).siblings("div").css("display", "none");
+    });
     $("#filter_condition ul li").click(function () {
         var index = $(this).index();
         $(this).children("a").addClass("condition_active");
@@ -842,30 +866,29 @@
         $("#age_r").val($(this).html());
         $(".age_r").hide();
     });
+    var groupName = [];
+    var groupCode = [];
     $(".filter_group ul").on("click","li",function () {
-        var val = $("#filter_group").val();
-        var code = $("#filter_group").attr("data-code");
-        if(val ==""){
-            val = $(this).html();
-            code = $(this).attr("id");
+        var val = $(this).html();
+        var code = $(this).attr("id");
+        if($(this).attr("class") == "group_active"){
+            $(this).removeClass("group_active");
+            groupName.remove(val);
+            groupCode.remove(code);
         }else {
-            if($(this).attr("class") == "group_active"){
-                $(this).removeClass("group_active");
-
-                return ;
-            }
-            val = val+","+$(this).html();
-            code = code+","+$(this).attr("id");
+            $(this).addClass("group_active");
+            groupName.push(val);
+            groupCode.push(code);
         }
-        $(this).addClass("group_active");
-        $("#filter_group").val(val);
-        $("#filter_group").attr("data-code",code);
+        $("#filter_group").val(groupName.toString());
+        $("#filter_group").attr("data-code",groupCode.toString);
     });
     //获取分组
     $("#filter_group").click(function () {
         $(".filter_group").toggle();
         var corp = $("#filter_group").attr("data-corp");
         if(corp !== undefined){
+            $(".filter_group #ul").getNiceScroll().resize();
             return ;
         }else {
             getGroup();
@@ -904,13 +927,13 @@
             $(".age_r").append('<li>'+i+'</li>')
         }
         //引用滚动样式插件
-        $(".filter_group ul").niceScroll({
+        $(".filter_group #ul").niceScroll({
             cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
             cursorcolor:" rgba(0,0,0,0.2)",
             cursoropacitymax:1,
             touchbehavior:false,
             cursorminheight:30,
-            autohidemode:"leave"
+            autohidemode:false
            });
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
