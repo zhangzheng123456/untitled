@@ -32,7 +32,6 @@ var interFace={
     },
     InitialState:function(){
         var self=this;
-        console.log(self.return_jump)
         if(self.return_jump!==null){
             self.inx=self.return_jump.inx;
             self.pageSize=self.return_jump.pageSize;
@@ -139,40 +138,40 @@ var interFace={
     container.innerHTML = a.join("");
         var pageClick = function() {
             var oAlink = container.getElementsByTagName("span");
-            var inx = pageindex; //初始的页码
-            $("#input-txt").val(inx);
+         self.inx = pageindex; //初始的页码
+            $("#input-txt").val(self.inx);
             $(".foot-sum .zy").html("共 "+count+"页");
             oAlink[0].onclick = function() { //点击上一页
-                if (inx == 1) {
+                if (self.inx == 1) {
                     return false;
                 }
-                inx--;
-                self.dian(inx);
-                self.setPage(container, count, inx,pageSize,funcCode,value);
+                self.inx--;
+                self.dian(self.inx);
+                self.setPage(container, count, self.inx,pageSize,funcCode,value);
                 return false;
             };
             for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
                 oAlink[i].onclick = function() {
-                    inx = parseInt(this.innerHTML);
-                    self.dian(inx);
-                    self.setPage(container, count, inx,pageSize,funcCode,value);
+                    self.inx = parseInt(this.innerHTML);
+                    self.dian(self.inx);
+                    self.setPage(container, count, self.inx,pageSize,funcCode,value);
                     return false;
                 }
             }
             oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-                if (inx == count) {
+                if (self.inx == count) {
                     return false;
                 }
-                inx++;
-                self.dian(inx);
-                self.setPage(container, count, inx,pageSize,funcCode,value);
+                self.inx++;
+                self.dian(self.inx);
+                self.setPage(container, count, self.inx,pageSize,funcCode,value);
                 return false;
             }
         }();
     },
     dian:function(inx){//
         if(interFace.value==""){
-            oc.postRequire("get","/interfacers/list?pageNumber="+interFace.inx+"&pageSize="+interFace.pageSize
+            oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+interFace.pageSize
                 +"&funcCode="+interFace.funcCode+"","","",function(data){
                 if(data.code=="0"){
                     $(".table tbody").empty();
@@ -393,6 +392,7 @@ var interFace={
         var self=this;
         $("#search").keydown(function() {
             var event=window.event||arguments[0];
+            self.inx=1;
             self.param["pageNumber"]=self.inx;
             self.param["pageSize"]=self.pageSize;
             self.param["funcCode"]=self.funcCode;
@@ -407,6 +407,7 @@ var interFace={
         var self=this;
         $("#d_search").click(function(){
             self.value=$("#search").val().replace(/\s+/g,"");
+            self.inx=1;
             self.param["searchValue"]=self.value;
             self.param["pageNumber"]=self.inx;
             self.param["pageSize"]=self.pageSize;
