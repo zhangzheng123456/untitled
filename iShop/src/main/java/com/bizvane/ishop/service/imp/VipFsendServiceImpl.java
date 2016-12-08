@@ -138,6 +138,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
         // String phone = "13776410320,";
+        String openid = "ogUZEuD2Ju904CQvb2DBwRXOPpNk";
         String phone = "";
         if (type.equals("1")) {
             String area_code = sms_vips_obj.get("area_code").toString();
@@ -165,6 +166,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                    openid=vip_obj.getString("OPEN_ID");
                 }
             } else {
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -180,6 +182,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                    openid=vip_obj.getString("OPEN_ID");
                 }
             }
         } else {
@@ -197,6 +200,9 @@ public class VipFsendServiceImpl implements VipFsendService {
             for (int i = 0; i < vip_infos.size(); i++) {
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
                 phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                if(!vip_obj.getString("OPEN_ID").equals("")){
+                    openid=vip_obj.getString("OPEN_ID");
+                }
             }
         }
         vipFsend.setSms_code(sms_code);
@@ -231,7 +237,9 @@ public class VipFsendServiceImpl implements VipFsendService {
                 return status;
             } else {
                 //发送类型：微信模板消息
+
                 JSONObject template_content = JSONObject.parseObject(content);
+                template_content.put("openid",openid);
                 String result = sendTemplate(template_content);
                 JSONObject info = JSONObject.parseObject(result);
                 if ("0".equals(info.getString("errcode"))) {
