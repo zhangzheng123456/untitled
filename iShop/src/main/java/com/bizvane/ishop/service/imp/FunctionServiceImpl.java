@@ -316,15 +316,19 @@ public class FunctionServiceImpl implements FunctionService {
         group_code = corp_code +"G"+group_code;
         List<Privilege> privilege_act = privilegeMapper.selectPrivilegeAct(user_code, group_code, role_code);
         List<Privilege> privilege_col = privilegeMapper.selectPrivilegeCol(user_code, group_code, role_code);
-        List<Privilege> privilege_func = privilegeMapper.selectPrivilegeFunc(user_code, group_code, role_code, search_value);
+        List<Function> privilege_func = privilegeMapper.selectPrivilegeFunc(user_code, group_code, role_code, search_value);
+//        List<Privilege> privilege_func = functionMapper.selectAllFun(user_code, group_code, role_code);
 
         JSONArray privilege_array = new JSONArray();
         for (int i = 0; i < privilege_func.size(); i++) {
             String function_code = privilege_func.get(i).getFunction_code();
             String function_name = privilege_func.get(i).getFunction_name();
+            String module_name = privilege_func.get(i).getModule_name();
             JSONObject obj = new JSONObject();
             obj.put("function_code",function_code);
             obj.put("function_name",function_name);
+            obj.put("module_name",module_name);
+
             JSONArray action_array = new JSONArray();
             JSONArray column_array = new JSONArray();
             for (int j = 0; j < privilege_act.size(); j++) {

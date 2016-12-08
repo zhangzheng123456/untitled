@@ -276,6 +276,7 @@ jQuery(document).ready(function(){
 				console.log(action.length);
 				if(action.length==0){
 					$("#edit_save").remove();
+					$("#edit_close").css("margin-left","120px");
 				}
 			}
 		});
