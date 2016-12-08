@@ -10,6 +10,7 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.service.imp.WeiMobServiceImpl;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,11 +35,13 @@ import java.util.List;
 @Controller
 public class WebController {
 
-    private static final Logger logger = Logger.getLogger(WebController.class);
-
     private static long NETWORK_DELAY_SECONDS = 1000 * 60 * 10;// 10 mininutes
 
     private static String APP_KEY = "Fghz1Fhp6pM1XajBMjXM";
+
+    private static String ACCESS_KEY = "UAnDEwzPtRLU1uJom6QRD7cGRgW8SJoz";
+
+    private static String SIGN = "41bfa82252f31bef46ccffca4ec22b5e";
 
     @Autowired
     WebService webService;
@@ -60,6 +63,8 @@ public class WebController {
     WeimobService weimobService;
     @Autowired
     ActivityVipService activityVipService;
+
+    private static final Logger logger = Logger.getLogger(WebController.class);
 
     /**
      *
@@ -523,4 +528,78 @@ public class WebController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 点击登录
+     */
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String login(HttpServletRequest request) {
+        logger.info("------------starttime" + new Date());
+        String id = "";
+        String msg = "";
+        String status = "FAILED";
+        String data = "";
+        JSONObject return_msg = new JSONObject();
+        try {
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String reply = stringBuffer.toString();
+            JSONObject reply_obj = JSONObject.parseObject(reply);
+            if (!reply_obj.containsKey("id")){
+                msg = "request param [id]";
+            }else if (!reply_obj.containsKey("access_key")){
+                msg = "request param [access_key]";
+            }else if (!reply_obj.containsKey("sign")){
+                msg = "request param [sign]";
+            } else if (!reply_obj.containsKey("timestamp")){
+                msg = "request param [timestamp]";
+            }else if (!reply_obj.containsKey("data")){
+                msg = "request param [data]";
+            } else {
+                logger.info("--------------replymessage-----------" + reply_obj.toString());
+                id = reply_obj.get("id").toString();
+                String access_key = reply_obj.get("access_key").toString();
+                String sign = reply_obj.get("sign").toString();
+                String timestamp = reply_obj.get("timestamp").toString();
+                String data_message = reply_obj.get("data").toString();
+                long epoch = Long.valueOf(timestamp);
+                logger.debug(" range test:" + System.currentTimeMillis());
+
+                if (!access_key.equals(ACCESS_KEY)){
+                    msg = "param [access_key] Invalid";
+                }else if (!sign.equals(SIGN)){
+                    msg = "param [sign] Invalid";
+                }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
+                    msg = "param [timestamp] is time_out";
+                }else {
+                    JSONObject jsonObject = JSONObject.parseObject(data_message);
+                    String corp_code = jsonObject.get("corp_code").toString();
+                    String user_code = jsonObject.get("user_code").toString();
+                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code);
+                    if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
+                        msg = user_info.getString("error");
+                    } else {
+                        status = "SUCCESS";
+                        data = user_info.toString();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            return_msg.put("id",id);
+            return_msg.put("status",status);
+            return_msg.put("msg",ex.getMessage());
+            return_msg.put("data","");
+            ex.printStackTrace();
+        }
+        return_msg.put("id",id);
+        return_msg.put("status",status);
+        return_msg.put("msg",msg);
+        return_msg.put("data",data);
+        return return_msg.toString();
+    }
 }
