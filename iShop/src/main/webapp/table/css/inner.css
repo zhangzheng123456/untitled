@@ -1700,4 +1700,6 @@ input::-webkit-input-placeholder{
 	margin-left: 20px;
 	margin-right: 10px;
 	background-color: #ededed;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
