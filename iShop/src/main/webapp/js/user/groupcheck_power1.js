@@ -53,13 +53,21 @@ var groupPower = {
         var self = this;
         var group_corp = self.getSession();
         var param = {};
+        param["searchValue"]=$("#search").val();
         param["corp_code"] = group_corp.corp_code;
         param["group_code"] = group_corp.group_code;
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", "/user/group/check_power1", "0", param, function(data) {
             var message = JSON.parse(data.message);
             var list = message.list;
-            self.pageRendering(list);
+            if(list.length<=0){
+                $(".power_table p").remove();
+                $(".power_table").append("<p>没有找到与<span class='color'>“"+$("#search").val()+"”</span>相关的信息，请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+                $(".power_table p").remove();
+                self.pageRendering(list);
+            }
         });
     },
     clickWay: function() {
@@ -67,7 +75,7 @@ var groupPower = {
         $("#turnoff").bind("click", function() {
             $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
         });
-        $(".power_table").on("click", "ul li", function() {
+        $(".power_table").on("click", "ul li", function() {//点击选中状态
             var class_name = $(this).attr("class");
             if (class_name == "die") {
                 return;
@@ -153,6 +161,15 @@ var groupPower = {
                 whir.loading.remove();//移除加载框
             })
         });
+        $("#search").keydown(function() {
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                self.getPowerlist();
+            }
+        });
+        $("#d_search").click(function(){
+            self.getPowerlist();
+        })
     }
 };
 $(function() {
