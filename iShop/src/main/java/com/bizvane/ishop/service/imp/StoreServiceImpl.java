@@ -431,8 +431,6 @@ public class StoreServiceImpl implements StoreService {
             PageHelper.startPage(page_number, page_size);
             shops = storeMapper.selectAllStoreScreenEasy(params);
         }
-
-
         for (int i=0;i<shops.size();i++) {
             Store store = getStoreById(shops.get(i).getId());
             if (store.getBrand_name()!=null) {
@@ -923,5 +921,86 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         storeMapper.updateStore(store);
+    }
+
+
+    public List<Store> getStoreByBrandCode(String corp_code, String area_codes, String brand_codes
+            ,String store_codes, Map<String, String> map,String area_store_codes,String isactive) throws Exception{
+        Map<String, Object> params = new HashMap<String, Object>();
+        String[] areas = null;
+        String[] brands = null;
+        String[] stores = null;
+        String[] area_stores = null;
+        if (!area_codes.equals("")) {
+            area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
+            areas = area_codes.split(",");
+            for (int i = 0; i < areas.length; i++) {
+                areas[i] = Common.SPECIAL_HEAD+areas[i]+",";
+            }
+        }
+        if (!area_store_codes.equals("")){
+            area_store_codes = area_store_codes.replace(Common.SPECIAL_HEAD,"");
+            area_stores = area_store_codes.split(",");
+        }
+        if (!brand_codes.equals("")) {
+            brand_codes = brand_codes.replace(Common.SPECIAL_HEAD,"");
+            brands = brand_codes.split(",");
+            for (int i = 0; i < brands.length; i++) {
+                brands[i] = Common.SPECIAL_HEAD+brands[i]+",";
+            }
+        }
+        if (!store_codes.equals("")) {
+            store_codes = store_codes.replace(Common.SPECIAL_HEAD,"");
+            stores = store_codes.split(",");
+        }
+        int flg = 0;
+        for (int i = 0; i < map.size(); i++) {
+            if (map.containsKey("area_name") && !map.get("area_name").equals("")){
+                flg = 1;
+            }
+            if (map.containsKey("brand_name") && !map.get("brand_name").equals("")){
+                flg = 1;
+            }
+        }
+        params.put("corp_code", corp_code);
+        params.put("area_codes", areas);
+        params.put("brand_codes", brands);
+        params.put("store_codes", stores);
+        params.put("area_store_codes", area_stores);
+        params.put("map", map);
+        params.put("isactive", isactive);
+        List<Store> shops;
+        if (flg == 1) {
+            shops = storeMapper.selectAllStoreScreen(params);
+        }else {
+            shops = storeMapper.selectAllStoreScreenEasy(params);
+        }
+        for (int i=0;i<shops.size();i++) {
+            Store store = getStoreById(shops.get(i).getId());
+            if (store.getBrand_name()!=null) {
+                shops.get(i).setBrand_name(store.getBrand_name());
+            }else {
+                shops.get(i).setBrand_name("");
+            }
+            if (store.getArea_name()!=null) {
+                shops.get(i).setArea_name(store.getArea_name());
+            }else {
+                shops.get(i).setArea_name("");
+            }
+            List<StoreQrcode> qrcodeList = store.getQrcodeList();
+            StringBuilder qrcode = new StringBuilder("");
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
+                    qrcode.append(qrcode1);
+                    if (j != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
+                }
+            }
+            shops.get(i).setQrcode(qrcode.toString());
+            shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
+        }
+        return shops;
     }
 }

@@ -1,4 +1,4 @@
-// jQuery(function () {
+
     jQuery('#buy').click(function () {
         jQuery(this).css({backgroundColor: "#fff", color: "#dd6c5e"});
         jQuery('#match').css({backgroundColor: "#dfdfdf", color: "#8d8d8d"});
@@ -12,7 +12,6 @@
         $('.ti_img').css({"height":+h+"px"});
         jQuery(this).css({backgroundColor: "#fff", color: "#dd6c5e"});
         jQuery('#buy').css({backgroundColor: "#dfdfdf", color: "#8d8d8d"});
-        returnShareInfoToApp();
     });
     function GetRequest(){
         var url = location.search; //获取url中"?"符后的字串
@@ -31,6 +30,7 @@
     var corp_code = a.corp_code;
     var type=a.type;
     var goodsImage=[];
+    var goodsName="";
     var oc = new ObjectControl();
     var query = {
         "id": id,
@@ -65,6 +65,7 @@
             jQuery('#content').html(list.goods_description);
         }
         document.title = list.goods_name;
+        goodsName=list.goods_name;
         jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         list=list.matchgoods;
         if(list.length>0){
@@ -163,13 +164,12 @@
             param["goodsImage"]=goodsImage[0];
         }
         param["url"]="http://"+window.location.host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"&type=share";
+        param["goodsName"]=goodsName;
         var param=JSON.stringify(param);
         var osType = getWebOSType();
-        alert(param);
         if(osType=="iOS"){
             NSJumpToWebViewForWeb(param);
         }else if(osType == "Android"){
             iShop.jumpToWebViewForWeb(param);
         }
     }
-// });

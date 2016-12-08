@@ -92,4 +92,5 @@ public interface StoreService {
 
     List<Store> selectStore(String corp_code, String store_codes) throws SQLException;
 
+    List<Store> getStoreByBrandCode(String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map,String area_store_codes,String isactive) throws Exception;
 }

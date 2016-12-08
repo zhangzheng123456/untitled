@@ -55,27 +55,27 @@ public class FeedbackController {
 
     private static final Logger logger = Logger.getLogger(FeedbackController.class);
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-   //列表
-    public String selectAll(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<Feedback> list = feedbackService.selectAllFeedback(page_number, page_size, "");
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//   //列表
+//    public String selectAll(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<Feedback> list = feedbackService.selectAllFeedback(page_number, page_size, "");
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody

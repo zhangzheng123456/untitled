@@ -511,6 +511,7 @@ jQuery(document).ready(function(){
 				var action=message.actions;
 				if(action.length<=0){
 					$("#edit_save").hide();
+					$("#edit_close").css("margin-left","120px");
 				}
 			}
 		});

@@ -262,6 +262,10 @@ function jurisdiction(actions) {
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         } else if (actions[i].act_name == "edit") {
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }else if(actions[i].act_name=="output"){
+            $("#more_down").append("<div id='leading_out'>导出</div>");
+        }else if(actions[i].act_name=="input"){
+            $("#more_down").append("<div id='guide_into'>导入</div>");
         }
     }
 }

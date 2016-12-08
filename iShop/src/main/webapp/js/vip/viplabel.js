@@ -584,7 +584,7 @@ function bianse(){
 }
 //导出提交的
 $("#file_submit").click(function(){
-    var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
+    var li=$("#file_list_r input[type='checkbox']").parents("li");
     var param={};
     var tablemanager=[];
     if(li.length=="0"){
@@ -606,6 +606,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/VIP/label/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -625,8 +626,10 @@ $("#file_submit").click(function(){
                 $('#file_submit').show();
                 $('#download').hide();
             })
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
     })
 })

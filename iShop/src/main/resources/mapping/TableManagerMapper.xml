@@ -23,18 +23,18 @@
     </select>
 
     <update id="updateTable">
-        UPDATE def_table_manager SET column_code=#{table_code} WHERE id=#{id}
+        UPDATE def_table_manager SET column_code=#{column_code} WHERE id=#{id}
     </update>
 
     <select id="selTableList" resultType="com.bizvane.ishop.entity.TableManager">
-      SELECT * FROM def_table_list
+      SELECT * FROM def_table_manager
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.TablePrivilege">
-        INSERT INTO def_table_privilage
+        INSERT INTO def_table_privilege
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="column_code!=null">
-                column_code,
+            <if test="column_name!=null">
+                column_name,
             </if>
             <if test="function_code!=null">
                 function_code,
@@ -62,8 +62,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="column_code!=null">
-                #{column_code},
+            <if test="column_name!=null">
+                #{column_name},
             </if>
             <if test="function_code!=null">
                 #{function_code},

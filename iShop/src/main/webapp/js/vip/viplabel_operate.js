@@ -199,6 +199,7 @@ jQuery(document).ready(function(){
 				var action=message.actions;
 				if(action.length<=0){
 					$(".operedit_btn li:eq(0)").remove();
+					$("#edit_close").css("margin-left","120px");
 				}
 			}
 		});

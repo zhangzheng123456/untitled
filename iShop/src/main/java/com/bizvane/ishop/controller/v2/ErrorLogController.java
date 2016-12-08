@@ -41,63 +41,63 @@ public class ErrorLogController {
     private static final Logger logger = Logger.getLogger(ErrorLogController.class);
 
 
-       /**
-          * 列表展示
-          *
-          * @param request
-          * @return
-          */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String userActionList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-        int pages = 0;
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_error_log);
-            System.out.println("======错误日志mongeDB===== "+CommonValue.table_error_log);
-            DBCursor dbCursor = null;
-            // 读取数据
-            if (role_code.equals(Common.ROLE_SYS)) {
-                DBCursor dbCursor1 = cursor.find();
-
-                pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
-            } else {
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code", corp_code);
-                BasicDBObject ref = new BasicDBObject();
-                ref.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(ref);
-
-                pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
-            }
-
-            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
-            result.put("list", list);
-            result.put("pages", pages);
-            result.put("page_number", page_number);
-            result.put("page_size", page_size);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//       /**
+//          * 列表展示
+//          *
+//          * @param request
+//          * @return
+//          */
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String userActionList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+//        int pages = 0;
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_error_log);
+//            System.out.println("======错误日志mongeDB===== "+CommonValue.table_error_log);
+//            DBCursor dbCursor = null;
+//            // 读取数据
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                DBCursor dbCursor1 = cursor.find();
+//
+//                pages = MongoUtils.getPages(dbCursor1, page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
+//            } else {
+//                Map keyMap = new HashMap();
+//                keyMap.put("corp_code", corp_code);
+//                BasicDBObject ref = new BasicDBObject();
+//                ref.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(ref);
+//
+//                pages = MongoUtils.getPages(dbCursor1, page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "created_date", -1);
+//            }
+//
+//            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
+//            result.put("list", list);
+//            result.put("pages", pages);
+//            result.put("page_number", page_number);
+//            result.put("page_size", page_size);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
 

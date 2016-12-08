@@ -204,6 +204,7 @@ jQuery(document).ready(function(){
                 var action=message.actions;
                 if(action.length<=0){
                     $(".operedit_btn li:eq(0)").remove();
+                    $(".operedit_btn li:eq(1)").css("margin-left","120px");
                 }
             }
         });

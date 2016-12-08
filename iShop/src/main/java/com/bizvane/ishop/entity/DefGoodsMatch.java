@@ -21,6 +21,15 @@ public class DefGoodsMatch {
     //是否可用
     private String isactive;
     private String goods_image;
+    private String dgmid;
+
+    public String getDgmid() {
+        return dgmid;
+    }
+
+    public void setDgmid(String dgmid) {
+        this.dgmid = dgmid;
+    }
 
     public String getGoods_match_title() {
         return goods_match_title;

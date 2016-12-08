@@ -5,7 +5,7 @@ package com.bizvane.ishop.entity;
  */
 public class TableManager {
     private int id;
-//    private String column_code;
+    private String column_code;
     //功能编号
     private String function_code;
     //列名
@@ -21,13 +21,13 @@ public class TableManager {
     //筛选 下拉框值（select用）
     private String filter_value;
 
-//    public String getColumn_code() {
-//        return column_code;
-//    }
+    public String getColumn_code() {
+        return column_code;
+    }
 
-//    public void setColumn_code(String column_code) {
-//        this.column_code = column_code;
-//    }
+    public void setColumn_code(String column_code) {
+        this.column_code = column_code;
+    }
 
     public int getId() {
         return id;

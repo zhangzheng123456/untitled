@@ -39,4 +39,14 @@ public class TableManagerServiceImpl implements TableManagerService {
     public int insert(TablePrivilege tablePrivilege) {
         return managerMapper.insert(tablePrivilege);
     }
+
+    @Override
+    public List<TableManager> selTableList() throws Exception {
+        return managerMapper.selTableList();
+    }
+
+    @Override
+    public int updateTable(String column_code, String id) {
+        return managerMapper.updateTable(column_code,id);
+    }
 }

@@ -863,6 +863,58 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public PageInfo<User> getScreenPart2(int page_number, int page_size, String corp_code, Map<String, String> map, String store_code,String area_store, String area_code, String role_code,List<Store> storeList) throws Exception {
+        String[] stores = null;
+
+        if (!store_code.equals("")) {
+            stores = store_code.split(",");
+        }else {
+            store_code = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+            stores = store_code.split(",");
+        }
+        if (!area_code.equals("")) {
+            String[] storeCodes = null;
+            if (!area_store.equals("")){
+                area_store = area_store.replace(Common.SPECIAL_HEAD,"");
+                storeCodes = area_store.split(",");
+            }
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            String[] areas = area_code.split(",");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, storeCodes,null,Common.IS_ACTIVE_Y);
+            String a = "";
+            for (int i = 0; i < store.size(); i++) {
+                a = a + Common.SPECIAL_HEAD +store.get(i).getStore_code() + ",";
+            }
+            if (a.equals("")){
+                a = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+                stores = a.split(",");
+            }else {
+                stores = a.split(",");
+
+            }
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", stores);
+        params.put("map", map);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        PageHelper.startPage(page_number, page_size);
+        List<User> users = userMapper.selectPartScreen(params);
+        List<User> userList=new ArrayList<User>();
+        for (User user : users) {
+            for (Store store:storeList) {
+              String store_code_s =Common.SPECIAL_HEAD+store.getStore_code()+",";
+                if(user.getStore_code().contains(store_code_s)){
+                    userList.add(user);
+                }
+            }
+        }
+        conversion(userList);
+        PageInfo<User> page = new PageInfo<User>(userList);
+        return page;
+    }
+
+    @Override
     public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
         List<User> users;
         Map<String, Object> params = new HashMap<String, Object>();
@@ -874,6 +926,20 @@ public class UserServiceImpl implements UserService {
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
+
+    @Override
+    public PageInfo<User> getAllUserScreen2(int page_number, int page_size, String corp_code, Map<String, String> map,List<Store> storeList) throws Exception {
+        List<User> users;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        users = userMapper.selectAllUserScreen(params);
+        conversion(users);
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
 
     /**
      * 列表显示数据转换
