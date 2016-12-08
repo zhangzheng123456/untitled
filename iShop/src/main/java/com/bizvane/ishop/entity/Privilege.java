@@ -35,6 +35,16 @@ public class Privilege {
     //是否可用
     private String isactive;
 
+    private String column_code;
+
+    public String getColumn_code() {
+        return column_code;
+    }
+
+    public void setColumn_code(String column_code) {
+        this.column_code = column_code;
+    }
+
     private List<TableManager> cloumns;
 
     public int getId() {

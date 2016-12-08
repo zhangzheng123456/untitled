@@ -161,7 +161,7 @@
         AND p.enable = 'Y'
         AND p.isactive = 'Y'
         AND a.isactive = 'Y'
-        ORDER BY a.column_name
+        ORDER BY a.list_weight
     </select>
 
     <!--获取登陆人的权限动作-->
