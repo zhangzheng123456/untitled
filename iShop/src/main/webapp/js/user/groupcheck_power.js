@@ -13,11 +13,11 @@ if(group_corp!==null){
     corp_code=group_corp.corp_code;//企业编号
     group_code=group_corp.group_code;//群组编号
     var group_name=group_corp.group_name;//群组名称
-    $('#group_code').val(group_code);
-    $('#group_name').val(group_name);
-    $("#page-wrapper").hide();
-    $(".content").show();
-    GET();
+    // $('#group_code').val(group_code);
+    // $('#group_name').val(group_name);
+    // $("#page-wrapper").hide();
+    // $(".content").show();
+    // GET();
 }
 //编辑页面点击弹出角色权限的框
 $('#edit_power').click(function(){
@@ -25,10 +25,13 @@ $('#edit_power').click(function(){
     corp_code=$('#OWN_CORP').val();
     var group_name=$('#GROUP_NAME').val();
     $('#group_code').val(group_code);
+    var group_corp={"corp_code":corp_code,"group_code":group_code,"group_name":group_name};
+    sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+    $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
     $('#group_name').val(group_name);
     $("#page-wrapper").hide();
     $(".content").show();
-    GET();
+    // GET();
 })
 //新增页面点击弹出角色权限的框
 $("#add_power").click(function(){
@@ -44,7 +47,6 @@ $("#check_name").click(function(){
     var corp_code=$('#OWN_CORP').val();
     var group_name=$('#GROUP_NAME').val();
     var check_name={"group_code":group_code,"corp_code":corp_code,"group_name":group_name};
-    console.log(check_name);
     sessionStorage.setItem("check_name",JSON.stringify(check_name));//保存到本地
     $(window.parent.document).find('#iframepage').attr("src","user/groupcheck_name.html");
 });
@@ -92,7 +94,6 @@ $(function(){
         });          
     }      
 );
-  
 function showLi(){  
     $("#liebiao").show();  
 }  
@@ -124,8 +125,6 @@ function superaddition(data,num,die,live){
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-
-
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
@@ -169,16 +168,13 @@ function GET(){
     // param["pageSize"]=pageSize;
     param["group_code"]=group_code;
     param["corp_code"]=corp_code;
-    oc.postRequire("post","/user/group/check_power","0",param,function(data){
-        console.log(data);
+    oc.postRequire("post","/user/group/check_power1","0",param,function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var die=message.die;
                 var live=message.live;
                 var list=JSON.parse(message.list);
-                console.log(list);
-                console.log(die)
                 var actions=message.actions;
                 superaddition(list,inx,die,live);
                 // jurisdiction(actions);
@@ -194,41 +190,6 @@ function jumpBianse(){
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
-    //点击新增时页面进行的跳转
-//     $('#add').click(function(){
-//         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
-//     })
-//     点击编辑时页面进行的跳转
-//     $('#compile').click(function(){
-//         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-//         if(tr.length==1){
-//             id=$(tr).attr("id");
-//             sessionStorage.setItem("id",id);
-//             $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
-//         }else if(tr.length==0){
-//             frame();
-//             $('.frame').html("请先选择");
-//         }else if(tr.length>1){
-//             frame();
-//             $('.frame').html("不能选择多个");
-//         }
-//     })
-//     删除
-//     $("#remove").click(function(){
-//         var l=$(window).width();
-//         var h=$(document.body).height();
-//         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-//         if(tr.length==0){
-//             frame();
-//             $('.frame').html("请先选择");
-//             return;
-//         }
-//         $("#p").show();
-//         $("#tk").show();
-//         console.log(left);
-//         $("#p").css({"width":+l+"px","height":+h+"px"});
-//         $("#tk").css({"left":+left+"px","top":+tp+"px"});
-//     })
  }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -250,6 +211,11 @@ $("#d_search").click(function(){
     param["funcCode"]=funcCode;
     POST();
 })
+//点击列表显把一组数据放进数组里面
+$("#table").on("click",'tr',function(){
+    var action_code=$(this).attr("data-action");
+    var function_code=$(this).attr("data-function");
+})
 //搜索的请求函数
 function POST(){
     oc.postRequire("post","/user/group/check_power","0",param,function(data){
@@ -258,8 +224,6 @@ function POST(){
             var die=message.die;
             var live=message.live;
             var list=JSON.parse(message.list);
-            console.log(list);
-            console.log(die)
             jumpBianse();
             $(".table tbody").empty();
             if(list.length<=0){
@@ -275,7 +239,6 @@ function POST(){
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -301,7 +264,6 @@ $("#delete").click(function(){
     }
     var param={};
     param["id"]=ID;
-    console.log(param);
     oc.postRequire("post","/corp/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
@@ -327,12 +289,10 @@ $("#delete").click(function(){
 } 
 //全选
 function checkAll(name){
-    console.log(name);
     var el=$("tbody input[name='"+name+"']");
     var len = el.length;
     for(var i=0; i<len; i++)
         {
-            console.log(el[i].name);
             if((el[i].type=="checkbox") && (el[i].name==name));
             {
               el[i].checked = true;
@@ -342,7 +302,6 @@ function checkAll(name){
 
 //取消全选
 function clearAll(name){
-    console.log(name);
     var el=$("tbody input[name='"+name+"']");
     var len = el.length;
     for(var i=0; i<len; i++)

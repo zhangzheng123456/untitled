@@ -2,19 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>员工管理之编辑员工信息查看权限</title>
+	<title>权限管理之编辑群组编辑权限</title>
 	<link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../table/css/style.css">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="../table/js/navigation_bar.js"></script>
 </head>
 <body>
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
-                <span>员工管理</span>
+                <span>权限管理</span>
                 <span class="icon-ishop_8-03"></span>
-    			<span>编辑员工信息</span>
+    			<span>编辑群组</span>
                 <span class="icon-ishop_8-03"></span>
                 <span>编辑权限</span>
     		</div>
@@ -36,7 +35,7 @@
                         <i class="icon-ishop_6-04"></i>
                         保存
                     </div>
-                    <div class="turnoff">
+                    <div class="turnoff" id="turnoff">
                         <i class="icon-ishop_6-12"></i>
                         关闭
                     </div>
@@ -45,86 +44,13 @@
     		<div class="action">
     			<div class="action_l">
     				<ul>
-                        <li>
-                            <a href="/user/groupcheck_power_edit.html">
-                                <span class="icon-ishop_6-01"></span>
-                                新增
-                            </a>
-                        </li>
-                        <li class="bg" id="remove">
-                            <span class="icon-ishop_6-02"></span>
-                            删除
-                        </li>
-                        <li>
-                            <a href="/user/groupcheck_power_edit.html">
-                                <span class="icon-ishop_6-03"></span>
-                                编辑
-                            </a>
-                        </li>
-                        <li class="bg">
-                            <span class="icon-ishop_6-04"></span>
-                            保存
-                        </li>
-                        <li class="field_input">
-                            <input type="text" value="选着字段" class="field" readonly="">
-                            <span></span>
-                            <i class="icon-ishop_8-02"></i>
-                            <input type="text" class="f_input" placeholder="输入搜索的内容">
+                        <li class="li s">
+                            <input type="text" class="input" placeholder="模块名称/功能名称/动作名称" id="search">
+                            <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
     				</ul> 
     			</div>
-    			<div class="action_r">
-    				<ul>
-    					<li id="filtrate">
-    						<span class="icon-ishop_6-05"></span>
-    						筛选
-    					</li>
-    					<li class="bg">
-    						<span class="icon-ishop_6-07"></span>
-    						刷新
-    					</li>
-    					<li>
-    						<span class="icon-ishop_6-08"></span>
-    						更多
-    					</li>
-    				</ul>
-    			</div>
     		</div>
-             <div class="sxk" id="sxk">
-                <div class="btn">
-                    <div class="empty" id="empty">
-                        <i class="icon-ishop_6-16"></i>清空筛选
-                    </div>
-                    <div class="r_btn">
-                        <div class="pack_up" id="pack_up">
-                            <i class="icon-ishop_6-18"></i>
-                            收起
-                        </div>
-                        <div class="find" id="find">
-                            <i class="icon-ishop_6-19"></i>
-                            查找
-                        </div>
-                    </div>
-                </div>
-                <div class="inputs">
-                    <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
-                    </li>
-                    <li>
-                        <label>联系人</label>
-                        <input type="text" id="p2">
-                    </li>
-                    <li>
-                        <label>修改人</label>
-                        <input type="text" id="p3">
-                    </li>
-                    <li>
-                        <label>联系电话</label>
-                        <input type="text" id="p4">
-                    </li>
-                </div>
-            </div>
     		<div class="power_table">
     			<table id="table" cellpadding="0" cellspacing="0" width="100%">
                  	<thead>
@@ -245,26 +171,9 @@
     		</div>
     	</div>
     </div>
-    <div class="p" id="p"></div>
-    <div class="tk" id="tk">
-        <span class="icon-ishop_6-12" id="X"></span>
-        <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
-        <div class="btn">
-            <em class="cancel" id="cancel">取消</em>
-            <em class="delete" id="delete">删除</em>
-        </div>
-    </div>
-    <div id="side_bar">
-        <div class="gotop">
-            <span class="icon-ishop_4-03"></span>
-        </div>
-        <div class="gobottom">
-            <span class="icon-ishop_4-04"></span>
-        </div>
-    </div>
 </body>
-<script src="/js/postRequire.js"></script>
-<script src="/js/user/usercheck_power.js"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
+<script src="/js/user/groupcheck_power1.js"></script>
 <script type="text/javascript">
     $(function(){
         $(window).scroll(function(){
