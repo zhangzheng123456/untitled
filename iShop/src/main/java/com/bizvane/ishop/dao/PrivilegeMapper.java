@@ -1,5 +1,6 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.Function;
 import com.bizvane.ishop.entity.Privilege;
 import com.bizvane.ishop.entity.TablePrivilege;
 import org.apache.ibatis.annotations.Param;
@@ -26,7 +27,7 @@ public interface PrivilegeMapper {
 
     List<Privilege> selectPrivilegeCol(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code)  throws SQLException;
 
-    List<Privilege> selectPrivilegeFunc(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code,@Param("search_value") String search_value)  throws SQLException;
+    List<Function> selectPrivilegeFunc(@Param("user_code") String user_code, @Param("group_code") String group_code, @Param("role_code") String role_code, @Param("search_value") String search_value)  throws SQLException;
 
     int insertColPrivilege(TablePrivilege tablePrivilege) throws SQLException;
 
