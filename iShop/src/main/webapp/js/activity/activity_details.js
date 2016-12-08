@@ -460,6 +460,7 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
 
 //加载员工列表
 function listShow(userList){
+    console.log(userList);
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
     var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done" style="width: ${percent}%"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
@@ -640,6 +641,12 @@ $('#get_more .head_span_r').click(function () {
     whir.loading.remove();//移除加载框
 });
 //页面加载数据
+//每一条数据的详情显示
+$('#peopleContent').on('click','li',function () {
+    console.log(this)
+    var html='<div style="float: right;margin-right: 5px;"><button>详情</button></div>';
+    $(this).append(html);
+});
 window.onload = function(){
     //获取活动执行情况
     // getExecuteDetail();

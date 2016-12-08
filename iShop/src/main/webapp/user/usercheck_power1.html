@@ -4,9 +4,8 @@
 	<meta charset="UTF-8">
 	<title>权限管理之编辑群组编辑权限</title>
 	<link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../table/css/style.css">
+    <link rel="stylesheet" href="../css/font_style.css?20161116">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="../table/js/navigation_bar.js"></script>
 </head>
 <body>
     <div class="content">
@@ -36,7 +35,7 @@
                         <i class="icon-ishop_6-04"></i>
                         保存
                     </div>
-                    <div class="turnoff">
+                    <div class="turnoff" id="turnoff">
                         <i class="icon-ishop_6-12"></i>
                         关闭
                     </div>
@@ -51,58 +50,7 @@
                         </li>
     				</ul> 
     			</div>
-    			<!-- <div class="action_r">
-    				<ul>
-    					<li id="filtrate">
-    						<span class="icon-ishop_6-05"></span>
-    						筛选
-    					</li>
-    					<li class="bg">
-    						<span class="icon-ishop_6-07"></span>
-    						刷新
-    					</li>
-    					<li>
-    						<span class="icon-ishop_6-08"></span>
-    						更多
-    					</li>
-    				</ul>
-    			</div> -->
     		</div>
-            <!-- <div class="sxk" id="sxk">
-                <div class="btn">
-                    <div class="empty" id="empty">
-                        <i class="icon-ishop_6-16"></i>清空筛选
-                    </div>
-                    <div class="r_btn">
-                        <div class="pack_up" id="pack_up">
-                            <i class="icon-ishop_6-18"></i>
-                            收起
-                        </div>
-                        <div class="find" id="find">
-                            <i class="icon-ishop_6-19"></i>
-                            查找
-                        </div>
-                    </div>
-                </div>
-                <div class="inputs">
-                    <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
-                    </li>
-                    <li>
-                        <label>联系人</label>
-                        <input type="text" id="p2">
-                    </li>
-                    <li>
-                        <label>修改人</label>
-                        <input type="text" id="p3">
-                    </li>
-                    <li>
-                        <label>联系电话</label>
-                        <input type="text" id="p4">
-                    </li>
-                </div>
-            </div> -->
     		<div class="power_table">
     			<table id="table" cellpadding="0" cellspacing="0" width="100%">
                  	<thead>
@@ -115,7 +63,7 @@
                  		</tr>
                  	</thead>
                     <tbody>
-                    	<tr>
+                    	<!-- <tr>
                     		<td style="text-align: left;padding-left:22px;width:7.21%;">1</td>
                     		<td style="width:12.78%;">员工管理</td>
                             <td style="width: 12.78%;">员工列表</td>
@@ -143,61 +91,7 @@
                                     </ul>
                                 </div>
                             </td>
-                    	</tr>
-                        <tr>
-                            <td style="text-align: left;padding-left:22px;width:7.21%;">1</td>
-                            <td style="width:12.78%;">员工管理</td>
-                            <td style="width: 12.78%;">员工列表</td>
-                            <td style="width: 22.69%;">
-                               <div class="action_name">
-                                    <ul>
-                                        <li>新增</li>
-                                        <li>删除</li>
-                                        <li class="active">编辑</li>
-                                        <li>生成二维码</li>
-                                    </ul>
-                               </div> 
-                            </td>
-                            <td style="width: 44.54%;">
-                                <div class="modify_options">
-                                    <ul>
-                                        <li class="active">员工管理</li>
-                                        <li class="active">员工ID</li>
-                                        <li>头像</li>
-                                        <li class="active">姓名</li>
-                                        <li class="active">联系电话</li>
-                                        <li>所属企业</li>
-                                        <li class="active">所属群组</li>
-                                        <li class="active">店铺编号</li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;padding-left:22px;width:7.21%;">1</td>
-                            <td style="width:12.78%;">员工管理</td>
-                            <td style="width: 12.78%;">员工列表</td>
-                            <td style="width: 22.69%;">
-                               <div class="action_name">
-                                    <ul>
-                                        <li>新增</li>
-                                        <li>删除</li>
-                                        <li class="active">编辑</li>
-                                    </ul>
-                               </div> 
-                            </td>
-                            <td style="width: 44.54%;">
-                                <div class="modify_options">
-                                    <ul>
-                                        <li class="active">员工管理</li>
-                                        <li class="active">员工ID</li>
-                                        <li>头像</li>
-                                        <li class="active">姓名</li>
-                                        <li class="active">联系电话</li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                    	</tr> -->
                     </tbody>
     			</table>
     		</div>
@@ -205,27 +99,26 @@
     			<ul>
     				<li class="foot-jum">
     					<span>跳转至</span>
-    					<input class="input-txt" value="" id="input-txt" disabled="true">
+    					<input class="input-txt" value="1" id="input-txt" disabled="true">
     					<em>页</em>
     				</li>
     				<li class="foot-num" >
     					<ul id="foot-num">
-                            <li class="icon-ishop_4-01" style="color: #afafaf">
-                            </li>
-                            <li class="icon-ishop_4-02">
-                            </li>
+                            <li><span class="icon-ishop_4-01 unclick"></span></li>
+                            <li><span class="p-bg">1</span></li>
+                            <li><span class="icon-ishop_4-02 unclick"></span></li>
     					</ul>
     				</li>
     				<li class="foot-sum">
-						<span class="zy">共 0 页</span>
+						<span class="zy">共 1 页</span>
     				</li>
     			</ul>
     		</div>
     	</div>
     </div>
 </body>
-<script src="/js/postRequire.js"></script>
-<script src="/js/user/usercheck_power.js"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
+<script src="/js/user/groupcheck_power1.js"></script>
 <script type="text/javascript">
     $(function(){
         $(window).scroll(function(){
@@ -244,8 +137,5 @@
             $('html,body').animate({'scrollTop':btm},500);
         })
     });
-    $(".power_table").on("click","ul li",function(){
-        $(this).toggleClass("active");
-    })
 </script>
 </html>

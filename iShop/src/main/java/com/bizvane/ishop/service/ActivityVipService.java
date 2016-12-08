@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.ActivityVip;
 import com.github.pagehelper.PageInfo;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -34,4 +35,6 @@ public interface ActivityVipService {
     String executeActivity(ActivityVip activityVip,String user_code) throws Exception;
 
     JSONObject executeDetail(ActivityVip activityVip) throws Exception;
+
+    ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception;
 }

@@ -580,7 +580,7 @@ function bianse(){
 
 //导出提交的
 $("#file_submit").click(function(){
-   var li=$("#file_list input[type='checkbox']:checked").parents("li");
+   var li=$("#file_list input[type='checkbox']").parents("li");
    var param={};
    var tablemanager=[];
    if(li.length=="0"){

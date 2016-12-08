@@ -7,10 +7,7 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.ActivityVipMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.CheckUtils;
-import com.bizvane.ishop.utils.LuploadHelper;
-import com.bizvane.ishop.utils.OssUtils;
-import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.ishop.utils.*;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -581,5 +578,17 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             updateActivityVip(activityVip);
         }
         return status;
+    }
+
+    public ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception{
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
+        BasicDBObject dbObject = new BasicDBObject();
+        dbObject.put("activity_vip_code", activity_vip_code);
+        dbObject.put("corp_code", corp_code);
+        dbObject.put("user_code", user_code);
+        DBCursor dbCursor = cursor.find(dbObject);
+        ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+        return list;
     }
 }

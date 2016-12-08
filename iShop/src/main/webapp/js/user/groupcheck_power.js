@@ -13,11 +13,11 @@ if(group_corp!==null){
     corp_code=group_corp.corp_code;//企业编号
     group_code=group_corp.group_code;//群组编号
     var group_name=group_corp.group_name;//群组名称
-    $('#group_code').val(group_code);
-    $('#group_name').val(group_name);
-    $("#page-wrapper").hide();
-    $(".content").show();
-    GET();
+    // $('#group_code').val(group_code);
+    // $('#group_name').val(group_name);
+    // $("#page-wrapper").hide();
+    // $(".content").show();
+    // GET();
 }
 //编辑页面点击弹出角色权限的框
 $('#edit_power').click(function(){
@@ -25,11 +25,13 @@ $('#edit_power').click(function(){
     corp_code=$('#OWN_CORP').val();
     var group_name=$('#GROUP_NAME').val();
     $('#group_code').val(group_code);
-    // $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
+    var group_corp={"corp_code":corp_code,"group_code":group_code,"group_name":group_name};
+    sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+    $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
     $('#group_name').val(group_name);
     $("#page-wrapper").hide();
     $(".content").show();
-    GET();
+    // GET();
 })
 //新增页面点击弹出角色权限的框
 $("#add_power").click(function(){

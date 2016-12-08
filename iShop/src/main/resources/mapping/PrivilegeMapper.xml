@@ -25,9 +25,6 @@
             <if test="master_code!=null">
                 master_code,
             </if>
-            <if test="column_code!=null">
-                column_code,
-            </if>
             <if test="enable!=null">
                 enable,
             </if>
@@ -56,9 +53,6 @@
             </if>
             <if test="master_code!=null">
                 #{master_code},
-            </if>
-            <if test="column_code!=null">
-                #{column_code},
             </if>
             <if test="enable!=null">
                 #{enable},
@@ -92,10 +86,6 @@
             </if>
             <if test="master_code != null">
                 master_code = #{master_code},
-            </if>
-
-            <if test="column_code != null">
-                column_code = #{column_code},
             </if>
             <if test="enable != null">
                 enable = #{enable},
@@ -203,7 +193,7 @@
     </select>
 
     <!--获取登陆人的权限功能-->
-    <select id="selectPrivilegeFunc" resultType="com.bizvane.ishop.entity.Privilege">
+    <select id="selectPrivilegeFunc" resultType="com.bizvane.ishop.entity.Function">
         SELECT *
         FROM def_action a,def_function b,def_privilege p
         WHERE a.function_code = b.function_code

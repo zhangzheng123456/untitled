@@ -214,6 +214,7 @@ jQuery(document).ready(function(){
                 var action=message.actions;
                 if(action.length<=0){
                     $(".corpedit_oper_btn li:eq(0)").remove();
+                    $(".corpedit_oper_btn li:eq(1)").css("margin-left","120px");
                 }
             }
         });

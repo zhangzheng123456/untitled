@@ -398,7 +398,7 @@ input::-webkit-input-placeholder{
 }
 .table tr td span{
 	display: inline-block;
-	max-width: 150px;
+	max-width: 120px;
 	height:40px;
 	line-height: 39px;
 	white-space: nowrap;
@@ -1471,6 +1471,19 @@ input::-webkit-input-placeholder{
     -moz-box-sizing:border-box;
     -webkit-box-sizing:border-box;
 }
+.contion .short_input_date{
+	width:150px;
+	height: 30px;
+	margin-left: 10px;
+	padding-left: 10px;
+	border: 1px solid #d7d7d7;
+	border-radius: 5px;
+	outline: none;
+	color: #888888;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
 .contion .jian{
 	width: 20px;
 	text-align: center;
@@ -1678,10 +1691,15 @@ input::-webkit-input-placeholder{
 	color: #fff;
 	background-color: #6CC1C8;
 }
+.power_table tbody tr .action_name ul li.die,.power_table tbody tr .modify_options ul li.die{
+	background-color:rgba(255,255,255,0.4);
+}
 .power_table tbody tr .modify_options{
 	min-width: 470px;
 	min-height: 50px;
 	margin-left: 20px;
 	margin-right: 10px;
 	background-color: #ededed;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
