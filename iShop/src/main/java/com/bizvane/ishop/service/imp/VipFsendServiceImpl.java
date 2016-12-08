@@ -248,7 +248,10 @@ public class VipFsendServiceImpl implements VipFsendService {
                     JSONObject info = JSONObject.parseObject(result);
                     if ("0".equals(info.getString("errcode"))) {
                         return status;
-                    } else {
+                    } else if(info.getString("errcode").equals("40003")){
+                        status = "invalid";
+                        return status;
+                    }else{
                         status = "发送失败";
                         return status;
                     }
