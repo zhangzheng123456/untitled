@@ -236,10 +236,8 @@ jQuery(document).ready(function(){
 		var _params={"id":id};
 		var _command="/user/group/select";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
 				var mg=JSON.parse(msg.data);
 				$("#GROUP_ID").val(mg.group_code);
 				$("#GROUP_ID").attr("data-name",mg.group_code);
@@ -281,10 +279,8 @@ jQuery(document).ready(function(){
 		var role_param={"corp_code":$("#OWN_CORP").val()};
 		var role_command="/user/group/role";
 		oc.postRequire("post", role_command,"",role_param, function(data){
-			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
 				var index=0;
 				var role_html='';
 				var a=null;
@@ -376,10 +372,8 @@ function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			console.log(msg);
 			var index=0;
 			var corp_html='';
 			var c=null;
