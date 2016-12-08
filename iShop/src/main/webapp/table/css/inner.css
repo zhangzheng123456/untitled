@@ -398,7 +398,7 @@ input::-webkit-input-placeholder{
 }
 .table tr td span{
 	display: inline-block;
-	max-width: 150px;
+	max-width: 120px;
 	height:40px;
 	line-height: 39px;
 	white-space: nowrap;
@@ -1677,6 +1677,9 @@ input::-webkit-input-placeholder{
 	border:1px solid #6CC1C8;
 	color: #fff;
 	background-color: #6CC1C8;
+}
+.power_table tbody tr .action_name ul li.die,.power_table tbody tr .modify_options ul li.die{
+	background-color:rgba(255,255,255,0.4);
 }
 .power_table tbody tr .modify_options{
 	min-width: 470px;
