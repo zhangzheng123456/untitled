@@ -464,9 +464,10 @@ function listShow(userList){
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
     var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done" style="width: ${percent}%"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
+    var html = '';
     for(var i=0;i<userList.length;i++) {
         //随机进度
-        var html = '';
+
         var order = i + 1;
         var nowHTML1 = tempHTML;
         var percent = userList[i].complete_rate;
@@ -482,7 +483,7 @@ function listShow(userList){
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
-        $("#peopleContent").append(html);
+
         //判断进度颜色
         if (percent < 100 && percent > 0) {
             $('.percent_percent').css('color', '#42a0a8');
@@ -491,10 +492,11 @@ function listShow(userList){
         } else if (percent == 0) {
             $('.percent_percent').css('color', '#42a0a8');
         }
-        var nowLength = $('.people_title').length;
-        if (nowLength > 1) {
-            $('#peopleError').hide();
-        }
+    }
+    $("#peopleContent").append(html);
+    var nowLength = $('.people_title').length;
+    if (nowLength > 1) {
+        $('#peopleError').hide();
     }
     var el=$('.people')[0];
     if(!(el.scrollHeight > el.clientHeight)){
@@ -610,7 +612,7 @@ function getVal(name){
 //获取更多
 $('#rightMore').click(function () {
     whir.loading.add("",0.5);//加载等待框
-    $('#loading').remove();
+    $('#loading').hide();
     $('#fab_describe').empty();
     //赋值
     $('#content .content_r ').each(function(a,obj){
@@ -641,11 +643,67 @@ $('#get_more .head_span_r').click(function () {
     whir.loading.remove();//移除加载框
 });
 //页面加载数据
-//每一条数据的详情显示
+//每一条数据的详情按钮
 $('#peopleContent').on('click','li',function () {
-    console.log(this)
-    var html='<div style="float: right;margin-right: 5px;"><button>详情</button></div>';
-    $(this).append(html);
+    var html='<div class="data_detail" style="float: right;margin-right: 5px;height: 40px"><div class="detail">详情</div></div>';
+    if( $(this).children().length<=6) {
+        var user_code = $(this).find('.people_title_num ').html();
+        $(this).append(html).attr('data_user_code', user_code);
+        $(this).siblings().each(function () {
+            if ($(this).children().length == 7) {
+                $(this).find('div.data_detail').remove();
+            }
+            ;
+        });
+    }
+});
+//详情弹框
+$('#peopleContent').on('click','li div.data_detail',function () {
+    whir.loading.add("",0.5);//加载等待框
+    $('#vip_status').show();
+    var _params={
+        "id":"",
+        "message":{
+            "corp_code":sessionStorage.getItem('corp_code'),
+            'user_code':$(this).parent().attr('data_user_code'),
+            'activity_vip_code':moreDetail.activity_vip_code
+        }
+    };
+    $.ajax({
+        url: '/activity/userExecuteDetail',
+        type: 'POST',
+        dataType: "JSON",
+        data:{
+            param:JSON.stringify(_params)
+        },
+        success: function (data) {
+            var msg=JSON.parse(data.message).list;
+            console.log(msg);
+            msg=msg.join('')==''?[]:msg[0].vips;
+            doResponse(msg);
+        },
+        error: function (data) {
+            alert(data.message);
+        }
+    });
+    //处理函数
+    function doResponse(msg) {
+        var html='';
+        console.log(msg.length);
+        $('#vip_status table tbody').empty();
+        for(var i=0;i<msg.length;i++){
+            var a=i+1;
+            var status=msg[i].status=='Y'?'已完成':'未分配';
+            html+="<tr><td>"+a+"</td><td>"+msg[i].vip_info.NAME_VIP+"</td><td>"+msg[i].vip_id+"</td><td>"+status+"</td></tr>"
+        }
+        html=html==''?'<div class="no_data">暂无数据</div>':html;
+        $('#vip_status table tbody').append(html);
+        $('#loading').hide();
+    }
+});
+$('#vip_status .head_span_r').click(function () {
+    $('#vip_status').hide();
+    whir.loading.remove();//移除加载框
 });
 window.onload = function(){
     //获取活动执行情况

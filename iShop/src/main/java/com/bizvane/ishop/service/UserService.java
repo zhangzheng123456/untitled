@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.entity.UserQrcode;
@@ -75,7 +76,11 @@ public interface UserService {
 
     PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code,String area_store, String area_code, String role_code) throws Exception;
 
+    PageInfo<User> getScreenPart2(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code,String area_store, String area_code, String role_code,List<Store> storeList) throws Exception;
+
     PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code,Map<String,String> map) throws Exception;
+
+    PageInfo<User> getAllUserScreen2(int page_number, int page_size, String corp_code,Map<String,String> map,List<Store> storeList) throws Exception;
 
     List<UserQrcode> selectQrcodeByUser(String corp_code, String user_code) throws Exception;
 

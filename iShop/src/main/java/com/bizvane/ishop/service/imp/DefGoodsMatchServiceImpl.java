@@ -19,7 +19,7 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     @Autowired
     private DefGoodsMatchMapper defGoodsMatchMapper;
     @Override
-    public List<DefGoodsMatch> selectMatchGoods(String corp_code) {
+    public List<DefGoodsMatch> selectMatchGoods(String corp_code) throws Exception {
         List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchGoods(corp_code);
         for (int i = 0; list != null && i < list.size(); i++) {
             String goods_image = list.get(i).getGoods_image();
@@ -52,7 +52,7 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
         return image;
     }
     @Override
-    public List<DefGoodsMatch> selMatchBySeach(String corp_code, String search_value) {
+    public List<DefGoodsMatch> selMatchBySeach(String corp_code, String search_value) throws Exception {
         List<DefGoodsMatch> list = defGoodsMatchMapper.selMatchBySeach(corp_code, search_value);
         for (int i = 0; list != null && i < list.size(); i++) {
             String goods_image = list.get(i).getGoods_image();
@@ -63,7 +63,7 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     }
 
     @Override
-    public List<DefGoodsMatch> selectMatchByCode(String corp_code, String goods_match_code) {
+    public List<DefGoodsMatch> selectMatchByCode(String corp_code, String goods_match_code) throws Exception {
         List<DefGoodsMatch> list = defGoodsMatchMapper.selectMatchByCode(corp_code, goods_match_code);
         for (int i = 0; list != null && i < list.size(); i++) {
             String goods_image = list.get(i).getGoods_image();
@@ -74,22 +74,22 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     }
 
     @Override
-    public int delMatchByCode(String corp_code,String goods_match_code) {
+    public int delMatchByCode(String corp_code,String goods_match_code)throws Exception  {
         return defGoodsMatchMapper.delMatchByCode(corp_code,goods_match_code);
     }
 
     @Override
-    public int delMatchById(String id) {
+    public int delMatchById(String id)throws Exception  {
         return defGoodsMatchMapper.delMatchById(id);
     }
 
     @Override
-    public int addMatch(DefGoodsMatch defGoodsMatch) {
+    public int addMatch(DefGoodsMatch defGoodsMatch)throws Exception {
         return defGoodsMatchMapper.addMatch(defGoodsMatch);
     }
 
     @Override
-    public int updMatch(DefGoodsMatch defGoodsMatch) {
+    public int updMatch(DefGoodsMatch defGoodsMatch)throws Exception  {
         return 0;
     }
 
@@ -102,5 +102,15 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
             list.get(i).setGoods_image(new_image);
         }
         return list;
+    }
+
+    @Override
+    public List<DefGoodsMatch> selGoodsCodeByUpd(String corp_code, String goods_code) throws Exception {
+        return defGoodsMatchMapper.selGoodsCodeByUpd(corp_code,goods_code);
+    }
+
+    @Override
+    public int updGoodsCode(String goods_code, String id) throws Exception {
+        return defGoodsMatchMapper.updGoodsCode(goods_code,id);
     }
 }

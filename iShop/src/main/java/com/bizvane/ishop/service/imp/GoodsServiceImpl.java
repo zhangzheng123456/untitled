@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
+import com.bizvane.ishop.entity.DefGoodsMatch;
 import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.GoodsMatch;
+import com.bizvane.ishop.service.DefGoodsMatchService;
 import com.bizvane.ishop.service.GoodsService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
@@ -24,9 +26,9 @@ import java.util.*;
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private GoodsMapper goodsMapper;
-
-    private static final Logger log = Logger.getLogger (GoodsServiceImpl.class);
-
+    @Autowired
+    private DefGoodsMatchService defGoodsMatchService;
+    private static final Logger log = Logger.getLogger(GoodsServiceImpl.class);
 
 
     @Override
@@ -67,7 +69,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public int insertGoods(Goods goods,String match_goods) throws Exception {
+    public int insertGoods(Goods goods, String match_goods) throws Exception {
 //        Date now = new Date();
 //        if (!match_goods.equals("")) {
 //            String[] matches = match_goods.split(",");
@@ -91,11 +93,15 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public String update(Goods goods) throws Exception {
         Goods old_goods = goodsMapper.selectByPrimaryKey(goods.getId());
-        Goods new_goods = getGoodsByCode(goods.getCorp_code().trim(), goods.getGoods_code().trim(),Common.IS_ACTIVE_Y);
+        Goods new_goods = getGoodsByCode(goods.getCorp_code().trim(), goods.getGoods_code().trim(), Common.IS_ACTIVE_Y);
         if (goods.getCorp_code().trim().equals(old_goods.getCorp_code().trim())) {
             if (new_goods != null && old_goods.getId() != new_goods.getId()) {
                 return "编号已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
+                List<DefGoodsMatch> defGoodsMatches = defGoodsMatchService.selGoodsCodeByUpd(old_goods.getCorp_code().trim(), old_goods.getGoods_code());
+                for (DefGoodsMatch defGoodsMatch:defGoodsMatches) {
+                    defGoodsMatchService.updGoodsCode(goods.getGoods_code(),defGoodsMatch.getDgmid());
+                }
 //                goodsMapper.deleteMatch(goods.getCorp_code().trim(),old_goods.getGoods_code().trim());
 //                Date now = new Date();
 //                if (!match_goods.equals("")) {
@@ -130,17 +136,17 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception{
+    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception {
         List<Goods> list;
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("corp_code",corp_code);
-        map.put("search_value",search_value);
-        map.put("brand_code",brand_code);
-        map.put("isactive","");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("corp_code", corp_code);
+        map.put("search_value", search_value);
+        map.put("brand_code", brand_code);
+        map.put("isactive", "");
 
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoods(map);
-        for (Goods goods:list) {
+        for (Goods goods : list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
             transterGoods(goods);
         }
@@ -149,16 +155,16 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectAllGoodsByBrand(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception{
+    public PageInfo<Goods> selectAllGoodsByBrand(int page_number, int page_size, String corp_code, String search_value, String[] brand_code) throws Exception {
         List<Goods> list;
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("corp_code",corp_code);
-        map.put("search_value",search_value);
-        map.put("brand_code",brand_code);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("corp_code", corp_code);
+        map.put("search_value", search_value);
+        map.put("brand_code", brand_code);
 
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoodsByBrand(map);
-        for (Goods goods:list) {
+        for (Goods goods : list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
             transterGoods(goods);
         }
@@ -167,31 +173,31 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectBySearchForApp(int page_number, int page_size, String corp_code,String goods_quarter,
-                                                String goods_wave,String brand_code, String time_start,String time_end,String search_value) throws Exception{
+    public PageInfo<Goods> selectBySearchForApp(int page_number, int page_size, String corp_code, String goods_quarter,
+                                                String goods_wave, String brand_code, String time_start, String time_end, String search_value) throws Exception {
         List<Goods> list;
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("goods_quarter",goods_quarter);
-        map.put("goods_wave",goods_wave);
-        map.put("brand_code",brand_code);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("goods_quarter", goods_quarter);
+        map.put("goods_wave", goods_wave);
+        map.put("brand_code", brand_code);
         if (!goods_quarter.equals("")) {
             String[] goods_quarters = goods_quarter.split(",");
-            map.put("goods_quarter",goods_quarters);
+            map.put("goods_quarter", goods_quarters);
         }
         if (!goods_wave.equals("")) {
             String[] goods_waves = goods_wave.split(",");
-            map.put("goods_wave",goods_waves);
+            map.put("goods_wave", goods_waves);
         }
         if (!brand_code.equals("")) {
             String[] brand_codes = brand_code.split(",");
-            map.put("brand_code",brand_codes);
+            map.put("brand_code", brand_codes);
         }
 
-        map.put("corp_code",corp_code);
-        map.put("time_start",time_start);
-        map.put("time_end",time_end);
-        map.put("search_value",search_value);
-        map.put("isactive",Common.IS_ACTIVE_Y);
+        map.put("corp_code", corp_code);
+        map.put("time_start", time_start);
+        map.put("time_end", time_end);
+        map.put("search_value", search_value);
+        map.put("isactive", Common.IS_ACTIVE_Y);
 
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoodsForApp(map);
@@ -203,9 +209,9 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> matchGoodsList(int page_number, int page_size,String corp_code, String search_value,String goods_code,String brand_code) throws Exception{
+    public PageInfo<Goods> matchGoodsList(int page_number, int page_size, String corp_code, String search_value, String goods_code, String brand_code) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value,goods_code,brand_code,Common.IS_ACTIVE_Y);
+        List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value, goods_code, brand_code, Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transterGoods(list.get(i));
         }
@@ -214,7 +220,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map,String[] brand_code) throws Exception{
+    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map, String[] brand_code) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("corp_code", corp_code);
@@ -223,7 +229,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoodsScreen(params);
-        for (Goods goods:list) {
+        for (Goods goods : list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
             transterGoods(goods);
         }
@@ -236,7 +242,7 @@ public class GoodsServiceImpl implements GoodsService {
      *
      * @param goods ： 商品对象
      */
-    private void transter(Goods goods) throws Exception{
+    private void transter(Goods goods) throws Exception {
         try {
             String jsString = goods.getGoods_image();
             JSONObject jsonObject = JSONObject.parseObject(jsString);
@@ -258,42 +264,42 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public Goods getGoodsByCode(String corp_code, String goods_code,String isactive) throws Exception{
-        Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code,isactive);
-        if ( goods!= null)
+    public Goods getGoodsByCode(String corp_code, String goods_code, String isactive) throws Exception {
+        Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code, isactive);
+        if (goods != null)
             transter(goods);
         return goods;
     }
 
     @Override
-    public Goods goodsNameExist(String corp_code, String goods_name,String isactive) throws Exception{
-        Goods goods = goodsMapper.getGoodsByName(corp_code, goods_name,isactive);
+    public Goods goodsNameExist(String corp_code, String goods_name, String isactive) throws Exception {
+        Goods goods = goodsMapper.getGoodsByName(corp_code, goods_name, isactive);
         return goods;
     }
 
     //获取企业FAB季度
     @Override
-    public List<Goods> selectCorpGoodsQuarter(String corp_code) throws Exception{
+    public List<Goods> selectCorpGoodsQuarter(String corp_code) throws Exception {
         return goodsMapper.selectCorpGoodsQuarter(corp_code);
     }
 
     //获取企业FAB波段
     @Override
-    public List<Goods> selectCorpGoodsWave(String corp_code) throws Exception{
+    public List<Goods> selectCorpGoodsWave(String corp_code) throws Exception {
         return goodsMapper.selectCorpGoodsWave(corp_code);
     }
 
-    public List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception{
+    public List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception {
         List<Goods> goodsList = new ArrayList<Goods>();
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("brand_code",brand_code);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("brand_code", brand_code);
         if (!brand_code.equals("")) {
             String[] brand_codes = brand_code.split(",");
-            map.put("brand_code",brand_codes);
+            map.put("brand_code", brand_codes);
         }
-        map.put("corp_code",corp_code);
-        map.put("search_value",search_value);
-        map.put("isactive",Common.IS_ACTIVE_Y);
+        map.put("corp_code", corp_code);
+        map.put("search_value", search_value);
+        map.put("isactive", Common.IS_ACTIVE_Y);
         List<Goods> list = goodsMapper.selectAllGoodsForApp(map);
         for (int i = 0; list != null && i < list.size(); i++) {
             String image = "";
@@ -307,14 +313,14 @@ public class GoodsServiceImpl implements GoodsService {
                         JSONObject object = JSONObject.parseObject(jstring);
                         String good_image = object.get("image").toString();
                         String is_public = object.get("is_public").toString();
-                        if (is_public.equals("Y")){
+                        if (is_public.equals("Y")) {
                             image = image + good_image + ",";
                         }
                     }
                 }
             }
-            if (image.endsWith(",")){
-                goods.setGoods_image(image.substring(0,image.length()-1));
+            if (image.endsWith(",")) {
+                goods.setGoods_image(image.substring(0, image.length() - 1));
                 goodsList.add(goods);
             }
         }
@@ -353,7 +359,7 @@ public class GoodsServiceImpl implements GoodsService {
      *
      * @param goods ： 商品对象
      */
-    private void transterGoodsImg(Goods goods) throws Exception{
+    private void transterGoodsImg(Goods goods) throws Exception {
         String image = "11";
         if (goods.getGoods_image() != null && !goods.getGoods_image().equals("")) {
             String goods_image = goods.getGoods_image();
@@ -362,8 +368,8 @@ public class GoodsServiceImpl implements GoodsService {
                 String[] images = goods_image.split(",");
                 for (int i = 0; i < images.length; i++) {
                     JSONObject object = new JSONObject();
-                    object.put("image",images[i]);
-                    object.put("is_public","N");
+                    object.put("image", images[i]);
+                    object.put("is_public", "N");
                     array.add(object);
                 }
                 goods.setGoods_image(array.toString());
@@ -372,10 +378,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> getMatchFab(int page_number, int page_size,String corp_code,String search_value) throws SQLException {
+    public PageInfo<Goods> getMatchFab(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
-        list = goodsMapper.getMatchFab(corp_code,search_value);
+        list = goodsMapper.getMatchFab(corp_code, search_value);
         for (int i = 0; list != null && i < list.size(); i++) {
             transterGoods(list.get(i));
         }

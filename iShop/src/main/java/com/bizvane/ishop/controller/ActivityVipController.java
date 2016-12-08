@@ -470,5 +470,40 @@ public class ActivityVipController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 获取导购执行详情
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/userExecuteDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public String userExecuteDetail(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.getString("corp_code");
+            String user_code = jsonObject.getString("user_code");
+            String activity_vip_code = jsonObject.getString("activity_vip_code");
+
+            ArrayList list = activityVipService.userExecuteDetail(corp_code,activity_vip_code,user_code);
+
+            JSONObject obj = new JSONObject();
+            obj.put("list",list);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }
 
