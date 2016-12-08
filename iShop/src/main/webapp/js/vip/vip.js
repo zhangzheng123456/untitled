@@ -1838,15 +1838,11 @@ function getGroup() {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             var html = "";
-            var code = $("#filter_group").attr("data-code");
+            $("#filter_group").attr("data-corp",list[0].corp_code);
             $(".filter_group ul").empty();
             if (list.length>0) {
                 for (var i = 0; i < list.length; i++) {
-                    if(code == list[i].vip_group_code){
-                        html += '<li class="group_active" id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
-                    }else {
-                        html += '<li id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
-                    }
+                    html += '<li id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
                 }
                 $(".filter_group ul").append(html);
             } else if (list.length <= 0) {
