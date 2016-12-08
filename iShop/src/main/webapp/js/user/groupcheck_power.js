@@ -25,11 +25,13 @@ $('#edit_power').click(function(){
     corp_code=$('#OWN_CORP').val();
     var group_name=$('#GROUP_NAME').val();
     $('#group_code').val(group_code);
-    // $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
+    var group_corp={"corp_code":corp_code,"group_code":group_code,"group_name":group_name};
+    sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+    $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
     $('#group_name').val(group_name);
     $("#page-wrapper").hide();
     $(".content").show();
-    GET();
+    // GET();
 })
 //新增页面点击弹出角色权限的框
 $("#add_power").click(function(){
