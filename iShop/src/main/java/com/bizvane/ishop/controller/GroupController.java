@@ -57,8 +57,6 @@ public class GroupController {
     @Autowired
     private FunctionService functionService;
     @Autowired
-    private TableManagerService managerService;
-    @Autowired
     private CorpService corpService;
     @Autowired
     private BaseService baseService;
@@ -591,56 +589,7 @@ public class GroupController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 群组管理之
-     * 编辑群组信息
-     * 之查看权限
-     */
-    @RequestMapping(value = "/check_power1", method = RequestMethod.POST)
-    @ResponseBody
-    public String groupCheckPower1(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String login_user_code = request.getSession().getAttribute("user_code").toString();
-        String login_corp_code = request.getSession().getAttribute("corp_code").toString();
-        String login_role_code = request.getSession().getAttribute("role_code").toString();
-        String login_group_code = request.getSession().getAttribute("group_code").toString();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String group_code = jsonObject.get("group_code").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
 
-            String search_value = "";
-            if (jsonObject.has("searchValue")) {
-                search_value = jsonObject.get("searchValue").toString();
-            }
-            //获取登录用户的所有权限
-            JSONArray funcs = functionService.selectLoginPrivilege(login_corp_code,login_role_code, login_user_code, login_group_code, search_value);
-
-            Group group = groupService.selectByCode(corp_code, group_code, Common.IS_ACTIVE_Y);
-            String role_code = group.getRole_code();
-            group_code = corp_code +"G"+group_code;
-            JSONArray privilege_status = functionService.selectPrivilegeStatus("","",role_code,"N","Y",funcs);
-
-            JSONArray privilege_status1 = functionService.selectPrivilegeStatus("",group_code,"","Y","N",privilege_status);
-
-            JSONObject result = new JSONObject();
-            result.put("list", privilege_status1);
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
 
     /**
      * 群组管理之
@@ -673,58 +622,6 @@ public class GroupController {
                 master_code = group_code;
             }
             String result = functionService.updatePrivilege(master_code, user_id, array);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 群组管理之
-     * 编辑群组信息之
-     * 查看权限之
-     * 新增权限
-     */
-    @RequestMapping(value = "/check_power/save1", method = RequestMethod.POST)
-    @ResponseBody
-    public String addGroupCheckPower1(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String user_code = request.getSession().getAttribute("user_code").toString();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String del_act_id = jsonObject.get("del_act_id").toString();
-            String del_col_id = jsonObject.get("del_col_id").toString();
-            String add_action = jsonObject.get("add_action").toString();
-            String add_column = jsonObject.get("add_column").toString();
-
-            JSONArray act_array = JSONArray.parseArray(add_action);
-            JSONArray col_array = JSONArray.parseArray(add_column);
-
-            String group_code = jsonObject.get("group_code").toString();
-            String master_code;
-            if (jsonObject.has("corp_code")) {
-                String corp_code = jsonObject.get("corp_code").toString();
-                master_code = corp_code +"G"+ group_code;
-            } else {
-                master_code = group_code;
-            }
-            String result = functionService.updateACPrivilege(master_code, user_code,del_act_id, act_array,del_col_id,col_array);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

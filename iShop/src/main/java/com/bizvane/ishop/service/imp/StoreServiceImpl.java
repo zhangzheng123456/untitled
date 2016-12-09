@@ -75,12 +75,16 @@ public class StoreServiceImpl implements StoreService {
         String area_code = store.getArea_code();
 
         processStoreToSpecial(store);
-
         if (brand_code != null && !brand_code.equals("")) {
             brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
             String[] ids = brand_code.split(",");
-            for (int i = 0; i < ids.length; i++) {
-                Brand brand = brandMapper.selectByBrandCode(corp_code, ids[i],Common.IS_ACTIVE_Y);
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("corp_code",corp_code);
+            map.put("brand_code",ids);
+            map.put("search_value","");
+            List<Brand> brands = brandMapper.selectBrands(map);
+            for (int i = 0; i < brands.size(); i++) {
+                Brand brand = brands.get(i);
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
                     brand_name.append(brand_name1+",");
@@ -102,8 +106,12 @@ public class StoreServiceImpl implements StoreService {
         if (area_code != null && !area_code.equals("")) {
             area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] ids = area_code.split(",");
-            for (int i = 0; i < ids.length; i++) {
-                Area area = areaMapper.selectAreaByCode(corp_code,ids[i],Common.IS_ACTIVE_Y);
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("corp_code",corp_code);
+            map.put("area_codes",ids);
+            List<Area> areas = areaMapper.selectArea(map);
+            for (int i = 0; i < areas.size(); i++) {
+                Area area = areas.get(i);
                 if (area != null) {
                     String area_name1 = area.getArea_name();
                     area_name.append(area_name1+",");
