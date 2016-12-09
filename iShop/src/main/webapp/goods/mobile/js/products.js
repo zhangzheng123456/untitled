@@ -92,6 +92,12 @@
                     if(list[k].goods_match_code ==unqiuearr[c]){
                         title=list[k].goods_match_title;
                         var goods_image="";
+                        var isShare="";
+                        if(type=="app"){
+                            isShare='app';
+                        }else if(type=="share"){
+                            isShare='share';
+                        }
                         if(list[k].goods_image.indexOf("http")!==-1){
                             goods_image=list[k].goods_image;
                         }
@@ -102,7 +108,7 @@
                             + corp_code
                             + '&id='
                             + list[k].id
-                            + '"><li class="ti_img_wrap"><div class="ti_img"><img src="'
+                            + '&type='+isShare+'"><li class="ti_img_wrap"><div class="ti_img"><img src="'
                             + goods_image
                             + '" alt="暂无图片"></div><p>'
                             + list[k].goods_code
