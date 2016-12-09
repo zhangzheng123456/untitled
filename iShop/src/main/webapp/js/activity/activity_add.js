@@ -89,7 +89,7 @@ var funcCode=key_val.func_code;
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
-                if(execution_input.indexOf("任务")>-1&&start_time==""){
+                if(execution_input.indexOf("任务")>-1&&(start_time==""&& end_time=="")){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -263,7 +263,7 @@ var funcCode=key_val.func_code;
                 var execution_input = $("#execution_input").val();
                 var start_time = $("#start").val();
                 var end_time = $("#end").val();
-                if(execution_input.indexOf("任务")>-1&&start_time==""){
+                if(execution_input.indexOf("任务")>-1&&(start_time==""&& end_time=="")){
                     art.dialog({
                         time: 1,
                         lock: true,
