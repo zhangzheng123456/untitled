@@ -209,6 +209,13 @@ function superaddition(data, num) {//页面加载循环
         } else {
             var a = i + 1;
         }
+        var send_type='';
+        if(data[i].send_type=="sms"){
+            send_type="短信";
+        }
+        if(data[i].send_type=="template"){
+            send_type="微信模板";
+        }
         $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -220,6 +227,8 @@ function superaddition(data, num) {//页面加载循环
             + a
             + "</td><td><span  title='"+data[i].sms_code+"'>"
             + data[i].sms_code
+            + "</td><td><span title='"+send_type+"' class='send_type' data-type='"+data[i].send_type+"'>"
+            + send_type
             + "</span></td><td><span title='"+data[i].content+"'>"
             + data[i].content
             + "</span></td><td class='details'><a href='javascript:void(0)'>"

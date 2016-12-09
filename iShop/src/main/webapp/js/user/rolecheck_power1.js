@@ -62,6 +62,7 @@ var groupPower = {
         oc.postRequire("post", "/privilege/checkPower", "0", param, function(data) {
             var message = JSON.parse(data.message);
             var list = message.list;
+            $("#table tbody").empty();
             if(list.length<=0){
                 $(".power_table p").remove();
                 $(".power_table").append("<p>没有找到与<span class='color'>“"+$("#search").val()+"”</span>相关的信息，请重新搜索</p>");
@@ -163,7 +164,7 @@ var groupPower = {
             whir.loading.add("",0.5);//加载等待框
             oc.postRequire("post","/privilege/checkPower/save","0",param,function(data){
                 if(data.code=="0"){
-                    $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+                    $(window.parent.document).find('#iframepage').attr("src", "/user/role_edit.html");
                 }else if(data.code=="-1"){
                     alert(data.message);
                 }
@@ -178,7 +179,7 @@ var groupPower = {
         });
         $("#d_search").click(function(){//点击放大镜进行搜索
             self.getPowerlist();
-        })
+        });
     }
 };
 $(function() {

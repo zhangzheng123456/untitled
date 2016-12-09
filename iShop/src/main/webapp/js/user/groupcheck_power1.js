@@ -64,6 +64,7 @@ var groupPower = {
         oc.postRequire("post", "/privilege/checkPower", "0", param, function(data) {
             var message = JSON.parse(data.message);
             var list = message.list;
+            $("#table tbody").empty();
             if(list.length<=0){
                 $(".power_table p").remove();
                 $(".power_table").append("<p>没有找到与<span class='color'>“"+$("#search").val()+"”</span>相关的信息，请重新搜索</p>");
