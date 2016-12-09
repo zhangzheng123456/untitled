@@ -302,7 +302,7 @@ $("#baocun").click(function(){
 //  关闭
 $("#personal_close").click(function () {
     $(window.parent.document).find('#iframepage').attr("src","http://ishop.dev.bizvane.com/");
-})
+});
 
 function chongzhi() {
     $("#chongzhi_pwd").css('display','block');
