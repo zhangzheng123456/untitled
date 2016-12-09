@@ -91,7 +91,11 @@ public class VipFsendController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("发送成功");
-            } else {
+            } else if(result.equals("invalid")){
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("该会员未关注公众号");
+            }else{
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
