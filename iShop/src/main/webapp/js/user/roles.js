@@ -301,7 +301,7 @@ function jumpBianse(){
         var role_name=$(this).parents('tr').find("td:eq(3)").html();//角色名称
         var group_corp={"role_code":role_code,"role_name":role_name};//组成一个code的字符串
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
-        $(window.parent.document).find('#iframepage').attr("src","/user/role_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power1.html");
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){

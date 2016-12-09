@@ -7,15 +7,19 @@ var group_code="";//群主编号
 var corp_code="";//公司编号
 var user_code=""//用户编号
 $("#edit_power").click(function(){
-    corp_code=$('#OWN_CORP').val();
-	group_code=$('#OWN_RIGHT').attr("data-myrcode");
-    user_code=$('#USERID').val();
+    var corp_code=$('#OWN_CORP').val();
+	var group_code=$('#OWN_RIGHT').attr("data-myrcode");
+    var user_code=$('#USERID').val();
     var user_name=$('#USER_NAME').val();
-    $('#user_code').val(user_code);
-    $('#user_name').val(user_name);
-    $("#page-wrapper").hide();
-    $(".content").show();
-    GET();
+    var role_code=$('#OWN_RIGHT').attr("data-myjcode");
+    // $('#user_code').val(user_code);
+    // $('#user_name').val(user_name);
+    // $("#page-wrapper").hide();
+    // $(".content").show();
+    var group_corp={"corp_code":corp_code,"role_code":role_code,"group_code":group_code,"user_code":user_code,"user_name":user_name};
+    sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+    $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
+    // GET();
 })
 // $("#add_power").click(function(){
 //    group_code=$('#OWN_RIGHT').attr("data-myrcode");

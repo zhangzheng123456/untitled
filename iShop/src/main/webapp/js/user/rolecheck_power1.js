@@ -56,10 +56,8 @@ var groupPower = {
         var group_corp = self.getSession();
         var param = {};
         param["searchValue"]=$("#search").val();
-        param["corp_code"] = group_corp.corp_code;
-        param["group_code"] = group_corp.group_code;
         param["role_code"] = group_corp.role_code;
-        param["type"] = "group";
+        param["type"] = "role";
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", "/privilege/checkPower", "0", param, function(data) {
             var message = JSON.parse(data.message);
@@ -106,8 +104,8 @@ var groupPower = {
             var del_act_id = ""; //取消时获取的动作id
             var del_col_id = ""; //取消时获取的修改项id
             param["corp_code"] = group_corp.corp_code;
-            param["group_code"] = group_corp.group_code;
-            param["type"] = "group";
+            param["role_code"] = group_corp.role_code;
+            param["type"] = "role";
             for (var i = 0; i < tr.length; i++) {
                 var function_code = $(tr[i]).attr("data-function");
                 var action_li = $(tr[i]).find(".action_name ul li.active"); //动作的选中项
