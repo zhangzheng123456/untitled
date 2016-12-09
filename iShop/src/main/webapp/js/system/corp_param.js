@@ -10,47 +10,12 @@ var _param={};//筛选定义的内容
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
+var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取function_code的值
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
-if(return_jump!==null){
-    console.log(return_jump);
-    inx=return_jump.inx;
-    pageSize=return_jump.pageSize;
-    value=return_jump.value;
-    filtrate=return_jump.filtrate;
-    list=return_jump.list;
-    param=JSON.parse(return_jump.param);
-    _param=JSON.parse(return_jump._param);
-}
-if(return_jump==null){
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }
-}else if(return_jump!==null){
-    if(pageSize==10){
-        $("#page_row").val("10行/页");  
-    }
-    if(pageSize==30){
-        $("#page_row").val("30行/页");  
-    }
-    if(pageSize==50){
-        $("#page_row").val("50行/页");
-    }
-    if(pageSize==100){
-        $("#page_row").val("100行/页");
-    }
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }else if(value!==""){
-        $("#search").val(value);
-        POST(inx,pageSize); 
-    }else if(filtrate!==""){
-        filtrates(inx,pageSize); 
-    }
-}
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -65,6 +30,10 @@ $(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["funcCode"]=funcCode;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -108,6 +77,10 @@ $("#empty").click(function(){
     filtrate="";
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode) {
@@ -198,6 +171,10 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
 }
 function dian(a,b){//点击分页的时候调什么接口
     if (value==""&&filtrate=="") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(a,b);
     }else if (value!==""){
         param["pageNumber"] = a;
@@ -230,6 +207,7 @@ function superaddition(data,num){
         pageNumber=num;
     }
     for (var i = 0; i < data.length; i++) {
+        var TD=""
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
@@ -242,6 +220,12 @@ function superaddition(data,num){
         if(data[i].avatar!==""&&data[i].avatar!==undefined){
             avatar=data[i].avatar;
         }
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                TD+="<td><span>"+data[i][code]+"</span></td>";
+            })(c)
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -251,23 +235,9 @@ function superaddition(data,num){
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            +"</td><td>"
-            + data[i].corp_code
-            + "</td><td>"
-            + data[i].corp_name
-            + "</td><td>"
-            + data[i].param_desc
-            +"</td><td><span title='"+data[i].param_value+"'>"
-            +data[i].param_value
-            +"</span></td><td>"
-            +data[i].remark
-            +"</td><td>"
-            +data[i].modified_date
-            +"</td><td>"
-            +data[i].modifier
-            +"</td><td>"
-            +data[i].isactive
-            +"</td></tr>");
+            +"</td>" +
+            TD+
+            "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -285,6 +255,51 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
+};
+function InitialState(){
+    if(return_jump!==null){
+        inx=return_jump.inx;
+        pageSize=return_jump.pageSize;
+        value=return_jump.value;
+        filtrate=return_jump.filtrate;
+        list=return_jump.list;
+        param=JSON.parse(return_jump.param);
+        _param=JSON.parse(return_jump._param);
+    }
+    if(return_jump==null){
+        if(value==""&&filtrate==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
+            param["searchValue"]="";
+            GET(inx,pageSize);
+        }
+    }else if(return_jump!==null){
+        if(pageSize==10){
+            $("#page_row").val("10行/页");
+        }
+        if(pageSize==30){
+            $("#page_row").val("30行/页");
+        }
+        if(pageSize==50){
+            $("#page_row").val("50行/页");
+        }
+        if(pageSize==100){
+            $("#page_row").val("100行/页");
+        }
+        if(value==""&&filtrate==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
+            param["searchValue"]="";
+            GET(inx,pageSize);
+        }else if(value!==""){
+            $("#search").val(value);
+            POST(inx,pageSize);
+        }else if(filtrate!==""){
+            filtrates(inx,pageSize);
+        }
+    }
 }
 //页面加载调权限接口
 function qjia(){
@@ -293,17 +308,27 @@ function qjia(){
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
+        titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
+        InitialState();
+        tableTh();
     })
-}
+};
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
+};
 qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/corpParam/list?pageNumber="+a+"&pageSize="+b
-        +"&funcCode="+funcCode+"","","",function(data){
-        console.log(data);
+    //oc.postRequire("get","/corpParam/list?pageNumber="+a+"&pageSize="+b
+    //    +"&funcCode="+funcCode+"","","",function(data){
+    oc.postRequire("post","/corpParam/search","0",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -314,7 +339,6 @@ function GET(a,b){
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
-            console.log(data.message);
         }
     });
 }
@@ -338,7 +362,6 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/system/corp_param_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
@@ -346,7 +369,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -399,7 +421,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -431,7 +452,6 @@ $("#d_search").click(function(){
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/corpParam/search","0",param,function(data){
-        console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -457,7 +477,6 @@ function POST(a,b){
             $(".sxk").slideUp();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
-            console.log(data.message);
         }
     })
 }
@@ -486,12 +505,15 @@ $("#delete").click(function(){
     }
     var param={};
     param["id"]=ID;
-    console.log(param);
     oc.postRequire("post","/corpParam/delete","0",param,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
@@ -563,7 +585,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list ul").empty();
             for(var i=0;i<=message.length;i++){
                 $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -634,7 +655,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/user/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -650,7 +670,7 @@ function UpladFile() {
             if (xhr.status === 200) {
                 doResult(xhr.responseText);
             } else {
-                console.log('服务器返回了错误的响应状态码');
+                //console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
             }
         }
@@ -683,7 +703,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -801,6 +820,10 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 POST(inx, pageSize);

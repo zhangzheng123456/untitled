@@ -807,9 +807,9 @@ public class StoreController {
                         brand_code = brand_code + ",";
                     }
                     brand_code1 = brand_code1 + brand_code;
-                    codes = brand_code1.split(",");
-                    brand = brandService.getActiveBrand(corp_code, search_value, codes);
                 }
+                codes = brand_code1.split(",");
+                brand = brandService.getActiveBrand(corp_code, search_value, codes);
             } else if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)) {
                 List<Store> stores = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
                 String brand_code1 = "";

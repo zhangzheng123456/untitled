@@ -370,10 +370,10 @@ var interFace={
                 sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
                 $(window.parent.document).find('#iframepage').attr("src","/system/interface_edit.html");
             }else if(tr.length==0){
-                frame();
+                interFace.frame();
                 $('.frame').html("请先选择");
             }else if(tr.length>1){
-                frame();
+                interFace.frame();
                 $('.frame').html("不能选择多个");
             }
         });
@@ -398,7 +398,7 @@ var interFace={
             var h=$(document.body).height();
             var tr=$("tbody input[type='checkbox']:checked").parents("tr");
             if(tr.length==0){
-                frame();
+                interFace.frame();
                 $('.frame').html("请先选择");
                 return;
             }
@@ -407,6 +407,18 @@ var interFace={
             $("#p").css({"width":+l+"px","height":+h+"px"});
             $("#tk").css({"left":+interFace.left+"px","top":+interFace.tp+"px"});
         })
+    },
+    //删除弹框
+    frame:function (){
+        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+        },2000);
     },
     toPage:function(){  ////跳转页面的键盘按下事件
         var self=this;

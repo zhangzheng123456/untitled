@@ -533,11 +533,11 @@ public class WebController {
      */
     @RequestMapping(value = "/api/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String login(HttpServletRequest request) {
+    public String login(HttpServletRequest request,HttpServletResponse response) {
         logger.info("------------starttime" + new Date());
         String id = "";
         String msg = "";
-        String status = "FAILED";
+        String status = "failed";
         String data = "";
         JSONObject return_msg = new JSONObject();
         try {
@@ -578,14 +578,23 @@ public class WebController {
                     msg = "param [timestamp] is time_out";
                 }else {
                     JSONObject jsonObject = JSONObject.parseObject(data_message);
-                    String corp_code = jsonObject.get("corp_code").toString();
-                    String user_code = jsonObject.get("user_code").toString();
-                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code);
+//                    String corp_code = jsonObject.get("corp_code").toString();
+//                    String user_code = jsonObject.get("user_code").toString();
+                    String password = jsonObject.get("password").toString();
+                    String phone = jsonObject.get("account").toString();
+
+                    org.json.JSONObject user_info = userService.login(request, phone, password);
+
+//                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code,password);
                     if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
                         msg = user_info.getString("error");
                     } else {
-                        status = "SUCCESS";
-                        data = user_info.toString();
+//                        response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+                        status = "success";
+                        msg = "请求成功";
+                        JSONObject result = new JSONObject();
+                        result.put("redirect_url", CommonValue.ishop_url + "navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+                        data = result.toString();
                     }
                 }
             }
