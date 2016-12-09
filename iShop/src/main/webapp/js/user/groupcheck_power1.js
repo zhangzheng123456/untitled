@@ -6,6 +6,8 @@ var groupPower = {
     },
     getSession: function() { //获取本地存储
         var group_corp = JSON.parse(sessionStorage.getItem("group_corp")); //取本地的群组编号
+        $("#group_code").val(group_corp.group_code);
+        $("#group_name").val(group_corp.group_name);
         return group_corp
     },
     pageRendering: function(list) { //绘制页面
@@ -70,11 +72,20 @@ var groupPower = {
             }
         });
     },
-    clickWay: function() {
+    clickWay: function() {//所有的点击事件
         var self = this;
-        $("#turnoff").bind("click", function() {
+        $("#turnoff").bind("click", function() {//关闭按钮
             $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
         });
+        $("#back_group_list").click(function(){//回到列表
+            $(window.parent.document).find('#iframepage').attr("src", "/user/group.html");
+        });
+        $("#back_group_list").click(function(){//回到列表
+            $(window.parent.document).find('#iframepage').attr("src", "/user/group.html");
+        });
+        $("#back_group_edit").click(function(){//回到编辑界面
+            $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+        })
         $(".power_table").on("click", "ul li", function() {//点击选中状态
             var class_name = $(this).attr("class");
             if (class_name == "die") {
@@ -85,8 +96,8 @@ var groupPower = {
             }
         });
         $("#save").click(function() { //点击保存按钮获取列表内容
-            var tr = $("#table tbody tr");
-            var group_corp = self.getSession();
+            var tr = $("#table tbody tr");//获取所有的列表的字
+            var group_corp = self.getSession();//获取本地存储的值
             var param = {};
             var add_action = []; //动作
             var add_column = []; //列表项
@@ -161,13 +172,13 @@ var groupPower = {
                 whir.loading.remove();//移除加载框
             })
         });
-        $("#search").keydown(function() {
+        $("#search").keydown(function() {//搜索键盘事件的
             var event=window.event||arguments[0];
             if(event.keyCode == 13){
                 self.getPowerlist();
             }
         });
-        $("#d_search").click(function(){
+        $("#d_search").click(function(){//点击放大镜进行搜索
             self.getPowerlist();
         })
     }
