@@ -821,7 +821,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String, String> map, String store_code,String area_store, String area_code, String role_code) throws Exception {
         String[] stores = null;
-
+        map.remove("brand_name");
         if (!store_code.equals("")) {
             stores = store_code.split(",");
         }else {
@@ -865,7 +865,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> getScreenPart2(int page_number, int page_size, String corp_code, Map<String, String> map, String store_code,String area_store, String area_code, String role_code,List<Store> storeList) throws Exception {
         String[] stores = null;
-
+        //----------------------------------------
+        map.remove("brand_name");
+        String store_code2="";
+        for (Store store:storeList) {
+            store_code2 +=Common.SPECIAL_HEAD+ store.getStore_code()+",";
+        }
+        String[] split=null;
+        if(!store_code2.equals("")){
+            split  = store_code2.split(",");
+        }
+        //---------------------------------------
         if (!store_code.equals("")) {
             stores = store_code.split(",");
         }else {
@@ -898,25 +908,18 @@ public class UserServiceImpl implements UserService {
         params.put("map", map);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
+        params.put("storeList",split);
         PageHelper.startPage(page_number, page_size);
-        List<User> users = userMapper.selectPartScreen(params);
-        List<User> userList=new ArrayList<User>();
-        for (User user : users) {
-            for (Store store:storeList) {
-              String store_code_s =Common.SPECIAL_HEAD+store.getStore_code()+",";
-                if(user.getStore_code().contains(store_code_s)){
-                    userList.add(user);
-                }
-            }
-        }
-        conversion(userList);
-        PageInfo<User> page = new PageInfo<User>(userList);
+        List<User> users = userMapper.selectPartScreen2(params);
+        conversion(users);
+        PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
 
     @Override
     public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
         List<User> users;
+        map.remove("brand_name");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("map", map);
@@ -930,11 +933,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> getAllUserScreen2(int page_number, int page_size, String corp_code, Map<String, String> map,List<Store> storeList) throws Exception {
         List<User> users;
+        map.remove("brand_name");
+        String store_code="";
+        for (Store store:storeList) {
+            store_code +=Common.SPECIAL_HEAD+ store.getStore_code()+",";
+        }
+        String[] split=null;
+        if(!store_code.equals("")){
+            split  = store_code.split(",");
+        }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("map", map);
+        params.put("storeList",split);
         PageHelper.startPage(page_number, page_size);
-        users = userMapper.selectAllUserScreen(params);
+        users = userMapper.selectAllUserScreen2(params);
         conversion(users);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
