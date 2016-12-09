@@ -9,7 +9,6 @@ var groupPower = {
         return group_corp
     },
     pageRendering: function(list) { //绘制页面
-        console.log(list);
         var tr = "";
         for (var i = 0; i < list.length; i++) {
             var num = i + 1;
@@ -48,17 +47,27 @@ var groupPower = {
             tr += "</ul></div></td></tr>";
         }
         $("#table tbody").html(tr);
+        whir.loading.remove();//移除加载框
     },
     getPowerlist: function() {
         var self = this;
         var group_corp = self.getSession();
         var param = {};
+        param["searchValue"]=$("#search").val();
         param["corp_code"] = group_corp.corp_code;
         param["group_code"] = group_corp.group_code;
+        whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", "/user/group/check_power1", "0", param, function(data) {
             var message = JSON.parse(data.message);
             var list = message.list;
-            self.pageRendering(list);
+            if(list.length<=0){
+                $(".power_table p").remove();
+                $(".power_table").append("<p>没有找到与<span class='color'>“"+$("#search").val()+"”</span>相关的信息，请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+                $(".power_table p").remove();
+                self.pageRendering(list);
+            }
         });
     },
     clickWay: function() {
@@ -66,7 +75,7 @@ var groupPower = {
         $("#turnoff").bind("click", function() {
             $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
         });
-        $(".power_table").on("click", "ul li", function() {
+        $(".power_table").on("click", "ul li", function() {//点击选中状态
             var class_name = $(this).attr("class");
             if (class_name == "die") {
                 return;
@@ -92,24 +101,28 @@ var groupPower = {
                 var action_id_li = $(tr[i]).find(".action_name ul li"); //动作多有的项
                 var column_id_li = $(tr[i]).find(".modify_options ul li"); //允许修改项的所有项
                 for (var j = 0; j < action_li.length; j++) {
-                    var action_code = $(action_li[j]).attr("data-actioncode");
-                    var action_codes = {
-                        "action_code": action_code,
-                        "function_code": function_code
-                    };
-                    add_action.push(action_codes);
+                    if($(action_li[j]).attr("data-actionid")==""){
+                        var action_code = $(action_li[j]).attr("data-actioncode");
+                        var action_codes = {
+                            "action_code": action_code,
+                            "function_code": function_code
+                        };
+                        add_action.push(action_codes);
+                    };    
                 };
                 for (var k = 0; k < column_li.length; k++) {
-                    var column_name = $(column_li[k]).attr("data-columnname");
-                    var column_names = {
-                        "column_name": column_name,
-                        "function_code": function_code
-                    };
-                    add_column.push(column_names);
+                    if($(column_li[k]).attr("data-columnid")==""){
+                        var column_name = $(column_li[k]).attr("data-columnname");
+                        var column_names = {
+                            "column_name": column_name,
+                            "function_code": function_code
+                        };
+                        add_column.push(column_names);
+                    }
                 };
                 for (var l = action_id_li.length - 1; l >= 0; l--) {
                     var class_name = $(action_id_li[l]).attr("class");
-                    if (class_name !== "die") {
+                    if (class_name !== "die"&& class_name !=="active") {
                         var action_id = $(action_id_li[l]).attr("data-actionid");
                         if (action_id !== "" && action_id !== undefined) {
                             if (l > 0) {
@@ -121,12 +134,15 @@ var groupPower = {
                     }    
                 };
                 for (var m = column_id_li.length; m >= 0; m--) {
-                    var column_id = $(column_id_li[m]).attr("data-columnid");
-                    if (column_id !== "" && column_id !== undefined) {
-                        if (m > 0) {
-                            del_col_id += column_id + ",";
-                        } else {
-                            del_col_id += column_id;
+                    var class_name = $(column_id_li[m]).attr("class");
+                    if (class_name !=="active") {
+                        var column_id = $(column_id_li[m]).attr("data-columnid");
+                        if (column_id !== "" && column_id !== undefined) {
+                            if (m > 0) {
+                                del_col_id += column_id + ",";
+                            } else {
+                                del_col_id += column_id;
+                            }
                         }
                     }
                 }
@@ -135,9 +151,24 @@ var groupPower = {
             param["add_column"] = add_column;
             param["del_act_id"] = del_act_id;
             param["del_col_id"] = del_col_id;
+            whir.loading.add("",0.5);//加载等待框
             oc.postRequire("post","/user/group/check_power/save1","0",param,function(data){
-                console.log(data);
+                if(data.code=="0"){
+                    $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+                whir.loading.remove();//移除加载框
             })
+        });
+        $("#search").keydown(function() {
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                self.getPowerlist();
+            }
+        });
+        $("#d_search").click(function(){
+            self.getPowerlist();
         })
     }
 };

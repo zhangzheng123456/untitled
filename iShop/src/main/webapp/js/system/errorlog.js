@@ -26,6 +26,10 @@ if(return_jump!==null){
 }
 if(return_jump==null){
     if(value==""&&filtrate==""){
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(inx,pageSize);
     }
 }else if(return_jump!==null){
@@ -42,6 +46,10 @@ if(return_jump==null){
         $("#page_row").val("100行/页");
     }
     if(value==""&&filtrate==""){
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(inx,pageSize);
     }else if(value!==""){
         $("#search").val(value);
@@ -64,6 +72,10 @@ $(function(){
                 pageSize=$(this).attr('id');
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["funcCode"]=funcCode;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -109,6 +121,10 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize) {
@@ -199,6 +215,10 @@ function setPage(container, count, pageindex,pageSize) {
 }
 function dian(a,b){//点击分页的时候调什么接口
     if (value==""&&filtrate=="") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(a,b);
     }else if (value!==""){
         param["pageNumber"] = a;
@@ -287,13 +307,14 @@ function qjia(){
 qjia();
 //页面加载时list请求
 function GET(a,b){
-        param={
-            "page_num":a,
-            "page_size":b
-        }
+        //param={
+    //    "page_num":a,
+    //    "page_size":b
+    //};
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/errorLog/list?pageNumber="+a+"&pageSize="+b
-        +"&funcCode="+funcCode+"","",param,function(data){
+    //oc.postRequire("get","/errorLog/list?pageNumber="+a+"&pageSize="+b
+    //    +"&funcCode="+funcCode+"","",param,function(data){
+    oc.postRequire("post","/errorLog/search","0",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -448,6 +469,10 @@ $("#delete").click(function(){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
@@ -812,6 +837,10 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;

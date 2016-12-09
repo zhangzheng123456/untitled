@@ -572,6 +572,80 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 免密码登录
+     */
+    @Transactional
+    public JSONObject noPasswdlogin(HttpServletRequest request, String corp_code, String user_code) throws Exception {
+        logger.info("-----------noPasswdlogin--------");
+
+        JSONObject user_info = new JSONObject();
+
+        List<User> users = userMapper.selectUserCode(user_code,corp_code,Common.IS_ACTIVE_Y);
+        if (users.size()>1 || users.size()<1 || users.get(0).getCan_login().equals("N")){
+            user_info.put("error", "账号异常");
+            user_info.put("status", Common.DATABEAN_CODE_ERROR);
+        }else {
+            User login_user = users.get(0);
+            int user_id = login_user.getId();
+            String phone = login_user.getPhone().trim();
+            String user_name = login_user.getUser_name();
+            String group_code = login_user.getGroup_code().trim();
+            String store_code = login_user.getStore_code().trim();
+            String area_code = login_user.getArea_code().trim();
+
+            String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code().trim();
+
+            request.getSession().setAttribute("user_id", user_id);
+            request.getSession().setAttribute("user_name", user_name);
+            request.getSession().setAttribute("user_code", user_code);
+            request.getSession().setAttribute("phone", phone);
+            request.getSession().setAttribute("corp_code", corp_code);
+            request.getSession().setAttribute("role_code", role_code);
+            request.getSession().setAttribute("group_code", group_code);
+            request.getSession().setAttribute("area_code", "");
+            request.getSession().setAttribute("store_code", "");
+            request.getSession().setAttribute("brand_code", "");
+
+            String user_type;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                user_type = "admin";
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                //总经理
+                user_type = "gm";
+            } else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                user_type = "bm";
+                if (login_user.getBrand_code() != null) {
+                    String brand_code = login_user.getBrand_code().trim();
+                    request.getSession().setAttribute("brand_code", brand_code);
+                }
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                //区经
+                user_type = "am";
+                request.getSession().setAttribute("area_code", area_code);
+                request.getSession().setAttribute("store_code", store_code);
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                //店长
+                user_type = "sm";
+                request.getSession().setAttribute("store_code", store_code);
+            } else {
+                //导购
+                user_type = "staff";
+                request.getSession().setAttribute("store_code", store_code);
+            }
+            request.getSession().setAttribute("user_type", user_type);
+            user_info.put("role_code", role_code);
+            user_info.put("status", Common.DATABEAN_CODE_SUCCESS);
+            user_info.put("redirect_url", CommonValue.ishop_url+"navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+            Date now = new Date();
+            login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
+            userMapper.updateByUserId(login_user);
+        }
+        return user_info;
+    }
+
+    /**
      * 验证手机号是否已注册
      */
     @Override

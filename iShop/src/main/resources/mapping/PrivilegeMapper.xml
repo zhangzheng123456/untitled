@@ -156,7 +156,12 @@
 
     <!--获取登陆人的权限动作-->
     <select id="selectPrivilegeAct" resultType="com.bizvane.ishop.entity.Privilege">
-        SELECT *
+        SELECT p.id,
+        p.function_code,
+        p.master_code,
+        p.action_code,
+        a.action_name,
+        a.action_show_name
         FROM def_action a,def_function b,def_privilege p
         WHERE a.function_code = b.function_code
         AND a.action_code = p.action_code
@@ -175,7 +180,11 @@
 
     <!--获取登陆人的权限列-->
     <select id="selectPrivilegeCol" resultType="com.bizvane.ishop.entity.Privilege">
-        SELECT *
+        SELECT p.id,
+        p.function_code,
+        p.column_name,
+        p.master_code,
+        a.show_name
         FROM def_table_manager a,def_function b, def_table_privilege p
         WHERE a.function_code = b.function_code
         AND a.function_code = p.function_code

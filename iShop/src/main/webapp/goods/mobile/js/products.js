@@ -53,6 +53,7 @@
             }
             jQuery('#buy').html("详情");
             jQuery('#content').html(list.share_description);
+            jQuery('.detail').html('<p class="product_code">商品编号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         }else if(type=="app"){
             for(var i=0;i<goods_image.length;i++){
                 if(goods_image[i].image.indexOf("http")!==-1){
@@ -63,10 +64,10 @@
                 }
             }
             jQuery('#content').html(list.goods_description);
+            jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         }
         document.title = list.goods_name;
         goodsName=list.goods_name;
-        jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         list=list.matchgoods;
         if(list.length>0){
             var arr=[];
