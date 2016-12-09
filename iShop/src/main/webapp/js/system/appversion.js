@@ -237,25 +237,9 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
-                        + data[i].platform
-                        + "</td><td><span title='"+data[i].download_addr+"'>"
-                        + data[i].download_addr
-                        + "</span></td><td><span title='"+data[i].version_id+"'>"
-                        + data[i].version_id
-                        + "</span></td><td><span>"
-                        + data[i].is_force_update
-                        +"</span></td><td><span title='"+data[i].corp_code+"'>"
-                        +data[i].corp_code
-                        + "<span></td><td><span title='"+data[i].version_describe+"'>"
-                        +data[i].version_describe
-                        + "</span></td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
+                        + "</td>" +
+                        TD +
+                        "</tr>");
     }
     $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
