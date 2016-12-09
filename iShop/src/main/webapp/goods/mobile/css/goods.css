@@ -94,7 +94,10 @@ a {
     .detail .total p {
       float: left;
       width: 33.3333%;
-      text-align: left; }
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
 
 .buy-match {
   width: 100%; }
