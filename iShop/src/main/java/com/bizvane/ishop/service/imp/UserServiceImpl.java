@@ -948,6 +948,9 @@ public class UserServiceImpl implements UserService {
         String[] split=null;
         if(!store_code2.equals("")){
             split  = store_code2.split(",");
+        }else {
+            store_code2 = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+            split = store_code2.split(",");
         }
         //---------------------------------------
         if (!store_code.equals("")) {
@@ -1015,6 +1018,9 @@ public class UserServiceImpl implements UserService {
         String[] split=null;
         if(!store_code.equals("")){
             split  = store_code.split(",");
+        }else {
+            store_code = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz"+Common.SPECIAL_HEAD+Common.SPECIAL_HEAD;
+            split = store_code.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
