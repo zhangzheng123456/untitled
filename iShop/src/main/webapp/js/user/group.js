@@ -428,7 +428,7 @@ function jumpBianse(){
         var group_name=$(this).parents('tr').find("td:eq(3)").html();
         var group_corp={"corp_code":corp_code,"group_code":group_code,"group_name":group_name};
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-        $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","user/usercheck_power1.html");
     })
 }
 //鼠标按下时触发的收索
