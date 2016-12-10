@@ -7,6 +7,7 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
+var page=1;//批量标签搜索
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
@@ -302,6 +303,8 @@ function jurisdiction(actions){
             $("#more_down").append("<div id='leading_out'>导出</div>");
         }else if(actions[i].act_name=="input"){
             $("#more_down").append("<div id='guide_into'>导入</div>");
+        }else if(actions[i].act_name=="addLabel"){
+            $("#more_down").append("<div style='font-size:10px;' id='batch_label'>批量贴标签</div>");
         }
     }
 }
@@ -352,6 +355,193 @@ function GET(a,b){
             alert(data.message);
         }
     });
+}
+//批量贴标签
+$("#more_down").on("click","#batch_label",function () {
+    var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+    if(tr.length == 0){
+        frame();
+        $(".frame").html("请选择会员");
+    }else if(tr.length>0) {
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#screen_wrapper").width())/2;
+        var tp=(arr[3]-$("#screen_wrapper").height())/2;
+        $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});;
+        $("#p").show();
+        $("#batch_label_wrapper").show();
+        $("#batch_label_hot").empty();
+        var param={};
+        var vip_id="";
+        for(var j=0;j<tr.length;j++){
+            vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
+        }
+        param['vip_id']=vip_id;
+        param["corp_code"]=$(tr[0]).attr("id");
+        oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
+            if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list);
+                var html="";
+                var classname="";
+                for(var i=0;i<msg.length;i++){
+                    if(msg[i].label_type=="user"){
+                        classname="label_u";
+                    }else{
+                        classname="label_g";
+                    }
+                    html+="<span data-id="+msg[i].label_id+" class="+classname+" id="+i+">"+msg[i].label_name+"</span>"
+                }
+                $("#batch_label_hot").append(html);
+            }
+        })
+    }
+});
+$("#close_label").click(function () {
+    $("#batch_label_wrapper").hide();
+    $("#p").hide();
+});
+//批量标签tabel页切换
+$("#label_title li").click(function () {
+    $(this).addClass("liactive");
+    $(this).siblings("li").removeClass("liactive");
+    if($(this).html()=="热门"){
+        $("#batch_label_hot").show();
+        $("#batch_label_gov").hide();
+    }else if($(this).html()=="官方"){
+        $("#batch_label_gov").show();
+        $("#batch_label_hot").hide();
+        $("#batch_label_gov").empty();
+        var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+        var param={};
+        var vip_id="";
+        var page=1;
+        for(var j=0;j<tr.length;j++){
+            vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
+        }
+        param["type"]="2";
+        param['vip_id']=vip_id;
+        param["corp_code"]=$(tr[0]).attr("id");
+        param['pageNumber']=page;
+        param['searchValue']="";
+        oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+            if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                var list=JSON.parse(msg.list)
+                var hasNextPage=list.hasNextPage;
+                list=list.list;
+                var html="";
+                var classname="";
+                // if(hasNextPage==false){
+                //     $("#more_label_g").hide();
+                // }else {
+                //     $("#more_label_g").show();
+                // }
+                for(var i=0;i<list.length;i++){
+                    classname="label_g";
+                    html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+i+"g'>"+list[i].label_name+"</span>"
+                }
+                $("#batch_label_gov").append(html);
+            }
+        })
+    }
+});
+//批量添加标签
+$("#batch_label_box").on("click","span",function () {
+    var that=$(this);
+    addViplabel(that,"");
+});
+//按钮添加
+$("#label_add").click(function () {
+    var btn=$("#batch_search_label").val().trim();
+    addViplabel("",btn);
+});
+//搜索标签
+$('#batch_search_label').bind('input propertychange', function() {
+    var thatFun=arguments.callee;
+    var that=this;
+    $(this).unbind("input propertychange",thatFun);
+    $(".batch_search_label ul").empty();
+    page=1;
+    searchHotlabel();
+    setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
+});
+//搜索热门标签
+function searchHotlabel() {
+    var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+    var param={};
+    var vip_id="";
+    for(var j=0;j<tr.length;j++){
+        vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
+    }
+    param["corp_code"]=$(tr[0]).attr("id");
+    param['pageNumber']=page;
+    param['vip_id']=vip_id;
+    param['searchValue']=$('#batch_search_label').val().replace(/\s+/g,"");
+    param['type']="1";
+    oc.postRequire("post","/VIP/label/findViplabelByType","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            msg=JSON.parse(msg.list)
+            var hasNextPage=msg.hasNextPage;
+            var list=msg.list;
+            var html="";
+            if(list.length>0){
+                $(".batch_search_label ul").show();
+                for(var i=0;i<list.length;i++){
+                    html+="<li data-id="+list[i].id+">"+list[i].label_name+"</li>"
+                }
+                $(".batch_search_label ul").append(html);
+            }else {
+                $(".batch_search_label ul").hide();
+            }
+            if(hasNextPage==true){
+
+            }
+        }
+        //搜索下拉点击事件
+        $(".batch_search_label ul li").click(function () {
+          $("#batch_search_label").val($(this).html());
+        })
+    })
+}
+function addViplabel(obj,btn) {
+    var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+    var classname=$(obj).attr("class");
+    var param={};
+    var list=[];
+    for(var i=0;i<tr.length;i++){
+        var code=$(tr[i]).children("td:nth-child(3)").attr("id");
+        var store_id=$(tr[i]).attr("data-storeid");
+        var params={
+            "vip_code":code,
+            "store_code":store_id
+        }
+        list.push(params);
+    }
+    if(btn!==""){
+        param['label_name']=btn;
+    }else{
+        param['label_name']=$(obj).html();
+    }
+    param["corp_code"]=$(tr[0]).attr("id");
+    param['label_id']="";
+    param['list']=list;
+    oc.postRequire("post","/VIP/label/addBatchRelViplabel","",param,function(data){
+        if(data.code=="0"){
+            if(btn!==""){
+                frame();
+                $(".frame").html("添加成功");
+            }
+            if(classname=="label_u"){
+                $(obj).removeClass(classname).addClass("label_u_active");
+            }else if(classname=="label_g"){
+                $(obj).removeClass(classname).addClass("label_g_active");
+            }
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html('添加失败');
+        }
+    })
 }
 //加载完成以后页面进行的操作
 function jumpBianse(){

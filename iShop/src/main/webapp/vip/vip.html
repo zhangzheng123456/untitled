@@ -125,6 +125,136 @@
         background: #4a5f7c;
         color: #FFFFFF;
     }
+    /*批量标签*/
+    .batch_label_wrapper{
+        display: none;
+        position: absolute;
+        top:20%;
+        left:30%;
+        z-index: 1000;
+        width:400px;
+        height: 400px;
+        border-radius: 5px;
+        border: 1px solid #d1d1d1;
+        background: #FFFFFF;
+        box-shadow: 0 0  14px #d1d1d1;
+    }
+    .batch_search_label{
+        display: inline-flex;
+        height: 30px;
+        padding: 10px;
+        margin-top: 10px;
+        position: relative;
+        color: #888;
+    }
+    .batch_search_label .icon-ishop_3-05{
+        position: absolute;
+        right: 120px;
+        top: 14px;
+        font-size: 25px;
+    }
+    .batch_search_label ul{
+        display: none;
+        position: absolute;
+        top: 41px;
+        text-indent: 10px;
+        width: 270px;
+        height: 100px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        overflow-y: scroll;
+    }
+    .batch_search_label ul li{
+        width: 100%;
+        height: 25px;
+        line-height: 25px;
+        cursor: pointer;
+    }
+    .batch_search_label ul li:hover{
+        color: #FFFFFF;
+        background: #4a5f7c;
+    }
+    .batch_search_label input{
+        width: 270px;
+        height: 30px;
+        border: 1px solid #e8e8e8;
+        outline: none;
+        border-radius: 5px;
+        text-indent: 10px;
+    }
+    .add_label{
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background: #6cc1c8;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-left: 15px;
+    }
+    .batch_label_box{
+        height: 300px;
+        /*overflow-y: scroll;*/
+        margin-top: 10px;
+        padding: 0 20px;
+    }
+    .batch_label_box span{
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        padding: 0px 8px;
+        text-align: center;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+    .batch_label_box span + span{
+        margin-right: 5px;
+    }
+    .label_u{
+        color: #9d9d9d;
+        border: 1px dashed #9d9d9d;
+    }
+    .label_u_active{
+        color: #fff;
+        background: #9b9b9b;
+    }
+    .label_g{
+        color: #6dc1c8;
+        border: 1px dashed #6dc1c8;
+    }
+    .label_g_active{
+        background: #6cc1c8;
+        color: #fff;
+    }
+    .batch_label_wrapper .icon-ishop_6-12{
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        line-height: 15px;
+        text-align: right;
+        right: 0px;
+        top: 0px;
+        color: #888;
+    }
+    .label_title{
+        width:100%;
+        height: 30px;
+        line-height: 30px;
+        color: #888;
+    }
+    .label_title li{
+        width:50%;
+        float: left;
+        text-align: center;
+        cursor: pointer;
+    }
+    .label_title .liactive{
+        color: #6dc1c8;
+        border-bottom: 1px solid #6dc1c8;
+    }
 </style>
 <body>
 <div class="content">
@@ -643,6 +773,34 @@
     </div>
     <div class="screen_que">确定</div>
 </div>
+<!--批量贴标签-->
+<div class="batch_label_wrapper" id="batch_label_wrapper">
+    <span class="icon-ishop_6-12" id="close_label"></span>
+    <div class="batch_search_label">
+        <input type="text" id="batch_search_label" maxlength="8"><i class="icon-ishop_3-05"></i><div class="add_label" id="label_add">贴上</div>
+        <ul>
+        </ul>
+    </div>
+    <div class="label_title" id="label_title">
+        <ul>
+            <li class="liactive">热门</li>
+            <li>官方</li>
+        </ul>
+    </div>
+    <div id="batch_label_box">
+        <div class="batch_label_box" id="batch_label_hot">
+            <!--<span class="label_u_active">老同学</span>-->
+            <!--<span class="label_u_active">家有地暖</span>-->
+            <!--<span class="label_u_active">买2套浴巾送人</span>-->
+            <!--<span class="label_g_active">有品位</span>-->
+            <!--<span class="label_u_active">8月31生日</span>-->
+            <!--<span class="label_u_active">喜欢红色</span>-->
+        </div>
+        <div class="batch_label_box" id="batch_label_gov">
+
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
@@ -918,6 +1076,9 @@
         }
         if(!($(e.target).is("#filter_group")||$(e.target).is(".filter_group input"))){
             $(".filter_group").hide();
+        }
+        if(!($(e.target).is("#batch_search_label"))){
+            $(".batch_search_label ul").hide();
         }
     });
     $(function () {

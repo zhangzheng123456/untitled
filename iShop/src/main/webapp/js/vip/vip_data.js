@@ -405,7 +405,7 @@ $(".label_nav li").click(function () {
     $(this).siblings().removeClass("label_li_active");
     $(".label_box").eq(index).show();
     $(".label_box").eq(index).siblings("div").hide();
-})
+});
 //添加，删除标签
 function labelDelete(obj) {
     var param={};
