@@ -440,7 +440,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             }else if(send_type.equals("template")){
                 result="微信模板";
             }else{
-                send_type="";
+                result="";
             }
             vipFsend.setSend_type(result);
 
