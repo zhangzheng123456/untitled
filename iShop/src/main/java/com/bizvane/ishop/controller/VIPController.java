@@ -539,7 +539,8 @@ public class VIPController {
             String page_num = 1+"";
             String page_size =  Common.EXPORTEXECLCOUNT+"";
 
-            String output_message = jsonObj.get("output_message").toString();
+            org.json.JSONObject jsonObj2 = new org.json.JSONObject(param);
+            String output_message = jsonObj2.get("output_message").toString();
             org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
 
             if (role_code.equals(Common.ROLE_SYS)) {
