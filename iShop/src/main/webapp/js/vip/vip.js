@@ -525,16 +525,20 @@ function addViplabel(obj,btn) {
     oc.postRequire("post","/VIP/label/addBatchRelViplabel","",param,function(data){
         if(data.code=="0"){
             if(btn!==""){
-                if($(".batch_label_box").css("display")=="block"){
-                    var len = $(".batch_label_box span").length;
-                    for(var i=0;i<len;i++){
-                        if(btn == $($(".batch_label_box span")[i]).html()){
-                            var classname1=$($(".batch_label_box span")[i]).attr("class");
-                            if(classname1=="label_u"){
-                                $($(".batch_label_box span")[i]).removeClass(classname1).addClass("label_u_active");
-                            }else if(classname1=="label_g"){
-                                $($(".batch_label_box span")[i]).removeClass(classname1).addClass("label_g_active");
-                            }
+                var len_g = $("#batch_label_gov span").length;
+                var len_h = $("#batch_label_hot span").length;
+                for(var i=0;i<len_g;i++){
+                    if(btn == $($("#batch_label_gov span")[i]).html()){
+                        $($("#batch_label_gov span")[i]).removeClass("label_g").addClass("label_g_active");
+                    }
+                }
+                for(var j=0;j<len_h;j++){
+                    if(btn == $($("#batch_label_hot span")[i]).html()){
+                        var name = $($("#batch_label_hot span")[i]).attr("class");
+                        if(name=="label_u"){
+                            $($("#batch_label_hot span")[i]).removeClass("label_u").addClass("label_u_active");
+                        }else if(name=="label_g"){
+                            $($("#batch_label_hot span")[i]).removeClass("label_g").addClass("label_g_active");
                         }
                     }
                 }
@@ -1392,7 +1396,7 @@ function getstafflist(a,b){
     var pageNumber=a;
     var _param={};
     if(b=="staff"){
-        _param['store_code']=$(tr[0]).attr("data-storeid");//店铺
+        _param['store_code']=$(tr[0]).attr("data-storecode");//店铺
         _param['searchValue']=$("#search_staff").val().trim();//搜索值
     }else{
         _param['area_code']=message.cache.area_codes;
@@ -1948,7 +1952,7 @@ $("#choose_staff .screen_que").click(function () {
        $("#p").hide();
        var staff_name = $("#choose_staff .screen_content_r ul li span").html();
        var user_code = $("#choose_staff .screen_content_r ul li").attr("id");
-       var store_code = $(tr[0]).attr("data-storecode");
+       var store_code = $(tr[0]).attr("data-storeid");
        var vip_id = "";
        for(var i=0;i<tr.length;i++){
            if(i<tr.length-1){
