@@ -573,10 +573,7 @@ function jumpBianse(){
             $(this).removeClass("tr");
         }
     })
-    //点击新增时页面进行的跳转
-    $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_add.html");
-    })
+
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).children().eq(2).attr("id");
@@ -2058,5 +2055,13 @@ function getGroup() {
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();
 })
-
+//新增页面弹窗事件
+$('#jurisdiction').on('click','#add',function(e){
+    e.stopPropagation();
+    $('#get_more').show();
+    console.log('ok')
+})
+$('#get_more .head_span_r').click(function () {
+    $('#get_more').hide();
+});
 

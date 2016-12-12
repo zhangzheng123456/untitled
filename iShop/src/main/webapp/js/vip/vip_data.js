@@ -660,6 +660,37 @@ function getNowFormatDate() {//获取当前日期
     var currentdate = ""+year+month+strDate+H+M+S+m;
     return currentdate
 }
+//会员资料基本信息更改
+$('#change_save').click(function () {
+    var param={}
+    param.vip_id=$('#vip_name_edit').attr('data_vip_id');
+    param.vip_name=$('#vip_name_edit').val();
+    param.corp_code=sessionStorage.getItem('corp_code');
+    param.phone=$('#vip_phone_edit').val();
+    param.birthday=$('#vip_birthday_edit').val().split('-').join('');
+    param.card_no=$('#vip_card_no_edit').val();
+    oc.postRequire("post","/vip/updateVip","",param,function(data){
+        if(data.code==0){
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "保存成功"
+            });
+            return;
+        }else if(data.code==-1){
+            art.dialog({
+                zIndex:10003,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "保存失败"
+            });
+            return;
+        }
+    });
+});
 $(function(){
     getConsumCount();
     upLoadAlbum();

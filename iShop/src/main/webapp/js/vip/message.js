@@ -229,7 +229,7 @@ function superaddition(data, num) {//页面加载循环
             + data[i].sms_code
             + "</td><td><span title='"+send_type+"' class='send_type' data-type='"+data[i].send_type+"'>"
             + data[i].send_type
-            + "</span></td><td><span title='"+data[i].content+"'>"
+            + "</span></td><td class='message_content'><span title='"+data[i].content+"'>"
             + data[i].content
             + "</span></td><td class='details'><a href='javascript:void(0)'>"
             + "查看"
@@ -350,8 +350,14 @@ function jumpBianse() {
         }
         var param={};
         var id=$(this).parents('tr').attr("id");
+        var send_type=$(this).parents('tr').find('.send_type').attr("data-type");
+        var content=$(this).parents('tr').find('.message_content span').html();
         param["id"]=id;
+        param["send_type"]=send_type;
+        param["content"]=content;
+        console.log(content);
         whir.loading.add("",0.5);//加载等待框
+        console.log(param);
         oc.postRequire("post","/vipFsend/checkVipInfo","0",param,function(data){
             if(data.code=="0"){
                 $('#details').show();
