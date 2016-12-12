@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.controller.VipFsendController;
 import com.bizvane.sun.common.service.http.HttpClient;
 import com.bizvane.ishop.dao.VipFsendMapper;
 import com.bizvane.ishop.entity.Store;
@@ -30,6 +31,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     MongoDBClient mongodbClient;
 
     private static HttpClient httpClient = new HttpClient();
+    private static final Logger logger = Logger.getLogger(VipFsendServiceImpl.class);
 
 
     /**
@@ -69,14 +72,17 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     @Override
     public String getVipFsendById(int id, String send_type, String content) throws Exception {
+        MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         String message = "";
         String vip_id = "";
         String vip_name = "";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
+        logger.info("json--sms_vips-----------------------" + sms_vips);
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
         String type = vips_obj.get("type").toString().trim();
+        logger.info("json--send_type-----------------------" + send_type);
         if (send_type.equals("sms")) {
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -118,13 +124,14 @@ public class VipFsendServiceImpl implements VipFsendService {
             }
         } else if (send_type.equals("template")) {
             //如果发送类型是微信模板消息，根据筛选会员方式获取vip_id
-            MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+
             //字符串去换行符
             Pattern p = Pattern.compile("\\s*|\t|\r|\n");
             Matcher m = p.matcher(content);
             String m1 = m.replaceAll("");
             JSONObject contents = JSONObject.parseObject(m1);
             String message_id = contents.get("message_id").toString().trim();
+            logger.info("json--message_id-----------------------" + message_id);
 
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -150,7 +157,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                        vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                        vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
 
                     }
                 } else {
@@ -166,7 +173,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                        vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                        vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                     }
 
                 }
@@ -184,13 +191,15 @@ public class VipFsendServiceImpl implements VipFsendService {
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 }
-
             }
+
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             String vipname[] = vip_name.split(",");
+            logger.info("json--vipid-----------------------" + vip_id);
+            logger.info("json--vipname-----------------------" + vip_name);
             List<Map<String, Object>> list = new ArrayList();
             for (int i = 0; i < vipid.length; i++) {
                 for (int j = 0; j < vipname.length; j++) {
@@ -198,7 +207,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     String name = vipname[i];
                     Map query_key = new HashMap();
                     query_key.put("template", "fsend");
-                    query_key.put("message_id", message_id);
+                    query_key.put("_id", message_id);
                     query_key.put("vip_id", vip);
                     List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
                     if (message_list.size() == 0) {
@@ -207,8 +216,14 @@ public class VipFsendServiceImpl implements VipFsendService {
                         list_fail.put("vip_name", name);
                         list_fail.put("is_read", "发送失败");
                         list.add(list_fail);
+                        JSONObject  vips_info=new JSONObject();
+                        vips_info.put("vips_info",list);
+                        message=JSON.toJSONString(vips_info);
                     } else {
                         list.addAll(message_list);
+                        JSONObject  vips_info=new JSONObject();
+                        vips_info.put("vips_info",list);
+                        message=JSON.toJSONString(vips_info);
                     }
                 }
             }
@@ -519,7 +534,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         JSONObject message = new JSONObject();
         MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         Map query_key = new HashMap();
-        query_key.put("_id", "read" + System.currentTimeMillis());
+        query_key.put("_id", message_id);
         List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
         if (message_list.size() > 0) {
             message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));

@@ -6,9 +6,13 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var cout="";
+var titleArray=[];
+var filtrate="";
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
+return_jump=JSON.parse(return_jump);
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -18,11 +22,12 @@ $(function(){
                 showLi();  
             }  
         });            
-        $("#liebiao li").each(function(i,v){  
+        $("#liebiao li").each(function(i,v){
             $(this).click(function(){
+                inx=1;
                 pageSize=$(this).attr('id');  
                 if(value==""){
-                    GET();
+                    GET(inx,pageSize);
                 }else if(value!==""){
                     param["pageSize"]=pageSize;
                     POST(); 
@@ -110,7 +115,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
     container.innerHTML = a.join("");
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageindex; //初始的页码
+        inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页
@@ -166,14 +171,19 @@ function superaddition(data,num){//页面加载循环
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-
-
-    console.log(data);
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
+        }
+
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                TD+="<td><span>"+data[i][code]+"</span></td>";
+            })(c)
         }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
@@ -184,24 +194,16 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
-                        + data[i].role_code
-                        + "</td><td>"
-                        + data[i].role_name
-                        + "</td><td>"
-                        + data[i].remark
-                        +"</td><td class='power'><a href='javascript:void(0);'>"
+                        + "</td>" +
+                        TD +
+                        "<td class='power'><a href='javascript:void(0);'>"
                         +"编辑"
-                        + "</a></td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
+                         + "</a></td>"
+                        +"</tr>");
     }
     whir.loading.remove();//移除加载框
-};
+    sessionStorage.removeItem("return_jump");
+}
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
@@ -215,24 +217,70 @@ function jurisdiction(actions){
         }
     }
 }
-//页面加载调权限接口
+function InitialState(){
+    if(return_jump!==null){
+        inx=return_jump.inx;
+        pageSize=return_jump.pageSize;
+        value=return_jump.value;
+        //filtrate=return_jump.filtrate;
+        //list=return_jump.list;
+        param=JSON.parse(return_jump.param);
+        //_param=JSON.parse(return_jump._param);
+    }
+    if(return_jump==null){
+        if(value==""&&filtrate==""){
+            GET(inx,pageSize);
+        }
+    }else if(return_jump!==null){
+        if(pageSize==10){
+            $("#page_row").val("10行/页");
+        }
+        if(pageSize==30){
+            $("#page_row").val("30行/页");
+        }
+        if(pageSize==50){
+            $("#page_row").val("50行/页");
+        }
+        if(pageSize==100){
+            $("#page_row").val("100行/页");
+        }
+        if(value==""&& filtrate==""){
+            GET(inx,pageSize);
+        }else if(value!==""){
+            $("#search").val(value);
+            POST(inx,pageSize);
+        }else if(filtrate!==""){
+            filtrates(inx,pageSize);
+        }
+    }
+}
+//页面加载调权限
 function qjia(){
     var param={};
     param["funcCode"]=funcCode;
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
+        titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
+        InitialState();
+        tableTh();
     })
 }
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
+};
 qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/user/role/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -247,7 +295,7 @@ function GET(a,b){
             }
     });
 }
-GET(inx,pageSize);
+//GET(inx,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
@@ -259,7 +307,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");  
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -283,7 +330,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -297,8 +343,8 @@ function jumpBianse(){
         }
         var id=$(this).parents('tr').attr('id');
         sessionStorage.setItem("id",id);
-        var role_code=$(this).parents('tr').find("td:eq(2)").html();//角色编号
-        var role_name=$(this).parents('tr').find("td:eq(3)").html();//角色名称
+        var role_code=$(this).parents('tr').find("td:eq(2)").text();//角色编号
+        var role_name=$(this).parents('tr').find("td:eq(3)").text();//角色名称
         var group_corp={"role_code":role_code,"role_name":role_name};//组成一个code的字符串
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
         $(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power1.html");
@@ -314,6 +360,13 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
+            var return_jump={};//定义一个对象
+            return_jump["inx"]=inx;//跳转到第几页
+            return_jump["value"]=value;//搜索的值;
+            return_jump["param"]=JSON.stringify(param);//搜索定义的值
+            //return_jump["list"]=list;//筛选的请求的list;
+            return_jump["pageSize"]=pageSize;//每页多少行
+            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
             sessionStorage.removeItem('group_corp');
             // var role_code=$(tr).find("td:eq(2)").html();
             // var group_corp={"role_code":role_code};
@@ -330,8 +383,14 @@ function jumpBianse(){
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        //return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        console.log(id);
         sessionStorage.removeItem('group_corp');
         // var role_code=$(this).find("td:eq(2)").html();
         // var group_corp={"role_code":role_code};
@@ -373,7 +432,7 @@ function POST(){
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与"+value+"相关的信息，请重新搜索</p>")
+                $(".table").append("<p>没有找到与"+value+"相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
@@ -386,7 +445,6 @@ function POST(){
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -412,7 +470,6 @@ $("#delete").click(function(){
     }
     var param={};
     param["id"]=ID;
-    console.log(param);
     oc.postRequire("post","/user/role/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
