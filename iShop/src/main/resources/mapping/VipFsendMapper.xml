@@ -64,8 +64,6 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             OR def_vip_fsendsms.creater LIKE concat('%',#{search_value},'%')
             OR def_vip_fsendsms.created_date LIKE concat('%',#{search_value},'%')
-            OR def_vip_fsendsms.send_type LIKE concat('%',#{search_value},'%')
-            OR def_vip_fsendsms.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY def_vip_fsendsms.id DESC
