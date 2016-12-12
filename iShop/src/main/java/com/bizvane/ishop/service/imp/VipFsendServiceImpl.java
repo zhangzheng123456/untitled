@@ -60,6 +60,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     private static HttpClient httpClient = new HttpClient();
 
 
+
     /**
      * 查看选择接收群发消息的会员信息
      *
@@ -69,6 +70,7 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     @Override
     public String getVipFsendById(int id, String send_type, String content) throws Exception {
+        MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         String message = "";
         String vip_id = "";
         String vip_name = "";
@@ -118,7 +120,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             }
         } else if (send_type.equals("template")) {
             //如果发送类型是微信模板消息，根据筛选会员方式获取vip_id
-            MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+
             //字符串去换行符
             Pattern p = Pattern.compile("\\s*|\t|\r|\n");
             Matcher m = p.matcher(content);
@@ -150,7 +152,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                        vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                        vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
 
                     }
                 } else {
@@ -166,7 +168,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                        vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                        vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                     }
 
                 }
@@ -184,7 +186,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 }
 
             }
