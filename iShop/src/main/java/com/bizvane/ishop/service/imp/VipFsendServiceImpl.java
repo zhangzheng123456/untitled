@@ -118,7 +118,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 message = dataBox.data.get("message").value;
             }
         } else if (send_type.equals("template")) {
-
+             //如果发送类型是微信模板消息，根据筛选会员方式获取vip_id
             MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -166,6 +166,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             } else if (type.equals("2")) {
                 vip_id = vips_obj.get("vips").toString();
             }
+            //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             for (int i = 0; i < vipid.length; i++) {
                 String vip = vipid[i];
@@ -175,6 +176,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 query_key.put("message_id", message_id);
                 query_key.put("message_id", vip);
                 List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
+                message=JSON.toJSONString(message_list);
             }
         } else {
             message = "发送类型不合法";
