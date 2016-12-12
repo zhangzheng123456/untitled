@@ -233,6 +233,7 @@ public class VipFsendController {
 
     /**
      * 查看选择接收短信的会员信息
+     * 以及模板消息的已读状态
      *
      * @param request
      * @return
@@ -245,7 +246,7 @@ public class VipFsendController {
         try {
             String jsString = request.getParameter("param");
 
-           // logger.info("json-select-------------" + jsString);
+           logger.info("json-select-------------" + jsString);
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -253,7 +254,9 @@ public class VipFsendController {
             String vipFsend_id = jsonObject.get("id").toString().trim();
             String send_type=jsonObject.get("send_type").toString().trim();
            String  content=jsonObject.get("content").toString().trim();
+            logger.info("----------------content----1---"+content);
             String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id),send_type,content);
+            logger.info("----------------模板消息----1---");
             if (info != null) {
                 bean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 bean.setId("1");
@@ -267,9 +270,9 @@ public class VipFsendController {
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage("信息异常");
+            bean.setMessage(e.toString());
         }
-//        logger.info("info-----" + bean.getJsonStr());
+
         return bean.getJsonStr();
     }
 
