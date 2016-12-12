@@ -264,7 +264,7 @@
                     </div>
                     <div>
                     <span>
-                        <label style="color:#c26555;">备注*</label>
+                        <label>备注</label>
                         <input type="text" id="topUpNote" autocomplete="off" maxlength="200"/>
                     </span>
                     </div>
@@ -1437,45 +1437,62 @@
 //    execution_change(val);
     });
     //充值店仓
+    function topUpShop(){
+        var param={};
+        param["pageSize"]='20'
+        param["pageNumber"]='1';
+        param["searchValue"]='';
+        param["corp_code"]=sessionStorage.getItem("corp_code");
+        oc.postRequire("post","/shop/selectByAreaCode","",param,function(data){
+            var msg = JSON.parse(data.message);
+            var list = JSON.parse(msg.list);
+            var listList = list.list;
+            for(i=0;i<listList.length;i++){
+                var store_code = listList[i].store_code;
+                var store_name = listList[i].store_name;
+                var tempHTML = '<li id="${id}">${msg}<li>';
+                var html = '';
+                var nowHTML1 = tempHTML;
+                nowHTML1 = nowHTML1.replace("${id}", store_code);
+                nowHTML1 = nowHTML1.replace("${msg}", store_name);
+                html += nowHTML1;
+                $("#topUpShopSelcet").append(html);
+            }
+        })
+    }
     $('#topUpShop').click(function(){
-        $('#topUpShopSelet').toggle();
-            var param={};
-            param["pageSize"]='20'
-            param["pageNumber"]='1';
-            param["searchValue"]='';
-            param["corp_code"]=sessionStorage.getItem("corp_code");
-            oc.postRequire("post","/shop/selectByAreaCode","",param,function(data){
-                var msg = JSON.parse(data.message);
-                var list = JSON.parse(msg.list);
-                var listList = list.list;
-//                console.log(JSON.stringify(listList));
-                for(i=0;i<listList.leng;i++){
-                    var store_code = listList[i].store_code;
-                    var store_name = listList[i].store_name;
-                    console.log(store_code+''+ store_name);
-                }
-            })
+        $('#topUpShopSelcet').toggle();
     });
-
     //下拉选择
-    $("#topUpShopSelet li").click(function () {
-        var val = $(this).html();
+    $("#topUpShopSelcet li").click(function () {
+        var val = $(this).html();;
         $(this).addClass("liactive").siblings("li").removeClass("liactive");
         $("#topUpShop").val(val);
-        $('#topUpShopSelet').css('display','none');
-//    execution_change(val);
+        $('#topUpShopSelcet').css('display','none');
     });
     //经办人
-    $('#topUpPeople').click(function(){
-        $('#topUpPeopleSelect').toggle();
+    function topUpPeople(){
         var param={};
         param["store_code"]=sessionStorage.getItem("store_id");
         param["corp_code"]=sessionStorage.getItem("corp_code");
         oc.postRequire("post","/shop/staff","",param,function(data){
-            console.log(data);
-//        var HTML = '<li>${msg}</li>';
-//        var html = '';
+            var msg = JSON.parse(data.message);
+            console.log(msg);
+            for(i=0;i<msg.length;i++){
+                var user_name = msg[i].user_name;
+                var user_id = msg[i].user_id;
+                var tempHTML = '<li id="${id}">${msg}<li>';
+                var html = '';
+                var nowHTML1 = tempHTML;
+                nowHTML1 = nowHTML1.replace("${id}", user_id);
+                nowHTML1 = nowHTML1.replace("${msg}", user_name);
+                html += nowHTML1;
+                $("#topUpPeopleSelect").append(html);
+            }
         })
+    }
+    $('#topUpPeople').click(function(){
+        $('#topUpPeopleSelect').toggle();
     });
     //下拉选择
     $("#topUpShopSelet li").click(function () {
@@ -1591,6 +1608,10 @@
         else {//IE浏览器
             window.event.cancelBubble = true;
         }
+    }
+    window.onload = function(){
+        topUpShop();
+        topUpPeople();
     }
 </script>
 </html>
