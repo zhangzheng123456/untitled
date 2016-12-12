@@ -182,7 +182,8 @@
 			accept:{
 				title:"Images",
 				extensions:"gif,jpg,jpeg,bmp,png",
-				mimeTypes:"image/*"
+				// mimeTypes:"image/*"
+				mimeTypes:"image/jpg,image/jpeg,image/png"
 			},
 			//配置生成缩略图的选项
 			thumb:{

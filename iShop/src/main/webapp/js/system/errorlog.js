@@ -730,7 +730,7 @@ $("#find").click(function(){
         }
     }
     getInputValue();
-})
+});
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
@@ -756,9 +756,9 @@ function filtrateDown(){
     })
 }
 //筛选查找
-$("#find").click(function(){
-    getInputValue();
-})
+//$("#find").click(function(){
+//    getInputValue();
+//})
 function getInputValue(){
     // var input=$('#sxk .inputs li');
     var input=$('#sxk .inputs>ul>li');
@@ -808,7 +808,7 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
+    filtrates(inx,pageSize);
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){

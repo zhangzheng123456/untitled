@@ -45,6 +45,7 @@
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
         var goods_image=JSON.parse(list.goods_image);
+        console.log(goods_image);
         if(type=="share"){
             for(var i=0;i<goods_image.length;i++){
                 if(goods_image[i].image.indexOf("http")!==-1&&goods_image[i].is_public=="Y"){
@@ -99,11 +100,23 @@
                         }else if(type=="share"){
                             isShare='share';
                         }
-                        console.log(list[k].goods_image);
-                        if(list[k].goods_image.image.indexOf("http")!==-1){
-                            goods_image=list[k].goods_image;
+                        var dapei=JSON.parse(list[k].goods_image);
+                        var dapei_goodsimage=[];
+                        for(var l=0;l<dapei.length;l++){
+                            if(type=="app"){
+                                dapei_goodsimage.push(dapei[l].image);
+                            }
+                            if(type=="share"){
+                                if(dapei[l].is_public=="Y"){
+                                    dapei_goodsimage.push(dapei[l].image);
+                                }
+                                
+                            }
                         }
-                        if(list[k].goods_image.image.indexOf("http")==-1){
+                        if(dapei_goodsimage[0].indexOf("http")!==-1){
+                            goods_image=dapei_goodsimage[0];
+                        }
+                        if(dapei_goodsimage[0].indexOf("http")==-1){
                             goods_image="image/goods_default_image.png";
                         }
                         li+='<a href="goods.html?corp_code='
