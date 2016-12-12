@@ -370,6 +370,7 @@ function jumpBianse() {
                 var message=JSON.parse(data.message);
                 var list=message.vip_info;
                 console.log(list);
+                $(".table #table_r thead").empty();
                 $(".table #table_r tbody").empty();
                 if(list.length == 0){
                     var len = $(".table #table_r thead tr th").length;
@@ -381,9 +382,7 @@ function jumpBianse() {
                         }
                     }
                     $(".table #table_r tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
-                }
-                for(var i=0;i<list.length;i++){
-                    var a=i+1;
+                }else {
                     if(send_type == "sms"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
@@ -391,15 +390,18 @@ function jumpBianse() {
                             "<th>会员卡号</th>" +
                             "<th>会员手机号</th>" +
                             "</tr>");
-                        $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
-                            + a
-                            + "</td><td>"
-                            + list[i].NAME_VIP
-                            + "</td><td>"
-                            + list[i].CARD_NO_VIP
-                            + "</td><td>"
-                            + list[i].MOBILE_VIP
-                            + "</td></tr>");
+                        for(var i=0;i<list.length;i++) {
+                            var a = i + 1;
+                            $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                                + a
+                                + "</td><td>"
+                                + list[i].NAME_VIP
+                                + "</td><td>"
+                                + list[i].CARD_NO_VIP
+                                + "</td><td>"
+                                + list[i].MOBILE_VIP
+                                + "</td></tr>");
+                        }
                     }else if(send_type == "template"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
@@ -407,15 +409,18 @@ function jumpBianse() {
                             "<th>会员编号</th>" +
                             "<th>发送状态</th>" +
                             "</tr>");
-                        $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
-                            + a
-                            + "</td><td>"
-                            + list[i].NAME_VIP
-                            + "</td><td>"
-                            + list[i].CARD_NO_VIP
-                            + "</td><td>"
-                            + list[i].MOBILE_VIP
-                            + "</td></tr>");
+                        for(var j=0;j<list.length;j++) {
+                            var a = j + 1;
+                            $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                                + a
+                                + "</td><td>"
+                                + list[j].vip_name
+                                + "</td><td>"
+                                + list[j].vip_id
+                                + "</td><td>"
+                                + list[j].is_read
+                                + "</td></tr>");
+                        }
                     }
                 }
             }
