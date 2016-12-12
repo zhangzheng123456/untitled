@@ -28,4 +28,7 @@ public interface VipGroupMapper {
     VipGroup selectByVipGroupCode(@Param("corp_code") String corp_code, @Param("vip_group_code") String vip_group_code, @Param("isactive") String isactive) throws SQLException;
 
     List<VipGroup> selectAllVipGroupScreen(Map<String, Object> params) throws SQLException;
+
+    List<VipGroup> selectByVipid(@Param("corp_code") String corp_code, @Param("vip_id") String vip_id, @Param("isactive") String isactive) throws SQLException;
+
 }

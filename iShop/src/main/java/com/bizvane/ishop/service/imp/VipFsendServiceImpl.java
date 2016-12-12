@@ -1,6 +1,5 @@
 package com.bizvane.ishop.service.imp;
 
-import IceInternal.Ex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -13,10 +12,8 @@ import com.bizvane.ishop.entity.VipFsend;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.common.service.jdbc.SpringJdbcService;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.common.utils.JSONUtil;
-import com.bizvane.sun.common.utils.MapUtil;
 import com.bizvane.sun.common.utils.SpringUtil;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -30,6 +27,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -56,9 +54,9 @@ public class VipFsendServiceImpl implements VipFsendService {
     private ValidateCodeService validateService;
     @Autowired
     MongoDBClient mongodbClient;
-
+   // MongoDBClient client = null;
     private static HttpClient httpClient = new HttpClient();
-
+    private static final Logger logger = Logger.getLogger(VipFsendServiceImpl.class);
 
 
     /**
@@ -70,15 +68,18 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     @Override
     public String getVipFsendById(int id, String send_type, String content) throws Exception {
-        MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+       // if (mongodbClient == null) mongodbClient = SpringUtil.getBean("mongodbClient");
+      //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         String message = "";
         String vip_id = "";
         String vip_name = "";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
+        logger.info("json--sms_vips-----------------------" + sms_vips);
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
         String type = vips_obj.get("type").toString().trim();
+        logger.info("json--send_type-----------------------" + send_type);
         if (send_type.equals("sms")) {
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -127,6 +128,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             String m1 = m.replaceAll("");
             JSONObject contents = JSONObject.parseObject(m1);
             String message_id = contents.get("message_id").toString().trim();
+            logger.info("json--message_id-----------------------" + message_id);
 
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -188,11 +190,13 @@ public class VipFsendServiceImpl implements VipFsendService {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 }
-
             }
+
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             String vipname[] = vip_name.split(",");
+            logger.info("json--vipid-----------------------" + vip_id);
+            logger.info("json--vipname-----------------------" + vip_name);
             List<Map<String, Object>> list = new ArrayList();
             for (int i = 0; i < vipid.length; i++) {
                 for (int j = 0; j < vipname.length; j++) {
@@ -202,16 +206,22 @@ public class VipFsendServiceImpl implements VipFsendService {
                     query_key.put("template", "fsend");
                     query_key.put("_id", message_id);
                     query_key.put("vip_id", vip);
-                    List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
+                    List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
                     if (message_list.size() == 0) {
-                        Map<String, Object> list_fail = new HashedMap();
-                        list_fail.put("vip_id", vip);
+                       Map<String, Object> list_fail = new HashedMap();
+                       list_fail.put("vip_id", vip);
                         list_fail.put("vip_name", name);
                         list_fail.put("is_read", "发送失败");
-                        list.add(list_fail);
-                    } else {
-                        list.addAll(message_list);
-                    }
+                       list.add(list_fail);
+                        JSONObject  vips_info=new JSONObject();
+                      vips_info.put("vip_info",list);
+                        message=JSON.toJSONString(vips_info);
+                   } else {
+                       list.addAll(message_list);
+                       JSONObject  vips_info=new JSONObject();
+                       vips_info.put("vip_info",list);
+                        message=JSON.toJSONString(vips_info);
+                   }
                 }
             }
         } else {
@@ -379,6 +389,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String auth_appid = template_content.get("app_user_name").toString().trim();
                 String message_id = template_content.get("message_id").toString().trim();
                 JSONObject test = new JSONObject();
+                //测试情况，默认模板已发送成功
                 test.put("errcode", "0");
                 String result = test.toString();
                 //String result = sendTemplate(template_content);
@@ -391,22 +402,22 @@ public class VipFsendServiceImpl implements VipFsendService {
                         String open_id = openid[i];
                         String id = vipid[i];
                         insertMongoDB(corp_code, open_id, id, auth_appid, vipname[i]);
-                    }
+                   }
                 }
-                if ("0".equals(info.getString("errcode"))) {
-                    updateReadInfo(message_id);
-                    return status;
-                } else if (info.getString("errcode").equals("40003")) {
-                    status = "invalid";
-                    return status;
+               if ("0".equals(info.getString("errcode"))) {
+                   updateReadInfo(message_id);
+                   return status;
+               } else if (info.getString("errcode").equals("40003")) {
+                   status = "invalid";
+                   return status;
                 } else {
                     status = "发送失败";
                     return status;
-                }
+               }
             } else {
-                status = "发送类型不合法";
-                return status;
-            }
+               status = "发送类型不合法";
+               return status;
+           }
         } else {
             status = "发送失败";
             return status;
@@ -519,10 +530,11 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     public JSONObject updateReadInfo(String message_id) throws Exception {
         JSONObject message = new JSONObject();
-        MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+        //if (client == null) client = SpringUtil.getBean("mongodbClient");
+     //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         Map query_key = new HashMap();
         query_key.put("_id", message_id);
-        List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
+        List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
         if (message_list.size() > 0) {
             message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
             Map old = message_list.get(0);
@@ -541,8 +553,8 @@ public class VipFsendServiceImpl implements VipFsendService {
             map_new.put("template", old.get("template"));
             map_new.put("is_read", "Y");
             // map_new.put("is_send", old.get("is_send"));
-            mongoDBClient.update("vip_message_content", map_new, old);
+            mongodbClient.update("vip_message_content", map_new, old);
         }
-        return message;
+       return message;
     }
 }

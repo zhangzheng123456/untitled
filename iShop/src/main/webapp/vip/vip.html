@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161202">
     <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <script src="../js/laydate/laydate.js"></script>
@@ -285,55 +286,66 @@
         padding-top: 5px;
     }
     #get_more .head_span_r{
-        float:right;
+        float: right;
         padding-right: 2px;
         padding-top: 5px;
         cursor: pointer;
+        position: relative;
+        font-size: 15px;
+        color: #434960;
+        left: 15px;
     }
     #content{
-        margin-top:10px;
-        padding-top: 10px;
-        padding-right: 20px;
+        padding: 10px 20px;
         overflow-y: auto;
-        height: 430px;
+        height: 370px;
     }
     #content .content_l{
         float:left;
         color:#434960;
-        width: 120px;
-        height: 50px;
+        width: 20%;
+        height: 40px;
         text-align: right;
-        line-height: 50px;
+        line-height: 40px;
+        font-size: 15px;
+        color: #434960;
     }
     #content .content_r{
-        margin-left: 120px;
-        padding-left: 25px;
-        padding-left: 25px;
-        height: 50px;
+        margin-left:20%;
+        padding-left: 20px;
+        padding-right: 20px;
+        height: 40px;
         color:#888;
         text-align:left;
-        line-height: 50px;
-    }
-    #fab_describe img{
-        max-width: 100%;
-        max-height:100%;
-    }
-    #fab_describe {
-        min-height: 100px;
-        margin-bottom: 30px;
-        border-radius: 4px;
-        outline: none;
-        background: #dfdfdf;
-        position: relative;
-        top: 18px;
-        margin-left: 145px;
-        padding:5px;
-        color:#888;
-        overflow: hidden;
+        line-height: 40px;
     }
     .get_more_head{
-        padding-left: 20px;
-        border-bottom: 1px solid #ddd;
+       padding: 5px 20px 5px 20px;
+    }
+    #get_more i{
+        display: block;
+        margin-top: 5px;
+        border-top:1px solid #ddd;
+    }
+    #content .content_r input,#OWN_CORP,.search_input{
+        border: 1px solid #ddd;
+        width: 100%;
+        height: 30px;
+        margin-right: 20px;
+        border-radius: 5px;
+        outline: none;
+        padding-left: 10px;
+        color:#888;
+        font-size: 15px;
+        box-sizing: border-box;
+    }
+    #OWN_CORP, .search_input{
+        background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+        background-size: 30px 30px;
+        margin-right: 0px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
     }
 </style>
 <body>
@@ -884,50 +896,67 @@
 <!--新增VIP弹窗-->
 <div id="get_more">
     <div class="get_more_head">
-        <span class="head_span_l">活动详情</span>
+        <span class="head_span_l">新增VIP</span>
         <span class="head_span_r icon-ishop_6-12" ></span>
+        <i></i>
     </div>
     <ul id="content">
         <li>
-            <span class="content_l">活动状态</span>
-            <div class="content_r"id="activityState_1">
-            </div>
-        </li>
-        <li>
-            <span class="content_l">活动主题</span>
+            <span class="content_l">单号</span>
             <div class="content_r">
+                    <input type="text">
             </div>
         </li>
         <li>
-            <span class="content_l">执行方式</span>
+            <span class="content_l"style="color:#c26555">所属企业*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">所属企业*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select class="search_input" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">所属店铺*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select class="search_input" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">所属导购*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select class="search_input" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">VIP姓名*</span>
             <div class="content_r">
-                测试
+                <input type="text">
             </div>
         </li>
         <li>
-            <span class="content_l">活动时间</span>
+            <span class="content_l"style="color:#c26555">手机号*</span>
             <div class="content_r">
-                <span id="beiginTime_1" style="margin-left: 0px"></span> ~ <span id="endTime_1"></span></span>
-            </div>
-        </li>
-        <li>
-            <span class="content_l">执行范围</span>
-            <div class="content_r">
-                测试
-            </div>
-        </li>
-        <li>
-            <span class="content_l">目标会员</span>
-            <div class="content_r">
-                测试
-            </div>
-        </li>
-        <li>
-            <span class="content_l">活动描述</span>
-            <div id="fab_describe">
+                <input type="text">
             </div>
         </li>
     </ul>
+    <div class="get_more_footer">
+        <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
+        <b class="radio_b"></b>
+        <label for="ck_1"id="showDone">仅显示已完成</label>
+    </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>

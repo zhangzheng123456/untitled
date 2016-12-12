@@ -302,4 +302,8 @@ public class VipGroupServiceImpl implements VipGroupService {
         }
         return new_array;
     }
+
+    public List<VipGroup> selectByVipid(String corp_code,String vip_id,String isactive) throws Exception{
+        return vipGroupMapper.selectByVipid(corp_code,vip_id,isactive);
+    }
 }

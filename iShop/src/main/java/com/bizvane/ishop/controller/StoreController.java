@@ -90,13 +90,16 @@ public class StoreController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String searchValue = jsonObject.get("searchValue").toString();
+            String searchValue = "";
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             String area_code = "";
             String brand_code = "";
             String city = "";
+            if (jsonObject.has("searchValue")) {
+                searchValue = jsonObject.get("searchValue").toString();
+            }
             if (jsonObject.has("area_code")) {
                 area_code = jsonObject.get("area_code").toString();
             }
