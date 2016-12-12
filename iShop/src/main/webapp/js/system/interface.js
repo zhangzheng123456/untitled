@@ -291,7 +291,7 @@ var interFace={
         var self=this;
         var param={};
         param["funcCode"]=self.funcCode;
-        whir.loading.add("",0.5);//加载等待框
+        //whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/list/action","0",param,function(data){
             var message=JSON.parse(data.message);
             var actions=message.actions;
@@ -310,8 +310,10 @@ var interFace={
         $("#tableOrder").after(TH);
     },
     GET:function(){   //页面加载时list请求
+        whir.loading.add("",0.5);//加载等待框
             //oc.postRequire("get","/interfacers/list?pageNumber="+interFace.inx+"&pageSize="+interFace.pageSize
             //    +"&funcCode="+interFace.funcCode+"","","",function(data){
+        console.log(interFace.param);
         oc.postRequire("post","/interfacers/search","0",interFace.param,function(data){
                 if(data.code=="0"){
                     $(".table tbody").empty();
@@ -437,11 +439,11 @@ var interFace={
                         self.param["funcCode"]=self.funcCode;
                         self.param["searchValue"]="";
                         self.GET(self.inx, self.pageSize);
-                    } else if (value !== "") {
+                    } else if (self.value !== "") {
                         self.param["pageSize"] = self.pageSize;
                         self.param["pageNumber"]=self.inx;
                         self.POST(self.inx, self.pageSize);
-                    } else if (filtrate !== "") {
+                    } else if (self.filtrate !== "") {
                         self._param["pageSize"] = self.pageSize;
                         self._param["pageNumber"]=self.inx;
                         self.filtrates(self.inx, self.pageSize);
@@ -610,10 +612,10 @@ $(function(){
                 interFace.pageSize=$(this).attr('id');
                 if(interFace.value=="" && interFace.filtrate==""){
                     interFace.inx=1;
-                    self.param["pageNumber"]=self.inx;
-                    self.param["pageSize"]=self.pageSize;
-                    self.param["funcCode"]=self.funcCode;
-                    self.param["searchValue"]="";
+                    interFace.param["pageNumber"]=interFace.inx;
+                    interFace.param["pageSize"]=interFace.pageSize;
+                    interFace.param["funcCode"]=interFace.funcCode;
+                    interFace.param["searchValue"]="";
                     interFace.GET(interFace.inx,interFace.pageSize);
                 }else if(interFace.value!==""){
                     interFace.inx=1;

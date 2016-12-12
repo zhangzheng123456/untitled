@@ -26,15 +26,16 @@ $(function(){
                   
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
-                pageSize=$(this).attr('id');  
+                pageSize=$(this).attr('id');
+                inx=1;
                 if(value==""){
-                    inx=1;
                     param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     param["funcCode"]=funcCode;
                     param["searchValue"]="";
                     GET();
                 }else if(value!==""){
+                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     POST(); 
                 } 
@@ -67,7 +68,7 @@ $("#empty").click(function(){
     }
 })
 function setPage(container, count, pageindex,pageSize,funcCode,value) {
-    count==0?count=1:'';
+    //count==0?count=1:'';
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -427,6 +428,7 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
+    inx=1;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
