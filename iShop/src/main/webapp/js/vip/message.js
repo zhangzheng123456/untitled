@@ -813,10 +813,10 @@ function getInputValue(){
    var num=0;
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
+        var screen_key=$(input[i]).find("input").attr("id");
         var screen_value={};
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_value=$(input[i]).attr("data-code");
+       if($(input[i]).attr("class")=="isActive_select"){
+           screen_value=$(input[i]).find("input").attr("data-code");
        }else if($(input[i]).attr("class")=="created_date"){
            var start=$('#start').val();
            var end=$('#end').val();
