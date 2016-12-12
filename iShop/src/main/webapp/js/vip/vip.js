@@ -411,34 +411,38 @@ $("#label_title li").click(function () {
     }else if($(this).children("a").html()=="官方"){
         $("#batch_label_gov").show();
         $("#batch_label_hot").hide();
-        $("#batch_label_gov").empty();
-        var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
-        var param={};
-        var vip_id="";
-        var page=1;
-        for(var j=0;j<tr.length;j++){
-            vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
-        }
-        param["type"]="2";
-        param['vip_id']=vip_id;
-        param["corp_code"]=$(tr[0]).attr("id");
-        param['pageNumber']=page;
-        param['searchValue']="";
-        oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
-            if(data.code=="0"){
-                var msg=JSON.parse(data.message);
-                var list=JSON.parse(msg.list)
-                var hasNextPage=list.hasNextPage;
-                list=list.list;
-                var html="";
-                var classname="";
-                for(var i=0;i<list.length;i++){
-                    classname="label_g";
-                    html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+i+"g'>"+list[i].label_name+"</span>"
-                }
-                $("#batch_label_gov").append(html);
+        if($("#batch_label_gov span").length>0){
+            return ;
+        }else {
+            $("#batch_label_gov").empty();
+            var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+            var param={};
+            var vip_id="";
+            var page=1;
+            for(var j=0;j<tr.length;j++){
+                vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
             }
-        })
+            param["type"]="2";
+            param['vip_id']=vip_id;
+            param["corp_code"]=$(tr[0]).attr("id");
+            param['pageNumber']=page;
+            param['searchValue']="";
+            oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+                if(data.code=="0"){
+                    var msg=JSON.parse(data.message);
+                    var list=JSON.parse(msg.list)
+                    var hasNextPage=list.hasNextPage;
+                    list=list.list;
+                    var html="";
+                    var classname="";
+                    for(var i=0;i<list.length;i++){
+                        classname="label_g";
+                        html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+i+"g'>"+list[i].label_name+"</span>"
+                    }
+                    $("#batch_label_gov").append(html);
+                }
+            })
+        }
     }
 });
 //批量添加标签
