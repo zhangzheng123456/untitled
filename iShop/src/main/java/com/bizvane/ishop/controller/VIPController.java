@@ -22,6 +22,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import org.apache.log4j.Logger;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -407,7 +408,6 @@ public class VIPController {
 
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result);
@@ -419,7 +419,70 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "数据异常，导出失败";
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String user_code = jsonObject.get("user_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String brand_code = jsonObject.get("brand_code").toString();
+            String area_code = jsonObject.get("area_code").toString();
+            String page_num = 1+"";
+            String page_size =  Common.EXPORTEXECLCOUNT+"";
 
+            String output_message = jsonObj.get("output_message").toString();
+            org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
+
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            logger.info("json--------------corp_code-" + corp_code);
+            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
+
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+            org.json.JSONObject object = new org.json.JSONObject(result);
+            org.json.JSONArray jsonArray =new org.json.JSONArray(object.get("all_vip_list").toString());
+            List list = WebUtils.Json2List(jsonArray);
+            if (list.size() >= Common.EXPORTEXECLCOUNT) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(list);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
+            JSONObject result2 = new JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result2.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result2.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(errormessage);
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 会员信息(头像，扩展信息，备注，相册)
      * 保存mongodb
