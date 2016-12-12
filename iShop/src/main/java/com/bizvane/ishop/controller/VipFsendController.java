@@ -91,7 +91,11 @@ public class VipFsendController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("发送成功");
-            } else {
+            } else if(result.equals("invalid")){
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("该会员未关注公众号");
+            }else{
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
@@ -246,8 +250,10 @@ public class VipFsendController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String vipFsend_id = jsonObject.get("id").toString();
-            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id));
+            String vipFsend_id = jsonObject.get("id").toString().trim();
+            String send_type=jsonObject.get("send_type").toString().trim();
+           String  content=jsonObject.get("content").toString().trim();
+            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id),send_type,content);
             if (info != null) {
                 bean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 bean.setId("1");

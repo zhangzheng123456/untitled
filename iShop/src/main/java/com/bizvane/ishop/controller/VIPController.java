@@ -22,6 +22,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import org.apache.log4j.Logger;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,102 @@ public class VIPController {
     @Autowired
     MongoDBClient mongodbClient;
 
+    /**
+     * 新增会员信息
+     *
+     */
+    @RequestMapping(value = "/addVip", method = RequestMethod.POST)
+    @ResponseBody
+    public String addVip(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String phone = jsonObject.get("phone").toString();
+            String vip_name = jsonObject.get("vip_name").toString();
+            String vip_card_type = jsonObject.get("vip_card_type").toString();
+            String card_no = jsonObject.get("card_no").toString();
+            String user_code = jsonObject.get("user_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String birthday = jsonObject.get("birthday").toString();
+            String sex = jsonObject.get("sex").toString();
+            String join_date = Common.DATETIME_FORMAT_DAY.format(new Date());
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 更新会员信息
+     *
+     */
+    @RequestMapping(value = "/updateVip", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateVip(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String phone = jsonObject.get("phone").toString();
+            String card_no = jsonObject.get("card_no").toString();
+
+            String vip_name = jsonObject.get("vip_name").toString();
+            String birthday = jsonObject.get("birthday").toString();
+
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_card_no = new Data("vip_card_no",card_no, ValueType.PARAM);
+            Data data_vip_phone = new Data("vip_phone", phone, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+            Data data_name = new Data("name", vip_name, ValueType.PARAM);
+            Data data_birthday = new Data("birthday", birthday, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_vip_card_no.key, data_vip_card_no);
+            datalist.put(data_vip_phone.key, data_vip_phone);
+            datalist.put(data_vip_id.key, data_vip_id);
+            datalist.put(data_name.key, data_name);
+            datalist.put(data_birthday.key, data_birthday);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipProfileBackup",datalist);
+            String status = dataBox.status.toString();
+            if (status.equals("SUCCESS")){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("SUCCESS");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("FAILED");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 会员信息
@@ -385,7 +482,6 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
-
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -408,7 +504,6 @@ public class VIPController {
 
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result);
@@ -420,7 +515,70 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "数据异常，导出失败";
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String user_code = jsonObject.get("user_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String brand_code = jsonObject.get("brand_code").toString();
+            String area_code = jsonObject.get("area_code").toString();
+            String page_num = 1+"";
+            String page_size =  Common.EXPORTEXECLCOUNT+"";
 
+            String output_message = jsonObj.get("output_message").toString();
+            org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
+
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            logger.info("json--------------corp_code-" + corp_code);
+            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
+
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+            org.json.JSONObject object = new org.json.JSONObject(result);
+            org.json.JSONArray jsonArray =new org.json.JSONArray(object.get("all_vip_list").toString());
+            List list = WebUtils.Json2List(jsonArray);
+            if (list.size() >= Common.EXPORTEXECLCOUNT) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(list);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
+            JSONObject result2 = new JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result2.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result2.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(errormessage);
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 会员信息(头像，扩展信息，备注，相册)
      * 保存mongodb
@@ -756,6 +914,59 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 充值或退款
+     */
+    @RequestMapping(value = "/recharge", method = RequestMethod.POST)
+    @ResponseBody
+    public String recharge(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        Date now = new Date();
+        String errormessage = "数据异常，导出失败";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String type = jsonObject.get("type").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            if (type.equals("pay")){
+                if (corp_code.equals("C10016")){
+                    String store_code = jsonObject.get("store_code").toString();
+                    String card_no = jsonObject.get("card_no").toString();
+                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
+                    String price = jsonObject.get("price").toString();//吊牌金额
+                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
+                    String remark = jsonObject.get("remark").toString();
+
+                }
+            }else if (type.equals("refund")){
+                if (corp_code.equals("C10016")){
+                    String store_code = jsonObject.get("store_code").toString();
+                    String card_no = jsonObject.get("card_no").toString();
+                    String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
+
+                    String billNO = jsonObject.get("billNO").toString();//单据编号（充值单退款时必填）
+                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
+                    String remark = jsonObject.get("remark").toString();
+
+                }
+            }
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");

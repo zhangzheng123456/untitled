@@ -6,8 +6,8 @@ var groupPower = {
     },
     getSession: function() { //获取本地存储
         var group_corp = JSON.parse(sessionStorage.getItem("group_corp")); //取本地的群组编号
-        $("#group_code").val(group_corp.group_code);
-        $("#group_name").val(group_corp.group_name);
+        $("#user_code").val(group_corp.user_code);
+        $("#user_name").val(group_corp.user_name);
         return group_corp
     },
     pageRendering: function(list) { //绘制页面
@@ -59,7 +59,8 @@ var groupPower = {
         param["corp_code"] = group_corp.corp_code;
         param["group_code"] = group_corp.group_code;
         param["role_code"] = group_corp.role_code;
-        param["type"] = "group";
+        param["user_code"] =group_corp.user_code;
+        param["type"] = "user";
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", "/privilege/checkPower", "0", param, function(data) {
             var message = JSON.parse(data.message);
@@ -78,16 +79,13 @@ var groupPower = {
     clickWay: function() {//所有的点击事件
         var self = this;
         $("#turnoff").bind("click", function() {//关闭按钮
-            $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src", "/user/user_edit.html");
         });
-        $("#back_group_list").click(function(){//回到列表
-            $(window.parent.document).find('#iframepage').attr("src", "/user/group.html");
+        $("#back_user_list").click(function(){//回到列表
+            $(window.parent.document).find('#iframepage').attr("src", "/user/user.html");
         });
-        $("#back_group_list").click(function(){//回到列表
-            $(window.parent.document).find('#iframepage').attr("src", "/user/group.html");
-        });
-        $("#back_group_edit").click(function(){//回到编辑界面
-            $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+        $("#back_user_edit").click(function(){//回到编辑界面
+            $(window.parent.document).find('#iframepage').attr("src", "/user/user_edit.html");
         })
         $(".power_table").on("click", "ul li", function() {//点击选中状态
             var class_name = $(this).attr("class");
@@ -107,8 +105,8 @@ var groupPower = {
             var del_act_id = ""; //取消时获取的动作id
             var del_col_id = ""; //取消时获取的修改项id
             param["corp_code"] = group_corp.corp_code;
-            param["group_code"] = group_corp.group_code;
-            param["type"] = "group";
+            param["user_code"] = group_corp.user_code;
+            param["type"] = "user";
             for (var i = 0; i < tr.length; i++) {
                 var function_code = $(tr[i]).attr("data-function");
                 var action_li = $(tr[i]).find(".action_name ul li.active"); //动作的选中项
@@ -169,7 +167,7 @@ var groupPower = {
             whir.loading.add("",0.5);//加载等待框
             oc.postRequire("post","/privilege/checkPower/save","0",param,function(data){
                 if(data.code=="0"){
-                    $(window.parent.document).find('#iframepage').attr("src", "/user/group_edit.html");
+                    $(window.parent.document).find('#iframepage').attr("src", "/user/user_edit.html");
                 }else if(data.code=="-1"){
                     alert(data.message);
                 }

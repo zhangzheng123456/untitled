@@ -62,6 +62,7 @@ $(function(){
         	var src=$(this).attr("data-url");
         	var func_code=$(this).attr("data-code");
         	$('#iframepage').attr("src",src);
+            console.log(src);
             sessionStorage.removeItem("return_jump");
             sessionStorage.removeItem("state");
             var key_val={"url":src,"func_code":func_code};

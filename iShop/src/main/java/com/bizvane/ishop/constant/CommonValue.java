@@ -23,6 +23,9 @@ public class CommonValue {
 //    public final static String wechat_url = "http://wechat.app.bizvane.com/app/wechat";
     public final static String wechat_url = "http://wechat.dev.bizvane.com/app/wechat";
 
+//    public final static String ishop_url = "http://ishop.app.bizvane.com/";
+    public final static String ishop_url = "http://ishop.dev.bizvane.com/";
+
     //table名（mongodb）
     //用户行为日志
     public final static String table_log_user_action = "log_person_action";

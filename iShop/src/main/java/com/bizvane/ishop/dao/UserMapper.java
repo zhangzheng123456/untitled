@@ -49,7 +49,11 @@ public interface UserMapper {
 
     List<User> selectPartScreen(Map<String, Object> params) throws SQLException;
 
+    List<User> selectPartScreen2(Map<String, Object> params) throws SQLException;
+
     List<User> selectAllUserScreen(Map<String, Object> params) throws SQLException;
+
+    List<User> selectAllUserScreen2(Map<String, Object> params) throws SQLException;
 
     List<User> selectUsersByRole(Map<String, Object> params) throws SQLException;
 

@@ -56,6 +56,10 @@ var interFace={
                 $("#page_row").val("100行/页");
             }
             if(self.value=="" && self.filtrate==""){
+                self.param["pageNumber"]=self.inx;
+                self.param["pageSize"]=self.pageSize;
+                self.param["funcCode"]=self.funcCode;
+                self.param["searchValue"]="";
                 self.GET(self.inx,self.pageSize);
             }else if(self.value!==""){
                 $("#search").val(self.value);
@@ -65,6 +69,10 @@ var interFace={
             }
         }else if (self.return_jump==null){
             if(self.value=="" && self.filtrate==""){
+                self.param["pageNumber"]=self.inx;
+                self.param["pageSize"]=self.pageSize;
+                self.param["funcCode"]=self.funcCode;
+                self.param["searchValue"]="";
                 self.GET(self.inx,self.pageSize);
             }
         }
@@ -147,7 +155,7 @@ var interFace={
     container.innerHTML = a.join("");
         var pageClick = function() {
             var oAlink = container.getElementsByTagName("span");
-         self.inx = pageindex; //初始的页码
+            self.inx = pageindex; //初始的页码
             $("#input-txt").val(self.inx);
             $(".foot-sum .zy").html("共 "+count+"页");
             oAlink[0].onclick = function() { //点击上一页
@@ -179,9 +187,15 @@ var interFace={
         }();
     },
     dian:function(inx){//
+        whir.loading.add("",0.5);//加载等待框
         if(interFace.value==""){
-            oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+interFace.pageSize
-                +"&funcCode="+interFace.funcCode+"","","",function(data){
+            //oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+interFace.pageSize
+            //    +"&funcCode="+interFace.funcCode+"","","",function(data){
+            interFace.param["pageNumber"]=interFace.inx;
+            interFace.param["pageSize"]=interFace.pageSize;
+            interFace.param["funcCode"]=interFace.funcCode;
+            interFace.param["searchValue"]="";
+            oc.postRequire("post","/interfacers/search","0",interFace.param,function(data){
                 if(data.code=="0"){
                     $(".table tbody").empty();
                     var message=JSON.parse(data.message);
@@ -241,7 +255,7 @@ var interFace={
             for (var c=0;c<interFace.titleArray.length;c++){
                 (function(j){
                     var code=interFace.titleArray[j].column_name;
-                    TD+="<td>"+data[i][code]+"</td>";
+                    TD+="<td><span>"+data[i][code]+"</span></td>";
                 })(c)
             }
             $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -259,6 +273,7 @@ var interFace={
         }
         $(".th th:first-child input").removeAttr("checked");
         sessionStorage.removeItem("return_jump");
+        whir.loading.remove();
     },
     jurisdiction:function (actions){  //权限配置
         $('#jurisdiction').empty();
@@ -276,6 +291,7 @@ var interFace={
         var self=this;
         var param={};
         param["funcCode"]=self.funcCode;
+        //whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/list/action","0",param,function(data){
             var message=JSON.parse(data.message);
             var actions=message.actions;
@@ -294,8 +310,11 @@ var interFace={
         $("#tableOrder").after(TH);
     },
     GET:function(){   //页面加载时list请求
-            oc.postRequire("get","/interfacers/list?pageNumber="+interFace.inx+"&pageSize="+interFace.pageSize
-                +"&funcCode="+interFace.funcCode+"","","",function(data){
+        whir.loading.add("",0.5);//加载等待框
+            //oc.postRequire("get","/interfacers/list?pageNumber="+interFace.inx+"&pageSize="+interFace.pageSize
+            //    +"&funcCode="+interFace.funcCode+"","","",function(data){
+        console.log(interFace.param);
+        oc.postRequire("post","/interfacers/search","0",interFace.param,function(data){
                 if(data.code=="0"){
                     $(".table tbody").empty();
                     var message=JSON.parse(data.message);
@@ -353,10 +372,10 @@ var interFace={
                 sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
                 $(window.parent.document).find('#iframepage').attr("src","/system/interface_edit.html");
             }else if(tr.length==0){
-                frame();
+                interFace.frame();
                 $('.frame').html("请先选择");
             }else if(tr.length>1){
-                frame();
+                interFace.frame();
                 $('.frame').html("不能选择多个");
             }
         });
@@ -381,7 +400,7 @@ var interFace={
             var h=$(document.body).height();
             var tr=$("tbody input[type='checkbox']:checked").parents("tr");
             if(tr.length==0){
-                frame();
+                interFace.frame();
                 $('.frame').html("请先选择");
                 return;
             }
@@ -390,6 +409,18 @@ var interFace={
             $("#p").css({"width":+l+"px","height":+h+"px"});
             $("#tk").css({"left":+interFace.left+"px","top":+interFace.tp+"px"});
         })
+    },
+    //删除弹框
+    frame:function (){
+        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+        },2000);
     },
     toPage:function(){  ////跳转页面的键盘按下事件
         var self=this;
@@ -403,12 +434,16 @@ var interFace={
             if (self.inx > 0) {
                 if (event.keyCode == 13) {
                     if ( self.value == "" && self.filtrate == "") {
+                        self.param["pageNumber"]=self.inx;
+                        self.param["pageSize"]=self.pageSize;
+                        self.param["funcCode"]=self.funcCode;
+                        self.param["searchValue"]="";
                         self.GET(self.inx, self.pageSize);
-                    } else if (value !== "") {
+                    } else if (self.value !== "") {
                         self.param["pageSize"] = self.pageSize;
                         self.param["pageNumber"]=self.inx;
                         self.POST(self.inx, self.pageSize);
-                    } else if (filtrate !== "") {
+                    } else if (self.filtrate !== "") {
                         self._param["pageSize"] = self.pageSize;
                         self._param["pageNumber"]=self.inx;
                         self.filtrates(self.inx, self.pageSize);
@@ -446,6 +481,7 @@ var interFace={
     },
     //搜索的请求函数
     POST:function (){
+        whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/interfacers/search","0",interFace.param,function(data){
             if(data.code=="0"){
                 var message=JSON.parse(data.message);
@@ -500,6 +536,10 @@ var interFace={
                     if(value==""){
                         self.frame();
                         $('.frame').html('删除成功');
+                        self.param["pageNumber"]=self.inx;
+                        self.param["pageSize"]=self.pageSize;
+                        self.param["funcCode"]=self.funcCode;
+                        self.param["searchValue"]="";
                         self.GET();
                     }else if(value!==""){
                         self.frame();
@@ -572,6 +612,10 @@ $(function(){
                 interFace.pageSize=$(this).attr('id');
                 if(interFace.value=="" && interFace.filtrate==""){
                     interFace.inx=1;
+                    interFace.param["pageNumber"]=interFace.inx;
+                    interFace.param["pageSize"]=interFace.pageSize;
+                    interFace.param["funcCode"]=interFace.funcCode;
+                    interFace.param["searchValue"]="";
                     interFace.GET(interFace.inx,interFace.pageSize);
                 }else if(interFace.value!==""){
                     interFace.inx=1;

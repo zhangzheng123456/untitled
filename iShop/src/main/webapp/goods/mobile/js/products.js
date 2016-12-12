@@ -45,6 +45,7 @@
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
         var goods_image=JSON.parse(list.goods_image);
+        console.log(goods_image);
         if(type=="share"){
             for(var i=0;i<goods_image.length;i++){
                 if(goods_image[i].image.indexOf("http")!==-1&&goods_image[i].is_public=="Y"){
@@ -53,6 +54,7 @@
             }
             jQuery('#buy').html("详情");
             jQuery('#content').html(list.share_description);
+            jQuery('.detail').html('<p class="product_code">商品编号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         }else if(type=="app"){
             for(var i=0;i<goods_image.length;i++){
                 if(goods_image[i].image.indexOf("http")!==-1){
@@ -63,11 +65,12 @@
                 }
             }
             jQuery('#content').html(list.goods_description);
+            jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         }
         document.title = list.goods_name;
         goodsName=list.goods_name;
-        jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         list=list.matchgoods;
+        console.log(list);
         if(list.length>0){
             var arr=[];
             var unqiuearr=[];
@@ -91,17 +94,36 @@
                     if(list[k].goods_match_code ==unqiuearr[c]){
                         title=list[k].goods_match_title;
                         var goods_image="";
-                        if(list[k].goods_image.indexOf("http")!==-1){
-                            goods_image=list[k].goods_image;
+                        var isShare="";
+                        if(type=="app"){
+                            isShare='app';
+                        }else if(type=="share"){
+                            isShare='share';
                         }
-                        if(list[k].goods_image.indexOf("http")==-1){
+                        var dapei=JSON.parse(list[k].goods_image);
+                        var dapei_goodsimage=[];
+                        for(var l=0;l<dapei.length;l++){
+                            if(type=="app"){
+                                dapei_goodsimage.push(dapei[l].image);
+                            }
+                            if(type=="share"){
+                                if(dapei[l].is_public=="Y"){
+                                    dapei_goodsimage.push(dapei[l].image);
+                                }
+                                
+                            }
+                        }
+                        if(dapei_goodsimage[0].indexOf("http")!==-1){
+                            goods_image=dapei_goodsimage[0];
+                        }
+                        if(dapei_goodsimage[0].indexOf("http")==-1){
                             goods_image="image/goods_default_image.png";
                         }
                         li+='<a href="goods.html?corp_code='
                             + corp_code
                             + '&id='
                             + list[k].id
-                            + '"><li class="ti_img_wrap"><div class="ti_img"><img src="'
+                            + '&type='+isShare+'"><li class="ti_img_wrap"><div class="ti_img"><img src="'
                             + goods_image
                             + '" alt="暂无图片"></div><p>'
                             + list[k].goods_code

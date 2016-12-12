@@ -209,6 +209,13 @@ function superaddition(data, num) {//页面加载循环
         } else {
             var a = i + 1;
         }
+        var send_type='';
+        if(data[i].send_type=="sms"){
+            send_type="短信";
+        }
+        if(data[i].send_type=="template"){
+            send_type="微信模板";
+        }
         $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -220,7 +227,9 @@ function superaddition(data, num) {//页面加载循环
             + a
             + "</td><td><span  title='"+data[i].sms_code+"'>"
             + data[i].sms_code
-            + "</span></td><td><span title='"+data[i].content+"'>"
+            + "</td><td><span title='"+send_type+"' class='send_type' data-type='"+data[i].send_type+"'>"
+            + send_type
+            + "</span></td><td class='message_content'><span title='"+data[i].content+"'>"
             + data[i].content
             + "</span></td><td class='details'><a href='javascript:void(0)'>"
             + "查看"
@@ -341,8 +350,14 @@ function jumpBianse() {
         }
         var param={};
         var id=$(this).parents('tr').attr("id");
+        var send_type=$(this).parents('tr').find('.send_type').attr("data-type");
+        var content=$(this).parents('tr').find('.message_content span').html();
         param["id"]=id;
+        param["send_type"]=send_type;
+        param["content"]=content;
+        console.log(content);
         whir.loading.add("",0.5);//加载等待框
+        console.log(param);
         oc.postRequire("post","/vipFsend/checkVipInfo","0",param,function(data){
             if(data.code=="0"){
                 $('#details').show();

@@ -247,7 +247,7 @@ function superaddition(data,num){//页面加载循环
                         + data[i].group_code
                         + "</td><td>"
                         + data[i].group_name
-                        + "</td><td>"
+                        + "</td><td class='role_code' data-code="+data[i].role.role_code+">"
                         + data[i].role.role_name
                         + "</td><td>"
                         + data[i].corp.corp_name
@@ -426,9 +426,10 @@ function jumpBianse(){
         var corp_code=$(this).parents('tr').attr("data-code");
         var group_code=$(this).parents('tr').find("td:eq(2)").html();
         var group_name=$(this).parents('tr').find("td:eq(3)").html();
-        var group_corp={"corp_code":corp_code,"group_code":group_code,"group_name":group_name};
+        var role_code=$(this).parents('tr').find(".role_code").attr("data-code");
+        var group_corp={"corp_code":corp_code,role_code:role_code,"group_code":group_code,"group_name":group_name};
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-        $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","user/groupcheck_power1.html");
     })
 }
 //鼠标按下时触发的收索

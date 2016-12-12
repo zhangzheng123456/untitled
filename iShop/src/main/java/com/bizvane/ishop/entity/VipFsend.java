@@ -19,6 +19,7 @@ public class VipFsend {
     private String modifier;
     //创建时间
     private String created_date;
+    private String send_type;
     //创建者
     private String creater;
     //是否可用
@@ -129,5 +130,13 @@ public class VipFsend {
 
     public void setTarget_vips_count(String target_vips_count) {
         this.target_vips_count = target_vips_count;
+    }
+
+    public String getSend_type() {
+        return send_type;
+    }
+
+    public void setSend_type(String send_type) {
+        this.send_type = send_type;
     }
 }
