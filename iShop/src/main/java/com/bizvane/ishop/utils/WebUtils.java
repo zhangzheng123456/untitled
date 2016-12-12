@@ -254,6 +254,22 @@ public class WebUtils {
         return result;
     }
 
+    public static List Json2List2(JSONArray json) {
+        if (json == null) {
+            return null;
+        }
+
+        List result = new ArrayList();
+        for (int i = 0; i < json.length(); i++) {
+           if (json.get(i) instanceof JSONArray) {
+                result.add(Json2List((JSONArray) json.get(i)));
+            } else {
+                result.add(json.get(i));
+            }
+        }
+
+        return result;
+    }
 
     /**
      * 特殊字符替换(现在主要针对导出)
