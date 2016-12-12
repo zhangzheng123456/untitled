@@ -214,12 +214,12 @@ public class VipFsendServiceImpl implements VipFsendService {
                         list_fail.put("is_read", "发送失败");
                        list.add(list_fail);
                         JSONObject  vips_info=new JSONObject();
-                      vips_info.put("vips_info",list);
+                      vips_info.put("vip_info",list);
                         message=JSON.toJSONString(vips_info);
                    } else {
                        list.addAll(message_list);
                        JSONObject  vips_info=new JSONObject();
-                       vips_info.put("vips_info",list);
+                       vips_info.put("vip_info",list);
                         message=JSON.toJSONString(vips_info);
                    }
                 }
