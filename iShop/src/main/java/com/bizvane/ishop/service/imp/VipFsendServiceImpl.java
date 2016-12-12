@@ -200,7 +200,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     String name = vipname[i];
                     Map query_key = new HashMap();
                     query_key.put("template", "fsend");
-                    query_key.put("message_id", message_id);
+                    query_key.put("_id", message_id);
                     query_key.put("vip_id", vip);
                     List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
                     if (message_list.size() == 0) {
@@ -521,7 +521,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         JSONObject message = new JSONObject();
         MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         Map query_key = new HashMap();
-        query_key.put("_id", "read" + System.currentTimeMillis());
+        query_key.put("_id", message_id);
         List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
         if (message_list.size() > 0) {
             message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
