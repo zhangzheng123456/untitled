@@ -250,7 +250,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -1948,7 +1948,7 @@ $("#choose_staff .screen_que").click(function () {
        $("#p").hide();
        var staff_name = $("#choose_staff .screen_content_r ul li span").html();
        var user_code = $("#choose_staff .screen_content_r ul li").attr("id");
-       var store_code = $(tr[0]).attr("data-storeid");
+       var store_code = $(tr[0]).attr("data-storecode");
        var vip_id = "";
        for(var i=0;i<tr.length;i++){
            if(i<tr.length-1){
