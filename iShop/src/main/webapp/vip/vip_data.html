@@ -1471,15 +1471,28 @@
         $('#topUpShopSelcet').css('display','none');
     });
     //经办人
-    $('#topUpPeople').click(function(){
-        $('#topUpPeopleSelect').toggle();
+    function topUpPeople(){
         var param={};
         param["store_code"]=sessionStorage.getItem("store_id");
         param["corp_code"]=sessionStorage.getItem("corp_code");
         oc.postRequire("post","/shop/staff","",param,function(data){
             var msg = JSON.parse(data.message);
             console.log(msg);
+            for(i=0;i<msg.length;i++){
+                var user_name = msg[i].user_name;
+                var user_id = msg[i].user_id;
+                var tempHTML = '<li id="${id}">${msg}<li>';
+                var html = '';
+                var nowHTML1 = tempHTML;
+                nowHTML1 = nowHTML1.replace("${id}", user_id);
+                nowHTML1 = nowHTML1.replace("${msg}", user_name);
+                html += nowHTML1;
+                $("#topUpPeopleSelect").append(html);
+            }
         })
+    }
+    $('#topUpPeople').click(function(){
+        $('#topUpPeopleSelect').toggle();
     });
     //下拉选择
     $("#topUpShopSelet li").click(function () {
@@ -1598,6 +1611,7 @@
     }
     window.onload = function(){
         topUpShop();
+        topUpPeople();
     }
 </script>
 </html>
