@@ -299,14 +299,15 @@
         padding: 10px 20px;
         overflow-y: auto;
         height: 370px;
+        box-sizing: border-box;
     }
     #content .content_l{
         float:left;
         color:#434960;
         width: 20%;
-        height: 40px;
+        height: 50px;
         text-align: right;
-        line-height: 40px;
+        line-height: 50px;
         font-size: 15px;
         color: #434960;
     }
@@ -314,10 +315,10 @@
         margin-left:20%;
         padding-left: 20px;
         padding-right: 20px;
-        height: 40px;
+        height: 50px;
         color:#888;
         text-align:left;
-        line-height: 40px;
+        line-height: 50px;
     }
     .get_more_head{
        padding: 5px 20px 5px 20px;
@@ -327,7 +328,7 @@
         margin-top: 5px;
         border-top:1px solid #ddd;
     }
-    #content .content_r input,#OWN_CORP,.search_input{
+    #content .content_r input,#OWN_CORP,.search_input,#card_no{
         border: 1px solid #ddd;
         width: 100%;
         height: 30px;
@@ -346,6 +347,59 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         -ms-appearance: none;
+    }
+    .get_more_footer{
+        margin: 0px 20px 10px 20px;
+        border-top:1px solid #ddd;
+        padding-top: 10px;
+    }
+    .check{
+        visibility: hidden;
+    }
+    .get_more_footer .check:checked + b{
+        background: url(../img/icon_radio_S.png) no-repeat center center;
+        background-size: 15px 15px;
+    }
+    .radio_b{
+        display:inline-block;
+        width: 15px;
+        height:15px;
+        background:#fff;
+        border-radius: 50%;
+        border: 1px solid #9c9c9c;
+        position: relative;
+        top: 1px;
+        cursor: pointer;
+    }
+    .get_more_footer label{
+        cursor: pointer;
+    }
+    .upper{
+        position: relative;
+        top:-2px;
+        margin-right:10px;
+    }
+    .footer_ul {
+        width:100%;
+        overflow: hidden;
+        padding-top: 20px;
+    }
+    .footer_ul li{
+        width: 50%;
+        float:left;
+    }
+    #get_more_save{
+        float:right;
+        width: 100px;
+        height: 30px;
+        background: #6dc1c8;
+        color:#fff;
+        border-radius: 5px;
+        letter-spacing: 5px;
+        font-style: normal;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
     }
 </style>
 <body>
@@ -911,15 +965,7 @@
             <span class="content_l"style="color:#c26555">所属企业*</span>
             <div  class="content_r">
                  <span class="corp_select">
-                    <select id="OWN_CORP" style="display:inline-flex"></select>
-                 </span>
-            </div>
-        </li>
-        <li>
-            <span class="content_l"style="color:#c26555">所属企业*</span>
-            <div  class="content_r">
-                 <span class="corp_select">
-                    <select class="search_input" style="display:inline-flex"></select>
+                    <select class="search_input"id="OWN_CORP" style="display:inline-flex"></select>
                  </span>
             </div>
         </li>
@@ -953,13 +999,24 @@
         </li>
     </ul>
     <div class="get_more_footer">
-        <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
+        <input type="radio"class="check"style="display: none" name="ck"  id="ck_1">
         <b class="radio_b"></b>
-        <label for="ck_1"id="showDone">仅显示已完成</label>
+        <label for="ck_1"class="upper">手动输入卡号</label>
+        <input type="radio"class="check"style="display: none" name="ck"   id="ck_2">
+        <b class="radio_b"></b>
+        <label for="ck_2"class="upper">自动生成卡号</label>
+            <ul class="footer_ul">
+                <li>
+                    <input type="text" id="card_no">
+                </li>
+                <li><i id="get_more_save">保存</i></li>
+            </ul>
     </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
 <script src="/js/silide.js?20161206"></script>

@@ -299,4 +299,19 @@
         GROUP BY dvg.id
         ORDER BY dvg.id DESC
     </select>
+
+    <select id="selectByVipid" resultMap="VipGroup">
+        SELECT
+        dvg.id,
+        dvg.vip_group_code,
+        dvg.vip_group_name,
+        dvg.user_code,
+        dvg.corp_code,
+        dvg.isactive
+        From def_vip_group dvg
+        WHERE dvg.corp_code = #{corp_code}
+        AND dvg.vip_ids regexp #{vip_id}
+        AND dvg.isactive = #{isactive}
+    </select>
+
 </mapper>

@@ -40,8 +40,6 @@ public class WebController {
 
     private static String APP_KEY = "Fghz1Fhp6pM1XajBMjXM";
 
-    private static String ACCESS_KEY = "UAnDEwzPtRLU1uJom6QRD7cGRgW8SJoz";
-
     private static String SIGN = "41bfa82252f31bef46ccffca4ec22b5e";
 
     @Autowired
@@ -542,9 +540,19 @@ public class WebController {
         String data = "";
         JSONObject return_msg = new JSONObject();
         try {
-            String param= request.getParameter("param");
+            String timestamp= request.getParameter("timestamp");
+            String sign= request.getParameter("sign");
+            String account= request.getParameter("account");
+            String password= request.getParameter("password");
 
-
+            if (timestamp == null || timestamp.equals("")){
+                msg = "request param [timestamp]";
+            }else if (sign == null || sign.equals("")) {
+                msg = "request param [sign]";
+            }else if (account == null || account.equals("")) {
+                msg = "request param [account]";
+            }else if (password == null || password.equals("")){
+                msg = "request param [password]";
 //            InputStream inputStream = request.getInputStream();
 //            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 //            String buffer = null;
@@ -553,25 +561,25 @@ public class WebController {
 //                stringBuffer.append(buffer);
 //            }
 //            String reply = stringBuffer.toString();
-            JSONObject reply_obj = JSONObject.parseObject(param);
+//            JSONObject reply_obj = JSONObject.parseObject(reply);
 //            if (!reply_obj.containsKey("id")){
 //                msg = "request param [id]";
 //            }else if (!reply_obj.containsKey("access_key")){
 //                msg = "request param [access_key]";
 //            }else
-            if (!reply_obj.containsKey("sign")){
-                msg = "request param [sign]";
-            } else if (!reply_obj.containsKey("timestamp")){
-                msg = "request param [timestamp]";
-            }else if (!reply_obj.containsKey("data")){
-                msg = "request param [data]";
+//            if (!reply_obj.containsKey("sign")){
+//                msg = "request param [sign]";
+//            } else if (!reply_obj.containsKey("timestamp")){
+//                msg = "request param [timestamp]";
+//            }else if (!reply_obj.containsKey("data")){
+//                msg = "request param [data]";
             } else {
-                logger.info("--------------replymessage-----------" + reply_obj.toString());
-                id = reply_obj.get("id").toString();
+//                logger.info("--------------replymessage-----------" + reply_obj.toString());
+//                id = reply_obj.get("id").toString();
 //                String access_key = reply_obj.get("access_key").toString();
-                String sign = reply_obj.get("sign").toString();
-                String timestamp = reply_obj.get("timestamp").toString();
-                String data_message = reply_obj.get("data").toString();
+//                String sign = reply_obj.get("sign").toString();
+//                String timestamp = reply_obj.get("timestamp").toString();
+//                String data_message = reply_obj.get("data").toString();
                 long epoch = Long.valueOf(timestamp);
                 logger.debug(" range test:" + System.currentTimeMillis());
 
@@ -583,13 +591,13 @@ public class WebController {
                 }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
                     msg = "param [timestamp] is time_out";
                 }else {
-                    JSONObject jsonObject = JSONObject.parseObject(data_message);
+//                    JSONObject jsonObject = JSONObject.parseObject(data_message);
 //                    String corp_code = jsonObject.get("corp_code").toString();
 //                    String user_code = jsonObject.get("user_code").toString();
-                    String password = jsonObject.get("password").toString();
-                    String phone = jsonObject.get("account").toString();
+//                    String password = jsonObject.get("password").toString();
+//                    String phone = jsonObject.get("account").toString();
 
-                    org.json.JSONObject user_info = userService.login(request, phone, password);
+                    org.json.JSONObject user_info = userService.login(request, account, password);
 
 //                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code,password);
                     if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
