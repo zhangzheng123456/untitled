@@ -537,7 +537,7 @@ public class VIPController {
             String brand_code = jsonObject.get("brand_code").toString();
             String area_code = jsonObject.get("area_code").toString();
             String page_num = 1+"";
-            String page_size =  Common.EXPORTEXECLCOUNT+"";
+            String page_size =  3000+"";
 
             org.json.JSONObject jsonObj2 = new org.json.JSONObject(param);
             String output_message = jsonObj2.get("output_message").toString();
@@ -549,20 +549,20 @@ public class VIPController {
             logger.info("json--------------corp_code-" + corp_code);
             DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
 
-            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+          //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             org.json.JSONObject object = new org.json.JSONObject(result);
             org.json.JSONArray jsonArray =new org.json.JSONArray(object.get("all_vip_list").toString());
-            List list = WebUtils.Json2List(jsonArray);
-            if (list.size() >= Common.EXPORTEXECLCOUNT) {
+           List list = WebUtils.Json2List2(jsonArray);
+            if (list.size() >= 3000) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(list);
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//            String json = mapper.writeValueAsString(list);
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
-            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
+            String pathname = OutExeclHelper.OutExecl_vip(jsonArray, list, map, response, request);
             JSONObject result2 = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
