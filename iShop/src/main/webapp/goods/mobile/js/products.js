@@ -69,6 +69,7 @@
         document.title = list.goods_name;
         goodsName=list.goods_name;
         list=list.matchgoods;
+        console.log(list);
         if(list.length>0){
             var arr=[];
             var unqiuearr=[];
@@ -98,10 +99,11 @@
                         }else if(type=="share"){
                             isShare='share';
                         }
-                        if(list[k].goods_image.indexOf("http")!==-1){
+                        console.log(list[k].goods_image);
+                        if(list[k].goods_image.image.indexOf("http")!==-1){
                             goods_image=list[k].goods_image;
                         }
-                        if(list[k].goods_image.indexOf("http")==-1){
+                        if(list[k].goods_image.image.indexOf("http")==-1){
                             goods_image="image/goods_default_image.png";
                         }
                         li+='<a href="goods.html?corp_code='

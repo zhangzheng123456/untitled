@@ -152,6 +152,7 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 }
 .action{
+	position: relative;
 	height: 50px;
 }
 .action span{
@@ -175,7 +176,7 @@ input::-webkit-input-placeholder{
 	color: #434960;
 }
 .action_l{
-	float: left;
+	position: absolute;
 }
 .action_l a{
 	color:#565656;
