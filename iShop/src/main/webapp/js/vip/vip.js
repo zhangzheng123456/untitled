@@ -2087,7 +2087,10 @@ $('#jurisdiction').on('click','#add',function(e){
                 // if(a!==""){
                 //     $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
                 // }
+
                 $('.corp_select select').searchableSelect();
+                console.log( $('#corp_select .searchable-select'));
+                $('#corp_select .searchable-select').css('width','100%');
                 $('.corp_select .searchable-select-input').keydown(function(event){
                     var event=window.event||arguments[0];
                     if(event.keyCode == 13){
