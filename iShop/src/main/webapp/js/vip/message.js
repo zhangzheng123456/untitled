@@ -228,7 +228,7 @@ function superaddition(data, num) {//页面加载循环
             + "</td><td><span  title='"+data[i].sms_code+"'>"
             + data[i].sms_code
             + "</td><td><span title='"+send_type+"' class='send_type' data-type='"+data[i].send_type+"'>"
-            + send_type
+            + data[i].send_type
             + "</span></td><td class='message_content'><span title='"+data[i].content+"'>"
             + data[i].content
             + "</span></td><td class='details'><a href='javascript:void(0)'>"
