@@ -29,6 +29,10 @@ $(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["funcCode"]=funcCode;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -73,6 +77,10 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex, pageSize, funcCode) {
@@ -164,6 +172,10 @@ function setPage(container, count, pageindex, pageSize, funcCode) {
 }
 function dian(a, b) {//点击分页的时候调什么接口
     if (value == "" && filtrate == "") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(a, b);
     } else if (value !== "") {
         param["pageNumber"] = a;
@@ -176,7 +188,6 @@ function dian(a, b) {//点击分页的时候调什么接口
     }
 }
 function superaddition(data, num) {//页面加载循环
-    console.log(data);
     if(data.length == 0){
         var len = $(".table thead tr th").length;
         var i;
@@ -226,7 +237,7 @@ function superaddition(data, num) {//页面加载循环
                 TD+="<td><span>"+data[i][code]+"</span></td>";
             })(c)
         }
-        $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='" + data[i].id + "'' data-message_code='"+data[i].message_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -238,7 +249,7 @@ function superaddition(data, num) {//页面加载循环
             + "</td><td >"
             + receiver_type
             + "</td>" +
-            TD+
+            TD
             +"</td><td class='details'><a href='javascript:void(0)'>"
             + "查看"
             + "</a></td>"+
@@ -281,15 +292,20 @@ function jurisdiction(actions) {
 }
 //页面加载调权限接口
 function qjia(){
-    var param={};
-    param["funcCode"]=funcCode;
-    oc.postRequire("post","/list/action","0",param,function(data){
+    var param1={};
+    param1["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param1,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
         titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
         tableTh();
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
+        GET(inx, pageSize);
     })
 }
 function tableTh(){ //table  的表头
@@ -303,8 +319,9 @@ qjia();
 //页面加载时list请求
 function GET(a, b) {
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("get", "/message/list?pageNumber=" + a + "&pageSize=" + b
-        + "&funcCode=" + funcCode + "", "", "", function (data) {
+    //oc.postRequire("get", "/message/list?pageNumber=" + a + "&pageSize=" + b
+    //    + "&funcCode=" + funcCode + "", "", "", function (data) {
+    oc.postRequire("post", "/message/search", "0", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
             var message = JSON.parse(data.message);
@@ -320,7 +337,6 @@ function GET(a, b) {
         }
     });
 }
-GET(inx, pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse() {
     $(document).ready(function () {//隔行变色
@@ -333,7 +349,6 @@ function jumpBianse() {
         var input = $(this).find("input")[0];
         var thinput = $("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if (input.type == "checkbox" && input.name == "test" && input.checked == false) {
             input.checked = true;
             $(this).addClass("tr");
@@ -367,7 +382,6 @@ function jumpBianse() {
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width": +l + "px", "height": +h + "px"});
         $("#tk").css({"left": +left + "px", "top": +tp + "px"});
     })
@@ -380,7 +394,7 @@ function jumpBianse() {
             event.cancelBubble=true;
         }
         var param={};
-        var message_code=$(this).parents('tr').find(".message_code").attr("data-code");
+        var message_code=$(this).parents('tr').attr("data-message_code");
         param["message_code"]=message_code;
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/message/detailInfo","0",param,function(data){
@@ -389,7 +403,6 @@ function jumpBianse() {
                 $('#content').hide();
                 var message=JSON.parse(data.message);
                 var list=message;
-                console.log(list);
                 $(".table #table_r tbody").empty();
                 for(var i=0;i<list.length;i++){
                     var a=i+1;
@@ -482,7 +495,6 @@ function POST(a,b) {
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function () {
     $("#p").hide();
@@ -513,6 +525,10 @@ $("#cancel").click(function () {
                 if (value == "" && filtrate == "") {
                     frame();
                     $('.frame').html('删除成功');
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["funcCode"]=funcCode;
+                    param["searchValue"]="";
                     GET(pageNumber, pageSize);
                 } else if (value !== "") {
                     frame();
@@ -587,7 +603,6 @@ $("#leading_out").click(function () {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var message = JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for (var i = 0; i < message.length; i++) {
                 $("#file_list_l ul").append("<li data-name='" + message[i].column_name + "'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -615,7 +630,6 @@ $("#file_submit").click(function () {
         $('.frame').html('请把要导出的列移到右边');
         return;
     }
-    console.log(li.length);
     for (var i = 0, column_name = ""; i < li.length; i++) {
         var r = $(li[i]).attr("data-name");
         if (i < li.length - 1) {
@@ -682,7 +696,6 @@ $("#x1").click(function () {
 //上传文件
 function UpladFile() {
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/area/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -702,7 +715,7 @@ function UpladFile() {
                 $('#file').val("");
             }
         }
-    }
+    };
     function doResult(data) {
         var data = JSON.parse(data);
         if (data.code == "0") {
@@ -712,7 +725,6 @@ function UpladFile() {
         }
         $('#file').val("");
     }
-
     xhr.open("post", FileController, true);
     xhr.onload = function () {
         // alert("上传完成!");
@@ -731,7 +743,6 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
                 li += "<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -866,6 +877,10 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
