@@ -323,8 +323,8 @@
                     <when test="entryValue!='' and entryKey=='corp_name'">
                         c.${entryKey} REGEXP ${entryValue}
                     </when>
-                    <when test="entryValue!='' and entryKey=='type_description'">
-                        mt.${entryKey} REGEXP ${entryValue}
+                    <when test="entryValue!='' and entryKey=='message_type'">
+                        mt.type_description REGEXP ${entryValue}
                     </when>
                     <when test="entryValue!=''">
                         dum.${entryKey} REGEXP ${entryValue}
