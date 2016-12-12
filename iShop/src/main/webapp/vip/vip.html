@@ -255,6 +255,76 @@
         color: #6dc1c8;
         border-bottom: 1px solid #6dc1c8;
     }
+    /*更多详情*/
+    #get_more{
+        display: none;
+        position: fixed;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-45%);
+        width: 570px;
+        background: #fff;
+        border-radius: 5px;
+        z-index: 99999;
+    }
+    #rightMore:hover,#showDone:hover,#showDoing:hover,#choose:hover{
+        cursor: pointer;
+    }
+    #get_more .head_span_l{
+        padding-left: 5px;
+        padding-top: 5px;
+    }
+    #get_more .head_span_r{
+        float:right;
+        padding-right: 2px;
+        padding-top: 5px;
+        cursor: pointer;
+    }
+    #content{
+        margin-top:10px;
+        padding-top: 10px;
+        padding-right: 20px;
+        overflow-y: auto;
+        height: 430px;
+    }
+    #content .content_l{
+        float:left;
+        color:#434960;
+        width: 120px;
+        height: 50px;
+        text-align: right;
+        line-height: 50px;
+    }
+    #content .content_r{
+        margin-left: 120px;
+        padding-left: 25px;
+        padding-left: 25px;
+        height: 50px;
+        color:#888;
+        text-align:left;
+        line-height: 50px;
+    }
+    #fab_describe img{
+        max-width: 100%;
+        max-height:100%;
+    }
+    #fab_describe {
+        min-height: 100px;
+        margin-bottom: 30px;
+        border-radius: 4px;
+        outline: none;
+        background: #dfdfdf;
+        position: relative;
+        top: 18px;
+        margin-left: 145px;
+        padding:5px;
+        color:#888;
+        overflow: hidden;
+    }
+    .get_more_head{
+        padding-left: 20px;
+        border-bottom: 1px solid #ddd;
+    }
 </style>
 <body>
 <div class="content">
@@ -800,6 +870,54 @@
 
         </div>
     </div>
+</div>
+<!--新增VIP弹窗-->
+<div id="get_more">
+    <div class="get_more_head">
+        <span class="head_span_l">活动详情</span>
+        <span class="head_span_r icon-ishop_6-12" ></span>
+    </div>
+    <ul id="content">
+        <li>
+            <span class="content_l">活动状态</span>
+            <div class="content_r"id="activityState_1">
+            </div>
+        </li>
+        <li>
+            <span class="content_l">活动主题</span>
+            <div class="content_r">
+            </div>
+        </li>
+        <li>
+            <span class="content_l">执行方式</span>
+            <div class="content_r">
+                测试
+            </div>
+        </li>
+        <li>
+            <span class="content_l">活动时间</span>
+            <div class="content_r">
+                <span id="beiginTime_1" style="margin-left: 0px"></span> ~ <span id="endTime_1"></span></span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l">执行范围</span>
+            <div class="content_r">
+                测试
+            </div>
+        </li>
+        <li>
+            <span class="content_l">目标会员</span>
+            <div class="content_r">
+                测试
+            </div>
+        </li>
+        <li>
+            <span class="content_l">活动描述</span>
+            <div id="fab_describe">
+            </div>
+        </li>
+    </ul>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
