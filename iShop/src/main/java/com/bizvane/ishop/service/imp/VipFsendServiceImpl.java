@@ -58,10 +58,6 @@ public class VipFsendServiceImpl implements VipFsendService {
     MongoDBClient mongodbClient;
 
     private static HttpClient httpClient = new HttpClient();
-   // SpringJdbcService JdbcService = null;
-   // MongoDBClient mongoDBClient = null;
-
-
 
 
     /**
@@ -72,56 +68,116 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @throws Exception
      */
     @Override
-    public String getVipFsendById(int id) throws Exception {
+    public String getVipFsendById(int id, String send_type, String content) throws Exception {
         String message = "";
+        String vip_id = "";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
-        String type = vips_obj.get("type").toString();
-        if (type.equals("1")) {
-            String area_code = vips_obj.get("area_code").toString();
-            String brand_code = vips_obj.get("brand_code").toString();
-            String store_code = vips_obj.get("store_code").toString();
-            String user_code = vips_obj.get("user_code").toString();
-            if (user_code.equals("")) {
-                if (store_code.equals("")) {
-                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-                    for (int i = 0; i < storeList.size(); i++) {
-                        store_code = store_code + storeList.get(i).getStore_code() + ",";
+        String type = vips_obj.get("type").toString().trim();
+        JSONObject contents = JSONObject.parseObject(content);
+        String message_id = contents.get("message_id").toString().trim();
+        if (send_type.equals("sms")) {
+            if (type.equals("1")) {
+                String area_code = vips_obj.get("area_code").toString();
+                String brand_code = vips_obj.get("brand_code").toString();
+                String store_code = vips_obj.get("store_code").toString();
+                String user_code = vips_obj.get("user_code").toString();
+                if (user_code.equals("")) {
+                    if (store_code.equals("")) {
+                        List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                        for (int i = 0; i < storeList.size(); i++) {
+                            store_code = store_code + storeList.get(i).getStore_code() + ",";
+                        }
                     }
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_store_code.key, data_store_code);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    message = dataBox.data.get("message").value;
+                } else {
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_user_code.key, data_user_code);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    message = dataBox.data.get("message").value;
                 }
-
-
+            } else if (type.equals("2")) {
+                String vips = vips_obj.get("vips").toString();
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
-
+                Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_store_code.key, data_store_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-                message = dataBox.data.get("message").value;
-            } else {
-
-                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
-
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_user_code.key, data_user_code);
+                datalist.put(data_vip_id.key, data_vip_id);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                 message = dataBox.data.get("message").value;
             }
-        } else if (type.equals("2")) {
-            String vips = vips_obj.get("vips").toString();
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_vip_id.key, data_vip_id);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-            message = dataBox.data.get("message").value;
+        } else if (send_type.equals("template")) {
 
+            MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+            if (type.equals("1")) {
+                String area_code = vips_obj.get("area_code").toString();
+                String brand_code = vips_obj.get("brand_code").toString();
+                String store_code = vips_obj.get("store_code").toString();
+                String user_code = vips_obj.get("user_code").toString();
+                if (user_code.equals("")) {
+                    if (store_code.equals("")) {
+                        List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                        for (int i = 0; i < storeList.size(); i++) {
+                            store_code = store_code + storeList.get(i).getStore_code() + ",";
+                        }
+                    }
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_store_code.key, data_store_code);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    message = dataBox.data.get("message").value;
+                    JSONObject msg_obj = JSONObject.parseObject(message);
+                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                    for (int i = 0; i < vip_infos.size(); i++) {
+                        JSONObject vip_obj = vip_infos.getJSONObject(i);
+                        vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
+
+                    }
+                } else {
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_user_code = new Data("user_codes", user_code, ValueType.PARAM);
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_user_code.key, data_user_code);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    message = dataBox.data.get("message").value;
+                    JSONObject msg_obj = JSONObject.parseObject(message);
+                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                    for (int i = 0; i < vip_infos.size(); i++) {
+                        JSONObject vip_obj = vip_infos.getJSONObject(i);
+                        vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
+
+                    }
+
+                }
+            } else if (type.equals("2")) {
+                vip_id = vips_obj.get("vips").toString();
+            }
+            String vipid[] = vip_id.split(",");
+            for (int i = 0; i < vipid.length; i++) {
+                String vip = vipid[i];
+
+                Map query_key = new HashMap();
+                query_key.put("template", "fsend");
+                query_key.put("message_id", message_id);
+                query_key.put("message_id", vip);
+                List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
+            }
+        } else {
+            message = "发送类型不合法";
         }
         return message;
     }
@@ -156,7 +212,8 @@ public class VipFsendServiceImpl implements VipFsendService {
         String type = sms_vips_obj.getString("type");
         String openids = "";
         String phone = "";
-        String vip_id="";
+        String vip_id = "";
+        String vip_name = "";
         if (type.equals("1")) {
             String area_code = sms_vips_obj.get("area_code").toString();
             String brand_code = sms_vips_obj.get("brand_code").toString();
@@ -184,10 +241,11 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                    vip_id= vip_id + vip_obj.getString("VIP_ID") + ",";
+                    vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
                     if (!vip_obj.getString("OPEN_ID").equals("")) {
                         openids = openids + vip_obj.getString("OPEN_ID") + ",";
                     }
+                    vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
 
                 }
             } else {
@@ -204,7 +262,8 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                    vip_id= vip_id + vip_obj.getString("VIP_ID") + ",";
+                    vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
+                    vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
                     if (!vip_obj.getString("OPEN_ID").equals("")) {
                         openids = openids + vip_obj.getString("OPEN_ID") + ",";
                     }
@@ -217,7 +276,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_vip_id.key, data_vip_id);
-            vip_id=vip_id+vips;
+            vip_id = vip_id + vips;
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
             String message1 = dataBox.data.get("message").value;
             JSONObject msg_obj = JSONObject.parseObject(message1);
@@ -225,6 +284,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             for (int i = 0; i < vip_infos.size(); i++) {
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
                 phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
                 if (!vip_obj.getString("OPEN_ID").equals("")) {
                     openids = openids + vip_obj.getString("OPEN_ID") + ",";
                 }
@@ -261,36 +321,42 @@ public class VipFsendServiceImpl implements VipFsendService {
                 }
                 status = Common.DATABEAN_CODE_SUCCESS;
                 return status;
-            } else {
+            } else if (send_type.equals("template")) {
                 //发送类型：微信模板消息
                 JSONObject template_content = JSONObject.parseObject(content);
                 template_content.put("openid", openids);
-                JSONObject test=new JSONObject();
-                test.put("errcode","0");
+                String auth_appid = template_content.get("app_user_name").toString().trim();
+                String message_id = template_content.get("message_id").toString().trim();
+                JSONObject test = new JSONObject();
+                test.put("errcode", "0");
                 String result = test.toString();
                 //String result = sendTemplate(template_content);
                 JSONObject info = JSONObject.parseObject(result);
-                String openid[]=openids.split(",");
-                String vipid[]=vip_id.split(",");
-                for (int i = 0; i <openid.length ; i++) {
+                String openid[] = openids.split(",");
+                String vipid[] = vip_id.split(",");
+                String vipname[] = vip_name.split(",");
+                for (int i = 0; i < openid.length; i++) {
                     for (int j = 0; j < vipid.length; j++) {
-                        String open_id=openid[i];
-                        String id=vipid[i];
-                        insertMongoDB(corp_code,open_id,id);
+                        String open_id = openid[i];
+                        String id = vipid[i];
+                        insertMongoDB(corp_code, open_id, id, auth_appid, vipname[i]);
                     }
                 }
-                    if ("0".equals(info.getString("errcode"))) {
+                if ("0".equals(info.getString("errcode"))) {
+                    updateReadInfo(message_id);
+                    return status;
+                } else if (info.getString("errcode").equals("40003")) {
+                    status = "invalid";
+                    updateSendInfo(message_id);
 
-                        return status;
-                    } else if(info.getString("errcode").equals("40003")){
-                        status = "invalid";
-                        update();
-
-                        return status;
-                    }else{
-                        status = "发送失败";
-                        return status;
-                    }
+                    return status;
+                } else {
+                    status = "发送失败";
+                    return status;
+                }
+            } else {
+                status = "发送类型不合法";
+                return status;
             }
         } else {
             status = "发送失败";
@@ -298,40 +364,41 @@ public class VipFsendServiceImpl implements VipFsendService {
         }
     }
 
-        @Override
-        public String update (String message, String user_id) throws Exception {
-            return "";
-        }
+    @Override
+    public String update(String message, String user_id) throws Exception {
+        return "";
+    }
 
-        @Override
-        public int delete ( int id) throws Exception {
-            return vipFsendMapper.deleteById(id);
-        }
+    @Override
+    public int delete(int id) throws Exception {
+        return vipFsendMapper.deleteById(id);
+    }
 
-        @Override
-        public PageInfo<VipFsend> getAllVipFsendScreen ( int page_number, int page_size, String
-        corp_code, Map < String, String > map) throws Exception {
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("corp_code", corp_code);
-            params.put("map", map);
-            PageHelper.startPage(page_number, page_size);
-            List<VipFsend> list1 = vipFsendMapper.selectAllFsendScreen(params);
-            for (VipFsend activityVip : list1) {
-                activityVip.setIsactive(CheckUtils.CheckIsactive(activityVip.getIsactive()));
-            }
-            PageInfo<VipFsend> page = new PageInfo<VipFsend>(list1);
-            return page;
+    @Override
+    public PageInfo<VipFsend> getAllVipFsendScreen(int page_number, int page_size, String
+            corp_code, Map<String, String> map) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<VipFsend> list1 = vipFsendMapper.selectAllFsendScreen(params);
+        for (VipFsend activityVip : list1) {
+            activityVip.setIsactive(CheckUtils.CheckIsactive(activityVip.getIsactive()));
         }
+        PageInfo<VipFsend> page = new PageInfo<VipFsend>(list1);
+        return page;
+    }
 
-        @Override
-        public VipFsend getVipFsendForId (String corp_code, String sms_code) throws Exception {
+    @Override
+    public VipFsend getVipFsendForId(String corp_code, String sms_code) throws Exception {
 
-            return vipFsendMapper.selectForId(corp_code, sms_code);
-        }
+        return vipFsendMapper.selectForId(corp_code, sms_code);
+    }
 
 
     /**
      * 微信发送模板
+     *
      * @param extras
      * @return
      * @throws Exception
@@ -344,14 +411,25 @@ public class VipFsendServiceImpl implements VipFsendService {
         String result = response.body().string();
         return result;
     }
-    public void insertMongoDB(String corp_code,String openid,String vip_id)throws Exception{
 
-        Date now=new Date();
+    /**
+     * 插入mongoDB
+     *
+     * @param corp_code
+     * @param openid
+     * @param vip_id
+     * @param app_user_name
+     * @param vip_name
+     * @throws Exception
+     */
+    public void insertMongoDB(String corp_code, String openid, String vip_id, String app_user_name, String vip_name) throws Exception {
+
+        Date now = new Date();
         String message_date = Common.DATETIME_FORMAT.format(now);
-        String message_id = corp_code+ openid + System.currentTimeMillis();
+        String message_id = app_user_name + openid + System.currentTimeMillis();
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection collection = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
-        DBObject saveData=new BasicDBObject();
+        DBObject saveData = new BasicDBObject();
         saveData.put("_id", message_id);
         saveData.put("message_target", "1");
         saveData.put("corp_code", corp_code);
@@ -365,16 +443,23 @@ public class VipFsendServiceImpl implements VipFsendService {
         saveData.put("template", "fsend");
         saveData.put("is_read", "N");
         saveData.put("is_send", "Y");
+        saveData.put("vip_name", vip_name);
         collection.insert(saveData);
 
     }
 
-
-    public void update()throws Exception{
+    /**
+     * 更新发送状态
+     *
+     * @param message_id
+     * @return
+     * @throws Exception
+     */
+    public JSONObject updateSendInfo(String message_id) throws Exception {
         JSONObject message = new JSONObject();
         MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         Map query_key = new HashMap();
-        query_key.put("_id", "fail"+System.currentTimeMillis());
+        query_key.put("_id", message_id);
         List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
         if (message_list.size() > 0) {
             message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
@@ -396,13 +481,21 @@ public class VipFsendServiceImpl implements VipFsendService {
             map_new.put("is_send", "N");
             mongoDBClient.update("vip_message_content", map_new, old);
         }
+        return message;
     }
 
-    public void update1()throws Exception{
+    /**
+     * 更新已读状态
+     *
+     * @param message_id
+     * @return
+     * @throws Exception
+     */
+    public JSONObject updateReadInfo(String message_id) throws Exception {
         JSONObject message = new JSONObject();
         MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         Map query_key = new HashMap();
-        query_key.put("_id", "read"+System.currentTimeMillis());
+        query_key.put("_id", "read" + System.currentTimeMillis());
         List<Map<String, Object>> message_list = mongoDBClient.query("vip_message_content", query_key);
         if (message_list.size() > 0) {
             message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
@@ -424,5 +517,6 @@ public class VipFsendServiceImpl implements VipFsendService {
             map_new.put("is_send", old.get("is_send"));
             mongoDBClient.update("vip_message_content", map_new, old);
         }
+        return message;
     }
 }

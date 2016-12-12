@@ -861,7 +861,7 @@ public class UserController {
                         }
                         user.setBrand_code(brand_code);
                     }
-                    if (role.equals(Common.ROLE_SM)) {
+                    if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_AM)) {
                         if(role.equals(Common.ROLE_SM ) && store_code.equals("")){
                             result = "：第" + (i + 1) + "行角色为店长，店铺编号为必填项";
                             int a = 5 / 0;

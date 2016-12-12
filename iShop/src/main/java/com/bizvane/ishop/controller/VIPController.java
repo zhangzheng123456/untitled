@@ -385,7 +385,6 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
-
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
