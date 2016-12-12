@@ -570,6 +570,7 @@ public class TaskController {
             bean.setId("1");
             bean.setMessage(result.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
             bean.setMessage("信息异常");

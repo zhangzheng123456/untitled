@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161202">
     <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <script src="../js/laydate/laydate.js"></script>
@@ -285,55 +286,120 @@
         padding-top: 5px;
     }
     #get_more .head_span_r{
-        float:right;
+        float: right;
         padding-right: 2px;
         padding-top: 5px;
         cursor: pointer;
+        position: relative;
+        font-size: 15px;
+        color: #434960;
+        left: 15px;
     }
     #content{
-        margin-top:10px;
-        padding-top: 10px;
-        padding-right: 20px;
+        padding: 10px 20px;
         overflow-y: auto;
-        height: 430px;
+        height: 370px;
+        box-sizing: border-box;
     }
     #content .content_l{
         float:left;
         color:#434960;
-        width: 120px;
+        width: 20%;
         height: 50px;
         text-align: right;
         line-height: 50px;
+        font-size: 15px;
+        color: #434960;
     }
     #content .content_r{
-        margin-left: 120px;
-        padding-left: 25px;
-        padding-left: 25px;
+        margin-left:20%;
+        padding-left: 20px;
+        padding-right: 20px;
         height: 50px;
         color:#888;
         text-align:left;
         line-height: 50px;
     }
-    #fab_describe img{
-        max-width: 100%;
-        max-height:100%;
-    }
-    #fab_describe {
-        min-height: 100px;
-        margin-bottom: 30px;
-        border-radius: 4px;
-        outline: none;
-        background: #dfdfdf;
-        position: relative;
-        top: 18px;
-        margin-left: 145px;
-        padding:5px;
-        color:#888;
-        overflow: hidden;
-    }
     .get_more_head{
-        padding-left: 20px;
-        border-bottom: 1px solid #ddd;
+       padding: 5px 20px 5px 20px;
+    }
+    #get_more i{
+        display: block;
+        margin-top: 5px;
+        border-top:1px solid #ddd;
+    }
+    #content .content_r input,#OWN_CORP,.search_input,#card_no{
+        border: 1px solid #ddd;
+        width: 100%;
+        height: 30px;
+        margin-right: 20px;
+        border-radius: 5px;
+        outline: none;
+        padding-left: 10px;
+        color:#888;
+        font-size: 15px;
+        box-sizing: border-box;
+    }
+    #OWN_CORP, .search_input{
+        background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+        background-size: 30px 30px;
+        margin-right: 0px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+    }
+    .get_more_footer{
+        margin: 0px 20px 10px 20px;
+        border-top:1px solid #ddd;
+        padding-top: 10px;
+    }
+    .check{
+        visibility: hidden;
+    }
+    .get_more_footer .check:checked + b{
+        background: url(../img/icon_radio_S.png) no-repeat center center;
+        background-size: 15px 15px;
+    }
+    .radio_b{
+        display:inline-block;
+        width: 15px;
+        height:15px;
+        background:#fff;
+        border-radius: 50%;
+        border: 1px solid #9c9c9c;
+        position: relative;
+        top: 1px;
+        cursor: pointer;
+    }
+    .get_more_footer label{
+        cursor: pointer;
+    }
+    .upper{
+        position: relative;
+        top:-2px;
+        margin-right:10px;
+    }
+    .footer_ul {
+        width:100%;
+        overflow: hidden;
+        padding-top: 20px;
+    }
+    .footer_ul li{
+        width: 50%;
+        float:left;
+    }
+    #get_more_save{
+        float:right;
+        width: 100px;
+        height: 30px;
+        background: #6dc1c8;
+        color:#fff;
+        border-radius: 5px;
+        letter-spacing: 5px;
+        font-style: normal;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
     }
 </style>
 <body>
@@ -884,53 +950,73 @@
 <!--新增VIP弹窗-->
 <div id="get_more">
     <div class="get_more_head">
-        <span class="head_span_l">活动详情</span>
+        <span class="head_span_l">新增VIP</span>
         <span class="head_span_r icon-ishop_6-12" ></span>
+        <i></i>
     </div>
     <ul id="content">
         <li>
-            <span class="content_l">活动状态</span>
-            <div class="content_r"id="activityState_1">
-            </div>
-        </li>
-        <li>
-            <span class="content_l">活动主题</span>
+            <span class="content_l">单号</span>
             <div class="content_r">
+                    <input type="text">
             </div>
         </li>
         <li>
-            <span class="content_l">执行方式</span>
+            <span class="content_l"style="color:#c26555">所属企业*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select class="search_input"id="OWN_CORP" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">所属店铺*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select class="search_input" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">所属导购*</span>
+            <div  class="content_r">
+                 <span class="corp_select">
+                    <select class="search_input" style="display:inline-flex"></select>
+                 </span>
+            </div>
+        </li>
+        <li>
+            <span class="content_l"style="color:#c26555">VIP姓名*</span>
             <div class="content_r">
-                测试
+                <input type="text">
             </div>
         </li>
         <li>
-            <span class="content_l">活动时间</span>
+            <span class="content_l"style="color:#c26555">手机号*</span>
             <div class="content_r">
-                <span id="beiginTime_1" style="margin-left: 0px"></span> ~ <span id="endTime_1"></span></span>
-            </div>
-        </li>
-        <li>
-            <span class="content_l">执行范围</span>
-            <div class="content_r">
-                测试
-            </div>
-        </li>
-        <li>
-            <span class="content_l">目标会员</span>
-            <div class="content_r">
-                测试
-            </div>
-        </li>
-        <li>
-            <span class="content_l">活动描述</span>
-            <div id="fab_describe">
+                <input type="text">
             </div>
         </li>
     </ul>
+    <div class="get_more_footer">
+        <input type="radio"class="check"style="display: none" name="ck"  id="ck_1">
+        <b class="radio_b"></b>
+        <label for="ck_1"class="upper">手动输入卡号</label>
+        <input type="radio"class="check"style="display: none" name="ck"   id="ck_2">
+        <b class="radio_b"></b>
+        <label for="ck_2"class="upper">自动生成卡号</label>
+            <ul class="footer_ul">
+                <li>
+                    <input type="text" id="card_no">
+                </li>
+                <li><i id="get_more_save">保存</i></li>
+            </ul>
+    </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
 <script src="/js/silide.js?20161206"></script>
