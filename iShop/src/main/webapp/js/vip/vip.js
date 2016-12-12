@@ -537,15 +537,17 @@ function addViplabel(obj,btn) {
                     }
                 }
                 for(var j=0;j<len_h;j++){
-                    if(btn == $($("#batch_label_hot span")[i]).html()){
-                        var name = $($("#batch_label_hot span")[i]).attr("class");
+                    if(btn == $($("#batch_label_hot span")[j]).html()){
+                        var name = $($("#batch_label_hot span")[j]).attr("class");
                         if(name=="label_u"){
-                            $($("#batch_label_hot span")[i]).removeClass("label_u").addClass("label_u_active");
+                            $($("#batch_label_hot span")[j]).removeClass("label_u").addClass("label_u_active");
                         }else if(name=="label_g"){
-                            $($("#batch_label_hot span")[i]).removeClass("label_g").addClass("label_g_active");
+                            $($("#batch_label_hot span")[j]).removeClass("label_g").addClass("label_g_active");
                         }
                     }
                 }
+                frame();
+                $(".frame").html("添加成功");
             }
             if(classname=="label_u"){
                 $(obj).removeClass(classname).addClass("label_u_active");
