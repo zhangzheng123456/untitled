@@ -54,7 +54,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     private ValidateCodeService validateService;
     @Autowired
     MongoDBClient mongodbClient;
-    MongoDBClient client = null;
+   // MongoDBClient client = null;
     private static HttpClient httpClient = new HttpClient();
     private static final Logger logger = Logger.getLogger(VipFsendServiceImpl.class);
 
@@ -68,7 +68,7 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     @Override
     public String getVipFsendById(int id, String send_type, String content) throws Exception {
-        if (client == null) client = SpringUtil.getBean("mongodbClient");
+       // if (mongodbClient == null) mongodbClient = SpringUtil.getBean("mongodbClient");
       //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
         String message = "";
         String vip_id = "";
@@ -206,7 +206,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     query_key.put("template", "fsend");
                     query_key.put("_id", message_id);
                     query_key.put("vip_id", vip);
-                    List<Map<String, Object>> message_list = client.query("vip_message_content", query_key);
+                    List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
                     if (message_list.size() == 0) {
                        Map<String, Object> list_fail = new HashedMap();
                        list_fail.put("vip_id", vip);
@@ -389,6 +389,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String auth_appid = template_content.get("app_user_name").toString().trim();
                 String message_id = template_content.get("message_id").toString().trim();
                 JSONObject test = new JSONObject();
+                //测试情况，默认模板已发送成功
                 test.put("errcode", "0");
                 String result = test.toString();
                 //String result = sendTemplate(template_content);
@@ -396,15 +397,15 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String openid[] = openids.split(",");
                 String vipid[] = vip_id.split(",");
                 String vipname[] = vip_name.split(",");
-//                for (int i = 0; i < openid.length; i++) {
-//                    for (int j = 0; j < vipid.length; j++) {
-//                        String open_id = openid[i];
-//                        String id = vipid[i];
-//                        insertMongoDB(corp_code, open_id, id, auth_appid, vipname[i]);
-//                    }
-//                }
+                for (int i = 0; i < openid.length; i++) {
+                    for (int j = 0; j < vipid.length; j++) {
+                        String open_id = openid[i];
+                        String id = vipid[i];
+                        insertMongoDB(corp_code, open_id, id, auth_appid, vipname[i]);
+                   }
+                }
                if ("0".equals(info.getString("errcode"))) {
-//                    updateReadInfo(message_id);
+                   updateReadInfo(message_id);
                    return status;
                } else if (info.getString("errcode").equals("40003")) {
                    status = "invalid";
@@ -496,27 +497,27 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     public void insertMongoDB(String corp_code, String openid, String vip_id, String app_user_name, String vip_name) throws Exception {
 
-//        Date now = new Date();
-//        String message_date = Common.DATETIME_FORMAT.format(now);
-//        String message_id = app_user_name + openid + System.currentTimeMillis();
-//        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//        DBCollection collection = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
-//        DBObject saveData = new BasicDBObject();
-//        saveData.put("_id", message_id);
-//        saveData.put("message_target", "1");
-//        saveData.put("corp_code", corp_code);
-//        saveData.put("open_id", openid);
-//        saveData.put("vip_id", vip_id);
-//        saveData.put("message_type", "text");
-//        saveData.put("message_content", "");
-//        saveData.put("user_code", "");
-//        saveData.put("message_date", message_date);
-//        saveData.put("auth_appid", "");
-//        saveData.put("template", "fsend");
-//        saveData.put("is_read", "N");
-//        // saveData.put("is_send", "Y");
-//        saveData.put("vip_name", vip_name);
-//        collection.insert(saveData);
+        Date now = new Date();
+        String message_date = Common.DATETIME_FORMAT.format(now);
+        String message_id = app_user_name + openid + System.currentTimeMillis();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection collection = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+        DBObject saveData = new BasicDBObject();
+        saveData.put("_id", message_id);
+        saveData.put("message_target", "1");
+        saveData.put("corp_code", corp_code);
+        saveData.put("open_id", openid);
+        saveData.put("vip_id", vip_id);
+        saveData.put("message_type", "text");
+        saveData.put("message_content", "");
+        saveData.put("user_code", "");
+        saveData.put("message_date", message_date);
+        saveData.put("auth_appid", "");
+        saveData.put("template", "fsend");
+        saveData.put("is_read", "N");
+        // saveData.put("is_send", "Y");
+        saveData.put("vip_name", vip_name);
+        collection.insert(saveData);
 
     }
 
@@ -529,31 +530,31 @@ public class VipFsendServiceImpl implements VipFsendService {
      */
     public JSONObject updateReadInfo(String message_id) throws Exception {
         JSONObject message = new JSONObject();
-//        if (client == null) client = SpringUtil.getBean("mongodbClient");
-//       // MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
-//        Map query_key = new HashMap();
-//        query_key.put("_id", message_id);
-//        List<Map<String, Object>> message_list = client.query("vip_message_content", query_key);
-//        if (message_list.size() > 0) {
-//            message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
-//            Map old = message_list.get(0);
-//            Object _id = old.get("_id");
-//            Map map_new = new HashMap();
-//            map_new.put("_id", _id);
-//            map_new.put("message_target", old.get("message_target"));
-//            map_new.put("corp_code", old.get("corp_code"));
-//            map_new.put("open_id", old.get("open_id"));
-//            map_new.put("vip_id", old.get("vip_id"));
-//            map_new.put("message_type", old.get("message_type"));
-//            map_new.put("message_content", old.get("message_content"));
-//            map_new.put("user_code", old.get("user_code"));
-//            map_new.put("message_date", old.get("message_date"));
-//            map_new.put("auth_appid", old.get("auth_appid"));
-//            map_new.put("template", old.get("template"));
-//            map_new.put("is_read", "Y");
-//            // map_new.put("is_send", old.get("is_send"));
-//            client.update("vip_message_content", map_new, old);
-//        }
+        //if (client == null) client = SpringUtil.getBean("mongodbClient");
+     //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+        Map query_key = new HashMap();
+        query_key.put("_id", message_id);
+        List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
+        if (message_list.size() > 0) {
+            message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
+            Map old = message_list.get(0);
+            Object _id = old.get("_id");
+            Map map_new = new HashMap();
+            map_new.put("_id", _id);
+            map_new.put("message_target", old.get("message_target"));
+            map_new.put("corp_code", old.get("corp_code"));
+            map_new.put("open_id", old.get("open_id"));
+            map_new.put("vip_id", old.get("vip_id"));
+            map_new.put("message_type", old.get("message_type"));
+            map_new.put("message_content", old.get("message_content"));
+            map_new.put("user_code", old.get("user_code"));
+            map_new.put("message_date", old.get("message_date"));
+            map_new.put("auth_appid", old.get("auth_appid"));
+            map_new.put("template", old.get("template"));
+            map_new.put("is_read", "Y");
+            // map_new.put("is_send", old.get("is_send"));
+            mongodbClient.update("vip_message_content", map_new, old);
+        }
        return message;
     }
 }
