@@ -9,6 +9,7 @@ var param = {};//定义的对象
 var _param = {};//筛选定义的内容
 var list = "";
 var cout = "";
+var titleArray=[];
 var filtrate = "";//筛选的定义的值
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
@@ -207,6 +208,7 @@ function superaddition(data, num) {//页面加载循环
     }
     for (var i = 0; i < data.length; i++) {
         var receiver_type='';
+        var TD="";
         switch (data[i].receiver_type){
             case 'staff': receiver_type='员工'; break;
             case 'area': receiver_type='区域'; break;
@@ -218,6 +220,12 @@ function superaddition(data, num) {//页面加载循环
         } else {
             var a = i + 1;
         }
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                TD+="<td><span>"+data[i][code]+"</span></td>";
+            })(c)
+        }
         $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -227,27 +235,29 @@ function superaddition(data, num) {//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td>"
-            // + data[i].message_receiver
-            // + "</td><td>"
-            + data[i].message_type
             + "</td><td >"
             + receiver_type
-            + "</td><td  class='message_code' data-code='"+data[i].message_code+"'>"
-            + data[i].message_title
-            + "</td><td><span title='" + data[i].message_content + "'>"
-            + data[i].message_content
-            + "</span></td><td>"
-            + data[i].message_sender
-            + "</td><td>"
-            + data[i].corp_name
-            + "</span></td><td class='details'><a href='javascript:void(0)'>"
+            + "</td>" +
+            TD+
+            +"</td><td class='details'><a href='javascript:void(0)'>"
             + "查看"
-            + "</a></td><td>"
-            + data[i].modified_date
-            + "</td><td>"
-            + data[i].modifier
-            + "</td></tr>");
+            + "</a></td>"+
+            //"<td  class='message_code' data-code='"+data[i].message_code+"'>"
+            //+ data[i].message_title
+            //+ "</td><td><span title='" + data[i].message_content + "'>"
+            //+ data[i].message_content
+            //+ "</span></td><td>"
+            //+ data[i].message_sender
+            //+ "</td><td>"
+            //+ data[i].corp_name
+            //+ "</span></td><td class='details'><a href='javascript:void(0)'>"
+            //+ "查看"
+            //+ "</a></td><td>"
+            //+ data[i].modified_date
+            //+ "</td><td>"
+            //+ data[i].modifier
+            //+ "</td>" +
+            "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -276,10 +286,19 @@ function qjia(){
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
+        titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
+        tableTh();
     })
 }
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
+};
 qjia();
 //页面加载时list请求
 function GET(a, b) {

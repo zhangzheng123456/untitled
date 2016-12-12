@@ -76,10 +76,10 @@ public class VipFsendServiceImpl implements VipFsendService {
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
-        logger.info("json--sms_vips-----------------------" + sms_vips);
+    //    logger.info("json--sms_vips-----------------------" + sms_vips);
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
         String type = vips_obj.get("type").toString().trim();
-        logger.info("json--send_type-----------------------" + send_type);
+    //    logger.info("json--send_type-----------------------" + send_type);
         if (send_type.equals("sms")) {
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -128,7 +128,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             String m1 = m.replaceAll("");
             JSONObject contents = JSONObject.parseObject(m1);
             String message_id = contents.get("message_id").toString().trim();
-            logger.info("json--message_id-----------------------" + message_id);
+        //    logger.info("json--message_id-----------------------" + message_id);
 
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -195,8 +195,8 @@ public class VipFsendServiceImpl implements VipFsendService {
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             String vipname[] = vip_name.split(",");
-            logger.info("json--vipid-----------------------" + vip_id);
-            logger.info("json--vipname-----------------------" + vip_name);
+//            logger.info("json--vipid-----------------------" + vip_id);
+//            logger.info("json--vipname-----------------------" + vip_name);
             List<Map<String, Object>> list = new ArrayList();
             for (int i = 0; i < vipid.length; i++) {
                 for (int j = 0; j < vipname.length; j++) {
@@ -390,9 +390,9 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String message_id = template_content.get("message_id").toString().trim();
                 JSONObject test = new JSONObject();
                 //测试情况，默认模板已发送成功
-                test.put("errcode", "0");
-                String result = test.toString();
-                //String result = sendTemplate(template_content);
+               // test.put("errcode", "0");
+               // String result = test.toString();
+                String result = sendTemplate(template_content);
                 JSONObject info = JSONObject.parseObject(result);
                 String openid[] = openids.split(",");
                 String vipid[] = vip_id.split(",");
