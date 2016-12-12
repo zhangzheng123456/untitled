@@ -228,7 +228,7 @@ function superaddition(data, num) {//页面加载循环
             + "</td><td><span  title='"+data[i].sms_code+"'>"
             + data[i].sms_code
             + "</td><td><span title='"+send_type+"' class='send_type' data-type='"+data[i].send_type+"'>"
-            + send_type
+            + data[i].send_type
             + "</span></td><td class='message_content'><span title='"+data[i].content+"'>"
             + data[i].content
             + "</span></td><td class='details'><a href='javascript:void(0)'>"
@@ -352,6 +352,11 @@ function jumpBianse() {
         var id=$(this).parents('tr').attr("id");
         var send_type=$(this).parents('tr').find('.send_type').attr("data-type");
         var content=$(this).parents('tr').find('.message_content span').html();
+        if(send_type == "微信模板"){
+            send_type = 'template';
+        }else if(send_type == "短信"){
+            send_type = "sms";
+        }
         param["id"]=id;
         param["send_type"]=send_type;
         param["content"]=content;
@@ -379,15 +384,39 @@ function jumpBianse() {
                 }
                 for(var i=0;i<list.length;i++){
                     var a=i+1;
-                    $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
-                        + a
-                        + "</td><td>"
-                        + list[i].NAME_VIP
-                        + "</td><td>"
-                        + list[i].CARD_NO_VIP
-                        + "</td><td>"
-                        + list[i].MOBILE_VIP
-                        + "</td></tr>");
+                    if(send_type == "sms"){
+                        $(".table #table_r thead").append("<tr class='th'>" +
+                            "<th style='text-align:center;width: 50px;'>序号</th>" +
+                            "<th>会员名称</th>" +
+                            "<th>会员卡号</th>" +
+                            "<th>会员手机号</th>" +
+                            "</tr>");
+                        $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                            + a
+                            + "</td><td>"
+                            + list[i].NAME_VIP
+                            + "</td><td>"
+                            + list[i].CARD_NO_VIP
+                            + "</td><td>"
+                            + list[i].MOBILE_VIP
+                            + "</td></tr>");
+                    }else if(send_type == "template"){
+                        $(".table #table_r thead").append("<tr class='th'>" +
+                            "<th style='text-align:center;width: 50px;'>序号</th>" +
+                            "<th>会员名称</th>" +
+                            "<th>会员编号</th>" +
+                            "<th>发送状态</th>" +
+                            "</tr>");
+                        $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                            + a
+                            + "</td><td>"
+                            + list[i].NAME_VIP
+                            + "</td><td>"
+                            + list[i].CARD_NO_VIP
+                            + "</td><td>"
+                            + list[i].MOBILE_VIP
+                            + "</td></tr>");
+                    }
                 }
             }
             $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");

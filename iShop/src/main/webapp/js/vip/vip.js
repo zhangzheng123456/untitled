@@ -250,7 +250,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -364,9 +364,10 @@ $("#more_down").on("click","#batch_label",function () {
         $(".frame").html("请选择会员");
     }else if(tr.length>0) {
         var arr=whir.loading.getPageSize();
-        var left=(arr[0]-$("#screen_wrapper").width())/2;
-        var tp=(arr[3]-$("#screen_wrapper").height())/2;
-        $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});;
+        var left=(arr[0]-$("#batch_label_wrapper").width())/2;
+        var tp=(arr[3]-$("#batch_label_wrapper").height())/2;
+        $("#batch_label_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixrd"});
+        $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
         $("#p").show();
         $("#batch_label_wrapper").show();
         $("#batch_label_hot").empty();
@@ -402,12 +403,12 @@ $("#close_label").click(function () {
 });
 //批量标签tabel页切换
 $("#label_title li").click(function () {
-    $(this).addClass("liactive");
-    $(this).siblings("li").removeClass("liactive");
-    if($(this).html()=="热门"){
+    $(this).children("a").addClass("liactive");
+    $(this).siblings("li").children("a").removeClass("liactive");
+    if($(this).children("a").html()=="热门"){
         $("#batch_label_hot").show();
         $("#batch_label_gov").hide();
-    }else if($(this).html()=="官方"){
+    }else if($(this).children("a").html()=="官方"){
         $("#batch_label_gov").show();
         $("#batch_label_hot").hide();
         $("#batch_label_gov").empty();
@@ -431,11 +432,6 @@ $("#label_title li").click(function () {
                 list=list.list;
                 var html="";
                 var classname="";
-                // if(hasNextPage==false){
-                //     $("#more_label_g").hide();
-                // }else {
-                //     $("#more_label_g").show();
-                // }
                 for(var i=0;i<list.length;i++){
                     classname="label_g";
                     html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+i+"g'>"+list[i].label_name+"</span>"
@@ -529,8 +525,19 @@ function addViplabel(obj,btn) {
     oc.postRequire("post","/VIP/label/addBatchRelViplabel","",param,function(data){
         if(data.code=="0"){
             if(btn!==""){
-                frame();
-                $(".frame").html("添加成功");
+                if($(".batch_label_box").css("display")=="block"){
+                    var len = $(".batch_label_box span").length;
+                    for(var i=0;i<len;i++){
+                        if(btn == $($(".batch_label_box span")[i]).html()){
+                            var classname1=$($(".batch_label_box span")[i]).attr("class");
+                            if(classname1=="label_u"){
+                                $($(".batch_label_box span")[i]).removeClass(classname1).addClass("label_u_active");
+                            }else if(classname1=="label_g"){
+                                $($(".batch_label_box span")[i]).removeClass(classname1).addClass("label_g_active");
+                            }
+                        }
+                    }
+                }
             }
             if(classname=="label_u"){
                 $(obj).removeClass(classname).addClass("label_u_active");
@@ -1941,7 +1948,7 @@ $("#choose_staff .screen_que").click(function () {
        $("#p").hide();
        var staff_name = $("#choose_staff .screen_content_r ul li span").html();
        var user_code = $("#choose_staff .screen_content_r ul li").attr("id");
-       var store_code = $(tr[0]).attr("data-storeid");
+       var store_code = $(tr[0]).attr("data-storecode");
        var vip_id = "";
        for(var i=0;i<tr.length;i++){
            if(i<tr.length-1){
