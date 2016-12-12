@@ -7,6 +7,10 @@ public class Interfacers {
     private int id;
     private String version;
     private String corp_code;
+    private String interface_name;
+    private String param;
+    private String method;
+
     private String created_date;
     private String creater;
     private String modified_date;

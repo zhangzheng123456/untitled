@@ -96,11 +96,11 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     @Override
     public List<DefGoodsMatch> selectGoodsMatchList(String corp_code, String goods_code, String isactive) throws Exception{
         List<DefGoodsMatch> list = defGoodsMatchMapper.selectGoodsMatchList(corp_code, goods_code, isactive);
-        for (int i = 0; list != null && i < list.size(); i++) {
-            String goods_image = list.get(i).getGoods_image();
-            String new_image = transterGoods(goods_image);
-            list.get(i).setGoods_image(new_image);
-        }
+//        for (int i = 0; list != null && i < list.size(); i++) {
+//            String goods_image = list.get(i).getGoods_image();
+//            String new_image = transterGoods(goods_image);
+//            list.get(i).setGoods_image(new_image);
+//        }
         return list;
     }
 
