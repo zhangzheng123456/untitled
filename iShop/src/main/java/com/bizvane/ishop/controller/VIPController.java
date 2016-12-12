@@ -301,6 +301,10 @@ public class VIPController {
                     avatar = obj.get("avatar").toString();
             }
 
+            List<VipGroup> vipGroups = vipGroupService.selectByVipid(corp_code,Common.SPECIAL_HEAD+vip_id+",",Common.IS_ACTIVE_Y);
+            for (int i = 0; i <vipGroups.size() ; i++) {
+                vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
+            }
             vip.put("vip_avatar", avatar);
             vip.put("vip_group_name", vip_group_name);
 
@@ -493,8 +497,49 @@ public class VIPController {
             String store_code = jsonObject.get("store_code").toString();
             String brand_code = jsonObject.get("brand_code").toString();
             String area_code = jsonObject.get("area_code").toString();
+
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
+            if (jsonObject.containsKey("type")){
+                String type = jsonObject.getString("type");
+                if (type.equals("easy")){
+                    String key = jsonObject.getString("key");
+                    String value = jsonObject.getString("value");
+                }else {
+                    if (jsonObject.containsKey("basic")){
+                        JSONObject basic = jsonObject.getJSONObject("basic");
+                        String vip_name = basic.getString("vip_name");
+                        String sex = basic.getString("sex");
+                        String age = basic.getString("age");
+                        String birthday = basic.getString("birthday");
+                        String phone = basic.getString("phone");
+                    }
+                    if (jsonObject.containsKey("vip")){
+                        JSONObject vip = jsonObject.getJSONObject("vip");
+                        String card_no = vip.getString("card_no");
+                        String card_type = vip.getString("card_type");
+                        String join_date = vip.getString("join_date");
+                        String points = vip.getString("points");
+                        String freeze = vip.getString("freeze");
+                    }
+                    if (jsonObject.containsKey("consume")){
+                        JSONObject consume = jsonObject.getJSONObject("consume");
+                        String recent_date = consume.getString("recent_date");
+                        String times = consume.getString("times");
+                        String total = consume.getString("total");
+                    }
+                    if (jsonObject.containsKey("extend")){
+                        JSONObject extend = jsonObject.getJSONObject("extend");
+                        String label = extend.getString("label");
+                        String group = extend.getString("group");
+                    }
+                    if (jsonObject.containsKey("ticket")){
+                        JSONObject ticket = jsonObject.getJSONObject("ticket");
+                        String ticket_type = ticket.getString("ticket_type");
+                        String ticket_status = ticket.getString("ticket_status");
+                    }
+                }
+            }
 
             if (role_code.equals(Common.ROLE_SYS)) {
                 corp_code = jsonObject.get("corp_code").toString();
@@ -502,7 +547,7 @@ public class VIPController {
             logger.info("json--------------corp_code-" + corp_code);
             DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
 
-            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+//            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -930,7 +975,9 @@ public class VIPController {
     @ResponseBody
     public String recharge(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String user_code = request.getSession().getAttribute("user_code").toString();
+//        String user_code = request.getSession().getAttribute("user_code").toString();
+//        String store_code = request.getSession().getAttribute("store_code").toString();
+
         Date now = new Date();
         String errormessage = "数据异常，导出失败";
         try {
@@ -944,17 +991,22 @@ public class VIPController {
 
             if (type.equals("pay")){
                 if (corp_code.equals("C10016")){
-                    String store_code = jsonObject.get("store_code").toString();
-                    String card_no = jsonObject.get("card_no").toString();
+                    String billNO = jsonObject.get("billNO").toString();//单据编号
+                    String date = jsonObject.get("date").toString();//单据编号
                     String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
+                    String store_code = jsonObject.get("store_code").toString();//充值店仓
+                    String user_code = jsonObject.get("user_code").toString();//经办人
+                    String vip_id = jsonObject.get("vip_id").toString();
+                    String card_no = jsonObject.get("card_no").toString();//会员卡号
                     String price = jsonObject.get("price").toString();//吊牌金额
                     String pay_price = jsonObject.get("pay_price").toString();//实付金额
+                    String discount = jsonObject.get("discount").toString();//折扣
                     String remark = jsonObject.get("remark").toString();
 
                 }
             }else if (type.equals("refund")){
                 if (corp_code.equals("C10016")){
-                    String store_code = jsonObject.get("store_code").toString();
+//                    String store_code = jsonObject.get("store_code").toString();
                     String card_no = jsonObject.get("card_no").toString();
                     String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
 

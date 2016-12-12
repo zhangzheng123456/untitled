@@ -37,4 +37,7 @@ public interface VipGroupService {
 //    JSONArray findVipsGroup(JSONArray array) throws Exception;
 
     JSONArray checkVipsGroup(JSONArray array,String vip_ids) throws Exception;
+
+    List<VipGroup> selectByVipid(String corp_code,String vip_id,String isactive) throws Exception;
+
 }

@@ -65,7 +65,7 @@ public class RoleController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            org.json.JSONObject result = new org.json.JSONObject();
+            JSONObject result = new JSONObject();
             PageInfo<Role> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = roleService.selectAllRole(page_number, page_size, "");
