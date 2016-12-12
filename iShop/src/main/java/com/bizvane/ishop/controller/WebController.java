@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -531,30 +532,34 @@ public class WebController {
     /**
      * 点击登录
      */
-    @RequestMapping(value = "/api/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/api/login", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String login(HttpServletRequest request,HttpServletResponse response) {
         logger.info("------------starttime" + new Date());
         String id = "";
-        String msg = "";
+        String msg = "请求失败";
         String status = "failed";
         String data = "";
         JSONObject return_msg = new JSONObject();
         try {
-            InputStream inputStream = request.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String buffer = null;
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((buffer = bufferedReader.readLine()) != null) {
-                stringBuffer.append(buffer);
-            }
-            String reply = stringBuffer.toString();
-            JSONObject reply_obj = JSONObject.parseObject(reply);
-            if (!reply_obj.containsKey("id")){
-                msg = "request param [id]";
-            }else if (!reply_obj.containsKey("access_key")){
-                msg = "request param [access_key]";
-            }else if (!reply_obj.containsKey("sign")){
+            String param= request.getParameter("param");
+
+
+//            InputStream inputStream = request.getInputStream();
+//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+//            String buffer = null;
+//            StringBuffer stringBuffer = new StringBuffer();
+//            while ((buffer = bufferedReader.readLine()) != null) {
+//                stringBuffer.append(buffer);
+//            }
+//            String reply = stringBuffer.toString();
+            JSONObject reply_obj = JSONObject.parseObject(param);
+//            if (!reply_obj.containsKey("id")){
+//                msg = "request param [id]";
+//            }else if (!reply_obj.containsKey("access_key")){
+//                msg = "request param [access_key]";
+//            }else
+            if (!reply_obj.containsKey("sign")){
                 msg = "request param [sign]";
             } else if (!reply_obj.containsKey("timestamp")){
                 msg = "request param [timestamp]";
@@ -563,16 +568,17 @@ public class WebController {
             } else {
                 logger.info("--------------replymessage-----------" + reply_obj.toString());
                 id = reply_obj.get("id").toString();
-                String access_key = reply_obj.get("access_key").toString();
+//                String access_key = reply_obj.get("access_key").toString();
                 String sign = reply_obj.get("sign").toString();
                 String timestamp = reply_obj.get("timestamp").toString();
                 String data_message = reply_obj.get("data").toString();
                 long epoch = Long.valueOf(timestamp);
                 logger.debug(" range test:" + System.currentTimeMillis());
 
-                if (!access_key.equals(ACCESS_KEY)){
-                    msg = "param [access_key] Invalid";
-                }else if (!sign.equals(SIGN)){
+//                if (!access_key.equals(ACCESS_KEY)){
+//                    msg = "param [access_key] Invalid";
+//                }else
+                if (!sign.equals(SIGN)){
                     msg = "param [sign] Invalid";
                 }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
                     msg = "param [timestamp] is time_out";
