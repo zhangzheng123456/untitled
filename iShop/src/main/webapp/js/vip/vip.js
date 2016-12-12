@@ -2059,7 +2059,53 @@ $(".icon-ishop_6-07").parent().click(function () {
 $('#jurisdiction').on('click','#add',function(e){
     e.stopPropagation();
     $('#get_more').show();
-    console.log('ok')
+    //获取企业
+    function getcorplist(a){
+        //获取所属企业列表
+        var corp_command="/user/getCorpByUser";
+        oc.postRequire("post", corp_command,"", "", function(data){
+            console.log(data);
+            if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                console.log(msg);
+                var index=0;
+                var corp_html='';
+                for( var i=0;i<msg.corps.length;i++){
+                    corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
+                }
+                $("#OWN_CORP").append(corp_html);
+                // if(a!==""){
+                //     $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+                // }
+                $('.corp_select select').searchableSelect();
+                $('.corp_select .searchable-select-input').keydown(function(event){
+                    var event=window.event||arguments[0];
+                    if(event.keyCode == 13){
+                        $("#services").html("");
+                        $("input[verify='Code']").val("");
+                        $("#BRAND_NAME").val("");
+                        $("input[verify='Code']").attr("data-mark","");
+                        $("#BRAND_NAME").attr("data-mark","");
+                    }
+                });
+                $('.searchable-select-item').click(function(){
+                    $("#services").html("");
+                    $("input[verify='Code']").val("");
+                    $("#BRAND_NAME").val("");
+                    $("input[verify='Code']").attr("data-mark","");
+                    $("#BRAND_NAME").attr("data-mark","");
+                })
+            }else if(data.code=="-1"){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        });
+    }
+    getcorplist();
 })
 $('#get_more .head_span_r').click(function () {
     $('#get_more').hide();
