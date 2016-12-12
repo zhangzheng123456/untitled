@@ -354,7 +354,7 @@ function jumpBianse() {
         var content=$(this).parents('tr').find('.message_content span').html();
         param["id"]=id;
         param["send_type"]=send_type;
-        param["content"]=JSON.parse(content);
+        param["content"]=content;
         console.log(content);
         whir.loading.add("",0.5);//加载等待框
         console.log(param);
