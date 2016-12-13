@@ -231,10 +231,16 @@ var getNewVip={
         //不为空验证
         var html='';
         if($(node).val().trim()==''){
-            html=$(node).parent().prev().html();
+            html=$(node).parent().prev().html().slice(0,-1);
+            var HTML='<li class="hint_li"><div class="content_hint"style="display: block"><span class="hint">'+html+'不能为空</span></div></li>';
+            console.log()
+            if( !$(node).parent().parent().next().hasClass('.hint_li')){
+                $(node).parent().parent().after(HTML);
+            }
+        }else{
+            $(node).parent().parent().next('.hint_li').remove();
         }
-        console.log(html);
-        var HTML='<li><div class="content_hint"><span class="hint">'+html+'不能为空</span></div></li>'
+
 
     }
 }
