@@ -50,4 +50,10 @@ public class CommonValue {
     //会员活动执行
     public final static String table_vip_activity_allocation = "vip_activity_allocation";
 
+
+    //参数
+    //新增会员是否验证单号
+    public final static String ADD_VIP_CHECK_BILL = "ADD_VIP_CHECK_BILL";
+    //新增会员是否输入卡号
+    public final static String ADD_VIP_INPUT_CARDNO = "ADD_VIP_INPUT_CARDNO";
 }

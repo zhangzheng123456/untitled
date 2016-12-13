@@ -125,7 +125,7 @@ html{
     color:#6dc1c8;
 }
 .header .center .message-class .tabs-parent{
-    height: 330px;
+    height: 320px;
     position: relative;
 }
 .header .center .message-class .tabs-parent table span{
@@ -429,6 +429,16 @@ padding:25px 15px 0 15px;
 }
 
 /*消费记录*/
+@media screen and (max-width: 1250px){
+    .record_input input{
+        width: 55%;
+    }
+}
+@media screen and (min-width: 1250px){
+    .record_input input{
+        width: 60%;
+    }
+}
 .record{
     display: none;
     font-size: 14px;
@@ -518,7 +528,6 @@ padding:25px 15px 0 15px;
     cursor: pointer;
 }
 .record_input input{
-    width: 60%;
     height: 30px;
     text-indent: 10px;
     margin: 0 10px;
@@ -845,7 +854,8 @@ padding:25px 15px 0 15px;
     color: #fff;
 }
 .all_label{
-    min-height:435px;
+    /*min-height:435px;*/
+    height: 435px;
     margin-bottom: 20px;
     float: right;
     padding: 0 20px;

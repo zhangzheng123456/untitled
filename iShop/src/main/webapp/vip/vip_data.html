@@ -17,11 +17,11 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
-        #topUp{
-            z-index: 9999999999999;;
-            display: none;;
+        #topUp,#refund{
+            z-index: 999;
+            display: none;
             width: 570px;
-            height: 500px;
+            height: 520px;
             background-color: white;
             border: 1px solid #f7f7f7;
             border-radius: 5px;
@@ -73,7 +73,7 @@
         .editor_em select{
             width: 410px;
         }
-        #topUpNum,#chooseDate,#topUpShop,#topUpCard,#topUpVipName,#topUpMoney,#topUpMoneyReality,#topUpMoneyDiscount,#topUpNote{
+        #topUpNum,#chooseDate,#topUpShop,#topUpCard,#topUpVipName,#topUpMoney,#topUpMoneyReality,#topUpMoneyDiscount,#topUpNote,#refundNum,#refundDate,#refunBalanceFrom,#refundBalance,#refunTopUpFrom,#refundReality,#refundMoneyDiscount{
             border: 1px solid #d7d7d7;
             border-radius: 5px;
             margin-left: -4px;
@@ -147,7 +147,7 @@
         }
         /*日期弹窗*/
         #laydate_box{
-            z-index: 9999999999999999;;
+            z-index:1000;
         }
     </style>
 </head>
@@ -168,7 +168,7 @@
                     </div>
                     <div>
                 <span class="activity_date">
-                    <label style="color:#c26555;">单据日期*</label>
+                    <label>单据日期</label>
                     <input type="text" id="chooseDate" readonly="true" placeholder="请选择日期" class="laydate-icon" />
                 </span>
                     </div>
@@ -262,6 +262,98 @@
                 <button id="toSave">保 存</button>
             </div>
         </div>
+    <!--充值结束-->
+    <div id="refund">
+        <div class="topUp_top">VIP退款<div class="screen_close" id="refundClose"><span class="icon-ishop_6-12"></span></div></div>
+        <div class="editor_em  animated fadeInRight topUp_main">
+            <form class="conpany_msg" style="margin-top: 30px">
+                <div>
+                    <span>
+                        <label>单据编号</label>
+                        <input type="text" id="refundNum" autocomplete="off" maxlength="50"/>
+                    </span>
+                </div>
+                <div>
+                <span class="activity_date">
+                    <label>单据日期</label>
+                    <input type="text" id="refundDate" readonly="true" placeholder="请选择日期" class="laydate-icon" />
+                </span>
+                </div>
+                <div>
+                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
+                        <li><label style="color:#c26555;">退款类型*</label></li>
+                        <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
+                        <input class="PARAM_NAME" id="refunTypeInput" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>
+                        <ul class="execution" id="refunType"style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
+                            <li onclick="refunTopUpShow()">按充值单退款</li>
+                            <li onclick="refunBalanceShow()">余额退款</li>
+                        </ul>
+                    </ul>
+                </div>
+                <div>
+                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
+                        <li><label style="color:#c26555;">退款店仓*</label></li>
+                        <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
+                        <input class="PARAM_NAME" id="refunShop" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px" readonly/>
+                        <ul class="execution" id="refunShopSelcet"style="height: 30px;overflow-y:hidden;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
+                            <li>本店</li>
+                        </ul>
+                    </ul>
+                </div>
+                <!--若选择按充值单退款：-->
+                <div id="refunTopUp" style="display: none;">
+                    <span>
+                        <label style="color:#c26555;">来源单号*</label>
+                        <input type="text" id="refunTopUpFrom" autocomplete="off" maxlength="200"/>
+                        <div style="padding-bottom: 0px" class="hint">
+                            <div hintinfo="折合吊牌金额不能为空！" class="error_tips"style="">折合吊牌金额不能为空！</div>
+                        </div>
+                    </span>
+                </div>
+                <!--若选择余额退款：-->
+                <div id="refunBalance" style="display: none;">
+                    <span>
+                        <label>来源单号</label>
+                        <input type="text" id="refunBalanceFrom" autocomplete="off" maxlength="200"/>
+                        <div style="padding-bottom: 0px" class="hint">
+                            <div hintinfo="折合吊牌金额不能为空！" class="error_tips"style="">折合吊牌金额不能为空！</div>
+                        </div>
+                    </span>
+                </div>
+                <div style="display: none">
+                    <span>
+                        <label>实付金额</label>
+                        <input type="text" id="refundReality" autocomplete="off" maxlength="200" disabled/>
+                         <div style="padding-bottom: 0px" class="hint">
+                             <div hintinfo="实付金额不能为空！" class="error_tips"style="">实付金额不能为空！</div>
+                         </div>
+                    </span>
+                </div>
+                <div style="display: none">
+                    <span>
+                        <label>充值折扣</label>
+                        <input type="text" id="refundMoneyDiscount" autocomplete="off" maxlength="200" disabled/>
+                    </span>
+                </div>
+                <div style="display: none">
+                    <span>
+                        <label>账户余额</label>
+                        <input type="text" id="refundBalance" autocomplete="off" maxlength="200" disabled/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>备注</label>
+                        <input type="text" id="refundNote" autocomplete="off" maxlength="200"/>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="topUp_bottom">
+            <button id="toFalse" onclick="toFalse()">取 消</button>
+            <button id="toSave" onclick="toSave()">保 存</button>
+        </div>
+    </div>
     <!--</div>-->
  <div id="VIP_Message">
      <!-- 导航-->
@@ -393,7 +485,7 @@
               </div>
               <div style="height: 30px;line-height: 30px;">
                   <!--<span class="detail-left">余额</span><span class="detail-right" id="balance">0 元</span><span class="functional_btn" id="toTopUp">充值</span>-->
-                  <span class="detail-left">余额</span><span class="detail-right" id="balance">0 元</span><span class="functional_btn" id="toTopUp">充值</span><span class="functional_btn">退款</span>
+                  <span class="detail-left">余额</span><span class="detail-right" id="balance">0 元</span><span class="functional_btn" id="toTopUp">充值</span><span class="functional_btn" id="toRefund">退款</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
                   <span class="detail-left">消费金额</span><span class="detail-right jifen" id="vip_total_amount"></span>
@@ -913,7 +1005,7 @@
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <!--滚动条-->
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<!--充值退款弹窗页面-->
+<!--充值、退款弹窗页面-->
 <script src="../js/vip/vip_dataPage.js"></script>
 <script type="text/javascript">
     require.config({
