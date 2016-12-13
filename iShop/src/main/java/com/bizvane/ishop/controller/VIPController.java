@@ -84,6 +84,7 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+
             String phone = jsonObject.get("phone").toString();
             String vip_name = jsonObject.get("vip_name").toString();
             String vip_card_type = jsonObject.get("vip_card_type").toString();
@@ -93,10 +94,15 @@ public class VIPController {
             String birthday = jsonObject.get("birthday").toString();
             String sex = jsonObject.get("sex").toString();
             String join_date = Common.DATETIME_FORMAT_DAY.format(new Date());
-
+            JSONObject obj = new JSONObject();
+            if (corp_code.equals("C10016")){
+                obj.put("card_no","14544423432898");
+                obj.put("vip_id","14544423432898");
+            }
+            //调毛伟栋新增接口
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -984,11 +990,11 @@ public class VIPController {
 
 
     /**
-     * 参数控制
+     * 充值或退款
      */
-    @RequestMapping(value = "/paramController", method = RequestMethod.POST)
+    @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     @ResponseBody
-    public String paramController(HttpServletRequest request, HttpServletResponse response) {
+    public String recharge(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
 //        String user_code = request.getSession().getAttribute("user_code").toString();
 //        String store_code = request.getSession().getAttribute("store_code").toString();
@@ -1030,7 +1036,7 @@ public class VIPController {
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
@@ -1039,12 +1045,13 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+
     /**
-     * 充值或退款
+     * 参数控制
      */
-    @RequestMapping(value = "/recharge", method = RequestMethod.GET)
+    @RequestMapping(value = "/paramController", method = RequestMethod.GET)
     @ResponseBody
-    public String recharge(HttpServletRequest request, HttpServletResponse response) {
+    public String paramController(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
 //        String user_code = request.getSession().getAttribute("user_code").toString();
 //        String store_code = request.getSession().getAttribute("store_code").toString();
@@ -1105,19 +1112,22 @@ public class VIPController {
             String corp_code = jsonObject.get("corp_code").toString();
             String vip_id = jsonObject.get("vip_id").toString();
 
+            JSONObject obj = new JSONObject();
             if (type.equals("billNo")){
                 if (corp_code.equals("C10016")){
                     String billNO = jsonObject.get("billNO").toString();//单据编号
+                    obj.put("price","100");
+                    obj.put("pay_price","80");
                 }
             }else if (type.equals("balances")){
                 if (corp_code.equals("C10016")){
-
+                    obj.put("balance","450");
                 }
             }
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
