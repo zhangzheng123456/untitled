@@ -1241,7 +1241,7 @@ function getbrandlist(){
             });
         }
     })
-};
+}
 //拉取区域
 function getarealist(a){
     var area_command = "/area/selAreaByCorpCode";
@@ -1985,7 +1985,7 @@ $("#choose_staff .screen_que").click(function () {
         })
     }
 })
-//点击会员确定
+//点确定击会员
 $("#screen_vip_que").click(function(){
     inx=1;
     _param["corp_code"]="C10000";
@@ -2007,6 +2007,8 @@ $("#screen_vip_que").click(function(){
     $("#screen_wrapper").hide();
     $("#p").hide();
 });
+//基本筛选确定
+
 //筛选调接口
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
