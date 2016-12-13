@@ -204,7 +204,7 @@
                             <li><label style="color:#c26555;">充值店仓*</label></li>
                             <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                             <input class="PARAM_NAME" id="topUpShop" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px" readonly/>
-                            <ul class="execution" id="topUpShopSelcet"style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
+                            <ul class="execution" id="topUpShopSelcet"style="height: 120px;overflow-y:auto;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
                                 <!--<li>退换转充值</li>-->
                                 <!--<li>直接充值</li>-->
                                 <!--<li>系统短信通知顾客</li>-->
@@ -1386,6 +1386,15 @@
         autohidemode:true,
         cursorwidth:"9px",
         cursorborderradius:"10px"});
+    $("#topUpShopSelcet").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"0px",
+        cursorborderradius:"10px"});
 //  弹窗
 
     var oc = new ObjectControl();
@@ -1463,25 +1472,22 @@
             var msg = JSON.parse(data.message);
             var list = JSON.parse(msg.list);
             var listList = list.list;
+            topUpShopShow(listList);
+        })
+    }
+    function topUpShopShow(listList){
+        for(i=0;i<listList.length;i++){
             var tempHTML = '<li id="${id}" name="${name}">${msg}<li>';
             var html = '';
-            for(i=0;i<listList.length;i++){
-                var store_code = listList[i].store_code;
-                var store_name = listList[i].store_name;
-                var nowHTML1 = tempHTML;
-                nowHTML1 = nowHTML1.replace("${id}", store_code);
-                nowHTML1 = nowHTML1.replace("${msg}", store_name);
-                nowHTML1 = nowHTML1.replace("${name}", i);
-                html += nowHTML1;
-                $("#topUpShopSelcet").append(html);
-            }
-//            $('#topUpShopSelcet li').each(function () {
-//                var thisLi = $(this).val().trim();
-//                if(thisLi==''){
-//                    $(this).remove();
-//                }
-//            });
-        })
+            var store_code = listList[i].store_code;
+            var store_name = listList[i].store_name;
+            var nowHTML1 = tempHTML;
+            nowHTML1 = nowHTML1.replace("${id}", store_code);
+            nowHTML1 = nowHTML1.replace("${msg}", store_name);
+            nowHTML1 = nowHTML1.replace("${name}", i);
+            html += nowHTML1;
+            $("#topUpShopSelcet").append(html);
+        }
     }
     $('#topUpShop').click(function(){
         $('#topUpShopSelcet').toggle();
@@ -1631,6 +1637,7 @@
         }
     }
     window.onload = function(){
+        $('#topUpShopSelcet').find('li').remove();
         topUpShop();
         topUpPeople();
     }
