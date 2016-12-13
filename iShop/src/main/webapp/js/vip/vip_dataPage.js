@@ -186,14 +186,14 @@ $('#toSave').click(function(){
     var topUpNote = $('#topUpNote').val();//备注
     if(topType == ''|| topUpShop == '' || topUpPeople == '' ) {
         art.dialog({
-            time: 1,
+            time: 910,
             lock: true,
             cancel: false,
             content: "充值类型、充值店仓、经办人不能为空"
         });
     }else if(topUpMoney == '' || topUpMoneyReality=='' ) {
         art.dialog({
-            time: 1,
+            time: 10,
             lock: true,
             cancel: false,
             content: "折合吊牌金额、实付金额不能为空"
