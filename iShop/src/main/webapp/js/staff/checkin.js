@@ -30,6 +30,10 @@ $(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["funcCode"]=funcCode;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -75,6 +79,10 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize) {
@@ -165,6 +173,10 @@ function setPage(container, count, pageindex,pageSize) {
 }
 function dian(a,b){//点击分页的时候调什么接口
     if (value==""&&filtrate=="") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(a,b);
     }else if (value!==""){
         param["pageNumber"] = a;
@@ -250,7 +262,6 @@ function jurisdiction(actions){
 }
 function InitialState(){
     if(return_jump!==null){
-        console.log(return_jump);
         inx=return_jump.inx;
         pageSize=return_jump.pageSize;
         value=return_jump.value;
@@ -261,6 +272,10 @@ function InitialState(){
     }
     if(return_jump==null){
         if(value==""&&filtrate==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
+            param["searchValue"]="";
             GET(inx,pageSize);
         }
     }else if(return_jump!==null){
@@ -277,6 +292,10 @@ function InitialState(){
             $("#page_row").val("100行/页");
         }
         if(value==""&&filtrate==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["funcCode"]=funcCode;
+            param["searchValue"]="";
             GET(inx,pageSize);
         }else if(value!==""){
             $("#search").val(value);
@@ -311,10 +330,10 @@ qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/sign/list?pageNumber="+a+"&pageSize="+b
-        +"&funcCode="+funcCode+"","","",function(data){
+    //oc.postRequire("get","/sign/list?pageNumber="+a+"&pageSize="+b
+    //    +"&funcCode="+funcCode+"","","",function(data){
+    oc.postRequire("post","/sign/search","0",param,function(data){
             if(data.code=="0"){
-                console.log(data);
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var cout=message.pages;
@@ -341,7 +360,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");  
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -369,7 +387,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -461,6 +478,10 @@ $("#delete").click(function(){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
@@ -540,7 +561,6 @@ $("#more_down").on("click","#leading_out",function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -630,7 +650,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -742,6 +761,10 @@ function getInputValue(){
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        param["searchValue"]="";
         GET(inx,pageSize);
         filtrate="";
     }
@@ -782,6 +805,10 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["funcCode"]=funcCode;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
