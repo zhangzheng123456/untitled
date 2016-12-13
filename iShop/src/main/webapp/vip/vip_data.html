@@ -60,28 +60,28 @@
             overflow-y: auto;
         }
         /*滚动条样式*/
-        ::-webkit-scrollbar
-        {
-            width: 8px;
-            height: 10px;
-            background-color: #ffffff;
-        }
+        /*::-webkit-scrollbar*/
+        /*{*/
+            /*width: 8px;*/
+            /*height: 10px;*/
+            /*background-color: #ffffff;*/
+        /*}*/
 
-        /*定义滚动条轨道 内阴影+圆角*/
-        ::-webkit-scrollbar-track
-        {
-            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
-            border-radius: 10px;
-            background-color: #ffffff;
-        }
+        /*/!*定义滚动条轨道 内阴影+圆角*!/*/
+        /*::-webkit-scrollbar-track*/
+        /*{*/
+            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*!/*/
+            /*border-radius: 10px;*/
+            /*background-color: #ffffff;*/
+        /*}*/
 
-        /*定义滑块 内阴影+圆角*/
-        ::-webkit-scrollbar-thumb
-        {
-            border-radius: 10px;
-            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*/
-            background-color: #dfdfdf;
-        }
+        /*/!*定义滑块 内阴影+圆角*!/*/
+        /*::-webkit-scrollbar-thumb*/
+        /*{*/
+            /*border-radius: 10px;*/
+            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*!/*/
+            /*background-color: #dfdfdf;*/
+        /*}*/
         .add_border{
             width: 410px;
             border: 1px solid #d7d7d7;
@@ -928,6 +928,8 @@
 <!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js?20161116"></script>
 <script src="../js/vip/vip_data1.js?20161116"></script>
+<!--滚动条-->
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript">
     require.config({
         paths: {
@@ -1374,6 +1376,25 @@
         $("#chart_analyze").dad()
     });
 //    ***********************************************************
+//    滚动条
+    $(".topUp_main").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"9px",
+        cursorborderradius:"10px"});
+    $("body").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:250,
+        autohidemode:true,
+        cursorwidth:"9px",
+        cursorborderradius:"10px"});
 //  弹窗
 
     var oc = new ObjectControl();
