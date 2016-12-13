@@ -376,10 +376,10 @@ $("#more_down").on("click","#batch_label",function () {
         var param={};
         var vip_id="";
         for(var j=0;j<tr.length;j++){
-            vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
+            vip_id+=$(tr[j]).attr("id")+",";
         }
         param['vip_id']=vip_id;
-        param["corp_code"]=$(tr[0]).attr("id");
+        param["corp_code"]=$(tr[0]).attr("data-code");
         oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
@@ -422,11 +422,11 @@ $("#label_title li").click(function () {
             var vip_id="";
             var page=1;
             for(var j=0;j<tr.length;j++){
-                vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
+                vip_id+=$(tr[j]).attr("id")+",";
             }
             param["type"]="2";
             param['vip_id']=vip_id;
-            param["corp_code"]=$(tr[0]).attr("id");
+            param["corp_code"]=$(tr[0]).attr("data-code");
             param['pageNumber']=page;
             param['searchValue']="";
             oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
@@ -473,9 +473,9 @@ function searchHotlabel() {
     var param={};
     var vip_id="";
     for(var j=0;j<tr.length;j++){
-        vip_id+=$(tr[j]).children("td:nth-child(3)").attr("id")+",";
+        vip_id+=$(tr[j]).attr("id")+",";
     }
-    param["corp_code"]=$(tr[0]).attr("id");
+    param["corp_code"]=$(tr[0]).attr("data-code");
     param['pageNumber']=page;
     param['vip_id']=vip_id;
     param['searchValue']=$('#batch_search_label').val().replace(/\s+/g,"");
@@ -512,7 +512,7 @@ function addViplabel(obj,btn) {
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var code=$(tr[i]).children("td:nth-child(3)").attr("id");
+        var code=$(tr[i]).attr("id");
         var store_id=$(tr[i]).attr("data-storeid");
         var params={
             "vip_code":code,
@@ -525,7 +525,7 @@ function addViplabel(obj,btn) {
     }else{
         param['label_name']=$(obj).html();
     }
-    param["corp_code"]=$(tr[0]).attr("id");
+    param["corp_code"]=$(tr[0]).attr("data-code");
     param['label_id']="";
     param['list']=list;
     oc.postRequire("post","/VIP/label/addBatchRelViplabel","",param,function(data){

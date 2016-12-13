@@ -5,11 +5,11 @@
     <title>会员分析</title>
     <link rel="stylesheet" href="../css/reset.css?20161116">
     <link rel="stylesheet" href="../css/vip_analyze.css?20161116">
+    <link rel="stylesheet" href="../css/vip-data.css?20161205">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161116">
     <link rel="stylesheet" href="../css/style.css?20161205">
-    <link rel="stylesheet" href="../css/vip-data.css?20161205">
     <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
     <!--弹窗-->
@@ -17,9 +17,6 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
-        /*.warp{*/
-
-        /*}*/
         #topUp{
             z-index: 9999999999999;;
             display: none;;
@@ -31,19 +28,23 @@
             position:absolute;
             left: 50%;
             margin-left: -285px;
+            font-family: "微软雅黑";
         }
         /*顶部*/
         .topUp_top{
-            height: 30px;
-            line-height: 30px;
+            height: 50px;
+            line-height: 50px;
             border-bottom: 1px solid #d7d7d7;
-            margin: 0 20px;
+            margin: 0 10px;
+            padding-left: 5px;
+            color: #888;
 
         }
         .screen_close{
             width: 30px;
             height: 30px;
-            line-height: 30px;
+            line-height: 50px;
+            padding-top: 5px;
             color: #888;
             font-size: 16px;
             cursor: pointer;
@@ -52,36 +53,18 @@
             right: 0;
             z-index: 3;
             text-align: center;
+            color: #888;
         }
         /*表单*/
         .topUp_main{
             height: 419px;
             overflow-x: hidden;
             overflow-y: auto;
+            font-size: 15px;
         }
-        /*滚动条样式*/
-        /*::-webkit-scrollbar*/
-        /*{*/
-            /*width: 8px;*/
-            /*height: 10px;*/
-            /*background-color: #ffffff;*/
-        /*}*/
-
-        /*/!*定义滚动条轨道 内阴影+圆角*!/*/
-        /*::-webkit-scrollbar-track*/
-        /*{*/
-            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*!/*/
-            /*border-radius: 10px;*/
-            /*background-color: #ffffff;*/
-        /*}*/
-
-        /*/!*定义滑块 内阴影+圆角*!/*/
-        /*::-webkit-scrollbar-thumb*/
-        /*{*/
-            /*border-radius: 10px;*/
-            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*!/*/
-            /*background-color: #dfdfdf;*/
-        /*}*/
+        .topUp_main div ul li label {
+            font-size: 15px;
+        }
         .add_border{
             width: 410px;
             border: 1px solid #d7d7d7;
@@ -90,7 +73,7 @@
         .editor_em select{
             width: 410px;
         }
-        #topUpNum,#end,#topUpShop,#topUpCard,#topUpVipName,#topUpMoney,#topUpMoneyReality,#topUpMoneyDiscount,#topUpNote{
+        #topUpNum,#chooseDate,#topUpShop,#topUpCard,#topUpVipName,#topUpMoney,#topUpMoneyReality,#topUpMoneyDiscount,#topUpNote{
             border: 1px solid #d7d7d7;
             border-radius: 5px;
             margin-left: -4px;
@@ -99,7 +82,7 @@
         /*底部*/
         .topUp_bottom{
             border-top: 1px solid #d7d7d7;
-            margin: 0 20px;
+            margin: 0 10px;
             height: 50px;
             line-height: 50px;
             position: relative;
@@ -162,6 +145,10 @@
         .hint{
             display: none;;
         }
+        /*日期弹窗*/
+        #laydate_box{
+            z-index: 9999999999999999;;
+        }
     </style>
 </head>
 <body>
@@ -182,11 +169,11 @@
                     <div>
                 <span class="activity_date">
                     <label style="color:#c26555;">单据日期*</label>
-                    <input type="text" id="end" readonly="true" placeholder="请选择日期" class="laydate-icon"/>
+                    <input type="text" id="chooseDate" readonly="true" placeholder="请选择日期" class="laydate-icon" />
                 </span>
                     </div>
                     <div>
-                        <ul style="display:inline-flex;position: relative">
+                        <ul style="display:inline-flex;position: relative;margin-bottom:0px">
                             <li><label style="color:#c26555;">充值类型*</label></li>
                             <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                             <input class="PARAM_NAME" id="execution_input" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>
@@ -200,7 +187,7 @@
                         </ul>
                     </div>
                     <div>
-                        <ul style="display:inline-flex;position: relative">
+                        <ul style="display:inline-flex;position: relative;margin-bottom:0px">
                             <li><label style="color:#c26555;">充值店仓*</label></li>
                             <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                             <input class="PARAM_NAME" id="topUpShop" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px" readonly/>
@@ -210,7 +197,7 @@
                         </ul>
                     </div>
                     <div>
-                        <ul style="display:inline-flex;position: relative">
+                        <ul style="display:inline-flex;position: relative;margin-bottom:0px">
                             <li><label style="color:#c26555;">经办人*</label></li>
                             <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                             <input class="PARAM_NAME" id="topUpPeople" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>
@@ -915,7 +902,6 @@
 <!-- oss存储 -->
 <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
 <script src="/js/loading.js?20161116"></script>
  <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
@@ -924,8 +910,11 @@
 <!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js?20161116"></script>
 <script src="../js/vip/vip_data1.js?20161116"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <!--滚动条-->
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!--充值退款弹窗页面-->
+<script src="../js/vip/vip_dataPage.js"></script>
 <script type="text/javascript">
     require.config({
         paths: {
@@ -1400,236 +1389,6 @@
         autohidemode:true,
         cursorwidth:"0px",
         cursorborderradius:"0px"});
-//  弹窗
-    var oc = new ObjectControl();
-    $('#toTopUp').click(function(){
-        $('#topUp').css('display','block')
-    });
-    // 关闭
-    $('#screen_close_shop').click(function () {
-        $('#topUp').css('display','none');
-    });
-    //单据编号
-    var mydate = new Date();
-    var str = "" + mydate.getFullYear() + "";
-    str += (mydate.getMonth()+1) + "";
-    str += mydate.getDate() + "";
-    str += mydate.getHours() + "";
-    str += mydate.getMinutes() + "";
-    str += mydate.getSeconds() + "";
-    $('#topUpNum').val(str);
-    //单据日期
-    var mydate = new Date();
-    var str = "" + mydate.getFullYear() + "-";
-    str += (mydate.getMonth()+1) + "-";
-    str += mydate.getDate() + " ";
-    str += mydate.getHours() + ":";
-    str += mydate.getMinutes() + ":";
-    str += mydate.getSeconds() + "";
-    $('#end').val(str);
-    console.log(str)
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        min: laydate.now(), //设定最小日期为当前日期
-        max: '2099-06-16 23:59:59', //最大日期
-        istoday: false,
-        choose: function (datas) {
-            end.min = datas; //开始日选好后，重置结束日的最小日期
-            end.start = datas; //将结束日的初始值设定为开始日
-        }
-    };
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        min: laydate.now(),
-        max: '2099-06-16 23:59:59',
-        istoday: false,
-        choose: function (datas) {
-            start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    laydate(start);
-    laydate(end);
-    //充值类型
-    $('#execution_input').click(function () {
-        $('#execution').toggle();
-    })
-    //下拉选择
-    $("#execution li").click(function () {
-        var val = $(this).html();
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#execution_input").val(val);
-        $('#execution').css('display','none');
-    });
-    //充值店仓
-    function topUpShop(){
-        var param={};
-        param["pageSize"]='20'
-        param["pageNumber"]='1';
-        param["searchValue"]='';
-        param["corp_code"]=sessionStorage.getItem("corp_code");
-        oc.postRequire("post","/shop/selectByAreaCode","",param,function(data){
-            var msg = JSON.parse(data.message);
-            var list = JSON.parse(msg.list);
-            var listList = list.list;
-            topUpShopShow(listList);
-        })
-    }
-    function topUpShopShow(listList){
-        for(i=0;i<listList.length;i++){
-            var tempHTML = '<li id=${id} name=${name} onclick="topUpShopSelcetClick(this)">${msg}<li>';
-            var html = '';
-            var store_code = listList[i].store_code;
-            var store_name = listList[i].store_name;
-            var nowHTML1 = tempHTML;
-            nowHTML1 = nowHTML1.replace("${id}", store_code);
-            nowHTML1 = nowHTML1.replace("${msg}", store_name);
-            nowHTML1 = nowHTML1.replace("${name}", i);
-            html += nowHTML1;
-            console.log(html);
-            $("#topUpShopSelcet").append(html);
-        }
-    }
-    $('#topUpShop').click(function(){
-        $('#topUpShopSelcet').toggle();
-    });
-    //下拉选择
-    function topUpShopSelcetClick(dom){
-        var val =$(dom).text();
-        $(dom).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#topUpShop").val(val);
-        $('#topUpShopSelcet').css('display','none');
-    }
-    //经办人
-    function topUpPeople(){
-        var param={};
-        param["store_code"]=sessionStorage.getItem("store_id");
-        param["corp_code"]=sessionStorage.getItem("corp_code");
-        oc.postRequire("post","/shop/staff","",param,function(data){
-            var msg = JSON.parse(data.message);
-            for(i=0;i<msg.length;i++){
-                var tempHTML = '<li id="${id}"onclick="topUpPeopleClick(this)">${msg}<li>';
-                var html = '';
-                var user_name = msg[i].user_name;
-                var user_id = msg[i].user_id;
-                var nowHTML1 = tempHTML;
-                nowHTML1 = nowHTML1.replace("${id}", user_id);
-                nowHTML1 = nowHTML1.replace("${msg}", user_name);
-                html += nowHTML1;
-                $("#topUpPeopleSelect").append(html);
-            }
-        })
-    }
-    $('#topUpPeople').click(function(){
-        $('#topUpPeopleSelect').toggle();
-    });
-    //下拉选择
-    function topUpPeopleClick(dom){
-        var val =$(dom).text();
-        $(dom).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#topUpPeople").val(val);
-        $('#topUpPeopleSelect').css('display','none');
-    }
-    //vip卡号、vip姓名
-    function topUpPerson(){
-        var vipName  = $('#vip_name').text();
-        var vipCard  = $('#vip_card_no').text();
-        $('#topUpVipName').val(vipName);
-        $('#topUpCard').val(vipCard);
-    }
 
-
-    //吊牌折合金额、实付金额、充值折扣
-    $('#topUpMoneyReality').focus(function () {
-        setInterval(function () {
-            var topUpMoneyReality = $('#topUpMoneyReality').val().trim();
-            var topUpMoney = $('#topUpMoney').val().trim();
-            if(topUpMoneyReality ==''){
-                $('#topUpMoneyReality').parent().find('.hint').css('display','block');
-            }else{
-                $('#topUpMoneyReality').parent().find('.hint').css('display','none');
-            }
-            if(topUpMoney ==''){
-                $('#topUpMoney').parent().find('.hint').css('display','block');
-            }else{
-                $('#topUpMoney').parent().find('.hint').css('display','none');
-            }
-            if(topUpMoneyReality!=''&&topUpMoney!='' ){
-                $('#topUpMoneyReality').parent().find('.hint').css('display','none');
-                $('#topUpMoney').parent().find('.hint').css('display','none');
-                topUpMoneyDiscount = topUpMoneyReality/topUpMoney;
-                $('#topUpMoneyDiscount').val(topUpMoneyDiscount);
-            }
-        },1000);
-    });
-
-    //保存
-    $('#toSave').click(function(){
-        var topUpNum = $('#topUpNum').val();
-        var topData = $('#end').val();
-        var topType = $('#execution_input').val();
-        var topUpShop = $('#topUpShop').val();
-        var topUpPeople = $('#topUpPeople').val();
-        var topUpCard = $('#topUpCard').val();
-        var topUpVipName = $('#topUpVipName').val();
-        var topUpMoney = $('#topUpMoney').val();
-        var topUpMoneyReality = $('#topUpMoneyReality').val();
-        var topUpMoneyDiscount = $('#topUpMoneyDiscount').val();
-        var topUpNote = $('#topUpNote').val();
-    });
-    //取消
-    $('#toFalse').click(function(){
-        $('#topUp').css('display','none');
-    });
-    //移动窗体
-    var mouseX, mouseY;
-    var objX, objY;
-    var isDowm = false;  //是否按下鼠标
-    function mouseDown(obj, e) {
-        obj.style.cursor = "move";
-        objX = obj.style.left;
-        objY = obj.style.top;
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        isDowm = true;
-    }
-    function mouseMove(e) {
-        var div = document.getElementById("topUp");
-        var x = e.clientX;
-        var y = e.clientY;
-        if (isDowm) {
-            div.style.left = parseInt(objX) + parseInt(x) - parseInt(mouseX) + "px";
-            div.style.top = parseInt(objY) + parseInt(y) - parseInt(mouseY) + "px";
-        }
-    }
-    function mouseUp(e) {
-        if (isDowm) {
-            var x = e.clientX;
-            var y = e.clientY;
-            var div = document.getElementById("topUp");
-            div.style.left = (parseInt(x) - parseInt(mouseX) + parseInt(objX)) + "px";
-            div.style.top = (parseInt(y) - parseInt(mouseY) + parseInt(objY)) + "px";
-//            mouseX = x;
-//            rewmouseY = y;
-            div.style.cursor = "default";
-            isDowm = false;
-        }
-    }
-    function stopBubble(e) {
-        if (e && e.stopPropagation) {//非IE浏览器
-            e.stopPropagation();
-        }
-        else {//IE浏览器
-            window.event.cancelBubble = true;
-        }
-    }
-    window.onload = function(){
-        topUpPerson();  //会员卡号、姓名
-        topUpShop();    //充值店仓列表
-        topUpPeople();  //经办人列表
-    }
 </script>
 </html>
