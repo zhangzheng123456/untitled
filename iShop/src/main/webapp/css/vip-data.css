@@ -481,6 +481,9 @@ hr{
     margin: 0 10px;
     color: #d7d7d7;
 }
+.record ul{
+    margin-bottom: 0;
+}
 .record_head_down{
     height: 50px;
     padding: 10px;
