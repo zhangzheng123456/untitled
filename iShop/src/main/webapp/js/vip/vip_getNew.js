@@ -23,6 +23,8 @@ var getNewVip={
             whir.loading.remove();//移除加载框
         });
         $('#get_more_save').click(function () {
+            $('#content input').trigger('blur');
+            if($('#content').find('.hint_li'))return
             this.postParma();
         }.bind(this));
         var me=this;
@@ -227,14 +229,14 @@ var getNewVip={
         })
     },
     testInput:function (node) {
-        console.log($(node).val())
         //不为空验证
         var html='';
         if($(node).val().trim()==''){
             html=$(node).parent().prev().html().slice(0,-1);
             var HTML='<li class="hint_li"><div class="content_hint"style="display: block"><span class="hint">'+html+'不能为空</span></div></li>';
-            console.log()
-            if( !$(node).parent().parent().next().hasClass('.hint_li')){
+            var nd=$(node).parent().parent().next()[0];
+            console.log(nd.className);
+            if(!nd.className){
                 $(node).parent().parent().after(HTML);
             }
         }else{
