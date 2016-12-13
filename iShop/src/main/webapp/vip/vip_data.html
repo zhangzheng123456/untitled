@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="../css/vip-data.css?20161205">
     <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
+    <!--弹窗-->
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         /*.warp{*/
 
@@ -56,28 +60,28 @@
             overflow-y: auto;
         }
         /*滚动条样式*/
-        ::-webkit-scrollbar
-        {
-            width: 8px;
-            height: 10px;
-            background-color: #ffffff;
-        }
+        /*::-webkit-scrollbar*/
+        /*{*/
+            /*width: 8px;*/
+            /*height: 10px;*/
+            /*background-color: #ffffff;*/
+        /*}*/
 
-        /*定义滚动条轨道 内阴影+圆角*/
-        ::-webkit-scrollbar-track
-        {
-            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
-            border-radius: 10px;
-            background-color: #ffffff;
-        }
+        /*/!*定义滚动条轨道 内阴影+圆角*!/*/
+        /*::-webkit-scrollbar-track*/
+        /*{*/
+            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*!/*/
+            /*border-radius: 10px;*/
+            /*background-color: #ffffff;*/
+        /*}*/
 
-        /*定义滑块 内阴影+圆角*/
-        ::-webkit-scrollbar-thumb
-        {
-            border-radius: 10px;
-            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*/
-            background-color: #dfdfdf;
-        }
+        /*/!*定义滑块 内阴影+圆角*!/*/
+        /*::-webkit-scrollbar-thumb*/
+        /*{*/
+            /*border-radius: 10px;*/
+            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*!/*/
+            /*background-color: #dfdfdf;*/
+        /*}*/
         .add_border{
             width: 410px;
             border: 1px solid #d7d7d7;
@@ -621,11 +625,11 @@
                             <li>顾客: <span id="vip_name_1"></span></li>
                         </ul>
                     </div>
-                    <hr/>
+                    <hr style="margin: 0"/>
                     <div class="record_head_down">
                         <ul class="record_date">
                             <li><input type="text" id="start" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})"></li>
-                            <li><span>至</span><input type="text" id="end" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})"></li>
+                            <li><span>至</span><input type="text" id="record_end" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#record_end',istime: true, format: 'YYYY-MM-DD'})"></li>
                         </ul>
                         <ul class="record_input">
                             <li><label>订单号</label><input /></li>
@@ -924,6 +928,8 @@
 <!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js?20161116"></script>
 <script src="../js/vip/vip_data1.js?20161116"></script>
+<!--滚动条-->
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript">
     require.config({
         paths: {
@@ -1370,6 +1376,16 @@
         $("#chart_analyze").dad()
     });
 //    ***********************************************************
+//    滚动条
+    $(".topUp_main").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"9px",
+        cursorborderradius:"10px"});
 //  弹窗
 
     var oc = new ObjectControl();
@@ -1447,17 +1463,24 @@
             var msg = JSON.parse(data.message);
             var list = JSON.parse(msg.list);
             var listList = list.list;
+            var tempHTML = '<li id="${id}" name="${name}">${msg}<li>';
+            var html = '';
             for(i=0;i<listList.length;i++){
                 var store_code = listList[i].store_code;
                 var store_name = listList[i].store_name;
-                var tempHTML = '<li id="${id}">${msg}<li>';
-                var html = '';
                 var nowHTML1 = tempHTML;
                 nowHTML1 = nowHTML1.replace("${id}", store_code);
                 nowHTML1 = nowHTML1.replace("${msg}", store_name);
+                nowHTML1 = nowHTML1.replace("${name}", i);
                 html += nowHTML1;
                 $("#topUpShopSelcet").append(html);
             }
+//            $('#topUpShopSelcet li').each(function () {
+//                var thisLi = $(this).val().trim();
+//                if(thisLi==''){
+//                    $(this).remove();
+//                }
+//            });
         })
     }
     $('#topUpShop').click(function(){
@@ -1504,25 +1527,23 @@
     });
     //vip卡号、vip姓名
     $('#topUpCard').focus(function () {
-        setInterval(function () {
-            var vipCard = $('#topUpCard').val().trim();
-            console.log(vipCard)
+        var vipCard = $('#topUpCard').val().trim();
+        var check = setInterval(function () {
             if(vipCard ==''){
                 $('#topUpCard').parent().find('.hint').css('display','block');
             }
             if(vipCard!=''){
-                var a= 1;
-//            clearInterval();
+            clearInterval(check);
                 $('#topUpCard').parent().find('.hint').css('display','none');
                 var param={};
                 param["crop_code"]=sessionStorage.getItem("corp_code");
                 param["vip_id"]=vipCard;
                 oc.postRequire("post","/vip/vipInfo","",param,function(data) {
                     console.log(data);
+                    $('#topUpVipName').val('该卡号未开卡');
                 });
             }
         },1000);
-        console.log(a);
     });
 
     //吊牌折合金额、实付金额、充值折扣
