@@ -416,6 +416,14 @@ public class VIPController {
                 String wardrobes = dataBox_wardrobes.data.get("message").value;
                 result_wardrobes = JSONObject.parseObject(wardrobes);
             }
+            JSONArray list_wardrobe = result_wardrobes.getJSONArray("list_wardrobe");
+            for (int i = 0; i < list_wardrobe.size(); i++) {
+                JSONObject orders = list_wardrobe.getJSONObject(i);
+                orders.put("use_points","180");
+                orders.put("get_points","15");
+                orders.put("discount","满100减50");
+            }
+            result_wardrobes.put("","");
             JSONObject result = new JSONObject();
             result.put("result_points", result_points);
             result.put("result_consumn", result_wardrobes);
@@ -979,7 +987,7 @@ public class VIPController {
 //        String store_code = request.getSession().getAttribute("store_code").toString();
 
         Date now = new Date();
-        String errormessage = "数据异常，导出失败";
+        String errormessage = "数据异常，操作失败";
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -1005,6 +1013,64 @@ public class VIPController {
 
                 }
             }else if (type.equals("refund")){
+                if (corp_code.equals("C10016")){
+//                    String store_code = jsonObject.get("store_code").toString();
+                    String card_no = jsonObject.get("card_no").toString();
+                    String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
+
+                    String billNO = jsonObject.get("billNO").toString();//单据编号（充值单退款时必填）
+                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
+                    String remark = jsonObject.get("remark").toString();
+
+                }
+            }
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 验证单号
+     */
+    @RequestMapping(value = "/checkBillNo", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkBillNo(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+
+        Date now = new Date();
+        String errormessage = "数据异常，操作失败";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String type = jsonObject.get("type").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            if (type.equals("billNo")){
+                if (corp_code.equals("C10016")){
+                    String billNO = jsonObject.get("billNO").toString();//单据编号
+                    String date = jsonObject.get("date").toString();//单据编号
+                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
+                    String store_code = jsonObject.get("store_code").toString();//充值店仓
+                    String user_code = jsonObject.get("user_code").toString();//经办人
+                    String vip_id = jsonObject.get("vip_id").toString();
+                    String card_no = jsonObject.get("card_no").toString();//会员卡号
+                    String price = jsonObject.get("price").toString();//吊牌金额
+                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
+                    String discount = jsonObject.get("discount").toString();//折扣
+                    String remark = jsonObject.get("remark").toString();
+
+                }
+            }else if (type.equals("balances")){
                 if (corp_code.equals("C10016")){
 //                    String store_code = jsonObject.get("store_code").toString();
                     String card_no = jsonObject.get("card_no").toString();

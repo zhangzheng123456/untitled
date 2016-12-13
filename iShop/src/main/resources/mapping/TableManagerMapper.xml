@@ -19,6 +19,8 @@
         WHERE function_code=#{function_code}
         AND filter_weight IS NOT NULL
         AND filter_weight != ''
+        AND filter_type != ''
+        AND filter_type IS NOT NULL
         ORDER BY filter_weight
     </select>
 
