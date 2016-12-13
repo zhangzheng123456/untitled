@@ -1463,7 +1463,6 @@
         $(this).addClass("liactive").siblings("li").removeClass("liactive");
         $("#execution_input").val(val);
         $('#execution').css('display','none');
-//    execution_change(val);
     });
     //充值店仓
     function topUpShop(){
@@ -1481,7 +1480,7 @@
     }
     function topUpShopShow(listList){
         for(i=0;i<listList.length;i++){
-            var tempHTML = '<li id=${id} name=${name}>${msg}<li>';
+            var tempHTML = '<li id=${id} name=${name} onclick="topUpShopSelcetClick(this)">${msg}<li>';
             var html = '';
             var store_code = listList[i].store_code;
             var store_name = listList[i].store_name;
@@ -1498,14 +1497,12 @@
         $('#topUpShopSelcet').toggle();
     });
     //下拉选择
-    $("#topUpShopSelcet li").click(function () {
-        console.log(11111111111);
-        var val = $(this).html();
-        console.log(val);
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
+    function topUpShopSelcetClick(dom){
+        var val =$(dom).text();
+        $(dom).addClass("liactive").siblings("li").removeClass("liactive");
         $("#topUpShop").val(val);
         $('#topUpShopSelcet').css('display','none');
-    });
+    }
     //经办人
     function topUpPeople(){
         var param={};
@@ -1513,9 +1510,8 @@
         param["corp_code"]=sessionStorage.getItem("corp_code");
         oc.postRequire("post","/shop/staff","",param,function(data){
             var msg = JSON.parse(data.message);
-//            console.log(msg);
             for(i=0;i<msg.length;i++){
-                var tempHTML = '<li id="${id}">${msg}<li>';
+                var tempHTML = '<li id="${id}"onclick="topUpPeopleClick(this)">${msg}<li>';
                 var html = '';
                 var user_name = msg[i].user_name;
                 var user_id = msg[i].user_id;
@@ -1531,22 +1527,20 @@
         $('#topUpPeopleSelect').toggle();
     });
     //下拉选择
-    $("#topUpShopSelet li").click(function () {
-        var val = $(this).html();
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#topUpShop").val(val);
-        $('#topUpShopSelet').css('display','none');
-//    execution_change(val);
-    });
+    function topUpPeopleClick(dom){
+        var val =$(dom).text();
+        $(dom).addClass("liactive").siblings("li").removeClass("liactive");
+        $("#topUpPeople").val(val);
+        $('#topUpPeopleSelect').css('display','none');
+    }
     //vip卡号、vip姓名
     $('#topUpCard').focus(function () {
         var vipCard = $('#topUpCard').val().trim();
-        var check = setInterval(function () {
+        setInterval(function () {
             if(vipCard ==''){
                 $('#topUpCard').parent().find('.hint').css('display','block');
             }
             if(vipCard!=''){
-            clearInterval(check);
                 $('#topUpCard').parent().find('.hint').css('display','none');
                 var param={};
                 param["crop_code"]=sessionStorage.getItem("corp_code");
