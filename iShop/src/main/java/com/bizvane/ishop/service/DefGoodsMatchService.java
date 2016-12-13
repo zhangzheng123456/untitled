@@ -27,5 +27,5 @@ public interface DefGoodsMatchService {
 
     List<DefGoodsMatch> selGoodsCodeByUpd(String corp_code,String goods_code)throws Exception;
 
-    int updGoodsCode(String goods_code,String id)throws Exception;
+    int updGoodsCode(String goods_code,int id)throws Exception;
 }

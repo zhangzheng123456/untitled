@@ -28,5 +28,5 @@ public interface DefGoodsMatchMapper {
 
     List<DefGoodsMatch> selGoodsCodeByUpd(@Param("corp_code")String corp_code,@Param("goods_code")String goods_code)throws Exception;
 
-    int updGoodsCode(@Param("goods_code")String goods_code,@Param("id")String id)throws Exception;
+    int updGoodsCode(@Param("goods_code")String goods_code,@Param("id")int id)throws Exception;
 }
