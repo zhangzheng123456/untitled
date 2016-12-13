@@ -2074,12 +2074,11 @@ $('#jurisdiction').on('click','#add',function(e){
     //获取企业
     function getcorplist(a){
         //获取所属企业列表
-        var corp_command="/user/getCorpByUser";
-        oc.postRequire("post", corp_command,"", "", function(data){
-            console.log(data);
+        var corp_command="/shop/findStore";
+        oc.postRequire("get", corp_command,"", "", function(data){
             if(data.code=="0"){
-                var msg=JSON.parse(data.message);
-                console.log(msg);
+                console.log(data)
+                var msg=JSON.parse(data.message.list);
                 var index=0;
                 var corp_html='';
                 for( var i=0;i<msg.corps.length;i++){
