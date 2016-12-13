@@ -200,6 +200,7 @@ function superaddition(data,num){//页面加载循环
         pageNumber=num;
     }
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         //判断是否有会员头像
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
@@ -215,7 +216,13 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                TD+="<td><span>"+data[i][code]+"</span></td>";
+            })(c)
+        }
+        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -224,27 +231,9 @@ function superaddition(data,num){//页面加载循环
         + "'></label></div>"
         + "</td><td style='text-align:left;'>"
         + a
-        + "</td><td id='"+data[i].vip_id+"'>"
-        + data[i].vip_id
-        + "</td><td>"
-        + data[i].vip_name
-        + "</td><td>"
-        + data[i].sex
-        +"</td><td>"
-        + data[i].vip_phone
-        +"</td><td>"
-        + data[i].vip_card_type
-        +"</td><td>"
-        + data[i].cardno
-        +"</td><td>"
-        + data[i].user_name
-        +"</td><td><span>"
-        + data[i].store_name
-        +"</span></td><td>"
-        + data[i].vip_birthday
-        +"</td><td>"
-        +data[i].join_date
-        +"</td></tr>");
+        + "</td>" +
+        TD +
+        "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -599,9 +588,9 @@ function jumpBianse(){
 
     //双击跳转
     $(".table tbody tr").dblclick(function(){
-        var id=$(this).children().eq(2).attr("id");
+        var id=$(this).attr("id");
         var store_id=$(this).attr("data-storeId");
-        var corp_code=$(this).attr("id");
+        var corp_code=$(this).attr("data-code");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -1254,7 +1243,7 @@ function getbrandlist(){
             });
         }
     })
-};
+}
 //拉取区域
 function getarealist(a){
     var area_command = "/area/selAreaByCorpCode";
@@ -1998,7 +1987,7 @@ $("#choose_staff .screen_que").click(function () {
         })
     }
 })
-//点击会员确定
+//点确定击会员
 $("#screen_vip_que").click(function(){
     inx=1;
     _param["corp_code"]="C10000";
@@ -2020,6 +2009,8 @@ $("#screen_vip_que").click(function(){
     $("#screen_wrapper").hide();
     $("#p").hide();
 });
+//基本筛选确定
+
 //筛选调接口
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
