@@ -182,7 +182,7 @@
                     <div>
                 <span class="activity_date">
                     <label style="color:#c26555;">单据日期*</label>
-                    <input type="text" id="chooseDate" readonly="true" placeholder="请选择日期" class="laydate-icon"/>
+                    <input type="text" id="chooseDate" readonly="true" placeholder="请选择日期" class="laydate-icon" onclick="laydate({  elem: '#chooseDate', format: 'YYYY-MM-DD hh:mm:ss', istime: true})" />
                 </span>
                     </div>
                     <div>
@@ -915,7 +915,6 @@
 <!-- oss存储 -->
 <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
 <script src="/js/loading.js?20161116"></script>
  <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
@@ -924,6 +923,7 @@
 <!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js?20161116"></script>
 <script src="../js/vip/vip_data1.js?20161116"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <!--滚动条-->
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript">
