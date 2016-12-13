@@ -18,6 +18,7 @@ var shop_next=false;
 var staff_num=1;
 var staff_next=false;
 var isscroll=false;
+var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);//取key_val的值
 var funcCode=key_val.func_code;
@@ -40,42 +41,6 @@ var  message={
         "corp_code":""
     }
 };
-if(return_jump!==null){
-    console.log(return_jump);
-    inx=return_jump.inx;
-    pageSize=return_jump.pageSize;
-    value=return_jump.value;
-    filtrate=return_jump.filtrate;
-    list=return_jump.list;
-    param=JSON.parse(return_jump.param);
-    _param=JSON.parse(return_jump._param);
-}
-if(return_jump==null){
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }
-}else if(return_jump!==null){
-    if(pageSize==10){
-        $("#page_row").val("10行/页");
-    }
-    if(pageSize==30){
-        $("#page_row").val("30行/页");
-    }
-    if(pageSize==50){
-        $("#page_row").val("50行/页");
-    }
-    if(pageSize==100){
-        $("#page_row").val("100行/页");
-    }
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }else if(value!==""){
-        $("#search").val(value);
-        POST(inx,pageSize);
-    }else if(filtrate!==""){
-        filtrates(inx,pageSize);
-    }
-}
 //模仿select
 $(function(){
         $("#page_row").click(function(){
@@ -235,6 +200,7 @@ function superaddition(data,num){//页面加载循环
         pageNumber=num;
     }
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         //判断是否有会员头像
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
@@ -250,7 +216,13 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                TD+="<td><span>"+data[i][code]+"</span></td>";
+            })(c)
+        }
+        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -259,27 +231,9 @@ function superaddition(data,num){//页面加载循环
         + "'></label></div>"
         + "</td><td style='text-align:left;'>"
         + a
-        + "</td><td id='"+data[i].vip_id+"'>"
-        + data[i].vip_id
-        + "</td><td>"
-        + data[i].vip_name
-        + "</td><td>"
-        + data[i].sex
-        +"</td><td>"
-        + data[i].vip_phone
-        +"</td><td>"
-        + data[i].vip_card_type
-        +"</td><td>"
-        + data[i].cardno
-        +"</td><td>"
-        + data[i].user_name
-        +"</td><td><span>"
-        + data[i].store_name
-        +"</span></td><td>"
-        + data[i].vip_birthday
-        +"</td><td>"
-        +data[i].join_date
-        +"</td></tr>");
+        + "</td>" +
+        TD +
+        "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -308,6 +262,44 @@ function jurisdiction(actions){
         }
     }
 }
+function InitialState(){
+    if(return_jump!==null){
+        console.log(return_jump);
+        inx=return_jump.inx;
+        pageSize=return_jump.pageSize;
+        value=return_jump.value;
+        filtrate=return_jump.filtrate;
+        list=return_jump.list;
+        param=JSON.parse(return_jump.param);
+        _param=JSON.parse(return_jump._param);
+    }
+    if(return_jump==null){
+        if(value==""&&filtrate==""){
+            GET(inx,pageSize);
+        }
+    }else if(return_jump!==null){
+        if(pageSize==10){
+            $("#page_row").val("10行/页");
+        }
+        if(pageSize==30){
+            $("#page_row").val("30行/页");
+        }
+        if(pageSize==50){
+            $("#page_row").val("50行/页");
+        }
+        if(pageSize==100){
+            $("#page_row").val("100行/页");
+        }
+        if(value==""&&filtrate==""){
+            GET(inx,pageSize);
+        }else if(value!==""){
+            $("#search").val(value);
+            POST(inx,pageSize);
+        }else if(filtrate!==""){
+            filtrates(inx,pageSize);
+        }
+    }
+}
 //页面加载调权限接口
 function qjia(){
     var param={};
@@ -315,9 +307,19 @@ function qjia(){
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
+        titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
+        InitialState();
+        tableTh();
     })
+}
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
 }
 qjia();
 //页面加载时list请求
@@ -586,9 +588,9 @@ function jumpBianse(){
 
     //双击跳转
     $(".table tbody tr").dblclick(function(){
-        var id=$(this).children().eq(2).attr("id");
+        var id=$(this).attr("id");
         var store_id=$(this).attr("data-storeId");
-        var corp_code=$(this).attr("id");
+        var corp_code=$(this).attr("data-code");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -2073,25 +2075,25 @@ $('#jurisdiction').on('click','#add',function(e){
     $('#get_more').show();
     //获取企业
     function getcorplist(a){
-        $('.searchable-select').remove();
-        $('#OWN_STORE').empty();
         //获取所属企业列表
-        var corp_command="/user/getCorpByUser";
-        oc.postRequire("post", corp_command,"", "", function(data){
-            console.log(data);
+        var corp_command="/shop/findStore";
+        oc.postRequire("get", corp_command,"", "", function(data){
             if(data.code=="0"){
-                var msg=JSON.parse(data.message);
-                console.log(msg);
+                console.log(data)
+                var msg=JSON.parse(data.message.list);
                 var index=0;
                 var corp_html='';
                 for( var i=0;i<msg.corps.length;i++){
                     corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
                 }
-                $("#OWN_STORE").append(corp_html);
+                // $("#OWN_CORP").append(corp_html);
                 // if(a!==""){
                 //     $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
                 // }
-                $('#OWN_STORE').searchableSelect();
+
+                // $('.corp_select select').searchableSelect();
+                console.log( $('#corp_select .searchable-select'));
+                $('#corp_select .searchable-select').css('width','100%');
                 $('.corp_select .searchable-select-input').keydown(function(event){
                     var event=window.event||arguments[0];
                     if(event.keyCode == 13){
@@ -2119,18 +2121,19 @@ $('#jurisdiction').on('click','#add',function(e){
             }
         });
     }
+    // getcorplist();
     function gender() {
         $('.searchable-select').remove();
         $('#gender').empty();
         //性别
         var corp_html='<option value="男">男</option>'+'<option value="女">女</option>';
         $("#gender").append(corp_html);
-        $('#OWN_STORE').searchableSelect();
-        $('.corp_select .searchable-select-input').hide();
+        $('#gender').searchableSelect();
+        $('#gender').parent().find('.searchable-select-holder').html('男');
+        $('#gender').parent().find('.searchable-select-input').remove();
     }
     getcorplist();
-    // gender();
-
+    gender();
 })
 $('#get_more .head_span_r').click(function () {
     $('#get_more').hide();
