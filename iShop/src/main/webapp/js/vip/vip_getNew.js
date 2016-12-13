@@ -11,6 +11,7 @@ var getNewVip={
             e.stopPropagation();
             $('#get_more').show();
             this.getMoreStore();
+            this.getparamCtrol();
             this.gender();
         }.bind(this));
         $('#get_more .head_span_r').click(function () {
@@ -24,6 +25,47 @@ var getNewVip={
         $('#get_more_save').click(function () {
             this.postParma();
         }.bind(this));
+        var me=this;
+        $('#content').on('blur','input',function () {
+            if(this.className=='billNo'){
+                me.testBlur();
+            }else{
+                me.testInput(this);
+            }
+        });
+    },
+    getparamCtrol:function () {
+        oc.postRequire("get","/vip/paramController?corp_code="+sessionStorage.getItem('corp_code'),"", '', function(data) {
+            if(data.code==0){
+                //控制两个节点
+                var  obj=JSON.parse(data.message);
+                for(var key in obj){
+                    console.log(key+':'+obj[key])
+                    if(key=='is_show_cardNo'){
+                       if(obj[key]=='Y'){
+                           $('#content .cardNo').val('').removeAttr('readonly');
+                       }else{
+                           $('#content .cardNo').val('由系统自动生成').attr('readonly');
+                       }
+                    }else if(key=='is_show_billNo'){
+                       if(obj[key]=='N'){
+                           // $('#content .billNo').hide();
+                           $('#content li:first-child').hide();
+                       }else{
+                           $('#content li:first-child').show();
+                       }
+                    }
+                }
+            }else if(data.code==-1){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+
+            }
+        })
     },
     getMoreStore:function (){
         whir.loading.add("",0.5);//加载等待框
@@ -41,7 +83,8 @@ var getNewVip={
             }
             $("#OWN_STORE").append(corp_html);
             $('#OWN_STORE').searchableSelect();
-            $('.corp_select .searchable-select-input').keydown(function(event){
+            // $('#OWN_STORE').parent().find('.searchable-select-input')
+            $('#get_more_store .corp_select .searchable-select-input').keydown(function(event){
                 var event=window.event||arguments[0];
                 if(event.keyCode == 13){
                     $("#services").html("");
@@ -53,7 +96,7 @@ var getNewVip={
                     me.getMoreStaff();
                 }
             });
-            $('.searchable-select-item').click(function(){
+            $('#get_more_store .searchable-select-item').click(function(){
                 $("#services").html("");
                 $("input[verify='Code']").val("");
                 $("#BRAND_NAME").val("");
@@ -89,14 +132,11 @@ var getNewVip={
         $('#OWN_SHOPPERS').empty().next().remove();
         var _param={};
         var  code=$('#OWN_STORE').val().split('-');
-        console.log(code)
         _param.store_code=code[0];
         _param.corp_code=code[1];
       oc.postRequire("post","/shop/staff","", _param, function(data) {
           if(data.code=="0"){
-              console.log(data)
               var msg=JSON.parse(data.message);
-              console.log(msg)
               var corp_html='';
               for( var i=0;i<msg.length;i++){
                   corp_html+='<option value="'+msg[i].user_code+'">'+msg[i].user_name+'</option>';
@@ -134,7 +174,68 @@ var getNewVip={
    },
     postParma:function () {
         //获取参数
-        console.log(sessionStorage.getItem('corp_code'))
+        var param={};
+        param.corp_code=sessionStorage.getItem('corp_code');
+        param.phone=$('#content').find('.phone').val();
+        param.card_no=$('#content').find('.cardNo').val();
+        param.vip_name=$('#content').find('.vipName').val();
+        param.billNo=$('#content').find('.billNo').val();
+        param.vip_card_type=$('#content').find('.vipCardType').val();
+        param.birthday=$('#content').find('.birthday').val();
+        param.sex=$('#content').find('.gender').val();
+        param.user_code=$('#OWN_SHOPPERS').val();
+        param.store_code=$('#OWN_STORE').val().split('-')[0];
+        oc.postRequire("post","/vip/addVip","", param, function(data) {
+            if(data.code==0){
+                console.log(0)
+                art.dialog({
+                    zIndex:10003,
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "新增成功"
+                });
+            }else if(data.code==-1){
+                art.dialog({
+                    zIndex:10003,
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "新增失败"
+                });
+            }
+        })
+    },
+    testBlur:function () {
+        var param={};
+        param.corp_code=sessionStorage.getItem('corp_code');
+        param.type='billNo';
+        param.billNo=$('#content').find('.billNo').val();
+        oc.postRequire("post","/vip/checkBillNo","", param, function(data) {
+            if(data.code==0){
+                var obj=JSON.parse(data.message);
+                obj.can_pass=='N'?$('#content .content_hint').show():$('#content .content_hint').hide();
+            }else if(data.code==-1){
+                art.dialog({
+                    zIndex:10003,
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        })
+    },
+    testInput:function (node) {
+        console.log($(node).val())
+        //不为空验证
+        var html='';
+        if($(node).val().trim()==''){
+            html=$(node).parent().prev().html();
+        }
+        console.log(html);
+        var HTML='<li><div class="content_hint"><span class="hint">'+html+'不能为空</span></div></li>'
+
     }
 }
 $(document).ready(function () {
