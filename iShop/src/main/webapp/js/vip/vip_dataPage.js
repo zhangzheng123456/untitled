@@ -6,6 +6,10 @@ var oc = new ObjectControl();
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block')
 });
+$('#toRefund').click(function(){
+    $('#Refund').css('display','block')
+});
+
 // 关闭
 $('#screen_close_shop').click(function () {
     $('#topUp').css('display','none');
