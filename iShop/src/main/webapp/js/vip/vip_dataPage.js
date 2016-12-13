@@ -173,17 +173,38 @@ $('#topUpMoneyReality').focus(function () {
 
 //保存
 $('#toSave').click(function(){
-    var topUpNum = $('#topUpNum').val();
-    var topData = $('#chooseDate').val();
-    var topType = $('#execution_input').val();
-    var topUpShop = $('#topUpShop').val();
-    var topUpPeople = $('#topUpPeople').val();
-    var topUpCard = $('#topUpCard').val();
+    var topUpNum = $('#topUpNum').val();//单据编号
+    var topData = $('#chooseDate').val();//单据日期
+    var topType = $('#execution_input').val(); //充值类型
+    var topUpShop = $('#topUpShop').val();  //充值店仓
+    var topUpPeople = $('#topUpPeople').val();//经办人
+    var topUpCard = $('#topUpCard').val();//会员卡号
     var topUpVipName = $('#topUpVipName').val();
-    var topUpMoney = $('#topUpMoney').val();
-    var topUpMoneyReality = $('#topUpMoneyReality').val();
-    var topUpMoneyDiscount = $('#topUpMoneyDiscount').val();
-    var topUpNote = $('#topUpNote').val();
+    var topUpMoney = $('#topUpMoney').val(); //吊牌金额
+    var topUpMoneyReality = $('#topUpMoneyReality').val(); //实付金额
+    var topUpMoneyDiscount = $('#topUpMoneyDiscount').val();//折扣
+    var topUpNote = $('#topUpNote').val();//备注
+    var param={};
+    param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+    param["vip_id"] = sessionStorage.getItem("id");//会员编号
+    param["card_no"] = topUpCard;//会员卡号
+    param["type"] = 'pay';
+    param["billNo"] = topUpNum;//单据编号
+    param["date"] = topData;//单据日期
+    param["pay_type"] = topType;//充值类型
+    param["store_code"] = topUpShop;//充值店铺
+    param["user_code"] = topUpPeople;//经办人
+    param["price"] = topUpMoney;//吊牌金额
+    param["pay_price"] = topUpMoneyReality;//实付金额
+    param["discount"] = topUpMoneyDiscount;//折扣
+    param["remark"] = topUpNote;//备注
+    oc.postRequire("post"," /vip/recharge","",param,function(data){
+        if (data.code == "0") {
+            console.log('保存成功！');
+        } else if (data.code == "-1") {
+            alert(data.message);
+        }
+    });
 });
 //取消
 $('#toFalse').click(function(){
