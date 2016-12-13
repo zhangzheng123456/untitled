@@ -16,48 +16,6 @@ key_val=JSON.parse(key_val);//取key_val的值
 var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
-if(return_jump!==null){
-    console.log(return_jump);
-    inx=return_jump.inx;
-    pageSize=return_jump.pageSize;
-    value=return_jump.value;
-    filtrate=return_jump.filtrate;
-    list=return_jump.list;
-    param=JSON.parse(return_jump.param);
-    _param=JSON.parse(return_jump._param);
-}
-if(return_jump==null){
-    if(value==""&&filtrate==""){
-        param["pageNumber"]=inx;
-        param["pageSize"]=pageSize;
-        param["searchValue"]="";
-        GET(inx,pageSize);
-    }
-}else if(return_jump!==null){
-    if(pageSize==10){
-        $("#page_row").val("10行/页");  
-    }
-    if(pageSize==30){
-        $("#page_row").val("30行/页");  
-    }
-    if(pageSize==50){
-        $("#page_row").val("50行/页");
-    }
-    if(pageSize==100){
-        $("#page_row").val("100行/页");
-    }
-    if(value==""&&filtrate==""){
-        param["pageNumber"]=inx;
-        param["pageSize"]=pageSize;
-        param["searchValue"]="";
-        GET(inx,pageSize);
-    }else if(value!==""){
-        $("#search").val(value);
-        POST(inx,pageSize); 
-    }else if(filtrate!==""){
-        filtrates(inx,pageSize); 
-    }
-}
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -292,6 +250,50 @@ function jurisdiction(actions){
         }
     }
 }
+function InitialState(){
+    if(return_jump!==null){
+        console.log(return_jump);
+        inx=return_jump.inx;
+        pageSize=return_jump.pageSize;
+        value=return_jump.value;
+        filtrate=return_jump.filtrate;
+        list=return_jump.list;
+        param=JSON.parse(return_jump.param);
+        _param=JSON.parse(return_jump._param);
+    }
+    if(return_jump==null){
+        if(value==""&&filtrate==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["searchValue"]="";
+            GET(inx,pageSize);
+        }
+    }else if(return_jump!==null){
+        if(pageSize==10){
+            $("#page_row").val("10行/页");
+        }
+        if(pageSize==30){
+            $("#page_row").val("30行/页");
+        }
+        if(pageSize==50){
+            $("#page_row").val("50行/页");
+        }
+        if(pageSize==100){
+            $("#page_row").val("100行/页");
+        }
+        if(value==""&&filtrate==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["searchValue"]="";
+            GET(inx,pageSize);
+        }else if(value!==""){
+            $("#search").val(value);
+            POST(inx,pageSize);
+        }else if(filtrate!==""){
+            filtrates(inx,pageSize);
+        }
+    }
+}
 //页面加载调权限接口
 function qjia(){
     var param={};
@@ -302,6 +304,7 @@ function qjia(){
         titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
+        InitialState();
         tableTh();
     })
 }
