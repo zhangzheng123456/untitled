@@ -184,28 +184,47 @@ $('#toSave').click(function(){
     var topUpMoneyReality = $('#topUpMoneyReality').val(); //实付金额
     var topUpMoneyDiscount = $('#topUpMoneyDiscount').val();//折扣
     var topUpNote = $('#topUpNote').val();//备注
-    var param={};
-    param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
-    param["vip_id"] = sessionStorage.getItem("id");//会员编号
-    param["card_no"] = topUpCard;//会员卡号
-    param["type"] = 'pay';
-    param["billNo"] = topUpNum;//单据编号
-    param["date"] = topData;//单据日期
-    param["pay_type"] = topType;//充值类型
-    param["store_code"] = topUpShop;//充值店铺
-    param["user_code"] = topUpPeople;//经办人
-    param["price"] = topUpMoney;//吊牌金额
-    param["pay_price"] = topUpMoneyReality;//实付金额
-    param["discount"] = topUpMoneyDiscount;//折扣
-    param["remark"] = topUpNote;//备注
-    oc.postRequire("post"," /vip/recharge","",param,function(data){
-        if (data.code == "0") {
-            console.log('保存成功！');
-        } else if (data.code == "-1") {
-            alert(data.message);
-        }
-    });
-});
+    if(topType == ''|| topUpShop == '' || topUpPeople == '' ) {
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "充值类型、充值店仓、经办人不能为空"
+        });
+    }else if(topUpMoney == '' || topUpMoneyReality=='' ) {
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "折合吊牌金额、实付金额不能为空"
+        });
+    }else{
+        var param = {};
+        param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+        param["vip_id"] = sessionStorage.getItem("id");//会员编号
+        param["card_no"] = topUpCard;//会员卡号
+        param["type"] = 'pay';
+        param["billNo"] = topUpNum;//单据编号
+        param["date"] = topData;//单据日期
+        param["pay_type"] = topType;//充值类型
+        param["store_code"] = topUpShop;//充值店铺
+        param["user_code"] = topUpPeople;//经办人
+        param["price"] = topUpMoney;//吊牌金额
+        param["pay_price"] = topUpMoneyReality;//实付金额
+        param["discount"] = topUpMoneyDiscount;//折扣
+        param["remark"] = topUpNote;//备注
+        oc.postRequire("post", " /vip/recharge", "", param, function (data) {
+            if (data.code == "0") {
+                console.log('保存成功！');
+            } else if (data.code == "-1") {
+                alert(data.message);
+            }
+        });
+    }
+
+})
+
+
 //取消
 $('#toFalse').click(function(){
     $('#topUp').css('display','none');
