@@ -5,15 +5,21 @@ var oc = new ObjectControl();
 //充值弹窗
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block')
+    $('#refund').css('display','none')
 });
 $('#toRefund').click(function(){
-    $('#Refund').css('display','block')
+    $('#refund').css('display','block')
+    $('#topUp').css('display','none')
 });
 
 // 关闭
 $('#screen_close_shop').click(function () {
     $('#topUp').css('display','none');
 });
+$('#refundClose').click(function () {
+    $('#refund').css('display','none');
+});
+
 //单据编号
 var mydate = new Date();
 var str = "" + mydate.getFullYear() + "";
@@ -23,6 +29,7 @@ str += mydate.getHours() + "";
 str += mydate.getMinutes() + "";
 str += mydate.getSeconds() + "";
 $('#topUpNum').val(str);
+$('#refundNum').val(str);
 //单据日期
 var mydate = new Date();
 var str = "" + mydate.getFullYear() + "-";
@@ -32,6 +39,7 @@ str += mydate.getHours() + ":";
 str += mydate.getMinutes() + ":";
 str += mydate.getSeconds() + "";
 $('#chooseDate').val(str);
+$('#refundDate').val(str);
 console.log(str)
 var chooseDate = {
     elem: '#chooseDate',
@@ -44,17 +52,41 @@ var chooseDate = {
         start.max = datas; //结束日选好后，重置开始日的最大日期
     }
 };
+var refundDate = {
+    elem: '#refundDate',
+    format: 'YYYY-MM-DD hh:mm:ss',
+    istime: true,
+    min: laydate.now(),
+    max: '2099-06-16 23:59:59',
+    istoday: false,
+    choose: function (datas) {
+        start.max = datas; //结束日选好后，重置开始日的最大日期
+    }
+};
 laydate(chooseDate);
+laydate(refundDate);
 //充值类型
 $('#execution_input').click(function () {
     $('#execution').toggle();
-})
+});
+
 //下拉选择
 $("#execution li").click(function () {
     var val = $(this).html();
     $(this).addClass("liactive").siblings("li").removeClass("liactive");
     $("#execution_input").val(val);
     $('#execution').css('display','none');
+});
+//退款类型
+$('#refunTypeInput').click(function () {
+    $('#refunType').toggle();
+})
+//下拉选择
+$("#refunType li").click(function () {
+    var val = $(this).html();
+    $(this).addClass("liactive").siblings("li").removeClass("liactive");
+    $("#refunTypeInput").val(val);
+    $('#refunType').css('display','none');
 });
 //充值店仓
 function topUpShop(){
@@ -102,6 +134,17 @@ function topUpShopSelcetClick(dom){
     $("#topUpShop").val(val);
     $('#topUpShopSelcet').css('display','none');
 }
+//退款店仓
+$('#refunShop').click(function () {
+    $('#refunShopSelcet').toggle();
+})
+//下拉选择
+$("#refunShopSelcet li").click(function () {
+    var val = $(this).html();
+    $(this).addClass("liactive").siblings("li").removeClass("liactive");
+    $("#refunShop").val(val);
+    $('#refunShopSelcet').css('display','none');
+});
 //经办人
 function topUpPeople(){
     var param={};
@@ -174,7 +217,45 @@ $('#topUpMoneyReality').focus(function () {
         }
     },1000);
 });
+// <!--若选择按充值单退款：-->（调接口/vip/checkBillNo 传单号，和退款类型，vip_id,corp_code）
+function refunTopUpShow(){
+    $('#refunTopUp').css('display','block');
+    $('#refunBalance').css('display','none');
+    $('#refundReality').parent('span').parent('div').css('display','block');
+    $('#refundMoneyDiscount').parent('span').parent('div').css('display','block');
+    $('#refundBalance').parent('span').parent('div').css('display','none');
 
+    var param = {};
+    param["billNo"] = $('#refunTopUpFrom').val();//单据编号
+    param["type"] = 'billNo';//退款类型
+    param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+    param["vip_id"] = sessionStorage.getItem("id");//会员编号
+    oc.postRequire("post", " /vip/checkBillNo", "", param, function (data) {
+        if (data.code == "0") {
+
+        } else if (data.code == "-1") {
+            alert(data.message);
+        }
+    });
+}
+// <!--若选择余额退款：-->（调接口/vip/checkBillNo 传退款类型，vip_id,corp_code）
+function refunBalanceShow(){
+    $('#refunTopUp').css('display','none');
+    $('#refunBalance').css('display','block');
+    $('#refundReality').parent('span').parent('div').css('display','none');
+    $('#refundMoneyDiscount').parent('span').parent('div').css('display','none');
+    $('#refundBalance').parent('span').parent('div').css('display','block');
+    param["type"] = 'balances';//退款类型
+    param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+    param["vip_id"] = sessionStorage.getItem("id");//会员编号
+    oc.postRequire("post", " /vip/checkBillNo", "", param, function (data) {
+        if (data.code == "0") {
+
+        } else if (data.code == "-1") {
+            alert(data.message);
+        }
+    });
+}
 //保存
 $('#toSave').click(function(){
     var topUpNum = $('#topUpNum').val();//单据编号
@@ -227,10 +308,38 @@ $('#toSave').click(function(){
     }
 
 })
+//退款保存
+function toSave(){
+    var param = {};
+    var refunTypeInput = $('#refunTypeInput').val();
+    param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+    param["vip_id"] = sessionStorage.getItem("id");//会员编号
+    param["card_no"] = $('#vip_card_no').text();//会员卡号
+    param["type"] = 'refund';
+    param["billNo"] = $('#refundNum').val();//单据编号
+    param["refund_type"] = refunTypeInput;//退款类型
+    param["store_code"] = $('#refunShop').val();//退款店铺
+    if(refunTypeInput == '按照充值单退款'){
+        param["sourceNo"] = $('#refunTopUpFrom').val();//来源单号
+    }else if(refunTypeInput == '余额退款'){
+        param["sourceNo"] = $('#refunBalanceFrom').val();//来源单号 m
+    }
+    param["remark"] = $('#refundNote').val();//备注
+    oc.postRequire("post", " /vip/recharge", "", param, function (data) {
+        if (data.code == "0") {
+            console.log('保存成功！');
+        } else if (data.code == "-1") {
+            alert(data.message);
+        }
+    });
+}
 //取消
 $('#toFalse').click(function(){
     $('#topUp').css('display','none');
 });
+function toFalse(){
+    $('#refund').css('display','none');
+}
 //移动窗体
 var mouseX, mouseY;
 var objX, objY;
@@ -273,7 +382,7 @@ function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
-//退款弹窗
+
 
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
