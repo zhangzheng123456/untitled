@@ -455,6 +455,9 @@ $("#batch_label_box").on("click","span",function () {
 //按钮添加
 $("#label_add").click(function () {
     var btn=$("#batch_search_label").val().trim();
+    if(btn==""){
+        return ;
+    }
     addViplabel("",btn);
 });
 //搜索标签
