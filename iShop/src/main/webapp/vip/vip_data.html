@@ -1439,6 +1439,7 @@
             start.max = datas; //结束日选好后，重置开始日的最大日期
         }
     };
+    laydate(chooseDate);
     //充值类型
     $('#execution_input').click(function () {
         $('#execution').toggle();
@@ -1631,11 +1632,9 @@
         }
     }
     window.onload = function(){
-
         topUpPerson();  //会员卡号、姓名
         topUpShop();    //充值店仓列表
         topUpPeople();  //经办人列表
-        laydate(chooseDate);  //日期插件
     }
 </script>
 </html>
