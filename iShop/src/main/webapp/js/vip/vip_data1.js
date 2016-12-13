@@ -215,8 +215,8 @@ function xiaofeiContent(consumnData,consumnlistData){
             +'</tr>';
         consumnHtmlall+='<div class="record_list">'
             +'<div class="order_list">'
-            +'<div class="list_head"><span class="black_font">日期:</span> '+date+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
-            +'<div class="list_head"><span class="black_font">订单号:</span> '+unqiuearr[i]+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
+            +'<div class="list_head"><span class="black_font">日期:</span> '+date+'<span style="margin-left:10px">'+tr+'件商品</span><ul><li><span class="black_font">消费</span><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>('+discount+'折<span style="margin-left: 5px">'+consumnlistData[i].discount+'</span>)</li><li style="color:#d39d6d ">'+consumnlistData[i].use_points+'积分</li></ul></div>'
+            +'<div class="list_head"><span class="black_font">订单号:</span> '+unqiuearr[i]+'<span class="black_font" style="margin-left:10px">导购:</span> '+consumnlistData[i].user_name+'<ul><span style="color:#58b4bc">+'+consumnlistData[i].get_points+'积分</span></ul></div>'
             +'</div>'
             +'<hr/>'
             +'<table class="list_table">'

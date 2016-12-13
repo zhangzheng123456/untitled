@@ -477,7 +477,7 @@ padding:25px 15px 0 15px;
 .record_head ul li:nth-child(2) span{
     color: #888888;
 }
-hr{
+.all_list hr{
     margin: 0 10px;
     color: #d7d7d7;
 }
@@ -653,9 +653,7 @@ hr{
 .point_head_down .record_date li{
     float: left;
 }
-.record_date span{
-    margin: 0 10px;
-}
+
 .point_table{
     width:100%;
     margin-top: 10px;
