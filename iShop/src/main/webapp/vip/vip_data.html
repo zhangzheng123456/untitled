@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="../css/vip-data.css?20161205">
     <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
+    <!--弹窗-->
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         /*.warp{*/
 
@@ -1504,25 +1508,23 @@
     });
     //vip卡号、vip姓名
     $('#topUpCard').focus(function () {
-        setInterval(function () {
-            var vipCard = $('#topUpCard').val().trim();
-            console.log(vipCard)
+        var vipCard = $('#topUpCard').val().trim();
+        var check = setInterval(function () {
             if(vipCard ==''){
                 $('#topUpCard').parent().find('.hint').css('display','block');
             }
             if(vipCard!=''){
-                var a= 1;
-//            clearInterval();
+            clearInterval(check);
                 $('#topUpCard').parent().find('.hint').css('display','none');
                 var param={};
                 param["crop_code"]=sessionStorage.getItem("corp_code");
                 param["vip_id"]=vipCard;
                 oc.postRequire("post","/vip/vipInfo","",param,function(data) {
                     console.log(data);
+                    $('#topUpVipName').val('该卡号未开卡');
                 });
             }
         },1000);
-        console.log(a);
     });
 
     //吊牌折合金额、实付金额、充值折扣
