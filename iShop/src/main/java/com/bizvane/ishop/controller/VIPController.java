@@ -61,6 +61,10 @@ public class VIPController {
     @Autowired
     StoreService storeService;
     @Autowired
+    ParamConfigureService paramConfigureService;
+    @Autowired
+    CorpParamService corpParamService;
+    @Autowired
     MongoDBClient mongodbClient;
 
     /**
@@ -305,6 +309,8 @@ public class VIPController {
             for (int i = 0; i <vipGroups.size() ; i++) {
                 vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
             }
+            if (vip_group_name.endsWith(","))
+                vip_group_name = vip_group_name.substring(0,vip_group_name.length()-1);
             vip.put("vip_avatar", avatar);
             vip.put("vip_group_name", vip_group_name);
 
@@ -976,12 +982,13 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+
     /**
-     * 充值或退款
+     * 参数控制
      */
-    @RequestMapping(value = "/recharge", method = RequestMethod.POST)
+    @RequestMapping(value = "/paramController", method = RequestMethod.POST)
     @ResponseBody
-    public String recharge(HttpServletRequest request, HttpServletResponse response) {
+    public String paramController(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
 //        String user_code = request.getSession().getAttribute("user_code").toString();
 //        String store_code = request.getSession().getAttribute("store_code").toString();
@@ -1033,6 +1040,51 @@ public class VIPController {
     }
 
     /**
+     * 充值或退款
+     */
+    @RequestMapping(value = "/recharge", method = RequestMethod.GET)
+    @ResponseBody
+    public String recharge(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+//        String user_code = request.getSession().getAttribute("user_code").toString();
+//        String store_code = request.getSession().getAttribute("store_code").toString();
+
+        String errormessage = "数据异常，操作失败";
+        try {
+            String corp_code = request.getParameter("corp_code").toString();
+
+            JSONObject obj = new JSONObject();
+            String is_show_billNo = "Y";
+            String is_show_cardNo = "N";
+
+            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_CHECK_BILL,Common.IS_ACTIVE_Y);
+            ParamConfigure param1 = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_INPUT_CARDNO,Common.IS_ACTIVE_Y);
+
+            String id = String.valueOf(param.getId());
+            String id1 = String.valueOf(param1.getId());
+
+            List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code,id,Common.IS_ACTIVE_Y);
+            List<CorpParam> corpParams1 = corpParamService.selectByCorpParam(corp_code,id1,Common.IS_ACTIVE_Y);
+
+            if (corpParams.size()>0 && corpParams.get(0).getParam_value().equals("N"))
+                is_show_billNo = "N";
+
+            if (corpParams1.size()>0 && corpParams1.get(0).getParam_value().equals("Y"))
+                is_show_cardNo = "Y";
+            obj.put("is_show_billNo",is_show_billNo);
+            obj.put("is_show_cardNo",is_show_cardNo);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
      * 验证单号
      * 获取余额
      */
@@ -1073,5 +1125,6 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
 
 }
