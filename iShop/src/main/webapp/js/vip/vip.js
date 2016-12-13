@@ -2123,11 +2123,12 @@ $('#jurisdiction').on('click','#add',function(e){
         //性别
         var corp_html='<option value="男">男</option>'+'<option value="女">女</option>';
         $("#gender").append(corp_html);
-        $('#OWN_STORE').searchableSelect();
-        $('.corp_select .searchable-select-input').hide();
+        $('#gender').searchableSelect();
+        $('#gender').parent().find('.searchable-select-holder').html('男');
+        $('#gender').parent().find('.searchable-select-input').remove();
     }
     getcorplist();
-    // gender();
+    gender();
 
 })
 $('#get_more .head_span_r').click(function () {
