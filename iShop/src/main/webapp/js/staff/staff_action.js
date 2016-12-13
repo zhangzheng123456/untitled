@@ -10,6 +10,7 @@ var _param={};//筛选定义的内容
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
+var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
@@ -48,6 +49,26 @@ $(function(){
         });
     }
 );
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        titleArray=message.columns;
+        GET(pageNumber,pageSize);
+        tableTh();
+    })
+}
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
+};
+qjia();
 function showLi(){
     $("#liebiao").show();
 }
@@ -56,10 +77,10 @@ function hideLi(){
 }
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
-})
+});
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
-})
+});
 //点击清空  清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
@@ -190,13 +211,20 @@ function superaddition(data,num){//页面加载循环
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
+
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
-        console.log();
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                TD+="<td><span>"+data[i][code]+"</span></td>";
+            })(c)
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
@@ -206,21 +234,9 @@ function superaddition(data,num){//页面加载循环
         + "'></label></div>"
         + "</td><td style='text-align:left;'>"
         + a
-        + "</td><td>"
-        + data[i].emp_id
-        + "</td><td>"
-        + data[i].emp_name
-        + "</td><td class='app_id'>"
-        + data[i].vip_id
-        + "</td><td><span style='max-width: 200px;' title='"+data[i].url+"'>"
-        + data[i].url
-        +"</span></td><td>"
-        + data[i].action
-        +"</td><td>"
-        + data[i].corp_name
-        +"</td><td>"
-        + data[i].time
-        +"</td></tr>");
+        + "</td>" +
+        TD +
+        "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -247,7 +263,7 @@ function GET(a,b){
         }
     });
 }
-GET(pageNumber,pageSize);
+
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色
