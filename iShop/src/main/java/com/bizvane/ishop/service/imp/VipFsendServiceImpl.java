@@ -264,7 +264,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String openids = "ogUZEuD2Ju904CQvb2DBwRXOPpNk,";
+        String openids = "";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
