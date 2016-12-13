@@ -1534,25 +1534,13 @@
         $('#topUpPeopleSelect').css('display','none');
     }
     //vip卡号、vip姓名
-//    $('#topUpCard').focus(function () {
-//        $('#topUpCard').blur(function(){
-//            var vipCard = $('#topUpCard').val().trim();
-//            setTimeout(function () {
-//                if(vipCard ==''){
-//                    $('#topUpCard').parent().find('.hint').css('display','block');
-//                }else if(vipCard!=''){
-//                    $('#topUpCard').parent().find('.hint').css('display','none');
-//                    var param={};
-//                    param["crop_code"]=sessionStorage.getItem("corp_code");
-//                    param["vip_id"]=vipCard;
-//                    oc.postRequire("post","/vip/vipInfo","",param,function(data) {
-//                        console.log(data);
-//                        $('#topUpVipName').val('该卡号未开卡');
-//                    });
-//                }
-//            },500);
-//        });
-//    });
+    function topUpPerson(){
+        var vipName  = $('#vip_name').text();
+        var vipCard  = $('#vip_card_no').text();
+        $('#topUpVipName').val(vipName);
+        $('#topUpCard').val(vipCard);
+    }
+
 
     //吊牌折合金额、实付金额、充值折扣
     $('#topUpMoneyReality').focus(function () {
@@ -1639,9 +1627,9 @@
         }
     }
     window.onload = function(){
-        $('#topUpShopSelcet').find('li').remove();
-        topUpShop();
-        topUpPeople();
+        topUpPerson();  //会员卡号、姓名
+        topUpShop();    //充值店仓列表
+        topUpPeople();  //经办人列表
     }
 </script>
 </html>
