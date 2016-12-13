@@ -6,6 +6,8 @@
 var getNewVip={
     init:function () {
         $('#jurisdiction').on('click', '#add', function (e) {
+            whir.loading.add("",0.5);//加载等待框
+            $('#loading').remove();
             e.stopPropagation();
             $('#get_more').show();
             this.getMoreStore();
@@ -13,18 +15,20 @@ var getNewVip={
         }.bind(this));
         $('#get_more .head_span_r').click(function () {
             $('#get_more').hide();
+            whir.loading.remove();//移除加载框
         });
         $('#get_more_close').click(function () {
             $('#get_more').hide();
+            whir.loading.remove();//移除加载框
         });
-        $('#OWN_SHOPPERS').click(function () {
-            console.log($('#OWN_STORE').val())
-        });
+        $('#get_more_save').click(function () {
+            this.postParma();
+        }.bind(this));
     },
     getMoreStore:function (){
+        whir.loading.add("",0.5);//加载等待框
         var me=this;
-       $('.searchable-select').remove();
-      $('#OWN_STORE').empty();
+       $('#OWN_STORE').empty().next().remove();
       //获取所属企业列表
       var corp_command="/shop/findStore";
       oc.postRequire("get", corp_command,"", "", function(data){
@@ -45,6 +49,8 @@ var getNewVip={
                     $("#BRAND_NAME").val("");
                     $("input[verify='Code']").attr("data-mark","");
                     $("#BRAND_NAME").attr("data-mark","");
+                    //调导购
+                    me.getMoreStaff();
                 }
             });
             $('.searchable-select-item').click(function(){
@@ -53,7 +59,10 @@ var getNewVip={
                 $("#BRAND_NAME").val("");
                 $("input[verify='Code']").attr("data-mark","");
                 $("#BRAND_NAME").attr("data-mark","");
+                //调导购
+                me.getMoreStaff();
             })
+            whir.loading.remove();//移除加载框
             me.getMoreStaff();
         }else if(data.code=="-1"){
             art.dialog({
@@ -76,9 +85,8 @@ var getNewVip={
     $('#gender').parent().find('.searchable-select-input').remove();
 },
     getMoreStaff:function(){
-    // whir.loading.add("",0.5);//加载等待框
-        $('#own_shoppers').parent().find('.searchable-select').remove();
-        $('#OWN_SHOPPERS').empty();
+        whir.loading.add("",0.5);//加载等待框
+        $('#OWN_SHOPPERS').empty().next().remove();
         var _param={};
         var  code=$('#OWN_STORE').val().split('-');
         console.log(code)
@@ -112,6 +120,7 @@ var getNewVip={
                   $("input[verify='Code']").attr("data-mark","");
                   $("#BRAND_NAME").attr("data-mark","");
               })
+              whir.loading.remove();//移除加载框
           }else if(data.code=="-1"){
               art.dialog({
                   time: 1,
@@ -119,9 +128,14 @@ var getNewVip={
                   cancel: false,
                   content: data.message
               });
+              whir.loading.remove();//移除加载框
           }
        })
-   }
+   },
+    postParma:function () {
+        //获取参数
+        console.log(sessionStorage.getItem('corp_code'))
+    }
 }
 $(document).ready(function () {
     getNewVip.init();
