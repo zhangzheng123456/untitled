@@ -225,8 +225,8 @@
                     </div>
                     <div>
                     <span>
-                        <label style="color:#c26555;">VIP卡号*</label>
-                        <input type="text" id="topUpCard" autocomplete="off" maxlength="200"/>
+                        <label>VIP卡号</label>
+                        <input type="text" id="topUpCard" autocomplete="off" maxlength="200" disabled/>
                          <div style="padding-bottom: 0px" class="hint">
                              <div hintinfo="VIP卡号不能为空！" class="error_tips"style="">VIP卡号不能为空！</div>
                          </div>
@@ -235,7 +235,7 @@
                     <div>
                     <span>
                         <label>VIP姓名</label>
-                        <input type="text" id="topUpVipName" autocomplete="off" maxlength="200"/>
+                        <input type="text" id="topUpVipName" autocomplete="off" maxlength="200" disabled/>
                     </span>
                     </div>
                     <div>
@@ -1463,7 +1463,6 @@
         $(this).addClass("liactive").siblings("li").removeClass("liactive");
         $("#execution_input").val(val);
         $('#execution').css('display','none');
-//    execution_change(val);
     });
     //充值店仓
     function topUpShop(){
@@ -1481,7 +1480,7 @@
     }
     function topUpShopShow(listList){
         for(i=0;i<listList.length;i++){
-            var tempHTML = '<li id=${id} name=${name}>${msg}<li>';
+            var tempHTML = '<li id=${id} name=${name} onclick="topUpShopSelcetClick(this)">${msg}<li>';
             var html = '';
             var store_code = listList[i].store_code;
             var store_name = listList[i].store_name;
@@ -1498,14 +1497,12 @@
         $('#topUpShopSelcet').toggle();
     });
     //下拉选择
-    $("#topUpShopSelcet li").click(function () {
-        console.log(11111111111);
-        var val = $(this).html();
-        console.log(val);
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
+    function topUpShopSelcetClick(dom){
+        var val =$(dom).text();
+        $(dom).addClass("liactive").siblings("li").removeClass("liactive");
         $("#topUpShop").val(val);
         $('#topUpShopSelcet').css('display','none');
-    });
+    }
     //经办人
     function topUpPeople(){
         var param={};
@@ -1513,9 +1510,8 @@
         param["corp_code"]=sessionStorage.getItem("corp_code");
         oc.postRequire("post","/shop/staff","",param,function(data){
             var msg = JSON.parse(data.message);
-//            console.log(msg);
             for(i=0;i<msg.length;i++){
-                var tempHTML = '<li id="${id}">${msg}<li>';
+                var tempHTML = '<li id="${id}"onclick="topUpPeopleClick(this)">${msg}<li>';
                 var html = '';
                 var user_name = msg[i].user_name;
                 var user_id = msg[i].user_id;
@@ -1531,33 +1527,20 @@
         $('#topUpPeopleSelect').toggle();
     });
     //下拉选择
-    $("#topUpShopSelet li").click(function () {
-        var val = $(this).html();
-        $(this).addClass("liactive").siblings("li").removeClass("liactive");
-        $("#topUpShop").val(val);
-        $('#topUpShopSelet').css('display','none');
-//    execution_change(val);
-    });
+    function topUpPeopleClick(dom){
+        var val =$(dom).text();
+        $(dom).addClass("liactive").siblings("li").removeClass("liactive");
+        $("#topUpPeople").val(val);
+        $('#topUpPeopleSelect').css('display','none');
+    }
     //vip卡号、vip姓名
-    $('#topUpCard').focus(function () {
-        var vipCard = $('#topUpCard').val().trim();
-        var check = setInterval(function () {
-            if(vipCard ==''){
-                $('#topUpCard').parent().find('.hint').css('display','block');
-            }
-            if(vipCard!=''){
-            clearInterval(check);
-                $('#topUpCard').parent().find('.hint').css('display','none');
-                var param={};
-                param["crop_code"]=sessionStorage.getItem("corp_code");
-                param["vip_id"]=vipCard;
-                oc.postRequire("post","/vip/vipInfo","",param,function(data) {
-                    console.log(data);
-                    $('#topUpVipName').val('该卡号未开卡');
-                });
-            }
-        },1000);
-    });
+    function topUpPerson(){
+        var vipName  = $('#vip_name').text();
+        var vipCard  = $('#vip_card_no').text();
+        $('#topUpVipName').val(vipName);
+        $('#topUpCard').val(vipCard);
+    }
+
 
     //吊牌折合金额、实付金额、充值折扣
     $('#topUpMoneyReality').focus(function () {
@@ -1644,9 +1627,9 @@
         }
     }
     window.onload = function(){
-        $('#topUpShopSelcet').find('li').remove();
-        topUpShop();
-        topUpPeople();
+        topUpPerson();  //会员卡号、姓名
+        topUpShop();    //充值店仓列表
+        topUpPeople();  //经办人列表
     }
 </script>
 </html>
