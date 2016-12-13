@@ -2083,12 +2083,12 @@ $('#jurisdiction').on('click','#add',function(e){
                 for( var i=0;i<msg.corps.length;i++){
                     corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
                 }
-                $("#OWN_CORP").append(corp_html);
+                // $("#OWN_CORP").append(corp_html);
                 // if(a!==""){
                 //     $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
                 // }
 
-                $('.corp_select select').searchableSelect();
+                // $('.corp_select select').searchableSelect();
                 console.log( $('#corp_select .searchable-select'));
                 $('#corp_select .searchable-select').css('width','100%');
                 $('.corp_select .searchable-select-input').keydown(function(event){
@@ -2118,7 +2118,7 @@ $('#jurisdiction').on('click','#add',function(e){
             }
         });
     }
-    getcorplist();
+    // getcorplist();
 })
 $('#get_more .head_span_r').click(function () {
     $('#get_more').hide();

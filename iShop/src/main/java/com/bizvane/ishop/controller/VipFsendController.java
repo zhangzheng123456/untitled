@@ -84,9 +84,10 @@ public class VipFsendController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            //org.json.JSONObject jsonObject = new org.json.JSONObject(message);
 
             String result = this.vipFsendService.insert(message, user_id);
+            logger.info("add-----------------------------sendtemoplate" + result);
             if (result.equals("0")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -98,7 +99,7 @@ public class VipFsendController {
             }else{
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(result);
+                dataBean.setMessage("发送失败");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
