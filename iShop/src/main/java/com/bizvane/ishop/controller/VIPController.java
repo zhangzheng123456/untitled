@@ -996,31 +996,27 @@ public class VIPController {
 
             String type = jsonObject.get("type").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
+            String card_no = jsonObject.get("card_no").toString();//会员卡号
+            String billNO = jsonObject.get("billNO").toString();//单据编号
+            String remark = jsonObject.get("remark").toString();
 
             if (type.equals("pay")){
                 if (corp_code.equals("C10016")){
-                    String billNO = jsonObject.get("billNO").toString();//单据编号
-                    String date = jsonObject.get("date").toString();//单据编号
+                    String date = jsonObject.get("date").toString();//单据日期
                     String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
                     String store_code = jsonObject.get("store_code").toString();//充值店仓
                     String user_code = jsonObject.get("user_code").toString();//经办人
-                    String vip_id = jsonObject.get("vip_id").toString();
-                    String card_no = jsonObject.get("card_no").toString();//会员卡号
                     String price = jsonObject.get("price").toString();//吊牌金额
                     String pay_price = jsonObject.get("pay_price").toString();//实付金额
                     String discount = jsonObject.get("discount").toString();//折扣
-                    String remark = jsonObject.get("remark").toString();
 
                 }
             }else if (type.equals("refund")){
                 if (corp_code.equals("C10016")){
-//                    String store_code = jsonObject.get("store_code").toString();
-                    String card_no = jsonObject.get("card_no").toString();
+                    String store_code = jsonObject.get("store_code").toString();
                     String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
-
-                    String billNO = jsonObject.get("billNO").toString();//单据编号（充值单退款时必填）
-                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
-                    String remark = jsonObject.get("remark").toString();
+                    String sourceNo = jsonObject.get("sourceNo").toString();//实付金额
 
                 }
             }
@@ -1038,6 +1034,7 @@ public class VIPController {
 
     /**
      * 验证单号
+     * 获取余额
      */
     @RequestMapping(value = "/checkBillNo", method = RequestMethod.POST)
     @ResponseBody
@@ -1054,31 +1051,14 @@ public class VIPController {
 
             String type = jsonObject.get("type").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
 
             if (type.equals("billNo")){
                 if (corp_code.equals("C10016")){
                     String billNO = jsonObject.get("billNO").toString();//单据编号
-                    String date = jsonObject.get("date").toString();//单据编号
-                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
-                    String store_code = jsonObject.get("store_code").toString();//充值店仓
-                    String user_code = jsonObject.get("user_code").toString();//经办人
-                    String vip_id = jsonObject.get("vip_id").toString();
-                    String card_no = jsonObject.get("card_no").toString();//会员卡号
-                    String price = jsonObject.get("price").toString();//吊牌金额
-                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
-                    String discount = jsonObject.get("discount").toString();//折扣
-                    String remark = jsonObject.get("remark").toString();
-
                 }
             }else if (type.equals("balances")){
                 if (corp_code.equals("C10016")){
-//                    String store_code = jsonObject.get("store_code").toString();
-                    String card_no = jsonObject.get("card_no").toString();
-                    String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
-
-                    String billNO = jsonObject.get("billNO").toString();//单据编号（充值单退款时必填）
-                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
-                    String remark = jsonObject.get("remark").toString();
 
                 }
             }
