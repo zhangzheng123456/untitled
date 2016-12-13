@@ -2132,6 +2132,18 @@ $('#jurisdiction').on('click','#add',function(e){
         });
     }
     // getcorplist();
+    function gender() {
+        $('.searchable-select').remove();
+        $('#gender').empty();
+        //性别
+        var corp_html='<option value="男">男</option>'+'<option value="女">女</option>';
+        $("#gender").append(corp_html);
+        $('#gender').searchableSelect();
+        $('#gender').parent().find('.searchable-select-holder').html('男');
+        $('#gender').parent().find('.searchable-select-input').remove();
+    }
+    getcorplist();
+    gender();
 })
 $('#get_more .head_span_r').click(function () {
     $('#get_more').hide();
