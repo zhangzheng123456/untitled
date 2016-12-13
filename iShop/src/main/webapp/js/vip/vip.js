@@ -2060,6 +2060,8 @@ $('#jurisdiction').on('click','#add',function(e){
     $('#get_more').show();
     //获取企业
     function getcorplist(a){
+        $('.searchable-select').remove();
+        $('#OWN_STORE').empty();
         //获取所属企业列表
         var corp_command="/user/getCorpByUser";
         oc.postRequire("post", corp_command,"", "", function(data){
@@ -2070,13 +2072,14 @@ $('#jurisdiction').on('click','#add',function(e){
                 for( var i=0;i<msg.corps.length;i++){
                     corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
                 }
-                // $("#OWN_CORP").append(corp_html);
+                $("#OWN_STORE").append(corp_html);
                 // if(a!==""){
                 //     $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
                 // }
 
                 // $('.corp_select select').searchableSelect();
                 $('#corp_select .searchable-select').css('width','100%');
+                $('#OWN_STORE').searchableSelect();
                 $('.corp_select .searchable-select-input').keydown(function(event){
                     var event=window.event||arguments[0];
                     if(event.keyCode == 13){
@@ -2104,7 +2107,18 @@ $('#jurisdiction').on('click','#add',function(e){
             }
         });
     }
-    // getcorplist();
+    function gender() {
+        $('.searchable-select').remove();
+        $('#gender').empty();
+        //性别
+        var corp_html='<option value="男">男</option>'+'<option value="女">女</option>';
+        $("#gender").append(corp_html);
+        $('#OWN_STORE').searchableSelect();
+        $('.corp_select .searchable-select-input').hide();
+    }
+    getcorplist();
+    // gender();
+
 })
 $('#get_more .head_span_r').click(function () {
     $('#get_more').hide();

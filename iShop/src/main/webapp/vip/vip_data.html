@@ -60,28 +60,28 @@
             overflow-y: auto;
         }
         /*滚动条样式*/
-        ::-webkit-scrollbar
-        {
-            width: 8px;
-            height: 10px;
-            background-color: #ffffff;
-        }
+        /*::-webkit-scrollbar*/
+        /*{*/
+            /*width: 8px;*/
+            /*height: 10px;*/
+            /*background-color: #ffffff;*/
+        /*}*/
 
-        /*定义滚动条轨道 内阴影+圆角*/
-        ::-webkit-scrollbar-track
-        {
-            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
-            border-radius: 10px;
-            background-color: #ffffff;
-        }
+        /*/!*定义滚动条轨道 内阴影+圆角*!/*/
+        /*::-webkit-scrollbar-track*/
+        /*{*/
+            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*!/*/
+            /*border-radius: 10px;*/
+            /*background-color: #ffffff;*/
+        /*}*/
 
-        /*定义滑块 内阴影+圆角*/
-        ::-webkit-scrollbar-thumb
-        {
-            border-radius: 10px;
-            /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*/
-            background-color: #dfdfdf;
-        }
+        /*/!*定义滑块 内阴影+圆角*!/*/
+        /*::-webkit-scrollbar-thumb*/
+        /*{*/
+            /*border-radius: 10px;*/
+            /*/!*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*!/*/
+            /*background-color: #dfdfdf;*/
+        /*}*/
         .add_border{
             width: 410px;
             border: 1px solid #d7d7d7;
@@ -204,12 +204,8 @@
                             <li><label style="color:#c26555;">充值店仓*</label></li>
                             <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                             <input class="PARAM_NAME" id="topUpShop" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px" readonly/>
-                            <ul class="execution" id="topUpShopSelcet"style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
-                                <!--<li>退换转充值</li>-->
-                                <!--<li>直接充值</li>-->
-                                <!--<li>系统短信通知顾客</li>-->
-                                <!--<li>(任务)分享链接到社交平台</li>-->
-                                <!--<li>微信公众号推送</li>-->
+                            <ul class="execution" id="topUpShopSelcet"style="height: 60px;overflow-y:auto;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
+
                             </ul>
                         </ul>
                     </div>
@@ -218,7 +214,7 @@
                             <li><label style="color:#c26555;">经办人*</label></li>
                             <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                             <input class="PARAM_NAME" id="topUpPeople" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>
-                            <ul class="execution" id="topUpPeopleSelect"style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
+                            <ul class="execution" id="topUpPeopleSelect"style="height: 60px;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
                                 <!--<li>退换转充值</li>-->
                                 <!--<li>直接充值</li>-->
                                 <!--<li>系统短信通知顾客</li>-->
@@ -625,11 +621,11 @@
                             <li>顾客: <span id="vip_name_1"></span></li>
                         </ul>
                     </div>
-                    <hr/>
+                    <hr style="margin: 0"/>
                     <div class="record_head_down">
                         <ul class="record_date">
                             <li><input type="text" id="start" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})"></li>
-                            <li><span>至</span><input type="text" id="end" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})"></li>
+                            <li><span>至</span><input type="text" id="record_end" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#record_end',istime: true, format: 'YYYY-MM-DD'})"></li>
                         </ul>
                         <ul class="record_input">
                             <li><label>订单号</label><input /></li>
@@ -928,6 +924,8 @@
 <!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js?20161116"></script>
 <script src="../js/vip/vip_data1.js?20161116"></script>
+<!--滚动条-->
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript">
     require.config({
         paths: {
@@ -1374,8 +1372,35 @@
         $("#chart_analyze").dad()
     });
 //    ***********************************************************
+//    滚动条
+    $(".topUp_main").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"9px",
+        cursorborderradius:"10px"});
+    $("#topUpShopSelcet").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"0px",
+        cursorborderradius:"10px"});
+    $("#topUpPeopleSelect").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"0px",
+        cursorborderradius:"0px"});
 //  弹窗
-
     var oc = new ObjectControl();
     $('#toTopUp').click(function(){
         $('#topUp').css('display','block')
@@ -1451,25 +1476,32 @@
             var msg = JSON.parse(data.message);
             var list = JSON.parse(msg.list);
             var listList = list.list;
-            for(i=0;i<listList.length;i++){
-                var store_code = listList[i].store_code;
-                var store_name = listList[i].store_name;
-                var tempHTML = '<li id="${id}">${msg}<li>';
-                var html = '';
-                var nowHTML1 = tempHTML;
-                nowHTML1 = nowHTML1.replace("${id}", store_code);
-                nowHTML1 = nowHTML1.replace("${msg}", store_name);
-                html += nowHTML1;
-                $("#topUpShopSelcet").append(html);
-            }
+            topUpShopShow(listList);
         })
+    }
+    function topUpShopShow(listList){
+        for(i=0;i<listList.length;i++){
+            var tempHTML = '<li id=${id} name=${name}>${msg}<li>';
+            var html = '';
+            var store_code = listList[i].store_code;
+            var store_name = listList[i].store_name;
+            var nowHTML1 = tempHTML;
+            nowHTML1 = nowHTML1.replace("${id}", store_code);
+            nowHTML1 = nowHTML1.replace("${msg}", store_name);
+            nowHTML1 = nowHTML1.replace("${name}", i);
+            html += nowHTML1;
+            console.log(html);
+            $("#topUpShopSelcet").append(html);
+        }
     }
     $('#topUpShop').click(function(){
         $('#topUpShopSelcet').toggle();
     });
     //下拉选择
     $("#topUpShopSelcet li").click(function () {
-        var val = $(this).html();;
+        console.log(11111111111);
+        var val = $(this).html();
+        console.log(val);
         $(this).addClass("liactive").siblings("li").removeClass("liactive");
         $("#topUpShop").val(val);
         $('#topUpShopSelcet').css('display','none');
@@ -1481,12 +1513,12 @@
         param["corp_code"]=sessionStorage.getItem("corp_code");
         oc.postRequire("post","/shop/staff","",param,function(data){
             var msg = JSON.parse(data.message);
-            console.log(msg);
+//            console.log(msg);
             for(i=0;i<msg.length;i++){
-                var user_name = msg[i].user_name;
-                var user_id = msg[i].user_id;
                 var tempHTML = '<li id="${id}">${msg}<li>';
                 var html = '';
+                var user_name = msg[i].user_name;
+                var user_id = msg[i].user_id;
                 var nowHTML1 = tempHTML;
                 nowHTML1 = nowHTML1.replace("${id}", user_id);
                 nowHTML1 = nowHTML1.replace("${msg}", user_name);
@@ -1612,6 +1644,7 @@
         }
     }
     window.onload = function(){
+        $('#topUpShopSelcet').find('li').remove();
         topUpShop();
         topUpPeople();
     }
