@@ -264,7 +264,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String openids = "";
+        String openids = "ogUZEuD2Ju904CQvb2DBwRXOPpNk,";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
@@ -299,7 +299,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     if (!vip_obj.getString("OPEN_ID").equals("")) {
                         openids = openids + vip_obj.getString("OPEN_ID") + ",";
                     }
-                    vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
 
                 }
             } else {
@@ -317,7 +317,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
                     vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                    vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                     if (!vip_obj.getString("OPEN_ID").equals("")) {
                         openids = openids + vip_obj.getString("OPEN_ID") + ",";
                     }
@@ -338,7 +338,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             for (int i = 0; i < vip_infos.size(); i++) {
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
                 phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                vip_name = vip_id + vip_obj.getString("NAME_VIP") + ",";
+                vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 if (!vip_obj.getString("OPEN_ID").equals("")) {
                     openids = openids + vip_obj.getString("OPEN_ID") + ",";
                 }
@@ -390,15 +390,24 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String openid[] = openids.split(",");
                 String vipid[] = vip_id.split(",");
                 String vipname[] = vip_name.split(",");
-                for (int i = 0; i < openid.length; i++) {
-                    for (int j = 0; j < vipid.length; j++) {
-                        String open_id = openid[i];
-                        String id = vipid[i];
-                        insertMongoDB(corp_code, open_id, id, auth_appid, vipname[i]);
-                    }
-                }
+                String open_id="";
+                String id="";
+                String name="";
+
+               //模板消息发送成功之后存入mongoDB,并更新已读未读状态
                 if ("0".equals(info.getString("errcode"))) {
+                    for (int i = 0; i < openid.length; i++) {
+                        open_id = openid[i];
+                        for (int j = 0; j < vipid.length; j++) {
+                            id = vipid[i];
+                            for (int k = 0; k <vipname.length ; k++) {
+                                name = vipname[i];
+                            }
+                        }
+                         insertMongoDB(corp_code, open_id, id, auth_appid, name);
+                    }
                     updateReadInfo(message_id);
+
                     return status;
                 } else if (info.getString("errcode").equals("40003")) {
                     status = "invalid";
