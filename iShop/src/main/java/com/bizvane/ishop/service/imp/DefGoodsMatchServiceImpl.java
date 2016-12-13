@@ -110,7 +110,7 @@ public class DefGoodsMatchServiceImpl implements DefGoodsMatchService {
     }
 
     @Override
-    public int updGoodsCode(String goods_code, String id) throws Exception {
+    public int updGoodsCode(String goods_code, int id) throws Exception {
         return defGoodsMatchMapper.updGoodsCode(goods_code,id);
     }
 }
