@@ -16,7 +16,7 @@ public interface ParamConfigureService {
 
     ParamConfigure getParamById(int id) throws SQLException;
 
-    ParamConfigure getParamByKey(String param_key,String isactive) throws Exception;
+    ParamConfigure getParamByKey(String param_name,String isactive) throws Exception;
 
     ParamConfigure getParamByName(String param_name) throws Exception;
 

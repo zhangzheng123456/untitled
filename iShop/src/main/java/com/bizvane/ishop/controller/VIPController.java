@@ -61,6 +61,10 @@ public class VIPController {
     @Autowired
     StoreService storeService;
     @Autowired
+    ParamConfigureService paramConfigureService;
+    @Autowired
+    CorpParamService corpParamService;
+    @Autowired
     MongoDBClient mongodbClient;
 
     /**
@@ -80,6 +84,7 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
 //            String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+
             String phone = jsonObject.get("phone").toString();
             String vip_name = jsonObject.get("vip_name").toString();
             String vip_card_type = jsonObject.get("vip_card_type").toString();
@@ -89,10 +94,15 @@ public class VIPController {
             String birthday = jsonObject.get("birthday").toString();
             String sex = jsonObject.get("sex").toString();
             String join_date = Common.DATETIME_FORMAT_DAY.format(new Date());
-
+            JSONObject obj = new JSONObject();
+            if (corp_code.equals("C10016")){
+                obj.put("card_no","14544423432898");
+                obj.put("vip_id","14544423432898");
+            }
+            //调毛伟栋新增接口
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -305,6 +315,8 @@ public class VIPController {
             for (int i = 0; i <vipGroups.size() ; i++) {
                 vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
             }
+            if (vip_group_name.endsWith(","))
+                vip_group_name = vip_group_name.substring(0,vip_group_name.length()-1);
             vip.put("vip_avatar", avatar);
             vip.put("vip_group_name", vip_group_name);
 
@@ -416,6 +428,14 @@ public class VIPController {
                 String wardrobes = dataBox_wardrobes.data.get("message").value;
                 result_wardrobes = JSONObject.parseObject(wardrobes);
             }
+            JSONArray list_wardrobe = result_wardrobes.getJSONArray("list_wardrobe");
+            for (int i = 0; i < list_wardrobe.size(); i++) {
+                JSONObject orders = list_wardrobe.getJSONObject(i);
+                orders.put("use_points","180");
+                orders.put("get_points","15");
+                orders.put("discount","满100减50");
+            }
+            result_wardrobes.put("","");
             JSONObject result = new JSONObject();
             result.put("result_points", result_points);
             result.put("result_consumn", result_wardrobes);
@@ -968,6 +988,7 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+
     /**
      * 充值或退款
      */
@@ -979,7 +1000,7 @@ public class VIPController {
 //        String store_code = request.getSession().getAttribute("store_code").toString();
 
         Date now = new Date();
-        String errormessage = "数据异常，导出失败";
+        String errormessage = "数据异常，操作失败";
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -988,38 +1009,34 @@ public class VIPController {
 
             String type = jsonObject.get("type").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
+            String card_no = jsonObject.get("card_no").toString();//会员卡号
+            String billNO = jsonObject.get("billNO").toString();//单据编号
+            String remark = jsonObject.get("remark").toString();
 
             if (type.equals("pay")){
                 if (corp_code.equals("C10016")){
-                    String billNO = jsonObject.get("billNO").toString();//单据编号
-                    String date = jsonObject.get("date").toString();//单据编号
+                    String date = jsonObject.get("date").toString();//单据日期
                     String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
                     String store_code = jsonObject.get("store_code").toString();//充值店仓
                     String user_code = jsonObject.get("user_code").toString();//经办人
-                    String vip_id = jsonObject.get("vip_id").toString();
-                    String card_no = jsonObject.get("card_no").toString();//会员卡号
                     String price = jsonObject.get("price").toString();//吊牌金额
                     String pay_price = jsonObject.get("pay_price").toString();//实付金额
                     String discount = jsonObject.get("discount").toString();//折扣
-                    String remark = jsonObject.get("remark").toString();
 
                 }
             }else if (type.equals("refund")){
                 if (corp_code.equals("C10016")){
-//                    String store_code = jsonObject.get("store_code").toString();
-                    String card_no = jsonObject.get("card_no").toString();
+                    String store_code = jsonObject.get("store_code").toString();
                     String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
-
-                    String billNO = jsonObject.get("billNO").toString();//单据编号（充值单退款时必填）
-                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
-                    String remark = jsonObject.get("remark").toString();
+                    String sourceNo = jsonObject.get("sourceNo").toString();//实付金额
 
                 }
             }
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
@@ -1027,5 +1044,97 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
+
+    /**
+     * 参数控制
+     */
+    @RequestMapping(value = "/paramController", method = RequestMethod.GET)
+    @ResponseBody
+    public String paramController(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+//        String user_code = request.getSession().getAttribute("user_code").toString();
+//        String store_code = request.getSession().getAttribute("store_code").toString();
+
+        String errormessage = "数据异常，操作失败";
+        try {
+            String corp_code = request.getParameter("corp_code").toString();
+
+            JSONObject obj = new JSONObject();
+            String is_show_billNo = "Y";
+            String is_show_cardNo = "N";
+
+            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_CHECK_BILL,Common.IS_ACTIVE_Y);
+            ParamConfigure param1 = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_INPUT_CARDNO,Common.IS_ACTIVE_Y);
+
+            String id = String.valueOf(param.getId());
+            String id1 = String.valueOf(param1.getId());
+
+            List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code,id,Common.IS_ACTIVE_Y);
+            List<CorpParam> corpParams1 = corpParamService.selectByCorpParam(corp_code,id1,Common.IS_ACTIVE_Y);
+
+            if (corpParams.size()>0 && corpParams.get(0).getParam_value().equals("N"))
+                is_show_billNo = "N";
+
+            if (corpParams1.size()>0 && corpParams1.get(0).getParam_value().equals("Y"))
+                is_show_cardNo = "Y";
+            obj.put("is_show_billNo",is_show_billNo);
+            obj.put("is_show_cardNo",is_show_cardNo);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 验证单号
+     * 获取余额
+     */
+    @RequestMapping(value = "/checkBillNo", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkBillNo(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+
+        Date now = new Date();
+        String errormessage = "数据异常，操作失败";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String type = jsonObject.get("type").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
+
+            JSONObject obj = new JSONObject();
+            if (type.equals("billNo")){
+                if (corp_code.equals("C10016")){
+                    String billNO = jsonObject.get("billNO").toString();//单据编号
+                    obj.put("price","100");
+                    obj.put("pay_price","80");
+                }
+            }else if (type.equals("balances")){
+                if (corp_code.equals("C10016")){
+                    obj.put("balance","450");
+                }
+            }
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
+
 
 }

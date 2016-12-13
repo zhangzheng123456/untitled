@@ -151,7 +151,7 @@
         AND p.enable = 'Y'
         AND p.isactive = 'Y'
         AND a.isactive = 'Y'
---         ORDER BY a.list_weight
+        ORDER BY a.filter_weight
     </select>
 
     <!--获取登陆人的权限动作-->
@@ -198,7 +198,7 @@
         AND p.isactive = 'Y'
         AND a.isactive = 'Y'
         AND b.isactive = 'Y'
-        ORDER BY b.show_order
+        ORDER BY b.show_order ASC,a.filter_weight ASC
     </select>
 
     <!--获取登陆人的权限功能-->

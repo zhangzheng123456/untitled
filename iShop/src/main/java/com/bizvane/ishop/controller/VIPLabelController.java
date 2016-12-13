@@ -691,7 +691,7 @@ public class VIPLabelController {
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
                 if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
-                } else if (role_code.equals(Common.ROLE_GM)) {
+                } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                     vipLabel.setLabel_type("org");
                 } else {
                     vipLabel.setLabel_type("user");
@@ -809,7 +809,7 @@ public class VIPLabelController {
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
                 if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
-                } else if (role_code.equals(Common.ROLE_GM)) {
+                } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                     vipLabel.setLabel_type("org");
                 } else {
                     vipLabel.setLabel_type("user");

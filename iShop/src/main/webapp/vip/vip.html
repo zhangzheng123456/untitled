@@ -138,7 +138,7 @@
         border-radius: 5px;
         border: 1px solid #d1d1d1;
         background: #FFFFFF;
-        box-shadow: 0 0  14px #d1d1d1;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
     .batch_search_label{
         display: inline-flex;
@@ -147,12 +147,6 @@
         margin-top: 10px;
         position: relative;
         color: #888;
-    }
-    .batch_search_label .icon-ishop_3-05{
-        position: absolute;
-        right: 120px;
-        top: 14px;
-        font-size: 25px;
     }
     .batch_search_label ul{
         display: none;
@@ -236,13 +230,15 @@
     .batch_label_wrapper .icon-ishop_6-12{
         display: block;
         position: absolute;
-        width: 30px;
-        height: 30px;
-        line-height: 15px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
         text-align: right;
-        right: 0px;
-        top: 0px;
+        right: 3px;
+        top: 3px;
         color: #888;
+        cursor: pointer;
+        font-size: 16px;
     }
     .label_title{
         width:100%;
@@ -276,7 +272,7 @@
         width: 570px;
         background: #fff;
         border-radius: 5px;
-        z-index: 99999;
+        z-index: 10001;
     }
     #rightMore:hover,#showDone:hover,#showDoing:hover,#choose:hover{
         cursor: pointer;
@@ -284,6 +280,7 @@
     #get_more .head_span_l{
         padding-left: 5px;
         padding-top: 5px;
+        color:#888;
     }
     #get_more .head_span_r{
         float: right;
@@ -293,20 +290,20 @@
         position: relative;
         font-size: 15px;
         color: #434960;
-        left: 15px;
     }
     #content{
         padding: 10px 20px;
         overflow-y: auto;
         height: 370px;
+        box-sizing: border-box;
     }
     #content .content_l{
         float:left;
         color:#434960;
         width: 20%;
-        height: 40px;
+        height: 50px;
         text-align: right;
-        line-height: 40px;
+        line-height: 50px;
         font-size: 15px;
         color: #434960;
     }
@@ -314,23 +311,23 @@
         margin-left:20%;
         padding-left: 20px;
         padding-right: 20px;
-        height: 40px;
+        height: 50px;
         color:#888;
         text-align:left;
-        line-height: 40px;
+        line-height: 50px;
     }
     .get_more_head{
-       padding: 5px 20px 5px 20px;
+       padding: 15px 10px 5px 10px;
     }
     #get_more i{
         display: block;
-        margin-top: 5px;
+        margin-top: 10px;
         border-top:1px solid #ddd;
     }
-    #content .content_r input,#OWN_CORP,.search_input{
+    #content .content_r input,#OWN_CORP,.search_input,#card_no{
         border: 1px solid #ddd;
         width: 100%;
-        height: 30px;
+        height: 32px;
         margin-right: 20px;
         border-radius: 5px;
         outline: none;
@@ -339,6 +336,18 @@
         font-size: 15px;
         box-sizing: border-box;
     }
+    #content .content_hint{
+        margin-left: 20%;
+        display: none;
+        padding-left: 20px;
+    }
+    #content .hint{
+        padding-left: 20px;
+        /* display: none; */
+        color: #c26555;
+        margin-top: 10px;
+        background: url(../img/pwd_sprite.png) 0 -350px no-repeat;
+    }
     #OWN_CORP, .search_input{
         background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
         background-size: 30px 30px;
@@ -346,6 +355,81 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         -ms-appearance: none;
+    }
+    .get_more_footer{
+        margin: 0px 10px 10px 10px;
+        border-top:1px solid #ddd;
+        padding-top: 10px;
+    }
+    .check{
+        visibility: hidden;
+    }
+    .get_more_footer .check:checked + b{
+        background: url(../img/icon_radio_S.png) no-repeat center center;
+        background-size: 15px 15px;
+    }
+    .radio_b{
+        display:inline-block;
+        width: 15px;
+        height:15px;
+        background:#fff;
+        border-radius: 50%;
+        border: 1px solid #9c9c9c;
+        position: relative;
+        top: 1px;
+        cursor: pointer;
+    }
+    .get_more_footer label{
+        cursor: pointer;
+    }
+    .upper{
+        position: relative;
+        top:-2px;
+        margin-right:10px;
+    }
+    .footer_ul {
+        width:100%;
+        overflow: hidden;
+    }
+    .footer_ul li{
+        width: 50%;
+        float:left;
+    }
+    #get_more_save,#get_more_close{
+        float:right;
+        width: 100px;
+        height: 30px;
+        background: #6dc1c8;
+        color:#fff;
+        border-radius: 5px;
+        letter-spacing: 5px;
+        font-style: normal;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .corp_select{
+        display:inline-block;
+        width: 100%;
+    }
+    .searchable-select{
+      min-width: 100% !important;
+    }
+    .searchable-select-dropdown{
+        width: 100% !important;
+        padding-left: 10px;
+        box-sizing: border-box;
+    }
+    .searchable-select-holder {
+        border: 1px solid #ccc !important;
+        border-radius: 6px !important;
+    }
+    .gender{
+        background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+        background-size: 30px 30px;
+    }
+    .gender_input{
+        display: none;
     }
 </style>
 <body>
@@ -466,17 +550,17 @@
                                 type="checkbox" value="" name="test" title="全选/取消" class="check"
                                 id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div>
                     </th>
-                    <th style="text-align: left;">序号</th>
-                    <th>会员编号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>手机号</th>
-                    <th>会员卡类型</th>
-                    <th>会员卡号</th>
-                    <th>所属导购</th>
-                    <th>所属店铺</th>
-                    <th>生日</th>
-                    <th>开卡日期</th>
+                    <th style="text-align: left;" id="tableOrder">序号</th>
+                    <!--<th>会员编号</th>-->
+                    <!--<th>姓名</th>-->
+                    <!--<th>性别</th>-->
+                    <!--<th>手机号</th>-->
+                    <!--<th>会员卡类型</th>-->
+                    <!--<th>会员卡号</th>-->
+                    <!--<th>所属导购</th>-->
+                    <!--<th>所属店铺</th>-->
+                    <!--<th>生日</th>-->
+                    <!--<th>开卡日期</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -510,7 +594,7 @@
                         </ul>
                         <span class="icon-ishop_8-02 icon"></span>
                     </div>
-                    <span class="zy">共 0 页</span>
+                    <!--<span class="zy">共 0 页</span>-->
                 </li>
             </ul>
         </div>
@@ -869,7 +953,7 @@
 <div class="batch_label_wrapper" id="batch_label_wrapper">
     <span class="icon-ishop_6-12" id="close_label"></span>
     <div class="batch_search_label">
-        <input type="text" id="batch_search_label" maxlength="8"><i class="icon-ishop_3-05"></i><div class="add_label" id="label_add">贴上</div>
+        <input type="text" id="batch_search_label" maxlength="8" placeholder="添加标签"><div class="add_label" id="label_add">贴上</div>
         <ul>
         </ul>
     </div>
@@ -897,37 +981,34 @@
 <div id="get_more">
     <div class="get_more_head">
         <span class="head_span_l">新增VIP</span>
-        <span class="head_span_r icon-ishop_6-12" ></span>
+        <span class="head_span_r icon-ishop_6-12"style="color:#888;font-size: 16px" ></span>
         <i></i>
     </div>
     <ul id="content">
         <li>
             <span class="content_l">单号</span>
             <div class="content_r">
-                    <input type="text">
+                    <input type="text"class="billNo">
             </div>
         </li>
         <li>
-            <span class="content_l"style="color:#c26555">所属企业*</span>
-            <div  class="content_r">
-                 <span class="corp_select">
-                    <select id="OWN_CORP" style="display:inline-flex"></select>
-                 </span>
+            <div class="content_hint">
+                <span class="hint">单号尚未满足要求</span>
             </div>
         </li>
-        <li>
-            <span class="content_l"style="color:#c26555">所属企业*</span>
-            <div  class="content_r">
-                 <span class="corp_select">
-                    <select class="search_input" style="display:inline-flex"></select>
-                 </span>
-            </div>
-        </li>
-        <li>
+        <!--<li>-->
+            <!--<span class="content_l"style="color:#c26555">所属企业*</span>-->
+            <!--<div  class="content_r">-->
+                 <!--<span class="corp_select">-->
+                    <!--<select class="search_input"id="OWN_CORP" style="display:inline-flex"></select>-->
+                 <!--</span>-->
+            <!--</div>-->
+        <!--</li>-->
+        <li id="get_more_store">
             <span class="content_l"style="color:#c26555">所属店铺*</span>
             <div  class="content_r">
                  <span class="corp_select">
-                    <select class="search_input" style="display:inline-flex"></select>
+                    <select class="search_input"id="OWN_STORE" style="display:inline-flex"></select>
                  </span>
             </div>
         </li>
@@ -935,36 +1016,87 @@
             <span class="content_l"style="color:#c26555">所属导购*</span>
             <div  class="content_r">
                  <span class="corp_select">
-                    <select class="search_input" style="display:inline-flex"></select>
+                    <select class="search_input"id="OWN_SHOPPERS" style="display:inline-flex"></select>
                  </span>
             </div>
         </li>
         <li>
-            <span class="content_l"style="color:#c26555">VIP姓名*</span>
+            <span class="content_l" style="color:#c26555">会员姓名*</span>
             <div class="content_r">
-                <input type="text">
+                <input type="text"class="vipName">
             </div>
         </li>
         <li>
-            <span class="content_l"style="color:#c26555">手机号*</span>
+            <span class="content_l" style="color:#c26555">会员卡号*</span>
             <div class="content_r">
-                <input type="text">
+                <input class="cardNo" type="text"value="由系统自动生成"readonly style=" color:#888;">
+            </div>
+        </li>
+        <li>
+            <span class="content_l" style="color:#c26555">手机号*</span>
+            <div class="content_r">
+                <input type="text"class="phone">
+            </div>
+        </li>
+        <li>
+            <span class="content_l" style="color:#c26555">生日*</span>
+            <div class="content_r">
+                <input  type="text"class="laydate-icon birthday" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+            </div>
+        </li>
+        <li>
+            <span class="content_l" style="color:#c26555">性别*</span>
+            <div class="content_r">
+                <input type="text"class="gender"id="gender" value="男">
+                <ul class="gender_input">
+                    <li>男</li>
+                    <li>女</li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <span class="content_l" style="color:#c26555">会员卡类型*</span>
+            <div class="content_r">
+                <input class="vipCardType" type="text">
             </div>
         </li>
     </ul>
     <div class="get_more_footer">
-        <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
-        <b class="radio_b"></b>
-        <label for="ck_1"id="showDone">仅显示已完成</label>
+        <!--<input type="radio"class="check"style="display: none"checked name="ck"  id="ck_1">-->
+        <!--<b class="radio_b"></b>-->
+        <!--<label for="ck_1"class="upper">手动输入卡号</label>-->
+        <!--<input type="radio"class="check"style="display: none" name="ck"   id="ck_2">-->
+        <!--<b class="radio_b"></b>-->
+        <!--<label for="ck_2"class="upper">自动生成卡号</label>-->
+            <ul class="footer_ul">
+                <li style="width: 50%;visibility: hidden">
+                    <i style="margin-right: 10px">提交</i>
+                </li>
+                <li>  <i id="get_more_close"style="margin-left: 10px">关闭</i><i id="get_more_save">提交</i></li>
+            </ul>
     </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/silide.js?20161206"></script>
 <script src="../js/vip/vip.js?20161202"></script>
+<script src="../js/vip/vip_getNew.js"></script>
 <script>
+    $("#content").niceScroll({
+        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+        cursorcolor:" #dfdfdf",
+        cursoropacitymax:1,
+        touchbehavior:false,
+        cursorminheight:200,
+        autohidemode:true,
+        cursorwidth:"9px",
+        cursorborderradius:"10px"});
     //日期调用插件
     var simple_birth_start={
         elem: '#simple_birth_start',

@@ -10,6 +10,7 @@ var _param = {};//筛选定义的内容
 var list = "";
 var cout = "";
 var filtrate = "";//筛选的定义的值
+var titleArray=[];
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
@@ -27,6 +28,9 @@ $(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -71,6 +75,9 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex, pageSize, funcCode) {
@@ -161,6 +168,9 @@ function setPage(container, count, pageindex, pageSize, funcCode) {
 }
 function dian(a, b) {//点击分页的时候调什么接口
     if (value == "" && filtrate == "") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(a, b);
     } else if (value !== "") {
         param["pageNumber"] = a;
@@ -204,6 +214,7 @@ function superaddition(data, num) {//页面加载循环
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         if (num >= 2) {
             var a = i + 1 + (num - 1) * pageSize;
         } else {
@@ -216,7 +227,19 @@ function superaddition(data, num) {//页面加载循环
         if(data[i].send_type=="template"){
             send_type="微信模板";
         }
-        $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                if(code=="details"){
+                        TD+="<td class='details'><a href='javascript:void(0)'>"
+                        + "查看"
+                        + "</a></span></td>"
+                }else{
+                    TD+="<td><span>"+data[i][code]+"</span></td>";
+                }
+            })(c)
+        }
+        $(".table tbody").append("<tr id='" + data[i].id + "' data-send_type='" + data[i].send_type + "' data-content='" + data[i].content + "'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -225,21 +248,9 @@ function superaddition(data, num) {//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td><span  title='"+data[i].sms_code+"'>"
-            + data[i].sms_code
-            + "</td><td><span title='"+send_type+"' class='send_type' data-type='"+data[i].send_type+"'>"
-            + data[i].send_type
-            + "</span></td><td class='message_content'><span title='"+data[i].content+"'>"
-            + data[i].content
-            + "</span></td><td class='details'><a href='javascript:void(0)'>"
-            + "查看"
-            + "</a></span></td><td>"
-            + data[i].corp_name
-            + "</td><td><span title='" + data[i].creater + "'>"
-            + data[i].creater
-            + "</span></td><td>"
-            + data[i].created_date
-            + "</td></tr>");
+            + "</td>" +
+            TD +
+            "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -259,21 +270,35 @@ function jurisdiction(actions) {
 }
 //页面加载调权限接口
 function qjia(){
-    var param={};
-    param["funcCode"]=funcCode;
-    oc.postRequire("post","/list/action","0",param,function(data){
+    var param1={};
+    param1["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param1,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
+        titleArray=message.columns;
         jurisdiction(actions);
         jumpBianse();
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
+        GET(inx, pageSize);
+        tableTh();
     })
+}
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
 }
 qjia();
 //页面加载时list请求
 function GET(a, b) {
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("get", "/vipFsend/list?pageNumber=" + a + "&pageSize=" + b
-        + "&funcCode=" + funcCode + "", "", "", function (data) {
+    //oc.postRequire("get", "/vipFsend/list?pageNumber=" + a + "&pageSize=" + b
+    //    + "&funcCode=" + funcCode + "", "", "", function (data) {
+    oc.postRequire("post", "/vipFsend/search", "0", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
             var message = JSON.parse(data.message);
@@ -289,7 +314,6 @@ function GET(a, b) {
         }
     });
 }
-GET(inx, pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse() {
     $(document).ready(function () {//隔行变色
@@ -350,8 +374,8 @@ function jumpBianse() {
         }
         var param={};
         var id=$(this).parents('tr').attr("id");
-        var send_type=$(this).parents('tr').find('.send_type').attr("data-type");
-        var content=$(this).parents('tr').find('.message_content span').html();
+        var send_type=$(this).parents('tr').attr("data-send_type");
+        var content=$(this).parents('tr').attr("data-content");
         if(send_type == "微信模板"){
             send_type = 'template';
         }else if(send_type == "短信"){
@@ -370,6 +394,7 @@ function jumpBianse() {
                 var message=JSON.parse(data.message);
                 var list=message.vip_info;
                 console.log(list);
+                $(".table #table_r thead").empty();
                 $(".table #table_r tbody").empty();
                 if(list.length == 0){
                     var len = $(".table #table_r thead tr th").length;
@@ -381,9 +406,7 @@ function jumpBianse() {
                         }
                     }
                     $(".table #table_r tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
-                }
-                for(var i=0;i<list.length;i++){
-                    var a=i+1;
+                }else {
                     if(send_type == "sms"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
@@ -391,15 +414,18 @@ function jumpBianse() {
                             "<th>会员卡号</th>" +
                             "<th>会员手机号</th>" +
                             "</tr>");
-                        $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
-                            + a
-                            + "</td><td>"
-                            + list[i].NAME_VIP
-                            + "</td><td>"
-                            + list[i].CARD_NO_VIP
-                            + "</td><td>"
-                            + list[i].MOBILE_VIP
-                            + "</td></tr>");
+                        for(var i=0;i<list.length;i++) {
+                            var a = i + 1;
+                            $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                                + a
+                                + "</td><td>"
+                                + list[i].NAME_VIP
+                                + "</td><td>"
+                                + list[i].CARD_NO_VIP
+                                + "</td><td>"
+                                + list[i].MOBILE_VIP
+                                + "</td></tr>");
+                        }
                     }else if(send_type == "template"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
@@ -407,15 +433,18 @@ function jumpBianse() {
                             "<th>会员编号</th>" +
                             "<th>发送状态</th>" +
                             "</tr>");
-                        $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
-                            + a
-                            + "</td><td>"
-                            + list[i].NAME_VIP
-                            + "</td><td>"
-                            + list[i].CARD_NO_VIP
-                            + "</td><td>"
-                            + list[i].MOBILE_VIP
-                            + "</td></tr>");
+                        for(var j=0;j<list.length;j++) {
+                            var a = j + 1;
+                            $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                                + a
+                                + "</td><td>"
+                                + list[j].vip_name
+                                + "</td><td>"
+                                + list[j].vip_id
+                                + "</td><td>"
+                                + list[j].is_read
+                                + "</td></tr>");
+                        }
                     }
                 }
             }
@@ -522,6 +551,9 @@ $("#cancel").click(function () {
                 if (value == "" && filtrate == "") {
                     frame();
                     $('.frame').html('删除成功');
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["searchValue"]="";
                     GET(pageNumber, pageSize);
                 } else if (value !== "") {
                     frame();
@@ -808,10 +840,10 @@ function getInputValue(){
    var num=0;
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
+        var screen_key=$(input[i]).find("input").attr("id");
         var screen_value={};
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_value=$(input[i]).attr("data-code");
+       if($(input[i]).attr("class")=="isActive_select"){
+           screen_value=$(input[i]).find("input").attr("data-code");
        }else if($(input[i]).attr("class")=="created_date"){
            var start=$('#start').val();
            var end=$('#end').val();
@@ -875,6 +907,9 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;

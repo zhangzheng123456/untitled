@@ -100,34 +100,36 @@
                         }else if(type=="share"){
                             isShare='share';
                         }
-                        var dapei=JSON.parse(list[k].goods_image);
-                        var dapei_goodsimage=[];
-                        for(var l=0;l<dapei.length;l++){
-                            if(type=="app"){
-                                dapei_goodsimage.push(dapei[l].image);
-                            }
-                            if(type=="share"){
-                                if(dapei[l].is_public=="Y"){
+                        if(list[k].goods_image!==""){
+                            var dapei=JSON.parse(list[k].goods_image);
+                            var dapei_goodsimage=[];
+                            for(var l=0;l<dapei.length;l++){
+                                if(type=="app"){
                                     dapei_goodsimage.push(dapei[l].image);
                                 }
-                                
+                                if(type=="share"){
+                                    if(dapei[l].is_public=="Y"){
+                                        dapei_goodsimage.push(dapei[l].image);
+                                    }
+                                    
+                                }
                             }
+                            if(dapei_goodsimage[0].indexOf("http")!==-1){
+                                goods_image=dapei_goodsimage[0];
+                            }
+                            if(dapei_goodsimage[0].indexOf("http")==-1){
+                                goods_image="image/goods_default_image.png";
+                            }
+                            li+='<a href="goods.html?corp_code='
+                                + corp_code
+                                + '&id='
+                                + list[k].id
+                                + '&type='+isShare+'"><li class="ti_img_wrap"><div class="ti_img"><img src="'
+                                + goods_image
+                                + '" alt="暂无图片"></div><p>'
+                                + list[k].goods_code
+                                + '</p></li></a>'
                         }
-                        if(dapei_goodsimage[0].indexOf("http")!==-1){
-                            goods_image=dapei_goodsimage[0];
-                        }
-                        if(dapei_goodsimage[0].indexOf("http")==-1){
-                            goods_image="image/goods_default_image.png";
-                        }
-                        li+='<a href="goods.html?corp_code='
-                            + corp_code
-                            + '&id='
-                            + list[k].id
-                            + '&type='+isShare+'"><li class="ti_img_wrap"><div class="ti_img"><img src="'
-                            + goods_image
-                            + '" alt="暂无图片"></div><p>'
-                            + list[k].goods_code
-                            + '</p></li></a>'
                     }
                 }
                 html+="<div class='footer'><h4 class='biaoti'>"+title+"</h4><div class='goods_list_p'><div class='goods_list'>"+li+"</div></div></div>";

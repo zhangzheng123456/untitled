@@ -274,7 +274,7 @@ public class StoreController {
      */
     @RequestMapping(value = "/findStore", method = RequestMethod.GET)
     @ResponseBody
-    public String selectArea(HttpServletRequest request) {
+    public String selectStore(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             JSONObject result = new JSONObject();
@@ -288,6 +288,15 @@ public class StoreController {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 list = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "", "");
+            } else if (role_code.equals(Common.ROLE_AM)){
+                String area_code = request.getSession().getAttribute("area_code").toString();
+                area_code = area_code.replace(Common.SPECIAL_HEAD, "");
+                String area_store_code = request.getSession().getAttribute("store_code").toString();
+                list = storeService.selStoreByAreaBrandCode(corp_code,area_code,"","",area_store_code);
+            } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)){
+                if (role_code.equals(Common.ROLE_SYS))
+                    corp_code = "C10000";
+                list = storeService.selStoreByAreaBrandCode(corp_code,"","","","");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
