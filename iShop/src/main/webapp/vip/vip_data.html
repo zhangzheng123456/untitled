@@ -1463,17 +1463,24 @@
             var msg = JSON.parse(data.message);
             var list = JSON.parse(msg.list);
             var listList = list.list;
+            var tempHTML = '<li id="${id}" name="${name}">${msg}<li>';
+            var html = '';
             for(i=0;i<listList.length;i++){
                 var store_code = listList[i].store_code;
                 var store_name = listList[i].store_name;
-                var tempHTML = '<li id="${id}">${msg}<li>';
-                var html = '';
                 var nowHTML1 = tempHTML;
                 nowHTML1 = nowHTML1.replace("${id}", store_code);
                 nowHTML1 = nowHTML1.replace("${msg}", store_name);
+                nowHTML1 = nowHTML1.replace("${name}", i);
                 html += nowHTML1;
                 $("#topUpShopSelcet").append(html);
             }
+//            $('#topUpShopSelcet li').each(function () {
+//                var thisLi = $(this).val().trim();
+//                if(thisLi==''){
+//                    $(this).remove();
+//                }
+//            });
         })
     }
     $('#topUpShop').click(function(){
