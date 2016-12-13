@@ -35,8 +35,8 @@
   text-indent:10px;
   color: #888888;
   box-sizing: border-box;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  /*-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);*/
+  /*box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);*/
   -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
   background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
