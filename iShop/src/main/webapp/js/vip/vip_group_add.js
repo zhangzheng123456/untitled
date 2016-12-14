@@ -657,6 +657,8 @@ function superaddition(data, num, c) {
     }
     group_cheked = [];
     var judge = '';
+    var tr_node='';
+    var wx='';
     for (var i = 0; i < data.length; i++) {
         if ( data[i].is_this_group == "Y") {
             judge = 'checked'
@@ -668,14 +670,20 @@ function superaddition(data, num, c) {
         } else {
             var a = i + 1;
         }
-        console.log(data[i].sex);
+        if(data[i].open_id){
+            wx="<span class='icon-ishop_6-22'style='color:#8ec750'></span>";
+        }else{
+            wx="<span class='icon-ishop_6-22'style='color:#cdcdcd'></span>";
+        }
         var gender = data[i].sex == 'F' ? '女' : '男';
         var tr_vip_id = data[i].vip_id;
-        var tr_node = "<tr data-storeid='" + data[i].store_id + "' id='" + data[i].corp_code + "'>"
+         tr_node += "<tr data-storeid='" + data[i].store_id + "' id='" + data[i].corp_code + "'>"
             + "</td><td style='text-align:left;padding-left:22px'>"
             + a
             + "</td><td data_vip_id='" + tr_vip_id + "'>"
             + data[i].vip_name
+             + "</td><td>"
+             + wx
             + "</td><td>"
             + gender
             + "</td><td>"
@@ -698,11 +706,11 @@ function superaddition(data, num, c) {
             + i
             + 1
             + "'></label></div></td></tr>";
-        $(".table tbody").append(tr_node);
         if (judge) {
             group_cheked.push(tr_vip_id);
         }
     }
+    $(".table tbody").append(tr_node);
     $("tbody tr").click(function () {
         var input = $(this).find("input")[0];
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
@@ -1741,4 +1749,39 @@ $('#staff_brand').click(function () {
 $('#staff_shop').click(function () {
     $('#screen_staff').hide();
     $('#screen_shopl').trigger('click');
+});
+//点击搜索按钮提示与否
+$('.r_filrate').hover(function () {
+    $(this).next().show();
+},function () {
+    $(this).next().hide();
+});
+//点击搜索按钮
+$('.r_filrate').click(function () {
+    param={};
+    inx=1;
+    var searchAreaCode='';
+    //清空搜索内容
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+        $(input[i]).attr("data-code","");
+    }
+    $(".sxk").slideUp();
+    $("#search").val('');
+    if($(this).next().text().trim()=='显示当前区域店铺'){
+        $(this).next().html('显示全部店铺');
+        $(this).attr('style','color:#50a3aa');
+        value ='';
+        searchAreaCode=$('#area_code').val();
+    }else{
+        $(this).next().html('显示当前区域店铺');
+        $(this).attr('style','color:#fff');
+        value ='';
+    }
+    param['searchAreaCode']=searchAreaCode;
+    param["searchValue"] = value;
+    param["pageNumber"] = inx;
+    param["pageSize"] = pageSize;
+    POST(inx,pageSize);
 });
