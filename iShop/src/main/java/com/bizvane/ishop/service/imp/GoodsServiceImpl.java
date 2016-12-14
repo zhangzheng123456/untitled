@@ -98,7 +98,7 @@ public class GoodsServiceImpl implements GoodsService {
             if (new_goods != null && old_goods.getId() != new_goods.getId()) {
                 return "编号已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-                if (!old_goods.getGoods_code().equals(new_goods.getGoods_code())){
+                if (!old_goods.getGoods_code().equals(goods.getGoods_code())){
                     List<DefGoodsMatch> defGoodsMatches = defGoodsMatchService.selGoodsCodeByUpd(old_goods.getCorp_code().trim(), old_goods.getGoods_code());
                     for (DefGoodsMatch defGoodsMatch:defGoodsMatches) {
                         defGoodsMatchService.updGoodsCode(goods.getGoods_code(),defGoodsMatch.getId());

@@ -219,7 +219,7 @@ function superaddition(data,num){//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span>"+data[i][code]+"</span></td>";
+                TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
             })(c)
         }
         console.log(data[i].open_id);

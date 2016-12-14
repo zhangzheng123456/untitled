@@ -61,7 +61,7 @@ public class Common {
     public static final String STATUS_SIGN_OUT = "-1";
 
     //导出数量限制10000条
-    public static int EXPORTEXECLCOUNT =10000;
+    public static int EXPORTEXECLCOUNT = 10000;
 
     //数据显示类型——文本框
     public static final String DATE_SHOW_TYPE_TEXT = "text";
@@ -72,13 +72,17 @@ public class Common {
     //数据显示类型——长文本
     public static final String DATE_SHOW_TYPE_LONGTEXT = "longtext";
 
-    public static  final String ACTION_ADD ="新增";
+    public static final String ACTION_ADD = "新增";
 
-    public static  final String ACTION_DEL ="删除";
+    public static final String ACTION_DEL = "删除";
 
-    public static  final String ACTION_UPD ="编辑";
+    public static final String ACTION_UPD = "编辑";
 
-   //微信模板消息
+    //微信模板消息
     public static final String SENDTEMPLATE_URL = "http://wechat.dev.bizvane.com/app/wechat/sendTemplate";
+
+    //微信群发消息
+    public static final String SENDWXMASS_URL = "http://wechat.dev.bizvane.com/app/wechat/sendWxMass";
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 }

@@ -233,9 +233,9 @@ function superaddition(data,num){//页面加载循环
             (function(j){
                 var code=titleArray[j].column_name;
                 if(code=="param_type"){
-                    TD+="<td><span>"+paramType+"</span></td>";
+                    TD+="<td><span title='"+paramType+"'>"+paramType+"</span></td>";
                 }else {
-                    TD+="<td><span>"+data[i][code]+"</span></td>";
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 }
             })(c)
         }

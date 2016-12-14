@@ -248,7 +248,7 @@ function superaddition(data,num){//页面加载循环
                     TD+= "<td><img src="+avatar+ ">"
                         + "</td>"
                 }else{
-                    TD+="<td><span>"+data[i][code]+"</span></td>";
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 }
             })(c)
         }

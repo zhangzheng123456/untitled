@@ -255,7 +255,7 @@ var interFace={
             for (var c=0;c<interFace.titleArray.length;c++){
                 (function(j){
                     var code=interFace.titleArray[j].column_name;
-                    TD+="<td><span>"+data[i][code]+"</span></td>";
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 })(c)
             }
             $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
