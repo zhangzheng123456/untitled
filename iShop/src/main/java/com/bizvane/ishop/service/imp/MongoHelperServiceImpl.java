@@ -153,12 +153,12 @@ public class MongoHelperServiceImpl {
             String brand_name="";
 //            System.out.println("====id======="+id);
 //            System.out.println("====user_id======="+String.valueOf(obj.get("user_id").toString()));
-            if(!String.valueOf(obj.get("user_id").toString()).equals("null") && obj.containsField("user_id")  ){
+            if(null!=obj.get("user_id")&&!String.valueOf(obj.get("user_id").toString()).equals("null") && obj.containsField("user_id")  ){
                 user_id =obj.get("user_id").toString();
             }else{
                 user_id="";
             }
-            if(!String.valueOf(obj.get("brand_name").toString()).equals("null") && obj.containsField("brand_name")){
+            if(null!=obj.get("brand_name")&&!String.valueOf(obj.get("brand_name").toString()).equals("null") && obj.containsField("brand_name")){
                 brand_name =obj.get("brand_name").toString();
             }else{
                 brand_name="";
