@@ -324,12 +324,12 @@ $('#toSave').click(function(){
     //    });
     //}else
      if(topUpMoney == '' || topUpMoneyReality=='' ) {
-        //art.dialog({
-        //    time: 1,
-        //    lock: true,
-        //    cancel: false,
-        //    content: "折合吊牌金额、实付金额不能为空"
-        //});
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "折合吊牌金额、实付金额不能为空"
+        });
          $('#topUpMoneyReality').parent().find('.hint').css('display','block');
          $('#topUpMoney').parent().find('.hint').css('display','block');
     }else{
