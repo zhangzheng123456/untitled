@@ -726,29 +726,52 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
-   inx=1;
-   _param["pageNumber"]=inx;
-   _param["pageSize"]=pageSize;
-   _param["funcCode"]=funcCode;
-   var num=0;
-   list=[];//定义一个list
-   for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
-        var screen_value="";
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_value=$(input[i]).attr("data-code");
-       }else{
-           screen_value=$(input[i]).val().trim();
-       }
+    // var input=$('#sxk .inputs li');
+    var input=$('#sxk .inputs>ul>li');
+    inx=1;
+    _param["pageNumber"]=inx;
+    _param["pageSize"]=pageSize;
+    _param["funcCode"]=funcCode;
+    var num=0;
+    list=[];//定义一个list
+    for(var i=0;i<input.length;i++){
+        var screen_key="";
+        var screen_value={};
+        if($(input[i]).attr("class")=="isActive_select2"){
+            screen_key=$(input[i]).attr("id");
+            switch ($(input[i]).find("input").val()){
+                case '>=':screen_value['type']='gt';screen_value['value']=$(input[i]).find("input").next().val();break;
+                case '<=':screen_value['type']='lt';screen_value['value']=$(input[i]).find("input").next().val();break;
+                case '介于':screen_value['type']='between';_value();break;
+                case '等于':screen_value['type']='eq';screen_value['value']=$(input[i]).find("input").next().val();;break;
+                case '全部':screen_value['type']='all';screen_value['value']='';;break;
+                case '':screen_value['type']='all';screen_value['value']='';;break;
+            }
+            function _value(){
+                screen_value['value']={};
+                var between_value=$(input[i]).find("input").nextAll();
+                screen_value['value'].start=$(between_value[0]).val();
+                screen_value['value'].end=$(between_value[1]).val();
+            }
+        }else if($(input[i]).attr("class")=="created_date"){
+            var start=$('#start').val();
+            var end=$('#end').val();
+            screen_key=$(input[i]).attr("id");
+            screen_value={"start":start,"end":end};
+        }else if($(input[i]).attr("class")=="isActive_select"){
+            screen_key=$(input[i]).find("input").attr("id");
+            screen_value=$(input[i]).find("input").attr("data-code");
+        }else{
+            screen_value=$(input[i]).find("input").val().trim();
+            screen_key=$(input[i]).find("input").attr("id");
+        }
         if(screen_value!=""){
             num++;
         }
-       var param1={"screen_key":screen_key,"screen_value":screen_value};
-       list.push(param1);
-   }
-   _param["list"]=list;
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
     filtrates(inx,pageSize)
@@ -758,6 +781,39 @@ function getInputValue(){
         filtrate="";
     }
 }
+//function getInputValue(){
+//    var input=$('#sxk .inputs input');
+//   inx=1;
+//   _param["pageNumber"]=inx;
+//   _param["pageSize"]=pageSize;
+//   _param["funcCode"]=funcCode;
+//   var num=0;
+//   list=[];//定义一个list
+//   for(var i=0;i<input.length;i++){
+//        var screen_key=$(input[i]).attr("id");
+//        var screen_value=$(input[i]).val().trim();
+//        var screen_value="";
+//       if($(input[i]).parent("li").attr("class")=="isActive_select"){
+//           screen_value=$(input[i]).attr("data-code");
+//       }else{
+//           screen_value=$(input[i]).val().trim();
+//       }
+//        if(screen_value!=""){
+//            num++;
+//        }
+//       var param1={"screen_key":screen_key,"screen_value":screen_value};
+//       list.push(param1);
+//   }
+//   _param["list"]=list;
+//    value="";//把搜索滞空
+//    $("#search").val("");
+//    filtrates(inx,pageSize)
+//    if(num>0){
+//        filtrate="sucess";
+//    }else if(num<=0){
+//        filtrate="";
+//    }
+//}
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
