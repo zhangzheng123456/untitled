@@ -199,6 +199,25 @@ public class VIPLabelController {
             } else {
                 vipLabel.setLabel_type("user");
             }
+            List<VipLabel> vipLabelList = vipLabelService.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name());
+            if (vipLabelList.size() == 0) {
+                List<ViplableGroup> viplableGroups1 = viplableGroupService.checkNameOnly(vipLabel.getCorp_code(), "默认分组", Common.IS_ACTIVE_Y);
+                List<ViplableGroup> viplableGroups2 = viplableGroupService.checkCodeOnly(vipLabel.getCorp_code(), "0001", Common.IS_ACTIVE_Y);
+                if (viplableGroups1.size() == 0 && viplableGroups2.size() == 0) {
+                    ViplableGroup viplableGroup = new ViplableGroup();
+                    viplableGroup.setCorp_code(vipLabel.getCorp_code());
+                    viplableGroup.setLabel_group_code("0001");
+                    viplableGroup.setLabel_group_name("默认分组");
+                    viplableGroup.setRemark("默认分组");
+                    viplableGroup.setIsactive("Y");
+                    Date date = new Date();
+                    viplableGroup.setCreated_date(Common.DATETIME_FORMAT.format(date));
+                    viplableGroup.setCreater(user_id);
+                    viplableGroup.setModified_date(Common.DATETIME_FORMAT.format(date));
+                    viplableGroup.setModifier(user_id);
+                    viplableGroupService.addViplableGroup(viplableGroup);
+                }
+            }
             String existInfo = vipLabelService.insert(vipLabel);
             if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
                 List<VipLabel> vipLabels = vipLabelService.selectViplabelByName(vipLabel.getCorp_code(), vipLabel.getLabel_name(), vipLabel.getIsactive());
