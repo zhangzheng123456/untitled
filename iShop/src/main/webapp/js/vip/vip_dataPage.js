@@ -13,6 +13,7 @@ $('#toTopUp').click(function(){
     $('#topUpMoneyReality').parent().find('.hint').css('display','none');
     $('#topUpMoney').parent().find('.hint').css('display','none');
 });
+//退款弹窗
 $('#toRefund').click(function(){
     $('#refund').css('display','block');
     $('#topUp').css('display','none');
@@ -21,7 +22,16 @@ $('#toRefund').click(function(){
     $('#refunType li').eq(1).click();
     $('#refunShopSelcet li').eq(0).click();
 });
-
+//充值记录弹窗
+$('#toRecord').click(function(){
+    $('#topUp').css('display','none');
+    $('#record').css('display','block');
+});
+//返回充值弹窗
+$('#toReturn').click(function () {
+    $('#topUp').css('display','block');
+    $('#record').css('display','none');
+});
 // 关闭
 $('#screen_close_shop').click(function () {
     $('#topUp').css('display','none');
@@ -31,7 +41,10 @@ $('#refundClose').click(function () {
     $('#refund').css('display','none');
     $('.warp').css('display','none');
 });
-
+$('.warp').click(function () {
+    $('#topUp').css('display','none');
+    $('#refund').css('display','none');
+});
 //单据编号
 var mydate = new Date();
 var str = "" + mydate.getFullYear() + "";
