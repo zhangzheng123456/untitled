@@ -6,7 +6,7 @@ var oc = new ObjectControl();
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block');
     $('#refund').css('display','none');
-    $('.warp').css('display','none');
+    $('.warp').css('display','block');
     $('#execution li').eq(0).click();
     $('#topUpShopSelcet li').eq(0).click();
     $('#topUpPeopleSelect li').eq(0).click();
@@ -16,6 +16,7 @@ $('#toTopUp').click(function(){
 $('#toRefund').click(function(){
     $('#refund').css('display','block');
     $('#topUp').css('display','none');
+    $('.warp').css('display','block');
     refunBalanceShow();//默认余额退款
     $('#refunType li').eq(1).click();
     $('#refunShopSelcet li').eq(0).click();
@@ -24,9 +25,11 @@ $('#toRefund').click(function(){
 // 关闭
 $('#screen_close_shop').click(function () {
     $('#topUp').css('display','none');
+    $('.warp').css('display','none');
 });
 $('#refundClose').click(function () {
     $('#refund').css('display','none');
+    $('.warp').css('display','none');
 });
 
 //单据编号
@@ -328,6 +331,7 @@ $('#toSave').click(function(){
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
                 $('#topUp').css('display','none');
+                $('.warp').css('display','none');
                 art.dialog({
                     time: 1,
                     lock: true,
@@ -362,6 +366,7 @@ function toSave(){
             oc.postRequire("post", " /vip/recharge", "", param, function (data) {
                 if (data.code == "0") {
                     $('#refund').css('display','none');
+                    $('.warp').css('display','none');
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -404,9 +409,11 @@ function toSave(){
 //取消
 $('#toFalse').click(function(){
     $('#topUp').css('display','none');
+    $('.warp').css('display','none');
 });
 function toFalse(){
     $('#refund').css('display','none');
+    $('.warp').css('display','none');
 }
 //移动窗体
 var mouseX, mouseY;
