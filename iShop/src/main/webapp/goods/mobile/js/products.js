@@ -185,7 +185,7 @@
         if(goodsImage[0]==undefined){
             param["goodsImage"]="";
         }else{
-            param["goodsImage"]=goodsImage[0];
+            param["goodsImage"]=goodsImage[0].replace(/(^\s*)|(\s*$)/g, "");
         }
         param["url"]="http://"+window.location.host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"&type=share";
         param["goodsName"]=goodsName;
