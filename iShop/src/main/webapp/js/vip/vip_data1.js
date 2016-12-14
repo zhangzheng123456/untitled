@@ -483,4 +483,12 @@ $(".record_search").click(function () {
     text_second=$(".record_input li:nth-child(2) input").val().trim();
     text_third=$(".record_input li:nth-child(3) input").val().trim();
     getVipPoints();
-})
+});
+//发送手机验证码
+$("#send_code i").click(function () {
+    $("#send_code ul").toggle();
+});
+$("#send_code ul li").click(function () {
+    $("#send_code input").val($(this).html());
+    $("#send_code ul").hide();
+});

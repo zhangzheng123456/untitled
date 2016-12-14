@@ -38,7 +38,7 @@ public class MongoHelperServiceImpl {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
-            if (screen_key.equals("operation_time")) {
+            if (screen_key.equals("operation_time") || screen_key.equals("created_date") || screen_key.equals("message_date")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();//2016-11-25 14:43:15
 
@@ -52,20 +52,20 @@ public class MongoHelperServiceImpl {
                     values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end + " 23:59:59")));
                 }
             }
-            if (screen_key.equals("created_date")) {
-                JSONObject date = JSON.parseObject(screen_value);
-                String start = date.get("start").toString();//2016-11-25 14:43:15
-
-                String end = date.get("end").toString();
-                if (!start.equals("") && start != null) {
-                    System.out.println("=========start:" + start);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start + " 00:00:00")));
-                }
-                if (!end.equals("") && end != null) {
-                    System.out.println("=========end:" + end);
-                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end + " 23:59:59")));
-                }
-            }
+//            if (screen_key.equals("created_date")) {
+//                JSONObject date = JSON.parseObject(screen_value);
+//                String start = date.get("start").toString();//2016-11-25 14:43:15
+//
+//                String end = date.get("end").toString();
+//                if (!start.equals("") && start != null) {
+//                    System.out.println("=========start:" + start);
+//                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.GTE, start + " 00:00:00")));
+//                }
+//                if (!end.equals("") && end != null) {
+//                    System.out.println("=========end:" + end);
+//                    values.add(new BasicDBObject(screen_key, new BasicDBObject(QueryOperators.LTE, end + " 23:59:59")));
+//                }
+//            }
         }
         if (values.size()>0)
             queryCondition.put("$and", values);
