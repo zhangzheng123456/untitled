@@ -179,22 +179,66 @@
         .record_all{
             margin-left:10px;
             margin-right:10px;
-            width: 100%;
-            height: 100%;
+            width: 547.78px;
         }
-        .record_head{
-            background-color: #efefef;
-            height: 30px;
-            line-height: 30px;
+        .record_head_the{
             color: #888;
             font-size: 14px;
+            background-color: #efefef;
+            margin: 0 auto;
+            height: 30px;
+            margin-top: 10px
         }
-        .record_head span{
-            font-weight: normal;
+        .record_bottom_the{
+            position: absolute;
+            bottom: 50px;
+            color: #888;
+            font-size: 14px;
+            margin: 0 auto;
+            height: 20px;
             text-align: center;
+            width: 547.78px;
         }
-        .record_body{
-
+        .record_bottom_the:hover{
+            cursor:pointer;
+        }
+        /*单据编号*/
+        .record_num{
+            width: 190px;
+            line-height: 30px;
+            text-align: center;
+            float: left;
+        }
+        /*单据类型*/
+        .record_type{
+            float: left;
+            line-height: 30px;
+            text-align: center;
+            width: 135px;
+        }
+        /*单据金额*/
+        .record_money{
+            float: left;
+            line-height: 30px;
+            text-align: center;
+            width: 100px;
+        }
+        /*单据余额*/
+        .record_balance{
+            float: left;
+            line-height: 30px;
+            text-align: center;
+            width: 100px;
+        }
+        #record_body li{
+            background-color: #fff;
+            border-bottom: 1px solid #e8e8e8;
+            color: #888888;
+            height: 30px;
+            font-size: 14px;
+        }
+        #record_body li:hover{
+            cursor:pointer;
         }
     </style>
 </head>
@@ -316,12 +360,14 @@
         <div class="topUp_top">VIP充值记录<div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div></div>
         <div class="editor_em  animated fadeInRight topUp_main">
             <ul class="record_all">
-                <li class="record_head"><span>单据编号</span><span>充值类型</span><span>充值金额</span><span>余额</span></li>
-                <li class="record_body">
-                    <ul>
-                        <li><span>单据编号</span><span>充值类型</span><span>充值金额</span><span>余额</span></li>
+                <li class="record_head_the"><div class="record_num">单据编号</div><div class="record_type">充值类型</div><div class="record_money">充值金额</div><div class="record_balance">余额</div></li>
+                <li class="record_body_the">
+                    <ul id="record_body">
+                        <!--记录数据加载模板-->
+                        <!--<li><span class="record_num">${record_num}</span><span class="record_type">${record_type}</span><span class="record_money">${record_money}</span><span class="record_balance">${record_balance}</span></li>-->
                     </ul>
                 </li>
+                <li class="record_bottom_the" id="toAddMore">加载更多></li>
             </ul>
         </div>
         <div class="topUp_bottom">
