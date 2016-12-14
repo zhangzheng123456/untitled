@@ -228,7 +228,7 @@ function superaddition(data, num) {//页面加载循环
                 if(titleArray[j].column_name=="goods_image"){
                     TD+="<td><img src='" + goods_image + "' alt=''></td>";
                 }else{
-                    TD+="<td><span>"+data[i][code]+"</span></td>";
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 }
             })(c)
         }

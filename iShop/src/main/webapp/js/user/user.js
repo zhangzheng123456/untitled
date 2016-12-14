@@ -237,7 +237,7 @@ function superaddition(data,num){
                if(code=="avatar"){
                    TD+="<td><img src='"+avatar+"' alt=''></td>";
                }else{
-                   TD+="<td><span>"+data[i][code]+"</span></td>";
+                   TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                }
             })(c)
         }
