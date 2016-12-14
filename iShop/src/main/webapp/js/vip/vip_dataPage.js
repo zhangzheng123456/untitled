@@ -324,6 +324,7 @@ $('#toSave').click(function(){
     //    });
     //}else
      if(topUpMoney == '' || topUpMoneyReality=='' ) {
+         $(".topUp_main").scrollTop($(".topUp_main")[0].scrollHeight);
         art.dialog({
             time: 1,
             lock: true,
