@@ -73,7 +73,7 @@
         .editor_em select{
             width: 410px;
         }
-        #topUpNum,#chooseDate,#topUpShop,#topUpCard,#topUpVipName,#topUpMoney,#topUpMoneyReality,#topUpMoneyDiscount,#topUpNote,#refundNum,#refundDate,#refunBalanceFrom,#refundBalance,#refunTopUpFrom,#refundReality,#refundMoneyDiscount{
+        #refundNote,#topUpNum,#chooseDate,#topUpShop,#topUpCard,#topUpVipName,#topUpMoney,#topUpMoneyReality,#topUpMoneyDiscount,#topUpNote,#refundNum,#refundDate,#refunBalanceFrom,#refundBalance,#refunTopUpFrom,#refundReality,#refundMoneyDiscount{
             border: 1px solid #d7d7d7;
             border-radius: 5px;
             margin-left: -4px;
@@ -284,6 +284,9 @@
                         <li><label style="color:#c26555;">退款类型*</label></li>
                         <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                         <input class="PARAM_NAME" id="refunTypeInput" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>
+                        <div style="padding-bottom: 0px" class="hint">
+                            <div hintinfo="退款类型不能为空！" class="error_tips"style="">退款类型不能为空！</div>
+                        </div>
                         <ul class="execution" id="refunType"style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
                             <li onclick="refunTopUpShow()">按充值单退款</li>
                             <li onclick="refunBalanceShow()">余额退款</li>
@@ -291,10 +294,13 @@
                     </ul>
                 </div>
                 <div>
-                    <ul style="display:inline-flex;position: relative;margin-bottom:0px">
+                    <ul style="display:inline-flex;position: relative;margin-bottom: 0px;">
                         <li><label style="color:#c26555;">退款店仓*</label></li>
                         <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                         <input class="PARAM_NAME" id="refunShop" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px" readonly/>
+                        <div style="padding-bottom: 0px" class="hint">
+                            <div hintinfo="退款店仓不能为空！" class="error_tips"style="">退款店仓不能为空！</div>
+                        </div>
                         <ul class="execution" id="refunShopSelcet"style="height: 30px;overflow-y:hidden;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">
                             <li>本店</li>
                         </ul>
@@ -304,9 +310,9 @@
                 <div id="refunTopUp" style="display: none;">
                     <span>
                         <label style="color:#c26555;">来源单号*</label>
-                        <input type="text" id="refunTopUpFrom" autocomplete="off" maxlength="200"/>
+                        <input type="text" id="refunTopUpFrom" autocomplete="off" maxlength="200" placeholder="请输入来源单号"/>
                         <div style="padding-bottom: 0px" class="hint">
-                            <div hintinfo="折合吊牌金额不能为空！" class="error_tips"style="">折合吊牌金额不能为空！</div>
+                            <div hintinfo="来源单号不能为空！" class="error_tips"style="">来源单号不能为空！</div>
                         </div>
                     </span>
                 </div>
@@ -315,18 +321,12 @@
                     <span>
                         <label>来源单号</label>
                         <input type="text" id="refunBalanceFrom" autocomplete="off" maxlength="200"/>
-                        <div style="padding-bottom: 0px" class="hint">
-                            <div hintinfo="折合吊牌金额不能为空！" class="error_tips"style="">折合吊牌金额不能为空！</div>
-                        </div>
                     </span>
                 </div>
                 <div style="display: none">
                     <span>
                         <label>实付金额</label>
                         <input type="text" id="refundReality" autocomplete="off" maxlength="200" disabled/>
-                         <div style="padding-bottom: 0px" class="hint">
-                             <div hintinfo="实付金额不能为空！" class="error_tips"style="">实付金额不能为空！</div>
-                         </div>
                     </span>
                 </div>
                 <div style="display: none">
