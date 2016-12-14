@@ -69,7 +69,6 @@ public class VIPController {
 
     /**
      * 新增会员信息
-     *
      */
     @RequestMapping(value = "/addVip", method = RequestMethod.POST)
     @ResponseBody
@@ -97,9 +96,9 @@ public class VIPController {
             String sex = jsonObject.get("sex").toString();
             String join_date = Common.DATETIME_FORMAT_DAY.format(new Date());
             JSONObject obj = new JSONObject();
-            if (corp_code.equals("C10016")){
-                obj.put("card_no","14544423432898");
-                obj.put("vip_id","14544423432898");
+            if (corp_code.equals("C10016")) {
+                obj.put("card_no", "14544423432898");
+                obj.put("vip_id", "14544423432898");
             }
             //调毛伟栋新增接口
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -116,7 +115,6 @@ public class VIPController {
 
     /**
      * 更新会员信息
-     *
      */
     @RequestMapping(value = "/updateVip", method = RequestMethod.POST)
     @ResponseBody
@@ -138,7 +136,7 @@ public class VIPController {
             String birthday = jsonObject.get("birthday").toString();
 
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_vip_card_no = new Data("vip_card_no",card_no, ValueType.PARAM);
+            Data data_vip_card_no = new Data("vip_card_no", card_no, ValueType.PARAM);
             Data data_vip_phone = new Data("vip_phone", phone, ValueType.PARAM);
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_name = new Data("name", vip_name, ValueType.PARAM);
@@ -152,13 +150,13 @@ public class VIPController {
             datalist.put(data_name.key, data_name);
             datalist.put(data_birthday.key, data_birthday);
 
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipProfileBackup",datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipProfileBackup", datalist);
             String status = dataBox.status.toString();
-            if (status.equals("SUCCESS")){
+            if (status.equals("SUCCESS")) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("SUCCESS");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("1");
                 dataBean.setMessage("FAILED");
@@ -313,12 +311,12 @@ public class VIPController {
                     avatar = obj.get("avatar").toString();
             }
 
-            List<VipGroup> vipGroups = vipGroupService.selectByVipid(corp_code,Common.SPECIAL_HEAD+vip_id+",",Common.IS_ACTIVE_Y);
-            for (int i = 0; i <vipGroups.size() ; i++) {
+            List<VipGroup> vipGroups = vipGroupService.selectByVipid(corp_code, Common.SPECIAL_HEAD + vip_id + ",", Common.IS_ACTIVE_Y);
+            for (int i = 0; i < vipGroups.size(); i++) {
                 vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
             }
             if (vip_group_name.endsWith(","))
-                vip_group_name = vip_group_name.substring(0,vip_group_name.length()-1);
+                vip_group_name = vip_group_name.substring(0, vip_group_name.length() - 1);
             vip.put("vip_avatar", avatar);
             vip.put("vip_group_name", vip_group_name);
 
@@ -433,11 +431,11 @@ public class VIPController {
             JSONArray list_wardrobe = result_wardrobes.getJSONArray("list_wardrobe");
             for (int i = 0; i < list_wardrobe.size(); i++) {
                 JSONObject orders = list_wardrobe.getJSONObject(i);
-                orders.put("use_points","180");
-                orders.put("get_points","15");
-                orders.put("discount","满100减50");
+                orders.put("use_points", "180");
+                orders.put("get_points", "15");
+                orders.put("discount", "满100减50");
             }
-            result_wardrobes.put("","");
+            result_wardrobes.put("", "");
             JSONObject result = new JSONObject();
             result.put("result_points", result_points);
             result.put("result_consumn", result_wardrobes);
@@ -480,7 +478,7 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             logger.info("json-----555555555555555555---------corp_code-" + corp_code);
 
-            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject, request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
             datalist.put(data_search_value.key, data_search_value);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
@@ -522,13 +520,13 @@ public class VIPController {
 
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
-            if (jsonObject.containsKey("type")){
+            if (jsonObject.containsKey("type")) {
                 String type = jsonObject.getString("type");
-                if (type.equals("easy")){
+                if (type.equals("easy")) {
                     String key = jsonObject.getString("key");
                     String value = jsonObject.getString("value");
-                }else {
-                    if (jsonObject.containsKey("basic")){
+                } else {
+                    if (jsonObject.containsKey("basic")) {
                         JSONObject basic = jsonObject.getJSONObject("basic");
                         String vip_name = basic.getString("vip_name");
                         String sex = basic.getString("sex");
@@ -536,7 +534,7 @@ public class VIPController {
                         String birthday = basic.getString("birthday");
                         String phone = basic.getString("phone");
                     }
-                    if (jsonObject.containsKey("vip")){
+                    if (jsonObject.containsKey("vip")) {
                         JSONObject vip = jsonObject.getJSONObject("vip");
                         String card_no = vip.getString("card_no");
                         String card_type = vip.getString("card_type");
@@ -544,18 +542,18 @@ public class VIPController {
                         String points = vip.getString("points");
                         String freeze = vip.getString("freeze");
                     }
-                    if (jsonObject.containsKey("consume")){
+                    if (jsonObject.containsKey("consume")) {
                         JSONObject consume = jsonObject.getJSONObject("consume");
                         String recent_date = consume.getString("recent_date");
                         String times = consume.getString("times");
                         String total = consume.getString("total");
                     }
-                    if (jsonObject.containsKey("extend")){
+                    if (jsonObject.containsKey("extend")) {
                         JSONObject extend = jsonObject.getJSONObject("extend");
                         String label = extend.getString("label");
                         String group = extend.getString("group");
                     }
-                    if (jsonObject.containsKey("ticket")){
+                    if (jsonObject.containsKey("ticket")) {
                         JSONObject ticket = jsonObject.getJSONObject("ticket");
                         String ticket_type = ticket.getString("ticket_type");
                         String ticket_status = ticket.getString("ticket_status");
@@ -567,7 +565,7 @@ public class VIPController {
                 corp_code = jsonObject.get("corp_code").toString();
             }
             logger.info("json--------------corp_code-" + corp_code);
-            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
+            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
 
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
@@ -582,6 +580,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -597,37 +596,56 @@ public class VIPController {
             logger.info("json---------------" + param);
             JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String user_code = jsonObject.get("user_code").toString();
-            String store_code = jsonObject.get("store_code").toString();
-            String brand_code = jsonObject.get("brand_code").toString();
-            String area_code = jsonObject.get("area_code").toString();
-            String page_num = 1+"";
-            String page_size =  3000+"";
+            String screen_message = jsonObj.get("screen_message").toString();
+            String searchValue = jsonObj.get("searchValue").toString().trim();
+
+            String page_num = 1 + "";
+            String page_size = 3000 + "";
 
             org.json.JSONObject jsonObj2 = new org.json.JSONObject(param);
             String output_message = jsonObj2.get("output_message").toString();
             org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
 
             if (role_code.equals(Common.ROLE_SYS)) {
-                corp_code = jsonObject.get("corp_code").toString();
+                corp_code = "C10000";
             }
             logger.info("json--------------corp_code-" + corp_code);
-            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num,page_size,corp_code,area_code,brand_code,store_code,user_code);
-
-          //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            DataBox dataBox = null;
+            if (!searchValue.equals("")) {
+                JSONObject object = new JSONObject();
+                object.put("searchValue",searchValue);
+                object.put("pageNumber",1);
+                object.put("pageSize",3000);
+                object.put("corp_code",corp_code);
+                Map datalist = iceInterfaceService.vipBasicMethod(object, request);
+                Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
+                datalist.put(data_search_value.key, data_search_value);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
+            }else if(screen_message.equals("") && searchValue.equals("")){
+                JSONObject object = new JSONObject();
+                object.put("searchValue",searchValue);
+                object.put("pageNumber",1);
+                object.put("pageSize",3000);
+                object.put("corp_code",corp_code);
+                Map datalist = iceInterfaceService.vipBasicMethod(object,request);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            }else if(!screen_message.equals("")){
+                JSONObject jsonObject = JSONObject.parseObject(screen_message);
+                String user_code = jsonObject.get("user_code").toString();
+                String store_code = jsonObject.get("store_code").toString();
+                String brand_code = jsonObject.get("brand_code").toString();
+                String area_code = jsonObject.get("area_code").toString();
+                dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+            }
+            //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             org.json.JSONObject object = new org.json.JSONObject(result);
-            org.json.JSONArray jsonArray =new org.json.JSONArray(object.get("all_vip_list").toString());
-           List list = WebUtils.Json2List2(jsonArray);
+            org.json.JSONArray jsonArray = new org.json.JSONArray(object.get("all_vip_list").toString());
+            List list = WebUtils.Json2List2(jsonArray);
             if (list.size() >= 3000) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-//            String json = mapper.writeValueAsString(list);
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
             String pathname = OutExeclHelper.OutExecl_vip(jsonArray, list, map, response, request);
             JSONObject result2 = new JSONObject();
@@ -647,6 +665,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 会员信息(头像，扩展信息，备注，相册)
      * 保存mongodb
@@ -1016,8 +1035,8 @@ public class VIPController {
             String billNO = jsonObject.get("billNO").toString();//单据编号
             String remark = jsonObject.get("remark").toString();
 
-            if (type.equals("pay")){
-                if (corp_code.equals("C10016")){
+            if (type.equals("pay")) {
+                if (corp_code.equals("C10016")) {
                     String date = jsonObject.get("date").toString();//单据日期
                     String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
                     String store_code = jsonObject.get("store_code").toString();//充值店仓
@@ -1027,8 +1046,8 @@ public class VIPController {
                     String discount = jsonObject.get("discount").toString();//折扣
 
                 }
-            }else if (type.equals("refund")){
-                if (corp_code.equals("C10016")){
+            } else if (type.equals("refund")) {
+                if (corp_code.equals("C10016")) {
                     String store_code = jsonObject.get("store_code").toString();
                     String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
                     String sourceNo = jsonObject.get("sourceNo").toString();//实付金额
@@ -1066,22 +1085,22 @@ public class VIPController {
             String is_show_billNo = "Y";
             String is_show_cardNo = "N";
 
-            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_CHECK_BILL,Common.IS_ACTIVE_Y);
-            ParamConfigure param1 = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_INPUT_CARDNO,Common.IS_ACTIVE_Y);
+            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_CHECK_BILL, Common.IS_ACTIVE_Y);
+            ParamConfigure param1 = paramConfigureService.getParamByKey(CommonValue.ADD_VIP_INPUT_CARDNO, Common.IS_ACTIVE_Y);
 
             String id = String.valueOf(param.getId());
             String id1 = String.valueOf(param1.getId());
 
-            List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code,id,Common.IS_ACTIVE_Y);
-            List<CorpParam> corpParams1 = corpParamService.selectByCorpParam(corp_code,id1,Common.IS_ACTIVE_Y);
+            List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code, id, Common.IS_ACTIVE_Y);
+            List<CorpParam> corpParams1 = corpParamService.selectByCorpParam(corp_code, id1, Common.IS_ACTIVE_Y);
 
-            if (corpParams.size()>0 && corpParams.get(0).getParam_value().equals("N"))
+            if (corpParams.size() > 0 && corpParams.get(0).getParam_value().equals("N"))
                 is_show_billNo = "N";
 
-            if (corpParams1.size()>0 && corpParams1.get(0).getParam_value().equals("Y"))
+            if (corpParams1.size() > 0 && corpParams1.get(0).getParam_value().equals("Y"))
                 is_show_cardNo = "Y";
-            obj.put("is_show_billNo",is_show_billNo);
-            obj.put("is_show_cardNo",is_show_cardNo);
+            obj.put("is_show_billNo", is_show_billNo);
+            obj.put("is_show_cardNo", is_show_cardNo);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(obj.toString());
@@ -1114,6 +1133,9 @@ public class VIPController {
             String corp_code = jsonObject.get("corp_code").toString();
 
             JSONObject obj = new JSONObject();
+
+     
+
             if (type.equals("billNo")){
 //                if (corp_code.equals("C10016")){
                     String billNo = jsonObject.get("billNo").toString();//单据编号
@@ -1126,6 +1148,7 @@ public class VIPController {
                     String vip_id = jsonObject.get("vip_id").toString();
                     obj.put("balance","450");
 //                }
+
             }
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
