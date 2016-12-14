@@ -546,13 +546,13 @@
         <h4>筛选店铺</h4>
         <div class="xuanzhong">
             <div class="xuanzhong_p">
+                <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
                 <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
                                           data-areacode="">
                 <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-            </div>
-            <div class="xuanzhong_p">
-                <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
-                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
             </div>
         </div>
         <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
@@ -631,14 +631,14 @@
         <h4>筛选</h4>
         <div class="xuanzhong">
             <div class="xuanzhong_p">
-                <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
-                                          data-areacode="">
-                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
-            </div>
-            <div class="xuanzhong_p">
                 <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
                                           data-brandcode="">
                 <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
             </div>
             <div class="xuanzhong_p">
                 <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
@@ -751,12 +751,12 @@
                 <div class="contion_input"><label>消费总额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
             </div>
             <div id="relation" style="display: none">
-                <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
-                                                                     readonly="true" data-code=""><span
-                        class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
                 <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
                 <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
@@ -964,7 +964,6 @@
             </ul>
     </div>
 </div>
-<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
