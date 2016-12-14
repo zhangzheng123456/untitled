@@ -596,14 +596,16 @@ public class VIPController {
             logger.info("json---------------" + param);
             JSONObject jsonObj = JSONObject.parseObject(param);
             id = jsonObj.get("id").toString();
-            String screen_message = jsonObj.get("screen_message").toString();
-            String searchValue = jsonObj.get("searchValue").toString().trim();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String screen_message = jsonObject.get("screen_message").toString();
+            String searchValue = jsonObject.get("searchValue").toString().trim();
 
             String page_num = 1 + "";
             String page_size = 3000 + "";
 
             org.json.JSONObject jsonObj2 = new org.json.JSONObject(param);
-            String output_message = jsonObj2.get("output_message").toString();
+            String output_message = jsonObj2.get("message").toString();
             org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
 
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -630,11 +632,11 @@ public class VIPController {
                 Map datalist = iceInterfaceService.vipBasicMethod(object,request);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             }else if(!screen_message.equals("")){
-                JSONObject jsonObject = JSONObject.parseObject(screen_message);
-                String user_code = jsonObject.get("user_code").toString();
-                String store_code = jsonObject.get("store_code").toString();
-                String brand_code = jsonObject.get("brand_code").toString();
-                String area_code = jsonObject.get("area_code").toString();
+                JSONObject jsonObject2 = JSONObject.parseObject(screen_message);
+                String user_code = jsonObject2.get("user_code").toString();
+                String store_code = jsonObject2.get("store_code").toString();
+                String brand_code = jsonObject2.get("brand_code").toString();
+                String area_code = jsonObject2.get("area_code").toString();
                 dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
             }
             //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
@@ -1134,7 +1136,7 @@ public class VIPController {
 
             JSONObject obj = new JSONObject();
 
-     
+
 
             if (type.equals("billNo")){
 //                if (corp_code.equals("C10016")){
