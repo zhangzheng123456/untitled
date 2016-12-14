@@ -14,7 +14,6 @@ var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取function_code的值
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 //模仿select
@@ -238,7 +237,7 @@ function superaddition(data,num){
                if(code=="avatar"){
                    TD+="<td><img src='"+avatar+"' alt=''></td>";
                }else{
-                   TD+="<td><span>"+data[i][code]+"</span></td>";
+                   TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                }
             })(c)
         }

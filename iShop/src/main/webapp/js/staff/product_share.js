@@ -11,6 +11,7 @@ var _param={};//筛选定义的内容
 var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
+var titleArray=[];
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
@@ -30,6 +31,9 @@ $(function(){
                 pageSize=$(this).attr('id');
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -51,6 +55,29 @@ $(function(){
         });
     }
 );
+//页面加载调权限接口
+function qjia(){
+    var param1={};
+    param1["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param1,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        titleArray=message.columns;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
+        GET(pageNumber,pageSize);
+        tableTh();
+    })
+}
+function tableTh(){ //table  的表头
+    var TH="";
+    for(var i=0;i<titleArray.length;i++){
+        TH+="<th>"+titleArray[i].show_name+"</th>"
+    }
+    $("#tableOrder").after(TH);
+}
+qjia();
 function showLi(){
     $("#liebiao").show();
 }
@@ -75,6 +102,9 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode) {
@@ -165,6 +195,9 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
 }
 function dian(a,b){//点击分页的时候调什么接口
     if (value==""&&filtrate=="") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(a,b);
     }else if (value!==""){
         param["pageNumber"] = a;
@@ -194,6 +227,7 @@ function superaddition(data,num){//页面加载循环
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     for (var i = 0; i < data.length; i++) {
+        var TD="";
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
@@ -207,6 +241,17 @@ function superaddition(data,num){//页面加载循环
         if(reg.test(data[i].product_image)){
             avatar=data[i].product_image;
         }
+        for (var c=0;c<titleArray.length;c++){
+            (function(j){
+                var code=titleArray[j].column_name;
+                if(code=="product_image"){
+                    TD+= "<td><img src="+avatar+ ">"
+                        + "</td>"
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
+            })(c)
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -216,18 +261,20 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td><img src="+avatar+ ">"
-            + "</td><td><span title='"+data[i].product_url+"'>"
-            + data[i].product_url
-            + "</span></td><td class='app_id'>"
-            + data[i].product_title
-            + "</td><td><span>"
-            + data[i].corp_code
-            +"</span></td><td>"
-            + data[i].operator_id
-            +"</td><td>"
-            + data[i].time
-            +"</td></tr>");
+            + "</td>" +
+            TD+
+            //"<td><span title='"+data[i].product_url+"'>"
+            //+ data[i].product_url
+            //+ "</span></td><td class='app_id'>"
+            //+ data[i].product_title
+            //+ "</td><td><span>"
+            //+ data[i].corp_code
+            //+"</span></td><td>"
+            //+ data[i].operator_id
+            //+"</td><td>"
+            //+ data[i].time
+            //+"</td>" +
+            "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -235,8 +282,9 @@ function superaddition(data,num){//页面加载循环
 };
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/productShare/list?pageNumber="+a+"&pageSize="+b
-        +"&funcCode="+funcCode+"","","",function(data){
+    //oc.postRequire("get","/productShare/list?pageNumber="+a+"&pageSize="+b
+    //    +"&funcCode="+funcCode+"","","",function(data){
+    oc.postRequire("post","/productShare/search","0",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -253,7 +301,7 @@ function GET(a,b){
         }
     });
 }
-GET(pageNumber,pageSize);
+//GET(pageNumber,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色
@@ -302,6 +350,9 @@ $("#search").keydown(function() {
         value=this.value.trim();
         param["searchValue"]=value;
         if(value==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["searchValue"]="";
             GET(inx,pageSize);
         }else{
             POST(inx,pageSize);
@@ -316,6 +367,9 @@ $("#d_search").click(function(){
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     if(value==""){
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(inx,pageSize);
     }else{
         POST(inx,pageSize);
@@ -383,6 +437,9 @@ $("#delete").click(function(){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
                 GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
@@ -697,6 +754,9 @@ function getInputValue(){
         filtrates(inx,pageSize)
     }else if(num==0){
         filtrate="";
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(inx,pageSize);
     }
 }
@@ -736,6 +796,9 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;

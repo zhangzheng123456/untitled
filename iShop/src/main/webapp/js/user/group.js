@@ -215,10 +215,17 @@ function superaddition(data,num){//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td data-"+code+"='"+data[i][code]+"'><span>"+data[i][code]+"</span></td>";
+                if(code=="details"){
+                    TD+= "<td class='power'><a href='javascript:void(0);'>"
+                        +"编辑"
+                        + "</a></td>"
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
+
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"'' data-code='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'' data-code='"+data[i].corp_code+"' data-group_code='"+data[i].group_code+"' data-group_name='"+data[i].group_name+"' data-role_code='"+data[i].role_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -228,10 +235,8 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td>" +
-                        TD +
-                        "<td class='power'><a href='javascript:void(0);'>"
-                        +"编辑"
-                        + "</a></td></tr>");
+                        TD+
+                        "</tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -462,17 +467,9 @@ function jumpBianse(){
         //var group_name=$(this).parents('tr').find("td:eq(3)").text();
         //var role_code=$(this).parents('tr').find(".role_code").attr("data-code");
         var tdAll=$(this).parents('tr').find("td");
-       for(var i= 0;i<tdAll.length;i++){
-            if($(tdAll[i]).attr("data-group_code")!==undefined){
-                var group_code=$(tdAll[i]).text();
-            }
-           if($(tdAll[i]).attr("data-group_name")!==undefined){
-                var group_name=$(tdAll[i]).text();
-            }
-           if($(tdAll[i]).attr("data-role_code")!==undefined){
-                var role_code=$(tdAll[i]).text();
-            }
-        }
+        var group_code=$(this).parents('tr').attr("data-group_code");
+        var group_name=$(this).parents('tr').attr("data-group_name");
+        var role_code=$(this).parents('tr').attr("data-role_code");
         var group_corp={"corp_code":corp_code,role_code:role_code,"group_code":group_code,"group_name":group_name};
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
         $(window.parent.document).find('#iframepage').attr("src","user/groupcheck_power1.html");

@@ -215,10 +215,16 @@ function superaddition(data,num){//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span>"+data[i][code]+"</span></td>";
+                if(code=="details"){
+                    TD+="<td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
+                    +"查看"
+                    + "</a></td>"
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>"
+                }
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'' data-store_code='"+data[i].store_code+"' data-store_name='"+data[i].store_name+"' ><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -457,13 +463,13 @@ function jumpBianse(){
         return_jump["list"]=list;//筛选的请求的list;
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-        var store_code=$(this).parents('tr').find("td:eq(2) span").html();
+        var store_code=$(this).parents('tr').attr("data-store_code");
         var corp_code=$(this).attr("data-code");
-        var store_name=$(this).parents('tr').find("td .store_name").html();
+        var store_name=$(this).parents('tr').attr("data-store_name");
         var store_corp={"store_code":store_code,"corp_code":corp_code,"store_name":store_name};
         sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
-    })
+    });
     //批量生成二维码
     $('#qrcode').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
@@ -535,7 +541,7 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2) span").html();
+        var store_code=$(tr[i]).attr("data-store_code");
         var corp_code=$(tr[i]).find(".staff").attr("data-code");
         var param1={"store_code":store_code,"corp_code":corp_code};
         list.push(param1);

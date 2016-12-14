@@ -504,7 +504,11 @@ public class GoodsController {
                     goods.setGoods_code(goods_code);
                     goods.setGoods_name(goods_name);
                     goods.setGoods_price(goods_price);
-                    goods.setGoods_image(goods_image+"  ");
+                    if(goods_image==null||goods_image.equals("")){
+                        goods.setGoods_image("");
+                    }else{
+                        goods.setGoods_image(goods_image);
+                    }
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("");
                     }else{
@@ -783,14 +787,14 @@ public class GoodsController {
                  * @param name 被操作name
                  * @throws Exception
                  */
-                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
+//                com.alibaba.fastjson.JSONObject action_json = com.alibaba.fastjson.JSONObject.parseObject(message);
                 String operation_corp_code = request.getSession().getAttribute("corp_code").toString();
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "商品管理_商品培训(FAB)";
                 String action = Common.ACTION_UPD;
-                String t_corp_code = action_json.get("corp_code").toString();
-                String t_code = action_json.get("goods_code").toString();
-                String t_name = action_json.get("goods_name").toString();
+                String t_corp_code = jsonObject.get("corp_code").toString();
+                String t_code = jsonObject.get("goods_code").toString();
+                String t_name = jsonObject.get("goods_name").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
                 //-------------------行为日志结束-----------------------------------------------------------------------------------

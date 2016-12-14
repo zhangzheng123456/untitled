@@ -182,10 +182,16 @@ function superaddition(data,num){//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span>"+data[i][code]+"</span></td>";
+                if(code=="details"){
+                    TD+="<td class='power'><a href='javascript:void(0);'>"
+                    +"编辑"
+                    + "</a></td>"
+                }else {
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"' data-role_code='"+data[i].role_code+"' data-role_name='"+data[i].role_name+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -196,9 +202,6 @@ function superaddition(data,num){//页面加载循环
                         + a
                         + "</td>" +
                         TD +
-                        "<td class='power'><a href='javascript:void(0);'>"
-                        +"编辑"
-                         + "</a></td>"
                         +"</tr>");
     }
     whir.loading.remove();//移除加载框
@@ -343,12 +346,12 @@ function jumpBianse(){
         }
         var id=$(this).parents('tr').attr('id');
         sessionStorage.setItem("id",id);
-        var role_code=$(this).parents('tr').find("td:eq(2)").text();//角色编号
-        var role_name=$(this).parents('tr').find("td:eq(3)").text();//角色名称
+        var role_code=$(this).parents('tr').attr("data-role_code");//角色编号
+        var role_name=$(this).parents('tr').attr("data-role_name");//角色名称
         var group_corp={"role_code":role_code,"role_name":role_name};//组成一个code的字符串
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
         $(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power1.html");
-    })
+    });
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         sessionStorage.removeItem('id');

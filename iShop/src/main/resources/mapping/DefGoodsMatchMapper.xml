@@ -193,7 +193,7 @@
         ORDER BY dgm.id DESC
     </select>
     <select id="selGoodsCodeByUpd" resultType="com.bizvane.ishop.entity.DefGoodsMatch">
-        SELECT dgm.id dgmid ,dgm.goods_code FROM def_goods_match dgm
+        SELECT dgm.id ,dgm.goods_code FROM def_goods_match dgm
         WHERE dgm.corp_code=#{corp_code}
         AND dgm.goods_code=#{goods_code}
     </select>

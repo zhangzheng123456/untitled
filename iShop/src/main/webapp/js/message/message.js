@@ -234,7 +234,15 @@ function superaddition(data, num) {//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span>"+data[i][code]+"</span></td>";
+                if(code=="receiver_type"){
+                    TD+="<td><span title='"+receiver_type+"'>"+receiver_type+"</span></td>";
+                }else if(code=="details"){
+                   TD+="</td><td class='details'><a href='javascript:void(0)'>"
+                    + "查看"
+                    + "</a></td>"
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
             })(c)
         }
         $(".table tbody").append("<tr id='" + data[i].id + "'' data-message_code='"+data[i].message_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -249,10 +257,7 @@ function superaddition(data, num) {//页面加载循环
             + "</td><td >"
             + receiver_type
             + "</td>" +
-            TD
-            +"</td><td class='details'><a href='javascript:void(0)'>"
-            + "查看"
-            + "</a></td>"+
+            TD+
             //"<td  class='message_code' data-code='"+data[i].message_code+"'>"
             //+ data[i].message_title
             //+ "</td><td><span title='" + data[i].message_content + "'>"

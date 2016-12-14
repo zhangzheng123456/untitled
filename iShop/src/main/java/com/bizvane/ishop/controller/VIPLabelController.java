@@ -641,7 +641,7 @@ public class VIPLabelController {
             id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String corp_code = jsonObject.getString("corp_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
             String vip_code_list = jsonObject.get("list").toString();
             JSONArray jsonArray = JSON.parseArray(vip_code_list);
             String store_code = "";
@@ -691,7 +691,7 @@ public class VIPLabelController {
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
                 if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
-                } else if (role_code.equals(Common.ROLE_GM)) {
+                } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                     vipLabel.setLabel_type("org");
                 } else {
                     vipLabel.setLabel_type("user");
@@ -707,6 +707,7 @@ public class VIPLabelController {
                         String label_id2 = viplabelID.get(0).getId() + "";
                         String vip_code2 = split_vip_code[i].toString();
                         String store_code2 = split_store_code[i].toString();
+                        relViplabel.setCorp_code(corp_code2);
                         relViplabel.setLabel_id(label_id2);
                         relViplabel.setVip_code(vip_code2);
                         relViplabel.setStore_code(store_code2);
@@ -808,7 +809,7 @@ public class VIPLabelController {
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
                 if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
-                } else if (role_code.equals(Common.ROLE_GM)) {
+                } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                     vipLabel.setLabel_type("org");
                 } else {
                     vipLabel.setLabel_type("user");

@@ -218,10 +218,17 @@ function superaddition(data,num){//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td data-"+code+"='"+data[i][code]+"'><span>"+data[i][code]+"</span></td>";
+                if(code=="details"){
+                    TD+="<td class='details'><a href='javascript:void(0)'>"
+                    + "查看"
+                    + "</a></td>"
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
+
             })(c)
         }
-        $(".table #table tbody").append("<tr id='"+data[i].id+"' data-code='"+data[i].corp_code+"' ondblclick='editAssignment(this)'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table #table tbody").append("<tr id='"+data[i].id+"' data-code='"+data[i].corp_code+"' data-task_code='"+data[i].task_code+"' ondblclick='editAssignment(this)'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -253,9 +260,6 @@ function superaddition(data,num){//页面加载循环
             //            + "</td><td>"
             //            +data[i].isactive
             //            +"</td>" +
-                          "<td class='details'><a href='javascript:void(0)'>"
-                          + "查看"
-                          + "</a></td>"
                           +"</tr>");
     }
     whir.loading.remove();//移除加载框
@@ -435,12 +439,7 @@ function jumpBianse(){
         var param={};
         var corp_code=$(this).parents('tr').attr("data-code");
         //var task_code=$(this).parents('tr').find("td:eq(2) span").html();
-        var tdAll=$(this).parents('tr').find("td");
-        for(var i= 0;i<tdAll.length;i++){
-            if($(tdAll[i]).attr("data-task_code")!==undefined){
-                var task_code=$(tdAll[i]).text();
-            }
-        }
+        var task_code=$(this).parents('tr').attr("data-task_code");
         param["corp_code"]=corp_code;
         param["task_code"]=task_code;
         whir.loading.add("",0.5);//加载等待框
@@ -563,12 +562,7 @@ $("#delete").click(function(){
         var id=$(tr[i]).attr("id");
         var corp_code=$(tr[i]).attr("data-code");
         //var task_code=$(tr[i]).find("td:eq(2) span").html();
-        var tdAll=$(tr[i]).find("td");
-        for(var i= 0;i<tdAll.length;i++){
-            if($(tdAll[i]).attr("data-task_code")!==undefined){
-                var task_code=$(tdAll[i]).text();
-            }
-        }
+        var task_code=$(tr[i]).attr("data-task_code");
         var param1={"id":id,"corp_code":corp_code,"task_code":task_code};
         list.push(param1);
     }

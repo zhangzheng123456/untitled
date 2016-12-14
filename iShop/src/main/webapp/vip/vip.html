@@ -272,7 +272,7 @@
         width: 570px;
         background: #fff;
         border-radius: 5px;
-        z-index: 99999;
+        z-index: 10001;
     }
     #rightMore:hover,#showDone:hover,#showDoing:hover,#choose:hover{
         cursor: pointer;
@@ -335,6 +335,18 @@
         color:#888;
         font-size: 15px;
         box-sizing: border-box;
+    }
+    #content .content_hint{
+        margin-left: 20%;
+        display: none;
+        padding-left: 20px;
+    }
+    #content .hint{
+        padding-left: 20px;
+        /* display: none; */
+        color: #c26555;
+        margin-top: 10px;
+        background: url(../img/pwd_sprite.png) 0 -350px no-repeat;
     }
     #OWN_CORP, .search_input{
         background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
@@ -549,6 +561,7 @@
                     <!--<th>所属店铺</th>-->
                     <!--<th>生日</th>-->
                     <!--<th>开卡日期</th>-->
+                    <th style="width: 20px"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -941,7 +954,7 @@
 <div class="batch_label_wrapper" id="batch_label_wrapper">
     <span class="icon-ishop_6-12" id="close_label"></span>
     <div class="batch_search_label">
-        <input type="text" id="batch_search_label" maxlength="8"><div class="add_label" id="label_add">贴上</div>
+        <input type="text" id="batch_search_label" maxlength="8" placeholder="添加标签"><div class="add_label" id="label_add">贴上</div>
         <ul>
         </ul>
     </div>
@@ -976,7 +989,12 @@
         <li>
             <span class="content_l">单号</span>
             <div class="content_r">
-                    <input type="text">
+                    <input type="text"class="billNo">
+            </div>
+        </li>
+        <li>
+            <div class="content_hint">
+                <span class="hint">单号尚未满足要求</span>
             </div>
         </li>
         <!--<li>-->
@@ -987,7 +1005,7 @@
                  <!--</span>-->
             <!--</div>-->
         <!--</li>-->
-        <li>
+        <li id="get_more_store">
             <span class="content_l"style="color:#c26555">所属店铺*</span>
             <div  class="content_r">
                  <span class="corp_select">
@@ -1004,31 +1022,31 @@
             </div>
         </li>
         <li>
-            <span class="content_l"class="vipName" style="color:#c26555">会员姓名*</span>
+            <span class="content_l" style="color:#c26555">会员姓名*</span>
             <div class="content_r">
-                <input type="text">
+                <input type="text"class="vipName">
             </div>
         </li>
         <li>
-            <span class="content_l"class="cardNo" style="color:#c26555">会员卡号*</span>
+            <span class="content_l" style="color:#c26555">会员卡号*</span>
             <div class="content_r">
-                <input type="text"value="由系统自动生成"readonly style=" color:#888;">
+                <input class="cardNo" type="text"value="由系统自动生成"readonly style=" color:#888;">
             </div>
         </li>
         <li>
-            <span class="content_l"class="iphone" style="color:#c26555">手机号*</span>
+            <span class="content_l" style="color:#c26555">手机号*</span>
             <div class="content_r">
-                <input type="text">
+                <input type="text"class="phone">
             </div>
         </li>
         <li>
-            <span class="content_l"class="birthday" style="color:#c26555">生日*</span>
+            <span class="content_l" style="color:#c26555">生日*</span>
             <div class="content_r">
-                <input type="text"class="laydate-icon" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+                <input  type="text"class="laydate-icon birthday" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"c>
             </div>
         </li>
         <li>
-            <span class="content_l"class="sex" style="color:#c26555">性别*</span>
+            <span class="content_l" style="color:#c26555">性别*</span>
             <div class="content_r">
                 <input type="text"class="gender"id="gender" value="男">
                 <ul class="gender_input">
@@ -1038,11 +1056,12 @@
             </div>
         </li>
         <li>
-            <span class="content_l"class="vipCardType" style="color:#c26555">会员卡类型*</span>
+            <span class="content_l" style="color:#c26555">会员卡类型*</span>
             <div class="content_r">
-                <input type="text"value="积累卡（尹默）">
+                <input class="vipCardType" type="text">
             </div>
         </li>
+        <li></li>
     </ul>
     <div class="get_more_footer">
         <!--<input type="radio"class="check"style="display: none"checked name="ck"  id="ck_1">-->
@@ -1065,6 +1084,7 @@
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/silide.js?20161206"></script>
 <script src="../js/vip/vip.js?20161202"></script>

@@ -153,12 +153,12 @@ public class MongoHelperServiceImpl {
             String brand_name="";
 //            System.out.println("====id======="+id);
 //            System.out.println("====user_id======="+String.valueOf(obj.get("user_id").toString()));
-            if(obj.containsField("user_id") && !String.valueOf(obj.get("user_id").toString()).equals("null")){
+            if(null!=obj.get("user_id")&&!String.valueOf(obj.get("user_id").toString()).equals("null") && obj.containsField("user_id")  ){
                 user_id =obj.get("user_id").toString();
             }else{
                 user_id="";
             }
-            if(obj.containsField("brand_name")&&!String.valueOf(obj.get("brand_name").toString()).equals("null")){
+            if(null!=obj.get("brand_name")&&!String.valueOf(obj.get("brand_name").toString()).equals("null") && obj.containsField("brand_name")){
                 brand_name =obj.get("brand_name").toString();
             }else{
                 brand_name="";
@@ -205,7 +205,7 @@ public class MongoHelperServiceImpl {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
-            if (screen_key.equals("sign_time")) {
+            if (screen_key.equals("modified_date")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();
 
