@@ -2020,8 +2020,6 @@ $("#screen_vip_que").click(function(){
     $("#screen_wrapper").hide();
     $("#p").hide();
 });
-//基本筛选确定
-
 //筛选调接口
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
@@ -2079,4 +2077,4 @@ function getGroup() {
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();
-})
+});

@@ -1236,10 +1236,18 @@
     $("#more_filter").click(function () {
         $("#simple_filter").hide();
         $("#senior_filter").show();
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#screen_wrapper").width())/2;
+        var tp=(arr[3]-$("#screen_wrapper").height())/2;
+        $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     });
     $("#back_filter").click(function () {
         $("#simple_filter").show();
         $("#senior_filter").hide();
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#screen_wrapper").width())/2;
+        var tp=(arr[3]-$("#screen_wrapper").height())/2;
+        $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     });
     //筛选的下拉模拟事件
     $("#simple_filter_condition ul li").click(function () {

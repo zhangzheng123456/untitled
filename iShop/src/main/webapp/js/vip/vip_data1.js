@@ -23,7 +23,7 @@ function getVipInfo(){
         $("#consume_times").html(conSumData.consume_times);
         $("#dormant_time").html(conSumData.dormant_time);
         $("#last_date").html(conSumData.last_date);
-        $("#remark_value").html(vipData.remark);
+        $("#remark_value").val(vipData.remark);
         function getvalue(){
             var VALUE="";
             for(data in extend_info){
@@ -490,5 +490,5 @@ $("#send_code i").click(function () {
 });
 $("#send_code ul li").click(function () {
     $("#send_code input").val($(this).html());
-    $("#send_code ul").hide();
+
 });
