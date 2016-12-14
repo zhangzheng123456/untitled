@@ -29,8 +29,8 @@ $('#toRecord').click(function(){
 });
 //返回充值弹窗
 $('#toReturn').click(function () {
-    $('#topUp').css('display','block');
     $('#record').css('display','none');
+    $('#topUp').css('display','block');
 });
 // 关闭
 $('#screen_close_shop').click(function () {
@@ -40,6 +40,11 @@ $('#screen_close_shop').click(function () {
 $('#refundClose').click(function () {
     $('#refund').css('display','none');
     $('.warp').css('display','none');
+});
+$('#record .screen_close').click(function () {
+    $('#record').css('display','none');
+    $('#topUp').css('display','block');
+    $('.warp').css('display','block');
 });
 $('.warp').click(function () {
     $('#topUp').css('display','none');
