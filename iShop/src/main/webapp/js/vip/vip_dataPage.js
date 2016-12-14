@@ -49,6 +49,7 @@ $('#record .screen_close').click(function () {
 $('.warp').click(function () {
     $('#topUp').css('display','none');
     $('#refund').css('display','none');
+    $('.warp').css('display','none');
 });
 //单据编号
 var mydate = new Date();
