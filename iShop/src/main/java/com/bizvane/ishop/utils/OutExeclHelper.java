@@ -186,7 +186,11 @@ public class OutExeclHelper {
             //这里可以改中文
             List<String> values=new ArrayList<String>();
             for (String key : cols.keySet()) {
-                values.add(cols.get(key));
+                if(key.equals("sex")){
+                    values.add("性别(M/男、F/女)");
+                }else {
+                    values.add(cols.get(key));
+                }
             }
             for(int i=0;i<values.size();i++){
                 sheet.setColumnView(i, 40);
