@@ -274,6 +274,7 @@ input::-webkit-input-placeholder{
 .action_l li.li .input{
 	width: 265px;
 	height: 27px;
+	line-height:27px;
 	border:none;
 	outline: none;
 	margin-left: 18px;
