@@ -6,6 +6,11 @@ var oc = new ObjectControl();
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block');
     $('#refund').css('display','none');
+    $('#execution li').eq(0).click();
+    $('#topUpShopSelcet li').eq(0).click();
+    $('#topUpPeopleSelect li').eq(0).click();
+    $('#topUpMoneyReality').parent().find('.hint').css('display','none');
+    $('#topUpMoney').parent().find('.hint').css('display','none');
 });
 $('#toRefund').click(function(){
     $('#refund').css('display','block');
@@ -287,20 +292,23 @@ $('#toSave').click(function(){
     var topUpMoneyReality = $('#topUpMoneyReality').val(); //实付金额
     var topUpMoneyDiscount = $('#topUpMoneyDiscount').val();//折扣
     var topUpNote = $('#topUpNote').val();//备注
-    if(topType == ''|| topUpShop == '' || topUpPeople == '' ) {
-        art.dialog({
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "充值类型、充值店仓、经办人不能为空"
-        });
-    }else if(topUpMoney == '' || topUpMoneyReality=='' ) {
-        art.dialog({
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "折合吊牌金额、实付金额不能为空"
-        });
+    //if(topType == ''|| topUpShop == '' || topUpPeople == '' ) {
+    //    art.dialog({
+    //        time: 1,
+    //        lock: true,
+    //        cancel: false,
+    //        content: "充值类型、充值店仓、经办人不能为空"
+    //    });
+    //}else
+     if(topUpMoney == '' || topUpMoneyReality=='' ) {
+        //art.dialog({
+        //    time: 1,
+        //    lock: true,
+        //    cancel: false,
+        //    content: "折合吊牌金额、实付金额不能为空"
+        //});
+         $('#topUpMoneyReality').parent().find('.hint').css('display','block');
+         $('#topUpMoney').parent().find('.hint').css('display','block');
     }else{
         var param = {};
         param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
@@ -318,6 +326,7 @@ $('#toSave').click(function(){
         param["remark"] = topUpNote;//备注
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
+                $('#topUp').css('display','none');
                 art.dialog({
                     time: 1,
                     lock: true,
@@ -368,7 +377,15 @@ function toSave(){
         param["remark"] = $('#refundNote').val();//备注
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
-                console.log('保存成功！');
+                $('#refund').css('display','none');
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "保存成功"
+                });
+                return ;
+
             } else if (data.code == "-1") {
                 alert(data.message);
             }
