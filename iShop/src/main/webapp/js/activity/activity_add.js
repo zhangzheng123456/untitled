@@ -565,6 +565,13 @@ jQuery(document).ready(function () {
     } else {
         getcorplist();
     }
+    $("#side_bar .gotop").click(function () {
+        $('html,body').animate({'scrollTop': 0}, 500);
+    });
+    $("#side_bar .gobottom").click(function () {
+        var btm = $('html,body').height();
+        $('html,body').animate({'scrollTop': btm}, 500);
+    });
     $(".areaadd_oper_btn ul li:nth-of-type(2)").click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/area/area.html");
     });
@@ -2113,7 +2120,7 @@ $("#filtrate").click(function () {
     $("#p").css("height",arr[3]);
     var left=(arr[0]-$("#screen_wrapper").width())/2;
     var tp=(arr[3]-$("#screen_wrapper").height())/2+63;
-    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_wrapper").show();
     $("#p").show();
 });
