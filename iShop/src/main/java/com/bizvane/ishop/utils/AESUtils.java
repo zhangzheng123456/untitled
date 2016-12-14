@@ -10,8 +10,12 @@ import java.security.MessageDigest;
 import java.util.*;
 
 public class AESUtils {
-    static String secret_key = "aaaaaaaaaabbbbbbaaaaaaaaaabbbbbb";
+    static String secret_key = "478bfa82223f31bb46ccfdca1ce22d5f";
 
+
+    /**
+     * 转为二进制
+     */
     private static byte[] asBin(String src) {
         if (src.length() < 1)
             return null;
@@ -24,6 +28,9 @@ public class AESUtils {
         return encrypted;
     }
 
+    /**
+     * 转为十六进制
+     */
     private static String asHex(byte buf[]) {
         StringBuffer strbuf = new StringBuffer(buf.length * 2);
         int i;
@@ -32,7 +39,6 @@ public class AESUtils {
                 strbuf.append("0");
             strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
         }
-        System.out.println(strbuf.toString());
         return strbuf.toString();
     }
 

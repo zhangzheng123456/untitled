@@ -8,6 +8,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.AESUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -538,14 +538,15 @@ public class WebController {
         String data = "";
         JSONObject return_msg = new JSONObject();
         try {
-            String timestamp= request.getParameter("timestamp");
+//            String timestamp= request.getParameter("timestamp");
             String sign= request.getParameter("sign");
             String account= request.getParameter("account");
             String password= request.getParameter("password");
 
-            if (timestamp == null || timestamp.equals("")){
-                msg = "request param [timestamp]";
-            }else if (sign == null || sign.equals("")) {
+//            if (timestamp == null || timestamp.equals("")){
+//                msg = "request param [timestamp]";
+//            }else
+            if (sign == null || sign.equals("")) {
                 msg = "request param [sign]";
             }else if (account == null || account.equals("")) {
                 msg = "request param [account]";
@@ -578,30 +579,24 @@ public class WebController {
 //                String sign = reply_obj.get("sign").toString();
 //                String timestamp = reply_obj.get("timestamp").toString();
 //                String data_message = reply_obj.get("data").toString();
+                password = AESUtils.Decryptor(password);
+                String timestamp = password.split("&&")[0];
+                password = password.split("&&")[1];
+
                 long epoch = Long.valueOf(timestamp);
                 logger.debug(" range test:" + System.currentTimeMillis());
 
-//                if (!access_key.equals(ACCESS_KEY)){
-//                    msg = "param [access_key] Invalid";
-//                }else
                 if (!sign.equals(SIGN)){
                     msg = "param [sign] Invalid";
                 }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
                     msg = "param [timestamp] is time_out";
                 }else {
-//                    JSONObject jsonObject = JSONObject.parseObject(data_message);
-//                    String corp_code = jsonObject.get("corp_code").toString();
-//                    String user_code = jsonObject.get("user_code").toString();
-//                    String password = jsonObject.get("password").toString();
-//                    String phone = jsonObject.get("account").toString();
-
                     org.json.JSONObject user_info = userService.login(request, account, password);
 
 //                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code,password);
                     if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
                         msg = user_info.getString("error");
                     } else {
-//                        response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
                         status = "success";
                         msg = "请求成功";
                         JSONObject result = new JSONObject();
