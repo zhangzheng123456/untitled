@@ -598,30 +598,76 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-
+            int page_num = Integer.parseInt(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject.get("pageSize").toString());
             String vip_group_id = jsonObject.get("vip_group_id").toString();
+
             String vip_ids = "";
             VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(vip_group_id));
-//            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            String corp_code = vipGroup.getCorp_code();
             if (vipGroup != null && vipGroup.getVip_ids() != null && !vipGroup.getVip_ids().equals("")){
                 vip_ids = vipGroup.getVip_ids();
                 vip_ids = vip_ids.replace(Common.SPECIAL_HEAD,"");
             }
-            //获取会员列表
-            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
-//            logger.info("-------vip列表" + dataBox.data.get("message").value);
-            String result = dataBox.data.get("message").value;
+            JSONObject return_value = new JSONObject();
+            JSONArray vips_array = new JSONArray();
+            if (jsonObject.containsKey("searchGroupVip")){
+                if (!vip_ids.equals("")){
+                    int pages = 0;
+                    String[] vips = vip_ids.split(",");
+                    int vip_size = vip_ids.split(",").length;
+                    String vip_ids1 = "";
+                    if (vip_size >= page_num * page_size) {
+                        for (int i = (page_num - 1) * page_size; i < page_num * page_size; i++) {
+                            vip_ids1 += vips[i] + ",";
+                        }
+                    } else {
+                        vip_ids1 = vip_ids;
+                    }
+                    if (vip_size % page_size == 0) {
+                        pages = vip_size / page_size;
+                    } else {
+                        pages = vip_size / page_size + 1;
+                    }
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_vip_id = new Data("vip_ids", vip_ids1, ValueType.PARAM);
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_vip_id.key, data_vip_id);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo",datalist);
+                    String result = dataBox.data.get("message").value;
+                    JSONObject msg_obj = JSONObject.parseObject(result);
+                    vips_array = msg_obj.getJSONArray("vip_info");
+                    return_value.put("pageNum",page_num);
+                    return_value.put("pageSize",page_size);
+                    return_value.put("count",vip_size);
+                    return_value.put("pages",pages);
+                    return_value.put("all_vip_list",vips_array);
+                }else {
+                    return_value.put("pageNum",page_num);
+                    return_value.put("pageSize",page_size);
+                    return_value.put("count",0);
+                    return_value.put("pages",0);
+                    return_value.put("all_vip_list",vips_array);
+                }
+            }else {
+                //获取会员列表
+                Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+    //          logger.info("-------vip列表" + dataBox.data.get("message").value);
+                String result = dataBox.data.get("message").value;
 
-            JSONObject obj = JSON.parseObject(result);
-            String vipLists = obj.get("all_vip_list").toString();
-            JSONArray array = JSONArray.parseArray(vipLists);
-            //获取会员的分组标识
-            JSONArray new_array = vipGroupService.checkVipsGroup(array,vip_ids);
-            obj.put("all_vip_list",new_array);
+                return_value = JSON.parseObject(result);
+                String vipLists = return_value.get("all_vip_list").toString();
+                JSONArray array = JSONArray.parseArray(vipLists);
+                //获取会员的分组标识
+                vips_array = vipGroupService.checkVipsGroup(array,vip_ids);
+                return_value.put("all_vip_list",vips_array);
+            }
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(obj.toString());
+            dataBean.setMessage(return_value.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
