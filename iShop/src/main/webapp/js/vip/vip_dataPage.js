@@ -29,8 +29,8 @@ $('#toRecord').click(function(){
 });
 //返回充值弹窗
 $('#toReturn').click(function () {
-    $('#topUp').css('display','block');
     $('#record').css('display','none');
+    $('#topUp').css('display','block');
 });
 // 关闭
 $('#screen_close_shop').click(function () {
@@ -41,9 +41,15 @@ $('#refundClose').click(function () {
     $('#refund').css('display','none');
     $('.warp').css('display','none');
 });
+$('#record .screen_close').click(function () {
+    $('#record').css('display','none');
+    $('#topUp').css('display','block');
+    $('.warp').css('display','block');
+});
 $('.warp').click(function () {
     $('#topUp').css('display','none');
     $('#refund').css('display','none');
+    $('.warp').css('display','none');
 });
 //单据编号
 var mydate = new Date();
@@ -318,12 +324,13 @@ $('#toSave').click(function(){
     //    });
     //}else
      if(topUpMoney == '' || topUpMoneyReality=='' ) {
-        //art.dialog({
-        //    time: 1,
-        //    lock: true,
-        //    cancel: false,
-        //    content: "折合吊牌金额、实付金额不能为空"
-        //});
+         $(".topUp_main").scrollTop($(".topUp_main")[0].scrollHeight);
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "折合吊牌金额、实付金额不能为空"
+        });
          $('#topUpMoneyReality').parent().find('.hint').css('display','block');
          $('#topUpMoney').parent().find('.hint').css('display','block');
     }else{
@@ -470,10 +477,51 @@ function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
+
+//充值记录数据加载
+function getRecord(){
+    for(i=0;i<10;i++){
+        var record_num = '010101001'
+        var record_type = 'Y'
+        var record_money = '100'
+        var record_balance = '100'
+        recordVal(record_num,record_type,record_money,record_balance)
+    }
+}
+function  recordVal(record_num,record_type,record_money,record_balance){
+    var tempHTML = '<li onclick="showDetail()"><span class="record_num">${record_num}</span><span class="record_type">${record_type}</span><span class="record_money">${record_money}</span><span class="record_balance">${record_balance}</span></li>';
+    var html = '';
+    var nowHTML1 = tempHTML;
+    nowHTML1 = nowHTML1.replace("${record_num}", record_num);
+    nowHTML1 = nowHTML1.replace("${record_type}", record_type);
+    nowHTML1 = nowHTML1.replace("${record_money}", record_money);
+    nowHTML1 = nowHTML1.replace("${record_balance}", record_balance);
+    html += nowHTML1;
+    $("#record_body").append(html);
+}
+//点击查看详细
+function showDetail(){
+    art.dialog({
+        time: 1,
+        lock: true,
+        cancel: false,
+        content: "还没有详细=￣ω￣="
+    });
+}
+//加载更多
+$('#toAddMore').click(function () {
+    art.dialog({
+        time: 1,
+        lock: true,
+        cancel: false,
+        content: "加载更多...=￣ω￣="
+    });
+})
 //遮罩层
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop();    //充值弹窗充值店仓列表
     topUpPeople();  //充值弹窗经办人列表
+    getRecord()  //充值记录数据加载
 
 }

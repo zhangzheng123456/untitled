@@ -8,6 +8,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -98,7 +99,7 @@ public class VIPRecordController {
             } else {
 
                 JSONArray array = JSONArray.parseArray(screen);
-                BasicDBObject queryCondition = MongoUtils.andOperation(array);
+                BasicDBObject queryCondition = MongoHelperServiceImpl.andUserOperScreen(array);
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
 
                 // 读取数据
@@ -307,7 +308,7 @@ public class VIPRecordController {
             String lists = jsonObject.get("list").toString();
 
             JSONArray array = JSONArray.parseArray(lists);
-            BasicDBObject queryCondition = MongoUtils.andOperation(array);
+            BasicDBObject queryCondition = MongoHelperServiceImpl.andUserOperScreen(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
