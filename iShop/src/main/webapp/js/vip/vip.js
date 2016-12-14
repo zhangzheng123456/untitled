@@ -225,7 +225,7 @@ function superaddition(data,num){//页面加载循环
         if(data[i].open_id){
             TD+="<td><span class='icon-ishop_6-22'style='color:#8ec750'></span></td>";
         }else{
-            TD+="<td><span class='icon-ishop_6-22'style='#cdcdcd'></span></td>";
+            TD+="<td><span class='icon-ishop_6-22'style='color:#cdcdcd'></span></td>";
         }
         $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
