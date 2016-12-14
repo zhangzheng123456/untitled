@@ -23,6 +23,11 @@ var getNewVip={
             whir.loading.remove();//移除加载框
         });
         $('#get_more_save').click(function () {
+            if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}
+            if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
+            if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
+            if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
+            if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
             this.postParma();
         }.bind(this));
         var me=this;
@@ -75,8 +80,10 @@ var getNewVip={
       var corp_command="/shop/findStore";
       oc.postRequire("get", corp_command,"", "", function(data){
         if(data.code=="0"){
+            console.log(data);
             var msg=JSON.parse(data.message);
             msg=JSON.parse(msg.list);
+            console.log(msg);
             var corp_html='';
             for( var i=0;i<msg.length;i++){
                 corp_html+='<option value="'+msg[i].store_code+'-'+msg[i].corp_code+'">'+msg[i].store_name+'</option>';
@@ -175,7 +182,7 @@ var getNewVip={
     postParma:function () {
         //获取参数
         var param={};
-        param.corp_code=sessionStorage.getItem('corp_code');
+        param.corp_code='C10000';
         param.phone=$('#content').find('.phone').val();
         param.card_no=$('#content').find('.cardNo').val();
         param.vip_name=$('#content').find('.vipName').val();
@@ -208,7 +215,7 @@ var getNewVip={
     },
     testBlur:function () {
         var param={};
-        param.corp_code=sessionStorage.getItem('corp_code');
+        param.corp_code='C10000';
         param.type='billNo';
         param.billNo=$('#content').find('.billNo').val();
         oc.postRequire("post","/vip/checkBillNo","", param, function(data) {
@@ -227,16 +234,25 @@ var getNewVip={
         })
     },
     testInput:function (node) {
-        console.log($(node).val())
         //不为空验证
         var html='';
         if($(node).val().trim()==''){
-            html=$(node).parent().prev().html();
+            html=$(node).parent().prev().html().slice(0,-1);
+            var HTML='<li class="hint_li"><div class="content_hint"style="display: block"><span class="hint">'+html+'不能为空</span></div></li>';
+            var nd=$(node).parent().parent().next()[0];
+            console.log(nd.className);
+            if(!nd.className){
+                $(node).parent().parent().after(HTML);
+            }
+        }else{
+            $(node).parent().parent().next('.hint_li').remove();
         }
-        console.log(html);
-        var HTML='<li><div class="content_hint"><span class="hint">'+html+'不能为空</span></div></li>'
+
 
     }
+}
+function checkStart(data) {
+    getNewVip.testInput($('#content .birthday')[0]);
 }
 $(document).ready(function () {
     getNewVip.init();
