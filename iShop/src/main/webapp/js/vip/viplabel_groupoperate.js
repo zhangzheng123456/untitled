@@ -322,7 +322,7 @@ function getcorplist(a){
                 $("input[verify='Code']").attr("data-mark","");
                 $("#STORE_NAME").attr("data-mark","");
             })
-            getstafflist(userNum);
+            //getstafflist(userNum);
         }else if(data.code=="-1"){
             art.dialog({
                 time: 1,

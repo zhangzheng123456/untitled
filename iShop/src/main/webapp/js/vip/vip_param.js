@@ -261,7 +261,7 @@ function jurisdiction(actions){
     $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
-            $('#jurisdiction').append("<li id='add'><a href='javascript:voi(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
         }else if(actions[i].act_name=="delete"){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
