@@ -343,38 +343,47 @@ $('#toSave').click(function(){
 })
 //退款保存
 function toSave(){
-    if(refunTypeInput!='' && $('#refunTopUpFrom').val() != ''&& $('#refunShop').val() != ''){
-        var param = {};
-        var refunTypeInput = $('#refunTypeInput').val();
-        param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
-        param["vip_id"] = sessionStorage.getItem("id");//会员编号
-        param["card_no"] = $('#vip_card_no').text();//会员卡号
-        param["type"] = 'refund';
-        param["billNo"] = $('#refundNum').val();//单据编号
-        param["refund_type"] = refunTypeInput;//退款类型
-        param["remark"] = $('#refundNote').val();//备注
-        //if(refunTypeInput ==''){
-        //$('#refunTypeInput').parent().find('.hint').css('display','block')
-        //}
-        if(refunTypeInput == '按照充值单退款'){
-            //$('#refunTypeInput').parent().find('.hint').css('display','none');
-            //if($('#refunTopUpFrom').val() == ''){
-            //$('#refunTopUpFrom').parent().find('.hint').css('display','block')
-            //}else{
-            //$('#refunTopUpFrom').parent().find('.hint').css('display','none')
-            param["sourceNo"] = $('#refunTopUpFrom').val();//来源单号
-            //}
-        }else if(refunTypeInput == '余额退款'){
-            //$('#refunTypeInput').parent().find('.hint').css('display','none')
-            param["sourceNo"] = $('#refunBalanceFrom').val();//来源单号 m
+    var refunTypeInput = $('#refunTypeInput').val();
+    console.log(refunTypeInput);
+    var param = {};
+    param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+    param["vip_id"] = sessionStorage.getItem("id");//会员编号
+    param["card_no"] = $('#vip_card_no').text();//会员卡号
+    param["type"] = 'refund';
+    param["billNo"] = $('#refundNum').val();//单据编号
+    param["refund_type"] = refunTypeInput;//退款类型
+    param["remark"] = $('#refundNote').val();//备注
+    param["store_code"] = $('#refunShop').val();//退款店铺
+    param["remark"] = $('#refundNote').val();//备注
+    if(refunTypeInput == '按充值单退款'){
+        param["sourceNo"] = $('#refunTopUpFrom').val();//来源单号
+        if(refunTypeInput!='' && $('#refunTopUpFrom').val() != ''&& $('#refunShop').val() != ''){
+            oc.postRequire("post", " /vip/recharge", "", param, function (data) {
+                if (data.code == "0") {
+                    $('#refund').css('display','none');
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "保存成功"
+                    });
+                    return ;
+                } else if (data.code == "-1") {
+                    alert(data.message);
+                }
+            });
+        }else{
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "请输入来源单号"
+            });
+            return ;
         }
-        //if($('#refunShop').val() == ''){
-        //$('#refunShop').parent().find('.hint').css('display','block')
-        //}else {
-        //$('#refunShop').parent().find('.hint').css('display','none')
-        param["store_code"] = $('#refunShop').val();//退款店铺
-        //}
-        param["remark"] = $('#refundNote').val();//备注
+    }
+    if(refunTypeInput == '余额退款'){
+        param["sourceNo"] = $('#refunBalanceFrom').val();//来源单号
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
                 $('#refund').css('display','none');
@@ -385,21 +394,11 @@ function toSave(){
                     content: "保存成功"
                 });
                 return ;
-
             } else if (data.code == "-1") {
                 alert(data.message);
             }
         });
-    }else{
-        art.dialog({
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "红色为必填项"
-        });
-        return ;
     }
-
 }
 //取消
 $('#toFalse').click(function(){
@@ -450,8 +449,6 @@ function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
-
-
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop();    //充值弹窗充值店仓列表
