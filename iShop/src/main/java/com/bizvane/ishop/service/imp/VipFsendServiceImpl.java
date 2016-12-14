@@ -67,7 +67,7 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @throws Exception
      */
     @Override
-    public String getVipFsendById(int id, String send_type, String content) throws Exception {
+    public String getVipFsendById(int id, String send_type) throws Exception {
 
         String message = "";
         String vip_id = "";
@@ -205,7 +205,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     Map<String, Object> list_fail = new HashedMap();
                     list_fail.put("vip_id", vip);
                     list_fail.put("vip_name", name);
-                    list_fail.put("is_read", "发送失败");
+                    list_fail.put("is_send", "发送失败");
                     list.add(list_fail);
                     JSONObject vips_info = new JSONObject();
                     vips_info.put("vip_info", list);
@@ -251,12 +251,11 @@ public class VipFsendServiceImpl implements VipFsendService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
         VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
-        // String sms_vips = vipFsend.getSms_vips();
         String sms_vips = jsonObject.get("sms_vips").toString().trim();
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String openids = "ogUZEuD2Ju904CQvb2DBwRXOPpNk,ogUZEuA3jm6M3TxrZQOGAjLGpWpA,";
+        String openids = "";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
