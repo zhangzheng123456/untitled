@@ -1128,6 +1128,7 @@ function superaddition(data,num){//页面加载循环
         pageNumber=num;
     }
     for (var i = 0; i < data.length; i++) {
+		var wx='';
         //判断是否有会员头像
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
@@ -1143,10 +1144,17 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
+		if(data[i].open_id){
+			wx="<span class='icon-ishop_6-22'style='color:#8ec750'></span>";
+		}else{
+			wx="<span class='icon-ishop_6-22'style='color:#cdcdcd'></span>";
+		}
         $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].vip_id+"'><td style='text-align:left;padding-left:22px;'>"
         + a
         + "</td><td>"
         + data[i].vip_name
+			+ "</td><td>"
+			+ wx
         + "</td><td>"
         + data[i].sex
         +"</td><td>"

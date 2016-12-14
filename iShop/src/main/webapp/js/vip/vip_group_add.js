@@ -605,6 +605,7 @@ $('#screen_wrapper_close').on('click', function () {
 });
 //请求页面数据
 function GET(a, b, c) {
+    console.log(arguments[3])
     whir.loading.add("", 0.5);//加载等待框
     var user_code =$("#PARAM_NAME").attr("data-code");
     var vip_group_code = $("#vip_num").val();
@@ -612,6 +613,7 @@ function GET(a, b, c) {
         user_code = "";
     }
     var param = {};
+    arguments[3]=='search'&&(param['searchGroupVip']='');
     param["pageNumber"] = a;
     param["pageSize"] = b;
     param["corp_code"] = corp_code;
@@ -1758,10 +1760,8 @@ $('.r_filrate').hover(function () {
 });
 //点击搜索按钮
 $('.r_filrate').click(function () {
-    param={};
-    inx=1;
-    var searchAreaCode='';
     //清空搜索内容
+    var str='';
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
         input[i].value="";
@@ -1769,19 +1769,14 @@ $('.r_filrate').click(function () {
     }
     $(".sxk").slideUp();
     $("#search").val('');
-    if($(this).next().text().trim()=='显示当前区域店铺'){
-        $(this).next().html('显示全部店铺');
+    if($(this).next().text().trim()=='显示当前分组会员'){
+        $(this).next().html('显示全部会员');
         $(this).attr('style','color:#50a3aa');
-        value ='';
-        searchAreaCode=$('#area_code').val();
+        str='search';
     }else{
-        $(this).next().html('显示当前区域店铺');
+        $(this).next().html('显示当前分组会员');
         $(this).attr('style','color:#fff');
-        value ='';
+        str=''
     }
-    param['searchAreaCode']=searchAreaCode;
-    param["searchValue"] = value;
-    param["pageNumber"] = inx;
-    param["pageSize"] = pageSize;
-    POST(inx,pageSize);
+    GET(1,10,group_code,str);
 });

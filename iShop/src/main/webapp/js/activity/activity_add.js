@@ -812,7 +812,9 @@ function superaddition(data, num) {
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:50%;font-size: 15px;color:#999'>暂无内容</span>");
     }
     var judge = '';
+    var tr_node=''
     for (var i = 0; i < data.length; i++) {
+        var wx='';
         if ( data[i].is_this_group == "Y") {
             judge = 'checked'
         } else {
@@ -825,11 +827,18 @@ function superaddition(data, num) {
         }
         var gender = data[i].sex == 'F' ? '女' : '男';
         var tr_vip_id = data[i].vip_id;
-        var tr_node = "<tr data-storeid='" + data[i].store_id + "' data-user='" + data[i].user_code + "' id='" + data[i].corp_code + "'>"
+        if(data[i].open_id){
+            wx="<span class='icon-ishop_6-22'style='color:#8ec750'></span>";
+        }else{
+            wx="<span class='icon-ishop_6-22'style='color:#cdcdcd'></span>";
+        }
+         tr_node += "<tr data-storeid='" + data[i].store_id + "' data-user='" + data[i].user_code + "' id='" + data[i].corp_code + "'>"
             + "</td><td style='text-align:left;padding-left:22px'>"
             + a
             + "</td><td data_vip_id='" + tr_vip_id + "'>"
             + data[i].vip_name
+             + "</td><td>"
+             + wx
             + "</td><td>"
             + gender
             + "</td><td>"
@@ -852,8 +861,8 @@ function superaddition(data, num) {
             + i
             + 1
             + "'></label></div></td></tr>";
-        $(".table tbody").append(tr_node);
     }
+    $(".table tbody").append(tr_node);
     $("tbody tr").click(function () {
         var input = $(this).find("input")[0];
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
