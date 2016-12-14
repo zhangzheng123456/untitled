@@ -765,12 +765,12 @@ function POST(a,b){
 $("#X").click(function(){
     $("#p").hide();
     $("#tk").hide();
-})
+});
 //取消关闭
 $("#cancel").click(function(){
     $("#p").hide();
     $("#tk").hide();
-})
+});
 //弹框删除关闭
 $("#delete").click(function(){
     $("#p").hide();
@@ -811,7 +811,7 @@ $("#delete").click(function(){
             $('.frame').html(data.message);
         }
     })
-})
+});
 //删除弹框
 function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
@@ -935,7 +935,7 @@ $("#more_down").on("click","#leading_out",function(){
             whir.loading.remove();//移除加载框
         }
     })
-})
+});
 //导出提交的
 $("#file_submit").click(function(){
     var li=$("#file_list_r input[type='checkbox']").parents("li");
@@ -2044,36 +2044,6 @@ function filtrates(a,b){
         }
     })
 }
-//获取分组
-function getGroup() {
-    var corp_command = "/vipGroup/getCorpGroups";
-    var _param = {};
-    _param["corp_code"] = "C10000";
-    _param["search_value"] = $("#search_filter_group").val();
-    oc.postRequire("post", corp_command, "0", _param, function (data) {
-        if (data.code == "0") {
-            var message = JSON.parse(data.message);
-            var list = JSON.parse(message.list);
-            var html = "";
-            $("#filter_group").attr("data-corp",list[0].corp_code);
-            $(".filter_group ul").empty();
-            if (list.length>0) {
-                for (var i = 0; i < list.length; i++) {
-                    html += '<li id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
-                }
-                $(".filter_group ul").append(html);
-            } else if (list.length <= 0) {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: data.message
-                });
-            }
-        }
-    })
-}
-
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();

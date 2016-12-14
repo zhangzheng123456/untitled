@@ -1377,13 +1377,13 @@ input::-webkit-input-placeholder{
     border-bottom: 1px solid #e8e8e8;
 }
 .screen_head i{
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     font-size: 16px;
     color: #999999;
     text-align: right;
     float: right;
-    line-height: 40px;
+    line-height: 30px;
     cursor: pointer;
 }
 .contion{
@@ -1702,4 +1702,118 @@ input::-webkit-input-placeholder{
 	background-color: #ededed;
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+.filter_condition {
+	width: 100%;
+	height: 60px;
+}
+.filter_condition ul li {
+	width: 16.6666%;
+	height: 50px;
+	line-height: 50px;
+	padding: 0 10px;
+	float: left;
+	cursor: pointer;
+	text-align: center;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box; /* Firefox */
+	-webkit-box-sizing: border-box; /* Safari */
+}
+.filter_condition ul a {
+	display: block;
+	color: #888888;
+}
+.filter_condition ul a:hover{
+	color: #6dc1c8;
+	border-top: 2px solid #6dc1c8;
+}
+.filter_condition .condition_active {
+	color: #6dc1c8;
+	border-top: 2px solid #6dc1c8;
+}
+.sex_select {
+	display: none;
+	position: relative;
+	z-index: 100;
+	width: 340px;
+	background: #f5f5f5;
+	margin-left: 93px;
+	border: 1px solid #ddd;
+}
+.sex_select li {
+	text-indent: 10px;
+	height: 30px;
+	line-height: 30px;
+}
+.sex_select li:hover {
+	color: #FFFFFF;
+	background: #4a5f7c;
+}
+.age_l{
+	display: none;
+	height: 100px;
+	overflow-y: scroll;
+	position: absolute;
+	top:30px;
+	left: 93px;
+	z-index: 100;
+	width: 150px;
+	text-indent: 10px;
+	background: #f5f5f5;
+	border: 1px solid #ddd;
+}
+.age_r{
+	display: none;
+	height: 100px;
+	overflow-y: scroll;
+	position: absolute;
+	top:30px;
+	right: 5px;
+	z-index: 100;
+	text-indent: 10px;
+	width: 150px;
+	background: #f5f5f5;
+	border: 1px solid #ddd;
+}
+.age_r li:hover,.age_l li:hover{
+	background: #6dc1c8;
+	color: #FFFFFF;
+}
+.filter_group{
+	display: none;
+	position: absolute;
+	top:30px;
+	left: 93px;
+	width: 340px;
+	background:#f5f5f5;
+	border: 1px solid #ddd;
+}
+.filter_group input{
+	width: 94%;
+	height: 30px;
+	color: #888888;
+	padding-left: 10px;
+	border-radius: 5px;
+	border: 1px solid #EAE2E2;
+	margin: 3px 3px;
+	outline: none;
+}
+.filter_group ul li{
+	cursor: pointer;
+	text-indent: 10px;
+	height: 30px;
+	line-height: 30px;
+}
+.filter_group ul {
+	width: 100%;
+	height: 120px;
+	overflow-y: scroll;
+}
+.filter_group ul li:hover{
+	background: #6dc1c8;
+	color: #FFFFFF;
+}
+.filter_group .group_active{
+	background: #4a5f7c;
+	color: #FFFFFF;
 }
