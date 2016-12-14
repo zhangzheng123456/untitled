@@ -119,7 +119,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                 message = dataBox.data.get("message").value;
             }
-        } else if (send_type.equals("template")) {
+        } else if (send_type.equals("wxmass")) {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
 
             if (type.equals("1")) {
@@ -366,7 +366,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 }
                 status = Common.DATABEAN_CODE_SUCCESS;
                 return status;
-            } else if (send_type.equals("template")) {
+            } else if (send_type.equals("wxmass")) {
                 //发送类型：微信群发消息
                 JSONObject template_content = new JSONObject();
                 template_content.put("content", content);//微信群发内容
@@ -455,8 +455,8 @@ public class VipFsendServiceImpl implements VipFsendService {
             result = "";
         } else if (send_type.equals("sms")) {
             result = "短信";
-        } else if (send_type.equals("template")) {
-            result = "微信模板";
+        } else if (send_type.equals("wxmass")) {
+            result = "微信群发消息";
         } else {
             result = "";
         }
@@ -513,59 +513,23 @@ public class VipFsendServiceImpl implements VipFsendService {
 
     }
     /**
-     * 微信发送模板
+     * 微信发送普通消息
      *
      * @param extras
      * @return
      * @throws Exception
      */
-//    public static String sendTemplate(JSONObject extras) throws Exception {
-//
-//        RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
-//        Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();
-//        Response response = httpClient.post(request);
-//        String result = response.body().string();
-//        return result;
-//    }
+    public static String sendWxMessage(JSONObject extras) throws Exception {
+
+        RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
+        Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();
+        Response response = httpClient.post(request);
+        String result = response.body().string();
+        return result;
+    }
 
 
 
-    /**
-     * 更新已读状态
-     *
-     * @param message_id
-     * @return
-     * @throws Exception
-     */
-//    public JSONObject updateReadInfo(String message_id) throws Exception {
-//        JSONObject message = new JSONObject();
-//        //if (client == null) client = SpringUtil.getBean("mongodbClient");
-//        //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
-//        Map query_key = new HashMap();
-//        query_key.put("_id", message_id);
-//        List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-//        if (message_list.size() > 0) {
-//            message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
-//            Map old = message_list.get(0);
-//            Object _id = old.get("_id");
-//            Map map_new = new HashMap();
-//            map_new.put("_id", _id);
-//            map_new.put("message_target", old.get("message_target"));
-//            map_new.put("corp_code", old.get("corp_code"));
-//            map_new.put("open_id", old.get("open_id"));
-//            map_new.put("vip_id", old.get("vip_id"));
-//            map_new.put("message_type", old.get("message_type"));
-//            map_new.put("message_content", old.get("message_content"));
-//            map_new.put("user_code", old.get("user_code"));
-//            map_new.put("message_date", old.get("message_date"));
-//            map_new.put("auth_appid", old.get("auth_appid"));
-//            map_new.put("template", old.get("template"));
-//            map_new.put("is_read", "Y");
-//            // map_new.put("is_send", old.get("is_send"));
-//            mongodbClient.update("vip_message_content", map_new, old);
-//        }
-//        return message;
-//    }
 
 
 }
