@@ -67,19 +67,19 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @throws Exception
      */
     @Override
-    public String getVipFsendById(int id, String send_type, String content) throws Exception {
-        // if (mongodbClient == null) mongodbClient = SpringUtil.getBean("mongodbClient");
-        //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
+    public String getVipFsendById(int id, String send_type) throws Exception {
+
         String message = "";
         String vip_id = "";
         String vip_name = "";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
+        String sms_code=vipFsend.getSms_code();
         String corp_code = vipFsend.getCorp_code();
         String sms_vips = vipFsend.getSms_vips();
-        //    logger.info("json--sms_vips-----------------------" + sms_vips);
+
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
         String type = vips_obj.get("type").toString().trim();
-        //    logger.info("json--send_type-----------------------" + send_type);
+
         if (send_type.equals("sms")) {
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -119,16 +119,8 @@ public class VipFsendServiceImpl implements VipFsendService {
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                 message = dataBox.data.get("message").value;
             }
-        } else if (send_type.equals("template")) {
-            //如果发送类型是微信模板消息，根据筛选会员方式获取vip_id
-
-            //字符串去换行符
-            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-            Matcher m = p.matcher(content);
-            String m1 = m.replaceAll("");
-            JSONObject contents = JSONObject.parseObject(m1);
-            String message_id = contents.get("message_id").toString().trim();
-            //    logger.info("json--message_id-----------------------" + message_id);
+        } else if (send_type.equals("wxmass")) {
+            //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
 
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
@@ -191,12 +183,11 @@ public class VipFsendServiceImpl implements VipFsendService {
                     vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 }
             }
-
+             String  mass=corp_code+System.currentTimeMillis();
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             String vipname[] = vip_name.split(",");
-//            logger.info("json--vipid-----------------------" + vip_id);
-//            logger.info("json--vipname-----------------------" + vip_name);
+
             List<Map<String, Object>> list = new ArrayList();
             String vip = "";
             String name = "";
@@ -206,15 +197,15 @@ public class VipFsendServiceImpl implements VipFsendService {
                     name = vipname[i];
                 }
                 Map query_key = new HashMap();
-                query_key.put("template", "fsend");
-                query_key.put("_id", message_id);
+                query_key.put("wxMass", "wxMass");
+                query_key.put("mass", sms_code);
                 query_key.put("vip_id", vip);
                 List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
                 if (message_list.size() == 0) {
                     Map<String, Object> list_fail = new HashedMap();
                     list_fail.put("vip_id", vip);
                     list_fail.put("vip_name", name);
-                    list_fail.put("is_read", "发送失败");
+                    list_fail.put("is_send", "发送失败");
                     list.add(list_fail);
                     JSONObject vips_info = new JSONObject();
                     vips_info.put("vip_info", list);
@@ -251,6 +242,7 @@ public class VipFsendServiceImpl implements VipFsendService {
 
     @Override
     public String insert(String message, String user_id) throws Exception {
+
         String status = Common.DATABEAN_CODE_SUCCESS;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
@@ -259,7 +251,6 @@ public class VipFsendServiceImpl implements VipFsendService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
         VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
-        // String sms_vips = vipFsend.getSms_vips();
         String sms_vips = jsonObject.get("sms_vips").toString().trim();
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
@@ -375,17 +366,15 @@ public class VipFsendServiceImpl implements VipFsendService {
                 }
                 status = Common.DATABEAN_CODE_SUCCESS;
                 return status;
-            } else if (send_type.equals("template")) {
-                //发送类型：微信模板消息
-                JSONObject template_content = JSONObject.parseObject(content);
-                template_content.put("openid", openids);
+            } else if (send_type.equals("wxmass")) {
+                //发送类型：微信群发消息
+                JSONObject template_content = new JSONObject();
+                template_content.put("content", content);//微信群发内容
+                template_content.put("app_user_name", "gh_a707333490f3"); //app_user_name
+                template_content.put("openid", openids);//所选择会员的openid
                 String auth_appid = template_content.get("app_user_name").toString().trim();
-                String message_id = template_content.get("message_id").toString().trim();
-                JSONObject test = new JSONObject();
-                //测试，默认模板已发送成功
-                // test.put("errcode", "0");
-                // String result = test.toString();
-                String result = sendTemplate(template_content);
+                //调用微信群发消息接口
+                String result = sendWxMass(template_content);
                 JSONObject info = JSONObject.parseObject(result);
                 String openid[] = openids.split(",");
                 String vipid[] = vip_id.split(",");
@@ -394,7 +383,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 String id="";
                 String name="";
 
-               //模板消息发送成功之后存入mongoDB,并更新已读未读状态
+               //群发消息发送成功之后存入mongoDB
                 if ("0".equals(info.getString("errcode"))) {
                     for (int i = 0; i < openid.length; i++) {
                         open_id = openid[i];
@@ -404,16 +393,12 @@ public class VipFsendServiceImpl implements VipFsendService {
                                 name = vipname[i];
                             }
                         }
-                         insertMongoDB(corp_code, open_id, id, auth_appid, name);
-                    }
-                    updateReadInfo(message_id);
 
-                    return status;
-                } else if (info.getString("errcode").equals("40003")) {
-                    status = "invalid";
+                         insertMongoDB(open_id,corp_code, id, auth_appid, name,content,sms_code);
+                    }
                     return status;
                 } else {
-                    status = "发送失败";
+                    status = info.get("errmsg").toString();
                     return status;
                 }
             } else {
@@ -461,18 +446,33 @@ public class VipFsendServiceImpl implements VipFsendService {
         return vipFsendMapper.selectForId(corp_code, sms_code);
     }
 
+    /**
+     * 发送类型转换
+     */
+    public String change_sendType(String send_type) {
+        String result = "";
+        if (send_type == null) {
+            result = "";
+        } else if (send_type.equals("sms")) {
+            result = "短信";
+        } else if (send_type.equals("wxmass")) {
+            result = "微信群发消息";
+        } else {
+            result = "";
+        }
+        return result;
+    }
 
     /**
-     * 微信发送模板
-     *
+     * 微信群发消息
      * @param extras
      * @return
      * @throws Exception
      */
-    public static String sendTemplate(JSONObject extras) throws Exception {
+    public static String sendWxMass(JSONObject extras) throws Exception {
 
         RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
-        Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();
+        Request request = new Request.Builder().url(Common.SENDWXMASS_URL).post(body).build();
         Response response = httpClient.post(request);
         String result = response.body().string();
         return result;
@@ -480,15 +480,15 @@ public class VipFsendServiceImpl implements VipFsendService {
 
     /**
      * 插入mongoDB
-     *
-     * @param corp_code
      * @param openid
+     * @param corp_code
      * @param vip_id
      * @param app_user_name
      * @param vip_name
+     * @param content
      * @throws Exception
      */
-    public void insertMongoDB(String corp_code, String openid, String vip_id, String app_user_name, String vip_name) throws Exception {
+    public void insertMongoDB(String openid, String corp_code,String vip_id, String app_user_name, String vip_name,String content,String mass) throws Exception {
 
         Date now = new Date();
         String message_date = Common.DATETIME_FORMAT.format(now);
@@ -501,70 +501,35 @@ public class VipFsendServiceImpl implements VipFsendService {
         saveData.put("corp_code", corp_code);
         saveData.put("open_id", openid);
         saveData.put("vip_id", vip_id);
+        saveData.put("mass", mass);
         saveData.put("message_type", "text");
-        saveData.put("message_content", "");
-        saveData.put("user_code", "");
+        saveData.put("message_content", content);
         saveData.put("message_date", message_date);
-        saveData.put("auth_appid", "");
-        saveData.put("template", "fsend");
-        saveData.put("is_read", "N");
-        // saveData.put("is_send", "Y");
+        saveData.put("auth_appid", app_user_name);
+        saveData.put("wxMass", "wxMass");
+        saveData.put("is_send", "Y");
         saveData.put("vip_name", vip_name);
         collection.insert(saveData);
 
     }
-
     /**
-     * 更新已读状态
+     * 微信发送普通消息
      *
-     * @param message_id
+     * @param extras
      * @return
      * @throws Exception
      */
-    public JSONObject updateReadInfo(String message_id) throws Exception {
-        JSONObject message = new JSONObject();
-        //if (client == null) client = SpringUtil.getBean("mongodbClient");
-        //  MongoDBClient mongoDBClient = SpringUtil.getBean("mongodbClient");
-        Map query_key = new HashMap();
-        query_key.put("_id", message_id);
-        List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-        if (message_list.size() > 0) {
-            message = JSONObject.parseObject(JSONUtil.getJsonString(message_list.get(0)));
-            Map old = message_list.get(0);
-            Object _id = old.get("_id");
-            Map map_new = new HashMap();
-            map_new.put("_id", _id);
-            map_new.put("message_target", old.get("message_target"));
-            map_new.put("corp_code", old.get("corp_code"));
-            map_new.put("open_id", old.get("open_id"));
-            map_new.put("vip_id", old.get("vip_id"));
-            map_new.put("message_type", old.get("message_type"));
-            map_new.put("message_content", old.get("message_content"));
-            map_new.put("user_code", old.get("user_code"));
-            map_new.put("message_date", old.get("message_date"));
-            map_new.put("auth_appid", old.get("auth_appid"));
-            map_new.put("template", old.get("template"));
-            map_new.put("is_read", "Y");
-            // map_new.put("is_send", old.get("is_send"));
-            mongodbClient.update("vip_message_content", map_new, old);
-        }
-        return message;
-    }
+    public static String sendWxMessage(JSONObject extras) throws Exception {
 
-    /**
-     * 发送类型转换
-     */
-    public String change_sendType(String send_type) {
-        String result = "";
-        if (send_type == null) {
-            result = "";
-        } else if (send_type.equals("sms")) {
-            result = "短信";
-        } else if (send_type.equals("template")) {
-            result = "微信模板";
-        } else {
-            result = "";
-        }
+        RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
+        Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();
+        Response response = httpClient.post(request);
+        String result = response.body().string();
         return result;
     }
+
+
+
+
+
 }

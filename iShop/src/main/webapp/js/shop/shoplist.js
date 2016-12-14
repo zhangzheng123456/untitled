@@ -220,7 +220,7 @@ function superaddition(data,num){//页面加载循环
                     +"查看"
                     + "</a></td>"
                 }else{
-                    TD+="<td><span>"+data[i][code]+"</span></td>"
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>"
                 }
             })(c)
         }
