@@ -15,17 +15,17 @@ var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
-            if("block" == $("#liebiao").css("display")){  
-                hideLi();  
-            }else{  
-                showLi();  
-            }  
-        });                                     
-        $("#liebiao li").each(function(i,v){  
+            if("block" == $("#liebiao").css("display")){
+                hideLi();
+            }else{
+                showLi();
+            }
+        });
+        $("#liebiao li").each(function(i,v){
             $(this).click(function(){
-                pageSize=$(this).attr('id');  
+                pageSize=$(this).attr('id');
                 if(value==""&&filtrate==""){
                     inx=1;
                     param["pageNumber"]=inx;
@@ -36,21 +36,21 @@ $(function(){
                     inx=1;
                     param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
-                    POST(inx,pageSize); 
+                    POST(inx,pageSize);
                 }else if(filtrate!==""){
                     inx=1;
                     _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
-                    filtrates(inx,pageSize); 
+                    filtrates(inx,pageSize);
                 }
-                $("#page_row").val($(this).html());  
+                $("#page_row").val($(this).html());
                 hideLi();
-            });    
-        });      
-        $("#page_row").blur(function(){  
-            setTimeout(hideLi,200);  
-        });          
-    }); 
+            });
+        });
+        $("#page_row").blur(function(){
+            setTimeout(hideLi,200);
+        });
+    });
 function showLi() {
     $("#liebiao").show();
 }
@@ -225,7 +225,7 @@ function superaddition(data, num) {//页面加载循环
             send_type="短信";
         }
         if(data[i].send_type=="wxmass"){
-            send_type="微信模板";
+            send_type="微信群发消息";
         }
         for (var c=0;c<titleArray.length;c++){
             (function(j){
@@ -417,14 +417,14 @@ function jumpBianse() {
                             $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
                                 + a
                                 + "</td><td>"
-                                + list[i].NAME_VIP
+                                + list[i].vip_name
                                 + "</td><td>"
-                                + list[i].CARD_NO_VIP
+                                + list[i].cardno
                                 + "</td><td>"
-                                + list[i].MOBILE_VIP
+                                + list[i].vip_phone
                                 + "</td></tr>");
                         }
-                    }else if(send_type == "template"){
+                    }else if(send_type == "wxmass"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
                             "<th>会员名称</th>" +
@@ -436,11 +436,11 @@ function jumpBianse() {
                             $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
                                 + a
                                 + "</td><td>"
-                                + list[j].vip_name
-                                + "</td><td>"
                                 + list[j].vip_id
                                 + "</td><td>"
-                                + list[j].is_read
+                                + list[j].vip_name
+                                + "</td><td>"
+                                + list[j].is_send
                                 + "</td></tr>");
                         }
                     }
@@ -463,7 +463,7 @@ function jumpBianse() {
 //鼠标按下时触发的收索
 $("#search").keydown(function () {
     var event = window.event || arguments[0];
-    
+
     inx=1;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
@@ -540,7 +540,7 @@ $("#cancel").click(function () {
                 ID+=r+",";
             }else{
                  ID+=r;
-            }     
+            }
         }
         var params= {};
         params["id"] = ID;

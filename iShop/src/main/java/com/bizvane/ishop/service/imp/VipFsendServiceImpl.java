@@ -188,7 +188,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 }
             }
-             String  mass=corp_code+System.currentTimeMillis();
+
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             String vipname[] = vip_name.split(",");
@@ -200,29 +200,30 @@ public class VipFsendServiceImpl implements VipFsendService {
                 vip = vipid[i];
                 for (int j = 0; j < vipname.length; j++) {
                     name = vipname[i];
-                }
-                Map query_key = new HashMap();
-                query_key.put("wxMass", "wxMass");
-                query_key.put("mass", sms_code);
-                query_key.put("vip_id", vip);
-                List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-                if (message_list.size() == 0) {
-                    Map<String, Object> list_fail = new HashedMap();
-                    list_fail.put("vip_id", vip);
-                    list_fail.put("vip_name", name);
-                    list_fail.put("is_send", "发送失败");
-                    list.add(list_fail);
-                    JSONObject vips_info = new JSONObject();
-                    vips_info.put("vip_info", list);
-                    message = JSON.toJSONString(vips_info);
-                } else {
-                    list.addAll(message_list);
-                    JSONObject vips_info = new JSONObject();
-                    vips_info.put("vip_info", list);
-                    message = JSON.toJSONString(vips_info);
+
+                    Map query_key = new HashMap();
+                    query_key.put("wxMass", "wxMass");
+                    query_key.put("mass", sms_code);
+                    query_key.put("vip_id", vip);
+                    List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
+                    if (message_list.size() == 0) {
+                        Map<String, Object> list_fail = new HashedMap();
+                        list_fail.put("vip_id", vip);
+                        list_fail.put("vip_name", name);
+                        list_fail.put("is_send", "未发送");
+                        list.add(list_fail);
+                        JSONObject vips_info = new JSONObject();
+                        vips_info.put("vip_info", list);
+                        message = JSON.toJSONString(vips_info);
+                    } else {
+                        list.addAll(message_list);
+                        JSONObject vips_info = new JSONObject();
+                        vips_info.put("vip_info", list);
+                        message = JSON.toJSONString(vips_info);
+                    }
                 }
             }
-        } else {
+        }else {
             message = "发送类型不合法";
         }
         return message;
