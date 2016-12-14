@@ -242,6 +242,21 @@ jQuery(document).ready(function () {
     window.param.init();
     if ($(".pre_title label").text() == "编辑会员参数") {
         var id = sessionStorage.getItem("id");
+        var key_val = sessionStorage.getItem("key_val");//取页面的function_code
+        key_val = JSON.parse(key_val);
+        var funcCode = key_val.func_code;
+        whir.loading.add("", 0.5);
+        $.get("/detail?funcCode=" + funcCode + "", function (data) {
+            var data = JSON.parse(data);
+            if (data.code == "0") {
+                var message = JSON.parse(data.message);
+                var action = message.actions;
+                if (action.length <= 0) {
+                    $(".operedit_btn li:eq(0)").remove();
+                    $(".operedit_btn li:eq(1)").css("margin-left","120px");
+                }
+            }
+        });
         var _params = {"id": id};
         var _command = "/vipparam/selectById";
         oc.postRequire("post", _command, "", _params, function (data) {
@@ -300,6 +315,7 @@ jQuery(document).ready(function () {
                     content: data.message
                 });
             }
+            whir.loading.remove();//移除加载框
         });
     } else {
         getcorplist();

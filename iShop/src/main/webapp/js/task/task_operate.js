@@ -711,12 +711,7 @@ function editAssignment(a) {
     var id = $(a).attr("id");
     var corp_code = $(a).attr("data-code");
     //var task_code = $(a).find("td:eq(2) span").html();
-    var tdAll=$(a).find("td");
-    for(var i= 0;i<tdAll.length;i++){
-        if($(tdAll[i]).attr("data-task_code")!==undefined){
-            var task_code=$(tdAll[i]).text();
-        }
-    }
+    var task_code=$(a).attr("data-task_code");
     param["corp_code"] = corp_code;//公司编号
     param["task_code"] = task_code;//任务编号
     param["id"] = id;//公司id
@@ -732,12 +727,7 @@ function editAssignmentb(a) {
     whir.loading.add("", 0.5);//加载等待框
     var id = $(tr).attr("id");
     var corp_code = $(tr).attr("data-code");
-    var tdAll=$(tr).find("td");
-    for(var i= 0;i<tdAll.length;i++){
-        if($(tdAll[i]).attr("data-task_code")!==undefined){
-            var task_code=$(tdAll[i]).text();
-        }
-    }
+    var task_code=$(tr).attr("data-task_code");
     //var task_code = $(tr).find("td:eq(2) span").html();
     param["corp_code"] = corp_code;//公司编号
     param["task_code"] = task_code;//任务编号

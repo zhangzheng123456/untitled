@@ -504,7 +504,11 @@ public class GoodsController {
                     goods.setGoods_code(goods_code);
                     goods.setGoods_name(goods_name);
                     goods.setGoods_price(goods_price);
-                    goods.setGoods_image(goods_image+"  ");
+                    if(goods_image==null||goods_image.equals("")){
+                        goods.setGoods_image("");
+                    }else{
+                        goods.setGoods_image(goods_image);
+                    }
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("");
                     }else{

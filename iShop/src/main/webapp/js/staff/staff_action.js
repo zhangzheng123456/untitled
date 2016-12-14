@@ -28,6 +28,9 @@ $(function(){
                 pageSize=$(this).attr('id');
                 if(value==""&&filtrate==""){
                     inx=1;
+                    param["pageNumber"]=inx;
+                    param["pageSize"]=pageSize;
+                    param["searchValue"]="";
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
@@ -51,12 +54,15 @@ $(function(){
 );
 //页面加载调权限接口
 function qjia(){
-    var param={};
-    param["funcCode"]=funcCode;
-    oc.postRequire("post","/list/action","0",param,function(data){
+    var param1={};
+    param1["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param1,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
         titleArray=message.columns;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(pageNumber,pageSize);
         tableTh();
     })
@@ -93,6 +99,9 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["searchValue"]="";
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode) {
@@ -183,6 +192,9 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
 }
 function dian(a,b){//点击分页的时候调什么接口
     if (value==""&&filtrate=="") {
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(a,b);
     }else if (value!==""){
         param["pageNumber"] = a;
@@ -245,8 +257,9 @@ function superaddition(data,num){//页面加载循环
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/userAction/list?pageNumber="+a+"&pageSize="+b
-    +"&funcCode="+funcCode+"","","",function(data){
+    //oc.postRequire("get","/userAction/list?pageNumber="+a+"&pageSize="+b
+    //+"&funcCode="+funcCode+"","","",function(data){
+    oc.postRequire("post","/userAction/search","0",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -314,6 +327,9 @@ $("#search").keydown(function() {
         value=this.value.trim();
         param["searchValue"]=value;
         if(value==""){
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["searchValue"]="";
             GET(inx,pageSize); 
         }else{
            POST(inx,pageSize); 
@@ -328,6 +344,9 @@ $("#d_search").click(function(){
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     if(value==""){
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
        GET(inx,pageSize); 
     }else{
        POST(inx,pageSize); 
@@ -396,6 +415,9 @@ $("#delete").click(function(){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
                 GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
@@ -713,6 +735,9 @@ function getInputValue(){
         filtrates(inx,pageSize)
     }else if(num==0){
         filtrate="";
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["searchValue"]="";
         GET(inx,pageSize);
     }
 }
@@ -752,6 +777,9 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
+                param["pageNumber"]=inx;
+                param["pageSize"]=pageSize;
+                param["searchValue"]="";
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
