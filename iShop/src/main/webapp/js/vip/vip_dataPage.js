@@ -449,6 +449,7 @@ function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
+//遮罩层
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop();    //充值弹窗充值店仓列表
