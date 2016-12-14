@@ -19,8 +19,14 @@
     <style>
         .warp{
             background-color: black;
-            /*opacity: 0.3;*/
-            z-index: 999;
+            opacity: 0.3;
+            z-index: 998;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+            display: none;;
         }
         #topUp,#refund{
             z-index: 999;
@@ -30,7 +36,7 @@
             background-color: white;
             border: 1px solid #f7f7f7;
             border-radius: 5px;
-            position:absolute;
+            position:fixed;
             top:50%;
             left: 50%;
             margin-top: -235px;
@@ -162,6 +168,7 @@
 <div class="con_table" id="con_table">
     <!--弹窗-->
     <div class="warp">
+    </div>
         <div id="topUp">
             <div class="topUp_top">VIP充值<div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div></div>
             <div class="editor_em  animated fadeInRight topUp_main">
@@ -269,9 +276,7 @@
                 <button id="toSave">保 存</button>
             </div>
         </div>
-    </div>
     <!--充值结束-->
-    <div class="warp">
         <div id="refund">
         <div class="topUp_top">VIP退款<div class="screen_close" id="refundClose"><span class="icon-ishop_6-12"></span></div></div>
         <div class="editor_em  animated fadeInRight topUp_main">
@@ -362,7 +367,6 @@
             <button id="toFalse" onclick="toFalse()">取 消</button>
             <button id="toSave" onclick="toSave()">保 存</button>
         </div>
-    </div>
     </div>
     <!--退款结束 -->
  <div id="VIP_Message">

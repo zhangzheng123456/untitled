@@ -6,6 +6,7 @@ var oc = new ObjectControl();
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block');
     $('#refund').css('display','none');
+    $('.warp').css('display','none');
     $('#execution li').eq(0).click();
     $('#topUpShopSelcet li').eq(0).click();
     $('#topUpPeopleSelect li').eq(0).click();
