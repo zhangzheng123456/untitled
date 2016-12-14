@@ -224,7 +224,7 @@ function superaddition(data, num) {//页面加载循环
         if(data[i].send_type=="sms"){
             send_type="短信";
         }
-        if(data[i].send_type=="template"){
+        if(data[i].send_type=="wxmass"){
             send_type="微信模板";
         }
         for (var c=0;c<titleArray.length;c++){
