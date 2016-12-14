@@ -84,10 +84,12 @@ public class VIPController {
 //            String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
+            String card_no = "";
             String phone = jsonObject.get("phone").toString();
             String vip_name = jsonObject.get("vip_name").toString();
             String vip_card_type = jsonObject.get("vip_card_type").toString();
-            String card_no = jsonObject.get("card_no").toString();
+            if (jsonObject.containsKey("card_no"))
+                card_no = jsonObject.get("card_no").toString();
             String user_code = jsonObject.get("user_code").toString();
             String store_code = jsonObject.get("store_code").toString();
             String birthday = jsonObject.get("birthday").toString();
@@ -1129,19 +1131,24 @@ public class VIPController {
 
             String type = jsonObject.get("type").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String vip_id = jsonObject.get("vip_id").toString();
 
             JSONObject obj = new JSONObject();
-            if (type.equals("billNo")) {
-                if (corp_code.equals("C10016")) {
-                    String billNO = jsonObject.get("billNO").toString();//单据编号
-                    obj.put("price", "100");
-                    obj.put("pay_price", "80");
-                }
-            } else if (type.equals("balances")) {
-                if (corp_code.equals("C10016")) {
-                    obj.put("balance", "450");
-                }
+
+     
+
+            if (type.equals("billNo")){
+//                if (corp_code.equals("C10016")){
+                    String billNo = jsonObject.get("billNo").toString();//单据编号
+                    obj.put("can_pass","N");
+                    obj.put("price","100");
+                    obj.put("pay_price","80");
+//                }
+            }else if (type.equals("balances")){
+//                if (corp_code.equals("C10016")){
+                    String vip_id = jsonObject.get("vip_id").toString();
+                    obj.put("balance","450");
+//                }
+
             }
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
