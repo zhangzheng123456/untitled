@@ -242,8 +242,6 @@ function superaddition(data,num){//页面加载循环
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
-    console.log('OK');
-    console.log(actions);
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
@@ -330,7 +328,6 @@ function GET(a,b){
     param["pageSize"]=b;
     param["corp_code"]='C10000';
     oc.postRequire("post","/vipAnalysis/allVip","",param,function(data){
-        console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var messages=JSON.parse(data.message);
