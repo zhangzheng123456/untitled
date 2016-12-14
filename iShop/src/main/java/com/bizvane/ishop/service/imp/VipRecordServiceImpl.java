@@ -85,13 +85,13 @@ public class VipRecordServiceImpl implements VipRecordService {
             }
             if (obj.containsField("action")){
                 String action = obj.get("action").toString();
-                object.put("action",action);
+               // object.put("action",action);
                 if (action.equals("1")){
-                    object.put("type_name","电话");
+                    object.put("action","电话");
                 }else if (action.equals("2")){
-                    object.put("type_name","短信");
+                    object.put("action","短信");
                 }else if (action.equals("3")){
-                    object.put("type_name","微信");
+                    object.put("action","微信");
                 }
             }
             array.add(object);
