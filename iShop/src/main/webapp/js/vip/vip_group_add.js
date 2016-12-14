@@ -605,7 +605,7 @@ $('#screen_wrapper_close').on('click', function () {
 });
 //请求页面数据
 function GET(a, b, c) {
-    console.log(arguments[3])
+    var role_add=arguments[3];
     whir.loading.add("", 0.5);//加载等待框
     var user_code =$("#PARAM_NAME").attr("data-code");
     var vip_group_code = $("#vip_num").val();
@@ -631,7 +631,7 @@ function GET(a, b, c) {
             jumpBianse();
             filtrate = "";
             $(".table p").remove();
-            setPage($("#foot-num")[0], cout, a, b, c);
+            setPage($("#foot-num")[0], cout, a, b, c,role_add);
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
             alert(data.message);
@@ -724,7 +724,7 @@ function superaddition(data, num, c) {
     $(".th th:last-child input").removeAttr("checked");
 };
 //生成分页
-function setPage(container, count, pageindex, pageSize, c) {
+function setPage(container, count, pageindex, pageSize, c,role_add) {
     count==0?count=1:'';
     var container = container;
     var count = count;
@@ -788,14 +788,14 @@ function setPage(container, count, pageindex, pageSize, c) {
                 return false;
             }
             inx--;
-            dian(inx, pageSize, c);
+            dian(inx, pageSize, c,role_add);
             // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function () {
                 inx = parseInt(this.innerHTML);
-                dian(inx, pageSize, c);
+                dian(inx, pageSize, c,role_add);
                 // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
@@ -805,17 +805,17 @@ function setPage(container, count, pageindex, pageSize, c) {
                 return false;
             }
             inx++;
-            dian(inx, pageSize, c);
+            dian(inx, pageSize, c,role_add);
             // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
     }()
 }
 //点击页码
-function dian(a, b, c) {//点击分页的时候调什么接口
-    console.log(c)
+function dian(a, b, c,role_add) {//点击分页的时候调什么接口
+    console.log(role_add)
     if (value == "" && filtrate == "") {
-        GET(a, b, c);
+        GET(a, b, c,role_add);
     } else if (value !== "") {
         param["pageNumber"] = a;
         param["pageSize"] = b;
@@ -866,7 +866,7 @@ $(function () {
                 pageSize = $(this).attr('id');
                 if (value == "" && filtrate == "") {
                     inx = 1;
-                    GET(inx, pageSize);
+                    GET(inx, pageSize,'',str);
                 } else if (value !== "") {
                     inx = 1;
                     param["pageSize"] = pageSize;
@@ -905,7 +905,7 @@ $("#input-txt").keydown(function () {
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
-                GET(inx, pageSize);
+                GET(inx, pageSize,'',str);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
                 param["pageNumber"] = inx;
@@ -930,6 +930,7 @@ var bd=[];//品牌
 var ar=[];//区域
 var sp=[];//店铺
 var sf=[];//员工
+var str='';//调用allVip接口的区分
 //点击筛选
 $("#filtrate").click(function () {
     var arr = whir.loading.getPageSize();
@@ -1761,7 +1762,7 @@ $('.r_filrate').hover(function () {
 //点击搜索按钮
 $('.r_filrate').click(function () {
     //清空搜索内容
-    var str='';
+     str='';
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
         input[i].value="";
