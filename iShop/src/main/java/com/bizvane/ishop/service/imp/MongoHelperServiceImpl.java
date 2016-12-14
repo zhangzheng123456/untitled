@@ -205,7 +205,7 @@ public class MongoHelperServiceImpl {
                 Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
-            if (screen_key.equals("sign_time")) {
+            if (screen_key.equals("modified_date")) {
                 JSONObject date = JSON.parseObject(screen_value);
                 String start = date.get("start").toString();
 

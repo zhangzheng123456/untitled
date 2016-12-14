@@ -659,7 +659,15 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result2.toString());
-        } catch (Exception ex) {
+        }catch (Ice.MemoryLimitException im){
+            System.out.println("===============ice异常========================================");
+            errormessage = "导出数据过大(ice)";
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(errormessage);
+            im.printStackTrace();
+        }catch (Exception ex) {
+            System.out.println("===============总异常========================================");
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(errormessage);
