@@ -655,6 +655,21 @@ if ($(".pre_title label").text() == "新增任务") {
     getcorplist(a, b);
 }
 function nssignment() {//加载list的文件
+    var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+    key_val=JSON.parse(key_val);
+    var funcCode=key_val.func_code;
+    whir.loading.add("",0.5);
+    $.get("/detail?funcCode="+funcCode+"", function(data){
+        var data=JSON.parse(data);
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var action=message.actions;
+            if(action.length<=0){
+                $("#edit_save").remove();
+                $("#edit_close").css("margin-left","120px");
+            }
+        }
+    });
     oc.postRequire("post", "/task/selectTaskById", "0", param, function (data) {
         var msg = data.message;
         var msg = JSON.parse(msg);
