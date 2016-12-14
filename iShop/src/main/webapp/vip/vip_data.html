@@ -100,7 +100,7 @@
             line-height: 50px;
             position: relative;
         }
-        #toRecord{
+        #toRecord,#toReturn{
             width: 100px;
             height: 30px;
             line-height: 30px;
@@ -174,6 +174,27 @@
         /*日期弹窗*/
         #laydate_box{
             z-index:1000;
+        }
+        /*记录页面*/
+        .record_all{
+            margin-left:10px;
+            margin-right:10px;
+            width: 100%;
+            height: 100%;
+        }
+        .record_head{
+            background-color: #efefef;
+            height: 30px;
+            line-height: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+        .record_head span{
+            font-weight: normal;
+            text-align: center;
+        }
+        .record_body{
+
         }
     </style>
 </head>
@@ -294,104 +315,14 @@
         <div id="record">
         <div class="topUp_top">VIP充值记录<div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div></div>
         <div class="editor_em  animated fadeInRight topUp_main">
-            <!--<form class="conpany_msg" style="margin-top: 30px">-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label>单据编号</label>-->
-                        <!--<input type="text" id="topUpNum" autocomplete="off" maxlength="50" disabled/>-->
-                    <!--</span>-->
-                    <!--&lt;!&ndash;<li class="add_border"><span class="corp_select"><select id="topUpNum"style="display:inline-flex;width: 410px"></select></span></li>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div>-->
-                <!--<span class="activity_date">-->
-                    <!--<label>单据日期</label>-->
-                    <!--<input type="text" id="chooseDate" readonly="true" placeholder="请选择日期" class="laydate-icon" />-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<ul style="display:inline-flex;position: relative;margin-bottom:0px">-->
-                        <!--<li><label style="color:#c26555;">充值类型*</label></li>-->
-                        <!--&lt;!&ndash;<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>&ndash;&gt;-->
-                        <!--<input class="PARAM_NAME" id="execution_input" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>-->
-                        <!--<ul class="execution" id="execution"style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">-->
-                            <!--<li>退换转充值</li>-->
-                            <!--<li>直接充值</li>-->
-                            <!--&lt;!&ndash;<li>系统短信通知顾客</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>(任务)分享链接到社交平台</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>微信公众号推送</li>&ndash;&gt;-->
-                        <!--</ul>-->
-                    <!--</ul>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<ul style="display:inline-flex;position: relative;margin-bottom:0px">-->
-                        <!--<li><label style="color:#c26555;">充值店仓*</label></li>-->
-                        <!--&lt;!&ndash;<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>&ndash;&gt;-->
-                        <!--<input class="PARAM_NAME" id="topUpShop" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px" readonly/>-->
-                        <!--<ul class="execution" id="topUpShopSelcet"style="height: 60px;overflow-y:auto;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">-->
-
-                        <!--</ul>-->
-                    <!--</ul>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<ul style="display:inline-flex;position: relative;margin-bottom:0px">-->
-                        <!--<li><label style="color:#c26555;">经办人*</label></li>-->
-                        <!--&lt;!&ndash;<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>&ndash;&gt;-->
-                        <!--<input class="PARAM_NAME" id="topUpPeople" style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888" readonly/>-->
-                        <!--<ul class="execution" id="topUpPeopleSelect"style="height: 60px;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;border: 1px solid #a9c9e2;background: #f5f5f5;display: none;">-->
-                            <!--&lt;!&ndash;<li>退换转充值</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>直接充值</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>系统短信通知顾客</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>(任务)分享链接到社交平台</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>微信公众号推送</li>&ndash;&gt;-->
-                        <!--</ul>-->
-                    <!--</ul>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label>VIP卡号</label>-->
-                        <!--<input type="text" id="topUpCard" autocomplete="off" maxlength="200" disabled/>-->
-                         <!--<div style="padding-bottom: 0px" class="hint">-->
-                             <!--<div hintinfo="VIP卡号不能为空！" class="error_tips"style="">VIP卡号不能为空！</div>-->
-                         <!--</div>-->
-                    <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label>VIP姓名</label>-->
-                        <!--<input type="text" id="topUpVipName" autocomplete="off" maxlength="200" disabled/>-->
-                    <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label style="color:#c26555;">折合吊牌金额*</label>-->
-                        <!--<input type="text" id="topUpMoney" autocomplete="off" maxlength="10"/>-->
-                        <!--<div style="padding-bottom: 0px" class="hint">-->
-                            <!--<div hintinfo="折合吊牌金额不能为空！" class="error_tips"style="">折合吊牌金额不能为空！</div>-->
-                        <!--</div>-->
-                    <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label style="color:#c26555;">实付金额*</label>-->
-                        <!--<input type="text" id="topUpMoneyReality" autocomplete="off" maxlength="10"/>-->
-                         <!--<div style="padding-bottom: 0px" class="hint">-->
-                             <!--<div hintinfo="实付金额不能为空！" class="error_tips"style="">实付金额不能为空！</div>-->
-                         <!--</div>-->
-                    <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label>充值折扣</label>-->
-                        <!--<input type="text" id="topUpMoneyDiscount" autocomplete="off" maxlength="200" disabled/>-->
-                    <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<span>-->
-                        <!--<label>备注</label>-->
-                        <!--<input type="text" id="topUpNote" autocomplete="off" maxlength="200"/>-->
-                    <!--</span>-->
-                <!--</div>-->
-            <!--</form>-->
+            <ul class="record_all">
+                <li class="record_head"><span>单据编号</span><span>充值类型</span><span>充值金额</span><span>余额</span></li>
+                <li class="record_body">
+                    <ul>
+                        <li><span>单据编号</span><span>充值类型</span><span>充值金额</span><span>余额</span></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
         <div class="topUp_bottom">
             <button id="toReturn">< 返回充值</button>
@@ -612,7 +543,8 @@
               </div>
               <div class="person-detail">
                  <div class="datail-first">
-                  <span class="detail-left">手机号码</span><span class="detail-right" id="vip_phone"></span><span class="functional_btn">发送验证码</span>
+                  <span class="detail-left">手机号码</span><span class="detail-right" id="vip_phone"></span><div id="send_code" class="functional_btn"><input
+                         type="text" value="预存款密码" readonly/><i class="icon-ishop_8-02"></i><ul><li>预存款密码</li><li>积分付款密码</li><li>生日券信息</li></ul><a href="####">发送</a></div>
               </div>
               <div style="height: 30px;line-height: 30px;">
                   <span class="detail-left">所属导购</span><span class="detail-right" id="user_name"></span>

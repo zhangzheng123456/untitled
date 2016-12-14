@@ -669,6 +669,7 @@ function nssignment() {//加载list的文件
                 $("#edit_close").css("margin-left","120px");
             }
         }
+        whir.loading.remove();//移除加载框
     });
     oc.postRequire("post", "/task/selectTaskById", "0", param, function (data) {
         var msg = data.message;
@@ -703,7 +704,7 @@ function nssignment() {//加载list的文件
     });
 }
 //双击进入编辑界面
-function editAssignment(a) {
+function editAssignment(a){
     whir.loading.add("", 0.5);//加载等待框
     $("#page-wrapper").show();
     $("#content").hide();

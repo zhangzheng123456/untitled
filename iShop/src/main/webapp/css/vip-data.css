@@ -288,10 +288,11 @@ padding:25px 15px 0 15px;
     color: #c26555;
 }
 .right .person-detail{
-    padding: 10px;
+    padding: 0 10px 10px 10px;
 }
 .right .person-detail .datail-first{
-    height: 30px;
+    height: 40px;
+    padding-top: 10px;
     box-sizing: border-box;
     border-top:1px solid #E8E8E8;
     line-height: 30px;
@@ -320,16 +321,52 @@ padding:25px 15px 0 15px;
 }
 .right .person-detail .functional_btn{
     display: inline-block;
+    position: relative;
     margin-left: 10px;
     cursor: pointer;
     padding: 0 5px;
-    height: 25px;
-    line-height: 24px;
+    height: 30px;
+    line-height: 30px;
     border: 1px solid #DDDDDD;
     border-radius: 5px;
     background-color: #fcfcfc;
     color: #888888;
     text-align: center;
+}
+.right .functional_btn input{
+    outline: none;
+    width:105px;
+    height: 25px;
+    line-height: 25px;
+}
+.right .functional_btn a{
+    text-decoration: none;
+    color: #888;
+    display: inline-block;
+    width: 45px;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 5px;
+    border-left: 1px solid #ddd;
+    text-align: center;
+}
+.right .functional_btn i{
+    position: absolute;
+    top: 8px;
+    right: 55px;
+    cursor: pointer;
+}
+.right .functional_btn ul{
+    display: none;
+    width: 110px;
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    top: 29px;
+    padding-left: 5px;
+    text-align: left;
+    background: #fdfdfd;
+    border: 1px solid #ddd;
 }
 .right .person-detail .detail-right.jifen{
     color:#c26555;

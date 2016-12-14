@@ -224,7 +224,7 @@ function superaddition(data, num) {//页面加载循环
         if(data[i].send_type=="sms"){
             send_type="短信";
         }
-        if(data[i].send_type=="template"){
+        if(data[i].send_type=="wxmass"){
             send_type="微信模板";
         }
         for (var c=0;c<titleArray.length;c++){
@@ -375,15 +375,13 @@ function jumpBianse() {
         var param={};
         var id=$(this).parents('tr').attr("id");
         var send_type=$(this).parents('tr').attr("data-send_type");
-        var content=$(this).parents('tr').attr("data-content");
         if(send_type == "微信模板"){
-            send_type = 'template';
+            send_type = 'wxmass';
         }else if(send_type == "短信"){
             send_type = "sms";
         }
         param["id"]=id;
         param["send_type"]=send_type;
-        param["content"]=content;
         console.log(content);
         whir.loading.add("",0.5);//加载等待框
         console.log(param);
