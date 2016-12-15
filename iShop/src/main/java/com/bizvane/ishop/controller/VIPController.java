@@ -622,7 +622,7 @@ public class VIPController {
                 Map datalist = iceInterfaceService.vipBasicMethod(object, request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
             }else if(screen_message.equals("") && searchValue.equals("")){
                 JSONObject object = new JSONObject();
                 object.put("searchValue",searchValue);
