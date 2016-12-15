@@ -6,7 +6,7 @@
     <title>系统管理员主页</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="../css/style.css?20161116" rel="stylesheet">
+    <link href="../css/style.css?20161215" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css?20161116">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
     <link rel="stylesheet" href="../css/tips.css?20161116">
@@ -120,6 +120,9 @@
                     </li>
                 </ul>
 
+            </div>
+            <div style="width: 10px;height:20px;background-color:#2f4050;position: absolute;right: -10px;top:300px;display: none;cursor: pointer;border-radius:0 3px 3px 0;" id="slideMenu">
+                <div style="width: 0; height: 0;margin:5px 2px;border-top:5px solid transparent;border-left:5px solid #FFFFFF;border-bottom: 5px solid transparent;"></div>
             </div>
         </nav>
         <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -261,6 +264,20 @@
 //            init(perArr);
 //        };
 //        window.onload = init(perArr);
+        $("#slideMenu").bind("click",function(){
+//            alert("这是折叠菜单测试按钮");
+            if($("#side-menu .nav-header").is(":hidden")){
+                $("#side-menu .nav-header").show();
+                $("#side-menu li div.nav-label").show();
+                $(".navbar-static-side").width("200px")
+                $("#page-wrapper").css("margin-left","200px")
+            }else{
+               $("#side-menu .nav-header").hide();
+                $("#side-menu li div.nav-label").hide();
+                $(".navbar-static-side").width("100px");
+                $("#page-wrapper").css("margin-left","100px")
+            }
+        })
     </script>
 
 </body>

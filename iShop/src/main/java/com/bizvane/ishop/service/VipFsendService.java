@@ -16,7 +16,7 @@ public interface VipFsendService {
 
     PageInfo<VipFsend> getAllVipFsendByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    String insert(String message, String user_id) throws Exception;
+    String insert(String message, String user_id,int tem_id) throws Exception;
 
     String update(String message, String user_id) throws Exception;
 

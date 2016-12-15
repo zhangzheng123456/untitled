@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface WxTemplateMapper {
 
+   WxTemplate selectById(int id) throws SQLException;
+
     List<WxTemplate> selectAllWxTemplate(@Param("corp_code") String corp_code,@Param("search_value") String search_value) throws SQLException;
 
     int insertWxTemplate(WxTemplate record) throws SQLException;

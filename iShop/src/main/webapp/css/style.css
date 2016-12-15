@@ -6481,6 +6481,9 @@ body.skin-3 {
   background: transparent;
 }
 @media (min-width: 768px) {
+  #slideMenu{
+    display: block!important;
+  }
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 200px;
@@ -8181,3 +8184,19 @@ li.select_index>a>label>i{
    display: block;
    cursor: pointer;
  }
+ .pro_parent{
+  position: relative;
+  font-weight: normal;
+}
+.pro_parent .pro{
+  position: absolute;
+  display: block;
+  top:-11px;
+  right: -28px;
+  color:#6cc1c8;
+  font-size: 12px;
+  font-style: italic;
+  width: 24px;
+  height: 13px;
+  line-height: 9px;
+}

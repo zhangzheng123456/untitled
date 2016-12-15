@@ -147,7 +147,7 @@
             width: 100%;
             background: rgba(0,0,0,0.05);
             position: fixed;
-            top: 25%;
+            top: 10%;
             left: 0;
             z-index: 100;
         }
@@ -533,13 +533,13 @@
             <h4>筛选店铺</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
+                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
                     <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"
                                               data-areacode="">
                     <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-                </div>
-                <div class="xuanzhong_p">
-                    <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
-                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
             </div>
             <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
@@ -794,7 +794,7 @@
                         </ul>
                         <span class="icon-ishop_8-02 icon"></span>
                     </div>
-                    <span class="zy">共 0 页</span>
+                    <!--<span class="zy">共 0 页</span>-->
                 </li>
             </ul>
         </div>
@@ -958,14 +958,109 @@
     <!-- 会员弹框 -->
     <div class="screen_wrapper" id="screen_wrapper">
         <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
-        <div class="contion">
-            <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
-            <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text" readonly="true"data-code=""><span class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
-            <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text" readonly="true"
-                                                                 data-code=""><span class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
-            <div class="contion_input"><label>所属导购</label><input id="screen_staff_num" class="input" type="text" readonly="true" data-code=""><span class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+        <div id="simple_filter">
+            <div class="filter_condition" id="simple_filter_condition">
+                <ul>
+                    <li><a href="####" class="condition_active">按生日</a></li>
+                    <li><a href="####">按纪念日</a></li>
+                    <li><a href="####">按消费频次</a></li>
+                    <li><a href="####">按消费金额</a></li>
+                    <li><a href="####">按可用积分</a></li>
+                    <li><a href="####">冻结会员</a></li>
+                </ul>
+            </div>
+            <div class="contion" id="simple_contion">
+                <div class="contion_input"><label>生日</label><input id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
+                <div class="contion_input" style="display: none"><label>纪念日</label><input id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
+                <div class="contion_input" style="display: none"><label>消费频次</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
+                <div class="contion_input" style="display: none"><label>消费金额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
+                <div class="contion_input" style="display: none"><label>可用  积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                <div class="contion_input" style="display: none"><label>冻结会员</label><input class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+                    <li>已冻结</li>
+                    <li>未冻结</li>
+                    <li>全部</li>
+                </ul></div>
+            </div>
+            <div class="ensure"><span>确定</span></div>
+            <a href="####" id="more_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">高级筛选</a>
         </div>
-        <div class="ensure"><span id="screen_vip_que">确定</span></div>
+        <div style="display: none" id="senior_filter">
+            <div class="filter_condition" id="filter_condition">
+                <ul>
+                    <li><a href="####" class="condition_active">按基本属性</a></li>
+                    <li><a href="####">按会员属性</a></li>
+                    <li><a href="####">按消费属性</a></li>
+                    <li><a href="####">按所属关系</a></li>
+                    <li><a href="####">按拓展属性</a></li>
+                    <li><a href="####">按券查询</a></li>
+                </ul>
+            </div>
+            <div class="contion" id="contion">
+                <div id="basic_message">
+                    <div class="contion_input"><label>姓名</label><input class="input" type="text"></div>
+                    <div class="contion_input">
+                        <label>性别</label><input class="select" type="text" value="全部" readonly="readonly" id="sex">
+                        <ul class="sex_select" id="sex_select">
+                            <li>男</li>
+                            <li>女</li>
+                            <li>全部</li>
+                        </ul>
+                    </div>
+                    <div class="contion_input"><label>年龄</label><input class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
+                            class="short_input" id="age_r" readonly/><ul class="age_r"></ul></div>
+                    <div class="contion_input"><label>生日</label><input id="birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="birth_end" class="short_input_date laydate-icon"></div>
+                    <div class="contion_input"><label>手机号</label><input class="input" type="text"></div>
+                </div>
+                <div id="vip_attribute" style="display: none">
+                    <div class="contion_input"><label>卡号</label><input class="input" type="text"></div>
+                    <div class="contion_input"><label>卡类型</label><input class="input" type="text"></div>
+                    <div class="contion_input"><label>开卡日期</label><input id="activate_card_start" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end" class="short_input_date laydate-icon" type="text" readonly/></div>
+                    <div class="contion_input"><label>可用积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                    <div class="contion_input"><label>冻结会员</label><input class="select" value="全部" id="state" type="text"><ul class="sex_select" id="state_select">
+                        <li>已冻结</li>
+                        <li>未冻结</li>
+                        <li>全部</li>
+                    </ul></div>
+                </div>
+                <div id="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>最近消费日期</label><input id="recent_start" class="short_input_date laydate-icon" readonly/><label class="jian">~</label><input id="recent_end" class="short_input_date laydate-icon" readonly/></div>
+                    <div class="contion_input"><label>消费次数</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
+                    <div class="contion_input"><label>消费总额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
+                </div>
+                <div id="relation" style="display: none">
+                    <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                    <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+                    <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+                    <div class="contion_input"><label>所属导购</label><input id="screen_stff_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+                </div>
+                <div id="expend_attribute" style="display: none">
+                    <div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>
+                    <div class="contion_input">
+                        <label>分组</label><input id="filter_group" class="select" type="text" data-code="" readonly="readonly">
+                        <div class="filter_group">
+                            <input type="text" id="search_filter_group">
+                            <ul id="ul">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="ticket" style="display: none">
+                    <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
+                    <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
+                </div>
+            </div>
+            <div class="ensure"><span id="screen_vip_que">确定</span></div>
+            <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
+        </div>
     </div>
 </div>
 <!-- Mainly scripts -->
@@ -973,10 +1068,12 @@
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
 <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../js/insidePostRequire.js"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js"></script>
 <script src="../js/loading.js"></script>
 <script src="../js/artDialog/plugins/iframeTools.js"></script>
+<script src="../js/vip_screen.js?20161214"></script>
 <script src="../js/activity/activity_add.js"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>

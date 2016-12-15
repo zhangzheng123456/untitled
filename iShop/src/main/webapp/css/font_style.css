@@ -22,7 +22,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-ishopwebicon_6-24:before {
+  content: "\e93f";
+}
 .icon-ishop_6-22:before {
   content: "\e93d";
 }

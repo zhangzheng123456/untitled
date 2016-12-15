@@ -182,6 +182,7 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     $(".table p").remove();
     if(data.length == 0){
         var len = $(".table thead tr th").length;
@@ -201,6 +202,7 @@ function superaddition(data,num){//页面加载循环
     }
     for (var i = 0; i < data.length; i++) {
         var TD="";
+        var wx='';
         //判断是否有会员头像
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
@@ -216,16 +218,20 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
+        if(data[i].open_id){
+            wx="<td><span class='icon-ishop_6-22'style='color:#8ec750'></span></td>";
+        }else{
+            wx="<td><span class='icon-ishop_6-22'style='color:#cdcdcd'></span></td>";
+        }
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                if(code=='vip_name'){
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>"+wx;
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
             })(c)
-        }
-        if(data[i].open_id){
-            TD+="<td><span class='icon-ishop_6-22'style='color:#8ec750'></span></td>";
-        }else{
-            TD+="<td><span class='icon-ishop_6-22'style='color:#cdcdcd'></span></td>";
         }
         $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
@@ -257,7 +263,8 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="chooseUser"){
             $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
         }else if(actions[i].act_name=="output"){
-            $("#more_down").append("<div id='leading_out'>导出</div>");
+            //$("#more_down").append("<div id='leading_out'>导出</div>");
+            $("#filtrate").before("<li id='leading_out' title='因会员数据量大，请筛选后再导出'> <span class='icon-ishopwebicon_6-24'></span> 导出</li>")
         }else if(actions[i].act_name=="input"){
             $("#more_down").append("<div id='guide_into'>导入</div>");
         }else if(actions[i].act_name=="addLabel"){
@@ -319,8 +326,13 @@ function qjia(){
 }
 function tableTh(){ //table  的表头
     var TH="";
+    console.log(titleArray);
     for(var i=0;i<titleArray.length;i++){
-        TH+="<th>"+titleArray[i].show_name+"</th>"
+        if(titleArray[i].show_name.trim()=='姓名'){
+            TH+="<th>"+titleArray[i].show_name+"</th>"+'<th style="width: 20px"></th>'
+        }else{
+            TH+="<th>"+titleArray[i].show_name+"</th>"
+        }
     }
     $("#tableOrder").after(TH);
 }
@@ -765,12 +777,12 @@ function POST(a,b){
 $("#X").click(function(){
     $("#p").hide();
     $("#tk").hide();
-})
+});
 //取消关闭
 $("#cancel").click(function(){
     $("#p").hide();
     $("#tk").hide();
-})
+});
 //弹框删除关闭
 $("#delete").click(function(){
     $("#p").hide();
@@ -811,7 +823,7 @@ $("#delete").click(function(){
             $('.frame').html(data.message);
         }
     })
-})
+});
 //删除弹框
 function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
@@ -908,7 +920,8 @@ function bianse(){
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
 //导出拉出list
-$("#more_down").on("click","#leading_out",function(){
+//$("#more_down").on("click","#leading_out",function(){
+$(".action_r ul").on("click","#leading_out",function(){
     var l=$(window).width();
     var h=$(document.body).height();
     $("#p").show();
@@ -935,7 +948,7 @@ $("#more_down").on("click","#leading_out",function(){
             whir.loading.remove();//移除加载框
         }
     })
-})
+});
 //导出提交的
 $("#file_submit").click(function(){
     var li=$("#file_list_r input[type='checkbox']").parents("li");
@@ -2044,36 +2057,6 @@ function filtrates(a,b){
         }
     })
 }
-//获取分组
-function getGroup() {
-    var corp_command = "/vipGroup/getCorpGroups";
-    var _param = {};
-    _param["corp_code"] = "C10000";
-    _param["search_value"] = $("#search_filter_group").val();
-    oc.postRequire("post", corp_command, "0", _param, function (data) {
-        if (data.code == "0") {
-            var message = JSON.parse(data.message);
-            var list = JSON.parse(message.list);
-            var html = "";
-            $("#filter_group").attr("data-corp",list[0].corp_code);
-            $(".filter_group ul").empty();
-            if (list.length>0) {
-                for (var i = 0; i < list.length; i++) {
-                    html += '<li id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
-                }
-                $(".filter_group ul").append(html);
-            } else if (list.length <= 0) {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: data.message
-                });
-            }
-        }
-    })
-}
-
 //刷新列表
 $(".icon-ishop_6-07").parent().click(function () {
     window.location.reload();
