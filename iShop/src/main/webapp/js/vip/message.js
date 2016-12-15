@@ -427,8 +427,8 @@ function jumpBianse() {
                     }else if(send_type == "wxmass"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
-                            "<th>会员名称</th>" +
                             "<th>会员编号</th>" +
+                            "<th>会员名称</th>" +
                             "<th>发送状态</th>" +
                             "</tr>");
                         for(var j=0;j<list.length;j++) {
