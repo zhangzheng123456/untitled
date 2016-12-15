@@ -240,15 +240,12 @@ var getNewVip={
             html=$(node).parent().prev().html().slice(0,-1);
             var HTML='<li class="hint_li"><div class="content_hint"style="display: block"><span class="hint">'+html+'不能为空</span></div></li>';
             var nd=$(node).parent().parent().next()[0];
-            console.log(nd.className);
             if(!nd.className){
                 $(node).parent().parent().after(HTML);
             }
         }else{
             $(node).parent().parent().next('.hint_li').remove();
         }
-
-
     }
 }
 function checkStart(data) {
