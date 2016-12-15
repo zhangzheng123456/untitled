@@ -51,37 +51,37 @@ public class SmsTemplateController {
      * 消息模板
      * 列表
      */
-    @RequestMapping(value = "/mobile/template/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String SmsTemplate(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<SmsTemplate> list = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = this.smsTemplateService.selectBySearch(page_number, page_size, "", "");
-            } else {
-                list = this.smsTemplateService.selectBySearch(page_number, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/mobile/template/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String SmsTemplate(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = new JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<SmsTemplate> list = null;
+//            if (role_code.contains(Common.ROLE_SYS)) {
+//                list = this.smsTemplateService.selectBySearch(page_number, page_size, "", "");
+//            } else {
+//                list = this.smsTemplateService.selectBySearch(page_number, page_size, corp_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 消息模板

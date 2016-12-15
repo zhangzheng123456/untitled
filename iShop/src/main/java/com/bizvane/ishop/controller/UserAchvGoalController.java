@@ -68,56 +68,56 @@ public class UserAchvGoalController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String userAchvGoalManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
-            org.json.JSONObject result = new org.json.JSONObject();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
-            int page_size = Integer.parseInt(request.getParameter("pageSize").toString());
-            PageInfo<UserAchvGoal> pages = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                pages = this.userAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
-            } else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "", "");
-                String store_code = "";
-                for (int i = 0; i < stores.size(); i++) {
-                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
-                }
-                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", "", role_code);
-            } else if (role_code.equals(Common.ROLE_AM)) {
-                String area_code = request.getSession(false).getAttribute("area_code").toString();
-                String store_code = request.getSession(false).getAttribute("store_code").toString();
-                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, store_code, role_code);
-            } else if (role_code.equals(Common.ROLE_SM)) {
-                String store_code = request.getSession(false).getAttribute("store_code").toString();
-                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", "", role_code);
-            } else {
-                List<UserAchvGoal> goal = userAchvGoalService.userAchvGoalExist(corp_code, user_code);
-                pages = new PageInfo<UserAchvGoal>();
-                pages.setList(goal);
-            }
-            result.put("list", JSON.toJSONString(pages));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String userAchvGoalManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String user_code = request.getSession().getAttribute("user_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
+//            int page_size = Integer.parseInt(request.getParameter("pageSize").toString());
+//            PageInfo<UserAchvGoal> pages = null;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
+//            } else if (role_code.equals(Common.ROLE_GM)) {
+//                pages = this.userAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
+//            } else if (role_code.equals(Common.ROLE_BM)) {
+//                String brand_code = request.getSession().getAttribute("brand_code").toString();
+//                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+//                List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "", "");
+//                String store_code = "";
+//                for (int i = 0; i < stores.size(); i++) {
+//                    store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+//                }
+//                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", "", role_code);
+//            } else if (role_code.equals(Common.ROLE_AM)) {
+//                String area_code = request.getSession(false).getAttribute("area_code").toString();
+//                String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, store_code, role_code);
+//            } else if (role_code.equals(Common.ROLE_SM)) {
+//                String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", "", role_code);
+//            } else {
+//                List<UserAchvGoal> goal = userAchvGoalService.userAchvGoalExist(corp_code, user_code);
+//                pages = new PageInfo<UserAchvGoal>();
+//                pages.setList(goal);
+//            }
+//            result.put("list", JSON.toJSONString(pages));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
     /**
