@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+
+
+import com.bizvane.ishop.entity.WxTemplate;
 import com.bizvane.sun.common.service.http.HttpClient;
 import com.bizvane.ishop.dao.VipFsendMapper;
 import com.bizvane.ishop.entity.Store;
@@ -13,8 +16,7 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
-import com.bizvane.sun.common.utils.JSONUtil;
-import com.bizvane.sun.common.utils.SpringUtil;
+
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
@@ -32,10 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by nanji on 2016/11/24.
@@ -48,6 +47,8 @@ public class VipFsendServiceImpl implements VipFsendService {
     private IceInterfaceService iceInterfaceService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private WxTemplateService wxTemplateService;
     @Autowired
     private StoreService storeService;
     @Autowired
@@ -183,7 +184,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
                 }
             }
-             String  mass=corp_code+System.currentTimeMillis();
+
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
             String vipname[] = vip_name.split(",");
@@ -191,33 +192,37 @@ public class VipFsendServiceImpl implements VipFsendService {
             List<Map<String, Object>> list = new ArrayList();
             String vip = "";
             String name = "";
+            logger.info("json--vip_name---------------------------" + vip_name);
+
             for (int i = 0; i < vipid.length; i++) {
                 vip = vipid[i];
-                for (int j = 0; j < vipname.length; j++) {
-                    name = vipname[i];
-                }
                 Map query_key = new HashMap();
                 query_key.put("wxMass", "wxMass");
                 query_key.put("mass", sms_code);
                 query_key.put("vip_id", vip);
                 List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-                if (message_list.size() == 0) {
-                    Map<String, Object> list_fail = new HashedMap();
-                    list_fail.put("vip_id", vip);
-                    list_fail.put("vip_name", name);
-                    list_fail.put("is_send", "发送失败");
-                    list.add(list_fail);
-                    JSONObject vips_info = new JSONObject();
-                    vips_info.put("vip_info", list);
-                    message = JSON.toJSONString(vips_info);
-                } else {
-                    list.addAll(message_list);
-                    JSONObject vips_info = new JSONObject();
-                    vips_info.put("vip_info", list);
-                    message = JSON.toJSONString(vips_info);
+                for (int j = 0; j < vipname.length; j++) {
+                    name = vipname[i];
+                    if (message_list.size() == 0) {
+                        Map<String, Object> list_fail = new HashedMap();
+                        list_fail.put("vip_id", vip);
+                        list_fail.put("vip_name", name);
+                        list_fail.put("is_send", "未发送");
+                        list.add(list_fail);
+                        JSONObject vips_info = new JSONObject();
+                        vips_info.put("vip_info", list);
+                        message = JSON.toJSONString(vips_info);
+                    } else {
+                        list.addAll(message_list);
+                        JSONObject vips_info = new JSONObject();
+                        vips_info.put("vip_info", list);
+                        message = JSON.toJSONString(vips_info);
+                    }
                 }
-            }
-        } else {
+
+                }
+
+        }else {
             message = "发送类型不合法";
         }
         return message;
@@ -241,7 +246,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     @Override
-    public String insert(String message, String user_id) throws Exception {
+    public String insert(String message, String user_id,int tem_id) throws Exception {
 
         String status = Common.DATABEAN_CODE_SUCCESS;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
@@ -255,7 +260,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String openids = "";
+        String openids = "ogUZEuD2Ju904CQvb2DBwRXOPpNk,";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
@@ -264,9 +269,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             String brand_code = sms_vips_obj.get("brand_code").toString();
             String store_code = sms_vips_obj.get("store_code").toString();
             String vip_user_code = sms_vips_obj.get("user_code").toString();
-
             if (vip_user_code.equals("")) {
-
                 if (store_code.equals("")) {
                     List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
                     for (int i = 0; i < storeList.size(); i++) {
@@ -368,20 +371,46 @@ public class VipFsendServiceImpl implements VipFsendService {
                 return status;
             } else if (send_type.equals("wxmass")) {
                 //发送类型：微信群发消息
-                JSONObject template_content = new JSONObject();
-                template_content.put("content", content);//微信群发内容
-                template_content.put("app_user_name", "gh_a707333490f3"); //app_user_name
-                template_content.put("openid", openids);//所选择会员的openid
-                String auth_appid = template_content.get("app_user_name").toString().trim();
-                //调用微信群发消息接口
-                String result = sendWxMass(template_content);
-                JSONObject info = JSONObject.parseObject(result);
+
+                //根据id查询微信模板信息
+                WxTemplate wxTemplate= wxTemplateService.getTemplateById(tem_id);
+                String app_user_name=wxTemplate.getApp_user_name();
+                String template_id=wxTemplate.getTemplate_id();
+                //逗号分割
                 String openid[] = openids.split(",");
                 String vipid[] = vip_id.split(",");
                 String vipname[] = vip_name.split(",");
                 String open_id="";
                 String id="";
                 String name="";
+                //message_id 插入MongoDB,主键
+                String message_id = app_user_name + openid + System.currentTimeMillis();
+
+                JSONObject template_content = new JSONObject();
+                String  result="";
+                if(openid.length>=2){
+                    //调用微信群发消息接口
+                    template_content.put("content", content);//微信群发内容
+                    template_content.put("app_user_name", app_user_name); //app_user_name
+                    template_content.put("openid", openids);//所选择会员的openid
+                     result = sendWxMass(template_content);
+
+                }else if(openid.length>=1){
+                       //调用微信模板消息接口
+                    JSONObject con=new JSONObject();
+                    con.put("first", "您好，您的专属导购给您发了一条消息");
+                    con.put("keyword1", System.currentTimeMillis()); //关键词
+                    con.put("keyword2", Common.DATETIME_FORMAT.format(now)); //关键词
+                    con.put("remark", "请点击查看！"); //备注
+                    template_content.put("content",con);
+                    template_content.put("app_user_name",app_user_name);
+                    template_content.put("template_id",template_id);
+                    template_content.put("openid",openid[0]);
+                    template_content.put("message_id",message_id);
+                    result = sendTemplate(template_content);
+                }
+                JSONObject info = JSONObject.parseObject(result);
+
 
                //群发消息发送成功之后存入mongoDB
                 if ("0".equals(info.getString("errcode"))) {
@@ -393,8 +422,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                                 name = vipname[i];
                             }
                         }
-
-                         insertMongoDB(open_id,corp_code, id, auth_appid, name,content,sms_code);
+                         insertMongoDB(open_id,corp_code, id, app_user_name, name,content,sms_code,message_id);
                     }
                     return status;
                 } else {
@@ -488,11 +516,11 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @param content
      * @throws Exception
      */
-    public void insertMongoDB(String openid, String corp_code,String vip_id, String app_user_name, String vip_name,String content,String mass) throws Exception {
+    public void insertMongoDB(String openid, String corp_code,String vip_id, String app_user_name, String vip_name,String content,String mass,String message_id) throws Exception {
 
         Date now = new Date();
         String message_date = Common.DATETIME_FORMAT.format(now);
-        String message_id = app_user_name + openid + System.currentTimeMillis();
+        //String message_id = app_user_name + openid + System.currentTimeMillis();
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection collection = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
         DBObject saveData = new BasicDBObject();
@@ -513,13 +541,13 @@ public class VipFsendServiceImpl implements VipFsendService {
 
     }
     /**
-     * 微信发送普通消息
+     * 微信发送模板消息
      *
      * @param extras
      * @return
      * @throws Exception
      */
-    public static String sendWxMessage(JSONObject extras) throws Exception {
+    public static String sendTemplate(JSONObject extras) throws Exception {
 
         RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
         Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();

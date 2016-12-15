@@ -322,10 +322,10 @@ function searchHotlabel() {
             var a="li";
             cls=$(this).attr("class");
             txt=$(this).html();
-            param['label_name']=txt
+            param['label_name']=txt;
             $("#search_input").val("");
             addViplabel(a);
-        })
+        });
     })
 }
 //加载更多

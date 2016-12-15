@@ -30,7 +30,12 @@ public class WxTemplateServiceImpl implements WxTemplateService{
 
     private static final Logger logger = Logger.getLogger(WxTemplateServiceImpl.class);
 
-    public List<WxTemplate> selectAllWxTemplate(String corp_code,String search_value) throws Exception {
+    @Override
+    public WxTemplate getTemplateById(int id) throws Exception {
+        return wxTemplateMapper.selectById(id);
+    }
+
+    public List<WxTemplate> selectAllWxTemplate(String corp_code, String search_value) throws Exception {
         return wxTemplateMapper.selectAllWxTemplate(corp_code,search_value);
     }
 

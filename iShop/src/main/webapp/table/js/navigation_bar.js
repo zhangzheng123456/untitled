@@ -48,7 +48,11 @@ $(function(){
         	if(menu[i].functions!==""){
                 li+="<dl>"
         		for(var j=0;j<menu[i].functions.length;j++){
-        			li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span>"+menu[i].functions[j].fun_name+"</a></dd>"
+                    if(menu[i].functions[j].func_code=='F0036'||menu[i].functions[j].func_code=='F0034'||menu[i].functions[j].func_code=='F0032'||menu[i].functions[j].func_code=='F0041'){
+                        li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span><b class='pro_parent'>"+menu[i].functions[j].fun_name+"<b class='pro'>pro</b></b></a></dd>" 
+                    }else{
+        			    li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span>"+menu[i].functions[j].fun_name+"</a></dd>"
+                    }
         		}
                 li+="</dl>"		
         	}

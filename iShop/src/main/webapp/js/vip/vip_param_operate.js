@@ -70,7 +70,12 @@ var oc = new ObjectControl();
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
                 if(PARAM_TYPE==""){
-                    alert("参数不能为空！");
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"参数类型不能为空"
+                    });
                     return;
                 }
                 // if(PARAM_TYPE=="select" && PARAM_VALUE==""){
@@ -393,12 +398,8 @@ function getcorplist(a, b) {
 }
 //参数类型下拉
 $("#PARAM_TYPE").click(function () {
-    if ($(".paramType").css("display") == "none") {
-        $(".paramType").show();
-    } else {
-        $(".paramType").hide();
-    }
-})
+    $(".paramType").toggle();
+});
 $("#PARAM_TYPE").blur(function () {
     setTimeout(function () {
         $(".paramType").hide();

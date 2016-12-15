@@ -296,3 +296,22 @@ body{
 	color: #6cc1c8;
 	margin-left: 10px;
 }
+.pro_parent{
+	position: relative;
+	font-weight: normal;
+}
+.pro_parent .pro{
+	position: absolute;
+	display: block;
+	top:-11px;
+	right: -28px;
+	color:#6cc1c8;
+	font-size: 12px;
+	font-style: italic;
+	border: 1px solid #6cc1c8;
+	width: 24px;
+	height: 13px;
+	line-height: 9px;
+	background-color: #fff;
+	border-radius: 2px;
+}

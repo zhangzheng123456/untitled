@@ -622,7 +622,9 @@ public class VipGroupController {
                             vip_ids1 += vips[i] + ",";
                         }
                     } else {
-                        vip_ids1 = vip_ids;
+                        for (int i = (page_num - 1) * page_size; i < vip_size; i++) {
+                            vip_ids1 += vips[i] + ",";
+                        }
                     }
                     if (vip_size % page_size == 0) {
                         pages = vip_size / page_size;
@@ -638,11 +640,17 @@ public class VipGroupController {
                     String result = dataBox.data.get("message").value;
                     JSONObject msg_obj = JSONObject.parseObject(result);
                     vips_array = msg_obj.getJSONArray("vip_info");
+                    JSONArray array = new JSONArray();
+                    for (int i = 0; i < vips_array.size(); i++) {
+                        JSONObject vip = JSONObject.parseObject(vips_array.get(i).toString());
+                        vip.put("is_this_group","Y");
+                        array.add(vip);
+                    }
                     return_value.put("pageNum",page_num);
                     return_value.put("pageSize",page_size);
                     return_value.put("count",vip_size);
                     return_value.put("pages",pages);
-                    return_value.put("all_vip_list",vips_array);
+                    return_value.put("all_vip_list",array);
                 }else {
                     return_value.put("pageNum",page_num);
                     return_value.put("pageSize",page_size);

@@ -435,52 +435,73 @@ public class LoginController {
         try {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             JSONArray cols = new JSONArray();
             String function_code = request.getParameter("funcCode");
             List<TableManager> col = tableManagerService.selByCode(function_code);
+
+            //获取列表显示字段权限
+            List<Map<String,String>> columns = functionService.selectColumnByFun(corp_code, user_code, group_code, role_code, function_code);
+
             for (int i = 0; i < col.size(); i++) {
                 TableManager table = col.get(i);
                 String col_name = table.getColumn_name();
                 String show_name = table.getShow_name();
                 String type = table.getFilter_type();
 
-                JSONObject obj = new JSONObject();
-                obj.put("col_name",col_name);
-                obj.put("show_name",show_name);
-                obj.put("type",type);
-                if (type.equals("select")){
-                    JSONArray values = new JSONArray();
-                    if (col_name.equals("group_name")){
-                        List<Group> groups = new ArrayList<Group>();
-                        if (role_code.equals(Common.ROLE_GM)){
-                            groups = groupService.getGroupAll(corp_code,"");
-                        }else if (role_code.equals(Common.ROLE_SYS)){
+                for (int j = 0; j < columns.size(); j++) {
+                    if (col_name.equals(columns.get(j).get("column_name"))){
+                        JSONObject obj = new JSONObject();
+                        obj.put("col_name",col_name);
+                        obj.put("show_name",show_name);
+                        obj.put("type",type);
+                        if (type.equals("select")){
+                            JSONArray values = new JSONArray();
+                            if (col_name.equals("group_name")){
+                                List<Group> groups = new ArrayList<Group>();
+                                if (role_code.equals(Common.ROLE_GM)){
+                                    groups = groupService.getGroupAll(corp_code,"");
+                                }else if (role_code.equals(Common.ROLE_SYS)){
+                                    obj.put("value","");
+                                    obj.put("type","text");
+                                    cols.add(obj);
+                                    continue;
+                                }else {
+                                    groups = groupService.getGroupAll(corp_code,role_code);
+                                }
+                                for (int k = 0; k < groups.size(); k++) {
+                                    JSONObject object = new JSONObject();
+                                    object.put("key",groups.get(k).getGroup_name());
+                                    object.put("value",groups.get(k).getGroup_name());
+                                    values.add(object);
+                                }
+                                JSONObject object = new JSONObject();
+                                object.put("key","全部");
+                                object.put("value","");
+                                values.add(object);
+                            }else {
+                                String value = table.getFilter_value();
+                                values = JSONArray.parseArray(value);
+                            }
+                            obj.put("value",values);
+                        }else{
                             obj.put("value","");
-                            obj.put("type","text");
-                            cols.add(obj);
-                            continue;
-                        }else {
-                            groups = groupService.getGroupAll(corp_code,role_code);
                         }
-                        for (int j = 0; j < groups.size(); j++) {
-                            JSONObject object = new JSONObject();
-                            object.put("key",groups.get(j).getGroup_name());
-                            object.put("value",groups.get(j).getGroup_name());
-                            values.add(object);
-                        }
-                        JSONObject object = new JSONObject();
-                        object.put("key","全部");
-                        object.put("value","");
-                        values.add(object);
-                    }else {
-                        String value = table.getFilter_value();
-                        values = JSONArray.parseArray(value);
+                        cols.add(obj);
+                        break;
+                    }else if (function_code.equals("F0005") && col_name.equals("brand_name")){
+                        JSONObject obj = new JSONObject();
+                        obj.put("col_name",col_name);
+                        obj.put("show_name",show_name);
+                        obj.put("type",type);
+                        obj.put("value","");
+                        cols.add(obj);
+                        break;
                     }
-                    obj.put("value",values);
-                }else{
-                    obj.put("value","");
                 }
-                cols.add(obj);
+
             }
             JSONObject filter = new JSONObject();
             filter.put("filter",cols);

@@ -50,12 +50,12 @@ var oc = new ObjectControl();
 				}
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
-				var label_group=$("#label_group").attr("data-id");
-				var label_gpname=$("#label_group").val();
-				if(label_gpname==""){
-					alert("请选择标签分组!");
-					return;
-				}
+				// var label_group=$("#label_group").attr("data-id");
+				// var label_gpname=$("#label_group").val();
+				// if(label_gpname==""){
+				// 	alert("请选择标签分组!");
+				// 	return;
+				// }
 				// var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 				var _params = {
 					"corp_code": OWN_CORP,
 					"label_name": LABEL_NAME,
-					"label_group_code":label_group,
+					"label_group_code":"",
 					// "label_type": LABEL_TYPE,
 					"isactive": ISACTIVE
 				};
@@ -95,7 +95,7 @@ var oc = new ObjectControl();
 				var ID=sessionStorage.getItem("id");//编辑时候的id
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
-				var label_group=$("#label_group").attr("data-id");
+				// var label_group=$("#label_group").attr("data-id");
 				// var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -113,7 +113,7 @@ var oc = new ObjectControl();
 					"id": ID,
 					"corp_code": OWN_CORP,
 					"label_name": LABEL_NAME,
-					"label_group_code":label_group,
+					"label_group_code":"",
 					// "label_type": LABEL_TYPE,
 					"isactive": ISACTIVE
 				};
@@ -213,8 +213,8 @@ jQuery(document).ready(function(){
 				// var label_type=msg.label_type//会员标签
 				// $("#LABEL_TYPE option[value='"+label_type+"']").attr("selected","true");
 				$("#LABEL_NAME").val(msg.label_name);
-				$("#label_group").val(msg.label_group_name);
-				$("#label_group").attr("data-id",msg.label_group_code);
+				// $("#label_group").val(msg.label_group_name);
+				// $("#label_group").attr("data-id",msg.label_group_code);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);

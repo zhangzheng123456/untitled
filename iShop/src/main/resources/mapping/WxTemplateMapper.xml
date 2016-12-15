@@ -16,6 +16,26 @@
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
+    <select id="selectById" resultMap="WxTemplate">
+        SELECT
+        rwt.id,
+        rwt.template_id,
+        rwt.template_name,
+        rwt.corp_code,
+        rwt.app_id,
+        rwt.app_name,
+        rwt.app_user_name,
+        rwt.modified_date,
+        rwt.modifier,
+        rwt.created_date,
+        rwt.creater,
+        rwt.isactive,
+        def_corp.corp_name
+        FROM rel_wechat_template rwt,def_corp
+        WHERE rwt.corp_code = def_corp.corp_code
+        AND  rwt.ID=#{id}
+    </select>
+
     <select id="selectAllWxTemplate" resultMap="WxTemplate">
         SELECT rwt.*,
         dc.corp_name

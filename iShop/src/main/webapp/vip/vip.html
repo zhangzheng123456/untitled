@@ -12,120 +12,6 @@
     <script src="../js/laydate/laydate.js"></script>
 </head>
 <style>
-    .filter_condition {
-        width: 100%;
-        height: 60px;
-    }
-    .filter_condition ul li {
-        width: 16.6666%;
-        height: 50px;
-        line-height: 50px;
-        padding: 0 10px;
-        float: left;
-        cursor: pointer;
-        text-align: center;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box; /* Firefox */
-        -webkit-box-sizing: border-box; /* Safari */
-    }
-    .filter_condition ul a {
-        display: block;
-        color: #888888;
-    }
-    .filter_condition ul a:hover{
-        color: #6dc1c8;
-        border-top: 2px solid #6dc1c8;
-    }
-    .filter_condition .condition_active {
-        color: #6dc1c8;
-        border-top: 2px solid #6dc1c8;
-    }
-    .sex_select {
-        display: none;
-        position: relative;
-        z-index: 100;
-        width: 340px;
-        background: #f5f5f5;
-        margin-left: 93px;
-        border: 1px solid #ddd;
-    }
-    .sex_select li {
-        text-indent: 10px;
-        height: 30px;
-        line-height: 30px;
-    }
-    .sex_select li:hover {
-        color: #FFFFFF;
-        background: #4a5f7c;
-    }
-    .age_l{
-        display: none;
-        height: 100px;
-        overflow-y: scroll;
-        position: absolute;
-        top:30px;
-        left: 93px;
-        z-index: 100;
-        width: 150px;
-        text-indent: 10px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-    }
-    .age_r{
-        display: none;
-        height: 100px;
-        overflow-y: scroll;
-        position: absolute;
-        top:30px;
-        right: 5px;
-        z-index: 100;
-        text-indent: 10px;
-        width: 150px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-    }
-    .age_r li:hover,.age_l li:hover{
-        background: #6dc1c8;
-        color: #FFFFFF;
-    }
-    .filter_group{
-        display: none;
-        position: absolute;
-        top:30px;
-        left: 93px;
-        width: 340px;
-        background:#f5f5f5;
-        border: 1px solid #ddd;
-    }
-    .filter_group input{
-        width: 94%;
-        height: 30px;
-        color: #888888;
-        padding-left: 10px;
-        border-radius: 5px;
-        border: 1px solid #EAE2E2;
-        margin: 3px 3px;
-        outline: none;
-    }
-    .filter_group ul li{
-        cursor: pointer;
-        text-indent: 10px;
-        height: 30px;
-        line-height: 30px;
-    }
-    .filter_group ul {
-        width: 100%;
-        height: 120px;
-        overflow-y: scroll;
-    }
-    .filter_group ul li:hover{
-        background: #6dc1c8;
-        color: #FFFFFF;
-    }
-    .filter_group .group_active{
-        background: #4a5f7c;
-        color: #FFFFFF;
-    }
     /*批量标签*/
     .batch_label_wrapper{
         display: none;
@@ -659,13 +545,13 @@
         <h4>筛选店铺</h4>
         <div class="xuanzhong">
             <div class="xuanzhong_p">
+                <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
                 <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
                                           data-areacode="">
                 <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
-            </div>
-            <div class="xuanzhong_p">
-                <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
-                <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
             </div>
         </div>
         <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
@@ -744,14 +630,14 @@
         <h4>筛选</h4>
         <div class="xuanzhong">
             <div class="xuanzhong_p">
-                <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
-                                          data-areacode="">
-                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
-            </div>
-            <div class="xuanzhong_p">
                 <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
                                           data-brandcode="">
                 <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+            </div>
+            <div class="xuanzhong_p">
+                <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                          data-areacode="">
+                <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
             </div>
             <div class="xuanzhong_p">
                 <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
@@ -864,12 +750,12 @@
                 <div class="contion_input"><label>消费总额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
             </div>
             <div id="relation" style="display: none">
-                <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
-                                                                     readonly="true" data-code=""><span
-                        class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
                 <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
                 <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
@@ -1077,7 +963,6 @@
             </ul>
     </div>
 </div>
-<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
@@ -1087,6 +972,7 @@
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/silide.js?20161206"></script>
 <script src="../js/vip/vip.js?20161202"></script>
+<script src="../js/vip_screen.js?20161214"></script>
 <script src="../js/vip/vip_getNew.js"></script>
 <script>
     $("#content").niceScroll({
@@ -1098,313 +984,6 @@
         autohidemode:true,
         cursorwidth:"9px",
         cursorborderradius:"10px"});
-    //日期调用插件
-    var simple_birth_start={
-        elem: '#simple_birth_start',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59', //最大日期
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            simple_birth_end.min = datas; //开始日选好后，重置结束日的最小日期
-            simple_birth_end.start = datas; //将结束日的初始值设定为开始日
-        }
-    };
-    var simple_birth_end={
-        elem: '#simple_birth_end',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59',
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            simple_birth_start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    var mark_start={
-        elem: '#simple_mark_start',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59', //最大日期
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            mark_end.min = datas; //开始日选好后，重置结束日的最小日期
-            mark_end.start = datas; //将结束日的初始值设定为开始日
-        }
-    };
-    var mark_end={
-        elem: '#simple_mark_end',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59',
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            mark_start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    var start={
-        elem: '#birth_start',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59', //最大日期
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            end.min = datas; //开始日选好后，重置结束日的最小日期
-            end.start = datas; //将结束日的初始值设定为开始日
-        }
-    };
-    var end={
-        elem: '#birth_end',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59',
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    var activity_start={
-        elem: '#activate_card_start',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59', //最大日期
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            activity_end.min = datas; //开始日选好后，重置结束日的最小日期
-            activity_end.start = datas; //将结束日的初始值设定为开始日
-        }
-    };
-    var activity_end={
-        elem: '#activate_card_end',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59',
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            activity_start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    var recent_start={
-        elem: '#recent_start',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59', //最大日期
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            recent_end.min = datas; //开始日选好后，重置结束日的最小日期
-            recent_end.start = datas; //将结束日的初始值设定为开始日
-        }
-    };
-    var recent_end={
-        elem: '#recent_end',
-        format: 'YYYY-MM-DD',
-        istime: true,
-        max: '2099-06-16 23:59:59',
-        istoday: false,
-        fixed:true,
-        choose: function (datas) {
-            activity_start.max = datas; //结束日选好后，重置开始日的最大日期
-        }
-    };
-    laydate(simple_birth_start);
-    laydate(simple_birth_end);
-    laydate(mark_start);
-    laydate(mark_end);
-    laydate(start);
-    laydate(end);
-    laydate(activity_start);
-    laydate(activity_end);
-    laydate(recent_start);
-    laydate(recent_end);
-    //定义remove
-    Array.prototype.remove = function(val) {
-        var index = this.indexOf(val);
-        if (index > -1) {
-            this.splice(index, 1);
-        }
-    };
-    //高级筛选弹窗
-    $("#more_filter").click(function () {
-        $("#simple_filter").hide();
-        $("#senior_filter").show();
-    });
-    $("#back_filter").click(function () {
-        $("#simple_filter").show();
-        $("#senior_filter").hide();
-    });
-    //筛选的下拉模拟事件
-    $("#simple_filter_condition ul li").click(function () {
-        var index = $(this).index();
-        $(this).children("a").addClass("condition_active");
-        $(this).siblings("li").children("a").removeClass("condition_active");
-        $("#simple_contion").children("div").eq(index).css("display", "block");
-        $("#simple_contion").children("div").eq(index).siblings("div").css("display", "none");
-    });
-    $("#filter_condition ul li").click(function () {
-        var index = $(this).index();
-        $(this).children("a").addClass("condition_active");
-        $(this).siblings("li").children("a").removeClass("condition_active");
-        $("#contion").children("div").eq(index).css("display", "block");
-        $("#contion").children("div").eq(index).siblings("div").css("display", "none");
-    });
-    $("#sex").click(function () {
-        $("#sex_select").toggle();
-    });
-    $("#sex_select li").click(function () {
-        $("#sex").val($(this).html());
-        $("#sex_select").hide();
-    });
-    $("#state").click(function () {
-        $("#state_select").toggle();
-    });
-    $("#state_select li").click(function () {
-        $("#state").val($(this).html());
-        $("#state_select").hide();
-    });
-    $("#simple_state").click(function () {
-        $("#simple_state_select").toggle();
-    });
-    $("#simple_state_select li").click(function () {
-        $("#simple_state").val($(this).html());
-        $("#simple_state_select").hide();
-    });
-    $("#age_l").click(function () {
-        $(".age_l").toggle();
-    });
-    $("#age_r").click(function () {
-        $(".age_r").toggle();
-    });
-    $(".age_l").on("click","li",function () {
-        var max = $("#age_r").val();
-        var val = parseInt($(this).html());
-        if(val >= max && max !== ""){
-            art.dialog({
-                zIndex:10003,
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: "不能大于右边的年龄哦"
-            });
-            return;
-        }
-        $("#age_l").val($(this).html());
-        $(".age_l").hide();
-    });
-    $(".age_r").on("click","li",function () {
-        var min = $("#age_l").val();
-        var val = parseInt($(this).html());
-        if(val <= min  && min !== ""){
-            art.dialog({
-                zIndex:10003,
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: "不能小于右边的年龄哦"
-            });
-            return;
-        }
-        $("#age_r").val($(this).html());
-        $(".age_r").hide();
-    });
-    var groupName = [];
-    var groupCode = [];
-    $(".filter_group ul").on("click","li",function () {
-        var val = $(this).html();
-        var code = $(this).attr("id");
-        if($(this).attr("class") == "group_active"){
-            $(this).removeClass("group_active");
-            groupName.remove(val);
-            groupCode.remove(code);
-        }else {
-            $(this).addClass("group_active");
-            groupName.push(val);
-            groupCode.push(code);
-        }
-        $("#filter_group").val(groupName.toString());
-        $("#filter_group").attr("data-code",groupCode.toString);
-    });
-    //获取分组
-    $("#filter_group").click(function () {
-        $(".filter_group").toggle();
-        var corp = $("#filter_group").attr("data-corp");
-        if(corp !== undefined){
-            $(".filter_group #ul").getNiceScroll().resize();
-            return ;
-        }else {
-            getGroup();
-        }
-    });
-    $("#search_filter_group").keydown(function () {
-        var event=window.event||arguments[0];
-        if(event.keyCode==13){
-            getGroup();
-        }
-    });
-    $(document).click(function (e) {
-        if (!($(e.target).is("#sex_select")||$(e.target).is("#sex"))) {
-            $("#sex_select").hide();
-        }
-        if (!($(e.target).is("#state_select")||$(e.target).is("#state"))) {
-            $("#state_select").hide();
-        }
-        if (!($(e.target).is("#simple_state_select")||$(e.target).is("#simple_state"))) {
-            $("#simple_state_select").hide();
-        }
-        if(!($(e.target).is(".age_l")||$(e.target).is("#age_l"))) {
-            $(".age_l").hide()
-        }
-        if(!($(e.target).is(".age_r")||$(e.target).is("#age_r"))){
-            $(".age_r").hide();
-        }
-        if(!($(e.target).is("#filter_group")||$(e.target).is(".filter_group input"))){
-            $(".filter_group").hide();
-        }
-        if(!($(e.target).is("#batch_search_label"))){
-            $(".batch_search_label ul").hide();
-        }
-    });
-    $(function () {
-        //给年龄赋值
-        for(var i=1;i<101;i++){
-            $(".age_l").append('<li>'+i+'</li>');
-            $(".age_r").append('<li>'+i+'</li>')
-        }
-        //引用滚动样式插件
-        $(".filter_group #ul").niceScroll({
-            cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-            cursorcolor:" rgba(0,0,0,0.2)",
-            cursoropacitymax:1,
-            touchbehavior:false,
-            cursorminheight:30,
-            autohidemode:false
-           });
-        $(window).scroll(function () {
-            if ($(window).scrollTop() > 100) {
-                $("#side_bar .gotop").fadeIn();
-            } else {
-                $("#side-bar .gotop").hide();
-            }
-        });
-        $("#side_bar .gotop").click(function () {
-            $('html,body').animate({
-                'scrollTop': 0
-            }, 500);
-        });
-        $("#side_bar .gobottom").click(function () {
-            var btm = $('html,body').height();
-            $('html,body').animate({
-                'scrollTop': btm
-            }, 500);
-        })
-    });
 </script>
 </body>
 </html>

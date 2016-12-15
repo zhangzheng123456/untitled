@@ -1416,8 +1416,8 @@ $("#send").click(function(){
 	var send_type="";
 	if($("#MESSAGE_TYPE").val() == "短信"){
 		send_type = "sms";
-	}else if($("#MESSAGE_TYPE").val() == "模板消息"){
-		send_type = "template";
+	}else if($("#MESSAGE_TYPE").val() == "微信群发消息"){
+		send_type = "wxmass";
 	}
 	param["corp_code"]=corp_code;
 	param["content"]=content;

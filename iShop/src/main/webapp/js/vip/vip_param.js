@@ -352,7 +352,7 @@ function GET(a,b){
             cout=list.pages;
             var pageNum = list.pageNum;
             list=list.list;
-            superaddition(list,pageNumber);
+            superaddition(list,pageNum);
             jumpBianse();
             setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
             $(".table tbody").sortable({helper:fixHelper,axis: 'y' ,delay: 200,cursor:"move",opacity: 0.6 , update: function(event, ui) {
@@ -485,13 +485,13 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
+    value=$("#search").val().replace(/\s+/g,"");
     inx=1;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         if(value!==""){
-            value=this.value.trim();
             param["searchValue"]=value;
             POST(inx,pageSize);
         }else {

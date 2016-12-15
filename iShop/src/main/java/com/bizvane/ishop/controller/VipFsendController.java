@@ -84,7 +84,8 @@ public class VipFsendController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = this.vipFsendService.insert(message, user_id);
+            int tem_id=1;
+            String result = this.vipFsendService.insert(message, user_id,tem_id);
 
             if (result.equals("0")) {
                 dataBean.setId(id);
