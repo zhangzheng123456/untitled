@@ -247,43 +247,43 @@ public class AreaController {
     /**
      * 区域列表
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String areaManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<Area> list = new PageInfo<Area>();
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = areaService.getAllAreaByPage(page_number, page_size, "", "");
-            } else {
-                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM) ) {
-                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", "");
-                } else if (role_code.equals(Common.ROLE_AM)) {
-                    String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, "");
-                }else {
-                    List<Area> list1 = new ArrayList<Area>();
-                    list.setList(list1);
-                }
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String areaManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<Area> list = new PageInfo<Area>();
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员
+//                list = areaService.getAllAreaByPage(page_number, page_size, "", "");
+//            } else {
+//                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM) ) {
+//                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", "");
+//                } else if (role_code.equals(Common.ROLE_AM)) {
+//                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+//                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, "");
+//                }else {
+//                    List<Area> list1 = new ArrayList<Area>();
+//                    list.setList(list1);
+//                }
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 区域新增
@@ -540,7 +540,7 @@ public class AreaController {
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Area> list = null;
+            PageInfo<Area> list = new PageInfo<Area>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = areaService.getAllAreaByPage(page_number, page_size, "", search_value);

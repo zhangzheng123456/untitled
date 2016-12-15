@@ -47,41 +47,41 @@ public class MessageQuickReplyController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String quickReplyList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            PageInfo<MessageQuickReply> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, "", "");
-            } else {
-                list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, corp_code, "");
-
-            }
-            JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String quickReplyList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String jsString = request.getParameter("param");
+//            logger.info("json---------------" + jsString);
+//            JSONObject jsonObj = new JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            PageInfo<MessageQuickReply> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员
+//                list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, "", "");
+//            } else {
+//                list = messageQuickReplyService.getAllQuickReplyByPage(page_number, page_size, corp_code, "");
+//
+//            }
+//            JSONObject result = new JSONObject();
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//            logger.info(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 根据id查询

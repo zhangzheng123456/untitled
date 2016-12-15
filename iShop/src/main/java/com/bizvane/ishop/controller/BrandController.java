@@ -177,43 +177,43 @@ public class BrandController {
     }
 
 
-    /**
-     * 品牌列表
-     */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String brandManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<Brand> list = new PageInfo<Brand>();
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = brandService.getAllBrandByPage(page_number, page_size, "", "");
-            } else if (role_code.equals(Common.ROLE_BM)) {
-                String brand_code = request.getSession().getAttribute("brand_code").toString();
-                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                String[] codes = brand_code.split(",");
-                list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, "");
-            } else {
-                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 品牌列表
+//     */
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String brandManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<Brand> list = new PageInfo<Brand>();
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员
+//                list = brandService.getAllBrandByPage(page_number, page_size, "", "");
+//            } else if (role_code.equals(Common.ROLE_BM)) {
+//                String brand_code = request.getSession().getAttribute("brand_code").toString();
+//                brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+//                String[] codes = brand_code.split(",");
+//                list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, "");
+//            } else {
+//                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 品牌新增
@@ -471,7 +471,7 @@ public class BrandController {
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Brand> list;
+            PageInfo<Brand> list = new PageInfo<Brand>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = brandService.getAllBrandByPage(page_number, page_size, "", search_value);
@@ -481,9 +481,12 @@ public class BrandController {
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
                 list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, search_value);
-            } else {
+            } else if (role_code.equals(Common.ROLE_AM)){
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = brandService.getAllBrandByPage(page_number, page_size, corp_code, search_value);
+            } else {
+                List<Brand> list1 = new ArrayList<Brand>();
+                list.setList(list1);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

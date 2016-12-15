@@ -38,34 +38,34 @@ public class VipParamController {
     @Autowired
     private BaseService baseService;
     String id;
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    //列表
-    public String selectAll(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            PageInfo<VipParam> list=new PageInfo<VipParam>();
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipParamService.selectAllParam(page_number, page_size, "", "");
-            }else {
-                list = vipParamService.selectAllParam(page_number, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    //列表
+//    public String selectAll(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            PageInfo<VipParam> list=new PageInfo<VipParam>();
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = vipParamService.selectAllParam(page_number, page_size, "", "");
+//            }else {
+//                list = vipParamService.selectAllParam(page_number, page_size, corp_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     //条件查询
     @RequestMapping(value = "/search", method = RequestMethod.POST)
