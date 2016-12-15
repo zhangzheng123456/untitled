@@ -122,7 +122,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             }
         } else if (send_type.equals("wxmass")) {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
-
+            JSONArray vip_infos=null;
             if (type.equals("1")) {
                 String area_code = vips_obj.get("area_code").toString();
                 String brand_code = vips_obj.get("brand_code").toString();
@@ -143,11 +143,11 @@ public class VipFsendServiceImpl implements VipFsendService {
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                     message = dataBox.data.get("message").value;
                     JSONObject msg_obj = JSONObject.parseObject(message);
-                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                     vip_infos = msg_obj.getJSONArray("vip_info");
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                        vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
+                        vip_obj.put("is_send","未发送");
 
                     }
                 } else {
@@ -159,11 +159,11 @@ public class VipFsendServiceImpl implements VipFsendService {
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                     message = dataBox.data.get("message").value;
                     JSONObject msg_obj = JSONObject.parseObject(message);
-                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                     vip_infos = msg_obj.getJSONArray("vip_info");
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
                         vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                        vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
+                        vip_obj.put("is_send","未发送");
                     }
 
                 }
@@ -176,23 +176,21 @@ public class VipFsendServiceImpl implements VipFsendService {
                 datalist.put(data_vip_id.key, data_vip_id);
 
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-                String message1 = dataBox.data.get("message").value;
-                JSONObject msg_obj = JSONObject.parseObject(message1);
-                JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                 message = dataBox.data.get("message").value;
+                JSONObject msg_obj = JSONObject.parseObject(message);
+                 vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
+                    vip_obj.put("is_send","未发送");
+                  
                 }
             }
 
             //查询MongoDB数据库获取列表
             String vipid[] = vip_id.split(",");
-            String vipname[] = vip_name.split(",");
 
             List<Map<String, Object>> list = new ArrayList();
             String vip = "";
-            String name = "";
-            logger.info("json--vip_name---------------------------" + vip_name);
 
             for (int i = 0; i < vipid.length; i++) {
                 vip = vipid[i];
@@ -201,24 +199,17 @@ public class VipFsendServiceImpl implements VipFsendService {
                 query_key.put("mass", sms_code);
                 query_key.put("vip_id", vip);
                 List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-                for (int j = 0; j < vipname.length; j++) {
-                    name = vipname[i];
+
+
                     if (message_list.size() == 0) {
-                        Map<String, Object> list_fail = new HashedMap();
-                        list_fail.put("vip_id", vip);
-                        list_fail.put("vip_name", name);
-                        list_fail.put("is_send", "未发送");
-                        list.add(list_fail);
-                        JSONObject vips_info = new JSONObject();
-                        vips_info.put("vip_info", list);
-                        message = JSON.toJSONString(vips_info);
+                        message = vip_infos.toString();
                     } else {
                         list.addAll(message_list);
                         JSONObject vips_info = new JSONObject();
                         vips_info.put("vip_info", list);
                         message = JSON.toJSONString(vips_info);
                     }
-                }
+
 
                 }
 
@@ -260,7 +251,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
         String type = sms_vips_obj.getString("type");
-        String openids = "ogUZEuD2Ju904CQvb2DBwRXOPpNk,";
+        String openids = "";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
