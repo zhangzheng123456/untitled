@@ -931,16 +931,6 @@ var ar=[];//区域
 var sp=[];//店铺
 var sf=[];//员工
 var str='';//调用allVip接口的区分
-//点击筛选
-$("#filtrate").click(function () {
-    var arr = whir.loading.getPageSize();
-    var left = (arr[0] - $("#screen_wrapper").width()) / 2;
-    var tp = (arr[3] - $("#screen_wrapper").height()) / 2 + 30;
-    $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
-    $("#p").show();
-    $("#screen_wrapper").css({"left": +left + "px", "top": +tp + "px", "position": "fixed"});
-    console.log(123123);
-})
 //点击筛选会员的所属区域
 $("#screen_areal").click(function () {
     // if($('#screen_area .screen_content_r ul li').length!=0){
@@ -963,7 +953,7 @@ $("#screen_areal").click(function () {
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
     $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
     $("#p").show();
-    $("#screen_area").css({"left": +left + "px", "top": +tp + "px", "position": "fixed"});
+    $("#screen_area").css({"left": +left + "px", "top": +tp + "px"});
     $("#screen_wrapper").hide();
     $("#screen_area").show();
     var area_num = 1
@@ -981,7 +971,7 @@ $("#screen_brandl").click(function () {
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
     $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
     $("#p").show();
-    $("#screen_brand").css({"left": +left + "px", "top": +tp + "px", "position": "fixed"});
+    $("#screen_brand").css({"left": +left + "px", "top": +tp + "px"});
     $("#screen_brand").show();
     if ($("#screen_brand .screen_content_l ul li").length > 1) {
         return;
@@ -1013,7 +1003,7 @@ $("#screen_staffl").click(function () {
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
     $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
     $("#p").show();
-    $("#screen_staff").css({"left": +left + "px", "top": +tp + "px", "position": "fixed"});
+    $("#screen_staff").css({"left": +left + "px", "top": +tp + "px"});
     $("#screen_wrapper").hide();
     $("#screen_staff").show();
     $("#screen_staff .screen_content_l ul").empty();
@@ -1034,16 +1024,6 @@ function nodeSave(node_r,node_l,arr,node_container) {
         })
     }
 }
-//点击列表显示选中状态
-$(".screen_content").on("click", "li", function () {
-    var input = $(this).find("input")[0];
-    var thinput = $("thead input")[0];
-    if (input.type == "checkbox" && input.name == "test" && input.checked == false) {
-        input.checked = true;
-    } else if (input.type == "checkbox" && input.name == "test" && input.checked == true) {
-        input.checked = false;
-    }
-})
 //点击店铺的区域
 $("#shop_area").click(function () {
     var arr = whir.loading.getPageSize();
@@ -1051,7 +1031,7 @@ $("#shop_area").click(function () {
     var tp = (arr[3] - $("#screen_shop").height()) / 2 + 30;
     $("#screen_shop").hide();
     $("#screen_area").show();
-    $("#screen_area").css({"left": +left + "px", "top": +tp + "px", "position": "fixed"});
+    $("#screen_area").css({"left": +left + "px", "top": +tp + "px"});
     var area_num = 1;
     $("#screen_area .screen_content_l ul").empty();
     // $("#screen_area .screen_content_r ul").empty();
@@ -1066,98 +1046,10 @@ $("#shop_brand").click(function () {
     var tp = (arr[3] - $("#screen_shop").height()) / 2 + 30;
     $("#screen_shop").hide();
     $("#screen_brand").show();
-    $("#screen_brand").css({"left": +left + "px", "top": +tp + "px", "position": "fixed"});
+    $("#screen_brand").css({"left": +left + "px", "top": +tp + "px"});
     $("#screen_brand .screen_content_l ul").empty();
     // $("#screen_brand .screen_content_r ul").empty();
     getbrandlist();
-})
-//移到右边
-function removeRight(a, b) {
-    var li = "";
-    if (a == "only") {
-        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
-    }
-    if (a == "all") {
-        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
-    }
-    if (li.length == "0") {
-        art.dialog({
-            zIndex:10003,
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "请先选择"
-        });
-        return;
-    }
-    if (li.length > 0) {
-        for (var i = 0; i < li.length; i++) {
-            var html = $(li[i]).html();
-            var id = $(li[i]).find("input[type='checkbox']").val();
-            var input = $(b).parents(".screen_content").find(".screen_content_r li");
-            for (var j = 0; j < input.length; j++) {
-                if ($(input[j]).attr("id") == id) {
-                    $(input[j]).remove();
-                }
-            }
-            $(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='" + id + "'>" + html + "</li>")
-        }
-    }
-    var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
-    $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-    // bianse();
-}
-//移到左边
-function removeLeft(a, b) {
-    var li = "";
-    if (a == "only") {
-        li = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']:checked").parents("li");
-    }
-    if (a == "all") {
-        li = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
-    }
-    if (li.length == "0") {
-        art.dialog({
-            zIndex:10003,
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "请先选择"
-        });
-        return;
-    }
-    if (li.length > 0) {
-        for (var i = li.length - 1; i >= 0; i--) {
-            $(li[i]).remove();
-        }
-    }
-    var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
-    $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-    // bianse();
-}
-//点击右移
-$(".shift_right").click(function () {
-    var right = "only";
-    var div = $(this);
-    removeRight(right, div);
-})
-//点击右移全部
-$(".shift_right_all").click(function () {
-    var right = "all";
-    var div = $(this);
-    removeRight(right, div);
-})
-//点击左移
-$(".shift_left").click(function () {
-    var left = "only";
-    var div = $(this);
-    removeLeft(left, div);
-})
-//点击左移全部
-$(".shift_left_all").click(function () {
-    var left = "all";
-    var div = $(this);
-    removeLeft(left, div);
 })
 //区域搜索
 $("#area_search").keydown(function () {

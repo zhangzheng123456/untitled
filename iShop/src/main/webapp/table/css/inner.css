@@ -1497,6 +1497,11 @@ input::-webkit-input-placeholder{
 	right: 15px;
 	top: 5px;
 }
+.contion .first_unit{
+	position: absolute;
+	right: 204px;
+	top: 5px;
+}
 .text_l{
     position: absolute;
     top: 6px;
@@ -1743,8 +1748,8 @@ input::-webkit-input-placeholder{
 }
 .sex_select li {
 	text-indent: 10px;
-	height: 30px;
-	line-height: 30px;
+	height: 25px;
+	line-height: 25px;
 }
 .sex_select li:hover {
 	color: #FFFFFF;

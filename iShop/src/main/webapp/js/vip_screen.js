@@ -126,6 +126,16 @@ laydate(activity_start);
 laydate(activity_end);
 laydate(recent_start);
 laydate(recent_end);
+//点击筛选
+$("#filtrate").click(function () {
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_wrapper").width())/2;
+    var tp=(arr[3]-$("#screen_wrapper").height())/2;
+    $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
+    $("#p").show();
+    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_wrapper").show();
+});
 //高级筛选弹窗
 $("#more_filter").click(function () {
     $("#simple_filter").hide();
@@ -133,7 +143,7 @@ $("#more_filter").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_wrapper").width())/2;
     var tp=(arr[3]-$("#screen_wrapper").height())/2;
-    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
 });
 $("#back_filter").click(function () {
     $("#simple_filter").show();
@@ -141,7 +151,7 @@ $("#back_filter").click(function () {
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_wrapper").width())/2;
     var tp=(arr[3]-$("#screen_wrapper").height())/2;
-    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#screen_wrapper").css({"left":+left+"px","top":+tp+"px"});
 });
 //筛选的下拉模拟事件
 $("#simple_filter_condition ul li").click(function () {
@@ -322,6 +332,15 @@ Array.prototype.remove = function(val) {
         this.splice(index, 1);
     }
 };
+//点击列表显示选中状态
+$(".screen_content").on("click","li",function(){
+    var input=$(this).find("input")[0];
+    if(input.type=="checkbox"&&input.checked==false){
+        input.checked = true;
+    }else if(input.type=="checkbox"&&input.checked==true){
+        input.checked = false;
+    }
+});
 //获取分组
 function getGroup() {
     var corp_command = "/vipGroup/getCorpGroups";
@@ -351,3 +370,96 @@ function getGroup() {
         }
     })
 }
+//移到右边
+function removeRight(a,b){
+    var li="";
+    if(a=="only"){
+        li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
+    }
+    if(a=="all"){
+        li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
+    }
+    if(li.length=="0"){
+        art.dialog({
+            zIndex:10003,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "请先选择"
+        });
+        return;
+    }
+    if(li.length>0){
+        for(var i=0;i<li.length;i++){
+            var html=$(li[i]).html();
+            var id=$(li[i]).find("input[type='checkbox']").val();
+            $(li[i]).find("input[type='checkbox']")[0].checked=true;
+            var input=$(b).parents(".screen_content").find(".screen_content_r li");
+            for(var j=0;j<input.length;j++){
+                if($(input[j]).attr("id")==id){
+                    $(input[j]).remove();
+                }
+            }
+            $(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
+            $(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
+        }
+    }
+    var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+    $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+    $("#screen_staff .screen_content_l li:odd").css("backgroundColor","#fff");
+    $("#screen_staff .screen_content_l li:even").css("backgroundColor","#ededed");
+    $("#screen_staff .screen_content_r li:odd").css("backgroundColor","#fff");
+    $("#screen_staff .screen_content_r li:even").css("backgroundColor","#ededed");
+}
+//移到左边
+function removeLeft(a,b){
+    var li="";
+    if(a=="only"){
+        li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']:checked").parents("li");
+    }
+    if(a=="all"){
+        li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
+    }
+    if(li.length=="0"){
+        art.dialog({
+            zIndex:10003,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "请先选择"
+        });
+        return;
+    }
+    if(li.length>0){
+        for(var i=li.length-1;i>=0;i--){
+            $(li[i]).remove();
+            $(b).parents(".screen_content").find(".screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked");
+        }
+    }
+    var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+    $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+}
+//点击右移
+$(".shift_right").click(function(){
+    var right="only";
+    var div=$(this);
+    removeRight(right,div);
+});
+//点击右移全部
+$(".shift_right_all").click(function(){
+    var right="all";
+    var div=$(this);
+    removeRight(right,div);
+});
+//点击左移
+$(".shift_left").click(function(){
+    var left="only";
+    var div=$(this);
+    removeLeft(left,div);
+});
+//点击左移全部
+$(".shift_left_all").click(function(){
+    var left="all";
+    var div=$(this);
+    removeLeft(left,div);
+});

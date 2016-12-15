@@ -192,7 +192,6 @@ var oc = new ObjectControl();
 	return obj;
 }));
 jQuery(document).ready(function(){
-
 	window.tasktype.init();//初始化
 	var a="";
 	if($(".pre_title label").text() == "编辑任务类型") {

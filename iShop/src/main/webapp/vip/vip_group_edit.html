@@ -102,8 +102,8 @@
     <div class="editor_detail col-lg-4 col-md-7 col-sm-10 animated fadeInRight" style="margin: 0;">
         <div class="brandedit_oper_btn">
             <ul>
-                <li id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
-                <li id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
         <form class="msg_detail">
@@ -326,9 +326,9 @@
         <div class="contion" id="simple_contion">
             <div class="contion_input"><label>生日</label><input id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
             <div class="contion_input" style="display: none"><label>纪念日</label><input id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input" style="display: none"><label>消费频次</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
-            <div class="contion_input" style="display: none"><label>消费金额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
-            <div class="contion_input" style="display: none"><label>可用  积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+            <div class="contion_input" style="display: none"><label>消费频次</label><input class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+            <div class="contion_input" style="display: none"><label>消费金额</label><input class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            <div class="contion_input" style="display: none"><label>可用积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
             <div class="contion_input" style="display: none"><label>冻结会员</label><input class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
                 <li>已冻结</li>
                 <li>未冻结</li>
@@ -378,8 +378,8 @@
             </div>
             <div id="consume_attribute" style="display: none">
                 <div class="contion_input"><label>最近消费日期</label><input id="recent_start" class="short_input_date laydate-icon" readonly/><label class="jian">~</label><input id="recent_end" class="short_input_date laydate-icon" readonly/></div>
-                <div class="contion_input"><label>消费次数</label><input class="short_input_date"><span>次</span><label class="jian">~</label><input class="short_input_date"></div>
-                <div class="contion_input"><label>消费总额</label><input class="short_input_date"><label class="jian">~</label><span>元</span><input class="short_input_date"></div>
+                <div class="contion_input"><label>消费次数</label><input class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+                <div class="contion_input"><label>消费总额</label><input class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
             </div>
             <div id="relation" style="display: none">
                 <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text"
