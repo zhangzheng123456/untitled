@@ -44,14 +44,14 @@ $(function(){
         var menu=message.menu;
         for(var i=0;i<menu.length;i++){
         	var li="<li>";
-        	li+="<h1 class='menu_t' data-url='"+menu[i].url+"' data-code='"+menu[i].func_code+"'><i class='"+menu[i].icon+"'></i>"+menu[i].mod_name+"<span></span></h1>";
+        	li+="<h1 class='menu_t' data-url='"+menu[i].url+"' data-code='"+menu[i].func_code+"'><i class='"+menu[i].icon+"'></i><b class='quchu'>"+menu[i].mod_name+"</b><span></span></h1>";
         	if(menu[i].functions!==""){
                 li+="<dl>"
         		for(var j=0;j<menu[i].functions.length;j++){
                     if(menu[i].functions[j].func_code=='F0036'||menu[i].functions[j].func_code=='F0034'||menu[i].functions[j].func_code=='F0032'||menu[i].functions[j].func_code=='F0041'){
                         li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span><b class='pro_parent'>"+menu[i].functions[j].fun_name+"<b class='pro'>pro</b></b></a></dd>" 
                     }else{
-        			    li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span>"+menu[i].functions[j].fun_name+"</a></dd>"
+        			    li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span><b class='quchu'>"+menu[i].functions[j].fun_name+"</b></a></dd>"
                     }
         		}
                 li+="</dl>"		
