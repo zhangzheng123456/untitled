@@ -182,6 +182,7 @@ var getNewVip={
     postParma:function () {
         //获取参数
         var param={};
+        console.log(String($('#OWN_SHOPPERS').val()).search('null')==-1);//===-1说明不是null
         param.corp_code='C10000';
         param.phone=$('#content').find('.phone').val();
         param.card_no=$('#content').find('.cardNo').val();
@@ -190,11 +191,10 @@ var getNewVip={
         param.vip_card_type=$('#content').find('.vipCardType').val();
         param.birthday=$('#content').find('.birthday').val();
         param.sex=$('#content').find('.gender').val();
-        param.user_code=$('#OWN_SHOPPERS').val();
-        param.store_code=$('#OWN_STORE').val().split('-')[0];
+        param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val();
+        param.store_code=String($('#OWN_STORE').val()).search('null')!=-1?'':$('#OWN_STORE').val().split('-')[0];
         oc.postRequire("post","/vip/addVip","", param, function(data) {
             if(data.code==0){
-                console.log(0)
                 art.dialog({
                     zIndex:10003,
                     time: 1,
