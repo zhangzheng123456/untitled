@@ -481,7 +481,7 @@ public class VIPController {
             Map datalist = iceInterfaceService.vipBasicMethod(jsonObject, request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
             datalist.put(data_search_value.key, data_search_value);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
