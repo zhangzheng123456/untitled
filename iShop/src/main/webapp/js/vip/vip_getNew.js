@@ -34,7 +34,7 @@ var getNewVip={
         $('#content').on('blur','input',function () {
             if(this.className=='billNo'){
                 me.testBlur();
-            }else{
+            }else if(this.className=='searchable-select-input'){}else{
                 me.testInput(this);
             }
         });
