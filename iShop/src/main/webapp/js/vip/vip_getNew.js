@@ -27,14 +27,14 @@ var getNewVip={
             if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
             if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
             if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
-            if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
+            // if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
             this.postParma();
         }.bind(this));
         var me=this;
         $('#content').on('blur','input',function () {
             if(this.className=='billNo'){
                 me.testBlur();
-            }else{
+            }else if(this.className=='searchable-select-input'){}else{
                 me.testInput(this);
             }
         });
@@ -133,7 +133,15 @@ var getNewVip={
     $('#gender').searchableSelect();
     $('#gender').parent().find('.searchable-select-holder').html('男');
     $('#gender').parent().find('.searchable-select-input').remove();
-},
+    var corp_htm2='<option value="东鹏玖姿贵宾卡">东鹏玖姿贵宾卡</option>'
+        +'<option value="玖姿贵宾卡">玖姿贵宾卡</option>'
+        +'<option value="南阳贵宾卡">南阳贵宾卡</option>'
+        +'<option value="玖姿累积卡">玖姿累积卡</option>';
+        $("#vipCardType").append(corp_htm2);
+        $('#vipCardType').searchableSelect();
+        $('#vipCardType').parent().find('.searchable-select-holder').html('东鹏玖姿贵宾卡');
+        $('#vipCardType').parent().find('.searchable-select-input').remove();
+    },
     getMoreStaff:function(){
         whir.loading.add("",0.5);//加载等待框
         $('#OWN_SHOPPERS').empty().next().remove();
@@ -182,7 +190,6 @@ var getNewVip={
     postParma:function () {
         //获取参数
         var param={};
-        console.log(String($('#OWN_SHOPPERS').val()).search('null')==-1);//===-1说明不是null
         param.corp_code='C10000';
         param.phone=$('#content').find('.phone').val();
         param.card_no=$('#content').find('.cardNo').val();
