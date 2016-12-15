@@ -198,7 +198,7 @@ jQuery(document).ready(function(){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
 				if(action.length<=0){
-					$(".operedit_btn li:eq(0)").remove();
+					$("#edit_save").remove();
 					$("#edit_close").css("margin-left","120px");
 				}
 			}

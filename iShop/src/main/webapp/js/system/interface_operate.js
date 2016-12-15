@@ -144,6 +144,21 @@ jQuery(document).ready(function(){
 	window.interface.init();//初始化
 	if($(".pre_title label").text()=="编辑接口信息"){
 		var id=sessionStorage.getItem("id");
+		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+		key_val=JSON.parse(key_val);
+		var funcCode=key_val.func_code;
+		$.get("/detail?funcCode="+funcCode+"", function(data){
+			var data=JSON.parse(data);
+			if(data.code=="0"){
+				var message=JSON.parse(data.message);
+				var action=message.actions;
+				console.log(action.length);
+				if(action.length==0){
+					$("#edit_save").remove();
+					$("#edit_close").css("margin-left","120px");
+				}
+			}
+		});
 		var _params={"id":id};
 		var _command="/interfacers/selectById";
 		oc.postRequire("post", _command,"", _params, function(data){

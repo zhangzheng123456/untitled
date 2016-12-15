@@ -7340,11 +7340,11 @@ body.skin-3 {
   vertical-align:middle;
   font-size:16px;
 }
-.editor_detail ul li:nth-of-type(odd){
+.editor_detail ul .edit_save{
   background:#6dc1c8;
   margin-right:10px;
 }
-.editor_detail ul li:nth-of-type(even){
+.editor_detail ul .edit_close{
   background:#4a5f7c;
 }
 .msg_detail{
@@ -7488,6 +7488,7 @@ body.skin-3 {
 .editor_detail_em ul li {
     width: 160px;
     height: 30px;
+    float: left;
     display: inline-block;
     list-style: none;
     color: #ffffff;
