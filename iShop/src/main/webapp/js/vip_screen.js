@@ -158,6 +158,12 @@ $("#filter_condition ul li").click(function () {
     $("#contion").children("div").eq(index).css("display", "block");
     $("#contion").children("div").eq(index).siblings("div").css("display", "none");
 });
+$("#vip_card_type").click(function () {
+   $("#card_type_select").toggle();
+});
+$("#card_type_select li").click(function () {
+    $("#vip_card_type").val($(this).html());
+});
 $("#sex").click(function () {
     $("#sex_select").toggle();
 });
@@ -270,6 +276,9 @@ $(document).click(function (e) {
     }
     if(!($(e.target).is("#batch_search_label"))){
         $(".batch_search_label ul").hide();
+    }
+    if(!($(e.target).is("#vip_card_type"))){
+        $("#card_type_select").hide();
     }
 });
 $(function () {
