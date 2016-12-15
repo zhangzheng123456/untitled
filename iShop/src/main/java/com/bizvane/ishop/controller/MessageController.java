@@ -53,39 +53,39 @@ public class MessageController {
     /**
      * 发送消息
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String messageManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<MessageInfo> list = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageService.selectBySearch(page_number, page_size, "", "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                //企业管理员
-                list = messageService.selectBySearch(page_number, page_size, corp_code, "", "");
-            } else {
-                list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.toString());
-            logger.info("错误信息:" + ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String messageManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            String user_code = request.getSession(false).getAttribute("user_code").toString();
+//
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<MessageInfo> list = null;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = messageService.selectBySearch(page_number, page_size, "", "", "");
+//            } else if (role_code.equals(Common.ROLE_GM)) {
+//                //企业管理员
+//                list = messageService.selectBySearch(page_number, page_size, corp_code, "", "");
+//            } else {
+//                list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setId("1");
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.toString());
+//            logger.info("错误信息:" + ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
     /**

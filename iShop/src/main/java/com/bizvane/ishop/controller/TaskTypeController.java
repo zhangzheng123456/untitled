@@ -50,36 +50,36 @@ public class TaskTypeController {
 
     private static final Logger logger = Logger.getLogger(TaskTypeController.class);
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String taskTypeList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            int page_num = Integer.parseInt(request.getParameter("pageNumber"));
-
-            JSONObject result = new JSONObject();
-            PageInfo<TaskType> tasktype;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                tasktype = taskTypeService.selectAllTaskType(page_num, page_size, "", "");
-            } else {
-                tasktype = taskTypeService.selectAllTaskType(page_num, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(tasktype));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String taskTypeList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            int page_num = Integer.parseInt(request.getParameter("pageNumber"));
+//
+//            JSONObject result = new JSONObject();
+//            PageInfo<TaskType> tasktype;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                tasktype = taskTypeService.selectAllTaskType(page_num, page_size, "", "");
+//            } else {
+//                tasktype = taskTypeService.selectAllTaskType(page_num, page_size, corp_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(tasktype));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//            logger.info(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody

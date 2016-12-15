@@ -341,90 +341,90 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 店铺管理
-     */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String list(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-
-            JSONObject result = new JSONObject();
-            PageInfo<Store> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = storeService.getAllStore(request, page_number, page_size, "", "", "", "");
-            } else {
-                if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(request, page_number, page_size, corp_code, "", "", "");
-                } else if (role_code.equals(Common.ROLE_BM)) {
-                    String brand_code = request.getSession().getAttribute("brand_code").toString();
-                    if (brand_code == null || brand_code.equals("")) {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId("1");
-                        dataBean.setMessage("您还没有所属品牌");
-                        return dataBean.getJsonStr();
-                    } else {
-                        //加上特殊字符，进行查询
-                        brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
-                        String[] brandCodes = brand_code.split(",");
-                        for (int i = 0; i < brandCodes.length; i++) {
-                            brandCodes[i] = Common.SPECIAL_HEAD + brandCodes[i] + ",";
-                        }
-                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null, null, brandCodes, "", "", "");
-                    }
-                } else if (role_code.equals(Common.ROLE_AM)) {
-                    String area_code = request.getSession().getAttribute("area_code").toString();
-                    String store_code = request.getSession().getAttribute("store_code").toString();
-                    if (area_code == null || area_code.equals("")) {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId("1");
-                        dataBean.setMessage("您还没有所属区域");
-                        return dataBean.getJsonStr();
-                    } else {
-                        //加上特殊字符，进行查询
-                        area_code = area_code.replace(Common.SPECIAL_HEAD, "");
-                        String[] areaCodes = area_code.split(",");
-                        String[] storeCodes = null;
-                        for (int i = 0; i < areaCodes.length; i++) {
-                            areaCodes[i] = Common.SPECIAL_HEAD + areaCodes[i] + ",";
-                        }
-                        if (!store_code.equals("")) {
-                            store_code = store_code.replace(Common.SPECIAL_HEAD, "");
-                            storeCodes = store_code.split(",");
-                        }
-                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, storeCodes, null, "", "", "");
-                    }
-                } else {
-                    String store_code = request.getSession().getAttribute("store_code").toString();
-                    if (store_code == null || store_code.equals("")) {
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setId("1");
-                        dataBean.setMessage("您还没有所属店铺");
-                        return dataBean.getJsonStr();
-                    } else {
-                        list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, "");
-                    }
-                }
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 店铺管理
+//     */
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String list(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//
+//            JSONObject result = new JSONObject();
+//            PageInfo<Store> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员
+//                list = storeService.getAllStore(request, page_number, page_size, "", "", "", "");
+//            } else {
+//                if (role_code.equals(Common.ROLE_GM)) {
+//                    list = storeService.getAllStore(request, page_number, page_size, corp_code, "", "", "");
+//                } else if (role_code.equals(Common.ROLE_BM)) {
+//                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+//                    if (brand_code == null || brand_code.equals("")) {
+//                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                        dataBean.setId("1");
+//                        dataBean.setMessage("您还没有所属品牌");
+//                        return dataBean.getJsonStr();
+//                    } else {
+//                        //加上特殊字符，进行查询
+//                        brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+//                        String[] brandCodes = brand_code.split(",");
+//                        for (int i = 0; i < brandCodes.length; i++) {
+//                            brandCodes[i] = Common.SPECIAL_HEAD + brandCodes[i] + ",";
+//                        }
+//                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, null, null, brandCodes, "", "", "");
+//                    }
+//                } else if (role_code.equals(Common.ROLE_AM)) {
+//                    String area_code = request.getSession().getAttribute("area_code").toString();
+//                    String store_code = request.getSession().getAttribute("store_code").toString();
+//                    if (area_code == null || area_code.equals("")) {
+//                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                        dataBean.setId("1");
+//                        dataBean.setMessage("您还没有所属区域");
+//                        return dataBean.getJsonStr();
+//                    } else {
+//                        //加上特殊字符，进行查询
+//                        area_code = area_code.replace(Common.SPECIAL_HEAD, "");
+//                        String[] areaCodes = area_code.split(",");
+//                        String[] storeCodes = null;
+//                        for (int i = 0; i < areaCodes.length; i++) {
+//                            areaCodes[i] = Common.SPECIAL_HEAD + areaCodes[i] + ",";
+//                        }
+//                        if (!store_code.equals("")) {
+//                            store_code = store_code.replace(Common.SPECIAL_HEAD, "");
+//                            storeCodes = store_code.split(",");
+//                        }
+//                        list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, storeCodes, null, "", "", "");
+//                    }
+//                } else {
+//                    String store_code = request.getSession().getAttribute("store_code").toString();
+//                    if (store_code == null || store_code.equals("")) {
+//                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                        dataBean.setId("1");
+//                        dataBean.setMessage("您还没有所属店铺");
+//                        return dataBean.getJsonStr();
+//                    } else {
+//                        list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, "");
+//                    }
+//                }
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//            logger.info(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 新增
@@ -696,7 +696,7 @@ public class StoreController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Store> list;
+            PageInfo<Store> list = new PageInfo<Store>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = storeService.getAllStore(request, page_number, page_size, "", search_value, "", "");
@@ -741,7 +741,7 @@ public class StoreController {
                         }
                         list = storeService.selectByAreaBrand(page_number, page_size, corp_code, areaCodes, storeCodes, null, search_value, "", "");
                     }
-                } else {
+                } else if(role_code.equals(Common.ROLE_SM)) {
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     if (store_code == null || store_code.equals("")) {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -751,6 +751,9 @@ public class StoreController {
                     } else {
                         list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, search_value);
                     }
+                }else {
+                    List<Store> list1 = new ArrayList<Store>();
+                    list.setList(list1);
                 }
             }
             result.put("list", JSON.toJSONString(list));

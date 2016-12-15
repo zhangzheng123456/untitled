@@ -264,7 +264,7 @@ function jurisdiction(actions){
             $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
         }else if(actions[i].act_name=="output"){
             //$("#more_down").append("<div id='leading_out'>导出</div>");
-            $("#filtrate").before("<li id='leading_out' title='导出'> <span class='icon-ishop_6-05'></span> 导出</li>")
+            $("#filtrate").before("<li id='leading_out' title='因会员数据量大，请筛选后再导出'> <span class='icon-ishopwebicon_6-24'></span> 导出</li>")
         }else if(actions[i].act_name=="input"){
             $("#more_down").append("<div id='guide_into'>导入</div>");
         }else if(actions[i].act_name=="addLabel"){

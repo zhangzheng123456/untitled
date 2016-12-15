@@ -485,10 +485,10 @@ $(".record_search").click(function () {
     getVipPoints();
 });
 //发送手机验证码
-$("#send_code i").click(function () {
+$("#send_code i,#send_code input").click(function () {
     $("#send_code ul").toggle();
 });
 $("#send_code ul li").click(function () {
     $("#send_code input").val($(this).html());
-
+    $("#send_code ul").hide();
 });

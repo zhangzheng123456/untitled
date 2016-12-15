@@ -51,36 +51,36 @@ public class ValidateCodeController {
 
     private static final Logger logger = Logger.getLogger(ValidateCodeController.class);
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    //列表
-    public String selectAll(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String role_code = request.getSession().getAttribute("role_code").toString();
-        String corp_code = request.getSession().getAttribute("corp_code").toString();
-        String phone = request.getSession().getAttribute("phone").toString();
-
-        try {
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<ValidateCode> list;
-            if (role_code.equals(Common.ROLE_SYS) || phone.equals("18900001111")) {
-                list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
-            }else {
-                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    //列表
+//    public String selectAll(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String role_code = request.getSession().getAttribute("role_code").toString();
+//        String corp_code = request.getSession().getAttribute("corp_code").toString();
+//        String phone = request.getSession().getAttribute("phone").toString();
+//
+//        try {
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<ValidateCode> list;
+//            if (role_code.equals(Common.ROLE_SYS) || phone.equals("18900001111")) {
+//                list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
+//            }else {
+//                list = validateCodeService.selectValidateCodeByCorp(page_number, page_size,corp_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody

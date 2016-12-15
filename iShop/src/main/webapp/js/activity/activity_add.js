@@ -612,12 +612,9 @@ function getcorplist(a) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
             console.log(msg);
-            var index = 0;
             var corp_html = '';
-            var c = null;
-            for (index in msg.corps) {
-                c = msg.corps[index];
-                corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
+            for (var i=0;i<msg.corps.length;i++) {
+                corp_html += '<option value="' + msg.corps[i].corp_code + '">' + msg.corps[i].corp_name + '</option>';
             }
             $("#OWN_CORP").append(corp_html);
             if (a !== "") {

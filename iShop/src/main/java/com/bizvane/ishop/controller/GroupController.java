@@ -66,37 +66,37 @@ public class GroupController {
     /**
      * 群组管理
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String groupManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<Group> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = groupService.getGroupAll(page_number, page_size, "", "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                list = groupService.getGroupAll(page_number, page_size, corp_code, "", "");
-            } else {
-                list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String groupManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<Group> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员
+//                list = groupService.getGroupAll(page_number, page_size, "", "", "");
+//            } else if (role_code.equals(Common.ROLE_GM)) {
+//                list = groupService.getGroupAll(page_number, page_size, corp_code, "", "");
+//            } else {
+//                list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 群组管理
