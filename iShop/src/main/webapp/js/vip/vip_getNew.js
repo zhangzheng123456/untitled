@@ -133,7 +133,15 @@ var getNewVip={
     $('#gender').searchableSelect();
     $('#gender').parent().find('.searchable-select-holder').html('男');
     $('#gender').parent().find('.searchable-select-input').remove();
-},
+    var corp_htm2='<option value="东鹏玖姿贵宾卡">东鹏玖姿贵宾卡</option>'
+        +'<option value="玖姿贵宾卡">玖姿贵宾卡</option>'
+        +'<option value="南阳贵宾卡">南阳贵宾卡</option>'
+        +'<option value="玖姿累积卡">玖姿累积卡</option>';
+        $("#vipCardType").append(corp_htm2);
+        $('#vipCardType').searchableSelect();
+        $('#vipCardType').parent().find('.searchable-select-holder').html('东鹏玖姿贵宾卡');
+        $('#vipCardType').parent().find('.searchable-select-input').remove();
+    },
     getMoreStaff:function(){
         whir.loading.add("",0.5);//加载等待框
         $('#OWN_SHOPPERS').empty().next().remove();
