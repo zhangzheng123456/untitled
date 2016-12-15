@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.WechatTemplate;
+
+
+import com.bizvane.ishop.entity.WxTemplate;
 import com.bizvane.sun.common.service.http.HttpClient;
 import com.bizvane.ishop.dao.VipFsendMapper;
 import com.bizvane.ishop.entity.Store;
@@ -14,8 +16,7 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
-import com.bizvane.sun.common.utils.JSONUtil;
-import com.bizvane.sun.common.utils.SpringUtil;
+
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
@@ -33,10 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by nanji on 2016/11/24.
@@ -50,9 +48,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     private UserService userService;
     @Autowired
-    WechatTemplate wechatTemplate;
-    @Autowired
-    private WechatTemplateService wechatTemplateService;
+    private WxTemplateService wxTemplateService;
     @Autowired
     private StoreService storeService;
     @Autowired
@@ -196,16 +192,17 @@ public class VipFsendServiceImpl implements VipFsendService {
             List<Map<String, Object>> list = new ArrayList();
             String vip = "";
             String name = "";
+            logger.info("json--vip_name---------------------------" + vip_name);
+
             for (int i = 0; i < vipid.length; i++) {
                 vip = vipid[i];
+                Map query_key = new HashMap();
+                query_key.put("wxMass", "wxMass");
+                query_key.put("mass", sms_code);
+                query_key.put("vip_id", vip);
+                List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
                 for (int j = 0; j < vipname.length; j++) {
                     name = vipname[i];
-
-                    Map query_key = new HashMap();
-                    query_key.put("wxMass", "wxMass");
-                    query_key.put("mass", sms_code);
-                    query_key.put("vip_id", vip);
-                    List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
                     if (message_list.size() == 0) {
                         Map<String, Object> list_fail = new HashedMap();
                         list_fail.put("vip_id", vip);
@@ -222,7 +219,9 @@ public class VipFsendServiceImpl implements VipFsendService {
                         message = JSON.toJSONString(vips_info);
                     }
                 }
-            }
+
+                }
+
         }else {
             message = "发送类型不合法";
         }
@@ -374,9 +373,9 @@ public class VipFsendServiceImpl implements VipFsendService {
                 //发送类型：微信群发消息
 
                 //根据id查询微信模板信息
-                 wechatTemplate= wechatTemplateService.getTemplateById(tem_id);
-                String app_user_name=wechatTemplate.getApp_user_name();
-                String template_id=wechatTemplate.getTemplate_id();
+                WxTemplate wxTemplate= wxTemplateService.getTemplateById(tem_id);
+                String app_user_name=wxTemplate.getApp_user_name();
+                String template_id=wxTemplate.getTemplate_id();
                 //逗号分割
                 String openid[] = openids.split(",");
                 String vipid[] = vip_id.split(",");

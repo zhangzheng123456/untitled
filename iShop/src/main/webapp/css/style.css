@@ -8184,3 +8184,19 @@ li.select_index>a>label>i{
    display: block;
    cursor: pointer;
  }
+ .pro_parent{
+  position: relative;
+  font-weight: normal;
+}
+.pro_parent .pro{
+  position: absolute;
+  display: block;
+  top:-11px;
+  right: -28px;
+  color:#6cc1c8;
+  font-size: 12px;
+  font-style: italic;
+  width: 24px;
+  height: 13px;
+  line-height: 9px;
+}

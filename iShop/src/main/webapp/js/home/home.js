@@ -38,7 +38,11 @@ $(function(){
                     +'</a>'
                     +'<ul class="nav nav-second-level">';
                     for(index_li in p.functions){
-                        html +='<li><a href="../../navigation_bar.html?url='+p.functions[index_li].url+'&func_code='+p.functions[index_li].func_code+'" >'+p.functions[index_li].fun_name+'</a></li>';
+                        if(p.functions[index_li].func_code=='F0036'||p.functions[index_li].func_code=='F0034'||p.functions[index_li].func_code=='F0032'||p.functions[index_li].func_code=='F0041'){
+                            html +='<li><a href="../../navigation_bar.html?url='+p.functions[index_li].url+'&func_code='+p.functions[index_li].func_code+'" ><b class="pro_parent">'+p.functions[index_li].fun_name+'<b class="pro">pro</b></b></a></li>';
+                        }else{
+                            html +='<li><a href="../../navigation_bar.html?url='+p.functions[index_li].url+'&func_code='+p.functions[index_li].func_code+'" >'+p.functions[index_li].fun_name+'</a></li>';
+                        }
                     }
                 }
                 else{

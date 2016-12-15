@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface WxTemplateService {
 
+    WxTemplate getTemplateById(int id) throws Exception;
+
     List<WxTemplate> selectAllWxTemplate(String corp_code, String search_value) throws Exception;
 
     int insertWxTemplate(WxTemplate template) throws Exception;
