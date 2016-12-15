@@ -263,7 +263,8 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="chooseUser"){
             $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
         }else if(actions[i].act_name=="output"){
-            $("#more_down").append("<div id='leading_out'>导出</div>");
+            //$("#more_down").append("<div id='leading_out'>导出</div>");
+            $("#filtrate").before("<li id='leading_out'> <span class='icon-ishop_6-05'></span> 导出</li>")
         }else if(actions[i].act_name=="input"){
             $("#more_down").append("<div id='guide_into'>导入</div>");
         }else if(actions[i].act_name=="addLabel"){
@@ -919,7 +920,8 @@ function bianse(){
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
 //导出拉出list
-$("#more_down").on("click","#leading_out",function(){
+//$("#more_down").on("click","#leading_out",function(){
+$(".action_r ul").on("click","#leading_out",function(){
     var l=$(window).width();
     var h=$(document.body).height();
     $("#p").show();
