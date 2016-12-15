@@ -480,12 +480,26 @@ function stopBubble(e) {
 
 //充值记录数据加载
 function getRecord(){
-    for(i=0;i<10;i++){
-        var record_num = '010101001'
-        var record_type = 'Y'
-        var record_money = '100'
-        var record_balance = '100'
-        recordVal(record_num,record_type,record_money,record_balance)
+    var length = 100;
+    //长度大于10
+    if(length>10){
+        for(i=0;i<10;i++){
+            var record_num = '010101001'
+            var record_type = 'Y'
+            var record_money = '100'
+            var record_balance = '100'
+            recordVal(record_num,record_type,record_money,record_balance);
+    }
+        $('#toAddMore').css('display','block');
+    }else if(length<=10){
+        for(i=0;i<10;i++){
+            var record_num = '010101001'
+            var record_type = 'Y'
+            var record_money = '100'
+            var record_balance = '100'
+            recordVal(record_num,record_type,record_money,record_balance);
+        }
+        $('#toAddMore').css('display','none');
     }
 }
 function  recordVal(record_num,record_type,record_money,record_balance){
