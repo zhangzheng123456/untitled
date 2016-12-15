@@ -146,7 +146,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                      vip_infos = msg_obj.getJSONArray("vip_info");
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
-                        vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
+                        vip_id = vip_id + vip_obj.getString("vip_id") + ",";
                         vip_obj.put("is_send","未发送");
 
                     }
@@ -162,7 +162,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                      vip_infos = msg_obj.getJSONArray("vip_info");
                     for (int i = 0; i < vip_infos.size(); i++) {
                         JSONObject vip_obj = vip_infos.getJSONObject(i);
-                        vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
+                        vip_id = vip_id + vip_obj.getString("vip_id") + ",";
                         vip_obj.put("is_send","未发送");
                     }
 
@@ -182,7 +182,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     vip_obj.put("is_send","未发送");
-                  
+
                 }
             }
 
@@ -279,12 +279,12 @@ public class VipFsendServiceImpl implements VipFsendService {
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                    vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                    if (!vip_obj.getString("OPEN_ID").equals("")) {
-                        openids = openids + vip_obj.getString("OPEN_ID") + ",";
+                    phone = phone + vip_obj.getString("vip_phone") + ",";
+                    vip_id = vip_id + vip_obj.getString("vip_id") + ",";
+                    if (!vip_obj.getString("open_id").equals("")) {
+                        openids = openids + vip_obj.getString("open_id") + ",";
                     }
-                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
+                    vip_name = vip_name + vip_obj.getString("vip_name") + ",";
 
                 }
             } else {
@@ -300,11 +300,11 @@ public class VipFsendServiceImpl implements VipFsendService {
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                    vip_id = vip_id + vip_obj.getString("VIP_ID") + ",";
-                    vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
-                    if (!vip_obj.getString("OPEN_ID").equals("")) {
-                        openids = openids + vip_obj.getString("OPEN_ID") + ",";
+                    phone = phone + vip_obj.getString("vip_phone") + ",";
+                    vip_id = vip_id + vip_obj.getString("vip_id") + ",";
+                    vip_name = vip_name + vip_obj.getString("vip_name") + ",";
+                    if (!vip_obj.getString("open_id").equals("")) {
+                        openids = openids + vip_obj.getString("open_id") + ",";
                     }
                 }
             }
@@ -322,10 +322,10 @@ public class VipFsendServiceImpl implements VipFsendService {
             JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
             for (int i = 0; i < vip_infos.size(); i++) {
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
-                phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
-                vip_name = vip_name + vip_obj.getString("NAME_VIP") + ",";
-                if (!vip_obj.getString("OPEN_ID").equals("")) {
-                    openids = openids + vip_obj.getString("OPEN_ID") + ",";
+                phone = phone + vip_obj.getString("vip_phone") + ",";
+                vip_name = vip_name + vip_obj.getString("vip_name") + ",";
+                if (!vip_obj.getString("open_id").equals("")) {
+                    openids = openids + vip_obj.getString("open_id") + ",";
                 }
             }
         }
@@ -445,6 +445,14 @@ public class VipFsendServiceImpl implements VipFsendService {
             corp_code, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
+        JSONObject date = JSONObject.parseObject(map.get("created_date"));
+        params.put("created_date_start", date.get("start").toString());
+        String end = date.get("end").toString();
+        if (!end.equals(""))
+            end = end + " 23:59:59";
+        params.put("created_date_end", end);
+        map.remove("created_date");
+
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<VipFsend> list1 = vipFsendMapper.selectAllFsendScreen(params);
