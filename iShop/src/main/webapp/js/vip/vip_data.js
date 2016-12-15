@@ -83,12 +83,14 @@ function img_hover(){
     })
 }
 $("#Ablum-all").on("click",".cancel_img",function(){
+    whir.loading.add("mask",0.5);
     var time=$(this).attr("data-time");
     $("#tk").show();
     $("#delete").attr("data-time",time);
 });
 $("#X").click(function(){
     $("#tk").hide();
+    whir.loading.remove("mask");
 });
 $("#Ablum-all").on("mouseover","img",function(){
    $(this).next().show()
@@ -190,7 +192,7 @@ function gethotVIPlabel() {
 }
 $("#hot_label").click(function () {
     gethotVIPlabel();
-})
+});
 //官方用户标签
 function getOtherlabel() {
     param['vip_id']=sessionStorage.getItem("id");

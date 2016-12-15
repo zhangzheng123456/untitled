@@ -606,7 +606,7 @@ input::-webkit-input-placeholder{
 	height: 180px;
 	background-color: #fff;
 	position: absolute;
-	z-index: 788;
+	z-index: 10010;
 	text-align: center;
 	color: #888;
 	display: none;
@@ -642,6 +642,7 @@ input::-webkit-input-placeholder{
 	font-style: normal;
 	width: 100px;
 	height: 30px;
+	line-height: 30px;
 	cursor: pointer;
 }
 .tk .btn .cancel{
