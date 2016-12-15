@@ -47,28 +47,28 @@ public class ParamConfigureController {
     private static final Logger logger = Logger.getLogger(ParamConfigureController.class);
 
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String paramManage(HttpServletRequest request) {
-
-        DataBean dataBean = new DataBean();
-        try {
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<ParamConfigure> list = null;
-            list = paramConfigureService.getAllParamByPage(page_number, page_size, "");
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String paramManage(HttpServletRequest request) {
+//
+//        DataBean dataBean = new DataBean();
+//        try {
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<ParamConfigure> list = null;
+//            list = paramConfigureService.getAllParamByPage(page_number, page_size, "");
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 添加参数配置

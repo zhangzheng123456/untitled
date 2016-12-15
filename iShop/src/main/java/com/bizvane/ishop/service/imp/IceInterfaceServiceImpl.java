@@ -85,6 +85,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             for (int i = 0; i < storeList.size(); i++) {
                 store_id = store_id + storeList.get(i).getStore_code() + ",";
             }
+            System.out.println("-------GM拉店铺--------------"+storeList.size());
         } else if (role_code.equals(Common.ROLE_AM)){
             role_code = Common.ROLE_SM;
             String brand_code = request.getSession().getAttribute("brand_code").toString();

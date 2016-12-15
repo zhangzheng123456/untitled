@@ -173,7 +173,7 @@ jQuery(document).ready(function() {
 			console.log(msg);
 			$("#OWN_CORP").val(msg.corp_name);//赋值给所属企业
 			$("#CALLBACK_DATE").val(msg.message_date);//回访日期
-			$("#CALLBACK_TYPE").val(msg.type_name);//回访类型
+			$("#CALLBACK_TYPE").val(msg.action);//回访类型
 			$("#VIP").val(msg.vip_name)//会员名称
 			$("#task_dec").val(msg.message_content)//会员名称
 			$("#CALLBACK_STUFF").val(msg.user_name)//回访员工

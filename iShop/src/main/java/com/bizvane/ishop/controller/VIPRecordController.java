@@ -150,62 +150,62 @@ public class VIPRecordController {
      * 回访记录管理
      * 列表
      */
-    @RequestMapping(value = "/callback/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String callBackManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        int pages = 0;
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-
-            JSONObject result = new JSONObject();
-            JSONObject result1 = new JSONObject();
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
-
-            DBCursor dbCursor = null;
-            Map keyMap = new HashMap();
-            keyMap.put("message_type", "returnVisit");
-            BasicDBObject ref = new BasicDBObject();
-
-            // 读取数据
-            if (role_code.equals(Common.ROLE_SYS)) {
-                ref.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(ref);
-                pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "message_date", -1);
-            } else {
-                keyMap.put("corp_code", corp_code);
-                ref.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(ref);
-                pages = MongoUtils.getPages(dbCursor1, page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "message_date", -1);
-            }
-            JSONArray array = vipRecordService.transRecord(dbCursor);
-
-            result.put("list", array);
-            result.put("pages", pages);
-            result.put("page_number", page_number);
-            result.put("page_size", page_size);
-
-            result1.put("list", result.toJSONString());
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result1.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/callback/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String callBackManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        int pages = 0;
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//
+//            JSONObject result = new JSONObject();
+//            JSONObject result1 = new JSONObject();
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_message_content);
+//
+//            DBCursor dbCursor = null;
+//            Map keyMap = new HashMap();
+//            keyMap.put("message_type", "returnVisit");
+//            BasicDBObject ref = new BasicDBObject();
+//
+//            // 读取数据
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                ref.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(ref);
+//                pages = MongoUtils.getPages(dbCursor1, page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "message_date", -1);
+//            } else {
+//                keyMap.put("corp_code", corp_code);
+//                ref.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(ref);
+//                pages = MongoUtils.getPages(dbCursor1, page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1, page_number, page_size, "message_date", -1);
+//            }
+//            JSONArray array = vipRecordService.transRecord(dbCursor);
+//
+//            result.put("list", array);
+//            result.put("pages", pages);
+//            result.put("page_number", page_number);
+//            result.put("page_size", page_size);
+//
+//            result1.put("list", result.toJSONString());
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result1.toString());
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 回访记录管理

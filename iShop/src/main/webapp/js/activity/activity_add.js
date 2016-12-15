@@ -1187,7 +1187,7 @@ $("#screen_close_brand").click(function(){
 //获取品牌列表
 function getbrandlist(a){
     var corp_code = $('#OWN_CORP').val();
-    if(a="brand"){
+    if(a=="brand"){
         var searchValue=$("#search_brand").val().trim();
     }else {
         var searchValue=$("#brand_search").val().trim();

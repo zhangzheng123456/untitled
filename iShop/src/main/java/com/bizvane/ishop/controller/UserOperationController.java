@@ -48,57 +48,57 @@ public class UserOperationController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String userActionList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        JSONObject result = new JSONObject();
-        int pages = 0;
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            System.out.println("======UserOperationController===== ");
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
-
-            DBCursor dbCursor = null;
-            // 读取数据
-            if (role_code.equals(Common.ROLE_SYS)) {
-                DBCursor dbCursor1 = cursor.find();
-
-                pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
-            } else {
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code", corp_code);
-                BasicDBObject ref = new BasicDBObject();
-                ref.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(ref);
-
-                pages = MongoUtils.getPages(dbCursor1,page_size);
-                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
-            }
-
-            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
-            result.put("list", list);
-            result.put("pages", pages);
-            result.put("page_number", page_number);
-            result.put("page_size", page_size);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String userActionList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        JSONObject result = new JSONObject();
+//        int pages = 0;
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            System.out.println("======UserOperationController===== ");
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_operation);
+//
+//            DBCursor dbCursor = null;
+//            // 读取数据
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                DBCursor dbCursor1 = cursor.find();
+//
+//                pages = MongoUtils.getPages(dbCursor1,page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
+//            } else {
+//                Map keyMap = new HashMap();
+//                keyMap.put("corp_code", corp_code);
+//                BasicDBObject ref = new BasicDBObject();
+//                ref.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(ref);
+//
+//                pages = MongoUtils.getPages(dbCursor1,page_size);
+//                dbCursor = MongoUtils.sortAndPage(dbCursor1,page_number,page_size,"operation_time",-1);
+//            }
+//
+//            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
+//            result.put("list", list);
+//            result.put("pages", pages);
+//            result.put("page_number", page_number);
+//            result.put("page_size", page_size);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      *

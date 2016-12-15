@@ -60,44 +60,44 @@ public class VipGroupController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String vipGroupList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String corp_code = request.getSession().getAttribute("corp_code").toString();
-        String role_code = request.getSession().getAttribute("role_code").toString();
-        String user_code = request.getSession().getAttribute("user_code").toString();
-
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            PageInfo<VipGroup> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size,"","", "");
-            } else if (role_code.equals(Common.ROLE_GM)){
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,"", "");
-            }else {
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code, "");
-            }
-            JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String vipGroupList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String corp_code = request.getSession().getAttribute("corp_code").toString();
+//        String role_code = request.getSession().getAttribute("role_code").toString();
+//        String user_code = request.getSession().getAttribute("user_code").toString();
+//
+//        try {
+//            String jsString = request.getParameter("param");
+//            logger.info("json---------------" + jsString);
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            PageInfo<VipGroup> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                //系统管理员
+//                list = vipGroupService.getAllVipGroupByPage(page_number, page_size,"","", "");
+//            } else if (role_code.equals(Common.ROLE_GM)){
+//                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,"", "");
+//            }else {
+//                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code,user_code, "");
+//            }
+//            JSONObject result = new JSONObject();
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//            logger.info(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 根据id查看

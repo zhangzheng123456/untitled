@@ -48,37 +48,37 @@ public class TaskController {
     private BaseService baseService;
     String id;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String taskList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String user_code = request.getSession().getAttribute("user_code").toString();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            int page_num = Integer.parseInt(request.getParameter("pageNumber"));
-            JSONObject result = new JSONObject();
-            PageInfo<Task> tasks;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                tasks = taskService.selectAllTask(page_num, page_size, "", "", "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                tasks = taskService.selectAllTask(page_num, page_size, corp_code, "", "", "");
-            } else {
-                tasks = taskService.selectAllTask(page_num, page_size, corp_code, "ident", user_code, "");
-            }
-            result.put("list", JSON.toJSONString(tasks));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String taskList(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String user_code = request.getSession().getAttribute("user_code").toString();
+//            String role_code = request.getSession().getAttribute("role_code").toString();
+//            String corp_code = request.getSession().getAttribute("corp_code").toString();
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            int page_num = Integer.parseInt(request.getParameter("pageNumber"));
+//            JSONObject result = new JSONObject();
+//            PageInfo<Task> tasks;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                tasks = taskService.selectAllTask(page_num, page_size, "", "", "", "");
+//            } else if (role_code.equals(Common.ROLE_GM)) {
+//                tasks = taskService.selectAllTask(page_num, page_size, corp_code, "", "", "");
+//            } else {
+//                tasks = taskService.selectAllTask(page_num, page_size, corp_code, "ident", user_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(tasks));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody

@@ -57,6 +57,7 @@
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_fsendsms.corp_code = #{corp_code}
         </if>
+
         <if test="search_value != null and search_value !=''">
             AND
             (def_vip_fsendsms.sms_code LIKE concat('%',#{search_value},'%')
@@ -198,6 +199,12 @@
         WHERE def_vip_fsendsms.corp_code = def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND def_vip_fsendsms.corp_code=#{corp_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  def_vip_fsendsms.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  def_vip_fsendsms.created_date &lt;= #{created_date_end}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
