@@ -2,6 +2,7 @@
 var moreDetail={};//更多详情
 var staffData=[];//页面的数据
 var role=1;
+var show_filtrate='';
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 function stop(){
@@ -77,7 +78,9 @@ $('#showDone').click(function(){
         $('#peopleError div').text('未发现已完成');
     }
     data=null;
-    $('#screening').slideUp(600);
+    $('#screening').slideUp(600,function () {
+        $(".people").getNiceScroll().resize();
+    });
 });
 //显示未完成
 $('#showDoing').click(function(){
@@ -99,7 +102,9 @@ $('#showDoing').click(function(){
         $('#peopleError').show();
     }
     data=null;
-    $('#screening').slideUp(600);
+    $('#screening').slideUp(600,function () {
+        $(".people").getNiceScroll().resize();
+    });
 });
 //显示全部
 $('#showAll').click(function(){
@@ -109,7 +114,9 @@ $('#showAll').click(function(){
         $('#peopleError div').text('暂无数据');
         $('#peopleError').show();
     }
-    $('#screening').slideUp(600);
+    show_filtrate=='show'?show_filtrate='':$('#screening').slideUp(600,function () {
+        $(".people").getNiceScroll().resize();
+    });
 });
 //点击radio时
 $('.btnSecond .radio_b').click(function () {
@@ -124,18 +131,22 @@ $('#choose').click(function(){
 });
 //清空筛选
 $('#empty').click(function(){
-    $('.btnSecond input:checked').removeAttr('checked');
+    show_filtrate='show';
+    // $('.btnSecond input:checked').removeAttr('checked');
     $('.inputs input').val('');
-    listShow(staffData);
-    var nowLength = $('.people_title').length;
-    if(nowLength <=0) {
-        $('#peopleError div').text('暂无数据');
-        $('#peopleError').show();
-    }
+    $('#showAll').trigger('click');
+    // listShow(staffData);
+    // var nowLength = $('.people_title').length;
+    // if(nowLength <=0) {
+    //     $('#peopleError div').text('暂无数据');
+    //     $('#peopleError').show();
+    // }
 });
 //收起
 $('#pack_up').click(function(){
-    $('#screening').slideToggle(600);
+    $('#screening').slideToggle(600,function () {
+        $(".people").getNiceScroll().resize();
+    });
 })
 //查找
 $('#find').click(function(){
