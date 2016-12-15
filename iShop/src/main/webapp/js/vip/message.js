@@ -391,7 +391,6 @@ function jumpBianse() {
                 $('#content').hide();
                 var message=JSON.parse(data.message);
                 var list=message.vip_info;
-                console.log(list);
                 $(".table #table_r thead").empty();
                 $(".table #table_r tbody").empty();
                 if(list.length == 0){
@@ -431,6 +430,7 @@ function jumpBianse() {
                             "<th>会员名称</th>" +
                             "<th>发送状态</th>" +
                             "</tr>");
+                        list=JSON.parse(list);
                         for(var j=0;j<list.length;j++) {
                             var a = j + 1;
                             $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
