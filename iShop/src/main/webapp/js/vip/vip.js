@@ -182,6 +182,7 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     $(".table p").remove();
     if(data.length == 0){
         var len = $(".table thead tr th").length;
@@ -201,6 +202,7 @@ function superaddition(data,num){//页面加载循环
     }
     for (var i = 0; i < data.length; i++) {
         var TD="";
+        var wx='';
         //判断是否有会员头像
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
@@ -216,16 +218,20 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
+        if(data[i].open_id){
+            wx="<td><span class='icon-ishop_6-22'style='color:#8ec750'></span></td>";
+        }else{
+            wx="<td><span class='icon-ishop_6-22'style='color:#cdcdcd'></span></td>";
+        }
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                if(code=='vip_name'){
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>"+wx;
+                }else{
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
             })(c)
-        }
-        if(data[i].open_id){
-            TD+="<td><span class='icon-ishop_6-22'style='color:#8ec750'></span></td>";
-        }else{
-            TD+="<td><span class='icon-ishop_6-22'style='color:#cdcdcd'></span></td>";
         }
         $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
@@ -319,8 +325,13 @@ function qjia(){
 }
 function tableTh(){ //table  的表头
     var TH="";
+    console.log(titleArray);
     for(var i=0;i<titleArray.length;i++){
-        TH+="<th>"+titleArray[i].show_name+"</th>"
+        if(titleArray[i].show_name.trim()=='姓名'){
+            TH+="<th>"+titleArray[i].show_name+"</th>"+'<th style="width: 20px"></th>'
+        }else{
+            TH+="<th>"+titleArray[i].show_name+"</th>"
+        }
     }
     $("#tableOrder").after(TH);
 }
