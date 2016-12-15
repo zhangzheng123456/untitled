@@ -27,7 +27,7 @@ var getNewVip={
             if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
             if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
             if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
-            if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
+            // if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
             this.postParma();
         }.bind(this));
         var me=this;
@@ -190,7 +190,6 @@ var getNewVip={
     postParma:function () {
         //获取参数
         var param={};
-        console.log(String($('#OWN_SHOPPERS').val()).search('null')==-1);//===-1说明不是null
         param.corp_code='C10000';
         param.phone=$('#content').find('.phone').val();
         param.card_no=$('#content').find('.cardNo').val();
