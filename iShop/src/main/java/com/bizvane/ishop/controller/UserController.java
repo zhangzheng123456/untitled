@@ -563,10 +563,10 @@ public class UserController {
             Cell[] column4 = rs.getColumn(4);//电话
             Cell[] column1 = rs.getColumn(1);//员工编号
             Cell[] column2 = rs.getColumn(2);//员工ID
-            Cell[] column7 = rs.getColumn(7);//群组编号
-            Cell[] column8 = rs.getColumn(8);//区域编号
-            Cell[] column9 = rs.getColumn(9);//店铺编号
-            Cell[] column10 = rs.getColumn(10);//品牌编号
+            Cell[] column7 = rs.getColumn(6);//群组编号
+            Cell[] column8 = rs.getColumn(7);//区域编号
+            Cell[] column9 = rs.getColumn(8);//店铺编号
+            Cell[] column10 = rs.getColumn(9);//品牌编号
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
