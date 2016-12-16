@@ -6,8 +6,8 @@
 var getNewVip={
     init:function () {
         $('#jurisdiction').on('click', '#add', function (e) {
-            whir.loading.add("",0.5);//加载等待框
-            $('#loading').remove();
+            whir.loading.add("mask",0.5);//加载等待框
+            // $('#loading').remove();
             e.stopPropagation();
             $('#get_more').show();
             this.getMoreStore();
@@ -16,11 +16,11 @@ var getNewVip={
         }.bind(this));
         $('#get_more .head_span_r').click(function () {
             $('#get_more').hide();
-            whir.loading.remove();//移除加载框
+            whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_close').click(function () {
             $('#get_more').hide();
-            whir.loading.remove();//移除加载框
+            whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_save').click(function () {
             if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}

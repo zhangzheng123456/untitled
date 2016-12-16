@@ -483,6 +483,7 @@ public class GoodsController {
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     String cellTypeForDate = LuploadHelper.checkDate(rs.getCell(j++, i).getContents().toString().trim());
                     String goods_description = rs.getCell(j++, i).getContents().toString().trim();
+                    String share_description = rs.getCell(j++, i).getContents().toString().trim();
 //                    String match_goods = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
 //                    if(cellCorp.equals("")  && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("") && quarter.equals("") && wave.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("") && isactive.equals("")){
@@ -537,6 +538,7 @@ public class GoodsController {
                     }
                     goods.setGoods_time(cellTypeForDate);
                     goods.setGoods_description(goods_description);
+                    goods.setShare_description(share_description);
 //                    goods.setMatch_goods(match_goods);
                     if (isactive.toUpperCase().equals("N")) {
                         goods.setIsactive("N");
@@ -572,6 +574,7 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
+
 
     /**
      * 商品培训
