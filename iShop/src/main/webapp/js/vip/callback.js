@@ -507,7 +507,13 @@ $("#delete").click(function(){
             $('.frame').html(data.message);
         }
     })
-})
+});
+function checkStart(data){
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
+function checkEnd(data){
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+};
 //删除弹框
 function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值

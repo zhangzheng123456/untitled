@@ -4,6 +4,21 @@ jQuery(document).ready(function(){
     // window.param.init();
     if($(".pre_title label").text()=="查看错误日志"){
         var id=sessionStorage.getItem("id");
+        var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+        key_val=JSON.parse(key_val);
+        var funcCode=key_val.func_code;
+        $.get("/detail?funcCode="+funcCode+"", function(data){
+            var data=JSON.parse(data);
+            if(data.code=="0"){
+                var message=JSON.parse(data.message);
+                var action=message.actions;
+                console.log(action.length);
+                if(action.length==0){
+                    $("#edit_save").remove();
+                    $("#edit_close").css("margin-left","120px");
+                }
+            }
+        });
         var _params={"id":id};
         var _command="/errorLog/select";
         oc.postRequire("post", _command,"", _params, function(data){

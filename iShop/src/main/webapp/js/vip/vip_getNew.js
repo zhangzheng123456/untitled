@@ -6,8 +6,8 @@
 var getNewVip={
     init:function () {
         $('#jurisdiction').on('click', '#add', function (e) {
-            whir.loading.add("",0.5);//加载等待框
-            $('#loading').remove();
+            whir.loading.add("mask",0.5);//加载等待框
+            // $('#loading').remove();
             e.stopPropagation();
             $('#get_more').show();
             this.getMoreStore();
@@ -16,25 +16,25 @@ var getNewVip={
         }.bind(this));
         $('#get_more .head_span_r').click(function () {
             $('#get_more').hide();
-            whir.loading.remove();//移除加载框
+            whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_close').click(function () {
             $('#get_more').hide();
-            whir.loading.remove();//移除加载框
+            whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_save').click(function () {
             if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}
             if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
             if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
             if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
-            if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
+            // if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
             this.postParma();
         }.bind(this));
         var me=this;
         $('#content').on('blur','input',function () {
             if(this.className=='billNo'){
                 me.testBlur();
-            }else{
+            }else if(this.className=='searchable-select-input'){}else{
                 me.testInput(this);
             }
         });
@@ -190,7 +190,6 @@ var getNewVip={
     postParma:function () {
         //获取参数
         var param={};
-        console.log(String($('#OWN_SHOPPERS').val()).search('null')==-1);//===-1说明不是null
         param.corp_code='C10000';
         param.phone=$('#content').find('.phone').val();
         param.card_no=$('#content').find('.cardNo').val();
