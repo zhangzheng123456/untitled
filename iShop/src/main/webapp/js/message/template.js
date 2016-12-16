@@ -384,7 +384,11 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/message/template_edit.html");
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/message/template_edit.html");
+        }
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -449,7 +453,7 @@ $("#d_search").click(function(){
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     POST(inx,pageSize);
-})
+});
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框

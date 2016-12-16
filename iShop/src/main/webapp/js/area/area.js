@@ -343,13 +343,12 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
+    });
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
-        $(this).toggleClass("tr");  
-        console.log(input);
+        $(this).toggleClass("tr");
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -378,8 +377,12 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
-    })
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+        }
+    });
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");

@@ -237,7 +237,6 @@
 		var $diyProgressText = $diyBar.find('.diyProgressText');
 		$diyProgress.width( progress );
 		$diyProgressText.text( text );
-
 	}
 
 	//取消事件;

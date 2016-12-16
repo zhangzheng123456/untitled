@@ -326,7 +326,7 @@ $(function () {
     obj.init = init;
     return obj;
 }));
-function getcorplist(C) {
+function getcorplist(a) {
     //获取所属企业列表
     var userNum = 1;//分配导购分页，默认第一页; var userNum = 1;//分配导购分页，默认第一页;
     var corp_command = "/user/getCorpByUser";
@@ -335,18 +335,14 @@ function getcorplist(C) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
             //console.log(msg);
-            var index = 0;
             var corp_html = '';
-            var c = null;
-            for (index in msg.corps) {
-                c = msg.corps[index];
-                if (c.corp_code == C) {
-                    corp_html += '<option value="' + c.corp_code + '" selected>' + c.corp_name + '</option>';
-                } else {
-                    corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
-                }
+            for (var i=0;i<msg.corps.length;i++) {
+                corp_html += '<option value="' + msg.corps[i].corp_code + '">' + msg.corps[i].corp_name + '</option>';
             }
             $("#OWN_CORP").append(corp_html);
+            if (a !== "") {
+                $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
+            }
             $('.corp_select select').searchableSelect();
             $('.searchable-select-item').click(function () {
                 user_num = 1;

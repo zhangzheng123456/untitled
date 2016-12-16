@@ -420,7 +420,11 @@ function jumpBianse() {
         return_jump["pageSize"] = pageSize;//每页多少行
         sessionStorage.setItem("return_jump", JSON.stringify(return_jump));
         sessionStorage.setItem("id", id);
-        $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_edit.html");
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_edit.html");
+        }
     });
     //删除
     $("#remove").click(function () {

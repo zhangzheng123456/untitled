@@ -323,7 +323,7 @@ function tableTh(){ //table  的表头
         TH+="<th>"+titleArray[i].show_name+"</th>"
     }
     $("#tableOrder").after(TH);
-};
+}
 qjia();
 //页面加载时list请求
 function GET(){
@@ -406,7 +406,11 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/system/appversion_edit.html");
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/system/appversion_edit.html");
+        }
     })
     //删除
     $("#remove").click(function(){
