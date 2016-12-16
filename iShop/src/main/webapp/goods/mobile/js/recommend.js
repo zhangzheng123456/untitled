@@ -217,6 +217,7 @@ jQuery(function(){
  		var param={};
  		param["type"]="FAB";
  		param["url"]="http://"+host+"/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"&type=app";
+ 		param["title"]=$(this).find(".shop-t h1").html();
     	doAppWebRefresh(param);
 	})
 	//获取手机系统
