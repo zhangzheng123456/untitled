@@ -757,7 +757,7 @@ public class UserController {
                     User user = new User();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String user_code = rs.getCell(j++, i).getContents().toString().trim();
-                    String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
+ //                   String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
 //                    if (user_id2.equals("")) {
 //                        user_id2 = user_code;
 //                    }
