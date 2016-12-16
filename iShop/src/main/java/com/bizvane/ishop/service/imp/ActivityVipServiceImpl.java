@@ -525,7 +525,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                    phone = phone + vip_obj.getString("vip_phone") + ",";
                 }
             }else {
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -540,7 +540,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                    phone = phone + vip_obj.getString("vip_phone") + ",";
                 }
             }
         }else {
@@ -557,7 +557,7 @@ public class ActivityVipServiceImpl implements ActivityVipService {
             JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
             for (int i = 0; i < vip_infos.size(); i++) {
                 JSONObject vip_obj = vip_infos.getJSONObject(i);
-                phone = phone + vip_obj.getString("MOBILE_VIP") + ",";
+                phone = phone + vip_obj.getString("vip_phone") + ",";
             }
         }
         Data data_channel = new Data("channel", "santong", ValueType.PARAM);

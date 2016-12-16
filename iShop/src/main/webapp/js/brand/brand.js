@@ -371,8 +371,12 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/brand/brand_edit.html");
-    })
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/brand/brand_edit.html");
+        }
+    });
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/brand/brand_add.html");

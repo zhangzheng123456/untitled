@@ -364,7 +364,11 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/system/param_edit.html");
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/system/param_edit.html");
+        }
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){

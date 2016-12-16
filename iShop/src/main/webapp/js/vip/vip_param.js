@@ -461,8 +461,11 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_paramedit.html");
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_paramedit.html");
+        }
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){

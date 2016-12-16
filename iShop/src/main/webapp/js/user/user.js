@@ -241,7 +241,7 @@ function superaddition(data,num){
                }
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'' data-code='"+data[i].corp_code+"' data-user_code='"+data[i].user_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -257,7 +257,7 @@ function superaddition(data,num){
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
     sessionStorage.removeItem("return_jump");
-};
+}
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
@@ -501,7 +501,7 @@ function quanXian(){
         param["list"]=list;
         whir.loading.add("",0.5);//加载等待框
         var param1={};
-        var corp_code1=$(tr[length]).find(".corp_code").attr("data-code");
+        var corp_code1=$(tr[length]).attr("data-code");
         param1["corp_code"]=corp_code1;
         oc.postRequire("post","/corp/selectWx","0",param1,function(data){
             if(data.code=="0"){
@@ -568,8 +568,12 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
-	})
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+        }
+	});
 	//点击tr input是选择状态  tr增加class属性
 	$(".table tbody tr").click(function(){
 		var input=$(this).find("input")[0];
@@ -599,9 +603,9 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2)").find("span").html();
-        var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
-        var param1={"user_code":store_code,"corp_code":corp_code};
+        var user_code=$(tr[i]).attr("data-user_code");
+        var corp_code=$(tr[i]).attr("data-code");
+        var param1={"user_code":user_code,"corp_code":corp_code};
         list.push(param1);
     }
     list.reverse();
