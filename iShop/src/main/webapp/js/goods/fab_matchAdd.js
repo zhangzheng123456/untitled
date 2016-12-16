@@ -57,7 +57,6 @@ var swip_image = [];
                 var GOODS_CODE='';
                 var nowValLength = $(".conpany_msg .goods_code").length;
                 var goods_match_title = $('#goodsTitle').val();
-                console.log('商品标题是'+goods_match_title);
                 var goods_match_desc = $('#goodsDescribe').val();
                 if(nowValLength<1){
                     art.dialog({
@@ -71,14 +70,13 @@ var swip_image = [];
                         time: 2,
                         lock: true,
                         cancel: false,
-                        content:"商品标题或商品描述未填写"
+                        content:"商品名称或商品描述未填写"
                     });
                 }else{
                     $(".conpany_msg .goods_code").each(function () {
                         var nowVal = $(this).text();
                         GOODS_CODE += nowVal + ',';
                     });
-                    console.log('添加的商品id是' + GOODS_CODE);
                     var reg = /,$/gi;
                     GOODS_CODE = GOODS_CODE.replace(reg, "");
                     var ISACTIVE = "";//是否可用
