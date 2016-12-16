@@ -298,6 +298,8 @@ function GET(a, b) {
     whir.loading.add("", 0.5);//加载等待框
     //oc.postRequire("get", "/vipFsend/list?pageNumber=" + a + "&pageSize=" + b
     //    + "&funcCode=" + funcCode + "", "", "", function (data) {
+    $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
     oc.postRequire("post", "/vipFsend/search", "0", param, function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();
@@ -487,6 +489,8 @@ $("#d_search").click(function () {
 //搜索的请求函数
 function POST(a,b) {
     whir.loading.add("", 0.5);//加载等待框
+    $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
     oc.postRequire("post", "/vipFsend/search", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -783,9 +787,9 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
                     +"'><label>"
                     +filter[i].show_name
                     +"</label>"
-                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})\">"
                     +"<label class='tm20'>至</label>"
-                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})\">"
                     +"</li>";
             }
 
@@ -801,6 +805,12 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
         })
     }
 });
+function checkStart(data){
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+};
+function checkEnd(data){
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+};
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
