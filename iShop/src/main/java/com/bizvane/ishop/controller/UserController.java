@@ -560,7 +560,7 @@ public class UserController {
                 int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);//企业编号
-            Cell[] column4 = rs.getColumn(4);//电话
+            Cell[] column4 = rs.getColumn(3);//电话
             Cell[] column1 = rs.getColumn(1);//员工编号
             Cell[] column2 = rs.getColumn(2);//员工ID
             Cell[] column7 = rs.getColumn(6);//群组编号
