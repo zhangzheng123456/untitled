@@ -175,13 +175,15 @@ jQuery(document).ready(function() {
 			$("#CALLBACK_DATE").val(msg.message_date);//回访日期
 			$("#CALLBACK_TYPE").val(msg.action);//回访类型
 			$("#VIP").val(msg.vip_name)//会员名称
+			$("#VIP_CODE").val(msg.vip_id);
 			$("#task_dec").val(msg.message_content)//会员名称
 			$("#CALLBACK_STUFF").val(msg.user_name)//回访员工
+			$("#STUFF_CODE").val(msg.user_code);
 			$("#created_time").val(msg.created_date);
 			$("#creator").val(msg.creater);
 			$("#modify_time").val(msg.modified_date);
 			$("#modifier").val(msg.modifier);
-            if(msg.type_name.trim()=='电话'){
+            if(msg.action=='电话'){
 				$("#task_dec_content").hide();
 			}else{
 				$("#task_dec_content").show();

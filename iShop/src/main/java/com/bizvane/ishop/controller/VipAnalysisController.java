@@ -193,6 +193,8 @@ public class VipAnalysisController {
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipRecent", datalist);
             }else if (query_type.equals("freq")){
                 //消费频率
+                Data data_type = new Data("type", "three", ValueType.PARAM);
+                datalist.put(data_type.key, data_type);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipFreq", datalist);
             }else if (query_type.equals("month")){
                 //本月消费
@@ -210,7 +212,7 @@ public class VipAnalysisController {
                 datalist.put(data_query_type.key, data_query_type);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnlysisVipAmount", datalist);
             }
-            logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
+         //   logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
