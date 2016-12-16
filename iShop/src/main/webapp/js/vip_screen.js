@@ -7,7 +7,7 @@ var simple_birth_start={
     istime: true,
     max: '2099-06-16 23:59:59', //最大日期
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         simple_birth_end.min = datas; //开始日选好后，重置结束日的最小日期
         simple_birth_end.start = datas; //将结束日的初始值设定为开始日
@@ -19,7 +19,7 @@ var simple_birth_end={
     istime: true,
     max: '2099-06-16 23:59:59',
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         simple_birth_start.max = datas; //结束日选好后，重置开始日的最大日期
     }
@@ -30,7 +30,7 @@ var mark_start={
     istime: true,
     max: '2099-06-16 23:59:59', //最大日期
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         mark_end.min = datas; //开始日选好后，重置结束日的最小日期
         mark_end.start = datas; //将结束日的初始值设定为开始日
@@ -42,7 +42,7 @@ var mark_end={
     istime: true,
     max: '2099-06-16 23:59:59',
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         mark_start.max = datas; //结束日选好后，重置开始日的最大日期
     }
@@ -53,7 +53,7 @@ var start={
     istime: true,
     max: '2099-06-16 23:59:59', //最大日期
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         end.min = datas; //开始日选好后，重置结束日的最小日期
         end.start = datas; //将结束日的初始值设定为开始日
@@ -65,7 +65,7 @@ var end={
     istime: true,
     max: '2099-06-16 23:59:59',
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         start.max = datas; //结束日选好后，重置开始日的最大日期
     }
@@ -76,7 +76,7 @@ var activity_start={
     istime: true,
     max: '2099-06-16 23:59:59', //最大日期
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         activity_end.min = datas; //开始日选好后，重置结束日的最小日期
         activity_end.start = datas; //将结束日的初始值设定为开始日
@@ -88,7 +88,7 @@ var activity_end={
     istime: true,
     max: '2099-06-16 23:59:59',
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         activity_start.max = datas; //结束日选好后，重置开始日的最大日期
     }
@@ -99,7 +99,7 @@ var recent_start={
     istime: true,
     max: '2099-06-16 23:59:59', //最大日期
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         recent_end.min = datas; //开始日选好后，重置结束日的最小日期
         recent_end.start = datas; //将结束日的初始值设定为开始日
@@ -111,7 +111,7 @@ var recent_end={
     istime: true,
     max: '2099-06-16 23:59:59',
     istoday: false,
-    fixed:true,
+    fixed:false,
     choose: function (datas) {
         activity_start.max = datas; //结束日选好后，重置开始日的最大日期
     }
