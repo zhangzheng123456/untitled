@@ -111,7 +111,7 @@
             AND def_user.can_login = #{user_can_login}
             )
         </if>
-        <if test="user_no_login !=null and user_no_login !=''">
+        <if test="user_can_login !=null and user_can_login !=''">
             AND  (
             def_user.isactive = 'N'
             OR def_user.can_login = 'N'
