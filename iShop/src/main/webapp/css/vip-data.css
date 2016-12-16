@@ -1,6 +1,6 @@
 body{
     min-width: 1200px;
-    overflow-x: auto;
+    overflow-x: auto!important;
     margin-top: 0;
     padding-top: 81px;
     background-color: #e8e8e8;
