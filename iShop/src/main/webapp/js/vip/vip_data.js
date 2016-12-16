@@ -605,6 +605,7 @@ function upLoadAlbum(){
         bucket: 'products-image'
     });
     document.getElementById('upAlbum').addEventListener('change', function (e) {
+        whir.loading.add("上传中,请稍后...",0.5);
         var file = e.target.files[0];
         var time=getNowFormatDate();
         var corp_code=sessionStorage.getItem("corp_code");
@@ -642,6 +643,7 @@ function addVipAlbum(url){//上传照片到相册
             frame();
             $('.frame').html('添加失败');
         }
+        whir.loading.remove();
     })
 }
 function getNowFormatDate() {//获取当前日期

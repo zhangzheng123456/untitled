@@ -783,9 +783,9 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
                     +"'><label>"
                     +filter[i].show_name
                     +"</label>"
-                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD', max: laydate.now()})\">"
                     +"<label class='tm20'>至</label>"
-                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
+                    +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD', max: laydate.now()})\">"
                     +"</li>";
             }
 
@@ -801,6 +801,29 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
         })
     }
 });
+var start={
+    elem: '#start',
+    format: 'YYYY-MM-DD',
+    istime: true,
+    max: laydate.now(), //最大日期
+    istoday: false,
+    fixed:false,
+    choose: function (datas) {
+        end.min = datas; //开始日选好后，重置结束日的最小日期
+        end.start = datas; //将结束日的初始值设定为开始日
+    }
+};
+var end={
+    elem: '#end',
+    format: 'YYYY-MM-DD',
+    istime: true,
+    max: laydate.now(), //最大日期
+    istoday: false,
+    fixed:false,
+    choose: function (datas) {
+        end.min = datas; //开始日选好后，重置结束日的最小日期
+    }
+}
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
