@@ -8,6 +8,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
@@ -21,6 +22,16 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ishop_9-04:before {
+  content: "\e940";
+}
+.icon-ishop_9-05:before {
+  content: "\e941";
+}
+.icon-ishopwebicon_6-23:before {
+  content: "\e93e";
 }
 .icon-ishopwebicon_6-24:before {
   content: "\e93f";
@@ -211,4 +222,5 @@
 .icon-ishop_9-02:before {
   content: "\e93a";
 }
+
 

@@ -48,7 +48,9 @@
         g.corp_code,
         g.brand_code,
         cp.corp_name,
-        db.brand_name
+        db.brand_name,
+        g.goods_description,
+        g.share_description
         FROM def_goods g,def_corp cp,def_brand db
         WHERE g.corp_code=cp.corp_code AND g.corp_code=db.corp_code AND g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
@@ -247,7 +249,9 @@
         g.corp_code,
         g.brand_code,
         cp.corp_name,
-        db.brand_name
+        db.brand_name,
+        g.goods_description,
+        g.share_description
         FROM def_goods g,def_corp cp,def_brand db
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">

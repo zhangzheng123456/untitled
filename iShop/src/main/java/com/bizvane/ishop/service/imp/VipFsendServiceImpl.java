@@ -108,6 +108,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     datalist.put(data_corp_code.key, data_corp_code);
                     datalist.put(data_user_code.key, data_user_code);
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
                     message = dataBox.data.get("message").value;
                 }
             } else if (type.equals("2")) {
@@ -118,6 +119,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_vip_id.key, data_vip_id);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
                 message = dataBox.data.get("message").value;
             }
         } else if (send_type.equals("wxmass")) {
@@ -141,6 +143,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     datalist.put(data_corp_code.key, data_corp_code);
                     datalist.put(data_store_code.key, data_store_code);
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
                     message = dataBox.data.get("message").value;
                     JSONObject msg_obj = JSONObject.parseObject(message);
                      vip_infos = msg_obj.getJSONArray("vip_info");
@@ -157,6 +160,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     datalist.put(data_corp_code.key, data_corp_code);
                     datalist.put(data_user_code.key, data_user_code);
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
                     message = dataBox.data.get("message").value;
                     JSONObject msg_obj = JSONObject.parseObject(message);
                      vip_infos = msg_obj.getJSONArray("vip_info");
@@ -176,6 +180,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 datalist.put(data_vip_id.key, data_vip_id);
 
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
                  message = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message);
                  vip_infos = msg_obj.getJSONArray("vip_info");
@@ -276,6 +281,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_store_code.key, data_store_code);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -297,6 +303,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_user_code.key, data_user_code);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -319,6 +326,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             datalist.put(data_vip_id.key, data_vip_id);
             vip_id = vip_id + vips;
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+            logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
             String message1 = dataBox.data.get("message").value;
             JSONObject msg_obj = JSONObject.parseObject(message1);
             JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -356,6 +364,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 datalist.put(data_phone.key, data_phone);
                 datalist.put(data_text.key, data_text);
                 DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS", datalist);
+                logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
                 if (!dataBox.status.toString().equals("SUCCESS")) {
                     status = "发送失败";
                     return status;

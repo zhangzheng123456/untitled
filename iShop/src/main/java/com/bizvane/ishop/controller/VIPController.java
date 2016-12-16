@@ -661,7 +661,7 @@ public class VIPController {
             dataBean.setMessage(result2.toString());
         }catch (Ice.MemoryLimitException im){
             System.out.println("===============ice异常========================================");
-            errormessage = "导出数据过大(ice)";
+            errormessage = "导出数据过大,请筛选后导出";
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(errormessage);

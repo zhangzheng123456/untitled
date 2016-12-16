@@ -241,7 +241,7 @@ function superaddition(data,num){
                }
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'' data-code='"+data[i].corp_code+"' data-user_code='"+data[i].user_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -501,7 +501,7 @@ function quanXian(){
         param["list"]=list;
         whir.loading.add("",0.5);//加载等待框
         var param1={};
-        var corp_code1=$(tr[length]).find(".corp_code").attr("data-code");
+        var corp_code1=$(tr[length]).attr("data-code");
         param1["corp_code"]=corp_code1;
         oc.postRequire("post","/corp/selectWx","0",param1,function(data){
             if(data.code=="0"){
@@ -599,9 +599,9 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2)").find("span").html();
-        var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
-        var param1={"user_code":store_code,"corp_code":corp_code};
+        var user_code=$(tr[i]).attr("data-user_code");
+        var corp_code=$(tr[i]).attr("data-code");
+        var param1={"user_code":user_code,"corp_code":corp_code};
         list.push(param1);
     }
     list.reverse();

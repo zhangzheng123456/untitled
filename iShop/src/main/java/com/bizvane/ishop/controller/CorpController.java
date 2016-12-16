@@ -71,36 +71,36 @@ public class CorpController {
     /*
     * 列表
     * */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String cropManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession().getAttribute("role_code").toString();
-//            String corp_code = request.getSession().getAttribute("corp_code").toString();
-//
-//            org.json.JSONObject info = new org.json.JSONObject();
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                //系统管理员(官方画面)
-//                int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//                int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//                PageInfo<Corp> corpInfo = corpService.selectAllCorp(page_number, page_size, "");
-//                info.put("list", JSON.toJSONString(corpInfo));
-//            } else {
-//                //用户画面
-//                Corp corp = corpService.selectByCorpId(0, corp_code, "");
-//                info.put("list", JSON.toJSONString(corp));
-//            }
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(info.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public String cropManage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+
+            org.json.JSONObject info = new org.json.JSONObject();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员(官方画面)
+                int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+                int page_size = Integer.parseInt(request.getParameter("pageSize"));
+                PageInfo<Corp> corpInfo = corpService.selectAllCorp(page_number, page_size, "");
+                info.put("list", JSON.toJSONString(corpInfo));
+            } else {
+                //用户画面
+                Corp corp = corpService.selectByCorpId(0, corp_code, "");
+                info.put("list", JSON.toJSONString(corp));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(info.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 新增

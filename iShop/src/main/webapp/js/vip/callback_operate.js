@@ -177,6 +177,7 @@ jQuery(document).ready(function() {
 			$("#VIP").val(msg.vip_name)//会员名称
 			$("#task_dec").val(msg.message_content)//会员名称
 			$("#CALLBACK_STUFF").val(msg.user_name)//回访员工
+			$("#STUFF_CODE").val(msg.user_code);
 			$("#created_time").val(msg.created_date);
 			$("#creator").val(msg.creater);
 			$("#modify_time").val(msg.modified_date);

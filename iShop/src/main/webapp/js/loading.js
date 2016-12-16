@@ -50,9 +50,20 @@ whir.loading ={
             loading.style.borderRadius="8px";
             loading.style.textAlign="center";
             loading.style.color = "#fff";
-            title = (title != undefined && title.length > 0) ? title : "加载中，请稍候...";
-            loading.innerHTML = title;
-            document.body.appendChild(loading);
+            if(title != undefined && title.length > 0){
+                if(title == "mask"){
+                    title = "" ;
+                }else {
+                    title =title ;
+                    loading.innerHTML = title;
+                    document.body.appendChild(loading);
+                }
+            }else {
+                title = "加载中，请稍候...";
+                loading.innerHTML = title;
+                document.body.appendChild(loading);
+            }
+            // title = (title != undefined && title.length > 0) ? title : "加载中，请稍候...";
         }else {
             //显示图片
             var imgBox = document.createElement("div");
@@ -138,12 +149,17 @@ whir.loading ={
             right.addEventListener('click', function () {r()}, false); //点击事件
         }
 
-    },  
-    remove: function () {
-        var element = document.getElementById("mask");
-        element.parentNode.removeChild(element);
-        element = document.getElementById("loading");
-        element.parentNode.removeChild(element);
+    },
+    remove: function (e) {
+        if(e == "mask"){
+            var element = document.getElementById("mask");
+            element.parentNode.removeChild(element);
+        }else {
+            var element = document.getElementById("mask");
+            element.parentNode.removeChild(element);
+            element = document.getElementById("loading");
+            element.parentNode.removeChild(element);
+        }
     },
     remove1: function () {
         var element = document.getElementById("mask");
