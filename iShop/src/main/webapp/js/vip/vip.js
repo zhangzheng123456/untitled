@@ -621,7 +621,11 @@ function jumpBianse(){
         sessionStorage.setItem("id",id);
         sessionStorage.setItem("corp_code",corp_code);
         sessionStorage.setItem("store_id",store_id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_data.html");
+        if(id == "" || id == undefined){
+            return ;
+        }else{
+            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_data.html");
+        }
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
