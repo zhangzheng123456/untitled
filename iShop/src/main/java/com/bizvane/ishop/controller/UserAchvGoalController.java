@@ -403,8 +403,10 @@ public class UserAchvGoalController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String user_code = request.getSession(false).getAttribute("user_code").toString();
+
             JSONObject result = new JSONObject();
-            PageInfo<UserAchvGoal> list = null;
+            PageInfo<UserAchvGoal> list = new PageInfo<UserAchvGoal>();
             if (role_code.contains(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
@@ -427,6 +429,9 @@ public class UserAchvGoalController {
                 } else if (role_code.equalsIgnoreCase(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", "", role_code);
+                }else {
+                    List<UserAchvGoal> goal = userAchvGoalService.userAchvGoalExist(corp_code, user_code);
+                    list.setList(goal);
                 }
             }
             result.put("list", JSON.toJSONString(list));
