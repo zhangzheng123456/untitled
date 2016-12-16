@@ -470,19 +470,21 @@ public class BrandController {
             String search_value = jsonObject.get("searchValue").toString();
 
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+
             JSONObject result = new JSONObject();
             PageInfo<Brand> list = new PageInfo<Brand>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = brandService.getAllBrandByPage(page_number, page_size, "", search_value);
+            } else if(role_code.equals(Common.ROLE_GM)){
+                list = brandService.getAllBrandByPage(page_number, page_size, corp_code, "");
             } else if (role_code.equals(Common.ROLE_BM)) {
-                String corp_code = request.getSession().getAttribute("corp_code").toString();
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
                 String[] codes = brand_code.split(",");
                 list = brandService.getPartBrandByPage(page_number, page_size, corp_code, codes, search_value);
             } else if (role_code.equals(Common.ROLE_AM)){
-                String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = brandService.getAllBrandByPage(page_number, page_size, corp_code, search_value);
             } else {
                 List<Brand> list1 = new ArrayList<Brand>();
