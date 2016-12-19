@@ -11,6 +11,7 @@ var proportion_list={};
 var page_shop=1;
 var page_brand=1;
 var page_area=1;
+var page_group=1;
 var next_shop_page='';
 var next_area_page='';
 /**********************左侧数据**************************************************************************************/
@@ -51,6 +52,7 @@ function getBrand(){
     });
 }
 getBrand();
+getGroup();
 //获取区域
 function GetArea(){
     var search_param=arguments.length;
@@ -143,6 +145,31 @@ function getStore(a){
         }
     });
 }
+//获取分组
+function getGroup(){
+    var search_param=arguments.length;
+    var param={};
+    var ul='';
+    param["corp_code"]= "C10000";
+    param["searchValue"]=$("#select_analyze_group input").val();
+    oc.postRequire("post","/vipGroup/getCorpGroups", "",param, function(data){
+        if(data.code==0){
+            var message=JSON.parse(data.message)
+            var groups=JSON.parse(message.list);//数组
+            if(groups.length<=0){return}
+            for(var i=0;i<groups.length;i++){
+                groups[i].vip_group_name=='全部'?'':ul+="<li group_cord='"+groups[i].vip_group_code+"'>"+groups[i].vip_group_name+"</li>";
+            }
+            if(search_param==0){
+                $('#side_analyze ul li:nth-child(4) s').html("全部");
+                $('#side_analyze ul li:nth-child(4) s').attr('group_code','');
+            }
+            $('#select_analyze_group ul').append(ul);
+        }else if(data.code==-1){
+            console.log(data.message);
+        }
+    });
+}
 //点击li填充s中的数据显示
 function showNameClick(e){
     un_push=1;
@@ -167,8 +194,7 @@ function showNameClick(e){
         $('#select_analyze_shop ul').html('');
         getStore($('#side_analyze ul li:nth-child(2) s').attr('data_area'));
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click');
-
-    }else{
+    }else if($(d).attr('id')=='select_analyze_shop'){
         var store_code=$(e).attr('data_store');
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
@@ -176,6 +202,13 @@ function showNameClick(e){
         //添加店铺时，找到显示的DIV发起请求
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
         getData();
+    }else if($(d).attr('id')=='select_analyze_group') {
+        var group_code = $(e).attr('group_code');
+        $('#side_analyze ul li:nth-child(4) s').html($(e).html());
+        $('#side_analyze ul li:nth-child(4) s').attr('group_code', group_code);
+        $('#select_analyze_group').toggle();
+        //添加分组时，找到显示的DIV发起请求
+        $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
     }
 }
 //取消下拉框
@@ -197,7 +230,7 @@ $(document).on('click',function(e){
         || e.target==$('#select_analyze_shop div b span')[0]
         || e.target==$('#select_analyze_shop div ul')[0]
         || e.target==$('#select_analyze_shop div ul li')[0]
-        || e.target==$('#select_analyze_shop div s')[0]))$('#select_analyze_shop').hide()
+        || e.target==$('#select_analyze_shop div s')[0]))$('#select_analyze_shop').hide();
     if(!(e.target==$($('#side_analyze_brand>ul')[0]).find('li:nth-child(2)')
         || e.target==$('#select_analyze_brand')
         || e.target==$('#select_analyze_brand div')[0]
@@ -207,6 +240,15 @@ $(document).on('click',function(e){
         || e.target==$('#select_analyze_brand div ul')[0]
         || e.target==$('#select_analyze_brand div ul li')[0]
         || e.target==$('#select_analyze_brand div s')[0]))$('#select_analyze_brand').hide();
+    if(!(e.target==$($('#side_analyze>ul')[0]).find('li:nth-child(2)')
+        || e.target==$('#select_analyze_group')
+        || e.target==$('#select_analyze_group div')[0]
+        || e.target==$('#select_analyze_group div b')[0]
+        || e.target==$('#select_analyze_group div b input')[0]
+        || e.target==$('#select_analyze_group div b span')[0]
+        || e.target==$('#select_analyze_group div ul')[0]
+        || e.target==$('#select_analyze_group div ul li')[0]
+        || e.target==$('#select_analyze_group div s')[0]))$('#select_analyze_group').hide();
 });
 //加载更多
 function getMore(e){
@@ -225,6 +267,10 @@ function getMore(e){
     if( $(e).hasClass('select_analyze_brand')){
         page_brand++;
         getBrand(page_brand);
+    }
+    if( $(e).hasClass('select_analyze_group')){
+        page_group++;
+        getGroup(page_group);
     }
 }
 function getShopMore(){
@@ -246,7 +292,7 @@ $("#select_analyze_shop ul").bind("scroll",function () {
     var nDivHight=$(this).height();
     if(nScrollTop + nDivHight >= nScrollHight){
          next_shop_page?getShopMore():page_shop=1;
-    };
+    }
 });
 $("#select_analyze ul").bind("scroll",function () {
     var nScrollHight = $(this)[0].scrollHeight;
@@ -254,7 +300,7 @@ $("#select_analyze ul").bind("scroll",function () {
     var nDivHight=$(this).height();
     if(nScrollTop + nDivHight >= nScrollHight){
         next_area_page?getAreaMore():page_area=1;
-    };
+    }
 });
 //搜索
 function searchValue(e){
@@ -274,8 +320,10 @@ function searchValue(e){
           GetArea();
       }else if($(parent).attr('id')=='select_analyze_brand'){
           getBrand();
-      }else{
+      }else if($(parent).attr('id')=='select_analyze_shop'){
           getStore( $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area'));
+      }else if($(parent).attr('id')=='select_analyze_group'){
+          getGroup();
       }
 }
 //页面加载前加载区域
@@ -290,6 +338,7 @@ $('#side_analyze>ul:nth-child(1) li').click(function(){
         if($(this).find('b').html()=='区域'){
             $('#select_analyze').toggle();
             $('#select_analyze_shop').hide();
+            $('#select_analyze_group').hide();
             if($('#select_analyze input').val()){
                 $('#select_analyze input').val('');
                 $('#select_analyze ul').html('');
@@ -299,18 +348,31 @@ $('#side_analyze>ul:nth-child(1) li').click(function(){
             $('#select_analyze_brand').toggle();
             $('#select_analyze_shop').hide();
             $('#select_analyze').hide();
+            $('#select_analyze_group').hide();
             if($('#select_analyze_brand input').val()){
                 $('#select_analyze_brand input').val('');
                 $('#select_analyze_brand ul').html('');
-                GetArea();
+                getBrand();
             }
-        }else{
+        }else if($(this).find('b').html()=='店铺'){
             $('#select_analyze_shop').toggle();
+            $('#select_analyze_group').hide();
             //下拉搜索内容重置
             if($('#select_analyze_shop input').val()){
                 $('#select_analyze_shop input').val('');
                 $('#select_analyze_shop ul').html('');
                 getStore( $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area'));
+            }
+        }else if($(this).find('b').html()=='分组'){
+            $('#select_analyze_group').toggle();
+            $('#select_analyze_shop').hide();
+            $('#select_analyze').hide();
+            $('#select_analyze_brand').hide();
+            //下拉搜索内容重置
+            if($('#select_analyze_group input').val()){
+                $('#select_analyze_group input').val('');
+                $('#select_analyze_group ul').html('');
+                getGroup();
             }
         }
     });
@@ -421,11 +483,12 @@ $(".vip_nav_bar li:nth-child(5)").click(function () {
     $(".rank").hide();
     $(".freq").show();
     $("#page_row").val("10行/页");
+    consumefreq();
     jump=5;
     //点击时，将第一个按钮设置class为btn_bg
-    $($(".freq .month_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});;
+    $($(".freq .new_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});;
     //取消其他的class;
-    var lis= $($(".freq .month_btn span")[0]).parent().nextAll();
+    var lis= $($(".freq .new_btn span")[0]).parent().nextAll();
     for(var i=0;i<lis.length;i++){
         $(lis[i]).find('span').css({"color":"","background":""});
     }
@@ -983,7 +1046,8 @@ function consumefreq(){
     var pageIndex=arguments[0]?arguments[0]:page;
     param['pageNumber']=pageIndex;
     param['pageSize']=pageSize;
-    param['query_type']=query_type;
+    param['query_type']="freq";
+    param['freq_type']=query_type;
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
@@ -993,7 +1057,7 @@ function consumefreq(){
             var msg=JSON.parse(data.message);
             count=msg.pages;
             var pageIndex=msg.pageNum;
-            msg=msg.vip_consume_recently_list;
+            msg=msg.vip_cost_freq_list;
             $(".freq thead").append('<tr>'
                 + '<th>序号</th>'
                 + '<th>会员名称</th>'
@@ -1683,6 +1747,7 @@ $().ready(function(){
     $('#select_analyze ul').on('click','li',showNameClick);
     $('#select_analyze_shop ul').on('click','li',showNameClick);
     $('#select_analyze_brand ul').on('click','li',showNameClick);
+    $('#select_analyze_group ul').on('click','li',showNameClick);
     //加载更多
     $('#side_analyze div s').click(getMore);
     // $('#select_analyze_brand s').click(getMore);
@@ -1719,7 +1784,7 @@ $().ready(function(){
         $("#page_row").val("10行/页");
     });
     //消费排频率
-    $('.freq .month_btn li').click(function () {
+    $('.freq .new_btn li').click(function () {
         consumefreq_sub(this);
         $("#page_row").val("10行/页");
     });
