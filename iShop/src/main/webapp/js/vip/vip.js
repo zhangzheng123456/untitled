@@ -1903,27 +1903,27 @@ $("#choose_staff .screen_que").click(function () {
     }
 })
 //点确定击会员
-$("#screen_vip_que").click(function(){
-    inx=1;
-    _param["corp_code"]="C10000";
-    _param["brand_code"]=message.cache.brand_codes;
-    _param["store_code"]=message.cache.store_codes;
-    _param["area_code"]=message.cache.area_codes;
-    _param["user_code"]=message.cache.user_codes;
-    _param["pageNumber"] = inx;
-    _param["pageSize"] = pageSize;
-    if(message.cache.area_codes==""&&message.cache.brand_codes==""&&message.cache.store_codes==""&&message.cache.user_codes==""){
-        GET(inx,pageSize);
-        $("#save_all").hide();
-    }
-    if(message.cache.area_codes!==""||message.cache.brand_codes!==""||message.cache.store_codes!==""||message.cache.user_codes!==""){
-        filtrate="sucess";
-        filtrates(inx,pageSize);
-    }
-    $("#search").val("");
-    $("#screen_wrapper").hide();
-    $("#p").hide();
-});
+// $("#screen_vip_que").click(function(){
+//     inx=1;
+//     _param["corp_code"]="C10000";
+//     _param["brand_code"]=message.cache.brand_codes;
+//     _param["store_code"]=message.cache.store_codes;
+//     _param["area_code"]=message.cache.area_codes;
+//     _param["user_code"]=message.cache.user_codes;
+//     _param["pageNumber"] = inx;
+//     _param["pageSize"] = pageSize;
+//     if(message.cache.area_codes==""&&message.cache.brand_codes==""&&message.cache.store_codes==""&&message.cache.user_codes==""){
+//         GET(inx,pageSize);
+//         $("#save_all").hide();
+//     }
+//     if(message.cache.area_codes!==""||message.cache.brand_codes!==""||message.cache.store_codes!==""||message.cache.user_codes!==""){
+//         filtrate="sucess";
+//         filtrates(inx,pageSize);
+//     }
+//     $("#search").val("");
+//     $("#screen_wrapper").hide();
+//     $("#p").hide();
+// });
 //筛选调接口
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框

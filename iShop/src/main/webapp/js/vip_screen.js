@@ -230,6 +230,98 @@ $(".filter_group ul").on("click","li",function () {
     $("#filter_group").val(groupName.toString());
     $("#filter_group").attr("data-code",groupCode.toString);
 });
+//筛选确定
+$("#screen_vip_que").click(function () {
+    inx = 1;
+    _param["corp_code"]="C10000";
+    _param["pageNumber"] = inx;
+    _param["pageSize"] = pageSize;
+    var screen=[];
+    if($("#simple_filter").css("display") == "block"){
+        $("#simple_contion .contion_input").each(function () {
+            if($(this).css("display") == "block"){
+                console.log(this);
+                var input = $(this).find("input");
+                var key = $(input[0]).attr("data-kye");
+                var classname = $(input[0]).attr("class");
+                if(classname.indexOf("short")==0){
+                    if($(input[0]).val()!==""||$(input[1]).val()!==""){
+                        var param={};
+                        var val={};
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val()
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        screen.push(param);
+                    }
+                }else {
+                    if($(input[0]).val()!==""&&$(input[0]).val()!=="全部"){
+                        var param={};
+                        var val = $(input[0]).val();
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        screen.push(param);
+                    }
+                }
+            }
+        });
+    }else if($("#senior_filter").css("display") == "block"){
+        $("#contion>div").each(function () {
+            if($(this).css("display") == "block"){
+                console.log(this);
+                $(this).find(".contion_input").each(function (i,e) {
+                    console.log(e);
+                    var input = $(e).find("input");
+                    var key = $(input[0]).attr("data-kye");
+                    var classname = $(input[0]).attr("class");
+                    var id = $(input[0]).attr("id");
+                    if(classname.indexOf("short")==0){
+                        if($(input[0]).val()!==""||$(input[1]).val()!==""){
+                            var param={};
+                            var val={};
+                            val['start'] = $(input[0]).val();
+                            val['end'] = $(input[1]).val();
+                            param['type'] = "json";
+                            param['key'] = key;
+                            param['value'] = val;
+                            screen.push(param);
+                        }
+                    }else if(id.indexOf("screen")==0){
+                        if($(input[0]).val()!==""&&$(input[0]).val()!=="全部"){
+                            var param={};
+                            var val = $(input[0]).attr("data-code");
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            screen.push(param);
+                        }
+                    }else {
+                        if($(input[0]).val()!==""&&$(input[0]).val()!=="全部"){
+                            var param={};
+                            var val = $(input[0]).val();
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            screen.push(param);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    _param['screen'] = screen;
+    if(screen.length==0){
+        GET(inx,pageSize);
+    }else {
+        filtrate="sucess";
+        filtrates(inx,pageSize);
+    }
+    $("#search").val("");
+    $("#screen_wrapper").hide();
+    $("#p").hide();
+});
 //获取分组
 $("#filter_group").click(function () {
     $(".filter_group").toggle();
