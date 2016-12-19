@@ -147,11 +147,10 @@ function getStore(a){
 }
 //获取分组
 function getGroup(){
-    var search_param=arguments.length;
     var param={};
     var ul='';
     param["corp_code"]= "C10000";
-    param["searchValue"]=$("#select_analyze_group input").val();
+    param["search_value"]=$("#select_analyze_group input").val();
     oc.postRequire("post","/vipGroup/getCorpGroups", "",param, function(data){
         if(data.code==0){
             var message=JSON.parse(data.message)
@@ -159,10 +158,6 @@ function getGroup(){
             if(groups.length<=0){return}
             for(var i=0;i<groups.length;i++){
                 groups[i].vip_group_name=='全部'?'':ul+="<li group_cord='"+groups[i].vip_group_code+"'>"+groups[i].vip_group_name+"</li>";
-            }
-            if(search_param==0){
-                $('#side_analyze ul li:nth-child(4) s').html("全部");
-                $('#side_analyze ul li:nth-child(4) s').attr('group_code','');
             }
             $('#select_analyze_group ul').append(ul);
         }else if(data.code==-1){

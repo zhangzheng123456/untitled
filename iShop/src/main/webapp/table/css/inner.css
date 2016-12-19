@@ -1714,8 +1714,11 @@ input::-webkit-input-placeholder{
 	width: 100%;
 	height: 60px;
 }
+#simple_filter .filter_condition ul li{
+	width:16.6666%;
+}
 .filter_condition ul li {
-	width: 16.6666%;
+	width: 20%;
 	height: 50px;
 	line-height: 50px;
 	padding: 0 10px;

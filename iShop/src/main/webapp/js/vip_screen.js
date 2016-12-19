@@ -93,29 +93,6 @@ var activity_end={
         activity_start.max = datas; //结束日选好后，重置开始日的最大日期
     }
 };
-var recent_start={
-    elem: '#recent_start',
-    format: 'YYYY-MM-DD',
-    istime: true,
-    max: '2099-06-16 23:59:59', //最大日期
-    istoday: false,
-    fixed:false,
-    choose: function (datas) {
-        recent_end.min = datas; //开始日选好后，重置结束日的最小日期
-        recent_end.start = datas; //将结束日的初始值设定为开始日
-    }
-};
-var recent_end={
-    elem: '#recent_end',
-    format: 'YYYY-MM-DD',
-    istime: true,
-    max: '2099-06-16 23:59:59',
-    istoday: false,
-    fixed:false,
-    choose: function (datas) {
-        activity_start.max = datas; //结束日选好后，重置开始日的最大日期
-    }
-};
 laydate(simple_birth_start);
 laydate(simple_birth_end);
 laydate(mark_start);
@@ -124,8 +101,6 @@ laydate(start);
 laydate(end);
 laydate(activity_start);
 laydate(activity_end);
-laydate(recent_start);
-laydate(recent_end);
 //点击筛选
 $("#filtrate").click(function () {
     var arr=whir.loading.getPageSize();
@@ -180,6 +155,13 @@ $("#sex").click(function () {
 $("#sex_select li").click(function () {
     $("#sex").val($(this).html());
     $("#sex_select").hide();
+});
+$("#consume_date").click(function () {
+    $("#consume_select").toggle();
+});
+$("#consume_select li").click(function () {
+    $("#consume_date").val($(this).html());
+    $("#consume_select").hide();
 });
 $("#state").click(function () {
     $("#state_select").toggle();
@@ -289,6 +271,9 @@ $(document).click(function (e) {
     }
     if(!($(e.target).is("#vip_card_type"))){
         $("#card_type_select").hide();
+    }
+    if(!($(e.target).is("#consume_date"))){
+        $("#consume_select").hide();
     }
 });
 $(function () {
