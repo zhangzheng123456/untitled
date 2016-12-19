@@ -436,6 +436,7 @@ $("#search").keydown(function() {
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        value=this.value.trim();
         if(value == ""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
