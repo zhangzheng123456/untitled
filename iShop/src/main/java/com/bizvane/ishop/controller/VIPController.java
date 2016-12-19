@@ -602,11 +602,10 @@ public class VIPController {
             String searchValue = jsonObject.get("searchValue").toString().trim();
 
             String page_num = 1 + "";
-            String page_size = 3000 + "";
+            String page_size = 50000 + "";
 
             org.json.JSONObject jsonObj2 = new org.json.JSONObject(param);
             String output_message = jsonObj2.get("message").toString();
-            org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
 
             if (role_code.equals(Common.ROLE_SYS)) {
                 corp_code = "C10000";
@@ -617,45 +616,54 @@ public class VIPController {
                 JSONObject object = new JSONObject();
                 object.put("searchValue",searchValue);
                 object.put("pageNumber",1);
-                object.put("pageSize",3000);
+                object.put("pageSize",50000);
                 object.put("corp_code",corp_code);
                 Map datalist = iceInterfaceService.vipBasicMethod(object, request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
+                datalist.put(data_output_message.key, data_output_message);
+                Data data_output_type = new Data("output_type", "search", ValueType.PARAM);
+                datalist.put(data_output_type.key, data_output_type);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(screen_message.equals("") && searchValue.equals("")){
                 JSONObject object = new JSONObject();
                 object.put("searchValue",searchValue);
                 object.put("pageNumber",1);
-                object.put("pageSize",3000);
+                object.put("pageSize",50000);
                 object.put("corp_code",corp_code);
                 Map datalist = iceInterfaceService.vipBasicMethod(object,request);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
+                datalist.put(data_output_message.key, data_output_message);
+                Data data_output_type = new Data("output_type", "all", ValueType.PARAM);
+                datalist.put(data_output_type.key, data_output_type);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(!screen_message.equals("")){
                 JSONObject jsonObject2 = JSONObject.parseObject(screen_message);
                 String user_code = jsonObject2.get("user_code").toString();
                 String store_code = jsonObject2.get("store_code").toString();
                 String brand_code = jsonObject2.get("brand_code").toString();
                 String area_code = jsonObject2.get("area_code").toString();
-                dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+                dataBox = iceInterfaceService.vipScreen2ExeclMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code, output_message);
             }
             //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             org.json.JSONObject object = new org.json.JSONObject(result);
-            org.json.JSONArray jsonArray = new org.json.JSONArray(object.get("all_vip_list").toString());
-            List list = WebUtils.Json2List2(jsonArray);
-            if (list.size() >= 3000) {
-                errormessage = "导出数据过大";
-                int i = 9 / 0;
-            }
-            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
-            String pathname = OutExeclHelper.OutExecl_vip(jsonArray, list, map, response, request);
+//            org.json.JSONArray jsonArray = new org.json.JSONArray(object.get("all_vip_list").toString());
+//            List list = WebUtils.Json2List2(jsonArray);
+//            if (list.size() >= 3000) {
+//                errormessage = "导出数据过大";
+//                int i = 9 / 0;
+//            }
+//            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
+//            String pathname = OutExeclHelper.OutExecl_vip(jsonArray, list, map, response, request);
+            System.out.println("-----会员导出返回值-----"+object.toString());
             JSONObject result2 = new JSONObject();
-            if (pathname == null || pathname.equals("")) {
-                errormessage = "数据异常，导出失败";
+            if (object.toString().startsWith("数据异常")||object.toString().startsWith("导出数据过大") ) {
+                errormessage = object.toString();
                 int a = 8 / 0;
             }
-            result2.put("path", JSON.toJSONString("lupload/" + pathname));
+            result2.put("path", JSON.toJSONString(object));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result2.toString());
