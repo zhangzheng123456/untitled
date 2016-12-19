@@ -356,8 +356,6 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String store_id = jsonObject.get("store_id").toString();
-            String store_code = baseService.storeIdConvertStoreCode(corp_code, store_id);
 
             String goods_code = "";
             String goods_name = "";
@@ -382,7 +380,6 @@ public class VIPController {
             }
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
             Data data_goods_code = new Data("good_code", goods_code, ValueType.PARAM);
             Data data_goods_name = new Data("good_name", goods_name, ValueType.PARAM);
             Data data_order_id = new Data("order_id", order_id, ValueType.PARAM);
@@ -392,7 +389,6 @@ public class VIPController {
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_vip_id.key, data_vip_id);
             datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_store_code.key, data_store_code);
             datalist.put(data_goods_code.key, data_goods_code);
             datalist.put(data_goods_name.key, data_goods_name);
             datalist.put(data_order_id.key, data_order_id);

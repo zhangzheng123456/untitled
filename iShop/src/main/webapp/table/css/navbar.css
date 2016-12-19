@@ -40,6 +40,7 @@ body{
 	margin-top:20px;
 	color:#6cc1c8;
 	position: relative;
+	height: 60px;
 }
 .navbar .floot-r li a{
 	display: block;

@@ -6,6 +6,16 @@ var txt="";//标签搜索下标签名
 var val="";//贴上input值
 var swip_image = [];//图片切换播放
 
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+key_val=JSON.parse(key_val);//取key_val的值
+if(Boolean(key_val.func_code)){
+    var funcCode=key_val.func_code
+}else{
+    var funcCode="F0010";
+    key_val.func_code="F0010";
+    sessionStorage.setItem("key_val",JSON.stringify(key_val));
+}
+
 function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     whir.loading.add("",0.5);//加载等待框
@@ -616,7 +626,7 @@ function upLoadAlbum(){
             $("#upAlbum").val("");
             addVipAlbum(url)
         }).catch(function (err) {
-             console.log(err);
+             //console.log(err);
         });
     });
 }
