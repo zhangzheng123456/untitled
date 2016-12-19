@@ -508,17 +508,19 @@ $("#delete").click(function(){
     oc.postRequire("post","/feedback/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
-                frame();
+                frame().then(function(){
+                    GET();
+                });
                 $('.frame').html('删除成功');
                 param["pageNumber"]=inx;
                 param["pageSize"]=pageSize;
                 param["funcCode"]=funcCode;
                 param["searchValue"]="";
-                GET();
             }else if(value!==""){
-                frame();
+                frame().then(function(){
+                    POST();
+                });
                 $('.frame').html('删除成功');
-                POST();
             }else if(data.code=="-1"){
                 frame();
                 $('.frame').html(data.message);
@@ -528,6 +530,7 @@ $("#delete").click(function(){
 })
 //删除弹框
 function frame(){
+    var def= $.Deferred();
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
@@ -536,7 +539,9 @@ function frame(){
     $(".frame").animate({opacity:"0"},1000);
     setTimeout(function(){
         $(".frame").hide();
+        def.resolve();
     },2000);
+    return def;
 }
 //全选
 function checkAll(name){

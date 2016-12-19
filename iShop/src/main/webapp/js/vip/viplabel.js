@@ -329,6 +329,7 @@ function GET(a,b){
     oc.postRequire("post","/VIP/label/find","0",param,function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
+                $(".table p").remove();
                 var message=JSON.parse(data.message);
                 var message=JSON.parse(message.list);
                 var list=message.list;
@@ -535,7 +536,7 @@ $("#delete").click(function(){
                 param["pageSize"]=pageSize;
                 param["funcCode"]=funcCode;
                 param["searchValue"]="";
-                    GET(pageNumber, pageSize);
+                GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
                 $('.frame').html('删除成功');

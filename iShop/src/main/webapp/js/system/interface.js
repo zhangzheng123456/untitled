@@ -416,6 +416,7 @@ var interFace={
     },
     //删除弹框
     frame:function (){
+        var def= $.Deferred();
         var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
         var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
         $('.frame').remove();
@@ -424,7 +425,9 @@ var interFace={
         $(".frame").animate({opacity:"0"},1000);
         setTimeout(function(){
             $(".frame").hide();
+            def.resolve();
         },2000);
+        return def;
     },
     toPage:function(){  ////跳转页面的键盘按下事件
         var self=this;
@@ -538,17 +541,19 @@ var interFace={
             oc.postRequire("post","/interfacers/delete","0",param,function(data){
                 if(data.code=="0"){
                     if(value==""){
-                        self.frame();
+                        self.frame().then(function(){
+                            self.GET();
+                        });
                         $('.frame').html('删除成功');
                         self.param["pageNumber"]=self.inx;
                         self.param["pageSize"]=self.pageSize;
                         self.param["funcCode"]=self.funcCode;
                         self.param["searchValue"]="";
-                        self.GET();
                     }else if(value!==""){
-                        self.frame();
+                        self.frame().then(function(){
+                            self.POST();
+                        });
                         $('.frame').html('删除成功');
-                        self.POST();
                     }else if(data.code=="-1"){
                         self.frame();
                         $('.frame').html(data.message);
