@@ -185,7 +185,6 @@ public class VipAnalysisController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String query_type = jsonObject.get("query_type").toString();
-
             DataBox dataBox = null;
             Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
             if (query_type.equals("recent")){
@@ -193,7 +192,8 @@ public class VipAnalysisController {
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipRecent", datalist);
             }else if (query_type.equals("freq")){
                 //消费频率
-                Data data_type = new Data("type", "three", ValueType.PARAM);
+                String freq_type = jsonObject.get("freq_type").toString();
+                Data data_type = new Data("type", freq_type, ValueType.PARAM);
                 datalist.put(data_type.key, data_type);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipFreq", datalist);
             }else if (query_type.equals("month")){
