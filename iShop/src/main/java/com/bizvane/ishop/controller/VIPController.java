@@ -9,20 +9,17 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
-import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.PageInfo;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import org.apache.log4j.Logger;
-import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -47,17 +44,9 @@ public class VIPController {
     @Autowired
     IceInterfaceService iceInterfaceService;
     @Autowired
-    VipAlbumService vipAlbumService;
-    @Autowired
     VipLabelService vipLabelService;
     @Autowired
     VipParamService vipParamService;
-    @Autowired
-    VipGroupService vipGroupService;
-    @Autowired
-    BaseService baseService;
-    @Autowired
-    UserService userService;
     @Autowired
     StoreService storeService;
     @Autowired
@@ -66,6 +55,8 @@ public class VIPController {
     CorpParamService corpParamService;
     @Autowired
     MongoDBClient mongodbClient;
+    @Autowired
+    TableManagerService tableManagerService;
 
     /**
      * 新增会员信息
@@ -509,58 +500,72 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String user_code = jsonObject.get("user_code").toString();
-            String store_code = jsonObject.get("store_code").toString();
-            String brand_code = jsonObject.get("brand_code").toString();
-            String area_code = jsonObject.get("area_code").toString();
-
-            String page_num = jsonObject.get("pageNumber").toString();
-            String page_size = jsonObject.get("pageSize").toString();
-            if (jsonObject.containsKey("type")) {
-                String type = jsonObject.getString("type");
-                if (type.equals("easy")) {
-                    String key = jsonObject.getString("key");
-                    String value = jsonObject.getString("value");
-                } else {
-                    if (jsonObject.containsKey("basic")) {
-                        JSONObject basic = jsonObject.getJSONObject("basic");
-                        String vip_name = basic.getString("vip_name");
-                        String sex = basic.getString("sex");
-                        String age = basic.getString("age");
-                        String birthday = basic.getString("birthday");
-                        String phone = basic.getString("phone");
-                    }
-                    if (jsonObject.containsKey("vip")) {
-                        JSONObject vip = jsonObject.getJSONObject("vip");
-                        String card_no = vip.getString("card_no");
-                        String card_type = vip.getString("card_type");
-                        String join_date = vip.getString("join_date");
-                        String points = vip.getString("points");
-                        String freeze = vip.getString("freeze");
-                    }
-                    if (jsonObject.containsKey("consume")) {
-                        JSONObject consume = jsonObject.getJSONObject("consume");
-                        String recent_date = consume.getString("recent_date");
-                        String times = consume.getString("times");
-                        String total = consume.getString("total");
-                    }
-                    if (jsonObject.containsKey("extend")) {
-                        JSONObject extend = jsonObject.getJSONObject("extend");
-                        String label = extend.getString("label");
-                        String group = extend.getString("group");
-                    }
-                    if (jsonObject.containsKey("ticket")) {
-                        JSONObject ticket = jsonObject.getJSONObject("ticket");
-                        String ticket_type = ticket.getString("ticket_type");
-                        String ticket_status = ticket.getString("ticket_status");
-                    }
-                }
-            }
-
             if (role_code.equals(Common.ROLE_SYS)) {
                 corp_code = jsonObject.get("corp_code").toString();
             }
-            logger.info("json--------------corp_code-" + corp_code);
+
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+            JSONArray screen = jsonObject.getJSONArray("screen");
+
+            List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
+
+            String brand_code = "";
+            String area_code = "";
+            String store_code = "";
+            String user_code = "";
+            JSONArray post_array = new JSONArray();
+            for (int i = 0; i < screen.size(); i++) {
+                JSONObject screen_obj = screen.getJSONObject(i);
+                String key = screen_obj.getString("key");
+                String type = screen_obj.getString("type");
+                String value = screen_obj.getString("value");
+                if (type.equals("text") && value.equals("")){
+                    //筛选值为空
+                    continue;
+                }else if (type.equals("json") && value.equals("{}")){
+                    //筛选值为空
+                    continue;
+                }else if (key.equals("brand_code")){
+                    //筛选品牌下会员
+                    brand_code = screen_obj.get("brand_code").toString();
+                }else if (key.equals("area_code")){
+                    //筛选区域下会员
+                    area_code = screen_obj.get("area_code").toString();
+                }else {
+                    //根据key值，找出其对应name
+                    for (int j = 0; j < tableManagers.size(); j++) {
+                        JSONObject post_obj = new JSONObject();
+                        post_obj.put("type",type);
+                        post_obj.put("value",value);
+                        if (key.equals(tableManagers.get(j).getFilter_weight())){
+                            String key_name = tableManagers.get(j).getColumn_name();
+                            post_obj.put("key",key_name);
+                            if (key_name.equals("store_code")){
+                                store_code = jsonObject.get(key).toString();
+                            }
+                            if (key_name.equals("user_code")){
+                                user_code = jsonObject.get(key).toString();
+                            }
+                            post_array.add(post_obj);
+                            break;
+                        }
+                    }
+                }
+            }
+            //若选择了区域和品牌，记住品牌区域下的store_code
+            if (store_code.equals("") && (!area_code.equals("") || !brand_code.equals(""))){
+                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                for (int i = 0; i < storeList.size(); i++) {
+                    store_code = store_code + storeList.get(i).getStore_code() + ",";
+                }
+                JSONObject post_obj = new JSONObject();
+                post_obj.put("key","store_code");
+                post_obj.put("type","text");
+                post_obj.put("value",store_code);
+                post_array.add(post_obj);
+            }
+
             DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
 
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
@@ -598,10 +603,11 @@ public class VIPController {
             String searchValue = jsonObject.get("searchValue").toString().trim();
 
             String page_num = 1 + "";
-            String page_size = 50000 + "";
+            String page_size = 10000 + "";
 
             org.json.JSONObject jsonObj2 = new org.json.JSONObject(param);
             String output_message = jsonObj2.get("message").toString();
+            org.json.JSONObject output_message_object = new org.json.JSONObject(output_message);
 
             if (role_code.equals(Common.ROLE_SYS)) {
                 corp_code = "C10000";
@@ -612,54 +618,64 @@ public class VIPController {
                 JSONObject object = new JSONObject();
                 object.put("searchValue",searchValue);
                 object.put("pageNumber",1);
-                object.put("pageSize",50000);
+                object.put("pageSize",10000);
                 object.put("corp_code",corp_code);
                 Map datalist = iceInterfaceService.vipBasicMethod(object, request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
-                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
-                datalist.put(data_output_message.key, data_output_message);
-                Data data_output_type = new Data("output_type", "search", ValueType.PARAM);
-                datalist.put(data_output_type.key, data_output_type);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+
+//                Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
+//                datalist.put(data_search_value.key, data_search_value);
+//                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
+//                datalist.put(data_output_message.key, data_output_message);
+//                Data data_output_type = new Data("output_type", "search", ValueType.PARAM);
+//                datalist.put(data_output_type.key, data_output_type);
+//                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(screen_message.equals("") && searchValue.equals("")){
                 JSONObject object = new JSONObject();
                 object.put("searchValue",searchValue);
                 object.put("pageNumber",1);
-                object.put("pageSize",50000);
+                object.put("pageSize",10000);
                 object.put("corp_code",corp_code);
                 Map datalist = iceInterfaceService.vipBasicMethod(object,request);
-                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
-                datalist.put(data_output_message.key, data_output_message);
-                Data data_output_type = new Data("output_type", "all", ValueType.PARAM);
-                datalist.put(data_output_type.key, data_output_type);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+
+//                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
+//                datalist.put(data_output_message.key, data_output_message);
+//                Data data_output_type = new Data("output_type", "all", ValueType.PARAM);
+//                datalist.put(data_output_type.key, data_output_type);
+//                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(!screen_message.equals("")){
                 JSONObject jsonObject2 = JSONObject.parseObject(screen_message);
                 String user_code = jsonObject2.get("user_code").toString();
                 String store_code = jsonObject2.get("store_code").toString();
                 String brand_code = jsonObject2.get("brand_code").toString();
                 String area_code = jsonObject2.get("area_code").toString();
-                dataBox = iceInterfaceService.vipScreen2ExeclMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code, output_message);
+                dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+
+              //  dataBox = iceInterfaceService.vipScreen2ExeclMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code, output_message);
             }
             //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             org.json.JSONObject object = new org.json.JSONObject(result);
-//            org.json.JSONArray jsonArray = new org.json.JSONArray(object.get("all_vip_list").toString());
-//            List list = WebUtils.Json2List2(jsonArray);
-//            if (list.size() >= 3000) {
-//                errormessage = "导出数据过大";
-//                int i = 9 / 0;
-//            }
-//            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
-//            String pathname = OutExeclHelper.OutExecl_vip(jsonArray, list, map, response, request);
-            System.out.println("-----会员导出返回值-----"+object.toString());
+            org.json.JSONArray jsonArray = new org.json.JSONArray(object.get("all_vip_list").toString());
+            List list = WebUtils.Json2List2(jsonArray);
+            if (list.size() >= 10000) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(output_message_object);
+            String pathname = OutExeclHelper.OutExecl_vip(jsonArray, list, map, response, request);
+            //System.out.println("-----会员导出返回值-----"+object.toString());
             JSONObject result2 = new JSONObject();
-            if (object.toString().startsWith("数据异常")||object.toString().startsWith("导出数据过大") ) {
-                errormessage = object.toString();
+//            if (object.toString().startsWith("数据异常")||object.toString().startsWith("导出数据过大") ) {
+//                errormessage = object.toString();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
-            result2.put("path", JSON.toJSONString(object));
+            result2.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result2.toString());

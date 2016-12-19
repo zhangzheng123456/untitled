@@ -26,4 +26,6 @@ public interface TableManagerMapper {
 
     List<TableManager> selByFunc(@Param("function_code")String function_code) throws SQLException;
 
+    List<TableManager> selVipScreenValue() throws SQLException;
+
 }
