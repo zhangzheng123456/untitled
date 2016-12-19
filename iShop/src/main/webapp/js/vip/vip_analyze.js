@@ -24,11 +24,9 @@ function getBrand(){
     param["searchValue"]=$("#select_analyze_brand input").val();
     oc.postRequire("post","/brand/findBrandByCorpCode", "",param, function(data){
     //     oc.postRequire("post","/shop/brands", "",param, function(data){
-            console.log(data);
         if(data.code==0){
         var message=JSON.parse(data.message)
         var brands=message.brands;//数组
-        console.log(brands.length);
         //遍历数组添加页面元素
         // if(brands.length<=8){
         //     $('#select_analyze_brand s').attr('style','display:none')
@@ -77,7 +75,6 @@ function GetArea(){
             }else{
                 $('#select_analyze s').attr('style','display:block')
             }
-            console.log(output);
             first_area=output_list[0].area_name;
             first_area_code=output_list[0].area_code;//区域号
             //设置本地缓存企业编号
@@ -91,7 +88,6 @@ function GetArea(){
                 $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
             }
             var area_code=output_list[0].area_code;
-            // console.log(area_code);
             // localStorage.setItem('area_code',area_code);
             //如果是加载跟多就不清除内容店铺下拉列表
             if(un_push){un_push=0;}else{
@@ -326,11 +322,9 @@ function getData(){
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param["type"]="D";
     param["time"]=$($('.date_title .date input')[0]).val();
-    console.log($($('.date_title .date input')[0]).html());
     oc.postRequire("post","/vipAnalysis/vipScale","",param,function(data){
         var message=JSON.parse(data.message);
         var message=JSON.parse(data.message);
-        console.log(message)
         for(var key in message){
             switch (key){
                 case 'all':fillVip(message[key],$('.all_vip span b'),$('.all_vip table tbody tr'));break;
@@ -400,7 +394,6 @@ $(".vip_nav_bar li:nth-child(3)").click(function () {
     //取消其他的class;
     var lis= $($(".month_btn span")[0]).parent().nextAll();
     for(var i=0;i<lis.length;i++){
-        console.log($(lis[i]).find('span'));
         $(lis[i]).find('span').css({"color":"","background":""});
     }
 });
@@ -418,7 +411,6 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     //取消其他的class;
     var lis= $($(".rank .month_btn span")[0]).parent().nextAll();
     for(var i=0;i<lis.length;i++){
-        console.log($(lis[i]).find('span'));
         $(lis[i]).find('span').css({"color":"","background":""});
     }
 });
@@ -455,7 +447,6 @@ $(".month_btn span").click(function () {
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
 });
 $(".more_data").click(function () {
-    console.log($('#table_analyze .foot .foot-num')[0]);
     vipTable_lg();
 });
 //加载更多页面放大
@@ -516,12 +507,10 @@ function brithVipGet() {
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
-    console.log(param);
     oc.postRequire("post","/vipAnalysis/vipBirth","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             count=msg.pages;
-            console.log(count);
             var pageIndex=msg.pageNum;
             msg=msg.birthday_vip_list;
             if(msg.length == 0){
@@ -542,7 +531,7 @@ function brithVipGet() {
                     } else {
                         var a = i + 1;
                     }
-                    $(".birthVip tbody").append('<tr><td>'
+                    $(".birthVip tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
                         + a
                         + '</td><td>'
                         + msg[i].vip_name
@@ -557,11 +546,14 @@ function brithVipGet() {
                         + '</td></tr>');
                 }
                 $(".birthVip .vip_table tbody tr").click(function () {
-                    vipTable_lg();
+                    //vipTable_lg();
+                    var ID=$(this).attr("id");
+                    sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }
         }else if(data.code=="-1"){
-            console.log(data.message);
         }
         whir.loading.remove();//移除加载框
         //调用生成页码
@@ -608,7 +600,7 @@ function newVipGet(){
                     }else{
                         var a=i+1;
                     }
-                    $(".newVip tbody").append('<tr><td>'
+                    $(".newVip tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
                         + a
                         +'</td><td>'
                         + msg[i].vip_name
@@ -621,7 +613,11 @@ function newVipGet(){
                         +'</td></tr>');
                 }
                 $(".vip_table tbody tr").click(function () {
-                    vipTable_lg();
+                    //vipTable_lg();
+                    var ID=$(this).attr("id");
+                    sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".newVip thead tr th").length;
@@ -635,7 +631,6 @@ function newVipGet(){
                 $(".newVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
-            console.log(data.message);
             // whir.loading.remove();//移除加载框
         }
         //调用生成页码
@@ -676,7 +671,6 @@ function sleepVipGet() {
             var msg=JSON.parse(data.message);
             count=msg.pages;
             proportion_list = msg.proportion_list;
-            console.log(proportion_list);
             //循环添加页面的百分比
             var spans=$('.activeVip .month_btn span');
             $($('.activeVip .month_btn span')[0]).html('活跃会员'+proportion_list.active_vip_proportion+'%');
@@ -684,10 +678,8 @@ function sleepVipGet() {
             $($('.activeVip .month_btn span')[2]).html('6个月'+proportion_list.six_vip_proportion+'%');
             $($('.activeVip .month_btn span')[3]).html('9个月'+proportion_list.nine_vip_proportion+"%");
             $($('.activeVip .month_btn span')[4]).html('12个月'+proportion_list.year_vip_proportion+'%');
-            console.log($('.activeVip .month_btn span'))
             var pageIndex=msg.pageNum;
             msg=msg.sleep_vip_list;
-            console.log( msg.length)
             if(msg.length){
                 for(var i=0;i<msg.length;i++){
                     if(pageIndex>=2){
@@ -695,7 +687,7 @@ function sleepVipGet() {
                     }else{
                         var a=i+1;
                     }
-                    $(".activeVip tbody").append('<tr><td>'
+                    $(".activeVip tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
                         + a
                         +'</td><td>'
                         + msg[i].vip_name
@@ -710,7 +702,10 @@ function sleepVipGet() {
                         +'</td></tr>');
                 }
                 $(".activeVip .vip_table tbody tr").click(function () {
-                    vipTable_lg();
+                    var ID=$(this).attr("id");
+                    sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
+                   window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".activeVip thead tr th").length;
@@ -724,8 +719,6 @@ function sleepVipGet() {
                 $(".activeVip tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
-            console.log(data.message);
-
         }
         whir.loading.remove();//移除加载框
         //调用生成页码
@@ -781,7 +774,7 @@ function consumeVipGet() {
                     }else{
                         var a=i+1;
                     }
-                    $(".rank tbody").append('<tr><td>'
+                    $(".rank tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
                         + a
                         +'</td><td>'
                         + msg[i].vip_name
@@ -794,7 +787,11 @@ function consumeVipGet() {
                         +'</td></tr>');
                 }
                 $(".rank .vip_table tbody tr").click(function () {
-                    vipTable_lg();
+                    //vipTable_lg();
+                    var ID=$(this).attr("id");
+                    sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".rank thead tr th").length;
@@ -808,7 +805,6 @@ function consumeVipGet() {
                 $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
-            console.log(data.message);
             // whir.loading.remove();//移除加载框
         }
         //调用生成页码
@@ -837,7 +833,6 @@ function consumeVipGetre() {
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
-            console.log(msg);
             count=msg.pages;
             var pageIndex=msg.pageNum;
             msg=msg.vip_cost_freq_list;
@@ -854,7 +849,7 @@ function consumeVipGetre() {
                     }else{
                         var a=i+1;
                     }
-                    $(".rank tbody").append('<tr><td>'
+                    $(".rank tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
                         + a
                         +'</td><td>'
                         + msg[i].vip_name
@@ -867,7 +862,11 @@ function consumeVipGetre() {
                         +'</td></tr>');
                 }
                 $(".rank .vip_table tbody tr").click(function () {
-                    vipTable_lg();
+                    //vipTable_lg();
+                    var ID=$(this).attr("id");
+                    sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".rank thead tr th").length;
@@ -881,8 +880,6 @@ function consumeVipGetre() {
                 $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
-            console.log(data.message);
-            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
@@ -925,7 +922,7 @@ function consumeVipGetam() {
                     }else{
                         var a=i+1;
                     }
-                    $(".rank tbody").append('<tr><td>'
+                    $(".rank tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
                         + a
                         +'</td><td>'
                         + msg[i].vip_name
@@ -936,7 +933,11 @@ function consumeVipGetam() {
                         +'</td></tr>');
                 }
                 $(".rank .vip_table tbody tr").click(function () {
-                    vipTable_lg();
+                    //vipTable_lg();
+                    var ID=$(this).attr("id");
+                    sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".rank thead tr th").length;
@@ -950,8 +951,6 @@ function consumeVipGetam() {
                 $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
             }
         }else if(data.code=="-1"){
-            console.log(data.message);
-            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
@@ -1226,8 +1225,6 @@ $("#input-txt").keydown(function() {
     };
     if (inx > 0) {
         if (event.keyCode == 13) {
-            console.log(month_type,jump);
-            console.log(jump_s);
                 jump==2&&(newVipGet(inx,'',month_type));
                 jump==3&&(sleepVipGet(inx,'',query_type));
                 jump==1&&(brithVipGet(inx,'',month_type));

@@ -401,7 +401,6 @@ public class StoreAchvGoalController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int user_id = Integer.parseInt(request.getSession().getAttribute("user_code").toString());
 
             String search_value = jsonObject.get("searchValue").toString();
 

@@ -134,7 +134,7 @@
 
 			//选择文件错误触发事件;
 			webUploader.on('error', function( code ) {
-				sessionStorage.setItem('error','error')
+				// sessionStorage.setItem('error','error')
 				var text = '';
 				switch( code ) {
 					case  'F_DUPLICATE' : text = '该文件已经被选择了!' ;
@@ -202,6 +202,7 @@
 			//文件上传方式
 			method:"POST",
 			//服务器地址;
+			duplicate:true,
 			server:"",
 			//是否已二进制的流的方式发送文件，这样整个上传内容php://input都为文件内容
 			sendAsBinary:false,

@@ -7342,10 +7342,17 @@ body.skin-3 {
 }
 .editor_detail ul .edit_save{
   background:#6dc1c8;
-  margin-right:10px;
 }
 .editor_detail ul .edit_close{
   background:#4a5f7c;
+  margin-left: 10px;
+}
+.edit_save{
+  background-color: #6dc1c8;
+}
+.edit_close{
+  background-color: #4a5f7c;
+   margin-left: 10px;
 }
 .msg_detail{
   margin-top:40px;
@@ -7499,17 +7506,11 @@ body.skin-3 {
     letter-spacing: 10px;
     cursor: pointer;
 }
-.editor_detail_em ul li:nth-of-type(odd) {
-    background: #6dc1c8;
-    margin-right: 10px;
-}
-.editor_detail_em ul li:nth-of-type(even) {
-    background: #4a5f7c;
-}
 .editor_detail_em ul li i {
     vertical-align: middle;
     font-size: 16px;
 }
+
 .editor_em .conpany_msg label ,.task_allot{
     width: 105px;
     height: 30px;

@@ -470,11 +470,11 @@ public class GroupController {
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             List<Role> roles;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                roles = roleService.selectAll("");
-            } else {
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                roles = roleService.selectAll("");
+//            } else {
                 roles = roleService.selectCorpRole(role_code);
-            }
+//            }
             JSONArray array = new JSONArray();
             for (int i = 0; i < roles.size(); i++) {
                 Role role = roles.get(i);

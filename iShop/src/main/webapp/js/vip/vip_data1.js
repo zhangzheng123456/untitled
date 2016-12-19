@@ -378,7 +378,6 @@ function getoselectvalue(){//点击模拟的select 获取值给input
                 frame();
                 $('.frame').html('删除成功');
                 swip_image.removeByValue(src);
-                console.log(src);
             }else{
                 frame();
                 $('.frame').html('删除失败');
@@ -462,7 +461,6 @@ $("#VIP_avatar").change(function(e){
         $(".person-img").css('backgroundImage','url('+url+'?'+Math.random()+')');
         postInfo('avatar',url);
     }).catch(function (err) {
-         console.log(err);
     });
 });
 

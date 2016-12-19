@@ -41,8 +41,6 @@ public class ActivityVipServiceImpl implements ActivityVipService {
     @Autowired
     private AreaService areaService;
     @Autowired
-    private ValidateCodeService validateService;
-    @Autowired
     private TaskService taskService;
     @Autowired
     private TaskTypeService taskTypeService;
