@@ -2,7 +2,6 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.TablePrivilege;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,4 +18,6 @@ public interface TableManagerService {
     List<TableManager> selTableList()throws Exception;
 
     int updateTable(String column_code,String id);
+
+    List<TableManager> selVipScreenValue() throws Exception;
 }
