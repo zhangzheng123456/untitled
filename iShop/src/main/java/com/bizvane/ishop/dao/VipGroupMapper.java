@@ -13,9 +13,9 @@ import java.util.Map;
 public interface VipGroupMapper {
     VipGroup selectVipGroupById(int id) throws SQLException;
 
-    List<VipGroup> selectCorpVipGroups(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("search_value") String search_value) throws SQLException;
+    List<VipGroup> selectCorpVipGroups(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
-    List<VipGroup> selectAllVipGroup(@Param("corp_code") String corp_code, @Param("user_code") String user_code,@Param("search_value") String search_value) throws SQLException;
+    List<VipGroup> selectAllVipGroup(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
     int insertVipGroup(VipGroup vipGroup) throws SQLException;
 
@@ -28,7 +28,5 @@ public interface VipGroupMapper {
     VipGroup selectByVipGroupCode(@Param("corp_code") String corp_code, @Param("vip_group_code") String vip_group_code, @Param("isactive") String isactive) throws SQLException;
 
     List<VipGroup> selectAllVipGroupScreen(Map<String, Object> params) throws SQLException;
-
-    List<VipGroup> selectByVipid(@Param("corp_code") String corp_code, @Param("vip_id") String vip_id, @Param("isactive") String isactive) throws SQLException;
 
 }

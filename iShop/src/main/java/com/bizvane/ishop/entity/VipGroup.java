@@ -9,12 +9,10 @@ public class VipGroup {
     private String vip_group_code;
     //会员分组名称
     private String vip_group_name;
-    //导购编号
-    private String user_code;
-    //分组下会员
-    private String vip_ids;
-    //备注
-    private String remark;
+    //分组方式
+    private String group_type;
+    //分组条件
+    private String group_condition;
     //企业编号
     private String corp_code;
     //修改时间
@@ -27,22 +25,8 @@ public class VipGroup {
     private String creater;
     //是否可用
     private String isactive;
-    //分组下会员数量
-    private int vip_count;
 
     private String corp_name;
-
-    private String user_name;
-
-    private Corp corp;
-
-    public Corp getCorp() {
-        return corp;
-    }
-
-    public void setCorp(Corp corp) {
-        this.corp = corp;
-    }
 
     public int getId() {
         return id;
@@ -68,28 +52,20 @@ public class VipGroup {
         this.vip_group_name = vip_group_name;
     }
 
-    public String getUser_code() {
-        return user_code;
+    public String getGroup_type() {
+        return group_type;
     }
 
-    public void setUser_code(String user_code) {
-        this.user_code = user_code;
+    public void setGroup_type(String group_type) {
+        this.group_type = group_type;
     }
 
-    public String getVip_ids() {
-        return vip_ids;
+    public String getGroup_condition() {
+        return group_condition;
     }
 
-    public void setVip_ids(String vip_ids) {
-        this.vip_ids = vip_ids;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setGroup_condition(String group_condition) {
+        this.group_condition = group_condition;
     }
 
     public String getCorp_code() {
@@ -146,21 +122,5 @@ public class VipGroup {
 
     public void setCorp_name(String corp_name) {
         this.corp_name = corp_name;
-    }
-
-    public String getUser_name() {
-        return user_name;
-    }
-
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
-
-    public int getVip_count() {
-        return vip_count;
-    }
-
-    public void setVip_count(int vip_count) {
-        this.vip_count = vip_count;
     }
 }

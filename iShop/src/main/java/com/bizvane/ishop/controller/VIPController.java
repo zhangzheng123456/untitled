@@ -277,7 +277,7 @@ public class VIPController {
             String extend_info = "";
             String remark = "";
             String avatar = "";
-            String vip_group_name = "";
+//            String vip_group_name = "";
 
             JSONArray extend = new JSONArray();
 
@@ -311,14 +311,14 @@ public class VIPController {
                     avatar = obj.get("avatar").toString();
             }
 
-            List<VipGroup> vipGroups = vipGroupService.selectByVipid(corp_code, Common.SPECIAL_HEAD + vip_id + ",", Common.IS_ACTIVE_Y);
-            for (int i = 0; i < vipGroups.size(); i++) {
-                vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
-            }
-            if (vip_group_name.endsWith(","))
-                vip_group_name = vip_group_name.substring(0, vip_group_name.length() - 1);
+//            List<VipGroup> vipGroups = vipGroupService.selectByVipid(corp_code, Common.SPECIAL_HEAD + vip_id + ",", Common.IS_ACTIVE_Y);
+//            for (int i = 0; i < vipGroups.size(); i++) {
+//                vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
+//            }
+//            if (vip_group_name.endsWith(","))
+//                vip_group_name = vip_group_name.substring(0, vip_group_name.length() - 1);
             vip.put("vip_avatar", avatar);
-            vip.put("vip_group_name", vip_group_name);
+//            vip.put("vip_group_name", vip_group_name);
 
             JSONObject result = new JSONObject();
             result.put("list", vip);
