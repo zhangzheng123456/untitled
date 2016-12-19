@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipRulesMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipRules" id="VipRules">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_type" property="vip_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="high_vip_type" property="high_vip_type"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="discount" property="discount" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="join_threshold" property="join_threshold"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="upgrade_amount" property="upgrade_amount"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="points_value" property="points_value" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="present_point" property="present_point" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="present_coupon" property="present_coupon"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectById" resultMap="VipRules">
+        SELECT
+          dvr.id,
+          dvr.corp_code,
+          dvr.vip_type,
+          dvr.high_vip_type,
+          dvr.discount,
+          dvr.join_threshold,
+          dvr.upgrade_time,
+          dvr.upgrade_amount,
+          dvr.points_value,
+          dvr.present_point,
+          dvr.present_coupon,
+          dvr.modified_date,
+          dvr.modifier,
+          dvr.created_date,
+          dvr.creater,
+          dvr.isactive,
+           dc.corp_name
+        FROM def_vip_rules dvr,def_corp dc
+        WHERE dvr.corp_code = dc.corp_code
+        AND  dvr.ID=#{id}
+    </select>
+
+    <select id="selectAllVipRules" resultMap="VipRules">
+        SELECT
+        dvr.id,
+        dvr.corp_code,
+        dvr.vip_type,
+        dvr.high_vip_type,
+        dvr.discount,
+        dvr.join_threshold,
+        dvr.upgrade_time,
+        dvr.upgrade_amount,
+        dvr.points_value,
+        dvr.present_point,
+        dvr.present_coupon,
+        dvr.modified_date,
+        dvr.modifier,
+        dvr.created_date,
+        dvr.creater,
+        dvr.isactive,
+        dc.corp_name
+        FROM def_vip_rules dvr,def_corp dc
+        WHERE dvr.corp_code = dc.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND dvr.corp_code = #{corp_code}
+        </if>
+
+        <if test="search_value != null and search_value !=''">
+            AND
+            (dvr.vip_type LIKE concat('%',#{search_value},'%')
+            OR dvr.high_vip_type LIKE concat('%',#{search_value},'%')
+            OR dc.corp_name LIKE concat('%',#{search_value},'%')
+            OR dvr.discount LIKE concat('%',#{search_value},'%')
+            OR dvr.join_threshold LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY  dvr.id DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM
+        def_vip_rules
+        WHERE ID=#{id}
+    </delete>
+
+    <insert id="insertVipRules" parameterType="com.bizvane.ishop.entity.VipRules">
+        INSERT INTO def_vip_rules
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="vip_type!=null">
+                vip_type,
+            </if>
+            <if test="high_vip_type!=null">
+                high_vip_type,
+            </if>
+            <if test="discount!=null">
+                discount,
+            </if>
+            <if test="join_threshold!=null">
+                join_threshold,
+            </if>
+            <if test="upgrade_time!=null">
+                upgrade_time,
+            </if>
+            <if test="upgrade_amount!=null">
+                upgrade_amount,
+            </if>
+            <if test="points_value!=null">
+                points_value,
+            </if>
+            <if test="present_point!=null">
+                present_point,
+            </if>
+            <if test="present_coupon!=null">
+                present_coupon,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="vip_type!=null">
+                #{vip_type},
+            </if>
+            <if test="high_vip_type!=null">
+                #{high_vip_type},
+            </if>
+            <if test="discount!=null">
+                #{discount},
+            </if>
+            <if test="join_threshold!=null">
+                #{join_threshold},
+            </if>
+            <if test="upgrade_time!=null">
+                #{upgrade_time},
+            </if>
+            <if test="upgrade_amount!=null">
+                #{upgrade_amount},
+            </if>
+            <if test="points_value!=null">
+            #{points_value},
+             </if>
+            <if test="present_point!=null">
+                #{present_point},
+            </if>
+            <if test="present_coupon!=null">
+                #{present_coupon},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateVipRules" parameterType="com.bizvane.ishop.entity.VipRules">
+        UPDATE def_vip_rules
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="vip_type!=null">
+                vip_type=#{vip_type},
+            </if>
+            <if test="high_vip_type!=null">
+                high_vip_type=#{high_vip_type},
+            </if>
+            <if test="discount!=null">
+                discount=#{discount},
+            </if>
+            <if test="join_threshold!=null">
+                join_threshold=#{join_threshold},
+            </if>
+            <if test="upgrade_time!=null">
+                upgrade_time=#{upgrade_time},
+            </if>
+            <if test="upgrade_amount!=null">
+                upgrade_amount=#{upgrade_amount},
+            </if>
+            <if test="points_value!=null">
+                points_value=#{points_value},
+            </if>
+            <if test="present_point!=null">
+                present_point=#{present_point},
+            </if>
+            <if test="present_coupon!=null">
+                present_coupon=#{present_coupon},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectVipRulesScreen" resultMap="VipRules">
+        SELECT
+        dvr.id,
+        dvr.corp_code,
+        dvr.vip_type,
+        dvr.high_vip_type,
+        dvr.discount,
+        dvr.join_threshold,
+        dvr.upgrade_time,
+        dvr.upgrade_amount,
+        dvr.points_value,
+        dvr.present_point,
+        dvr.present_coupon,
+        dvr.modified_date,
+        dvr.modifier,
+        dvr.created_date,
+        dvr.creater,
+        dvr.isactive,
+        dc.corp_name
+        FROM def_vip_rules dvr,def_corp dc
+        WHERE dvr.corp_code = def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvr.corp_code=#{corp_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND dvr.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND dvr.created_date &lt;= #{created_date_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    dvr.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP By dvr.id
+        ORDER BY dvr.id DESC
+    </select>
+    <select id="selectByVipType" resultType="com.bizvane.ishop.entity.VipRules">
+        SELECT
+        dvr.id,
+        dvr.corp_code,
+        dvr.vip_type,
+        dvr.high_vip_type,
+        dvr.discount,
+        dvr.join_threshold,
+        dvr.upgrade_time,
+        dvr.upgrade_amount,
+        dvr.points_value,
+        dvr.present_point,
+        dvr.present_coupon,
+        dvr.modified_date,
+        dvr.modifier,
+        dvr.created_date,
+        dvr.creater,
+        dvr.isactive
+        FROM def_vip_rules dvr
+        WHERE dvr.CORP_CODE = #{corp_code}
+        AND  dvr.vip_type= #{vip_type}
+    </select>
+
+
+    <select id="selectVipRules" resultType="com.bizvane.ishop.entity.VipRules">
+        SELECT vip_type
+        FROM def_vip_rules
+        WHERE 1=1
+        AND corp_code=#{corp_code}
+        AND vip_type IN
+        <foreach collection="vip_types" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND ISACTIVE = 'Y'
+    </select>
+</mapper>
