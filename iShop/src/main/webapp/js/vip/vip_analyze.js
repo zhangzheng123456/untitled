@@ -613,7 +613,7 @@ function brithVipGet() {
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
                     sessionStorage.setItem("corp_code","C10000");
-                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
                 })
             }
         }else if(data.code=="-1"){
@@ -680,7 +680,7 @@ function newVipGet(){
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
                     sessionStorage.setItem("corp_code","C10000");
-                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".newVip thead tr th").length;
@@ -768,7 +768,7 @@ function sleepVipGet() {
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
                     sessionStorage.setItem("corp_code","C10000");
-                   window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
+                   window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".activeVip thead tr th").length;
@@ -854,7 +854,7 @@ function consumeVipGet() {
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
                     sessionStorage.setItem("corp_code","C10000");
-                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".rank thead tr th").length;
@@ -929,7 +929,7 @@ function consumeVipGetre() {
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
                     sessionStorage.setItem("corp_code","C10000");
-                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".rank thead tr th").length;
@@ -1000,7 +1000,7 @@ function consumeVipGetam() {
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
                     sessionStorage.setItem("corp_code","C10000");
-                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
+                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
                 })
             }else if(msg.length == 0){
                 var len = $(".rank thead tr th").length;

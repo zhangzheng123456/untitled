@@ -1058,6 +1058,13 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setSex("男");
             }
+            if (user.getIsonline() == null || user.getIsonline().equals("")) {
+                user.setIsonline("");
+            } else if (user.getIsonline().equals("Y")) {
+                user.setIsonline("已签到");
+            } else {
+                user.setIsonline("已签退");
+            }
             String store = user.getStore_code();
             String area = user.getArea_code();
             String role_code = user.getRole_code();
