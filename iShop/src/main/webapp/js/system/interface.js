@@ -427,7 +427,7 @@ var interFace={
             $(".frame").hide();
             def.resolve();
         },2000);
-        return def;
+        return def
     },
     toPage:function(){  ////跳转页面的键盘按下事件
         var self=this;
@@ -540,8 +540,8 @@ var interFace={
             param["id"]=ID;
             oc.postRequire("post","/interfacers/delete","0",param,function(data){
                 if(data.code=="0"){
-                    if(value==""){
-                        self.frame().then(function(){
+                    if(self.value==""){
+                       self.frame().then(function(){
                             self.GET();
                         });
                         $('.frame').html('删除成功');
@@ -549,8 +549,8 @@ var interFace={
                         self.param["pageSize"]=self.pageSize;
                         self.param["funcCode"]=self.funcCode;
                         self.param["searchValue"]="";
-                    }else if(value!==""){
-                        self.frame().then(function(){
+                    }else if(self.value!==""){
+                        interFace.frame().then(function(){
                             self.POST();
                         });
                         $('.frame').html('删除成功');
@@ -561,15 +561,6 @@ var interFace={
                 }
             })
         });
-    },
-    //删除弹框
-    frame:function (){
-        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
-        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
-        $('.frame').remove();
-        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
-        $(".frame").animate({opacity:"1"},1000);
-        $(".frame").animate({opacity:"0"},1000);
     },
     select:function(){
         //全选
