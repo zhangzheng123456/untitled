@@ -112,4 +112,15 @@
         WHERE function_code = #{function_code}
         AND isactive = 'Y'
     </select>
+
+    <select id="selVipScreenValue" resultType="com.bizvane.ishop.entity.TableManager">
+        SELECT column_name,
+        show_name,
+        filter_weight
+        FROM def_table_manager
+        WHERE function_code = 'F0010'
+        AND filter_type != ''
+        AND filter_type IS NOT NULL
+        AND isactive = 'N'
+    </select>
 </mapper>
