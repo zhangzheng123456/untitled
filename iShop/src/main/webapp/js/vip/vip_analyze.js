@@ -359,6 +359,7 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     $(".newVip").hide();
     $(".activeVip").hide();
     $(".rank").hide();
+    $(".freq").hide();
     $("#page_row").val("10行/页");
     brithVipGet();
     jump=1;
@@ -367,7 +368,6 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     //取消其他的class;
     var lis= $($(".date_btn span")[0]).parent().nextAll();
     for(var i=0;i<lis.length;i++){
-        console.log($(lis[i]).find('span'));
         $(lis[i]).find('span').css({"color":"","background":""});
     }
 })
@@ -376,6 +376,7 @@ $(".vip_nav_bar li:nth-child(2)").click(function () {
     $(".newVip").show();
     $(".activeVip").hide();
     $(".rank").hide();
+    $(".freq").hide();
     $("#page_row").val("10行/页");
     newVipGet();
     jump=2;
@@ -390,6 +391,7 @@ $(".vip_nav_bar li:nth-child(3)").click(function () {
     $(".newVip").hide();
     $(".activeVip").show();
     $(".rank").hide();
+    $(".freq").hide();
     $("#page_row").val("10行/页");
     sleepVipGet();
     jump=3;
@@ -401,12 +403,13 @@ $(".vip_nav_bar li:nth-child(3)").click(function () {
         console.log($(lis[i]).find('span'));
         $(lis[i]).find('span').css({"color":"","background":""});
     }
-})
+});
 $(".vip_nav_bar li:nth-child(4)").click(function () {
     $('.birthVip').hide();
     $(".newVip").hide();
     $(".activeVip").hide();
     $(".rank").show();
+    $(".freq").hide();
     $("#page_row").val("10行/页");
     consumeVipGet();
     jump=4;
@@ -418,27 +421,43 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
         console.log($(lis[i]).find('span'));
         $(lis[i]).find('span').css({"color":"","background":""});
     }
-})
+});
+$(".vip_nav_bar li:nth-child(5)").click(function () {
+    $('.birthVip').hide();
+    $(".newVip").hide();
+    $(".activeVip").hide();
+    $(".rank").hide();
+    $(".freq").show();
+    $("#page_row").val("10行/页");
+    jump=5;
+    //点击时，将第一个按钮设置class为btn_bg
+    $($(".freq .month_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});;
+    //取消其他的class;
+    var lis= $($(".freq .month_btn span")[0]).parent().nextAll();
+    for(var i=0;i<lis.length;i++){
+        $(lis[i]).find('span').css({"color":"","background":""});
+    }
+});
 $(".vip_nav_bar li").click(function () {
     $(this).addClass("liactive");
     $(this).siblings().removeClass("liactive");
-})
+});
 $(".date_btn span").click(function () {
     $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-})
+});
 $(".new_btn span").click(function () {
     $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-})
+});
 $(".month_btn span").click(function () {
     $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-})
+});
 $(".more_data").click(function () {
     console.log($('#table_analyze .foot .foot-num')[0]);
     vipTable_lg();
-})
+});
 //加载更多页面放大
 function vipTable_lg() {
     $("#table_analyze").addClass("vip_table_lg");
@@ -953,12 +972,84 @@ function consumeVipGet_sub(ali) {
         case '历史总额': query_type="history";consumeVipGetam('','',query_type);break;
     }
 }
-$('.rank .month_btn li').click(function () {
-    jump_s=$(this).index();
-    console.log(jump_s);
-    consumeVipGet_sub(this);
-    $("#page_row").val("10行/页");
-});
+/*************消费频率****************/
+function consumefreq(){
+    whir.loading.add("",0.5);//加载等待框
+    var type='freq';
+    $('.freq .vip_table tbody').empty();
+    $('.freq .vip_table thead').empty();
+    var param={};
+    var query_type=arguments[2]?arguments[2]:"three";
+    var pageSize=arguments[1]?arguments[1]:10;
+    var pageIndex=arguments[0]?arguments[0]:page;
+    param['pageNumber']=pageIndex;
+    param['pageSize']=pageSize;
+    param['query_type']=query_type;
+    param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
+    param['corp_code']=localStorage.getItem('corp_code');
+    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            count=msg.pages;
+            var pageIndex=msg.pageNum;
+            msg=msg.vip_consume_recently_list;
+            $(".freq thead").append('<tr>'
+                + '<th>序号</th>'
+                + '<th>会员名称</th>'
+                + '<th>会员等级</th>'
+                + '<th>平均消费</th>'
+                + '<th>月消费次数</th></tr>');
+            if(msg.length){
+                for(var i=0;i<msg.length;i++){
+                    if(pageIndex>=2){
+                        var a=i+1+(pageIndex-1)*pageSize;
+                    }else{
+                        var a=i+1;
+                    }
+                    $(".freq tbody").append('<tr><td>'
+                        + a
+                        +'</td><td>'
+                        + msg[i].vip_name
+                        +'</td><td>'
+                        + msg[i].vip_type
+                        +'</td><td>'
+                        + msg[i].avg_amount
+                        +'</td><td>'
+                        + msg[i].consume_frequently
+                        +'</td></tr>');
+                }
+                $(".freq .vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+            }else if(msg.length == 0){
+                var len = $(".freq thead tr th").length;
+                var i;
+                for(i=0;i<10;i++){
+                    $(".freq tbody").append("<tr></tr>");
+                    for(var j=0;j<len;j++){
+                        $($(".rank tbody tr")[i]).append("<td></td>");
+                    }
+                }
+                $(".freq tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
+            }
+        }else if(data.code=="-1"){
+            console.log(data.message);
+        }
+        //调用生成页码
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
+        whir.loading.remove();//移除加载框
+    });
+}
+function consumefreq_sub(ali) {
+    var ali=ali;//当前对象
+    switch($($(ali).html()).html()){
+        case '三个月': query_type="three";consumefreq('','',query_type);break;
+        case '六个月': query_type="six";consumefreq('','',query_type);break;
+        case '十二个月': query_type="twelve";consumefreq('','',query_type);break;
+    }
+}
 /*******************共用方法***************************/
 //生成分页
 function setPage(container, count, pageindex,pageSize,type,query_type) {
@@ -1066,24 +1157,10 @@ $(function(){
                 jump==2&&(newVipGet(a,pageSize,month_type));
                 jump==3&&(sleepVipGet(a,pageSize,query_type));
                 jump==1&&(brithVipGet(a,pageSize,month_type));
-                // jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,month_type));
                 jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,query_type));
-                jump==4&&jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
-                jump==4&&jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
-                // if(value==""&&filtrate==""){
-                //     inx=1;
-                //     GET(inx,pageSize);
-                // }else if(value!==""){
-                //     inx=1;
-                //     param["pageNumber"]=inx;
-                //     param["pageSize"]=pageSize;
-                //     POST(inx,pageSize);
-                // }else if(filtrate!==""){
-                //     inx=1;
-                //     _param["pageNumber"]=inx;
-                //     _param["pageSize"]=pageSize;
-                //     filtrates(inx,pageSize);
-                // }
+                // jump==4&&jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
+                jump==4&&jump_s>=1&&(consumeVipGetam(a,pageSize,query_type));
+                jump==5&&(consumefreq(a,pageSize,query_type));
                 $("#page_row").val($(this).html());
                 hideLi();
             });
@@ -1130,6 +1207,14 @@ function dian(a,b,c,query_type){
     }else if( c=='consume'&&(query_type=="month"||query_type=="three_month"||query_type=="history") ){
         consumeVipGetam(a,b,query_type);
     }
+    //当请求类型为freq 判断请求的类型
+    if(c=='freq'&&query_type=='three'){
+        consumefreq(a,b);
+    }else if( c=='freq'&& query_type=="six"){
+        consumefreq(a,b,query_type);
+    }else if( c=='consume'&& query_type=="twelve"){
+        consumefreq(a,b,query_type);
+    }
 }
 //指定页面的跳转
 $("#input-txt").keydown(function() {
@@ -1147,10 +1232,11 @@ $("#input-txt").keydown(function() {
                 jump==3&&(sleepVipGet(inx,'',query_type));
                 jump==1&&(brithVipGet(inx,'',month_type));
                 jump==4&&jump_s==0&&(consumeVipGet(inx,'',month_type));
-                jump==4&&jump_s==1&&(consumeVipGetre(inx,'',query_type));
-                jump==4&&jump_s>1&&(consumeVipGetam(inx,'',query_type));
+                // jump==4&&jump_s==1&&(consumeVipGetre(inx,'',query_type));
+                jump==4&&jump_s>=1&&(consumeVipGetam(inx,'',query_type));
+                jump==5&&(consumefreq(a,pageSize,query_type));
             }
-        };
+        }
 })
 //页码显示或隐藏
 // function pageShow(table) {
@@ -1626,6 +1712,18 @@ $().ready(function(){
     //新会员切换
     $('.newVip .new_btn li').click(function () {
         newVipGet_sub(this)
+        $("#page_row").val("10行/页");
+    });
+    //消费排行
+    $('.rank .month_btn li').click(function () {
+        jump_s=$(this).index();
+        console.log(jump_s);
+        consumeVipGet_sub(this);
+        $("#page_row").val("10行/页");
+    });
+    //消费排频率
+    $('.freq .month_btn li').click(function () {
+        consumefreq_sub(this);
         $("#page_row").val("10行/页");
     });
     var date = new Date();

@@ -48,7 +48,7 @@
 }
 /*锟斤拷一锟斤拷ul 锟斤拷询锟斤拷*/
 #side_analyze>ul:first-child{
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     padding: 0 10px;
 }
 #side_analyze>ul:first-child li{
@@ -146,7 +146,7 @@
     color:#999;
 }
 #side_analyze table tr{
-    height: 30px;
+    height: 23px;
 }
 #side_analyze  table thead th,#side_analyze  table tbody td{
     width: 91px;
@@ -186,12 +186,11 @@
     border-bottom: 2px solid #6dc1c8;
 }
 .vip_nav_bar li{
-    width:23%;
+    width:20%;
     height:29px;
     line-height: 30px;
     float: left;
     text-align: center;
-    margin-left: 10px;
     cursor: pointer;
 }
 .date_btn li,.new_btn li{
@@ -266,7 +265,7 @@
 }
 
 /*/!*下拉框定位*!/*/
-#select_analyze,#select_analyze_shop,#select_analyze_brand{
+#select_analyze,#select_analyze_shop,#select_analyze_brand,#select_analyze_group{
     position: absolute;
     display:none;
     left: 2%;
@@ -289,11 +288,11 @@
     border: 1px solid #e8e8e8;
     color: #888888;
 }
-#select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div{
+#select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div,#select_analyze_group>div{
     width: 273px;
     background: #f5f5f5;
 }
-#select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div{
+#select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div,#select_analyze_group>div{
     width: 100%;
     left: 132px;
     top:130px;
@@ -302,7 +301,7 @@
     background: #f5f5f5;
     border-radius:4px;
 }
-#select_analyze input,#select_analyze_shop input,#select_analyze_brand input{
+#select_analyze input,#select_analyze_shop input,#select_analyze_brand input,#select_analyze_group input{
     width: 90%;
     height: 29px;
     border-radius: 8px;
@@ -313,11 +312,11 @@
     outline: none;
     color:#888;
 }
-#select_analyze b,#select_analyze_shop b,#select_analyze_brand b{
+#select_analyze b,#select_analyze_shop b,#select_analyze_brand b, #select_analyze_group b{
     display: block;
     position: relative;
 }
-#select_analyze b,#select_analyze_shop b,#select_analyze_brand b{
+#select_analyze b,#select_analyze_shop b,#select_analyze_brand b,#select_analyze_group b{
     border-radius: 7px;
     /*width: 87%;*/
     /*margin-left:6.5%;*/
@@ -326,14 +325,14 @@
     margin-left: 5px;
     margin-right:5px;
 }
-#select_analyze span,#select_analyze_shop span,#select_analyze_brand span{
+#select_analyze span,#select_analyze_shop span,#select_analyze_brand span,#select_analyze_group span{
     position: absolute;
     right: 2%;
     top: 0px;
     color:#d7d7d7;
     font-size: 30px;
 }
-#select_analyze ul,#select_analyze_shop ul,#select_analyze_brand ul{
+#select_analyze ul,#select_analyze_shop ul,#select_analyze_brand ul,#select_analyze_group ul{
     overflow-y: auto;
     max-height:207px;
     margin-top:4px;
@@ -341,14 +340,14 @@
     padding-left: 5px;
     /*padding: 0px 6.5% 0px 6.5%;*/
 }
-#select_analyze ul li,#select_analyze_shop ul li,#select_analyze_brand ul li{
+#select_analyze ul li,#select_analyze_shop ul li,#select_analyze_brand ul li,#select_analyze_group ul li{
     padding: 5px 5px 5px 20px;
     /*margin-left: 6%;*/
     /*margin-right: 5%;*/
     /*border-radius: 10px;*/
     /*margin-top: 2px;*/
 }
-#select_analyze ul li:hover,#select_analyze_shop ul li:hover,#select_analyze_brand ul li:hover{
+#select_analyze ul li:hover,#select_analyze_shop ul li:hover,#select_analyze_brand ul li:hover,#select_analyze_group ul li:hover{
     background:#4a5f7c;
     color: #fff;
     /*border-radius: 10px;*/
@@ -357,7 +356,7 @@
     /*width:91.5%;*/
     /*margin-left: 6.7%;*/
 }
-#select_analyze s,#select_analyze_shop s,#select_analyze_brand s{
+#select_analyze s,#select_analyze_shop s,#select_analyze_brand s,#select_analyze_group s{
     text-decoration: none;
     text-align: center;
     display: block;
@@ -365,7 +364,7 @@
     border-radius: 8px;
     background: #eee;
 }
-#select_analyze s:hover,#select_analyze_shop s:hover ,#select_analyze_brand s:hover{
+#select_analyze s:hover,#select_analyze_shop s:hover ,#select_analyze_brand s:hover,#select_analyze_group s:hover{
     cursor: pointer;
     background: #888888;
     color: #fff;
