@@ -529,6 +529,7 @@ function brithVipGet() {
                     //vipTable_lg();
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
                     window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }
@@ -595,6 +596,7 @@ function newVipGet(){
                     //vipTable_lg();
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
                     window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
@@ -682,6 +684,7 @@ function sleepVipGet() {
                 $(".activeVip .vip_table tbody tr").click(function () {
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
                    window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
@@ -767,6 +770,7 @@ function consumeVipGet() {
                     //vipTable_lg();
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
                     window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
@@ -841,6 +845,7 @@ function consumeVipGetre() {
                     //vipTable_lg();
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
                     window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
@@ -911,6 +916,7 @@ function consumeVipGetam() {
                     //vipTable_lg();
                     var ID=$(this).attr("id");
                     sessionStorage.setItem("id",ID);
+                    sessionStorage.setItem("corp_code","C10000");
                     window.open("http://2.dev.bizvane.com/navigation_bar.html?url=/vip/vip_data.html?funCode=F0010");
                 })
             }else if(msg.length == 0){
