@@ -363,6 +363,7 @@ $("#table").on("click","tbody tr",function(){
 });
 //点击新增时页面进行的跳转
 $('#jurisdiction').on("click","#add",function(){
+    sessionStorage.removeItem("id");
     $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_add.html");
 })
 //点击编辑的时候进行跳转
