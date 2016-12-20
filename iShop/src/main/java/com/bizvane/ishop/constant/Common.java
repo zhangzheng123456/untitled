@@ -83,6 +83,12 @@ public class Common {
 
     //微信群发消息
     public static final String SENDWXMASS_URL = "http://wechat.dev.bizvane.com/app/wechat/sendWxMass";
+    //获取券类型接口
+    //测试
+    public static final String COUPON_TYPE_URL="http://www.dev-wechat.bizvane.com/rest/api";
+    //正式
+    //public static final String COUPON_TYPE_URL="http://www.pub-wechat.bizvane.com/rest/api";
+
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 }

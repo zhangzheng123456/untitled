@@ -286,4 +286,33 @@ public class VipRulesController {
 
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/getCoupon", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCoupon(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String corp_code=jsonObject.get("corp_code").toString();
+               String result = vipRulesService.getCouponInfo(corp_code);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }
