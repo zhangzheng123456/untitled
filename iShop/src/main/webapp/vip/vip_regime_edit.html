@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>编辑区域信息</title>
+    <title>编辑会员制度</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -17,57 +17,97 @@
         body{
             margin-top:81px;
         }
-        .r_filrate{
-            width:30px;
-            height:30px;
-            background: #6dc1c8;
-            border-radius: 5px;
-            margin-left: 10px;
-            text-align: center;
-            color: #fff;
-            font-size: 18px;
-        }
-        .r_filrate_hint{
-            margin-left: 10px;
-            font-size: 12px;
-            color: #888;
-            display:none;
-        }
     </style>
 </head>
-
 <body>
-   <!--  <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title"><span id="back_area">区域管理</span><i class="icon-ishop_8-03"></i><label>编辑区域信息</label></div>
+        <div class="col-lg-12 pre_title"><span id="back_regime">会员制度</span><i class="icon-ishop_8-03"></i><label>编辑会员制度</label></div>
             <div class="editor_1 col-lg-7 editor_line animated fadeInRight">
-               <!--  <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div> -->
                 <form class="conpany_msg">
-                    <div>
+                     <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业*</label></li>
                             <li>
                                 <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex">
-                                    </select>
+                                    <select id="OWN_CORP" style="display:inline-flex"></select>
                                 </span>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">区域编号*</label><input type="text" id="AREA_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域编号不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">会员类型名称*</label><input type="text" id="vip_type_name" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空!"></div></div></span>
+                    </div>
+                    <div class="drop_down item_1">
+                        <span><label style="color:#c26555;">上级会员类型*</label><input class="input_select" value="1" id="USER_SEX" type="text" placeholder="" readonly="">
+                            <ul style="display: none;">
+                                <li>1<span>(最小)</span></li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li>5</li>
+                                <li>6</li>
+                                <li>7</li>
+                                <li>8</li>
+                                <li>9</li>
+                                <li>10</li>
+                            </ul>
+                        </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">区域名称*</label><input type="text" id="AREA_NAME" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域名称不能为空！"></div></div></span>
+                        <span><label>会员折扣</label><input type="text" id="vip_discount" maxlength="50"/></span>
                     </div>
                     <div>
-                        <span><label>下属店铺</label><input type="text" id="area_shop" class="area_shop" disabled="disabled"/></span>
-                        <span class="edit_shop_icon" id="edit_shop_icon">批量管理<i class="icon-ishop_8-03"></i></span>
+                        <label style="color:#c26655">会员门槛*</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold" verify="Empty" maxlength="50">
+                        <div style="padding-left:80px" class="hint"><div  hintinfo="会员门槛不能为空!"></div></div>
+                    </div>
+                    <div class="drop_down item_2 upgrade_amount">
+                        <span><label>升级门槛</label><input class="input_select w" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input type="text" class="w" id="upgrade_amount">
+                            <ul style="display: none;">
+                                <li>最近一个月</li>
+                                <li>最近二个月</li>
+                                <li>最近三个月</li>
+                                <li>最近四个月</li>
+                                <li>最近五个月</li>
+                                <li>最近六个月</li>
+                                <li>最近七个月</li>
+                                <li>最近八个月</li>
+                                <li>最近九个月</li>
+                                <li>最近十个月</li>
+                                <li>最近十一个月</li>
+                                <li>最近一年</li>
+                                <li>累计</li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div>
+                        <span><label>积分比例</label><span class="r">1元 =</span><input type="text" class="join_threshold" id="points_value" maxlength="50"/></span>
+                    </div>
+                    <div>
+                        <div>
+                            <label>赠送</label><span class="r"><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_integral"><label for="is_integral"></label></em><span class="r_text">积分</span></span><input type="text" class="join_threshold" id="points_value" maxlength="50"/>
+                        </div>
+                        <div>
+                            <div class="present_coupon drop_down item_2" >
+                                    <div class="quan_left">
+                                        <span class="r"><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_threshold"><label for="is_threshold"></label></em><span class="r_text">券</span>
+                                        </span>
+                                    </div>
+                                    <div class="quan_right">
+                                        <div id="quan_select">
+                                            <div class="quan_select item_2">
+                                                <input type="text" class="input_select quan" id="points_value" maxlength="50"/>
+                                                    <ul style="display:none;">
+                                                        <li>最近一个月</li>
+                                                        <li>最近二个月</li>
+                                                        <li>最近三个月</li>
+                                                    </ul>
+                                                <span class="icon-ishop_6-12 q_remove"></span>
+                                            </div>
+                                        </div>
+                                        <div class="add_quan">添加券<span class="icon-ishop_6-01"></span></div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -97,179 +137,10 @@
                 </form>
             </div>
         </div>
-    <div class="content" style="display: none;">
-       <div class="con_table" id="con_table">
-           <div class="title">
-               <span id="back_area_1">区域管理</span>
-               <span class="icon-ishop_8-03"></span>
-               <span id="back_area_edit">编辑区域信息</span>
-               <span class="icon-ishop_8-03"></span>
-               <span>批量管理下属店铺</span>
-           </div>
-           <div class="list">
-               <div class="list_l">
-                   <ul>
-                       <li>
-                           <label>区域编号</label>
-                           <input type="text" disabled="true" id="area_code">
-                       </li>
-                       <li class="r">
-                           <label>区域名称</label>
-                           <input type="text" disabled="true" id="areaName">
-                       </li>
-                       <li class="r_filrate">
-                           <i class="icon-ishop_6-05"></i>
-                       </li>
-                       <li class="r_filrate_hint">
-                           显示当前区域店铺
-                       </li>
-                   </ul>
-               </div>
-               <div class="list_r">
-                   <div class="save" id="save"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-04"></i>保存</div>
-                   <div class="turnoff" id="turnoff"style="letter-spacing: 10px"><i style="display: inline" class="icon-ishop_6-12"></i>关闭</div>
-               </div>
-           </div>
-           <div class="action">
-               <div class="action_l">
-                   <!-- <ul>
-                       <li>
-                           <a href="/user/groupcheck_power_edit.html">
-                               <span class="icon-ishop_6-01"></span>
-                               新增
-                           </a>
-                       </li>
-                       <li class="bg" id="remove">
-                           <span class="icon-ishop_6-02"></span>
-                           删除
-                       </li>
-                       <li>
-                           <a href="/user/groupcheck_power_edit.html">
-                               <span class="icon-ishop_6-03"></span>
-                               编辑
-                           </a>
-                       </li>
-                       <li class="bg">
-                           <span class="icon-ishop_6-04"></span>
-                           保存
-                       </li>
-                       <li class="field_input">
-                           <input type="text" value="选着字段" class="field" readonly="">
-                           <span></span>
-                           <i class="icon-ishop_8-02"></i>
-                           <input type="text" class="f_input" placeholder="输入搜索的内容">
-                       </li>
-                   </ul>  -->
-                   <ul>
-                       <li class="li s">
-                           <input type="text" class="input" placeholder="店铺编号/店铺名称" id="search">
-                           <i class="icon-ishop_3-05" id="d_search"></i>
-                       </li>
-                   </ul>
-               </div>
-                <div class="action_r">
-                   <ul>
-                       <li id="filtrate">
-                           <span class="icon-ishop_6-05"></span>
-                           筛选
-                       </li>
-                       <!--<li class="bg">-->
-                           <!--<span class="icon-ishop_6-07"></span>-->
-                           <!--刷新-->
-                       <!--</li>-->
-                       <!--<li>-->
-                           <!--<span class="icon-ishop_6-08"></span>-->
-                           <!--更多-->
-                       <!--</li>-->
-                   </ul>
-               </div>
-           </div>
-           <div class="sxk" id="sxk">
-               <div class="sbtn">
-                   <div class="empty" id="empty">
-                       <i class="icon-ishop_6-16"></i>清空筛选
-                   </div>
-                   <span class="screen_tip">支持多个条件模糊查找,以逗号分隔.</span>
-                   <div class="r_btn">
-                       <div class="pack_up" id="pack_up">
-                           <i class="icon-ishop_6-18"></i>
-                           收起
-                       </div>
-                       <div class="find" id="find">
-                           <i class="icon-ishop_6-19"></i>
-                           查找
-                       </div>
-                   </div>
-               </div>
-               <div class="inputs">
-                   <li>
-                       <label>店铺编号</label>
-                       <input type="text" id='store_code'>
-                   </li>
-                   <li>
-                       <label>店铺名称</label>
-                       <input type="text" id="store_name">
-                   </li>
-                   <li>
-                       <label>所属区域</label>
-                       <input type="text" id="area_name">
-                   </li>
-                   <li>
-                       <label>所属品牌</label>
-                       <input type="text" id="brand_name">
-                   </li>
-               </div>
-           </div>
-           <div class="table">
-               <table id="table" cellpadding="0" cellspacing="0" width="100%">
-                   <thead>
-                   <tr class="th">
-                       <th style="text-align: left; padding-left: 22px;">序号</th>
-                       <th>店铺编号</th>
-                       <th>店铺名称</th>
-                       <th>所属区域</th>
-                       <th>所属品牌</th>
-                       <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
-                   </tr>
-                   </thead>
-                   <tbody>
-                   </tbody>
-               </table>
-           </div>
-           <div class="foot">
-               <ul>
-                   <li class="foot-jum">
-                       <span>跳转至</span>
-                       <input class="input-txt" value="1" id="input-txt">
-                       <em>页</em>
-                   </li>
-                   <li class="foot-num" >
-                       <ul id="foot-num">
-                           <li><span class="icon-ishop_4-01 unclick"></span></li>
-                           <li><span class="p-bg">1</span></li>
-                           <li><span class="icon-ishop_4-02 unclick"></span></li>
-                       </ul>
-                   </li>
-                   <li class="foot-sum">
-                       <div class="page_p">
-                           <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
-                           <ul class="liebiao" style="display:none;width: 90px;margin-left: 10px;" id="liebiao">
-                               <li id="10">10行/页</li>
-                               <li id="30">30行/页</li>
-                               <li id="50">50行/页</li>
-                               <li id="100">100行/页</li>
-                           </ul>
-                           <span class="icon-ishop_8-02 icon"></span>
-                       </div>
-                       <span class="zy">共 75 页</span>
-                   </li>
-               </ul>
-           </div>
-       </div>
-   </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <script type="text/javascript" src="../js/moni_select.js?20161116"></script>
     <script src="../js/loading.js?20161116"></script>
    <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
@@ -279,8 +150,7 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/area/area_operate.js?20161116"></script>
-   <script type="text/javascript" src="../js/area/batch_manage_shop.js?20161116"></script>
+    <script type="text/javascript" src="../js/vip/vip_regime_operate.js?20161116"></script>
 </body>
 
 </html>
