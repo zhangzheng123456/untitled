@@ -566,7 +566,7 @@ public class VIPController {
                 post_obj.put("value",store_code);
                 post_array.add(post_obj);
             }
-
+            logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
             DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
 
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);

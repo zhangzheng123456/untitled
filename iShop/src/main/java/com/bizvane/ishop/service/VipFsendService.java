@@ -18,12 +18,11 @@ public interface VipFsendService {
 
     String insert(String message, String user_id,int tem_id) throws Exception;
 
-    String update(String message, String user_id) throws Exception;
 
     int delete(int id) throws Exception;
 
     PageInfo<VipFsend> getAllVipFsendScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 
-    VipFsend getVipFsendForId(String corp_code,String sms_code)throws Exception;
+
 
 }

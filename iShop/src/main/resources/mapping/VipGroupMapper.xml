@@ -8,6 +8,7 @@
         <result column="group_type" property="group_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="group_condition" property="group_condition" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -25,6 +26,7 @@
         dvg.group_condition,
         dc.corp_name,
         dvg.corp_code,
+        dvg.remark,
         dvg.modified_date,
         dvg.modifier,
         dvg.created_date,
@@ -44,6 +46,7 @@
         dvg.group_condition,
         dc.corp_name,
         dvg.corp_code,
+        dvg.remark,
         dvg.modified_date,
         dvg.modifier,
         dvg.created_date,
@@ -58,6 +61,7 @@
             AND
             (dvg.vip_group_code LIKE concat('%',#{search_value},'%')
             OR dvg.vip_group_name LIKE concat('%',#{search_value},'%')
+            OR dvg.remark LIKE concat('%',#{search_value},'%')
             OR dc.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
@@ -74,6 +78,7 @@
         dvg.group_condition,
         dc.corp_name,
         dvg.corp_code,
+        dvg.remark,
         dvg.modified_date,
         dvg.modifier,
         dvg.created_date,
@@ -100,6 +105,7 @@
         dvg.group_type,
         dvg.group_condition,
         dvg.corp_code,
+        dvg.remark,
         dvg.modified_date,
         dvg.modifier,
         dvg.created_date,
@@ -151,6 +157,9 @@
             <if test="corp_code!=null">
                 corp_code,
             </if>
+            <if test="remark!=null">
+                remark,
+            </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
@@ -182,6 +191,9 @@
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
+            </if>
+            <if test="remark!=null">
+                #{remark},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -219,6 +231,9 @@
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
+            <if test="remark!=null">
+                remark=#{remark},
+            </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
@@ -247,6 +262,7 @@
         dvg.group_condition,
         dc.corp_name,
         dvg.corp_code,
+        dvg.remark,
         dvg.modified_date,
         dvg.modifier,
         dvg.created_date,

@@ -10,6 +10,7 @@ import com.bizvane.ishop.entity.VipRules;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.IshowHttpClient;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.http.HttpClient;
 import com.github.pagehelper.PageHelper;
@@ -64,14 +65,14 @@ public class VipRulesServiceImpl implements VipRulesService {
 
     @Override
     public String insert(String message, String user_id) throws Exception {
-        String status = Common.DATABEAN_CODE_SUCCESS;
+        String status = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
-        VipRules vipRules1=this.getVipRulesByType(vipRules.getCorp_code(),vipRules.getVip_type());
+        VipRules vipRules1=this.getVipRulesByType(vipRules.getCorp_code(),vipRules.getVip_type(),vipRules.getIsactive());
 
        // String reult=getCouponInfo(corp_code);
         int num=0;
@@ -87,7 +88,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
             num=vipRulesMapper.insertVipRules(vipRules);
             if(num>0){
-                VipRules vipRules2=this.getVipRulesByType(vipRules.getCorp_code(),vipRules.getVip_type());
+                VipRules vipRules2=this.getVipRulesByType(vipRules.getCorp_code(),vipRules.getVip_type(),vipRules.getIsactive());
                 status=String.valueOf(vipRules2.getId());
                 System.out.print(String.valueOf(vipRules2.getId()));
                 return  status;
@@ -118,10 +119,10 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_point = jsonObject.get("present_point").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
-        VipRules vipRules1=this.getVipRulesByType(corp_code,vip_type);
+        VipRules vipRules1=this.getVipRulesByType(corp_code,vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules=getVipRulesById(id);
 
-            if(vipRules1==null||vipRules.getVip_type().equals(vip_type)){
+            if(vipRules1==null||vipRules1.getId()==id){
                 Date now = new Date();
                 vipRules.setCorp_code(corp_code);
                 vipRules.setVip_type(vip_type);
@@ -174,24 +175,11 @@ public class VipRulesServiceImpl implements VipRulesService {
     }
 
     @Override
-    public VipRules getVipRulesByType(String corp_code, String vip_type) throws Exception {
-        return vipRulesMapper.selectByVipType(corp_code,vip_type);
+    public VipRules getVipRulesByType(String corp_code, String vip_type,String isactive) throws Exception {
+        return vipRulesMapper.selectByVipType(corp_code,vip_type,isactive);
     }
 
-    @Override
-    public List<VipRules> selectVipRules(String corp_code, String vip_types) throws SQLException {
-        return null;
-    }
-    public  String getCouponType(JSONObject extras) throws Exception {
-
-        RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
-        Request request = new Request.Builder().url(Common.COUPON_TYPE_URL).post(body).build();
-        Response response = httpClient.post(request);
-        String result = response.body().string();
-        return result;
-    }
-
-    public String   getCouponInfo(String corp_code)throws Exception {
+    public String  getCouponInfo(String corp_code)throws Exception {
         List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
         JSONObject coupon = new JSONObject();
         String timestemp = System.currentTimeMillis() + "";//时间戳
@@ -205,24 +193,53 @@ public class VipRulesServiceImpl implements VipRulesService {
         coupon.put("method", method);
         coupon.put("params", param);
         String appname = "";
-        String result = "";
         JSONObject info=null;
-        JSONArray arr=new JSONArray();
+        JSONArray array=new JSONArray();
         for (int i = 0; i < corpWechats.size(); i++) {
             appid = corpWechats.get(i).getApp_id();
             coupon.put("appid", appid);
             str = appid + timestemp + secretkey;
-            sign = CheckUtils.encryptMD5Hash(str);//MD%加密
+            sign = CheckUtils.encryptMD5Hash(str);//MD5加密
             coupon.put("sign", sign);
-            appname = appname + corpWechats.get(i).getApp_name() + ",";
-            result = getCouponType(coupon);
-             info = JSON.parseObject(result);
-            String appnames[] = appname.split(",");
-            for (int j = 0; j < appnames.length; j++) {
-                info.put("appname", appnames[j]);
-                arr.add(info);
-            }
+            appname = corpWechats.get(i).getApp_name();
+            //post请求获取券类型接口
+            String couponInfo = IshowHttpClient.post(Common.COUPON_TYPE_URL,coupon);
+             info = JSON.parseObject(couponInfo);
+
+              if(info.get("code").equals("0")){
+              JSONArray result=info.getJSONArray("result");
+                  for (int j = 0; j <result.size() ; j++) {
+                      JSONObject obj = result.getJSONObject(i);
+                      obj.put("appname",appname);
+                      array.add(obj);
+                  }
+          } else if(info.get("code").toString().equals("-1")){
+              return info.get("message").toString();
+          }
         }
-        return arr.toJSONString();
+        return array.toJSONString();
+    }
+
+    public String  getCouponInfo1(String corp_code)throws Exception {
+
+        JSONObject coupon = new JSONObject();
+        JSONObject param = new JSONObject();//业务参数
+        String secretkey = "sf0001";//secretkey为密钥，圆周率，会员通、erp三方一致，测试（sf0001）
+        String method = "o2ocoupontype";//业务方法
+        coupon.put("ts", "1482129612509");
+        coupon.put("method", method);
+        coupon.put("params", param);
+        coupon.put("appid", "wxc9c9111020955324");
+        coupon.put("sign", "4E733E69DC02AA26DC21D938A4A4CA5E");
+
+        //post请求获取券类型接口
+        String couponInfo = IshowHttpClient.post(Common.COUPON_TYPE_URL,coupon);
+        JSONObject info = JSON.parseObject(couponInfo);
+        JSONArray result=info.getJSONArray("result");
+        return result.toJSONString();
+    }
+    @Override
+    public List<VipRules> getVipRulesType(String corp_code,String isactive) throws Exception {
+        return vipRulesMapper.selectBycode(corp_code,isactive);
     }
 }
