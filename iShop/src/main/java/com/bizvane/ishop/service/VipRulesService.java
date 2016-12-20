@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.VipRules;
 import com.github.pagehelper.PageInfo;
 
@@ -25,6 +26,9 @@ public interface VipRulesService {
 
     VipRules getVipRulesByType(String corp_code,String vip_type)throws Exception;
 
-    List<VipRules> selectVipRules(String corp_code, String vip_types) throws SQLException;
+    List<VipRules> selectVipRules(String corp_code, String vip_types) throws Exception;
+
+
+     String getCouponInfo(String corp_code)throws Exception;
 
 }

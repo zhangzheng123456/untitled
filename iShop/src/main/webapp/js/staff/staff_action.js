@@ -413,22 +413,25 @@ $("#delete").click(function(){
     oc.postRequire("post","/storeAchvGoal/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
-                frame();
+                frame().then(function(){
+                    GET(pageNumber, pageSize);
+                });
                 $('.frame').html('删除成功');
                 param["pageNumber"]=inx;
                 param["pageSize"]=pageSize;
                 param["searchValue"]="";
-                GET(pageNumber, pageSize);
             } else if (value !== "") {
-                frame();
+                frame().then(function(){
+                    POST(pageNumber, pageSize);
+                });
                 $('.frame').html('删除成功');
                 param["pageNumber"]=pageNumber;
-                POST(pageNumber, pageSize);
             } else if (filtrate !== "") {
-                frame();
+                frame().then(function(){
+                    filtrates(pageNumber, pageSize);
+                });
                 $('.frame').html('删除成功');
                 _param["pageNumber"]=pageNumber;
-                filtrates(pageNumber, pageSize);
             }
             var thinput=$("thead input")[0];
             thinput.checked =false;
@@ -440,12 +443,18 @@ $("#delete").click(function(){
 })
 //删除弹框
 function frame(){
+    var def= $.Deferred();
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+        $(".frame").hide();
+        def.resolve();
+    },2000);
+    return def;
 }
 //全选
 function checkAll(name){

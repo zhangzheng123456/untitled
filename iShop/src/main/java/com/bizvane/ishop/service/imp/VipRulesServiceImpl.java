@@ -1,14 +1,24 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipRulesMapper;
+import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.VipRules;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.http.HttpClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.apache.avro.data.Json;
+import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +37,9 @@ public class VipRulesServiceImpl implements VipRulesService {
 
     @Autowired
     VipRulesMapper vipRulesMapper;
+    @Autowired
+    CorpService corpService;
+    private static HttpClient httpClient = new HttpClient();
     private static final Logger logger = Logger.getLogger(VipRulesServiceImpl.class);
 
 
@@ -55,14 +68,19 @@ public class VipRulesServiceImpl implements VipRulesService {
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
+        String present_coupon = jsonObject.get("present_coupon").toString().trim();
+
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1=this.getVipRulesByType(vipRules.getCorp_code(),vipRules.getVip_type());
+
+       // String reult=getCouponInfo(corp_code);
         int num=0;
         if(vipRules1!=null){
             status="该企业已存在该会员类型";
         }else{
             vipRules.setCorp_code(corp_code);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
+            vipRules.setPresent_coupon(present_coupon);
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
             vipRules.setIsactive(Common.IS_ACTIVE_Y);
@@ -163,5 +181,48 @@ public class VipRulesServiceImpl implements VipRulesService {
     @Override
     public List<VipRules> selectVipRules(String corp_code, String vip_types) throws SQLException {
         return null;
+    }
+    public  String getCouponType(JSONObject extras) throws Exception {
+
+        RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
+        Request request = new Request.Builder().url(Common.COUPON_TYPE_URL).post(body).build();
+        Response response = httpClient.post(request);
+        String result = response.body().string();
+        return result;
+    }
+
+    public String   getCouponInfo(String corp_code)throws Exception {
+        List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
+        JSONObject coupon = new JSONObject();
+        String timestemp = System.currentTimeMillis() + "";//时间戳
+        JSONObject param = new JSONObject();//业务参数
+        String sign = "";//签名方式MD5(appid+ts+secretkey)
+        String appid = "";//公众号
+        String secretkey = "sf0001";//secretkey为密钥，圆周率，会员通、erp三方一致，测试（sf0001）
+        String method = "o2ocoupontype";//业务方法
+        String str = "";
+        coupon.put("ts", timestemp);
+        coupon.put("method", method);
+        coupon.put("params", param);
+        String appname = "";
+        String result = "";
+        JSONObject info=null;
+        JSONArray arr=new JSONArray();
+        for (int i = 0; i < corpWechats.size(); i++) {
+            appid = corpWechats.get(i).getApp_id();
+            coupon.put("appid", appid);
+            str = appid + timestemp + secretkey;
+            sign = CheckUtils.encryptMD5Hash(str);//MD%加密
+            coupon.put("sign", sign);
+            appname = appname + corpWechats.get(i).getApp_name() + ",";
+            result = getCouponType(coupon);
+             info = JSON.parseObject(result);
+            String appnames[] = appname.split(",");
+            for (int j = 0; j < appnames.length; j++) {
+                info.put("appname", appnames[j]);
+                arr.add(info);
+            }
+        }
+        return arr.toJSONString();
     }
 }
