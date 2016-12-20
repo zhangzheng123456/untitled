@@ -303,8 +303,7 @@ public class VipRulesController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String corp_code=jsonObject.get("corp_code").toString();
-               JSONObject result = vipRulesService.getCouponInfo(corp_code);
-
+               String result = vipRulesService.getCouponInfo(corp_code);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

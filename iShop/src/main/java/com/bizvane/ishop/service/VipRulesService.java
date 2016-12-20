@@ -29,6 +29,6 @@ public interface VipRulesService {
     List<VipRules> selectVipRules(String corp_code, String vip_types) throws Exception;
 
 
-     JSONObject getCouponInfo(String corp_code)throws Exception;
+     String getCouponInfo(String corp_code)throws Exception;
 
 }

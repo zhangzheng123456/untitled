@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipRulesMapper;
@@ -72,7 +73,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1=this.getVipRulesByType(vipRules.getCorp_code(),vipRules.getVip_type());
 
-        String reult=getCouponInfo(corp_code).toJSONString();
+       // String reult=getCouponInfo(corp_code);
         int num=0;
         if(vipRules1!=null){
             status="该企业已存在该会员类型";
@@ -190,35 +191,38 @@ public class VipRulesServiceImpl implements VipRulesService {
         return result;
     }
 
-    public JSONObject   getCouponInfo(String corp_code)throws Exception{
-        List<CorpWechat> corpWechats= corpService.getWByCorp(corp_code);
-        JSONObject coupon=new JSONObject();
-        String timestemp=System.currentTimeMillis()+"";//时间戳
-        JSONObject param=new JSONObject();//业务参数
-        String sign="";//签名方式MD5(appid+ts+secretkey)
-        String appid="";//公众号
-        String secretkey="sf0001";//secretkey为密钥，圆周率，会员通、erp三方一致，测试（sf0001）
-        String method="o2ocoupontype";//业务方法
-        String str="";
-        coupon.put("ts",timestemp);
-        coupon.put("method",method);
-        coupon.put("params",param);
-        String appname="";
+    public String   getCouponInfo(String corp_code)throws Exception {
+        List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
+        JSONObject coupon = new JSONObject();
+        String timestemp = System.currentTimeMillis() + "";//时间戳
+        JSONObject param = new JSONObject();//业务参数
+        String sign = "";//签名方式MD5(appid+ts+secretkey)
+        String appid = "";//公众号
+        String secretkey = "sf0001";//secretkey为密钥，圆周率，会员通、erp三方一致，测试（sf0001）
+        String method = "o2ocoupontype";//业务方法
+        String str = "";
+        coupon.put("ts", timestemp);
+        coupon.put("method", method);
+        coupon.put("params", param);
+        String appname = "";
+        String result = "";
+        JSONObject info=null;
+        JSONArray arr=new JSONArray();
         for (int i = 0; i < corpWechats.size(); i++) {
-             appid = corpWechats.get(i).getApp_id();
-            coupon.put("appid",appid);
-             str=appid+timestemp+secretkey;
-             sign=CheckUtils.encryptMD5Hash(str);//MD%加密
-             coupon.put("sign",sign);
-            appname=appname+corpWechats.get(i).getApp_name()+",";
+            appid = corpWechats.get(i).getApp_id();
+            coupon.put("appid", appid);
+            str = appid + timestemp + secretkey;
+            sign = CheckUtils.encryptMD5Hash(str);//MD%加密
+            coupon.put("sign", sign);
+            appname = appname + corpWechats.get(i).getApp_name() + ",";
+            result = getCouponType(coupon);
+             info = JSON.parseObject(result);
+            String appnames[] = appname.split(",");
+            for (int j = 0; j < appnames.length; j++) {
+                info.put("appname", appnames[j]);
+                arr.add(info);
+            }
         }
-        String result=getCouponType(coupon);
-        JSONObject  info= JSON.parseObject(result);
-        String appnames[]=appname.split(",");
-        for (int i = 0; i <appnames.length ; i++) {
-            info.put("appname",appnames[i]);
-        }
-
-        return info;
+        return arr.toJSONString();
     }
 }
