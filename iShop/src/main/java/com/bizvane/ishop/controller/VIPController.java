@@ -640,7 +640,7 @@ public class VIPController {
                 object.put("pageSize",10000);
                 object.put("corp_code",corp_code);
                 Map datalist = iceInterfaceService.vipBasicMethod(object,request);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
 
 //                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
 //                datalist.put(data_output_message.key, data_output_message);

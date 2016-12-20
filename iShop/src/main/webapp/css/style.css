@@ -8202,3 +8202,81 @@ li.select_index>a>label>i{
   height: 13px;
   line-height: 9px;
 }
+.conpany_msg .join_threshold{
+    width:350px;
+}
+.conpany_msg .r{
+    display:inline-block;
+    width:70px;
+    text-align:center;
+}
+.conpany_msg .r .r_text{
+    display:inline-block;
+    width:30px;
+    text-align:left;
+}
+.conpany_msg .r .checkbox_isactive label{
+    left: -40px;
+}
+.conpany_msg .w{
+    width:175px;
+    background-image:none;
+}
+.conpany_msg .quan{
+    width:310px;
+}
+.conpany_msg .q_remove{
+    display:inline-block;
+    font-size:20px;
+    width:40px;
+    color:#c77769;
+    vertical-align:middle;
+    text-align:right;
+    padding-right:9px;
+    margin-top:-2px;
+    cursor:pointer;
+}
+.conpany_msg .quan_left{
+    width:70px;
+    float:left;
+        }
+.conpany_msg .quan_right{
+    width:410px;
+    float:left;
+    color:#fff;
+}
+.conpany_msg .add_quan{
+    width:350px;
+    height:30px;
+    line-height:30px;
+    font-size:14px;
+    background-color:#6cc1c8;
+    border-radius:5px;
+    text-align:center;
+    cursor:pointer;
+}
+.conpany_msg .add_quan span{
+    font-size:20px;
+    vertical-align:middle;
+    display:inline-block;
+    margin-top:-2px;
+    margin-left: 5px;
+}
+.conpany_msg .present_coupon{
+    margin-left:123px;
+}
+.conpany_msg .input_select{
+    background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+    background-size: 30px 30px;
+}
+.conpany_msg .upgrade_amount ul{
+    width:175px;
+    height:150px;
+    overflow-y: auto;
+}
+.conpany_msg .present_coupon ul{
+    width:310px;
+    height:150px;
+    overflow-y: auto;
+    left:80px;
+}

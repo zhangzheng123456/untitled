@@ -8,7 +8,7 @@ $(function(){
 		}
 	});
 	$(".item_2 .input_select").click(function(){
-		var ul = $(".item_2 ul");
+		var ul = $(this).parent().find("ul");
 		if(ul.css("display")=="none"){
 			ul.show();
 		}else{
@@ -45,7 +45,7 @@ $(function(){
 			$("#sendee").show();
 		}
 		if(txt=='Web'){$('.conpany_msg').children(':not(".version_web")').hide()}else{$('.conpany_msg').children(':not(".version_web")').show();}
-		$(".item_2 .input_select").val(txt);
+		$(this).parents(".item_2").find(".input_select").val(txt);
 		var value = $(this).attr("rel");
 		$(".item_2 ul").hide();
 	});
@@ -54,13 +54,12 @@ $(function(){
 		setTimeout(hideLi,200);
 	})
 	$(".item_2 .input_select").blur(function(){
-		var ul = $(".item_2 ul");
-		setTimeout(hideli,200);
+		var ul = $(this).parent().find("ul");
+		setTimeout(function(){
+			ul.hide();
+		},200);
 	})
 	function hideLi(){
 	    $(".item_1 ul").hide();
-	}
-	function hideli(){
-		$(".item_2 ul").hide();
 	}
 });
