@@ -206,7 +206,7 @@ public class VipRulesController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject =  new org.json.JSONObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
@@ -243,18 +243,10 @@ public class VipRulesController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject =  new org.json.JSONObject(message);
-
-            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject jsonObject = JSON.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
-            List<VipRules> list = null;
-            Map<String, String> map = WebUtils.Json2Map(jsonObject);
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipRulesService.getVipRulesType( "", Common.IS_ACTIVE_Y);
-            } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = vipRulesService.getVipRulesType( corp_code, Common.IS_ACTIVE_Y);
-            }
+            List<VipRules> list = vipRulesService.getVipRulesType(corp_code, Common.IS_ACTIVE_Y);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -297,6 +289,37 @@ public class VipRulesController {
         }
 
 
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/vipTypeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipTypeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String viptype = jsonObject.get("vip_type").toString().trim();
+            String corp_code = jsonObject.get("corp_code").toString();
+            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code, viptype, Common.IS_ACTIVE_Y);
+            if (vipRules != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("当前企业下该会员类型已存在");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("当前企业下该会员类型不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
         return dataBean.getJsonStr();
     }
 
