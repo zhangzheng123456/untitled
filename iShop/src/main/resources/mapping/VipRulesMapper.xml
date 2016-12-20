@@ -271,12 +271,6 @@
         <if test="corp_code!=null and corp_code!=''">
             AND dvr.corp_code=#{corp_code}
         </if>
-        <if test="created_date_start!=null and created_date_start!=''">
-            AND dvr.created_date &gt;= #{created_date_start}
-        </if>
-        <if test="created_date_end!=null and created_date_end!=''">
-            AND dvr.created_date &lt;= #{created_date_end}
-        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
             <choose>
