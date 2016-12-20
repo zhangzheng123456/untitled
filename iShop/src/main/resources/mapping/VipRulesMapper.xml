@@ -312,7 +312,7 @@
          AND  dvr.isactive= #{isactive}
     </select>
 
-    <select id="selectBycode" resultType="com.bizvane.ishop.entity.VipRules">
+    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.VipRules">
         SELECT
         dvr.id,
         dvr.corp_code,

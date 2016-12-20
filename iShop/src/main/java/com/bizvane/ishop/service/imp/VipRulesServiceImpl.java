@@ -231,6 +231,6 @@ public class VipRulesServiceImpl implements VipRulesService {
 
     @Override
     public List<VipRules> getVipRulesType(String corp_code, String isactive) throws Exception {
-        return vipRulesMapper.selectBycode(corp_code, isactive);
+        return vipRulesMapper.selectByCorp(corp_code, isactive);
     }
 }
