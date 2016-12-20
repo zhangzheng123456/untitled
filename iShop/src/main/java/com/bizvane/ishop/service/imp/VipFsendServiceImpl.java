@@ -441,10 +441,7 @@ public class VipFsendServiceImpl implements VipFsendService {
         }
     }
 
-    @Override
-    public String update(String message, String user_id) throws Exception {
-        return "";
-    }
+
 
     @Override
     public int delete(int id) throws Exception {
@@ -478,11 +475,6 @@ public class VipFsendServiceImpl implements VipFsendService {
         return page;
     }
 
-    @Override
-    public VipFsend getVipFsendForId(String corp_code, String sms_code) throws Exception {
-
-        return vipFsendMapper.selectForId(corp_code, sms_code);
-    }
 
     /**
      * 发送类型转换
