@@ -21,7 +21,7 @@
 
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span id="back_area">区域管理</span><i class="icon-ishop_8-03"></i><label>新增区域</label></div>
+    <div class="col-lg-12 pre_title"><span id="back_regime">会员制度</span><i class="icon-ishop_8-03"></i><label>新增会员制度</label></div>
             <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
                 <form class="conpany_msg">
                     <div>
@@ -35,10 +35,86 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">区域编号*</label><input type="text" id="AREA_ID" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域编号不能为空！"></div></div></span>
+                        <span><label style="color:#c26655">会员类型名称*</label><input type="text" id="vip_type_name" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空!"></div></div></span>
+                    </div>
+                    <div class="drop_down item_1">
+                        <span><label style="color:#c26555;">会员卡等级*</label><input class="input_select" value="1" id="USER_SEX" type="text" placeholder="请选择性别" readonly="">
+                            <ul style="display: none;">
+                                <li>1<span>(最小)</span></li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li>5</li>
+                                <li>6</li>
+                                <li>7</li>
+                                <li>8</li>
+                                <li>9</li>
+                                <li>10</li>
+                            </ul>
+                        </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">区域名称*</label><input type="text" id="AREA_NAME" verify="Empty" maxlength="100"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域名称不能为空！"></div></div></span>
+                        <span><label>会员折扣</label><input type="text" id="vip_discount" maxlength="50"/></span>
+                    </div>
+                    <div>
+                        <label style="color:#c26655">会员门槛*</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold" verify="Empty" maxlength="50">
+                        <div style="padding-left:80px" class="hint"><div  hintinfo="会员门槛不能为空!"></div></div>
+                    </div>
+                    <div class="drop_down item_2 upgrade_amount">
+                        <span><label>升级门槛</label><input class="input_select w" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input type="text" class="w" id="upgrade_amount">
+                            <ul style="display: none;">
+                                <li>最近一个月</li>
+                                <li>最近二个月</li>
+                                <li>最近三个月</li>
+                                <li>最近四个月</li>
+                                <li>最近五个月</li>
+                                <li>最近六个月</li>
+                                <li>最近七个月</li>
+                                <li>最近八个月</li>
+                                <li>最近九个月</li>
+                                <li>最近十个月</li>
+                                <li>最近十一个月</li>
+                                <li>最近一年</li>
+                                <li>累计</li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div>
+                        <span><label>积分比例</label><span class="r">1元 =</span><input type="text" class="join_threshold" id="points_value" maxlength="50"/></span>
+                    </div>
+                    <div>
+                        <div>
+                            <label>赠送</label><span class="r"><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em><span class="r_text">积分</span></span><input type="text" class="join_threshold" id="points_value" maxlength="50"/>
+                        </div>
+                        <div>
+                            <div class="present_coupon drop_down item_2" >
+                                    <div class="quan_left">
+                                        <span class="r"><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_threshold"><label for="is_active"></label></em><span class="r_text">券</span>
+                                        </span>
+                                    </div>
+                                    <div class="quan_right">
+                                        <div class="quan_select">
+                                            <input type="text" class="input_select quan" id="points_value" maxlength="50"/>
+                                                <ul style="display:none;">
+                                                    <li>最近一个月</li>
+                                                    <li>最近二个月</li>
+                                                    <li>最近三个月</li>
+                                                </ul>
+                                            <span class="icon-ishop_6-12 q_remove"></span>
+                                        </div>
+                                        <div class="quan_select">
+                                            <input type="text" class="input_select quan" id="points_value" maxlength="50"/>
+                                                <ul style="display:none;">
+                                                    <li>最近一个月</li>
+                                                    <li>最近二个月</li>
+                                                    <li>最近三个月</li>
+                                                </ul>
+                                            <span class="icon-ishop_6-12 q_remove"></span>
+                                        </div>
+                                        <div class="add_quan">添加券<span class="icon-ishop_6-01"></span></div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
