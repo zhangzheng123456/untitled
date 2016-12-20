@@ -161,7 +161,7 @@ $("#consume_date").click(function () {
 });
 $("#consume_select li").click(function () {
     $("#consume_date").val($(this).html());
-    $("#consume_date").attr("data-date",$(this).attr("data-date"));
+    $("#consume_date").attr("data-date", $(this).attr("data-date"));
     $("#consume_select").hide();
 });
 $("#state").click(function () {
@@ -234,10 +234,10 @@ $(".filter_group ul").on("click", "li", function () {
 //筛选确定
 $("#screen_vip_que").click(function () {
     inx = 1;
-    var corp_code=$("#OWN_CORP").val();
-    if(corp_code!==""&&corp_code!==undefined){
-        _param["corp_code"]=corp_code;
-    }else {
+    var corp_code = $("#OWN_CORP").val();
+    if (corp_code !== "" && corp_code !== undefined) {
+        _param["corp_code"] = corp_code;
+    } else {
         _param["corp_code"] = "C10000";
     }
     _param["pageNumber"] = inx;
@@ -277,7 +277,7 @@ $("#screen_vip_que").click(function () {
                 var key = $(input[0]).attr("data-kye");
                 var classname = $(input[0]).attr("class");
                 var id = $(input[0]).attr("id");
-                if (key!=="3"&&key!=="4"&&classname.indexOf("short") == 0) {
+                if (key !== "3" && key !== "4" && classname.indexOf("short") == 0) {
                     if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                         var param = {};
                         var val = {};
@@ -289,7 +289,7 @@ $("#screen_vip_que").click(function () {
                         screen.push(param);
                     }
                 } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
-                    if ($(input[0]).attr("data-code")!=="") {
+                    if ($(input[0]).attr("data-code") !== "") {
                         var param = {};
                         var val = $(input[0]).attr("data-code");
                         param['key'] = key;
@@ -298,8 +298,8 @@ $("#screen_vip_que").click(function () {
                         screen.push(param);
                     }
                 } else if (key == "17") {
-                         return ;
-                } else if(key == "3" || key == "4"){
+                    return;
+                } else if (key == "3" || key == "4") {
                     if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                         var param = {};
                         var val = {};
@@ -340,31 +340,31 @@ $("#screen_vip_que").click(function () {
 });
 //清空筛选
 $("#empty_filter").click(function () {
-   $("#screen_wrapper .contion_input input").each(function () {
-       var key = $(this).attr("data-kye");
-       if(key=="6"||key=="8"||key=="12"){
-           $(this).val("全部");
-       }else if(key=="brand_code"||key=="area_code"||key=="14"||key=="15"){
-           $(this).val("");
-           $(this).attr("data-code","");
-       }else if(key=="16"){
-           $(this).val("");
-           $(this).attr("data-code","");
-           $("#filter_group").attr("data-corp","");
-           groupCode=[];
-           groupName=[];
-       } else if(key=="17"){
-           return ;
-       }else {
-           $(this).val("");
-       }
-   });
+    $("#screen_wrapper .contion_input input").each(function () {
+        var key = $(this).attr("data-kye");
+        if (key == "6" || key == "8" || key == "12") {
+            $(this).val("全部");
+        } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
+            $(this).val("");
+            $(this).attr("data-code", "");
+        } else if (key == "16") {
+            $(this).val("");
+            $(this).attr("data-code", "");
+            $("#filter_group").attr("data-corp", "");
+            groupCode = [];
+            groupName = [];
+        } else if (key == "17") {
+            return;
+        } else {
+            $(this).val("");
+        }
+    });
 });
 //获取分组
 $("#filter_group").click(function () {
     $(".filter_group").toggle();
     var corp = $("#filter_group").attr("data-corp");
-    if (corp !== undefined && corp !=="") {
+    if (corp !== undefined && corp !== "") {
         $(".filter_group #ul").getNiceScroll().resize();
         return;
     } else {
@@ -456,6 +456,82 @@ $(".screen_content").on("click", "li", function () {
         input.checked = false;
     }
 });
+//验证input值
+$("#screen_wrapper .contion_input").on("blur", "input", function () {
+    var classname = $(this).attr("class");
+    var key = $(this).attr("data-kye");
+    var val = $(this).val();
+    var _this=$(this);
+    if (key == "10" && val!=="") {
+        testInputNumber(val).then(function () {
+            _this.val("");
+        });
+    } else if (classname == "short_input_date" && key !== undefined && val!=="") {
+        var max = $(this).nextAll("input").val();
+        if(max!==""){
+            max = parseInt(max);
+            testInputNumber(val, "", max).then(function () {
+                _this.val("");
+            });
+        }else {
+            testInputNumber(val).then(function () {
+                _this.val("");
+            });
+        }
+    } else if (classname == "short_input_date" && key == undefined && val!=="") {
+        var min = $(this).prevAll("input").val();
+        if(min!==""){
+            min = parseInt(min);
+            testInputNumber(val, min, "").then(function () {
+                _this.val("");
+            });
+        }else {
+            testInputNumber(val).then(function () {
+                _this.val("");
+            });
+        }
+    }
+});
+function testInputNumber(val, min, max) {//验证数字
+    var reg = /^[0-9]*$/;
+    var phpne = /^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/;
+    var def=$.Deferred();
+    if (!reg.test(val)) {
+        art.dialog({
+            zIndex: 10010,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "只能输入数字"
+        });
+        def.resolve();
+        return def;
+    }
+    if (val < min && min !== "") {
+        art.dialog({
+            zIndex: 10010,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "不能小于前面的值"
+        });
+        def.resolve();
+        return def;
+    }
+    if (val > max && max !== "") {
+        art.dialog({
+            zIndex: 10010,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "不能大于后面的值"
+        });
+        def.resolve();
+        return def;
+    }
+    def.reject();
+    return def;
+}
 //获取分组
 function getGroup() {
     var corp_command = "/vipGroup/getCorpGroups";
