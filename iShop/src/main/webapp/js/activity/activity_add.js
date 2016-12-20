@@ -2295,32 +2295,6 @@ $("#que_staff").click(function () {
     $("#screen_wrapper").show();
     $("#screen_staff_num").val("已选"+li.length+"个");
 });
-//分配会员确定
-$("#screen_vip_que").click(function () {
-    $("#search").val("");
-    inx=1;
-    var tr= $('#table tbody tr');
-    var corp_code=$('#OWN_CORP').val();
-    var area_code =$('#screen_area_num').attr("data-code");//区域
-    var brand_code=$('#screen_brand_num').attr("data-code");//品牌
-    var store_code=$("#screen_shop_num").attr("data-code");//店铺
-    var user_code=$("#screen_staff_num").attr("data-code");//员工
-    _param["corp_code"]=corp_code;
-    _param["brand_code"]=brand_code;
-    _param["store_code"]=store_code;
-    _param["area_code"]=area_code;
-    _param["user_code"]=user_code;
-    _param["pageNumber"] = inx;
-    _param["pageSize"] = pageSize;
-    if(area_code==""&&brand_code==""&&store_code==""&&user_code==""){
-        GET(inx,pageSize);
-    }
-    if(area_code!==""||brand_code!==""||store_code!==""||user_code!==""){
-        filtrates(inx,pageSize);
-    }
-    $("#screen_wrapper").hide();
-    $("#p").hide();
-});
 //点击执行
 $("#performance").click(function () {
     var left=($(window).width()-$("#tk").width())/2-200;//弹框定位的left值

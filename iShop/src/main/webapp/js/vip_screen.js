@@ -161,6 +161,7 @@ $("#consume_date").click(function () {
 });
 $("#consume_select li").click(function () {
     $("#consume_date").val($(this).html());
+    $("#consume_date").attr("data-date",$(this).attr("data-date"));
     $("#consume_select").hide();
 });
 $("#state").click(function () {
@@ -227,13 +228,18 @@ $(".filter_group ul").on("click", "li", function () {
         groupName.push(val);
         groupCode.push(code);
     }
-    $("#filter_group").val(groupName.toString());
-    $("#filter_group").attr("data-code", groupCode.toString);
+    $("#filter_group").val(groupName.join(","));
+    $("#filter_group").attr("data-code", groupCode.join(","));
 });
 //筛选确定
 $("#screen_vip_que").click(function () {
     inx = 1;
-    _param["corp_code"] = "C10000";
+    var corp_code=$("#OWN_CORP").val();
+    if(corp_code!==""&&corp_code!==undefined){
+        _param["corp_code"]=corp_code;
+    }else {
+        _param["corp_code"] = "C10000";
+    }
     _param["pageNumber"] = inx;
     _param["pageSize"] = pageSize;
     var screen = [];
@@ -271,7 +277,7 @@ $("#screen_vip_que").click(function () {
                 var key = $(input[0]).attr("data-kye");
                 var classname = $(input[0]).attr("class");
                 var id = $(input[0]).attr("id");
-                if (classname.indexOf("short") == 0) {
+                if (key!=="3"&&key!=="4"&&classname.indexOf("short") == 0) {
                     if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                         var param = {};
                         var val = {};
@@ -283,7 +289,7 @@ $("#screen_vip_que").click(function () {
                         screen.push(param);
                     }
                 } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
-                    if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                    if ($(input[0]).attr("data-code")!=="") {
                         var param = {};
                         var val = $(input[0]).attr("data-code");
                         param['key'] = key;
@@ -292,7 +298,20 @@ $("#screen_vip_que").click(function () {
                         screen.push(param);
                     }
                 } else if (key == "17") {
-
+                         return ;
+                } else if(key == "3" || key == "4"){
+                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                        var param = {};
+                        var val = {};
+                        var date = $("#consume_date").attr("data-date");
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val();
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['date'] = date;
+                        screen.push(param);
+                    }
                 } else {
                     if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                         var param = {};
@@ -319,11 +338,33 @@ $("#screen_vip_que").click(function () {
     $("#screen_wrapper").hide();
     $("#p").hide();
 });
+//清空筛选
+$("#empty_filter").click(function () {
+   $("#screen_wrapper .contion_input input").each(function () {
+       var key = $(this).attr("data-kye");
+       if(key=="6"||key=="8"||key=="12"){
+           $(this).val("全部");
+       }else if(key=="brand_code"||key=="area_code"||key=="14"||key=="15"){
+           $(this).val("");
+           $(this).attr("data-code","");
+       }else if(key=="16"){
+           $(this).val("");
+           $(this).attr("data-code","");
+           $("#filter_group").attr("data-corp","");
+           groupCode=[];
+           groupName=[];
+       } else if(key=="17"){
+           return ;
+       }else {
+           $(this).val("");
+       }
+   });
+});
 //获取分组
 $("#filter_group").click(function () {
     $(".filter_group").toggle();
     var corp = $("#filter_group").attr("data-corp");
-    if (corp !== undefined) {
+    if (corp !== undefined && corp !=="") {
         $(".filter_group #ul").getNiceScroll().resize();
         return;
     } else {

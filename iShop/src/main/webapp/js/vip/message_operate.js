@@ -765,6 +765,7 @@ $("#screen_que_area").click(function(){
     $("#screen_area").hide();
     $("#screen_wrapper").show();
     $("#screen_area_num").val("已选"+li.length+"个");
+	$("#screen_area_num").attr("data-code",area_codes);
     $(".area_num").val("已选"+li.length+"个");
 });
 //点击品牌确定按钮
@@ -789,6 +790,7 @@ $("#screen_que_brand").click(function(){
     $("#screen_wrapper").show();
     $("#screen_brand_num").val("已选"+li.length+"个");
     $(".brand_num").val("已选"+li.length+"个");
+	$("#screen_brand_num").attr("data-code",brand_codes);
     console.log(message.cache.brand_codes);
     console.log(message.cache.brand_names);
 });
@@ -814,6 +816,7 @@ $("#screen_que_shop").click(function(){
     $("#screen_wrapper").show();
     $("#screen_shop_num").val("已选"+li.length+"个");
     $("#staff_shop_num").val("已选"+li.length+"个");
+	$("#screen_shop_num").attr("data-code",store_codes);
 });
 //点击员工确定按钮
 $("#screen_que_staff").click(function(){
@@ -836,6 +839,7 @@ $("#screen_que_staff").click(function(){
     $("#screen_staff").hide();
     $("#screen_wrapper").show();
     $("#screen_stff_num").val("已选"+li.length+"个");
+	$("#screen_stff_num").attr("data-code",user_codes);
 });
 /*************获取vip的接口***************/
 var inx=1;//默认是第一页
@@ -1348,28 +1352,6 @@ $("#send").click(function(){
 		whir.loading.remove();//移除加载框
 	});
 });
-//点击会员确定
-$("#screen_vip_que").click(function(){
-    inx=1;
-    _param["corp_code"]=$("#OWN_CORP").val();
-    _param["brand_code"]=message.cache.brand_codes;
-    _param["store_code"]=message.cache.store_codes;
-    _param["area_code"]=message.cache.area_codes;
-    _param["user_code"]=message.cache.user_codes;
-    _param["pageNumber"] = inx;
-    _param["pageSize"] = pageSize;
-    if(message.cache.area_codes==""&&message.cache.brand_codes==""&&message.cache.store_codes==""&&message.cache.user_codes==""){
-        GET(inx,pageSize);
-        $("#save_all").hide();
-    }
-    if(message.cache.area_codes!==""||message.cache.brand_codes!==""||message.cache.store_codes!==""||message.cache.user_codes!==""){
-        filtrate="sucess";
-        filtrates(inx,pageSize);
-    }
-    $("#search").val("");
-    $("#screen_wrapper").hide();
-    $("#p").hide();
-})
 //筛选调接口
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框

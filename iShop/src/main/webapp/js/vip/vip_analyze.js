@@ -157,7 +157,7 @@ function getGroup(){
             var groups=JSON.parse(message.list);//数组
             if(groups.length<=0){return}
             for(var i=0;i<groups.length;i++){
-                groups[i].vip_group_name=='全部'?'':ul+="<li group_cord='"+groups[i].vip_group_code+"'>"+groups[i].vip_group_name+"</li>";
+                groups[i].vip_group_name=='全部'?'':ul+="<li group_code='"+groups[i].vip_group_code+"'>"+groups[i].vip_group_name+"</li>";
             }
             $('#select_analyze_group ul').append(ul);
         }else if(data.code==-1){
@@ -565,6 +565,7 @@ function brithVipGet() {
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['group_code']=$($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
     oc.postRequire("post","/vipAnalysis/vipBirth","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -645,6 +646,7 @@ function newVipGet(){
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['group_code']=$($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
     oc.postRequire("post","/vipAnalysis/vipNew","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -724,6 +726,7 @@ function sleepVipGet() {
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['group_code']=$($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
     oc.postRequire("post","/vipAnalysis/vipSleep","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -814,6 +817,7 @@ function consumeVipGet() {
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['group_code']=$($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -873,80 +877,6 @@ function consumeVipGet() {
         whir.loading.remove();//移除加载框
     });
 }
-function consumeVipGetre() {
-    whir.loading.add("",0.5);//加载等待框
-    var type='consume';
-    $('.rank .vip_table tbody').empty();
-    $('.rank .vip_table thead').empty();
-    var param={};
-    var query_type=arguments[2]?arguments[2]:"recent";
-    var pageSize=arguments[1]?arguments[1]:10;
-    var pageIndex=arguments[0]?arguments[0]:page;
-    param['pageNumber']=pageIndex;
-    param['pageSize']=pageSize;
-    param['query_type']=query_type;
-    param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
-    param['corp_code']=localStorage.getItem('corp_code');
-    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
-    param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
-    oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
-        if(data.code=="0"){
-            var msg=JSON.parse(data.message);
-            count=msg.pages;
-            var pageIndex=msg.pageNum;
-            msg=msg.vip_cost_freq_list;
-            $(".rank thead").append('<tr>'
-                + '<th>序号</th>'
-                + '<th>会员名称</th>'
-                + '<th>会员等级</th>'
-                + '<th>平均消费</th>'
-                + '<th>月消费次数</th></tr>');
-            if(msg.length>0){
-                for(var i=0;i<msg.length;i++){
-                    if(pageIndex>=2){
-                        var a=i+1+(pageIndex-1)*pageSize;
-                    }else{
-                        var a=i+1;
-                    }
-                    $(".rank tbody").append('<tr id="'+msg[i].vip_id+'"><td>'
-                        + a
-                        +'</td><td>'
-                        + msg[i].vip_name
-                        +'</td><td>'
-                        + msg[i].vip_type
-                        +'</td><td>'
-                        + msg[i].avg_amount
-                        +'</td><td>'
-                        + msg[i].consume_frequently
-                        +'</td></tr>');
-                }
-                $(".rank .vip_table tbody tr").click(function () {
-                    //vipTable_lg();
-                    var ID=$(this).attr("id");
-                    sessionStorage.setItem("id",ID);
-                    sessionStorage.setItem("corp_code","C10000");
-                    window.open("http://"+window.location.host+"/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
-                })
-            }else if(msg.length == 0){
-                var len = $(".rank thead tr th").length;
-                var i;
-                for(i=0;i<10;i++){
-                    $(".rank tbody").append("<tr></tr>");
-                    for(var j=0;j<len;j++){
-                        $($(".rank tbody tr")[i]).append("<td></td>");
-                    }
-                }
-                $(".rank tbody tr:nth-child(5)").append("<span style='position:absolute;left:45%;line-height:45px;font-size: 15px;color:#999'>暂无数据</span>");
-            }
-        }else if(data.code=="-1"){
-        }
-        //调用生成页码
-        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
-        // $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
-        // pageShow($('.rank .vip_table tbody'));
-        whir.loading.remove();//移除加载框
-    });
-}
 function consumeVipGetam() {
     whir.loading.add("",0.5);//加载等待框
     var type='consume';
@@ -963,6 +893,7 @@ function consumeVipGetam() {
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['group_code']=$($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -1024,7 +955,6 @@ function consumeVipGet_sub(ali) {
     month_type='';//会员生日月份类型
     switch($($(ali).html()).html()){
         case '最近消费': query_type="recent";consumeVipGet('','',query_type);break;
-        case '消费频率': query_type="freq";consumeVipGetre('','',query_type);break;
         case '本月消费': query_type="month";consumeVipGetam('','',query_type);break;
         case '前三月消费': query_type="three_month";consumeVipGetam('','',query_type);break;
         case '历史总额': query_type="history";consumeVipGetam('','',query_type);break;
@@ -1048,6 +978,7 @@ function consumefreq(){
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     param['brand_code']=$($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['group_code']=$($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -1261,8 +1192,6 @@ function dian(a,b,c,query_type){
     //当请求类型为consume 判断请求的类型
     if(c=='consume'&&(query_type=='recent')){
         consumeVipGet(a,b);
-    }else if( c=='consume'&&(query_type=="freq") ){
-        consumeVipGetre(a,b,query_type);
     }else if( c=='consume'&&(query_type=="month"||query_type=="three_month"||query_type=="history") ){
         consumeVipGetam(a,b,query_type);
     }
