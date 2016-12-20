@@ -9,6 +9,7 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -565,7 +566,7 @@ public class VIPController {
                 post_obj.put("value",store_code);
                 post_array.add(post_obj);
             }
-
+            logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
             DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
 
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);

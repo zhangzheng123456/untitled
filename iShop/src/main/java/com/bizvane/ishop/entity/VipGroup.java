@@ -15,6 +15,8 @@ public class VipGroup {
     private String group_condition;
     //企业编号
     private String corp_code;
+    //备注
+    private String remark;
     //修改时间
     private String modified_date;
     //修改人
@@ -74,6 +76,14 @@ public class VipGroup {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getModified_date() {
