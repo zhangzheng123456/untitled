@@ -189,7 +189,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         String secretkey = "sf0001";//secretkey为密钥，圆周率，会员通、erp三方一致，测试（sf0001）
         String method = "o2ocoupontype";//业务方法
         String str = "";
-        coupon.put("ts", "1482129612509");
+        coupon.put("ts", timestemp);
         coupon.put("method", method);
         coupon.put("params", param);
         String appname = "";
@@ -220,6 +220,24 @@ public class VipRulesServiceImpl implements VipRulesService {
         return array.toJSONString();
     }
 
+    public String  getCouponInfo1(String corp_code)throws Exception {
+
+        JSONObject coupon = new JSONObject();
+        JSONObject param = new JSONObject();//业务参数
+        String secretkey = "sf0001";//secretkey为密钥，圆周率，会员通、erp三方一致，测试（sf0001）
+        String method = "o2ocoupontype";//业务方法
+        coupon.put("ts", "1482129612509");
+        coupon.put("method", method);
+        coupon.put("params", param);
+        coupon.put("appid", "wxc9c9111020955324");
+        coupon.put("sign", "4E733E69DC02AA26DC21D938A4A4CA5E");
+
+        //post请求获取券类型接口
+        String couponInfo = IshowHttpClient.post(Common.COUPON_TYPE_URL,coupon);
+        JSONObject info = JSON.parseObject(couponInfo);
+        JSONArray result=info.getJSONArray("result");
+        return result.toJSONString();
+    }
     @Override
     public List<VipRules> getVipRulesType(String corp_code,String isactive) throws Exception {
         return vipRulesMapper.selectBycode(corp_code,isactive);

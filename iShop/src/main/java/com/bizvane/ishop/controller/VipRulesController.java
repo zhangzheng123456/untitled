@@ -314,7 +314,7 @@ public class VipRulesController {
             JSONObject jsonObject = JSONObject.parseObject(message);
 
             String corp_code = jsonObject.get("corp_code").toString();
-            String result = vipRulesService.getCouponInfo(corp_code);
+            String result = vipRulesService.getCouponInfo1(corp_code);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
