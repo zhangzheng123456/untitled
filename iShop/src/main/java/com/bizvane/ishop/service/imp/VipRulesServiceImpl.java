@@ -122,7 +122,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         VipRules vipRules1=this.getVipRulesByType(corp_code,vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules=getVipRulesById(id);
 
-            if(vipRules1==null||vipRules.getVip_type().equals(vip_type)){
+            if(vipRules1==null||vipRules1.getId()==id){
                 Date now = new Date();
                 vipRules.setCorp_code(corp_code);
                 vipRules.setVip_type(vip_type);
@@ -180,8 +180,6 @@ public class VipRulesServiceImpl implements VipRulesService {
     }
 
     public String  getCouponInfo(String corp_code)throws Exception {
-
-
         List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
         JSONObject coupon = new JSONObject();
         String timestemp = System.currentTimeMillis() + "";//时间戳
@@ -195,36 +193,31 @@ public class VipRulesServiceImpl implements VipRulesService {
         coupon.put("method", method);
         coupon.put("params", param);
         String appname = "";
-        String result = "";
         JSONObject info=null;
-        JSONArray arr=new JSONArray();
+        JSONArray array=new JSONArray();
         for (int i = 0; i < corpWechats.size(); i++) {
             appid = corpWechats.get(i).getApp_id();
             coupon.put("appid", appid);
             str = appid + timestemp + secretkey;
             sign = CheckUtils.encryptMD5Hash(str);//MD5加密
             coupon.put("sign", sign);
-            appname = appname + corpWechats.get(i).getApp_name() + ",";
+            appname = corpWechats.get(i).getApp_name();
             //post请求获取券类型接口
             String couponInfo = IshowHttpClient.post(Common.COUPON_TYPE_URL,coupon);
-
              info = JSON.parseObject(couponInfo);
-            JSONArray array=new JSONArray();
-            String appnames[] = appname.split(",");
-          if(info.get("code").equals("0")){
 
-                  for (int j = 0; j < appnames.length; j++) {
-                      info.put("appname", appnames[j]);
-                      array.add(info);
+              if(info.get("code").equals("0")){
+              JSONArray result=info.getJSONArray("result");
+                  for (int j = 0; j <result.size() ; j++) {
+                      JSONObject obj = result.getJSONObject(i);
+                      obj.put("appname",appname);
+                      array.add(obj);
                   }
-
-
-
           } else if(info.get("code").toString().equals("-1")){
               return info.get("message").toString();
           }
         }
-        return arr.toJSONString();
+        return array.toJSONString();
     }
 
     @Override
