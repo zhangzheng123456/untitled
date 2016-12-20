@@ -46,13 +46,13 @@ $(function () {
                 $("#vip_num").val(msg.vip_group_code);
                 $("#vip_num").attr("data-name", msg.vip_group_code);
                 $("#vip_remark").val(msg.remark);
-                $("#OWN_CORP option").val(msg.corp.corp_code);
+                $("#OWN_CORP option").val(msg.corp_code);
                 $("#PARAM_NAME").attr("data-code",msg.user_code);
                 $("#PARAM_NAME").val(msg.user_name);
-                var Code = msg.corp.corp_code;
-                $("#OWN_CORP option").text(msg.corp.corp_name);
-                //$("#area_shop").val("共"+msg.store_count+"家店铺");
-                // $("#OWN_CORP").val(msg.corp_code);
+                var Code = msg.corp_code;
+                $("#OWN_CORP option").text(msg.corp_name);
+                $("#area_shop").val("共"+msg.store_count+"家店铺");
+                 $("#OWN_CORP").val(msg.corp_code);
                 $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
@@ -1668,4 +1668,224 @@ $('.r_filrate').click(function () {
         str=''
     }
     GET(1,10,group_code,str);
+});
+$("#group_type").click(function(){
+    $(this).next("ul").is(":hidden")==true?$(this).next("ul").show():$(this).next("ul").hide();
+});
+$("#group_type").next("ul").find("li").click(function(){
+    var Val=$(this).text();
+    var type=$(this).attr("data-type");
+    switch (type){
+        case "custom":
+            $("#group_type").css("width","320px");
+            $("#group_type").next("ul").css("width","420px");
+            $("#select_vip").css("display","inline-block");
+            $("#type").hide();
+            $("#group_list").hide();
+            $("#custom_vip_list").show();
+            break;
+        case "category":
+            $("#group_type").css("width","420px");
+            $("#select_vip").css("display","none");
+            $("#type").hide();
+            $("#group_list").show();
+            $("#group_list").children().show();
+            $("#group_list").children().eq(1).css("margin-bottom","20px");
+            $("#custom_vip_list").hide();
+            break;
+        case "brand":
+            $("#group_type").css("width","236px");
+            $("#group_type").next("ul").css("width","236px");
+            $("#select_vip").css("display","none");
+            var LI=$("<li>累计消费</li><li>近12个月消费</li>");
+            $("#type").next("ul").html(LI);
+            $("#type").val("累计消费");
+            $("#type").show();
+            $("#group_list").show();
+            $("#group_list").children().show();
+            $("#group_list").children().eq(1).css("margin-bottom","20px");
+            $("#custom_vip_list").hide();
+            break;
+        case "discount":
+            $("#group_type").css("width","236px");
+            $("#group_type").next("ul").css("width","236px");
+            $("#select_vip").css("display","none");
+            var LI=$(
+                "<li>3月</li>" +
+                "<li>6月</li>" +
+                "<li>12月</li>" +
+                "<li>15月</li>" +
+                "<li>18月</li>" +
+                "<li>21月</li>" +
+                "<li>24月</li>" +
+                "<li>累计消费</li>"
+                );
+            $("#type").next("ul").html(LI);
+            $("#type").val("3月");
+            $("#type").show();
+            $("#group_list").show();
+            $("#group_list").children().hide();
+            $("#group_list").children().last().show();
+            $("#custom_vip_list").hide();
+            break;
+        case "season":
+            $("#group_type").css("width","236px");
+            $("#group_type").next("ul").css("width","236px");
+            $("#select_vip").css("display","none");
+            var LI=$("<li>累计消费</li>");
+            $("#type").next("ul").html(LI);
+            $("#type").val("累计消费");
+            $("#type").show();
+            $("#group_list").show();
+            $("#group_list").children().show();
+            $("#group_list").children().last().hide();
+            $("#group_list").children().eq(1).css("margin","0");
+            $("#custom_vip_list").hide();
+            break;
+    }
+    $(this).parent().prev("input").val(Val);
+    $(this).parent().hide();
+});
+$("#type").next("ul").on("click","li",function(){
+    var Val=$(this).text();
+    $(this).parent().prev("input").val(Val);
+    $(this).parent().hide();
+});
+$("#type").click(function(){
+    $(this).next("ul").is(":hidden")==true?$(this).next("ul").show():$(this).next("ul").hide();
+});
+$("#type").blur(function(){
+    var self=$(this);
+    setTimeout(function(){
+        self.next("ul").hide();
+    },200)
+});
+$("#group_type").blur(function(){
+    var self=$(this);
+    setTimeout(function(){
+        self.next("ul").hide();
+    },200)
+});
+$("#select_vip").click(function(){
+    var arr = whir.loading.getPageSize();
+    var left = (arr[0] - $("#screen_wrapper").width()) / 2;
+    var tp = (arr[3] - $("#screen_wrapper").height()) / 2;
+    $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
+    $("#p").show();
+    $("#screen_wrapper").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_wrapper").show();
+});
+$("#select_vip_que").click(function(){ //筛选确定
+        var screen = [];
+        if ($("#simple_filter").css("display") == "block") {
+            $("#simple_contion .contion_input").each(function () {
+                var input = $(this).find("input");
+                var key = $(input[0]).attr("data-kye");
+                var classname = $(input[0]).attr("class");
+                if (classname.indexOf("short") == 0) {
+                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                        var param = {};
+                        var val = {};
+                        var name=$(input[0]).prev().text();
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val();
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param["name"]=name;
+                        screen.push(param);
+                    }
+                } else {
+                    if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                        var param = {};
+                        var val = $(input[0]).val();
+                        var name=$(input[0]).prev().text();
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        param["name"]=name;
+                        screen.push(param);
+                    }
+                }
+            });
+        } else {
+            $("#contion>div").each(function () {
+                $(this).find(".contion_input").each(function (i, e) {
+                    var input = $(e).find("input");
+                    var key = $(input[0]).attr("data-kye");
+                    var classname = $(input[0]).attr("class");
+                    var id = $(input[0]).attr("id");
+                    if (classname.indexOf("short") == 0) {
+                        if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                            var param = {};
+                            var val = {};
+                            var name=$(input[0]).prev().text();
+                            val['start'] = $(input[0]).val();
+                            val['end'] = $(input[1]).val();
+                            param['type'] = "json";
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['name']=name;
+                            screen.push(param);
+                        }
+                    } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
+                        if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                            var param = {};
+                            var val = $(input[0]).attr("data-code");
+                            var name=$(input[0]).prev().text();
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            param["name"]=name;
+                            screen.push(param);
+                        }
+                    } else if (key == "17") {
+
+                    } else {
+                        if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                            var param = {};
+                            var val = $(input[0]).val();
+                            var name=$(input[0]).prev().text();
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            param["name"]=name;
+                            screen.push(param);
+                        }
+                    }
+                });
+            });
+        }
+        //_param['screen'] = screen;
+        //if (screen.length == 0) {
+        //    GET(inx, pageSize);
+        //} else if (screen[0].key == "17" && (screen[1].value == "")) {
+        //
+        //} else {
+        //    filtrate = "sucess";
+        //    filtrates(inx, pageSize);
+        //}
+        //$("#search").val("");
+        if(screen.length>0){
+            var html="";
+            for(var i=0;i<screen.length;i++){
+                if(screen[i].type=="json"){
+                html+="<div style='float: left'>" +
+                    "<span style='text-align: right;display: inline-block;margin-right: 10px;'>"+screen[i].name+"</span>" +
+                    "<input type='text' style='width: 150px;' value='"+screen[i].value["start"]+"' readonly>" +
+                    "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
+                    "<input readonly type='text' style='width: 150px;' value='"+screen[i].value["end"]+"'>" +
+                     "<i class='icon-ishop_6-12'></i>"+
+                    "</div>"
+                }else{
+                    html+="<div style='float: left'>" +
+                        "<span style='text-align: right;display: inline-block;margin-right: 10px;'>"+screen[i].name+"</span>" +
+                        "<input type='text' style='width: 160px;' value='"+screen[i].value+"' readonly>"+
+                         "<i class='icon-ishop_6-12'></i>"
+                }
+            }
+            $("#custom_vip_list").html(html);
+        }
+        $("#screen_wrapper").hide();
+        $("#p").hide();
 });
