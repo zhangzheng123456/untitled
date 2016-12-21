@@ -107,14 +107,16 @@ public class VipRulesServiceImpl implements VipRulesService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
-
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
-
         int num = 0;
         if (vipRules1 != null) {
             status = "该企业已存在该会员类型";
         } else {
+            String upgrade_amount = vipRules.getUpgrade_amount();
+            if (upgrade_amount.equals("")){
+                vipRules.setUpgrade_time("");
+            }
             vipRules.setCorp_code(corp_code);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setPresent_coupon(present_coupon);
@@ -142,6 +144,7 @@ public class VipRulesServiceImpl implements VipRulesService {
     public String update(String message, String user_id) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+
         int id = Integer.parseInt(jsonObject.get("id").toString());
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String vip_type = jsonObject.get("vip_type").toString().trim();
@@ -154,12 +157,16 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_point = jsonObject.get("present_point").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
         String isactive = jsonObject.get("isactive").toString().trim();
+        String store_code = jsonObject.get("store_code").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
 
         if (vipRules1 == null || vipRules1.getId() == id) {
             Date now = new Date();
+            if (upgrade_amount.equals("")){
+                vipRules.setUpgrade_time("");
+            }
             vipRules.setCorp_code(corp_code);
             vipRules.setVip_type(vip_type);
             vipRules.setHigh_vip_type(high_vip_type);
