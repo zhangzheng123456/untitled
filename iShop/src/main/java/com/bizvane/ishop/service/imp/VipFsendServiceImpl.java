@@ -227,6 +227,13 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     @Override
+    public VipFsend getVipFsendInfoById(int id) throws Exception {
+        VipFsend vipFsend=vipFsendMapper.selectById(id);
+
+        return vipFsend;
+    }
+
+    @Override
     public PageInfo<VipFsend> getAllVipFsendByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         List<VipFsend> vipFsends;
         PageHelper.startPage(page_number, page_size);
