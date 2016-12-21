@@ -102,7 +102,6 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
-            vipRules.setIsactive(Common.IS_ACTIVE_Y);
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
             num = vipRulesMapper.insertVipRules(vipRules);
             if (num > 0) {
@@ -136,6 +135,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         String points_value = jsonObject.get("points_value").toString().trim();
         String present_point = jsonObject.get("present_point").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
+        String isactive = jsonObject.get("isactive").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
@@ -156,7 +156,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
-            vipRules.setIsactive(Common.IS_ACTIVE_Y);
+            vipRules.setIsactive(isactive);
             int num = vipRulesMapper.updateVipRules(vipRules);
             if (num > 0) {
                 return status;
