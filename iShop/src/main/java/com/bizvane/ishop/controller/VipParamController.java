@@ -484,4 +484,36 @@ public class VipParamController {
         }
         return dataBean.getJsonStr();
     }
+
+    //显示企业下可用参数
+    @RequestMapping(value = "/corpVipParams", method = RequestMethod.GET)
+    @ResponseBody
+    public String corpVipParams(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            //-------------------------------------------------------
+            JSONObject result = new JSONObject();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = "C10000";
+            }
+            List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
+
+            result.put("list", JSON.toJSONString(vipParams));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }

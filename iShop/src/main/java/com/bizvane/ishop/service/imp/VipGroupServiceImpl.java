@@ -62,6 +62,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
         for (VipGroup vipGroup : vipGroups) {
             vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
+            trans(vipGroup);
         }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(vipGroups);
         return page;
@@ -158,9 +159,29 @@ public class VipGroupServiceImpl implements VipGroupService {
         List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);
         for (VipGroup vipGroup : list1) {
             vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
+            trans(vipGroup);
         }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(list1);
         return page;
+    }
+
+    void trans(VipGroup vipGroup){
+        String group_type = vipGroup.getGroup_type();
+        if (group_type.equals("define")){
+            vipGroup.setGroup_type("自定义分组");
+        }
+        if (group_type.equals("brand")){
+            vipGroup.setGroup_type("品牌喜好分组");
+        }
+        if (group_type.equals("class")){
+            vipGroup.setGroup_type("品类喜好分组");
+        }
+        if (group_type.equals("discount")){
+            vipGroup.setGroup_type("折扣偏好分组");
+        }
+        if (group_type.equals("season")){
+            vipGroup.setGroup_type("季节偏好分组");
+        }
     }
 
 }

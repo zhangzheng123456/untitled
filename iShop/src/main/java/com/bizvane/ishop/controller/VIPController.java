@@ -269,10 +269,8 @@ public class VIPController {
             String extend_info = "";
             String remark = "";
             String avatar = "";
-//            String vip_group_name = "";
 
             JSONArray extend = new JSONArray();
-
             List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
             for (int i = 0; i < vipParams.size(); i++) {
                 JSONObject extend_obj = new JSONObject();
@@ -302,16 +300,7 @@ public class VIPController {
                 if (obj.containsField("avatar"))
                     avatar = obj.get("avatar").toString();
             }
-
-//            List<VipGroup> vipGroups = vipGroupService.selectByVipid(corp_code, Common.SPECIAL_HEAD + vip_id + ",", Common.IS_ACTIVE_Y);
-//            for (int i = 0; i < vipGroups.size(); i++) {
-//                vip_group_name = vip_group_name + vipGroups.get(i).getVip_group_name() + ",";
-//            }
-//            if (vip_group_name.endsWith(","))
-//                vip_group_name = vip_group_name.substring(0, vip_group_name.length() - 1);
             vip.put("vip_avatar", avatar);
-//            vip.put("vip_group_name", vip_group_name);
-
             JSONObject result = new JSONObject();
             result.put("list", vip);
             result.put("extend", extend);
@@ -515,6 +504,7 @@ public class VIPController {
             String area_code = "";
             String store_code = "";
             String user_code = "";
+            String store_code_key = "";
             JSONArray post_array = new JSONArray();
             for (int i = 0; i < screen.size(); i++) {
                 JSONObject screen_obj = screen.getJSONObject(i);
@@ -529,10 +519,10 @@ public class VIPController {
                     continue;
                 }else if (key.equals("brand_code")){
                     //筛选品牌下会员
-                    brand_code = screen_obj.get("brand_code").toString();
+                    brand_code = value;
                 }else if (key.equals("area_code")){
                     //筛选区域下会员
-                    area_code = screen_obj.get("area_code").toString();
+                    area_code = value;
                 }else {
                     //根据key值，找出其对应name
                     for (int j = 0; j < tableManagers.size(); j++) {
@@ -541,9 +531,10 @@ public class VIPController {
                         post_obj.put("value",value);
                         if (key.equals(tableManagers.get(j).getFilter_weight())){
                             String key_name = tableManagers.get(j).getColumn_name();
-                            post_obj.put("key",key_name);
+                            post_obj.put("key",key);
                             if (key_name.equals("store_code")){
                                 store_code = jsonObject.get(key).toString();
+                                store_code_key = key;
                             }
                             if (key_name.equals("user_code")){
                                 user_code = jsonObject.get(key).toString();
@@ -561,7 +552,7 @@ public class VIPController {
                     store_code = store_code + storeList.get(i).getStore_code() + ",";
                 }
                 JSONObject post_obj = new JSONObject();
-                post_obj.put("key","store_code");
+                post_obj.put("key",store_code_key);
                 post_obj.put("type","text");
                 post_obj.put("value",store_code);
                 post_array.add(post_obj);
