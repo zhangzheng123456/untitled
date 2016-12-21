@@ -677,6 +677,43 @@
     </div>
     <div class="screen_que" id="screen_que_staff">确定</div>
 </div>
+<!-- 拉取导购  -->
+<div id="screen_group" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选</h4>
+        <div class="screen_close" id="screen_close_group"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="group_search">
+            <span class="icon-ishop_3-05" id="group_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_group">确定</div>
+</div>
 <!-- 会员筛选弹框 -->
 <div class="screen_wrapper" id="screen_wrapper">
     <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
@@ -713,7 +750,8 @@
                 <li><a href="####">按会员属性</a></li>
                 <li><a href="####">按消费属性</a></li>
                 <li><a href="####">按所属关系</a></li>
-                <li><a href="####">按拓展属性</a></li>
+                <li><a href="####">按会员分组</a></li>
+                <li><a href="####">按拓展资料</a></li>
                 <!--<li><a href="####">按券查询</a></li>-->
             </ul>
         </div>
@@ -769,18 +807,20 @@
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
             </div>
-            <div id="expend_attribute" style="display: none">
+            <div id="vip_group" style="display: none">
                 <!--<div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>-->
                 <div class="contion_input">
-                    <label>分组</label><input data-kye="16" id="filter_group" class="select" type="text" data-code="" readonly="readonly">
-                    <div class="filter_group">
-                        <input type="text" id="search_filter_group">
-                        <ul id="ul">
+                    <label>分组</label><input data-kye="16" id="filter_group" class="input" type="text" data-code="" readonly="readonly"><span
+                        class="icon_r icon-ishop_8-03" id="screen_group_icon"></span>
+                    <!--<div class="filter_group">-->
+                        <!--<input type="text" id="search_filter_group">-->
+                        <!--<ul id="ul">-->
 
-                        </ul>
-                    </div>
+                        <!--</ul>-->
+                    <!--</div>-->
                 </div>
             </div>
+            <div id="expend_attribute" style="display: none"></div>
             <div id="ticket" style="display: none">
                 <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
                 <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
