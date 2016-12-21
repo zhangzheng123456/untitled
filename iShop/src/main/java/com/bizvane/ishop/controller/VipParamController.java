@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yin on 2016/9/7.
@@ -504,9 +501,15 @@ public class VipParamController {
                 corp_code = jsonObject.getString("corp_code");
             }
             List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
+            List<VipParam> list = new ArrayList<VipParam>();
+            for (int i = 0; i < vipParams.size(); i++) {
+                VipParam vipParam = vipParams.get(i);
+                String type = vipParams.get(i).getParam_type();
+                if (!type.equals("rule"))
+                    list.add(vipParam);
+            }
 
-
-            result.put("list", JSON.toJSONString(vipParams));
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

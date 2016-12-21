@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipRulesMapper;
 import com.bizvane.ishop.entity.CorpWechat;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.VipRules;
 import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.IshowHttpClient;
@@ -34,36 +36,52 @@ public class VipRulesServiceImpl implements VipRulesService {
     VipRulesMapper vipRulesMapper;
     @Autowired
     CorpService corpService;
+    @Autowired
+    StoreService storeService;
 
     @Override
     public VipRules getVipRulesById(int id) throws Exception {
         VipRules rules = vipRulesMapper.selectById(id);
-        String present_coupon = rules.getPresent_coupon();
-        JSONArray coupons = JSONArray.parseArray(present_coupon);
+        if (rules != null){
+            String present_coupon = rules.getPresent_coupon();
+            String store_codes = rules.getStore_code();
+            String corp_code = rules.getCorp_code();
+            List<Store> stores = storeService.selectStore(corp_code,store_codes);
+            JSONArray store_array = new JSONArray();
+            for (int i = 0; i < stores.size(); i++) {
+                JSONObject obj = new JSONObject();
+                obj.put("store_code",stores.get(i).getStore_code());
+                obj.put("store_name",stores.get(i).getStore_name());
+                store_array.add(obj);
+            }
+            rules.setStores(store_array);
+            JSONArray coupons = JSONArray.parseArray(present_coupon);
 
-        String coupon_info = getCouponInfo1(rules.getCorp_code());
-        if (!coupon_info.equals(Common.DATABEAN_CODE_ERROR)){
-            JSONArray array = JSONArray.parseArray(coupon_info);
+            String coupon_info = getCouponInfo1(rules.getCorp_code());
+            if (!coupon_info.equals(Common.DATABEAN_CODE_ERROR)){
+                JSONArray array = JSONArray.parseArray(coupon_info);
 
-            String app_name = "";
-            String coupon_name = "";
-            for (int i = 0; i <coupons.size() ; i++) {
-                JSONObject obj = coupons.getJSONObject(i);
-                String app_id = obj.getString("appid");
-                String coupon_code = obj.getString("couponcode");
-                for (int j = 0; j < array.size(); j++) {
-                    JSONObject coupon = array.getJSONObject(j);
-                    if (app_id.equals(coupon.getString("appid")) && coupon_code.equals(coupon.getString("couponcode"))){
-                        app_name = coupon.getString("appname");
-                        coupon_name = coupon.getString("name");
-                        obj.put("appname",app_name);
-                        obj.put("name",coupon_name);
+                String app_name = "";
+                String coupon_name = "";
+                for (int i = 0; i <coupons.size() ; i++) {
+                    JSONObject obj = coupons.getJSONObject(i);
+                    String app_id = obj.getString("appid");
+                    String coupon_code = obj.getString("couponcode");
+                    for (int j = 0; j < array.size(); j++) {
+                        JSONObject coupon = array.getJSONObject(j);
+                        if (app_id.equals(coupon.getString("appid")) && coupon_code.equals(coupon.getString("couponcode"))){
+                            app_name = coupon.getString("appname");
+                            coupon_name = coupon.getString("name");
+                            obj.put("appname",app_name);
+                            obj.put("name",coupon_name);
+                        }
                     }
                 }
-            }
 
+            }
+            rules.setPresent_coupon(coupons.toJSONString());
         }
-        rules.setPresent_coupon(coupons.toJSONString());
+
         return rules;
     }
 
@@ -89,14 +107,16 @@ public class VipRulesServiceImpl implements VipRulesService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
-
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
-
         int num = 0;
         if (vipRules1 != null) {
             status = "该企业已存在该会员类型";
         } else {
+            String upgrade_amount = vipRules.getUpgrade_amount();
+            if (upgrade_amount.equals("")){
+                vipRules.setUpgrade_time("");
+            }
             vipRules.setCorp_code(corp_code);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setPresent_coupon(present_coupon);
@@ -124,6 +144,7 @@ public class VipRulesServiceImpl implements VipRulesService {
     public String update(String message, String user_id) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+
         int id = Integer.parseInt(jsonObject.get("id").toString());
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String vip_type = jsonObject.get("vip_type").toString().trim();
@@ -136,12 +157,16 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_point = jsonObject.get("present_point").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
         String isactive = jsonObject.get("isactive").toString().trim();
+        String store_code = jsonObject.get("store_code").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
 
         if (vipRules1 == null || vipRules1.getId() == id) {
             Date now = new Date();
+            if (upgrade_amount.equals("")){
+                vipRules.setUpgrade_time("");
+            }
             vipRules.setCorp_code(corp_code);
             vipRules.setVip_type(vip_type);
             vipRules.setHigh_vip_type(high_vip_type);

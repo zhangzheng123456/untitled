@@ -935,4 +935,57 @@ public class VipGroupController {
 
     }
 
+    /**
+     * 查看分组下会员
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/groupVips", method = RequestMethod.POST)
+    @ResponseBody
+    public String groupVips(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String id = jsonObject.get("id").toString();
+            String type = jsonObject.get("type").toString();
+
+            DataBox dataBox = new DataBox();
+            if (type.equals("list")){
+                Data data_user_id = new Data("user_id", "", ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", "C10000", ValueType.PARAM);
+                Data data_role_code = new Data("role_code", Common.ROLE_SM, ValueType.PARAM);
+                Data data_store_id = new Data("store_id", "", ValueType.PARAM);
+                Data data_area_code = new Data("area_code", "", ValueType.PARAM);
+                Data data_page_num = new Data("page_num", "1", ValueType.PARAM);
+                Data data_page_size = new Data("page_size", "20", ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_user_id.key, data_user_id);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_store_id.key, data_store_id);
+                datalist.put(data_area_code.key, data_area_code);
+                datalist.put(data_role_code.key, data_role_code);
+                datalist.put(data_page_num.key, data_page_num);
+                datalist.put(data_page_size.key, data_page_size);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            }
+
+            String result = dataBox.data.get("message").value;
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
 }
