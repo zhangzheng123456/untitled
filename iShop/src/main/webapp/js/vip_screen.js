@@ -217,6 +217,20 @@ $(".age_r").on("click", "li", function () {
     $("#age_r").val($(this).html());
     $(".age_r").hide();
 });
+$("#expend_attribute").on("click",".select",function () {
+    $(this).next(".sex_select").toggle();
+});
+$("#expend_attribute").on("click",".sex_select li",function () {
+    var _this=$(this).parent(".sex_select").prev(".select");
+    $(_this).val($(this).html());
+    $(".sex_select").hide();
+});
+$("#expend_attribute").on("blur",".select",function () {
+   var ul = $(this).next(".sex_select");
+    setTimeout(function(){
+        ul.hide();
+    },200);
+});
 //筛选确定
 $("#screen_vip_que").click(function () {
     inx = 1;
@@ -620,26 +634,28 @@ function expend_data() {
     oc.postRequire("post","/vipparam/corpVipParams","0",param,function (data) {
        if(data.code == 0){
            var msg = JSON.parse(data.message);
-           var list = JSON.parse(list.msg);
+           var list = JSON.parse(msg.list);
            var html=""
            if(list.length>0){
-               for(var i=0;i,list.length;i++){
+               for(var i=0;i<list.length;i++){
                    var param_type = list[i].param_type;
                    if(param_type=="date"){
                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>' 
-                           + '<input readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'start'+i+'\',istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>' 
-                           + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'end'+i+'\',istime: false, format: \'YYYY-MM-DD\'})"></div>'
+                           + '<input readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                           + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
                    }
                    if(param_type=="select"){
                        var param_values = "";
                            param_values = list[i].param_values.split(",");
                        if(param_values.length>0){
+                           var li="";
                            for(var j=0;j<param_values.length;j++){
-                               html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
-                                   + '<input class="select" readonly><ul class="sex_select">'
-                                   + '<li>'+param_values[j]+'</li>'
-                                   + '</ul></div>'
+                               li+='<li>'+param_values[j]+'</li>'
                            }
+                           html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                               + '<input class="select" readonly><ul class="sex_select">'
+                               + li
+                               + '</ul></div>'
                        }else {
                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
                                + '<input class="select" readonly><ul class="sex_select"></ul></div>'
@@ -650,8 +666,8 @@ function expend_data() {
                            + '<input class="input"><ul class="sex_select"></ul></div>'
                    }
                    if(param_type=="longtext"){
-                       html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
-                           + '<input class="select" readonly><ul class="sex_select"></ul></div>'
+                       html+='<div class="textarea"><label>'+list[i].param_desc+'</label>'
+                           + '<textarea rows="0" cols="0"></textarea><ul class="sex_select"></ul></div>'
                    }
                }
            }
