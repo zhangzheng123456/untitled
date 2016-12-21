@@ -338,9 +338,15 @@ public class VipRulesController {
 
             String corp_code = jsonObject.get("corp_code").toString();
             String result = vipRulesService.getCouponInfo1(corp_code);
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
+            if (result.equals(Common.DATABEAN_CODE_ERROR)){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("获取优惠券失败");
+            }else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage(result.toString());
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
