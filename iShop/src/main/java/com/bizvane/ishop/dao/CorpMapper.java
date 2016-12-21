@@ -18,8 +18,6 @@ public interface CorpMapper {
 
     Corp selectByCorpId(@Param("corp_id") int corp_id, @Param("corp_code") String corp_code,@Param("isactive") String isactive) throws SQLException;
 
-    String selectMaxCorpCode() throws SQLException;
-
     int insertCorp(Corp record) throws SQLException;
 
     int updateByCorpId(Corp record) throws SQLException;
