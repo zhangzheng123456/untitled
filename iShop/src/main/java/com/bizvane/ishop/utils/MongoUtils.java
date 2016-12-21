@@ -61,6 +61,18 @@ public class MongoUtils {
         return queryCondition;
     }
 
+    //多个“and”查询(搜索)查询签到状态
+    public static BasicDBObject andOperation2(String corp_code, String user_code, String date,String status) {
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        values.add(new BasicDBObject("corp_code", corp_code));
+        values.add(new BasicDBObject("user_code", user_code));
+        Pattern pattern = Pattern.compile("^.*" + date + ".*$", Pattern.CASE_INSENSITIVE);
+        values.add(new BasicDBObject("sign_time", pattern));
+        values.add(new BasicDBObject("status", status));
+        queryCondition.put("$and", values);
+        return queryCondition;
+    }
     //in查询
     public static BasicDBObject inOperation(String[] args, String condition) {
         BasicDBObject queryCondition = new BasicDBObject();

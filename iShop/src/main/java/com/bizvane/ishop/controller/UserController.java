@@ -2282,6 +2282,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("success");
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
