@@ -58,6 +58,8 @@ public class VIPController {
     MongoDBClient mongodbClient;
     @Autowired
     TableManagerService tableManagerService;
+    @Autowired
+    VipRulesService vipRulesService;
 
     /**
      * 新增会员信息
@@ -1184,5 +1186,56 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 会员信息，会员升/降级
+     */
+    @RequestMapping(value = "/changeVipType", method = RequestMethod.POST)
+    @ResponseBody
+    public String changeVipType(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String operator_id = request.getSession().getAttribute("user_code").toString();
 
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String type = jsonObject.get("type").toString();
+            String vip_card_type = jsonObject.get("vip_card_type").toString();
+
+            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code,vip_card_type,Common.IS_ACTIVE_Y);
+            if (vipRules != null){
+                if (type.equals("upgrade")){
+                    String high_vip_type = vipRules.getHigh_vip_type();
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+                    Data data_vip_card_type = new Data("vip_card_type", high_vip_type, ValueType.PARAM);
+
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_vip_id.key, data_vip_id);
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_vip_card_type.key, data_vip_card_type);
+
+//                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("", datalist);
+//                    if (dataBox.status.toString().equals("SUCCESS")){
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId("1");
+                        dataBean.setMessage("SUCCESS");
+//                    }
+                }
+            }
+
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

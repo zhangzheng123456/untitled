@@ -16,6 +16,8 @@
         <result column="upgrade_amount" property="upgrade_amount"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="points_value" property="points_value" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
         <result column="present_point" property="present_point" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="present_coupon" property="present_coupon"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -42,6 +44,7 @@
           dvr.upgrade_amount,
           dvr.points_value,
           dvr.present_point,
+          dvr.store_code,
           dvr.present_coupon,
           dvr.modified_date,
           dvr.modifier,
@@ -124,6 +127,9 @@
             <if test="points_value!=null">
                 points_value,
             </if>
+            <if test="store_code!=null">
+                store_code,
+            </if>
             <if test="present_point!=null">
                 present_point,
             </if>
@@ -169,8 +175,11 @@
                 #{upgrade_amount},
             </if>
             <if test="points_value!=null">
-            #{points_value},
-             </if>
+                #{points_value},
+            </if>
+            <if test="store_code!=null">
+                #{store_code},
+            </if>
             <if test="present_point!=null">
                 #{present_point},
             </if>
@@ -221,6 +230,9 @@
             </if>
             <if test="points_value!=null">
                 points_value=#{points_value},
+            </if>
+            <if test="store_code!=null">
+                store_code=#{store_code},
             </if>
             <if test="present_point!=null">
                 present_point=#{present_point},
@@ -288,6 +300,7 @@
         GROUP By dvr.id
         ORDER BY dvr.id DESC
     </select>
+
     <select id="selectByVipType" resultType="com.bizvane.ishop.entity.VipRules">
         SELECT
         dvr.id,
@@ -299,6 +312,7 @@
         dvr.upgrade_time,
         dvr.upgrade_amount,
         dvr.points_value,
+        dvr.store_code,
         dvr.present_point,
         dvr.present_coupon,
         dvr.modified_date,
