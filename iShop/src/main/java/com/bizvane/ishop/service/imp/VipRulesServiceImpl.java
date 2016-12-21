@@ -62,6 +62,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
+
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
 
@@ -153,7 +154,6 @@ public class VipRulesServiceImpl implements VipRulesService {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<VipRules> list1 = vipRulesMapper.selectVipRulesScreen(params);
@@ -201,6 +201,7 @@ public class VipRulesServiceImpl implements VipRulesService {
                 for (int j = 0; j < result.size(); j++) {
                     JSONObject obj = result.getJSONObject(i);
                     obj.put("appname", appname);
+                    obj.put("appid", appid);
                     array.add(obj);
                 }
             } else if (info.get("code").toString().equals("-1")) {
@@ -224,9 +225,15 @@ public class VipRulesServiceImpl implements VipRulesService {
         //post请求获取券类型接口
         String couponInfo = IshowHttpClient.post(Common.COUPON_TYPE_URL, coupon);
         JSONObject info = JSON.parseObject(couponInfo);
-        System.out.println(info+"=====");
-      //  JSONArray result = info.getJSONArray("result");
-        return info.toString();
+        JSONArray result = info.getJSONArray("result");
+        JSONArray array = new JSONArray();
+        for (int j = 0; j < result.size(); j++) {
+            JSONObject obj = result.getJSONObject(j);
+            obj.put("appname", "爱秀");
+            obj.put("appid", "wxc9c9111020955324");
+            array.add(obj);
+        }
+        return array.toJSONString();
     }
 
     @Override
