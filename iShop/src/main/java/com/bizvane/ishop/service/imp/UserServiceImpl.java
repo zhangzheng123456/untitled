@@ -1248,7 +1248,7 @@ public class UserServiceImpl implements UserService {
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
                         }
-                        if(null==storeByCode.getStore_location()){
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
                             sign.setLocation("");
                         }else {
                             sign.setLocation(storeByCode.getStore_location());
@@ -1309,7 +1309,7 @@ public class UserServiceImpl implements UserService {
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
                         }
-                        if(null==storeByCode.getStore_location()){
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
                             sign.setLocation("");
                         }else {
                             sign.setLocation(storeByCode.getStore_location());
@@ -1327,7 +1327,7 @@ public class UserServiceImpl implements UserService {
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
                         }
-                        if(null==storeByCode.getStore_location()){
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
                             sign.setLocation("");
                         }else {
                             sign.setLocation(storeByCode.getStore_location());
