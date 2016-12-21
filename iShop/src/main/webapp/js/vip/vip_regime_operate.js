@@ -63,7 +63,7 @@ var oc = new ObjectControl();
 				var high_vip_type=$("#high_vip_type").val();//上级会员类型
 				var discount=$("#discount").val();//会员折扣
 				var join_threshold=$("#join_threshold").val();//招募门槛
-				var upgrade_time=$("#upgrade_time").val();//升级门槛时间
+				var upgrade_time=$("#upgrade_time").attr("data-value");//升级门槛时间
 				var upgrade_amount=$("#upgrade_amount").val();//升级门槛金额
 				var points_value=$("#points_value").val();//积分比例
 				var present_point=$("#present_point").val();//送积分
@@ -223,13 +223,17 @@ var oc = new ObjectControl();
 			}
 			if(points_value!==undefined){
 			for(var i=0;i<points_value.length;i++){
-				var html="<div class='quan_select item_2'><input type='text' data-appid='"+points_value[i].appid+"' data-couponcode='"+points_value[i].couponcode+"'value='"+points_value[i].name+"\("+points_value[i].appname+"\)' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
+				var html="<div class='quan_select item_2'><input type='text' data-appid='"
+				+points_value[i].appid+"' data-couponcode='"
+				+points_value[i].couponcode+"'value='"
+				+points_value[i].name+"\("+points_value[i].appname
+				+"\)' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
 				html+=li;
 				html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
 				$("#quan_select").append(html);
 			}
 			}else{
-				var html="<div class='quan_select item_2'><input type='text' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
+				var html="<div class='quan_select item_2'><input type='text' data-appid='' data-couponcode='' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
 				html+=li;
 				html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
 				$("#quan_select").append(html);
@@ -248,14 +252,18 @@ var oc = new ObjectControl();
 			$("#high_vip_type").val(message.high_vip_type);//上级会员类型
 			$("#discount").val(message.discount);//会员折扣
 			$("#join_threshold").val(message.join_threshold);//招募门槛
-			$("#upgrade_time").val(message.upgrade_time);//升级门槛时间
 			$("#upgrade_amount").val(message.upgrade_amount);//升级门槛金额
 			$("#points_value").val(message.points_value);//积分比例
 			$("#present_point").val(message.present_point);//送积分
-			$("#created_time").val(message.created_date);
-			$("#creator").val(message.creater);
-			$("#modify_time").val(message.modified_date);
-			$("#modifier").val(message.modifier);
+			$("#created_time").val(message.created_date);//创建时间
+			$("#creator").val(message.creater);//创建人
+			$("#modify_time").val(message.modified_date);//修改人
+			$("#modifier").val(message.modifier);//修改时间
+			$("#upgrade_time").attr("data-value",message.upgrade_time);//升级门槛时间
+			if(message.upgrade_time!==""){
+				var upgrade_time=$("#upgrade_time").siblings("ul").find("li[data-value='"+message.upgrade_time+"']").text();
+				$("#upgrade_time").val(upgrade_time);//升级门槛时间
+			}
 			var input=$("#is_active")[0];
 			if(message.isactive=="Y"){
 				input.checked=true;
@@ -263,7 +271,7 @@ var oc = new ObjectControl();
 				input.checked=false;
 			}
 			if(points_value!==""){
-				var points_value=JSON.parse(message.present_coupon);//券
+				var points_value=JSON.parse(message.present_coupon);//券的list
 				self.getQuanList(corp_code,points_value);
 			}
 			self.getcorplist(corp_code);
