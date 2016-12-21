@@ -486,7 +486,7 @@ public class VipParamController {
     }
 
     //显示企业下可用参数
-    @RequestMapping(value = "/corpVipParams", method = RequestMethod.GET)
+    @RequestMapping(value = "/corpVipParams", method = RequestMethod.POST)
     @ResponseBody
     public String corpVipParams(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -495,14 +495,16 @@ public class VipParamController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             //-------------------------------------------------------
             JSONObject result = new JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {
-                corp_code = "C10000";
+                corp_code = jsonObject.getString("corp_code");
             }
             List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
+
 
             result.put("list", JSON.toJSONString(vipParams));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
