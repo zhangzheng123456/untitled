@@ -46,6 +46,7 @@ $(function(){
 		}
 		if(txt=='Web'){$('.conpany_msg').children(':not(".version_web")').hide()}else{$('.conpany_msg').children(':not(".version_web")').show();}
 		$(this).parents(".item_2").find(".input_select").val(txt);
+		$(this).parents(".item_2").find(".input_select").attr("data-value",$(this).attr("data-value"));
 		var value = $(this).attr("rel");
 		$(".item_2 ul").hide();
 	});
