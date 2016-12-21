@@ -12,6 +12,7 @@ import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.DBCursor;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,8 @@ public class UserServiceImpl implements UserService {
     private BrandService brandService;
     @Autowired
     AppversionService appversionService;
+    @Autowired
+    BaseService baseService;
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     /**
@@ -1198,8 +1201,9 @@ public class UserServiceImpl implements UserService {
             logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
             User user = getById(Integer.parseInt(ids[i]));
             String today = Common.DATETIME_FORMAT_DAY.format(now);
-            List<Sign> signs = signService.selectUserRecord(user.getCorp_code(), user.getUser_code(), today, Common.STATUS_SIGN_IN);
-            if (signs.size() == 0) {
+            DBCursor signs = signService.selectUserRecord(user.getCorp_code(), user.getUser_code(), today, Common.STATUS_SIGN_IN);
+
+            if (signs.hasNext()==false) {
                 if (user.getIsonline() == null || user.getIsonline().equals("") || user.getIsonline().equals("N")) {
                     user.setIsonline("Y");
                     user.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -1210,18 +1214,53 @@ public class UserServiceImpl implements UserService {
                     sign.setUser_name(user.getUser_name());
                     sign.setPhone(user.getPhone());
                     sign.setStatus(Common.STATUS_SIGN_IN);
+                    sign.setDistance("");
                     sign.setSign_time(Common.DATETIME_FORMAT.format(now));
+                    if((user.getStore_code()==null && user.getArea_code()==null) || (user.getStore_code().equals("")&&user.getArea_code().equals(""))){
+                        sign.setStore_name("");
+                        sign.setStore_code("");
+                        sign.setLocation("");
+                    }
                     if (user.getStore_code() != null && !user.getStore_code().equals("")) {
                         String[] store_code = user.getStore_code().replace(Common.SPECIAL_HEAD, "").split(",");
                         sign.setStore_code(store_code[0]);
+                        Store storeByCode = storeService.getStoreByCode(user.getCorp_code(),store_code[0], "");
+                        if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                            sign.setStore_name("");
+                        }else {
+                            sign.setStore_name(storeByCode.getStore_name());
+                        }
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
+                            sign.setLocation("");
+                        }else {
+                            sign.setLocation(storeByCode.getStore_location());
+                        }
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
                         List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, null, null, Common.IS_ACTIVE_Y);
-                        if (stores.size() > 0)
+                        if (stores.size() > 0) {
                             sign.setStore_code(stores.get(0).getStore_code());
+                        }
+                        Store storeByCode = storeService.getStoreByCode(user.getCorp_code(), stores.get(0).getStore_code(), "");
+                        if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                            sign.setStore_name("");
+                        }else {
+                            sign.setStore_name(storeByCode.getStore_name());
+                        }
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
+                            sign.setLocation("");
+                        }else {
+                            sign.setLocation(storeByCode.getStore_location());
+                        }
                     }
                     sign.setCorp_code(user.getCorp_code());
+                    Corp corp = baseService.selectByCorpcode(sign.getCorp_code());
+                    if (corp != null) {
+                        sign.setCorp_name(corp.getCorp_name());
+                    }else {
+                        sign.setCorp_name("");
+                    }
                     sign.setModified_date(Common.DATETIME_FORMAT.format(now));
                     sign.setModifier(user_code);
                     sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -1242,8 +1281,8 @@ public class UserServiceImpl implements UserService {
             logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
             User user = getById(Integer.parseInt(ids[i]));
             String today = Common.DATETIME_FORMAT_DAY.format(now);
-            List<Sign> signs = signService.selectUserRecord(user.getCorp_code(), user.getUser_code(), today, Common.STATUS_SIGN_OUT);
-            if (signs.size() == 0) {
+            DBCursor   signs = signService.selectUserRecord(user.getCorp_code(), user.getUser_code(), today, Common.STATUS_SIGN_OUT);
+            if (signs.hasNext()==false) {
                 if (user.getIsonline() != null && user.getIsonline().equals("Y")) {
                     user.setIsonline("N");
                     user.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -1253,19 +1292,54 @@ public class UserServiceImpl implements UserService {
                     sign.setUser_code(user.getUser_code());
                     sign.setUser_name(user.getUser_name());
                     sign.setPhone(user.getPhone());
+                    sign.setDistance("");
                     sign.setStatus(Common.STATUS_SIGN_OUT);
                     sign.setSign_time(Common.DATETIME_FORMAT.format(now));
+                    if((user.getStore_code()==null && user.getArea_code()==null) || (user.getStore_code().equals("")&&user.getArea_code().equals(""))){
+                        sign.setStore_name("");
+                        sign.setStore_code("");
+                        sign.setLocation("");
+                    }
                     if (user.getStore_code() != null && !user.getStore_code().equals("")) {
                         String[] store_code = user.getStore_code().replace(Common.SPECIAL_HEAD, "").split(",");
                         sign.setStore_code(store_code[0]);
+                        Store storeByCode = storeService.getStoreByCode(user.getCorp_code(),store_code[0], "");
+                        if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                            sign.setStore_name("");
+                        }else {
+                            sign.setStore_name(storeByCode.getStore_name());
+                        }
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
+                            sign.setLocation("");
+                        }else {
+                            sign.setLocation(storeByCode.getStore_location());
+                        }
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
                         List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, null, null, Common.IS_ACTIVE_Y);
-                        if (stores.size() > 0)
+                        if (stores.size() > 0) {
                             sign.setStore_code(stores.get(0).getStore_code());
+                        }
+                        Store storeByCode = storeService.getStoreByCode(user.getCorp_code(), stores.get(0).getStore_code(), "");
+                        if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                            sign.setStore_name("");
+                        }else {
+                            sign.setStore_name(storeByCode.getStore_name());
+                        }
+                        if(storeByCode==null||null==storeByCode.getStore_location()){
+                            sign.setLocation("");
+                        }else {
+                            sign.setLocation(storeByCode.getStore_location());
+                        }
                     }
                     sign.setCorp_code(user.getCorp_code());
+                    Corp corp = baseService.selectByCorpcode(sign.getCorp_code());
+                    if (corp != null) {
+                        sign.setCorp_name(corp.getCorp_name());
+                    }else {
+                        sign.setCorp_name("");
+                    }
                     sign.setModified_date(Common.DATETIME_FORMAT.format(now));
                     sign.setModifier(user_code);
                     sign.setCreated_date(Common.DATETIME_FORMAT.format(now));

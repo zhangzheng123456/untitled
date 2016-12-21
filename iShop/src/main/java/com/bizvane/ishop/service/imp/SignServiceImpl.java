@@ -2,17 +2,28 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.dao.SignMapper;
 import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.BaseService;
 import com.bizvane.ishop.service.SignService;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.MongoUtils;
+import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +38,10 @@ class SignServiceImpl implements SignService {
     private SignMapper signMapper;
     @Autowired
     StoreService storeService;
-
+    @Autowired
+    BaseService baseService;
+    @Autowired
+    MongoDBClient mongodbClient;
     @Override
     public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code,String area_store_code) throws Exception {
         String[] stores = null;
@@ -178,8 +192,11 @@ class SignServiceImpl implements SignService {
     }
 
     @Override
-    public int insert(Sign sign) throws Exception{
-        return signMapper.insert(sign);
+    public void insert(Sign sign) throws Exception{
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection collection = mongoTemplate.getCollection(CommonValue.table_sign_content);
+        DBObject saveData= WebUtils.bean2DBObject(sign);
+        collection.insert(saveData);
     }
 
     @Override
@@ -188,9 +205,13 @@ class SignServiceImpl implements SignService {
     }
 
     @Override
-    public List<Sign> selectUserRecord(String corp_code, String user_code, String date,String status) throws Exception {
-        List<Sign> signs = signMapper.selectUserRecord(corp_code, user_code, date,status);
-        return signs;
+    public DBCursor selectUserRecord(String corp_code, String user_code, String date,String status) throws Exception {
+       // List<Sign> signs = signMapper.selectUserRecord(corp_code, user_code, date,status);
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_sign_content);
+        BasicDBObject dbObject = MongoUtils.andOperation2(corp_code, user_code, date, status);
+        DBCursor dbObjects = cursor.find(dbObject);
+        return dbObjects;
     }
 
     @Override

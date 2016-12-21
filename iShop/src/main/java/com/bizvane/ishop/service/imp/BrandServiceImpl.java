@@ -219,12 +219,11 @@ public class BrandServiceImpl implements BrandService {
         Brand brand1 = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
         Brand brand2 = getBrandByCode(corp_code, brand_name,Common.IS_ACTIVE_Y);
         if (brand.getCorp_code().trim().equals(corp_code)) {
-            if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
-                    (brand.getBrand_name().trim().equals(brand_name) || brand2 == null)) {
+            if ((brand.getBrand_code().equals(brand_code) || brand1 == null) && (brand.getBrand_name().trim().equals(brand_name) || brand2 == null)) {
                 if (!brand.getBrand_code().trim().equals(brand_code)) {
                     updateCauseCodeChange(corp_code, brand_code, brand.getBrand_code());
                 }
-                brand = new Brand();
+//                brand = new Brand();
                 Date now = new Date();
                 brand.setId(brand_id);
                 brand.setBrand_code(brand_code);

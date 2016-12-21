@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Sign;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.DBCursor;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
@@ -22,11 +23,11 @@ public interface SignService {
 
     PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception;
 
-    int insert(Sign sign) throws Exception;
+    void insert(Sign sign) throws Exception;
 
     int deleteByUser(String user_code,String corp_code)throws Exception;
 
-    List<Sign> selectUserRecord(String corp_code, String user_code, String date,String status) throws Exception;
+    DBCursor selectUserRecord(String corp_code, String user_code, String date, String status) throws Exception;
 
     Sign selSignById(int id) throws SQLException;
 

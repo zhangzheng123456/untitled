@@ -205,6 +205,7 @@ function superaddition(data,num){//页面加载循环
     }
     for (var i = 0; i < data.length; i++) {
         var TD="";
+        var text="";
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
@@ -213,7 +214,18 @@ function superaddition(data,num){//页面加载循环
         for (var c=0;c<titleArray.length;c++){
             (function(j){
                 var code=titleArray[j].column_name;
-                TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                if(code!=="upgrade_time"&&code!=="upgrade_amount"){
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                }
+                if(code=="upgrade_time"){
+                    if(data[i][code]!=="0"&&data[i][code]!==""){
+                       text+="最近"+data[i][code]+"个月" 
+                    }   
+                }
+                if(code=="upgrade_amount"){
+                    text+="累计消费满"+data[i][code]+"元";
+                    TD+="<td><span title='"+text+"'>"+text+"</span></td>";
+                }
             })(c)
         }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -311,7 +323,17 @@ function qjia(){
 function tableTh(){ //table  的表头
     var TH="";
     for(var i=0;i<titleArray.length;i++){
-        TH+="<th>"+titleArray[i].show_name+"</th>"
+        var show_name="";
+        if(titleArray[i].show_name=="升级时间"){
+            show_name="升级门槛";
+        }
+        if(titleArray[i].show_name!=="升级时间"){
+            show_name=titleArray[i].show_name;
+        }
+        if(titleArray[i].show_name=="升级金额"){
+            continue; 
+        }
+        TH+="<th>"+show_name+"</th>"
     }
     $("#tableOrder").after(TH);
 }
@@ -363,6 +385,7 @@ $("#table").on("click","tbody tr",function(){
 });
 //点击新增时页面进行的跳转
 $('#jurisdiction').on("click","#add",function(){
+    sessionStorage.removeItem("id");
     $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_add.html");
 })
 //点击编辑的时候进行跳转

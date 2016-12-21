@@ -37,7 +37,34 @@ public class VipRulesServiceImpl implements VipRulesService {
 
     @Override
     public VipRules getVipRulesById(int id) throws Exception {
-        return vipRulesMapper.selectById(id);
+        VipRules rules = vipRulesMapper.selectById(id);
+        String present_coupon = rules.getPresent_coupon();
+        JSONArray coupons = JSONArray.parseArray(present_coupon);
+
+        String coupon_info = getCouponInfo1(rules.getCorp_code());
+        if (!coupon_info.equals(Common.DATABEAN_CODE_ERROR)){
+            JSONArray array = JSONArray.parseArray(coupon_info);
+
+            String app_name = "";
+            String coupon_name = "";
+            for (int i = 0; i <coupons.size() ; i++) {
+                JSONObject obj = coupons.getJSONObject(i);
+                String app_id = obj.getString("appid");
+                String coupon_code = obj.getString("couponcode");
+                for (int j = 0; j < array.size(); j++) {
+                    JSONObject coupon = array.getJSONObject(j);
+                    if (app_id.equals(coupon.getString("appid")) && coupon_code.equals(coupon.getString("couponcode"))){
+                        app_name = coupon.getString("appname");
+                        coupon_name = coupon.getString("name");
+                        obj.put("appname",app_name);
+                        obj.put("name",coupon_name);
+                    }
+                }
+            }
+
+        }
+        rules.setPresent_coupon(coupons.toJSONString());
+        return rules;
     }
 
     @Override
@@ -62,6 +89,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
+
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
 
@@ -74,7 +102,6 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
-            vipRules.setIsactive(Common.IS_ACTIVE_Y);
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
             num = vipRulesMapper.insertVipRules(vipRules);
             if (num > 0) {
@@ -108,6 +135,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         String points_value = jsonObject.get("points_value").toString().trim();
         String present_point = jsonObject.get("present_point").toString().trim();
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
+        String isactive = jsonObject.get("isactive").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
@@ -128,7 +156,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
-            vipRules.setIsactive(Common.IS_ACTIVE_Y);
+            vipRules.setIsactive(isactive);
             int num = vipRulesMapper.updateVipRules(vipRules);
             if (num > 0) {
                 return status;
@@ -153,7 +181,6 @@ public class VipRulesServiceImpl implements VipRulesService {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<VipRules> list1 = vipRulesMapper.selectVipRulesScreen(params);
@@ -201,10 +228,11 @@ public class VipRulesServiceImpl implements VipRulesService {
                 for (int j = 0; j < result.size(); j++) {
                     JSONObject obj = result.getJSONObject(i);
                     obj.put("appname", appname);
+                    obj.put("appid", appid);
                     array.add(obj);
                 }
             } else if (info.get("code").toString().equals("-1")) {
-                return info.get("message").toString();
+                return Common.DATABEAN_CODE_ERROR;
             }
         }
         return array.toJSONString();
@@ -224,9 +252,15 @@ public class VipRulesServiceImpl implements VipRulesService {
         //post请求获取券类型接口
         String couponInfo = IshowHttpClient.post(Common.COUPON_TYPE_URL, coupon);
         JSONObject info = JSON.parseObject(couponInfo);
-        System.out.println(info+"=====");
-      //  JSONArray result = info.getJSONArray("result");
-        return info.toString();
+        JSONArray result = info.getJSONArray("result");
+        JSONArray array = new JSONArray();
+        for (int j = 0; j < result.size(); j++) {
+            JSONObject obj = result.getJSONObject(j);
+            obj.put("appname", "爱秀");
+            obj.put("appid", "wxc9c9111020955324");
+            array.add(obj);
+        }
+        return array.toJSONString();
     }
 
     @Override

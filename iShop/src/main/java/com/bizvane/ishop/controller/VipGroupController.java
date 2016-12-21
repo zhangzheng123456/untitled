@@ -7,6 +7,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.*;
@@ -52,6 +53,9 @@ public class VipGroupController {
     IceInterfaceService iceInterfaceService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private TableManagerService tableManagerService;
+
     String id;
 
 
@@ -75,21 +79,37 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
 
-//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-//            int vip_count = 0;
             VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
-//            if (vipGroup != null) {
-//                String corp_code = vipGroup.getCorp_code();
-//                String vip_group_code = vipGroup.getVip_group_code();
-//
-//                BasicDBObject dbObject=new BasicDBObject();
-//                dbObject.put("vip_group_code",vip_group_code);
-//                dbObject.put("corp_code",corp_code);
-//                DBCursor dbCursor= cursor.find(dbObject);
-//                vip_count = dbCursor.size();
-//                vipGroup.setVip_count(vip_count);
-//            }
+            if (vipGroup != null) {
+                String group_type = vipGroup.getGroup_type();
+                String group_condition = vipGroup.getGroup_condition();
+                if (group_type.equals("define")){
+                    JSONArray condition = JSONArray.parseArray(group_condition);
+                    List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
+                    for (int i = 0; i < condition.size(); i++) {
+                        JSONObject condition_obj = condition.getJSONObject(i);
+                        String key = condition_obj.getString("key");
+                        String type = condition_obj.getString("type");
+                        String value = condition_obj.getString("value");
+                        if (type.equals("text") && value.equals("")){
+                            //筛选值为空
+                            continue;
+                        }else if (type.equals("json") && value.equals("{}")){
+                            //筛选值为空
+                            continue;
+                        }else {
+                            //根据key值，找出其对应name
+                            for (int j = 0; j < tableManagers.size(); j++) {
+                                if (key.equals(tableManagers.get(j).getFilter_weight())){
+                                    String key_name = tableManagers.get(j).getShow_name();
+                                    condition_obj.put("name",key_name);
+                                    break;}
+                            }
+                        }
+                    }
+                    vipGroup.setGroup_condition(condition.toJSONString());
+                }
+            }
             data = JSON.toJSONString(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

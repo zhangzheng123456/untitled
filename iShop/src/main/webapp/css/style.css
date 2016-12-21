@@ -8238,6 +8238,8 @@ li.select_index>a>label>i{
 }
 .conpany_msg .quan_left{
     width:70px;
+    height: 30px;
+    line-height: 30px;
     float:left;
         }
 .conpany_msg .quan_right{
