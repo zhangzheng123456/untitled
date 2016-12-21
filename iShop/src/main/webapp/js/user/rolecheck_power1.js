@@ -135,24 +135,16 @@ var groupPower = {
                     if (class_name !== "die"&& class_name !=="active") {
                         var action_id = $(action_id_li[l]).attr("data-actionid");
                         if (action_id !== "" && action_id !== undefined) {
-                            if (l > 0) {
-                                del_act_id += action_id + ",";
-                            } else {
-                                del_act_id += action_id;
-                            }
+                            del_act_id += action_id + ",";
                         }
                     }    
                 };
-                for (var m = column_id_li.length; m >= 0; m--) {
+                for (var m = column_id_li.length-1; m >= 0; m--) {
                     var class_name = $(column_id_li[m]).attr("class");
                     if (class_name !=="active") {
                         var column_id = $(column_id_li[m]).attr("data-columnid");
                         if (column_id !== "" && column_id !== undefined) {
-                            if (m > 0) {
-                                del_col_id += column_id + ",";
-                            } else {
-                                del_col_id += column_id;
-                            }
+                            del_col_id += column_id + ",";
                         }
                     }
                 }
@@ -161,6 +153,7 @@ var groupPower = {
             param["add_column"] = add_column;
             param["del_act_id"] = del_act_id;
             param["del_col_id"] = del_col_id;
+            console.log(param);
             whir.loading.add("",0.5);//加载等待框
             oc.postRequire("post","/privilege/checkPower/save","0",param,function(data){
                 if(data.code=="0"){

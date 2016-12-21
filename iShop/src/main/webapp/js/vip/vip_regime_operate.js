@@ -54,6 +54,9 @@ var oc = new ObjectControl();
 		var self=this;
 		$("#edit_save").click(function(){
 			if(regimejs.firstStep()){
+				if(!self.param.price){
+
+				}
 				var param={};
 				var corp_code=$("#OWN_CORP").val();//公司编号
 				var vip_type=$("#vip_type").val();//会员类型
@@ -64,7 +67,21 @@ var oc = new ObjectControl();
 				var upgrade_amount=$("#upgrade_amount").val();//升级门槛金额
 				var points_value=$("#points_value").val();//积分比例
 				var present_point=$("#present_point").val();//送积分
-				var present_coupon="";//券
+				var present_coupon=[];//券
+				var quanList=$("#quan_select .input_select");
+				var isactive="";
+				var input=$("#is_active")[0];
+				if(input.checked==true){
+					isactive="Y";
+				}else if(input.checked==false){
+					isactive="N";
+				}
+				for(var i=0;i<quanList.length;i++){
+					var _param={};
+					_param["appid"]=$(quanList[i]).attr("data-appid");
+					_param["couponcode"]=$(quanList[i]).attr("data-couponcode");
+					present_coupon.push(_param);
+				}
 				param["corp_code"]=corp_code;//公司编号
 				param["vip_type"]=vip_type;//会员类型
 				param["high_vip_type"]=high_vip_type;//上级会员类型
@@ -75,7 +92,8 @@ var oc = new ObjectControl();
 				param["points_value"]=points_value;//积分比例
 				param["present_point"]=present_point;//送积分
 				param["present_coupon"]=present_coupon;//券
-				var id=sessionStorage.getItem("id");
+				param["isactive"]=isactive;//是否可用
+				var id=sessionStorage.getItem("id");//获取保存的id
 				if(id==null){
 					var command="/vipRules/add";
 					regimejs.ajaxSubmit(command,param);
@@ -108,19 +126,52 @@ var oc = new ObjectControl();
 			$(".item_1 .input_select").val(txt);
 			$(".item_1 ul").hide();
 		});
-		$(".item_2").on("click","ul li",function(){
+		$("#quan_select").on("click",".item_2 .input_select",function(){
+			var ul = $(this).parent().find("ul");
+			if(ul.css("display")=="none"){
+				ul.show();
+			}else{
+				ul.hide();
+			}
+		});
+		$("#quan_select").on("click",".item_2 ul li",function(){
 			var txt = $(this).text();
-			$(this).parents(".item_2").find(".input_select").val(txt);
-			var value = $(this).attr("rel");
+			var couponcode=$(this).attr("data-couponcode");
+			var appid=$(this).attr("data-appid");
+			$(this).parent().siblings('.input_select').val(txt);
+			$(this).parent().siblings('.input_select').attr("data-couponcode",couponcode);
+			$(this).parent().siblings('.input_select').attr("data-appid",appid);
 			$(".item_2 ul").hide();
-		})
+		});
+		$("#quan_select").on("blur",".item_2 .input_select",function(){
+			var ul = $(this).parent().find("ul");
+			setTimeout(function(){
+				ul.hide();
+			},200);
+		});
+		$("#vip_type").blur(function(){
+			var param={};
+			param["corp_code"]=$("#OWN_CORP").val();//企业编号
+			param["vip_type"]=$("#vip_type").val();//会员类型
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/vipRules/vipTypeExist","",param, function(data){
+				if(data.code=="0"){
+					div.html("");
+					self.param.price=true;
+				}else if(data.code=="-1"){
+					div.addClass("error_tips");
+					div.html(data.message);
+					self.param.price=false;
+				}
+			})
+		});
 	};
 	regimejs.ajaxSubmit=function(command,param){
 		oc.postRequire("post", command,"",param, function(data){
 			if(data.code=="0"){
 				if(command=="/vipRules/add"){
                     sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src", "/achv/shopgoal_edit.html");
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html");
                 }
                 if(command=="/vipRules/edit"){
                     art.dialog({
@@ -140,6 +191,9 @@ var oc = new ObjectControl();
 			}
 		});
 	};
+	regimejs.param={
+		price:"",
+	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
 		var _this;
 		if(obj1){
@@ -157,18 +211,29 @@ var oc = new ObjectControl();
 		}
 		return true;
 	};
-	regimejs.getQuanList=function(corp_code){
+	regimejs.getQuanList=function(corp_code,points_value){
 		var param={};
 		param["corp_code"]=corp_code;
+		var li="";
+		console.log(points_value);
 		oc.postRequire("post","/vipRules/getCoupon","",param, function(data){
 			var list=JSON.parse(data.message);
-			console.log(list);
-			var html="<div class='quan_select item_2'><input type='text' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
 			for(var i=0;i<list.length;i++){
-				html+="<li data-couponcode='"+list[i].couponcode+"'>"+list[i].name+"\("+list[i].user_code+"\)</li>";
+				li+="<li data-appid='"+list[i].appid+"' data-couponcode='"+list[i].couponcode+"'>"+list[i].name+"\("+list[i].appname+"\)</li>";
 			}
-			html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
-			$("#quan_select").append(html);
+			if(points_value!==undefined){
+			for(var i=0;i<points_value.length;i++){
+				var html="<div class='quan_select item_2'><input type='text' data-appid='"+points_value[i].appid+"' data-couponcode='"+points_value[i].couponcode+"'value='"+points_value[i].name+"\("+points_value[i].appname+"\)' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
+				html+=li;
+				html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
+				$("#quan_select").append(html);
+			}
+			}else{
+				var html="<div class='quan_select item_2'><input type='text' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
+				html+=li;
+				html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
+				$("#quan_select").append(html);
+			}
 		})
 	}
 	regimejs.getInputValue=function(id){//编辑时给input赋值
@@ -187,8 +252,22 @@ var oc = new ObjectControl();
 			$("#upgrade_amount").val(message.upgrade_amount);//升级门槛金额
 			$("#points_value").val(message.points_value);//积分比例
 			$("#present_point").val(message.present_point);//送积分
-			var points_value=message.present_coupon;//券
+			$("#created_time").val(message.created_date);
+			$("#creator").val(message.creater);
+			$("#modify_time").val(message.modified_date);
+			$("#modifier").val(message.modifier);
+			var input=$("#is_active")[0];
+			if(message.isactive=="Y"){
+				input.checked=true;
+			}else if(message.isactive=="N"){
+				input.checked=false;
+			}
+			if(points_value!==""){
+				var points_value=JSON.parse(message.present_coupon);//券
+				self.getQuanList(corp_code,points_value);
+			}
 			self.getcorplist(corp_code);
+			
 		})
 	};
 	regimejs.getcorplist=function(corp_code){//获取企业列表
@@ -196,8 +275,6 @@ var oc = new ObjectControl();
 		oc.postRequire("post","/user/getCorpByUser","", "", function(data){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
-				var index=0;
 				var corp_html='';
 				for(var i=0;i<msg.corps.length;i++){
 					corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
@@ -260,5 +337,4 @@ var oc = new ObjectControl();
 }));
 $(function(){
 	window.regime.init();//初始化
-	console.log(123123);
 });
