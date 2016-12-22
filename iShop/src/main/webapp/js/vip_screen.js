@@ -272,9 +272,9 @@ $("#screen_vip_que").click(function () {
             $(this).find(".contion_input").each(function (i, e) {
                 var input = $(e).find("input");
                 var key = $(input[0]).attr("data-kye");
+                var expend_key = $(input[0]).attr("data-expend");
                 var classname = $(input[0]).attr("class");
-                var id = $(input[0]).attr("id");
-                if (key !== "3" && key !== "4" && classname.indexOf("short") == 0) {
+                if ((key !== "3" && key !== "4" && classname.indexOf("short") == 0)||expend_key=="date") {
                     if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                         var param = {};
                         var val = {};
@@ -285,7 +285,7 @@ $("#screen_vip_que").click(function () {
                         param['value'] = val;
                         screen.push(param);
                     }
-                } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
+                } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15"|| key == "16") {
                     if ($(input[0]).attr("data-code") !== "") {
                         var param = {};
                         var val = $(input[0]).attr("data-code");
@@ -320,14 +320,21 @@ $("#screen_vip_que").click(function () {
                     }
                 }
             });
+            $(this).find("textarea").each(function () {
+                var key = $(this).attr("data-kye");
+                var param = {};
+                var val = $(this).val();
+                param['key'] = key;
+                param['value'] = val;
+                param['type'] = "text";
+                screen.push(param);
+            });
         });
     }
     _param['screen'] = screen;
     if (screen.length == 0) {
         GET(inx, pageSize);
-    } else if (screen[0].key == "17" && (screen[1].value == "")) {
-
-    } else {
+    }else {
         filtrate = "sucess";
         filtrates(inx, pageSize);
     }
@@ -645,13 +652,13 @@ function expend_data() {
            $("#expend_attribute").empty();
            var msg = JSON.parse(data.message);
            var list = JSON.parse(msg.list);
-           var html=""
+           var html="";
            if(list.length>0){
                for(var i=0;i<list.length;i++){
                    var param_type = list[i].param_type;
                    if(param_type=="date"){
                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>' 
-                           + '<input readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                           + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
                            + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
                    }
                    if(param_type=="select"){
@@ -663,21 +670,21 @@ function expend_data() {
                                li+='<li>'+param_values[j]+'</li>'
                            }
                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
-                               + '<input class="select" readonly><ul class="sex_select">'
+                               + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select">'
                                + li
                                + '</ul></div>'
                        }else {
                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
-                               + '<input class="select" readonly><ul class="sex_select"></ul></div>'
+                               + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select"></ul></div>'
                        }
                    }
                    if(param_type=="text"){
                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
-                           + '<input class="input"><ul class="sex_select"></ul></div>'
+                           + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="input"><ul class="sex_select"></ul></div>'
                    }
                    if(param_type=="longtext"){
                        html+='<div class="textarea"><label>'+list[i].param_desc+'</label>'
-                           + '<textarea rows="0" cols="0"></textarea><ul class="sex_select"></ul></div>'
+                           + '<textarea data-kye="'+list[i].param_name+'" rows="0" cols="0"></textarea><ul class="sex_select"></ul></div>'
                    }
                }
            }
