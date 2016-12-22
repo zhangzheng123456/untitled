@@ -15,6 +15,8 @@ var vip_ground_info={
         this.getGroup();
         this.slideLeft();
         this.selectShowType();
+        this.setPageSize();
+        this.inputGo();
     },
     setPage:function (container, count, pageindex,pageSize){
         count==0?count=1:'';
@@ -116,7 +118,7 @@ var vip_ground_info={
             }
         });
         $("#group_list li ul").on("click","li",function(){
-            vip_ground_info.id=$(this).attr("id")
+            vip_ground_info.nowId=$(this).attr("id");
             $("#group_list li ul li").removeClass("active");
             $(this).addClass("active");
             vip_ground_info.getList(vip_ground_info.id)
@@ -140,7 +142,7 @@ var vip_ground_info={
         var TH="";
         for(var i=0;i<titleArray.length;i++){
             if(titleArray[i].show_name.trim()=='姓名'){
-                TH+="<th>"+titleArray[i].show_name+"</th>"+'<th style="width: 20px"></th>'
+                TH+="<th>"+titleArray[i].show_name+"</th>"
             }else{
                 TH+="<th>"+titleArray[i].show_name+"</th>"
             }
@@ -166,6 +168,11 @@ var vip_ground_info={
         }
         for (var i = 0; i < data.length; i++) {
             var TD="";
+            if(data[i].sex=="F"){
+                data[i].sex="女"
+            }else if(data[i].sex=="M"){
+                data[i].sex="男"
+            }
             if(num>=2){
                 var a=i+1+(num-1)*pageSize;
             }else{
@@ -194,13 +201,14 @@ var vip_ground_info={
         $(".th th:first-child input").removeAttr("checked");
         sessionStorage.removeItem("return_jump");
     },
-    getList:function(id){
+    getList:function(){
         whir.loading.add("",0.5);//加载等待框
         var getListParam={};
-        getListParam["id"]=id;
+        getListParam["id"]=vip_ground_info.nowId;
         getListParam["pageNumber"]=vip_ground_info.inx;
         getListParam["pageSize"]=vip_ground_info.pageSize;
         getListParam["type"]="list";
+        getListParam["corp_code"]="C10000";
         oc.postRequire("post","/vipGroup/groupVips","",getListParam,function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -253,6 +261,44 @@ var vip_ground_info={
                 }
             }
         })
+    },
+    setPageSize: function () {
+        $("#page_row").click(function(){
+            if("block" == $("#liebiao").css("display")){
+                hideLi();
+            }else{
+                showLi();
+            }
+        });
+        function showLi(){
+            $("#liebiao").show();
+        }
+        function hideLi(){
+            $("#liebiao").hide();
+        }
+        $("#liebiao li").each(function(i,v){
+            $(this).click(function(){
+                vip_ground_info.pageSize=$(this).attr('id');
+                vip_ground_info.getList();
+                $("#page_row").val($(this).html());
+                hideLi();
+            })
+        })
+    },
+    inputGo:function(){
+        $("#input-txt").keydown(function() {
+            var event=window.event||arguments[0];
+            var inx= this.value.replace(/[^0-9]/g, '');
+            var inx=parseInt(inx);
+            if (inx > vip_ground_info.count) {
+                inx = vip_ground_info.count
+            };
+            if (inx > 0) {
+                if (event.keyCode == 13) {
+                    vip_ground_info.getList()
+                }
+            }
+        });
     }
 };
 $(function(){
