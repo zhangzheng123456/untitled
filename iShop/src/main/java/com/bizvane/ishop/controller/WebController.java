@@ -529,8 +529,7 @@ public class WebController {
      * 点击登录
      */
     @RequestMapping(value = "/api/login", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
-    @ResponseBody
-    public String login(HttpServletRequest request,HttpServletResponse response) {
+    public void login(HttpServletRequest request,HttpServletResponse response) {
         logger.info("------------starttime" + new Date());
         String id = "";
         String msg = "请求失败";
@@ -552,40 +551,13 @@ public class WebController {
                 msg = "request param [account]";
             }else if (password == null || password.equals("")){
                 msg = "request param [password]";
-//            InputStream inputStream = request.getInputStream();
-//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-//            String buffer = null;
-//            StringBuffer stringBuffer = new StringBuffer();
-//            while ((buffer = bufferedReader.readLine()) != null) {
-//                stringBuffer.append(buffer);
-//            }
-//            String reply = stringBuffer.toString();
-//            JSONObject reply_obj = JSONObject.parseObject(reply);
-//            if (!reply_obj.containsKey("id")){
-//                msg = "request param [id]";
-//            }else if (!reply_obj.containsKey("access_key")){
-//                msg = "request param [access_key]";
-//            }else
-//            if (!reply_obj.containsKey("sign")){
-//                msg = "request param [sign]";
-//            } else if (!reply_obj.containsKey("timestamp")){
-//                msg = "request param [timestamp]";
-//            }else if (!reply_obj.containsKey("data")){
-//                msg = "request param [data]";
             } else {
-//                logger.info("--------------replymessage-----------" + reply_obj.toString());
-//                id = reply_obj.get("id").toString();
-//                String access_key = reply_obj.get("access_key").toString();
-//                String sign = reply_obj.get("sign").toString();
-//                String timestamp = reply_obj.get("timestamp").toString();
-//                String data_message = reply_obj.get("data").toString();
                 password = AESUtils.Decryptor(password);
                 String timestamp = password.split("&&")[0];
                 password = password.split("&&")[1];
 
                 long epoch = Long.valueOf(timestamp);
                 logger.debug(" range test:" + System.currentTimeMillis());
-
                 if (!sign.equals(SIGN)){
                     msg = "param [sign] Invalid";
                 }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
@@ -600,8 +572,10 @@ public class WebController {
                         status = "success";
                         msg = "请求成功";
                         JSONObject result = new JSONObject();
+                        response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
                         result.put("redirect_url", CommonValue.ishop_url + "navigation_bar.html?url=/vip/vip.html&func_code=F0040");
-                        data = result.toString();
+//                        data = result.toString();
+//                        return "/vip/vip.html";
                     }
                 }
             }
@@ -616,6 +590,6 @@ public class WebController {
         return_msg.put("status",status);
         return_msg.put("msg",msg);
         return_msg.put("data",data);
-        return return_msg.toString();
+//        return return_msg.toString();
     }
 }

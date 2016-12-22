@@ -530,11 +530,12 @@ public class VIPController {
                     //根据key值，找出其对应name
                     for (int j = 0; j < tableManagers.size(); j++) {
                         JSONObject post_obj = new JSONObject();
+                        post_obj.put("key",key);
                         post_obj.put("type",type);
                         post_obj.put("value",value);
+                        post_array.add(post_obj);
                         if (key.equals(tableManagers.get(j).getFilter_weight())){
                             String key_name = tableManagers.get(j).getColumn_name();
-                            post_obj.put("key",key);
                             if (key_name.equals("store_code")){
                                 store_code = jsonObject.get(key).toString();
                                 store_code_key = key;
@@ -542,7 +543,6 @@ public class VIPController {
                             if (key_name.equals("user_code")){
                                 user_code = jsonObject.get(key).toString();
                             }
-                            post_array.add(post_obj);
                             break;
                         }
                     }
@@ -563,7 +563,6 @@ public class VIPController {
             logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
             DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
 
-//            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -692,7 +691,7 @@ public class VIPController {
     }
 
     /**
-     * 会员信息(头像，扩展信息，备注，相册)
+     * 会员信息(头像，拓展信息，备注，相册)
      * 保存mongodb
      */
     @RequestMapping(value = "/vipSaveInfo", method = RequestMethod.POST)
@@ -700,7 +699,6 @@ public class VIPController {
     public String vipSaveInfo(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         Date now = new Date();
-
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -1223,13 +1221,13 @@ public class VIPController {
 
 //                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("", datalist);
 //                    if (dataBox.status.toString().equals("SUCCESS")){
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                        dataBean.setId("1");
-                        dataBean.setMessage("SUCCESS");
+
 //                    }
                 }
             }
-
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("SUCCESS");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -334,34 +334,51 @@ public class FunctionServiceImpl implements FunctionService {
             for (int j = 0; j < privilege_act.size(); j++) {
                 String function_code1 = privilege_act.get(j).getFunction_code();
                 if (function_code.equals(function_code1)){
-                    int id = privilege_act.get(j).getId();
                     String action_show_name = privilege_act.get(j).getAction_show_name();
                     String action_name = privilege_act.get(j).getAction_name();
                     String action_code = privilege_act.get(j).getAction_code();
-
-                    JSONObject actions_obj = new JSONObject();
-                    actions_obj.put("action_id","");
-                    actions_obj.put("show_name",action_show_name);
-                    actions_obj.put("action_name",action_name);
-                    actions_obj.put("action_code",action_code);
-                    actions_obj.put("is_live","N");
-                    actions_obj.put("is_die","N");
-                    action_array.add(actions_obj);
+                    int flg = 0;
+                    for (int k = 0; k < action_array.size(); k++) {
+                        JSONObject act = action_array.getJSONObject(k);
+                        String act_code = act.getString("action_code");
+                        if (act_code.equals(action_code)){
+                            flg = 1;
+                        }
+                    }
+                    if (flg == 0){
+                        JSONObject actions_obj = new JSONObject();
+                        actions_obj.put("action_id","");
+                        actions_obj.put("show_name",action_show_name);
+                        actions_obj.put("action_name",action_name);
+                        actions_obj.put("action_code",action_code);
+                        actions_obj.put("is_live","N");
+                        actions_obj.put("is_die","N");
+                        action_array.add(actions_obj);
+                    }
                 }
             }
             for (int j = 0; j < privilege_col.size(); j++) {
                 String function_code1 = privilege_col.get(j).getFunction_code();
                 if (function_code.equals(function_code1)){
-                    int id = privilege_col.get(j).getId();
                     String column_name = privilege_col.get(j).getColumn_name();
                     String show_name = privilege_col.get(j).getShow_name();
-                    JSONObject column_obj = new JSONObject();
-                    column_obj.put("column_id","");
-                    column_obj.put("column_name",column_name);
-                    column_obj.put("show_name",show_name);
-                    column_obj.put("is_live","N");
-                    column_obj.put("is_die","N");
-                    column_array.add(column_obj);
+                    int flg = 0;
+                    for (int k = 0; k < column_array.size(); k++) {
+                        JSONObject col = column_array.getJSONObject(k);
+                        String col_name = col.getString("column_name");
+                        if (col_name.equals(column_name)){
+                            flg = 1;
+                        }
+                    }
+                    if (flg == 0){
+                        JSONObject column_obj = new JSONObject();
+                        column_obj.put("column_id","");
+                        column_obj.put("column_name",column_name);
+                        column_obj.put("show_name",show_name);
+                        column_obj.put("is_live","N");
+                        column_obj.put("is_die","N");
+                        column_array.add(column_obj);
+                    }
                 }
             }
             obj.put("actions",action_array);
@@ -391,7 +408,8 @@ public class FunctionServiceImpl implements FunctionService {
                 if (function_code1.equals(function_code)){
                     for (int k = 0; k < actions.size(); k++) {
                         JSONObject act_obj = actions.getJSONObject(k);
-                        if (action_code1.equals(act_obj.getString("action_code"))){
+                        String is_die = act_obj.getString("is_die");
+                        if (action_code1.equals(act_obj.getString("action_code")) && !is_die.equals("Y")){
                             act_obj.put("action_id",String.valueOf(act_id));
                             act_obj.put("is_die",die_status);
                             act_obj.put("is_live",live_status);
@@ -408,7 +426,8 @@ public class FunctionServiceImpl implements FunctionService {
                 if (function_code1.equals(function_code)){
                     for (int k = 0; k < columns.size(); k++) {
                         JSONObject col_obj = columns.getJSONObject(k);
-                        if (column_name1.equals(col_obj.getString("column_name"))){
+                        String is_die = col_obj.getString("is_die");
+                        if (column_name1.equals(col_obj.getString("column_name")) && !is_die.equals("Y")){
                             col_obj.put("column_id",String.valueOf(col_id));
                             col_obj.put("is_die",die_status);
                             col_obj.put("is_live",live_status);
