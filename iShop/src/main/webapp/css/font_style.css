@@ -9,6 +9,7 @@
   font-style: normal;
 }
 
+
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
@@ -24,6 +25,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-ishop_6-25:before {
+  content: "\e942";
+}
+.icon-ishop_6-26:before {
+  content: "\e943";
+}
 .icon-ishop_9-04:before {
   content: "\e940";
 }
@@ -222,5 +229,3 @@
 .icon-ishop_9-02:before {
   content: "\e93a";
 }
-
-

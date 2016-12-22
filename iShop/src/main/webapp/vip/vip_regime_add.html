@@ -12,9 +12,26 @@
     <link rel="stylesheet" href="../css/font_style.css?20161216">
     <link rel="stylesheet" type="text/css" href="../css/tips.css?20161216">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161216">
+    <link rel="stylesheet" href="../table/css/inner.css?20161214">
     <style>
         body{
             margin-top:81px;
+        }
+        .screen_area{
+            position: fixed;
+            top: 100px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            margin: auto;
+            height:530px;
+        }
+        .shop{
+            height:570px;
+        }
+        .arrow_right{
+            background-image: #ffffff url(../img/arrow_right.png) no-repeat 100% 50%;
+            background-size: 30px 30px;
         }
     </style>
 </head>
@@ -44,13 +61,15 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>会员折扣</label><input type="text" id="discount" maxlength="50"/></span>
+                        <span class="t_parent"><label>会员折扣</label><input type="text" id="discount" maxlength="50"/><span class="holder_text">折</span></span>
                     </div>
                     <div>
-                        <label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50">
+                        <span class="t_parent"><label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50" placeholder="填写金额" verify="Number" ><span class="holder_text">元</span>
+                        <div class="hint"><div  hintinfo="金额只能为数字" class="error_tips"></div></div>
+                        </span>
                     </div>
                     <div class="drop_down item_2 upgrade_amount">
-                        <span><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input type="text" class="w" id="upgrade_amount">
+                        <span class="t_parent"><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input style="background-image: none;" type="text" class="w" id="upgrade_amount" placeholder="填写金额"><span class="holder_text">元</span>
                             <ul style="display: none;">
                                 <li data-value="1">最近一个月</li>
                                 <li data-value="2">最近二个月</li>
@@ -69,8 +88,12 @@
                         </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">积分比例*</label><span class="r">1元 =</span><input type="text" class="join_threshold" verify="Empty" id="points_value" maxlength="50"/>
+                        <span class="t_parent"><label style="color:#c26655">积分比例*</label><span class="r">1元 =</span><input type="text" class="join_threshold" verify="Empty" id="points_value" maxlength="50"/><span class="holder_text">积分</span><span></span>
                         <div class="hint"><div  hintinfo="积分比例不能为空!"></div></div>
+                        </span>
+                    </div>
+                    <div>
+                        <span class="t_parent"><label>限制开卡店铺</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_shop"><label for="is_shop"></label></em><span class="r_text"></span></span><input type="text" class="join_threshold arrow_right" id="shop_list" maxlength="50" />
                         </span>
                     </div>
                     <div>
@@ -106,6 +129,127 @@
                     </div>
                 </form>
             </div>
+    </div>
+    <!-- 拉取区域 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选区域</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area shop">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input class="brand_num" type="text" value="全部" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><input class="area_num" type="text" value="全部" readonly="true" id="area_num"
+                                              data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>

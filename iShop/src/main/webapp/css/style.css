@@ -48,11 +48,11 @@ textarea{
   border-radius:4px;
 }
 
-::-webkit-input-placeholder{color:#D2CFCF;}
+::-webkit-input-placeholder{color:#888888;}
 /*::-moz-placeholder{color:#D2CFCF;}*/
 /*:-moz-placeholder{color:#D2CFCF;}*/
- ::-moz-placeholder{color:#000;}
- :-moz-placeholder{color:#000;}
+ ::-moz-placeholder{color:#888888;}
+ :-moz-placeholder{color:#888888;}
 
 .nav > li > a {
   -moz-user-select: none; 
@@ -8209,6 +8209,8 @@ li.select_index>a>label>i{
     display:inline-block;
     width:70px;
     text-align:center;
+    color: #888;
+    font-size: 14px;
 }
 .conpany_msg .r .r_text{
     display:inline-block;
@@ -8220,7 +8222,6 @@ li.select_index>a>label>i{
 }
 .conpany_msg .w{
     width:175px;
-    background-image:none;
 }
 .conpany_msg .quan{
     width:310px;
@@ -8267,18 +8268,23 @@ li.select_index>a>label>i{
 .conpany_msg .present_coupon{
     margin-left:123px;
 }
-.conpany_msg .input_select{
-    background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
-    background-size: 30px 30px;
-}
 .conpany_msg .upgrade_amount ul{
     width:175px;
     height:150px;
     overflow-y: auto;
+    margin-left: 113px;
 }
 .conpany_msg .present_coupon ul{
     width:310px;
     height:150px;
     overflow-y: auto;
     left:80px;
+}
+.conpany_msg .t_parent{
+    position:relative;
+}
+.conpany_msg .holder_text{
+    position:absolute;
+    right:7px;
+    top:0;
 }

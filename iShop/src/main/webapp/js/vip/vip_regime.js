@@ -203,43 +203,47 @@ function superaddition(data,num){//页面加载循环
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-    for (var i = 0; i < data.length; i++) {
-        var TD="";
-        var text="";
-        if(num>=2){
-            var a=i+1+(num-1)*pageSize;
-        }else{
-            var a=i+1;
+    if(data.length>0){
+        for (var i = 0; i < data.length; i++) {
+            var TD="";
+            var text="";
+            if(num>=2){
+                var a=i+1+(num-1)*pageSize;
+            }else{
+                var a=i+1;
+            }
+            for (var c=0;c<titleArray.length;c++){
+                (function(j){
+                    var code=titleArray[j].column_name;
+                    if(code!=="upgrade_time"&&code!=="upgrade_amount"){
+                        TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
+                    }
+                    if(code=="upgrade_time"){
+                        if(data[i][code]!=="0"&&data[i][code]!==""){
+                           text+="最近"+data[i][code]+"个月" 
+                        }   
+                    }
+                    if(code=="upgrade_amount"){
+                        if(data[i][code]!==""){
+                            text+="累计消费满"+data[i][code]+"元";
+                        }
+                        TD+="<td><span title='"+text+"'>"+text+"</span></td>";
+                    }
+                })(c)
+            }
+            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                            + i
+                            + 1
+                            + "'/><label for='checkboxTwoInput"
+                            + i
+                            + 1
+                            + "'></label></div>"
+                            + "</td><td style='text-align:left;'>"
+                            + a
+                            + "</td>" +
+                             TD+
+                             "</tr>");
         }
-        for (var c=0;c<titleArray.length;c++){
-            (function(j){
-                var code=titleArray[j].column_name;
-                if(code!=="upgrade_time"&&code!=="upgrade_amount"){
-                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
-                }
-                if(code=="upgrade_time"){
-                    if(data[i][code]!=="0"&&data[i][code]!==""){
-                       text+="最近"+data[i][code]+"个月" 
-                    }   
-                }
-                if(code=="upgrade_amount"){
-                    text+="累计消费满"+data[i][code]+"元";
-                    TD+="<td><span title='"+text+"'>"+text+"</span></td>";
-                }
-            })(c)
-        }
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        + "</td>" +
-                         TD+
-                         "</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -310,6 +314,7 @@ function InitialState(){
 function qjia(){
     var param={};
     param["funcCode"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;
@@ -318,6 +323,7 @@ function qjia(){
         jumpBianse();
         InitialState();
         tableTh();
+        whir.loading.remove();//移除加载框
     })
 }
 function tableTh(){ //table  的表头

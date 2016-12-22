@@ -10,7 +10,7 @@ ObjectControl.prototype = {
 			type: require_type,
 			dataType: 'json',
 			data:{param:JSON.stringify(_params)},
-			timeout: 60000,
+			timeout: 120000,
 			success:function(data){
 				if(data){
 				    callback(data);
