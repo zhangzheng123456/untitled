@@ -383,7 +383,7 @@ function jumpBianse(){
             if(id == "" || id == undefined){
                 return ;
             }else{
-                $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+                $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
             }
         }else if(tr.length==0){
             frame();

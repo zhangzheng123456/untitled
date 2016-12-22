@@ -140,9 +140,6 @@ $("#filter_condition ul li").click(function () {
     $(this).siblings("li").children("a").removeClass("condition_active");
     $("#contion").children("div").eq(index).css("display", "block");
     $("#contion").children("div").eq(index).siblings("div").css("display", "none");
-    // if(index == 5){
-    //     expend_data();
-    // }
 });
 $("#vip_card_type").click(function () {
     $("#card_type_select").toggle();
