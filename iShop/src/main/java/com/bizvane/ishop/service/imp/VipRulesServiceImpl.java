@@ -114,7 +114,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             status = "该企业已存在该会员类型";
         } else {
             String upgrade_amount = vipRules.getUpgrade_amount();
-            if (upgrade_amount.equals("")){
+            if (upgrade_amount.equals("")) {
                 vipRules.setUpgrade_time("");
             }
             vipRules.setCorp_code(corp_code);
@@ -129,21 +129,17 @@ public class VipRulesServiceImpl implements VipRulesService {
                 status = String.valueOf(vipRules2.getId());
                 System.out.print(String.valueOf(vipRules2.getId()));
                 return status;
-
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
-
         }
-
-
         return status;
     }
 
     @Override
     public String update(String message, String user_id) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
-        org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
 
         int id = Integer.parseInt(jsonObject.get("id").toString());
         String corp_code = jsonObject.get("corp_code").toString().trim();
@@ -172,9 +168,9 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setHigh_vip_type(high_vip_type);
             vipRules.setDiscount(discount);
             vipRules.setJoin_threshold(join_threshold);
-            vipRules.setUpgrade_time(upgrade_time);
             vipRules.setUpgrade_amount(upgrade_amount);
             vipRules.setPoints_value(points_value);
+            vipRules.setStore_code(store_code);
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setPresent_point(present_point);
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
