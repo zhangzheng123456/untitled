@@ -75,10 +75,10 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-//            String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
             String card_no = "";
+            String vip_id = "";
             String phone = jsonObject.get("phone").toString();
             String vip_name = jsonObject.get("vip_name").toString();
             String vip_card_type = jsonObject.get("vip_card_type").toString();
@@ -88,13 +88,14 @@ public class VIPController {
             String store_code = jsonObject.get("store_code").toString();
             String birthday = jsonObject.get("birthday").toString();
             String sex = jsonObject.get("sex").toString();
-            String join_date = Common.DATETIME_FORMAT_DAY.format(new Date());
             JSONObject obj = new JSONObject();
             if (corp_code.equals("C10016")) {
+                //调安正新增会员接口，返回会员卡号，vip_id
                 obj.put("card_no", "14544423432898");
                 obj.put("vip_id", "14544423432898");
             }
             //调毛伟栋新增接口
+            iceInterfaceService.addNewVip(corp_code,vip_id,vip_name,sex,birthday,phone,vip_card_type,card_no,store_code,user_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(obj.toString());

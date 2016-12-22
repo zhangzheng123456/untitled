@@ -28,4 +28,6 @@ public interface IceInterfaceService {
 
     DataBox vipScreen2ExeclMethod(String page_num,String page_size,String corp_code,String area_code,String brand_code,String store_code,String user_code,String output_message) throws Exception;
 
+    DataBox addNewVip(String corp_code,String vip_id,String vip_name,String sex,String birthday,String phone,
+                      String vip_card_type,String card_no,String store_code,String user_code) throws Exception;
 }

@@ -34,10 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nanji on 2016/9/1.
@@ -142,10 +139,12 @@ public class VipGroupController {
             org.json.JSONObject group_obj = new org.json.JSONObject(message);
             String user_id = request.getSession().getAttribute("user_code").toString();
             VipGroup vipGroup = WebUtils.JSON2Bean(group_obj,VipGroup.class);
+
+            String vip_group_code = "VG"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+            vipGroup.setVip_group_code(vip_group_code);
             String result = vipGroupService.insert(vipGroup, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 JSONObject jsonObject = JSONObject.parseObject(message);
-                String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
                 String corp_code = jsonObject.get("corp_code").toString().trim();
                 VipGroup vipGroup1 = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,jsonObject.get("isactive").toString());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -170,8 +169,8 @@ public class VipGroupController {
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "会员管理_会员分组";
                 String action = Common.ACTION_ADD;
-                String t_corp_code = action_json.get("corp_code").toString();
-                String t_code = action_json.get("vip_group_code").toString();
+                String t_corp_code = corp_code;
+                String t_code = vip_group_code;
                 String t_name = action_json.get("vip_group_name").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
