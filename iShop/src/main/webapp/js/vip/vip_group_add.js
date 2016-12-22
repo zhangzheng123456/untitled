@@ -85,7 +85,7 @@ $(function () {
         });
     } else {
         getcorplist();
-        $("#vip_num").val("VG"+ new Date().getTime())
+        //$("#vip_num").val("VG"+ new Date().getTime())
     }
     //分配导购
     // $("#PARAM_NAME").click(function () {
@@ -175,19 +175,19 @@ $(function () {
     vipjs.bindbutton = function () {
         $(".areaadd_oper_btn ul li:nth-of-type(1)").click(function () {
             var name = $("#vip_id").attr("data-mark");//区域名称是否唯一的标志
-            var num = $("#vip_num").attr("data-mark");//区域编号是否唯一的标志
+            //var num = $("#vip_num").attr("data-mark");//区域编号是否唯一的标志
             if (vipjs.firstStep()) {
-                if (name == "N" || num == "N") {
+                if (name == "N") {
                     if (name == "N") {
                         var div = $("#vip_id").next('.hint').children();
                         div.html("该名称已经存在！");
                         div.addClass("error_tips");
                     }
-                    if (num == "N") {
-                        var div = $("#vip_num").next('.hint').children();
-                        div.html("该编号已经存在！");
-                        div.addClass("error_tips");
-                    }
+                    //if (num == "N") {
+                    //    var div = $("#vip_num").next('.hint').children();
+                    //    div.html("该编号已经存在！");
+                    //    div.addClass("error_tips");
+                    //}
                     return;
                 }
                 var vip_id = $("#vip_id").val();
@@ -211,7 +211,7 @@ $(function () {
                     }
                 };
                 var _params = {
-                    "vip_group_code": vip_num,
+                    //"vip_group_code": vip_num,
                     "vip_group_name": vip_id,
                     "corp_code": OWN_CORP,
                     "user_code": user_code,
@@ -300,11 +300,22 @@ $(function () {
                     "isactive": ISACTIVE
                 };
                 var vip_group_type=$("#group_type").attr("data-type");
-                vip_group_type=="define"?isDefine():noDefine();
                 _params["group_type"]=vip_group_type;
+                vip_group_type=="define"?isDefine():noDefine();
                 function isDefine(){
                     var group_condition_array=all_select_vip_list;
                     _params["group_condition"]=group_condition_array;
+                    if(all_select_vip_list.length==0){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请设置分组条件"
+                        });
+                        return false;
+                    }else{
+                        vipjs.ajaxSubmit(_command, _params, opt);
+                    }
                 }
                 function noDefine(){
                     var group_condition={};
@@ -314,8 +325,8 @@ $(function () {
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
                     _params["group_condition"]=group_condition;
+                    vipjs.ajaxSubmit(_command, _params, opt);
                 }
-                vipjs.ajaxSubmit(_command, _params, opt);
             } else {
                 return;
             }

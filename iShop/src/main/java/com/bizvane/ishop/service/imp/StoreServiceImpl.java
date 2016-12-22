@@ -890,14 +890,15 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public List<Store> selectStore(String corp_code, String store_codes) throws SQLException {
         String[] storeArray = null;
+        List<Store> stores = new ArrayList<Store>();
         if (null != store_codes && !store_codes.isEmpty()) {
             store_codes = store_codes.replace(Common.SPECIAL_HEAD, "");
             storeArray = store_codes.split(",");
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("corp_code", corp_code);
+            params.put("store_codes", storeArray);
+            stores = storeMapper.selectStore(params);
         }
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("corp_code", corp_code);
-        params.put("store_codes", storeArray);
-        List<Store> stores = storeMapper.selectStore(params);
         return stores;
     }
 
