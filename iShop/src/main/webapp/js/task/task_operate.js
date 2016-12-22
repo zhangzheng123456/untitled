@@ -26,7 +26,7 @@ var start = {
     format: 'YYYY-MM-DD',
     min: laydate.now(), //设定最小日期为当前日期
     max: '2099-06-16 23:59:59', //最大日期
-    istime: true,
+    istime: false,
     istoday: false,
     choose: function (datas) {
         end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -38,7 +38,7 @@ var end = {
     format: 'YYYY-MM-DD',
     min: laydate.now(),
     max: '2099-06-16 23:59:59',
-    istime: true,
+    istime: false,
     istoday: false,
     choose: function (datas) {
         start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -740,7 +740,7 @@ function deleteName(a) {
     $(a).parent("p").remove();
 }
 //新增关闭
-$("#add_close").click(function () {
+$("#edit_close").click(function () {
     sessionStorage.removeItem("state");
     $(window.parent.document).find('#iframepage').attr("src", "/task/task.html");
 });

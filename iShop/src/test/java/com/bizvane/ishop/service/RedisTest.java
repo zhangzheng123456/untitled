@@ -1,7 +1,10 @@
 package com.bizvane.ishop.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.utils.IshowHttpClient;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.common.service.redis.RedisClient;
 import com.mongodb.MongoClient;
@@ -40,14 +43,16 @@ public class RedisTest {
     @Test
     public void test() {
         try {
-            List<Corp> list = new ArrayList<Corp>();
-            if (redisClient.get("CorpList") == null) {
-                list = corpMapper.selectCorps("");
-                redisClient.set("CorpList", list);
-            } else {
-                list = (List<Corp>) redisClient.get("CorpList");
-            }
-            System.out.println("------corp"+list);
+            JSONObject obj = new JSONObject();
+            JSONObject aa = new JSONObject();
+            obj.put("appid","wxc9c9111020955324");
+            obj.put("ts","1482129612509");
+            obj.put("sig","4E733E69DC02AA26DC21D938A4A4CA5E");
+            obj.put("method","o2ocoupontype");
+            obj.put("params",aa);
+            String bb = IshowHttpClient.post("http://www.dev-wechat.bizvane.com/rest/api",obj);
+
+System.out.println(bb);
         } catch (Exception x) {
             x.printStackTrace();
         }
@@ -57,26 +62,24 @@ public class RedisTest {
     public void testMongo(){
         MongoClient client = mongodbClient.getMongoClient();
         try {
-            // 取得Collecton句柄
-            MongoDatabase database = client.getDatabase("ishow");
-            MongoCollection<Document> collection = database.getCollection("test");
 
-            // 插入数据
-            Document doc = new Document();
-            String demoname = "JAVA:" + UUID.randomUUID();
-            doc.append("DEMO", demoname);
-            doc.append("MESG", "Hello AliCoudDB For MongoDB");
-//            collection.insertOne(doc);
-            System.out.println("insert document: " + doc);
-            // 读取数据
-            BsonDocument filter = new BsonDocument();
-            filter.append("DEMO", new BsonString(demoname));
-            MongoCursor<Document> cursor = collection.find(filter).iterator();
-            String result = null;
-            while (cursor.hasNext()) {
-                result = "find document: " + cursor.next();
+            JSONArray array = new JSONArray();
+            for (int i = 0; i < 3; i++) {
+                JSONObject obj = new JSONObject();
+                obj.put("appid","wxc9c9111020955324");
+                obj.put("ts","1");
+                obj.put("sig",i);
+                array.add(obj);
             }
-            System.out.print("------------"+result);
+            System.out.print("------------"+array.toJSONString());
+
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                obj.put("ok","ok");
+
+            }
+            System.out.print("------------"+array.toJSONString());
+
         } finally {
             //关闭Client，释放资源
             client.close();

@@ -292,6 +292,11 @@ public class VipRulesController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 验证会员类型得唯一性
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/vipTypeExist", method = RequestMethod.POST)
     @ResponseBody
     public String vipTypeExist(HttpServletRequest request) {
@@ -323,6 +328,11 @@ public class VipRulesController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 获取优惠券类型
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/getCoupon", method = RequestMethod.POST)
     @ResponseBody
     public String getCoupon(HttpServletRequest request) {

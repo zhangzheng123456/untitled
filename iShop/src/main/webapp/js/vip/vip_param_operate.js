@@ -78,10 +78,15 @@ var oc = new ObjectControl();
                     });
                     return;
                 }
-                // if(PARAM_TYPE=="select" && PARAM_VALUE==""){
-                //     alert("参数值不能为空！");
-                //     return;
-                // }
+                if(PARAM_TYPE=="select" && PARAM_VALUE==""){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"参数值不能为空"
+                    });
+                    return;
+                }
                 var REMARK = $("#REMARK").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
@@ -145,10 +150,15 @@ var oc = new ObjectControl();
                     PARAM_TYPE="rule"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
-                // if(PARAM_TYPE=="select" && PARAM_VALUE==""){
-                //     alert("参数值不能为空！");
-                //     return;
-                // }
+                if(PARAM_TYPE=="select" && PARAM_VALUE==""){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content:"参数值不能为空"
+                    });
+                    return;
+                }
                 var REMARK = $("#REMARK").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];

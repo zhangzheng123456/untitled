@@ -1458,6 +1458,20 @@ input::-webkit-input-placeholder{
     -moz-box-sizing:border-box;
     -webkit-box-sizing:border-box;
 }
+.contion  .textarea{
+	display: inline-flex;
+}
+.contion .textarea textarea{
+	height: 80px;
+	width: 340px;
+	outline: none;
+	margin-left: 10px;
+	margin-bottom: 20px;
+	padding: 5px;
+	box-sizing: border-box;
+	border: 1px solid #d7d7d7;
+	border-radius: 7px;
+}
 .contion .short_input{
     width:150px;
     height: 30px;
@@ -1718,7 +1732,7 @@ input::-webkit-input-placeholder{
 	width:16.6666%;
 }
 .filter_condition ul li {
-	width: 20%;
+	width: 16.6666%;
 	height: 50px;
 	line-height: 50px;
 	padding: 0 10px;

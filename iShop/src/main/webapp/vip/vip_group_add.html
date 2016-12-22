@@ -27,7 +27,7 @@
 
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_vip_group">会员分组</span><i class="icon-ishop_8-03"></i><label>新增会员分组</label></div>
+    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_vip_group">分组定义</span><i class="icon-ishop_8-03"></i><label>新增会员分组</label></div>
     <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
         <form class="conpany_msg">
             <div>
@@ -41,9 +41,9 @@
                     </li>
                 </ul>
             </div>
-            <div>
-                <span><label style="color:#c26655">分组编号*</label><input type="text" id="vip_num" verify="Empty" maxlength="30"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组编号不能为空！"></div></div></span>
-            </div>
+            <!--<div style="display: none">-->
+                <!--<span><label style="color:#c26655">分组编号*</label><input type="text" id="vip_num" verify="Empty" maxlength="30" readonly/><div style="padding-left:80px" class="hint"><div  hintinfo="分组编号不能为空！"></div></div></span>-->
+            <!--</div>-->
             <div>
                 <span><label style="color:#c26655">分组名称*</label><input type="text" id="vip_id" verify="Empty" maxlength="30"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组名称不能为空！"></div></div></span>
             </div>
@@ -57,11 +57,38 @@
                     <!--</div>-->
                 <!--</span>-->
             <!--</div>-->
-            <div class="check_per">
-                <span><label>分组会员</label><input id="group_recode" type="text" id="name_num" readonly/>
-                    <span class="check_icon vip_group_add"  id="screen_add"style="cursor: pointer;background: #dfdfdf">分配会员<i class="icon-ishop_8-03"></i>
+            <!--<div class="check_per">-->
+                <!--<span><label>分组会员</label><input id="group_recode" type="text" id="name_num" readonly/>-->
+                    <!--<span class="check_icon vip_group_add"  id="screen_add"style="cursor: pointer;background: #dfdfdf">分配会员<i class="icon-ishop_8-03"></i>-->
+                    <!--</span>-->
+                <!--</span>-->
+            <!--</div>-->
+            <div class="drop_down item_1">
+                <span><label>分组会员</label><input class="input_select"  style="width: 320px" type="text" readonly="true" id="group_type" value="自定义分组" data-type="define">
+                    <ul style="cursor: pointer" id="group_all_list">
+                        <li data-type="define">自定义分组</li>
+                        <li data-type="class">品类喜好分组</li>
+                        <li data-type="brand">品牌喜好分组</li>
+                        <li data-type="discount">折扣偏好分组</li>
+                        <li data-type="season">季节偏好分组</li>
+                    </ul>
+                     <input class="input_select" type="text" readonly id="type" style="width: 180px;display: none">
+                     <ul style="display: none;width:180px;margin-left:362px;cursor: pointer">
+                     </ul>
+                    <span  id="select_vip" style="display: inline-block;cursor: pointer;width: 96px;background-color: #6dc1c8;color: #FFFFFF;height: 30px;border-radius: 4px;line-height: 30px;text-align: center">选择会员<i class="icon-ishop_8-03" style="color: #FFFFFF;font-size: 12px"></i>
                     </span>
                 </span>
+            </div>
+            <div style="width: 418px;margin-left: 125px;">
+                <div id="group_list" style="display: none;border-top: 1px solid #d4d4d4;border-bottom: 1px solid #d4d4d4;padding: 10px 0;width: 100%">
+                    <div id="consume_amount"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费金额</span><input type="text" style="width: 160px;" value="1000" ><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 160px;" value="10000"></div>
+                    <div id="consume_piece"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费件数</span><input type="text" style="width: 160px;" value="100" ><span style="display: inline-block;width: 30px;text-align: center">~</span><input   type="text" style="width: 160px;" value="2000"></div>
+                    <div id="consume_discount" style="margin: 0"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费折扣</span><input type="text" style="width: 160px;" value="0.5" ><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 160px;" value="0.8"></div>
+                </div>
+                <div id="custom_vip_list" style="overflow:hidden;">
+
+                </div>
+                <!--<div style="cursor: pointer;background-color: #6dc1c8;color: #FFFFFF;height: 30px;line-height: 30px;text-align: center;border-radius: 4px;">查看该分组会员列表 <i class="icon-ishop_8-03" style="color: #FFFFFF;font-size: 12px;"></i></div>-->
             </div>
 
             <div>
@@ -72,7 +99,7 @@
     <div class="editor_detail col-lg-4 col-md-7 col-sm-10  animated fadeInRight">
         <div class="areaadd_oper_btn">
             <ul>
-                <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
                 <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
@@ -267,7 +294,7 @@
     </div>
 </div>
 <!--筛选会员-->
-<div class="screen_wrapper" id="screen_wrapper"style="top:40%;left:37%">
+<div class="screen_wrapper" id="screen_wrapper">
     <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
     <div id="simple_filter">
         <div class="filter_condition" id="simple_filter_condition">
@@ -281,18 +308,18 @@
             </ul>
         </div>
         <div class="contion" id="simple_contion">
-            <div class="contion_input"><label>生日</label><input id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input" style="display: none"><label>纪念日</label><input id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input" style="display: none"><label>消费次数</label><input class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
-            <div class="contion_input" style="display: none"><label>消费金额</label><input class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
-            <div class="contion_input" style="display: none"><label>可用积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
-            <div class="contion_input" style="display: none"><label>冻结会员</label><input class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+            <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
+            <div class="contion_input" style="display: none"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
+            <div class="contion_input" style="display: none"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+            <div class="contion_input" style="display: none"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            <div class="contion_input" style="display: none"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+            <div class="contion_input" style="display: none"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
                 <li>已冻结</li>
                 <li>未冻结</li>
                 <li>全部</li>
             </ul></div>
         </div>
-        <div class="ensure"><span>确定</span></div>
+        <!--<div class="ensure"><span>确定</span></div>-->
         <a href="####" id="more_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">高级筛选</a>
     </div>
     <div style="display: none" id="senior_filter">
@@ -303,59 +330,65 @@
                 <li><a href="####">按消费属性</a></li>
                 <li><a href="####">按所属关系</a></li>
                 <li><a href="####">按拓展属性</a></li>
-                <li><a href="####">按券查询</a></li>
+                <!--<li><a href="####">按券查询</a></li>-->
             </ul>
         </div>
         <div class="contion" id="contion">
             <div id="basic_message">
-                <div class="contion_input"><label>姓名</label><input class="input" type="text"></div>
+                <div class="contion_input"><label>姓名</label><input data-kye="7" class="input" type="text"></div>
                 <div class="contion_input">
-                    <label>性别</label><input class="select" type="text" value="全部" readonly="readonly" id="sex">
+                    <label>性别</label><input data-kye="8" class="select" type="text" value="全部" readonly="readonly" id="sex">
                     <ul class="sex_select" id="sex_select">
                         <li>男</li>
                         <li>女</li>
                         <li>全部</li>
                     </ul>
                 </div>
-                <div class="contion_input"><label>年龄</label><input class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
+                <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
                         class="short_input" id="age_r" readonly/><ul class="age_r"></ul></div>
-                <div class="contion_input"><label>生日</label><input id="birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="birth_end" class="short_input_date laydate-icon"></div>
-                <div class="contion_input"><label>手机号</label><input class="input" type="text"></div>
+                <div class="contion_input"><label>生日</label><input data-kye="1" id="birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="birth_end" class="short_input_date laydate-icon"></div>
+                <div class="contion_input"><label>手机号</label><input data-kye="10" class="input" type="text"></div>
             </div>
             <div id="vip_attribute" style="display: none">
-                <div class="contion_input"><label>卡号</label><input class="input" type="text"></div>
-                <div class="contion_input"><label>卡类型</label><input class="input" type="text"></div>
-                <div class="contion_input"><label>开卡日期</label><input id="activate_card_start" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end" class="short_input_date laydate-icon" type="text" readonly/></div>
-                <div class="contion_input"><label>可用积分</label><input class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
-                <div class="contion_input"><label>冻结会员</label><input class="select" value="全部" id="state" type="text"><ul class="sex_select" id="state_select">
+                <div class="contion_input"><label>卡号</label><input data-kye="11" class="input" type="text"></div>
+                <div class="contion_input"><label>卡类型</label><input data-kye="12" class="select" type="text" id="vip_card_type" value="全部" readonly><ul class="sex_select" id="card_type_select"><li>东鹏玖姿贵宾卡</li><li>玖姿贵宾卡</li><li>南阳贵宾卡</li><li>玖姿累积卡</li><li>全部</li></ul></div>
+                <div class="contion_input"><label>开卡日期</label><input data-kye="13" id="activate_card_start" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end" class="short_input_date laydate-icon" type="text" readonly/></div>
+                <div class="contion_input"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                <div class="contion_input"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="state" type="text" readonly><ul class="sex_select" id="state_select">
                     <li>已冻结</li>
                     <li>未冻结</li>
                     <li>全部</li>
                 </ul></div>
             </div>
             <div id="consume_attribute" style="display: none">
-                <div class="contion_input"><label>最近消费日期</label><input id="recent_start" class="short_input_date laydate-icon" readonly/><label class="jian">~</label><input id="recent_end" class="short_input_date laydate-icon" readonly/></div>
-                <div class="contion_input"><label>消费次数</label><input class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
-                <div class="contion_input"><label>消费总额</label><input class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" id="consume_date" data-date="3" readonly><ul class="sex_select" id="consume_select">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+                <div class="contion_input"><label>消费总额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
             </div>
             <div id="relation" style="display: none">
-                <div class="contion_input"><label>所属品牌</label><input id="screen_brand_num" class="input" type="text"
+                <div class="contion_input"><label>所属品牌</label><input data-kye="brand_code" id="screen_brand_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
-                <div class="contion_input"><label>所属区域</label><input id="screen_area_num" class="input" type="text"
+                <div class="contion_input"><label>所属区域</label><input data-kye="area_code" id="screen_area_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
-                <div class="contion_input"><label>所属店铺</label><input id="screen_shop_num" class="input" type="text"
+                <div class="contion_input"><label>所属店铺</label><input data-kye="14" id="screen_shop_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
-                <div class="contion_input"><label>所属导购</label><input id="screen_stff_num" class="input" type="text"
+                <div class="contion_input"><label>所属导购</label><input data-kye="15" id="screen_stff_num" class="input" type="text"
                                                                      readonly="true" data-code=""><span
                         class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
             </div>
             <div id="expend_attribute" style="display: none">
-                <div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>
+                <!--<div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>-->
                 <div class="contion_input">
-                    <label>分组</label><input id="filter_group" class="select" type="text" data-code="" readonly="readonly">
+                    <label>分组</label><input data-kye="16" id="filter_group" class="select" type="text" data-code="" readonly="readonly">
                     <div class="filter_group">
                         <input type="text" id="search_filter_group">
                         <ul id="ul">
@@ -369,9 +402,9 @@
                 <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
             </div>
         </div>
-        <div class="ensure"><span id="screen_vip_que">确定</span></div>
         <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
     </div>
+    <div class="ensure"><span id="select_vip_que">确定</span></div>
 </div>
 <!-- 拉取区域 -->
 <div id="screen_area" class="screen_area">
@@ -552,8 +585,6 @@
 <!-- Custom and plugin javascript -->
 <script src="../js/hplus.js?v=2.2.0"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<!-- moni select -->
-<script type="text/javascript" src="../js/moni_select.js"></script>
 <script src="../js/loading.js?20161116"></script>
 <!-- Dialog -->
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>

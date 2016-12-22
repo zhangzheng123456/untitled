@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yin on 2016/9/7.
@@ -484,4 +481,44 @@ public class VipParamController {
         }
         return dataBean.getJsonStr();
     }
+
+    //显示企业下可用参数
+    @RequestMapping(value = "/corpVipParams", method = RequestMethod.POST)
+    @ResponseBody
+    public String corpVipParams(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            //-------------------------------------------------------
+            JSONObject result = new JSONObject();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.getString("corp_code");
+            }
+            List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
+            List<VipParam> list = new ArrayList<VipParam>();
+            for (int i = 0; i < vipParams.size(); i++) {
+                VipParam vipParam = vipParams.get(i);
+                String type = vipParams.get(i).getParam_type();
+                if (!type.equals("rule"))
+                    list.add(vipParam);
+            }
+
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }

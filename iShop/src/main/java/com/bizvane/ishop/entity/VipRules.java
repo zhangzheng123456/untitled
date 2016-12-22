@@ -1,5 +1,7 @@
 package com.bizvane.ishop.entity;
 
+import com.alibaba.fastjson.JSONArray;
+
 /**
  * Created by nanji on 2016/12/19.
  */
@@ -23,6 +25,8 @@ public class VipRules {
     private String upgrade_amount;
     //积分比例
     private String points_value;
+    //限制开卡门店
+    private String store_code;
     //赠送类型：赠送积分，
     private String present_coupon;
     //2：赠送券
@@ -40,6 +44,8 @@ public class VipRules {
 
     private Corp corp;
     private String corp_name;
+
+    private JSONArray stores;
 
     public int getId() {
         return id;
@@ -113,6 +119,14 @@ public class VipRules {
         this.points_value = points_value;
     }
 
+    public String getStore_code() {
+        return store_code;
+    }
+
+    public void setStore_code(String store_code) {
+        this.store_code = store_code;
+    }
+
     public String getPresent_coupon() {
         return present_coupon;
     }
@@ -183,5 +197,13 @@ public class VipRules {
 
     public void setCorp_name(String corp_name) {
         this.corp_name = corp_name;
+    }
+
+    public JSONArray getStores() {
+        return stores;
+    }
+
+    public void setStores(JSONArray stores) {
+        this.stores = stores;
     }
 }

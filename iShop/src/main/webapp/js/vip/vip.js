@@ -36,6 +36,8 @@ var  message={
         "store_names":"",
         "user_codes":"",
         "user_names":"",
+        "group_codes":"",
+        "group_name":"",
         "type":"",
         "count":"",
         "corp_code":""

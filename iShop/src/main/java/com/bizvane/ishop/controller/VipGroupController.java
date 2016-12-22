@@ -7,6 +7,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.*;
@@ -33,10 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nanji on 2016/9/1.
@@ -52,6 +50,9 @@ public class VipGroupController {
     IceInterfaceService iceInterfaceService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private TableManagerService tableManagerService;
+
     String id;
 
 
@@ -75,21 +76,37 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
 
-//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-//            int vip_count = 0;
             VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
-//            if (vipGroup != null) {
-//                String corp_code = vipGroup.getCorp_code();
-//                String vip_group_code = vipGroup.getVip_group_code();
-//
-//                BasicDBObject dbObject=new BasicDBObject();
-//                dbObject.put("vip_group_code",vip_group_code);
-//                dbObject.put("corp_code",corp_code);
-//                DBCursor dbCursor= cursor.find(dbObject);
-//                vip_count = dbCursor.size();
-//                vipGroup.setVip_count(vip_count);
-//            }
+            if (vipGroup != null) {
+                String group_type = vipGroup.getGroup_type();
+                String group_condition = vipGroup.getGroup_condition();
+                if (group_type.equals("define")){
+                    JSONArray condition = JSONArray.parseArray(group_condition);
+                    List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
+                    for (int i = 0; i < condition.size(); i++) {
+                        JSONObject condition_obj = condition.getJSONObject(i);
+                        String key = condition_obj.getString("key");
+                        String type = condition_obj.getString("type");
+                        String value = condition_obj.getString("value");
+                        if (type.equals("text") && value.equals("")){
+                            //筛选值为空
+                            continue;
+                        }else if (type.equals("json") && value.equals("{}")){
+                            //筛选值为空
+                            continue;
+                        }else {
+                            //根据key值，找出其对应name
+                            for (int j = 0; j < tableManagers.size(); j++) {
+                                if (key.equals(tableManagers.get(j).getFilter_weight())){
+                                    String key_name = tableManagers.get(j).getShow_name();
+                                    condition_obj.put("name",key_name);
+                                    break;}
+                            }
+                        }
+                    }
+                    vipGroup.setGroup_condition(condition.toJSONString());
+                }
+            }
             data = JSON.toJSONString(vipGroup);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -122,10 +139,12 @@ public class VipGroupController {
             org.json.JSONObject group_obj = new org.json.JSONObject(message);
             String user_id = request.getSession().getAttribute("user_code").toString();
             VipGroup vipGroup = WebUtils.JSON2Bean(group_obj,VipGroup.class);
+
+            String vip_group_code = "VG"+Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+            vipGroup.setVip_group_code(vip_group_code);
             String result = vipGroupService.insert(vipGroup, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 JSONObject jsonObject = JSONObject.parseObject(message);
-                String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
                 String corp_code = jsonObject.get("corp_code").toString().trim();
                 VipGroup vipGroup1 = vipGroupService.getVipGroupByCode(corp_code,vip_group_code,jsonObject.get("isactive").toString());
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -150,8 +169,8 @@ public class VipGroupController {
                 String operation_user_code = request.getSession().getAttribute("user_code").toString();
                 String function = "会员管理_会员分组";
                 String action = Common.ACTION_ADD;
-                String t_corp_code = action_json.get("corp_code").toString();
-                String t_code = action_json.get("vip_group_code").toString();
+                String t_corp_code = corp_code;
+                String t_code = vip_group_code;
                 String t_name = action_json.get("vip_group_name").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
@@ -915,4 +934,57 @@ public class VipGroupController {
 
     }
 
+    /**
+     * 查看分组下会员
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/groupVips", method = RequestMethod.POST)
+    @ResponseBody
+    public String groupVips(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String id = jsonObject.get("id").toString();
+            String type = jsonObject.get("type").toString();
+
+            DataBox dataBox = new DataBox();
+            if (type.equals("list")){
+                Data data_user_id = new Data("user_id", "", ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", "C10000", ValueType.PARAM);
+                Data data_role_code = new Data("role_code", Common.ROLE_SM, ValueType.PARAM);
+                Data data_store_id = new Data("store_id", "", ValueType.PARAM);
+                Data data_area_code = new Data("area_code", "", ValueType.PARAM);
+                Data data_page_num = new Data("page_num", "1", ValueType.PARAM);
+                Data data_page_size = new Data("page_size", "20", ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_user_id.key, data_user_id);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_store_id.key, data_store_id);
+                datalist.put(data_area_code.key, data_area_code);
+                datalist.put(data_role_code.key, data_role_code);
+                datalist.put(data_page_num.key, data_page_num);
+                datalist.put(data_page_size.key, data_page_size);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            }
+
+            String result = dataBox.data.get("message").value;
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
 }

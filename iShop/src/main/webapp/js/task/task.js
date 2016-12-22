@@ -803,7 +803,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
                 if(filter[i].show_name=="开始时间"||filter[i].show_name=="截止时间"){
-                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' class='laydate-icon' onclick='laydate({elem: \"#"+filter[i].col_name+"\",istime: true, format: \"YYYY-MM-DD\"})'></li>";
+                    li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' class='laydate-icon' onclick='laydate({elem: \"#"+filter[i].col_name+"\",istime: false, format: \"YYYY-MM-DD\"})'></li>";
                 }else {
                     li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
                 }

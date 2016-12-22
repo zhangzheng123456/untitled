@@ -53,7 +53,7 @@
 <!--  <div id="wrapper">
  </div> -->
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_vip_group">会员分组</span><i class="icon-ishop_8-03"></i><label>编辑会员分组</label></div>
+    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_vip_group">分组定义</span><i class="icon-ishop_8-03"></i><label>编辑会员分组</label></div>
     <div class="editor_1 col-lg-7 editor_line  animated fadeInRight">
         <!-- <div class="operation_conpany">
             <ul>
@@ -72,8 +72,8 @@
                     </li>
                 </ul>
             </div>
-            <div>
-                <span><label style="color:#c26655">分组编号*</label><input type="text" id="vip_num" verify="Empty" maxlength="30"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组编号不能为空！"></div></div></span>
+            <div style="display: none">
+                <span><label style="color:#c26655">分组编号*</label><input type="text" id="vip_num" verify="Empty" maxlength="30" readonly/><div style="padding-left:80px" class="hint"><div  hintinfo="分组编号不能为空！"></div></div></span>
             </div>
             <div>
                 <span><label style="color:#c26655">分组名称*</label><input type="text" id="vip_id"  verify="Empty" maxlength="30"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组名称不能为空！"></div></div></span>
@@ -95,10 +95,10 @@
                 <!--</span>-->
             <!--</div>-->
             <div class="drop_down item_1">
-                <span><label>分组会员</label><input class="input_select"  style="width: 320px" type="text" readonly id="group_type" value="自定义分组">
-                    <ul style="display: none;cursor: pointer">
-                        <li data-type="custom">自定义分组</li>
-                        <li data-type="category">品类喜好分组</li>
+                <span><label>分组会员</label><input class="input_select"  style="width: 320px" type="text" readonly id="group_type" value="自定义分组" data-type="define">
+                    <ul style="display: none;cursor: pointer" id="group_all_list">
+                        <li data-type="define">自定义分组</li>
+                        <li data-type="class">品类喜好分组</li>
                         <li data-type="brand">品牌喜好分组</li>
                         <li data-type="discount">折扣偏好分组</li>
                         <li data-type="season">季节偏好分组</li>
@@ -112,14 +112,14 @@
             </div>
             <div style="width: 418px;margin-left: 125px;">
                 <div id="group_list" style="display: none;border-top: 1px solid #d4d4d4;border-bottom: 1px solid #d4d4d4;padding: 10px 0;width: 100%">
-                    <div><span style="text-align: right;display: inline-block;margin-right: 10px;">消费金额</span><input type="text" style="width: 160px;" value="1000" readonly><span style="display: inline-block;width: 30px;text-align: center">~</span><input readonly type="text" style="width: 160px;" value="10000"></div>
-                    <div><span style="text-align: right;display: inline-block;margin-right: 10px;">消费件数</span><input type="text" style="width: 160px;" value="100" readonly><span style="display: inline-block;width: 30px;text-align: center">~</span><input  readonly type="text" style="width: 160px;" value="2000"></div>
-                    <div style="margin: 0"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费折扣</span><input type="text" style="width: 160px;" value="0.5" readonly><span style="display: inline-block;width: 30px;text-align: center">~</span><input readonly type="text" style="width: 160px;" value="0.8"></div>
+                    <div id="consume_amount"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费金额</span><input type="text" style="width: 160px;"  value="1000"><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 160px;" value="10000"></div>
+                    <div id="consume_piece"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费件数</span><input type="text" style="width: 160px;"  value="100"><span style="display: inline-block;width: 30px;text-align: center">~</span><input   type="text" style="width: 160px;" value="2000"></div>
+                    <div id="consume_discount" style="margin: 0"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费折扣</span><input type="text" style="width: 160px;" value="0.5"><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 160px;" value="0.8"></div>
                 </div>
                 <div id="custom_vip_list" style="overflow:hidden;">
 
                 </div>
-                <div style="cursor: pointer;background-color: #6dc1c8;color: #FFFFFF;height: 30px;line-height: 30px;text-align: center;border-radius: 4px;">查看该分组会员列表 <i class="icon-ishop_8-03" style="color: #FFFFFF;font-size: 12px;"></i></div>
+                <!--<div style="cursor: pointer;background-color: #6dc1c8;color: #FFFFFF;height: 30px;line-height: 30px;text-align: center;border-radius: 4px;">查看该分组会员列表 <i class="icon-ishop_8-03" style="color: #FFFFFF;font-size: 12px;"></i></div>-->
             </div>
             <div>
                 <span><label>备注</label><input type="text" id="vip_remark" maxlength="100"/></span>
@@ -404,12 +404,12 @@
                 </ul></div>
             </div>
             <div id="consume_attribute" style="display: none">
-                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" id="consume_date" readonly><ul class="sex_select" id="consume_select">
-                    <li>最近3个月</li>
-                    <li>最近6个月</li>
-                    <li>最近9个月</li>
-                    <li>最近12个月</li>
-                    <li>最近24个月</li>
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" id="consume_date" data-date="3" readonly><ul class="sex_select" id="consume_select">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="24">最近24个月</li>
                 </ul></div>
                 <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
                 <div class="contion_input"><label>消费总额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>

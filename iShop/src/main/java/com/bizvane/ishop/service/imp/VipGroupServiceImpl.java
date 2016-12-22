@@ -62,6 +62,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
         for (VipGroup vipGroup : vipGroups) {
             vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
+            trans(vipGroup);
         }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(vipGroups);
         return page;
@@ -107,16 +108,17 @@ public class VipGroupServiceImpl implements VipGroupService {
     public String update(VipGroup vipGroup, String user_code) throws Exception {
         String result = "";
         int id = vipGroup.getId();
-        String vip_group_code = vipGroup.getVip_group_code().trim();
+//        String vip_group_code = vipGroup.getVip_group_code().trim();
         String vip_group_name = vipGroup.getVip_group_name().trim();
         String corp_code = vipGroup.getCorp_code();
 
-        VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
+//        VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
-        if (vipGroup1 != null && vipGroup1.getId() != id) {
-            result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null && vipGroup2.getId() != id) {
+//        if (vipGroup1 != null && vipGroup1.getId() != id) {
+//            result = "该会员分组编号已存在";
+//        } else
+        if (vipGroup2 != null && vipGroup2.getId() != id) {
             result = "该会员分组名称已存在";
         } else {
             Date now = new Date();
@@ -158,9 +160,29 @@ public class VipGroupServiceImpl implements VipGroupService {
         List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);
         for (VipGroup vipGroup : list1) {
             vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
+            trans(vipGroup);
         }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(list1);
         return page;
+    }
+
+    void trans(VipGroup vipGroup){
+        String group_type = vipGroup.getGroup_type();
+        if (group_type.equals("define")){
+            vipGroup.setGroup_type("自定义分组");
+        }
+        if (group_type.equals("brand")){
+            vipGroup.setGroup_type("品牌喜好分组");
+        }
+        if (group_type.equals("class")){
+            vipGroup.setGroup_type("品类喜好分组");
+        }
+        if (group_type.equals("discount")){
+            vipGroup.setGroup_type("折扣偏好分组");
+        }
+        if (group_type.equals("season")){
+            vipGroup.setGroup_type("季节偏好分组");
+        }
     }
 
 }

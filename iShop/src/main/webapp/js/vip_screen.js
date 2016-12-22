@@ -1,5 +1,3 @@
-var groupName = [];
-var groupCode = [];//定义分组里的值
 //日期调用插件
 var simple_birth_start = {
     elem: '#simple_birth_start',
@@ -216,20 +214,19 @@ $(".age_r").on("click", "li", function () {
     $("#age_r").val($(this).html());
     $(".age_r").hide();
 });
-$(".filter_group ul").on("click", "li", function () {
-    var val = $(this).html();
-    var code = $(this).attr("id");
-    if ($(this).attr("class") == "group_active") {
-        $(this).removeClass("group_active");
-        groupName.remove(val);
-        groupCode.remove(code);
-    } else {
-        $(this).addClass("group_active");
-        groupName.push(val);
-        groupCode.push(code);
-    }
-    $("#filter_group").val(groupName.join(","));
-    $("#filter_group").attr("data-code", groupCode.join(","));
+$("#expend_attribute").on("click",".select",function () {
+    $(this).next(".sex_select").toggle();
+});
+$("#expend_attribute").on("click",".sex_select li",function () {
+    var _this=$(this).parent(".sex_select").prev(".select");
+    $(_this).val($(this).html());
+    $(".sex_select").hide();
+});
+$("#expend_attribute").on("blur",".select",function () {
+   var ul = $(this).next(".sex_select");
+    setTimeout(function(){
+        ul.hide();
+    },200);
 });
 //筛选确定
 $("#screen_vip_que").click(function () {
@@ -275,9 +272,9 @@ $("#screen_vip_que").click(function () {
             $(this).find(".contion_input").each(function (i, e) {
                 var input = $(e).find("input");
                 var key = $(input[0]).attr("data-kye");
+                var expend_key = $(input[0]).attr("data-expend");
                 var classname = $(input[0]).attr("class");
-                var id = $(input[0]).attr("id");
-                if (key !== "3" && key !== "4" && classname.indexOf("short") == 0) {
+                if ((key !== "3" && key !== "4" && classname.indexOf("short") == 0)||expend_key=="date") {
                     if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                         var param = {};
                         var val = {};
@@ -288,7 +285,7 @@ $("#screen_vip_que").click(function () {
                         param['value'] = val;
                         screen.push(param);
                     }
-                } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
+                } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15"|| key == "16") {
                     if ($(input[0]).attr("data-code") !== "") {
                         var param = {};
                         var val = $(input[0]).attr("data-code");
@@ -323,14 +320,21 @@ $("#screen_vip_que").click(function () {
                     }
                 }
             });
+            $(this).find("textarea").each(function () {
+                var key = $(this).attr("data-kye");
+                var param = {};
+                var val = $(this).val();
+                param['key'] = key;
+                param['value'] = val;
+                param['type'] = "text";
+                screen.push(param);
+            });
         });
     }
     _param['screen'] = screen;
     if (screen.length == 0) {
         GET(inx, pageSize);
-    } else if (screen[0].key == "17" && (screen[1].value == "")) {
-
-    } else {
+    }else {
         filtrate = "sucess";
         filtrates(inx, pageSize);
     }
@@ -359,23 +363,96 @@ $("#empty_filter").click(function () {
             $(this).val("");
         }
     });
+    $("#screen_wrapper textarea").each(function () {
+        $(this).val("");
+    });
 });
-//获取分组
-$("#filter_group").click(function () {
-    $(".filter_group").toggle();
-    var corp = $("#filter_group").attr("data-corp");
-    if (corp !== undefined && corp !== "") {
-        $(".filter_group #ul").getNiceScroll().resize();
-        return;
-    } else {
-        getGroup();
+//分组弹窗
+$("#screen_group_icon").click(function () {
+    if(message.cache.group_codes!==""){
+        var group_codes=message.cache.group_codes.split(',');
+        var group_names=message.cache.group_names.split(',');
+        var group_html_right="";
+        for(var h=0;h<group_codes.length;h++){
+            group_html_right+="<li id='"+group_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+group_codes[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+group_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_group .s_pitch span").html(h);
+        $("#screen_group .screen_content_r ul").html(group_html_right);
+    }else{
+        $("#screen_group .s_pitch span").html("0");
+        $("#screen_group .screen_content_r ul").empty();
     }
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_group").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_wrapper").hide();
+    $("#screen_group").show();
+    getGroup();
 });
-$("#search_filter_group").keydown(function () {
+$("#screen_close_group").click(function () {
+   $("#screen_wrapper").show();
+   $("#screen_group").hide();
+});
+//分组确定
+$("#screen_que_group").click(function () {
+    var li=$("#screen_group .screen_content_r input[type='checkbox']").parents("li");
+    var group_codes="";
+    var group_names="";
+    for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            group_codes+=r+",";
+            group_names+=p+",";
+        }else{
+            group_codes+=r;
+            group_names+=p;
+        }
+    };
+    message.cache.group_codes=group_codes;
+    message.cache.group_names=group_names;
+    $("#screen_group").hide();
+    $("#screen_wrapper").show();
+    $("#filter_group").val("已选"+li.length+"个");
+    $("#filter_group").attr("data-code",group_codes);
+});
+//分组搜索
+$("#group_search").keydown(function () {
     var event = window.event || arguments[0];
     if (event.keyCode == 13) {
         getGroup();
     }
+});
+$("#group_search_f").click(function () {
+    getGroup();
+});
+//点击右移
+$(".shift_right").click(function () {
+    var right = "only";
+    var div = $(this);
+    removeRight(right, div);
+});
+//点击右移全部
+$(".shift_right_all").click(function () {
+    var right = "all";
+    var div = $(this);
+    removeRight(right, div);
+});
+//点击左移
+$(".shift_left").click(function () {
+    var left = "only";
+    var div = $(this);
+    removeLeft(left, div);
+});
+//点击左移全部
+$(".shift_left_all").click(function () {
+    var left = "all";
+    var div = $(this);
+    removeLeft(left, div);
 });
 $(document).click(function (e) {
     if (!($(e.target).is("#sex_select") || $(e.target).is("#sex"))) {
@@ -407,6 +484,7 @@ $(document).click(function (e) {
     }
 });
 $(function () {
+    expend_data();
     //给年龄赋值
     for (var i = 1; i < 101; i++) {
         $(".age_l").append('<li>' + i + '</li>');
@@ -415,11 +493,19 @@ $(function () {
     //引用滚动样式插件
     $(".filter_group #ul").niceScroll({
         cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
-        cursorcolor: " rgba(0,0,0,0.2)",
+        cursorcolor: " rgba(0,0,0,0.1)",
         cursoropacitymax: 1,
         touchbehavior: false,
         cursorminheight: 30,
         autohidemode: false
+    });
+    $("#expend_attribute").niceScroll({
+        cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
+        cursorcolor: " rgba(0,0,0,0.2)",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorminheight: 30,
+        autohidemode: "scroll"
     });
     $(window).scroll(function () {
         if ($(window).scrollTop() > 100) {
@@ -438,15 +524,8 @@ $(function () {
         $('html,body').animate({
             'scrollTop': btm
         }, 500);
-    })
+    });
 });
-//定义remove
-Array.prototype.remove = function (val) {
-    var index = this.indexOf(val);
-    if (index > -1) {
-        this.splice(index, 1);
-    }
-};
 //点击列表显示选中状态
 $(".screen_content").on("click", "li", function () {
     var input = $(this).find("input")[0];
@@ -537,19 +616,23 @@ function getGroup() {
     var corp_command = "/vipGroup/getCorpGroups";
     var _param = {};
     _param["corp_code"] = "C10000";
-    _param["search_value"] = $("#search_filter_group").val();
+    _param["search_value"] = $("#group_search").val();
     oc.postRequire("post", corp_command, "0", _param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
             var html = "";
+            $("#screen_group .screen_content_l ul").empty();
             $("#filter_group").attr("data-corp", list[0].corp_code);
-            $(".filter_group ul").empty();
             if (list.length > 0) {
                 for (var i = 0; i < list.length; i++) {
-                    html += '<li id="' + list[i].vip_group_code + '">' + list[i].vip_group_name + '</li>';
+                    html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].vip_group_code+"' name='test'  class='check'  id='checkboxOneInput"
+                        + i
+                        + "'/><label for='checkboxOneInput"
+                        + i
+                        + "'></label></div><span class='p16'>"+list[i].vip_group_name+"</span></li>"
                 }
-                $(".filter_group ul").append(html);
+                $("#screen_group .screen_content_l ul").append(html);
             } else if (list.length <= 0) {
                 art.dialog({
                     time: 1,
@@ -560,6 +643,56 @@ function getGroup() {
             }
         }
     })
+}
+//获取拓展资料
+function expend_data() {
+    var param={"corp_code":"C10000"};
+    oc.postRequire("post","/vipparam/corpVipParams","0",param,function (data) {
+       if(data.code == 0){
+           $("#expend_attribute").empty();
+           var msg = JSON.parse(data.message);
+           var list = JSON.parse(msg.list);
+           var html="";
+           if(list.length>0){
+               for(var i=0;i<list.length;i++){
+                   var param_type = list[i].param_type;
+                   if(param_type=="date"){
+                       html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>' 
+                           + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                           + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
+                   }
+                   if(param_type=="select"){
+                       var param_values = "";
+                           param_values = list[i].param_values.split(",");
+                       if(param_values.length>0){
+                           var li="";
+                           for(var j=0;j<param_values.length;j++){
+                               li+='<li>'+param_values[j]+'</li>'
+                           }
+                           html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                               + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select">'
+                               + li
+                               + '</ul></div>'
+                       }else {
+                           html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                               + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select"></ul></div>'
+                       }
+                   }
+                   if(param_type=="text"){
+                       html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                           + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="input"><ul class="sex_select"></ul></div>'
+                   }
+                   if(param_type=="longtext"){
+                       html+='<div class="textarea"><label>'+list[i].param_desc+'</label>'
+                           + '<textarea data-kye="'+list[i].param_name+'" rows="0" cols="0"></textarea><ul class="sex_select"></ul></div>'
+                   }
+               }
+           }
+           $("#expend_attribute").append(html);
+       }else if(data.code == -1){
+           console.log(data.message);
+       }
+    });
 }
 //移到右边
 function removeRight(a, b) {
@@ -630,27 +763,3 @@ function removeLeft(a, b) {
     var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
     $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
 }
-//点击右移
-$(".shift_right").click(function () {
-    var right = "only";
-    var div = $(this);
-    removeRight(right, div);
-});
-//点击右移全部
-$(".shift_right_all").click(function () {
-    var right = "all";
-    var div = $(this);
-    removeRight(right, div);
-});
-//点击左移
-$(".shift_left").click(function () {
-    var left = "only";
-    var div = $(this);
-    removeLeft(left, div);
-});
-//点击左移全部
-$(".shift_left_all").click(function () {
-    var left = "all";
-    var div = $(this);
-    removeLeft(left, div);
-});
