@@ -335,12 +335,15 @@ function moreSearch() {
         page=page+1;
        searchHotlabel();
     })
-};
+}
 $(document).click(function(e){
     if($(e.target).is("#more_search")){
         return;
     }else{
         $(".search_box").hide();
+    }
+    if(!($(e.target).is("#send_code i") || $(e.target).is("#send_code input"))){
+        $("#send_code ul").hide();
     }
 });
 //input输入框里面

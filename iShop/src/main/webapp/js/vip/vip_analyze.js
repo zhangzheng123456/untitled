@@ -1269,7 +1269,7 @@ require(
         var myChart3 = ec.init(document.getElementById('main3'));
         var myChart4 = ec.init(document.getElementById('main4'));
         var myChart5 = ec.init(document.getElementById('main5'));
-        var myChart6 = ec.init(document.getElementById('main6'));
+        // var myChart6 = ec.init(document.getElementById('main6'));
         var myChart7 = ec.init(document.getElementById('main7'));
         var option = {
             color:['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2','#5C778F','#4D5F7C','#444960','#2C3244'] ,
@@ -1650,7 +1650,7 @@ require(
         myChart3.setOption(option5);
         myChart4.setOption(option2);
         myChart5.setOption(option);
-        myChart6.setOption(option);
+        // myChart6.setOption(option);
         myChart7.setOption(option3);
 //            myChart.hideLoading();
         window.addEventListener("resize", function () {
@@ -1660,7 +1660,7 @@ require(
             myChart3.resize();
             myChart4.resize();
             myChart5.resize();
-            myChart6.resize();
+            // myChart6.resize();
             myChart7.resize();
         });
     }

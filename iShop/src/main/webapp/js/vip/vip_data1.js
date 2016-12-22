@@ -448,6 +448,20 @@ function getexpandValue(){
     }
     return param_expand;
 }
+function gradeChange(grade) {//会员升降级
+    var param={};
+    param['vip_id']=sessionStorage.getItem("id");
+    param['vip_card_type']=$("#vip_card_type").html();
+    param['type']=grade;
+    param['corp_code']=sessionStorage.getItem("corp_code");
+    oc.postRequire("post","/vip/changeVipType","0",param,function (data) {
+       if(data.code == 0){
+            
+       } else if(data.code == -1){
+           console.log(data.message);
+       }
+    });
+}
 $("#VIP_avatar").change(function(e){
     var corp_code=sessionStorage.getItem("corp_code");
     var id=sessionStorage.getItem("id");
@@ -467,7 +481,13 @@ $("#VIP_avatar").change(function(e){
     }).catch(function (err) {
     });
 });
-
+//会员升降级
+$("#grade_up").click(function () {
+    gradeChange("upgrade");
+});
+$("#grade_down").click(function () {
+   gradeChange("degrade");
+});
 //消费记录搜索
 $(".record_input input").keydown(function () {
     var event=window.event||arguments[0];

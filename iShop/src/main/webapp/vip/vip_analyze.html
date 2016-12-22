@@ -7,104 +7,106 @@
     <link rel="stylesheet" href="../css/font_style.css?20161116">
     <link rel="stylesheet" href="../css/vip_analyze.css?20161116">
     <style>
-        #select_analyze ul li.choose_li,#select_analyze_brand ul li.choose_li,#select_analyze_shop ul li.choose_li{
-            background:#6cc1c8 ;
+        #select_analyze ul li.choose_li, #select_analyze_brand ul li.choose_li, #select_analyze_shop ul li.choose_li {
+            background: #6cc1c8;
             color: #fff;
             /*border-radius: 10px;*/
             cursor: pointer;
-            width:100%;
+            width: 100%;
             /*margin-left: 6.7%;*/
         }
-        .no_data{
-            height:46px;
+
+        .no_data {
+            height: 46px;
         }
+
         /*数据图图标*/
-        .chart_head i{
-            float:right;
+        .chart_head i {
+            float: right;
         }
     </style>
 </head>
 <body>
-    <div class="con_table" id="con_table">
-        <!-- 导航-->
-        <div class="title">
-            <span id="vipAnalyze_return">会员管理</span>
-            <span class="icon-ishop_8-03"></span>
-            <span>会员分析</span>
+<div class="con_table" id="con_table">
+    <!-- 导航-->
+    <div class="title">
+        <span id="vipAnalyze_return">会员管理</span>
+        <span class="icon-ishop_8-03"></span>
+        <span>会员分析</span>
+    </div>
+    <!-- 左侧总体数据分析-->
+    <div id="side_analyze" class="col_lg_4 lf">
+        <ul>
+            <li>
+                <b>品牌</b>
+                <s></s>
+                <span class="icon-ishop_8-02"></span>
+            </li>
+            <li>
+                <b>区域</b>
+                <s></s>
+                <span class="icon-ishop_8-02 area"></span>
+            </li>
+            <li>
+                <b>店铺</b>
+                <s></s>
+                <span class="icon-ishop_8-02 ishop"></span>
+            </li>
+            <li style="border-bottom: none">
+                <b>分组</b>
+                <s>全部</s>
+                <span class="icon-ishop_8-02 group"></span>
+            </li>
+        </ul>
+        <!--下拉品牌-->
+        <div id="select_analyze_brand">
+            <div>
+                <b style="">
+                    <input>
+                    <span class="icon-ishop_3-05 ishop"></span>
+                </b>
+                <ul class="scroll_bar">
+                </ul>
+                <!--<s class="select_analyze_brand">...加载更多...</s>-->
+            </div>
         </div>
-        <!-- 左侧总体数据分析-->
-        <div id="side_analyze" class="col_lg_4 lf">
-            <ul>
-                <li>
-                    <b>品牌</b>
-                    <s></s>
-                    <span class="icon-ishop_8-02"></span>
-                </li>
-                <li>
-                    <b>区域</b>
-                    <s></s>
-                    <span class="icon-ishop_8-02 area"></span>
-                </li>
-                <li>
-                    <b>店铺</b>
-                    <s></s>
-                    <span class="icon-ishop_8-02 ishop"></span>
-                </li>
-                <li style="border-bottom: none">
-                    <b>分组</b>
-                    <s>全部</s>
-                    <span class="icon-ishop_8-02 group"></span>
-                </li>
-            </ul>
-            <!--下拉品牌-->
-            <div id="select_analyze_brand">
-                <div>
-                    <b style="">
-                        <input >
-                        <span class="icon-ishop_3-05 ishop"></span>
-                    </b>
-                    <ul class="scroll_bar">
-                    </ul>
-                    <!--<s class="select_analyze_brand">...加载更多...</s>-->
-                </div>
+        <!-- 下拉区域选择框-->
+        <div id="select_analyze">
+            <div>
+                <b>
+                    <input>
+                    <span class="icon-ishop_3-05 ishop"></span>
+                </b>
+                <ul class="scroll_bar">
+                </ul>
+                <!--<s class="select_analyze">...加载更多...</s>-->
             </div>
-            <!-- 下拉区域选择框-->
-            <div id="select_analyze">
-                <div>
-                    <b>
-                        <input >
-                        <span class="icon-ishop_3-05 ishop"></span>
-                    </b>
-                    <ul class="scroll_bar">
-                    </ul>
-                    <!--<s class="select_analyze">...加载更多...</s>-->
-                </div>
+        </div>
+        <!-- 店铺弹框-->
+        <div id="select_analyze_shop" style="top:116px">
+            <div>
+                <b>
+                    <input>
+                    <span class="icon-ishop_3-05"></span>
+                </b>
+                <ul class="scroll_bar">
+                </ul>
+                <!--<s class="select_analyze_shop">...加载更多...</s>-->
             </div>
-            <!-- 店铺弹框-->
-            <div id="select_analyze_shop"style="top:116px">
-                <div>
-                    <b>
-                        <input >
-                        <span class="icon-ishop_3-05"></span>
-                    </b>
-                    <ul class="scroll_bar">
-                    </ul>
-                    <!--<s class="select_analyze_shop">...加载更多...</s>-->
-                </div>
+        </div>
+        <div id="select_analyze_group" style="top:155px">
+            <div>
+                <b>
+                    <input>
+                    <span class="icon-ishop_3-05"></span>
+                </b>
+                <ul class="scroll_bar">
+                </ul>
             </div>
-            <div id="select_analyze_group" style="top:155px">
-                <div>
-                    <b>
-                        <input >
-                        <span class="icon-ishop_3-05"></span>
-                    </b>
-                    <ul class="scroll_bar">
-                    </ul>
-                </div>
-            </div>
-            <div class="date_title">
+        </div>
+        <div class="date_title">
                 <span class="choose item">
-                    <input readonly class="title_l"style="height: 27px;border:none;color: #888"value="按日查看">
+                    <input readonly class="title_l" style="height: 27px;border:none;color: #888" value="按日查看">
                         <ul class="select_Date">
                             <li>按日查看</li>
                             <li>按周查看</li>
@@ -113,81 +115,82 @@
                         </ul>
                 </span>
                 <span class="date">
-                    <input style='color: #888'placeholder="选择日期" id="date" type="text" class="icon-text" readonly="readonly">
+                    <input style='color: #888' placeholder="选择日期" id="date" type="text" class="icon-text"
+                           readonly="readonly">
                 </span>
-            </div>
-           <!-- 所有VIP-->
-           <ul class="all_vip">
-               <span class="vip_kind">所有VIP <b class="vip_count"></b></span>
-               <li>
-                   <table cellpadding="0" cellspacing="0">
-                       <thead>
-                            <th>业绩占比</th>
-                            <th>客件总价</th>
-                            <th>客件单价</th>
-                            <th>件单价</th>
-                       </thead>
-                       <tbody>
-                           <tr>
-                           </tr>
-                       </tbody>
-                   </table>
-               </li>
-           </ul>
-            <!-- 新VIP-->
-            <ul class="new_vip">
-                <span class="vip_kind">新VIP <b class="vip_count"></b></span>
-                <li>
-                    <table>
-                        <thead >
-                        <th width="91px">业绩占比</th>
-                        <th>客件总价</th>
-                        <th>客件单价</th>
-                        <th>件单价</th>
-                        </thead>
-                        <tbody>
-                          <tr>
-                          </tr>
-                        </tbody>
-                    </table>
-                </li>
-            </ul>
-            <!-- 老VIP-->
-            <ul class="old_vip">
-                <span class="vip_kind">老VIP <b class="vip_count"></b></span>
-                <li>
-                    <table>
-                        <thead>
-                        <th>业绩占比</th>
-                        <th>客件总价</th>
-                        <th>客件单价</th>
-                        <th>件单价</th>
-                        </thead>
-                        <tbody>
-                           <tr>
-                            </tr>
-                        </tbody>
-                    </table>
-                </li>
-            </ul>
         </div>
-        <!-- 右侧表格数据分析-->
-        <div id="table_analyze" class="col_lg_8 lf">
-            <ul class="vip_nav_bar">
-                <li class="liactive">生日会员</li>
-                <li>新入会员</li>
-                <li>活跃会员</li>
-                <li>消费排行</li>
-                <li>消费频率</li>
-            </ul>
+        <!-- 所有VIP-->
+        <ul class="all_vip">
+            <span class="vip_kind">所有VIP <b class="vip_count"></b></span>
+            <li>
+                <table cellpadding="0" cellspacing="0">
+                    <thead>
+                    <th>业绩占比</th>
+                    <th>客件总价</th>
+                    <th>客件单价</th>
+                    <th>件单价</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
+        <!-- 新VIP-->
+        <ul class="new_vip">
+            <span class="vip_kind">新VIP <b class="vip_count"></b></span>
+            <li>
+                <table>
+                    <thead>
+                    <th width="91px">业绩占比</th>
+                    <th>客件总价</th>
+                    <th>客件单价</th>
+                    <th>件单价</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
+        <!-- 老VIP-->
+        <ul class="old_vip">
+            <span class="vip_kind">老VIP <b class="vip_count"></b></span>
+            <li>
+                <table>
+                    <thead>
+                    <th>业绩占比</th>
+                    <th>客件总价</th>
+                    <th>客件单价</th>
+                    <th>件单价</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
+    </div>
+    <!-- 右侧表格数据分析-->
+    <div id="table_analyze" class="col_lg_8 lf">
+        <ul class="vip_nav_bar">
+            <li class="liactive">生日会员</li>
+            <li>新入会员</li>
+            <li>活跃会员</li>
+            <li>消费排行</li>
+            <li>消费频率</li>
+        </ul>
 
-            <div class="birthVip">
-                <ul class="date_btn">
+        <div class="birthVip">
+            <ul class="date_btn">
                 <li><span>今日</span></li>
                 <li><span>本月</span></li>
                 <li><span>次月</span></li>
             </ul>
-                <table class="vip_table" cellpadding="0" cellspacing="0">
+            <table class="vip_table" cellpadding="0" cellspacing="0">
                 <thead>
                 <tr>
                     <th>序号</th>
@@ -201,316 +204,319 @@
                 <tbody>
                 </tbody>
             </table>
-            </div>
+        </div>
 
-            <div style="display: none" class="newVip">
-               <div class="newVip_title">
-                   <ul class="new_btn">
-                       <li><span>今日</span></li>
-                       <li><span>本周</span></li>
-                       <li><span>本月</span></li>
-                   </ul>
-               </div>
-                <table class="vip_table" cellpadding="0" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>会员名称</th>
-                        <th>会员等级</th>
-                        <th>入会日期</th>
-                        <th>会员生日</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!--<tr>-->
-                        <!--<td>1</td>-->
-                        <!--<td>张鹏</td>-->
-                        <!--<td>金卡</td>-->
-                        <!--<td>2012-10-10</td>-->
-                        <!--<td>1982-10-10<i class="icon-ishop_8-03"></i></td>-->
-                    <!--</tr>-->
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="display: none" class="activeVip">
-                <ul class="month_btn">
-                    <li><span>活跃会员1.26%</span></li>
-                    <li><span>3个月23.95%</span></li>
-                    <li><span>6个月31.09%</span></li>
-                    <li><span>9个月26.05%</span></li>
-                    <li><span>12个月20.01%</span></li>
-                </ul>
-                <table class="vip_table" cellpadding="0" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>会员名称</th>
-                        <th>会员等级</th>
-                        <th>累计消费</th>
-                        <th>消费次数</th>
-                        <th>最近消费</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>张鹏</td>
-                        <td>金卡</td>
-                        <td>￥800.00</td>
-                        <td>8</td>
-                        <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="display: none" class="rank">
-                <ul class="month_btn">
-                    <li><span>最近消费</span></li>
-                    <!--<li><span>消费频率</span></li>-->
-                    <li><span>本月消费</span></li>
-                    <li><span>前三月消费</span></li>
-                    <li><span>历史总额</span></li>
-                </ul>
-                <table class="vip_table" cellpadding="0" cellspacing="0">
-                    <thead>
-                    <!--<tr>-->
-                        <!--<th>序号</th>-->
-                        <!--<th>会员</th>-->
-                        <!--<th>会员等级</th>-->
-                        <!--<th>消费总额</th>-->
-                        <!--<th>最近消费日期</th>-->
-                    <!--</tr>-->
-                    </thead>
-                    <tbody>
-                    <!--<tr>-->
-                        <!--<td>1</td>-->
-                        <!--<td>张鹏</td>-->
-                        <!--<td>金卡</td>-->
-                        <!--<td>￥800.00</td>-->
-                        <!--<td>8</td>-->
-                        <!--<td>1982-10-10<i class="icon-ishop_8-03"></i></td>-->
-                    <!--</tr>-->
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="display: none" class="freq">
+        <div style="display: none" class="newVip">
+            <div class="newVip_title">
                 <ul class="new_btn">
-                    <li><span>三个月</span></li>
-                    <li><span>六个月</span></li>
-                    <li><span>十二个月</span></li>
+                    <li><span>今日</span></li>
+                    <li><span>本周</span></li>
+                    <li><span>本月</span></li>
                 </ul>
-                <table class="vip_table" cellpadding="0" cellspacing="0">
-                    <thead>
-                    <!--<tr>-->
-                    <!--<th>序号</th>-->
-                    <!--<th>会员</th>-->
-                    <!--<th>会员等级</th>-->
-                    <!--<th>消费总额</th>-->
-                    <!--<th>最近消费日期</th>-->
-                    <!--</tr>-->
-                    </thead>
-                    <tbody>
-                    <!--<tr>-->
-                    <!--<td>1</td>-->
-                    <!--<td>张鹏</td>-->
-                    <!--<td>金卡</td>-->
-                    <!--<td>￥800.00</td>-->
-                    <!--<td>8</td>-->
-                    <!--<td>1982-10-10<i class="icon-ishop_8-03"></i></td>-->
-                    <!--</tr>-->
-                    </tbody>
-                </table>
             </div>
-            <div id="side_bar" style="display: none;">
-                <div class="gotop">
-                    <span class="icon-ishop_4-03"></span>
-                </div>
-                <div class="gobottom">
-                    <span class="icon-ishop_4-04"></span>
-                </div>
+            <table class="vip_table" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>会员名称</th>
+                    <th>会员等级</th>
+                    <th>入会日期</th>
+                    <th>会员生日</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--<tr>-->
+                <!--<td>1</td>-->
+                <!--<td>张鹏</td>-->
+                <!--<td>金卡</td>-->
+                <!--<td>2012-10-10</td>-->
+                <!--<td>1982-10-10<i class="icon-ishop_8-03"></i></td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: none" class="activeVip">
+            <ul class="month_btn">
+                <li><span>活跃会员1.26%</span></li>
+                <li><span>3个月23.95%</span></li>
+                <li><span>6个月31.09%</span></li>
+                <li><span>9个月26.05%</span></li>
+                <li><span>12个月20.01%</span></li>
+            </ul>
+            <table class="vip_table" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>会员名称</th>
+                    <th>会员等级</th>
+                    <th>累计消费</th>
+                    <th>消费次数</th>
+                    <th>最近消费</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张鹏</td>
+                    <td>金卡</td>
+                    <td>￥800.00</td>
+                    <td>8</td>
+                    <td>1982-10-10<i class="icon-ishop_8-03"></i></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: none" class="rank">
+            <ul class="month_btn">
+                <li><span>最近消费</span></li>
+                <!--<li><span>消费频率</span></li>-->
+                <li><span>本月消费</span></li>
+                <li><span>前三月消费</span></li>
+                <li><span>历史总额</span></li>
+            </ul>
+            <table class="vip_table" cellpadding="0" cellspacing="0">
+                <thead>
+                <!--<tr>-->
+                <!--<th>序号</th>-->
+                <!--<th>会员</th>-->
+                <!--<th>会员等级</th>-->
+                <!--<th>消费总额</th>-->
+                <!--<th>最近消费日期</th>-->
+                <!--</tr>-->
+                </thead>
+                <tbody>
+                <!--<tr>-->
+                <!--<td>1</td>-->
+                <!--<td>张鹏</td>-->
+                <!--<td>金卡</td>-->
+                <!--<td>￥800.00</td>-->
+                <!--<td>8</td>-->
+                <!--<td>1982-10-10<i class="icon-ishop_8-03"></i></td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: none" class="freq">
+            <ul class="new_btn">
+                <li><span>三个月</span></li>
+                <li><span>六个月</span></li>
+                <li><span>十二个月</span></li>
+            </ul>
+            <table class="vip_table" cellpadding="0" cellspacing="0">
+                <thead>
+                <!--<tr>-->
+                <!--<th>序号</th>-->
+                <!--<th>会员</th>-->
+                <!--<th>会员等级</th>-->
+                <!--<th>消费总额</th>-->
+                <!--<th>最近消费日期</th>-->
+                <!--</tr>-->
+                </thead>
+                <tbody>
+                <!--<tr>-->
+                <!--<td>1</td>-->
+                <!--<td>张鹏</td>-->
+                <!--<td>金卡</td>-->
+                <!--<td>￥800.00</td>-->
+                <!--<td>8</td>-->
+                <!--<td>1982-10-10<i class="icon-ishop_8-03"></i></td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+        <div id="side_bar" style="display: none;">
+            <div class="gotop">
+                <span class="icon-ishop_4-03"></span>
             </div>
-            <div class="more_data">查看更多<i class="icon-ishop_8-03"></i></div>
-            <div class="foot" style="display: none">
-                <ul>
-                    <li class="foot-jum">
-                        <span>跳转至</span>
-                        <input class="input-txt" value="36" id="input-txt">
-                        <em>页</em>
-                    </li>
-                    <li class="foot-num" >
-                        <ul id="foot-num">
-                            <li class="icon-ishop_4-01" style="color: #afafaf">
-
-                            </li>
-                            <li>
-                                <span class="p-bg">1</span>
-                            </li>
-                            <li>
-                                <span>2</span>
-                            </li>
-                            <li>
-                                <span>3</span>
-                            </li>
-                            <li>
-                                <span>4</span>
-                            </li>
-                            <li>
-                                <span>5</span>
-                            </li>
-                            <li class="icon-ishop_4-02">
-
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="foot-sum">
-                        <div class="page_p">
-                            <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly" style="width:100px">
-                            <ul class="liebiao" style="display:none;" id="liebiao">
-                                <li id="10">10行/页</li>
-                                <li id="30">30行/页</li>
-                                <li id="50">50行/页</li>
-                                <li id="100">100行/页</li>
-                            </ul>
-                            <span class="icon-ishop_8-02 icon"></span>
-                        </div>
-                        <span class="zy">共 75 页</span>
-                    </li>
-                </ul>
+            <div class="gobottom">
+                <span class="icon-ishop_4-04"></span>
             </div>
         </div>
-        <!-- 分析数据图表描述-->
-        <div id="chart_analyze" class="col_lg_12"style="display: inline-block">
-            <div class="chart_module">
-               <ul>
-                   <span class="chart_head">消费类型  <i class="icon-ishop_9-05"></i></span>
-                   <li id="main" style="padding-left: 10px;">
-                   </li>
-               </ul>
-           </div>
-            <div class="chart_module">
-                <ul>
-                    <span class="chart_head">星期偏好  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main1" style="height: 270px;">
-                    </li>
-                </ul>
-            </div>
-            <div class="chart_module"style="margin-right: 0px">
-                <ul>
-                    <span class="chart_head">价格偏好  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main2" style="height: 270px;">
-                    </li>
-                </ul>
-            </div>
-            <div class="chart_module">
-                <ul>
-                    <span class="chart_head">购买时段  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main3" style="height: 270px;">
-                    </li>
-                </ul>
-            </div>
-            <div class="chart_module">
-                <ul>
-                    <span class="chart_head">月份偏好  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main4" style="height: 270px;">
-                    </li>
-                </ul>
-            </div>
-            <div class="chart_module"style="margin-right: 0px">
-                <ul>
-                    <span class="chart_head">系列偏好  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main5" style="height: 270px;padding-left: 10px;">
-                    </li>
-                </ul>
-            </div>     <div class="chart_module">
-                <ul>
-                    <span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main6" style="height: 270px;padding-left: 10px;">
-                    </li>
-                </ul>
-            </div>     <div class="chart_module"style="margin-right: 0px">
-                <ul>
-                    <span class="chart_head">地域分布  <i class="icon-ishop_9-05"></i></span>
-                    <li id="main7" style="height:270px;">
-                    </li>
-                </ul>
-            </div>
+        <div class="more_data">查看更多<i class="icon-ishop_8-03"></i></div>
+        <div class="foot" style="display: none">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="36" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num">
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+
+                        </li>
+                        <li>
+                            <span class="p-bg">1</span>
+                        </li>
+                        <li>
+                            <span>2</span>
+                        </li>
+                        <li>
+                            <span>3</span>
+                        </li>
+                        <li>
+                            <span>4</span>
+                        </li>
+                        <li>
+                            <span>5</span>
+                        </li>
+                        <li class="icon-ishop_4-02">
+
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly"
+                               style="width:100px">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 75 页</span>
+                </li>
+            </ul>
         </div>
     </div>
+    <!-- 分析数据图表描述-->
+    <div id="chart_analyze" class="col_lg_12" style="display: inline-block">
+        <div class="chart_module">
+            <ul>
+                <span class="chart_head">消费类型  <i class="icon-ishop_9-05"></i></span>
+                <li id="main" style="padding-left: 10px;">
+                </li>
+            </ul>
+        </div>
+        <div class="chart_module">
+            <ul>
+                <span class="chart_head">星期偏好  <i class="icon-ishop_9-05"></i></span>
+                <li id="main1" style="height: 270px;">
+                </li>
+            </ul>
+        </div>
+        <div class="chart_module" style="margin-right: 0px">
+            <ul>
+                <span class="chart_head">价格偏好  <i class="icon-ishop_9-05"></i></span>
+                <li id="main2" style="height: 270px;">
+                </li>
+            </ul>
+        </div>
+        <div class="chart_module">
+            <ul>
+                <span class="chart_head">购买时段  <i class="icon-ishop_9-05"></i></span>
+                <li id="main3" style="height: 270px;">
+                </li>
+            </ul>
+        </div>
+        <div class="chart_module">
+            <ul>
+                <span class="chart_head">月份偏好  <i class="icon-ishop_9-05"></i></span>
+                <li id="main4" style="height: 270px;">
+                </li>
+            </ul>
+        </div>
+        <div class="chart_module" style="margin-right: 0px">
+            <ul>
+                <span class="chart_head">系列偏好  <i class="icon-ishop_9-05"></i></span>
+                <li id="main5" style="height: 270px;padding-left: 10px;">
+                </li>
+            </ul>
+        </div>
+        <!--<div class="chart_module">-->
+            <!--<ul>-->
+                <!--<span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>-->
+                <!--<li id="main6" style="height: 270px;padding-left: 10px;">-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+        <div class="chart_module" style="margin-right: 0px">
+            <ul>
+                <span class="chart_head">地域分布  <i class="icon-ishop_9-05"></i></span>
+                <li id="main7" style="height:270px;">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 </body>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
@@ -520,30 +526,31 @@
 <script type="text/javascript" src="../js/laydate/laydate.js?20161116"></script>
 <script src="../js/vip/vip_analyze.js?20161116"></script>
 <script>
-//    $('input').on('focus',function(){$(this)[0].style.outline='none';console.log('OK')});
+    //    $('input').on('focus',function(){$(this)[0].style.outline='none';console.log('OK')});
     console.log($(".scroll_bar"));
     $(".scroll_bar").niceScroll({
-        cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
-        cursorcolor:"#999",
-        cursoropacitymax:1,
-        touchbehavior:false,
-        cursorwidth:"5px",
-        cursorborder:"0",
-        cursorborderradius:"0px"});
-    $(function(){
-        $(window).scroll(function() {
+        cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorwidth: "5px",
+        cursorborder: "0",
+        cursorborderradius: "0px"
+    });
+    $(function () {
+        $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
                 $("#side_bar .gotop").fadeIn();
             } else {
                 $("#side-bar .gotop").hide();
             }
         });
-        $("#side_bar .gotop").click(function() {
+        $("#side_bar .gotop").click(function () {
             $('html,body').animate({
                 'scrollTop': 0
             }, 500);
         });
-        $("#side_bar .gobottom").click(function() {
+        $("#side_bar .gobottom").click(function () {
             var btm = $(document).height();
             $('html,body').animate({
                 'scrollTop': btm
