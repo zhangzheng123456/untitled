@@ -263,6 +263,10 @@ function fuzhi(data){
     $("#vip_card_no_edit").val(data.cardno);
     $("#vip_card_type").html(data.vip_card_type);
     $("#vip_card_type_edit").val(data.vip_card_type);
+    $("#balance_message").val(data.balance);
+    $("#monetary").val(data.total_amount);
+    $("#consume_cishu").val(data.consume_times);
+    $("#open_card_date").val(data.join_date);
     $("#vip_phone").html(data.vip_phone);
     $("#vip_phone_edit").val(data.vip_phone);
     $("#user_name").html(data.user_name);

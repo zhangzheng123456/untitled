@@ -140,9 +140,9 @@ $("#filter_condition ul li").click(function () {
     $(this).siblings("li").children("a").removeClass("condition_active");
     $("#contion").children("div").eq(index).css("display", "block");
     $("#contion").children("div").eq(index).siblings("div").css("display", "none");
-    if(index == 5){
-        expend_data();
-    }
+    // if(index == 5){
+    //     expend_data();
+    // }
 });
 $("#vip_card_type").click(function () {
     $("#card_type_select").toggle();
@@ -359,6 +359,9 @@ $("#empty_filter").click(function () {
             $(this).val("");
         }
     });
+    $("#screen_wrapper textarea").each(function () {
+        $(this).val("");
+    });
 });
 //分组弹窗
 $("#screen_group_icon").click(function () {
@@ -477,6 +480,7 @@ $(document).click(function (e) {
     }
 });
 $(function () {
+    expend_data();
     //给年龄赋值
     for (var i = 1; i < 101; i++) {
         $(".age_l").append('<li>' + i + '</li>');
@@ -485,11 +489,19 @@ $(function () {
     //引用滚动样式插件
     $(".filter_group #ul").niceScroll({
         cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
-        cursorcolor: " rgba(0,0,0,0.2)",
+        cursorcolor: " rgba(0,0,0,0.1)",
         cursoropacitymax: 1,
         touchbehavior: false,
         cursorminheight: 30,
         autohidemode: false
+    });
+    $("#expend_attribute").niceScroll({
+        cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
+        cursorcolor: " rgba(0,0,0,0.2)",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorminheight: 30,
+        autohidemode: "scroll"
     });
     $(window).scroll(function () {
         if ($(window).scrollTop() > 100) {
@@ -633,6 +645,7 @@ function expend_data() {
     var param={"corp_code":"C10000"};
     oc.postRequire("post","/vipparam/corpVipParams","0",param,function (data) {
        if(data.code == 0){
+           $("#expend_attribute").empty();
            var msg = JSON.parse(data.message);
            var list = JSON.parse(msg.list);
            var html=""
@@ -672,7 +685,6 @@ function expend_data() {
                }
            }
            $("#expend_attribute").append(html);
-           console.log(data.message);
        }else if(data.code == -1){
            console.log(data.message);
        }
