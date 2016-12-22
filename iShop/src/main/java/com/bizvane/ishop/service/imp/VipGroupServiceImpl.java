@@ -108,16 +108,17 @@ public class VipGroupServiceImpl implements VipGroupService {
     public String update(VipGroup vipGroup, String user_code) throws Exception {
         String result = "";
         int id = vipGroup.getId();
-        String vip_group_code = vipGroup.getVip_group_code().trim();
+//        String vip_group_code = vipGroup.getVip_group_code().trim();
         String vip_group_name = vipGroup.getVip_group_name().trim();
         String corp_code = vipGroup.getCorp_code();
 
-        VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
+//        VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
-        if (vipGroup1 != null && vipGroup1.getId() != id) {
-            result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null && vipGroup2.getId() != id) {
+//        if (vipGroup1 != null && vipGroup1.getId() != id) {
+//            result = "该会员分组编号已存在";
+//        } else
+        if (vipGroup2 != null && vipGroup2.getId() != id) {
             result = "该会员分组名称已存在";
         } else {
             Date now = new Date();
