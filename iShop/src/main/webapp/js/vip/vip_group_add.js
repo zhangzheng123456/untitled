@@ -1954,15 +1954,17 @@ $("#select_vip_que").click(function(){ //筛选确定
                     }
                 });
                 $(this).find("textarea").each(function () {
-                    var key = $(this).attr("data-kye");
-                    var param = {};
-                    var val = $(this).val();
-                    var name=$(this).prev().text();
-                    param['key'] = key;
-                    param['value'] = val;
-                    param['type'] = "text";
-                    param["name"]=name;
-                    screen.push(param);
+                    if($(this).val()!=""){
+                        var key = $(this).attr("data-kye");
+                        var param = {};
+                        var val = $(this).val();
+                        var name=$(this).prev().text();
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        param["name"]=name;
+                        screen.push(param);
+                    }
                 });
             });
         }
