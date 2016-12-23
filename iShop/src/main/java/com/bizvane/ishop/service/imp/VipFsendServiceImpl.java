@@ -274,51 +274,75 @@ public class VipFsendServiceImpl implements VipFsendService {
         String sms_vips = jsonObject.get("sms_vips").toString().trim();
         String content = vipFsend.getContent();
         JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
-        String type = sms_vips_obj.getString("type");
         String openids = "";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
-        if (type.equals("1")) {
-            String area_code = sms_vips_obj.get("area_code").toString();
-            String brand_code = sms_vips_obj.get("brand_code").toString();
-            String store_code = sms_vips_obj.get("store_code").toString();
-            String vip_user_code = sms_vips_obj.get("user_code").toString();
-            if (vip_user_code.equals("")) {
-                if (store_code.equals("")) {
-                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-                    for (int i = 0; i < storeList.size(); i++) {
-                        store_code = store_code + storeList.get(i).getStore_code() + ",";
+        if(send_scope.equals("vip")){
+            String type = sms_vips_obj.getString("type");
+            if (type.equals("1")) {
+                String area_code = sms_vips_obj.get("area_code").toString();
+                String brand_code = sms_vips_obj.get("brand_code").toString();
+                String store_code = sms_vips_obj.get("store_code").toString();
+                String vip_user_code = sms_vips_obj.get("user_code").toString();
+                if (vip_user_code.equals("")) {
+                    if (store_code.equals("")) {
+                        List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                        for (int i = 0; i < storeList.size(); i++) {
+                            store_code = store_code + storeList.get(i).getStore_code() + ",";
+                        }
                     }
-                }
-                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
 
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_store_code.key, data_store_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-                logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
-                String message1 = dataBox.data.get("message").value;
-                JSONObject msg_obj = JSONObject.parseObject(message1);
-                JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-                for (int i = 0; i < vip_infos.size(); i++) {
-                    JSONObject vip_obj = vip_infos.getJSONObject(i);
-                    phone = phone + vip_obj.getString("vip_phone") + ",";
-                    vip_id = vip_id + vip_obj.getString("vip_id") + ",";
-                    if (!vip_obj.getString("open_id").equals("")) {
-                        openids = openids + vip_obj.getString("open_id") + ",";
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_store_code.key, data_store_code);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
+                    String message1 = dataBox.data.get("message").value;
+                    JSONObject msg_obj = JSONObject.parseObject(message1);
+                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                    for (int i = 0; i < vip_infos.size(); i++) {
+                        JSONObject vip_obj = vip_infos.getJSONObject(i);
+                        phone = phone + vip_obj.getString("vip_phone") + ",";
+                        vip_id = vip_id + vip_obj.getString("vip_id") + ",";
+                        if (!vip_obj.getString("open_id").equals("")) {
+                            openids = openids + vip_obj.getString("open_id") + ",";
+                        }
+                        vip_name = vip_name + vip_obj.getString("vip_name") + ",";
+
                     }
-                    vip_name = vip_name + vip_obj.getString("vip_name") + ",";
+                } else {
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_user_code = new Data("user_codes", user_id, ValueType.PARAM);
 
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_user_code.key, data_user_code);
+                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+                    logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
+                    String message1 = dataBox.data.get("message").value;
+                    JSONObject msg_obj = JSONObject.parseObject(message1);
+                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                    for (int i = 0; i < vip_infos.size(); i++) {
+                        JSONObject vip_obj = vip_infos.getJSONObject(i);
+                        phone = phone + vip_obj.getString("vip_phone") + ",";
+                        vip_id = vip_id + vip_obj.getString("vip_id") + ",";
+                        vip_name = vip_name + vip_obj.getString("vip_name") + ",";
+                        if (!vip_obj.getString("open_id").equals("")) {
+                            openids = openids + vip_obj.getString("open_id") + ",";
+                        }
+                    }
                 }
             } else {
+                String vips = sms_vips_obj.get("vips").toString();
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_user_code = new Data("user_codes", user_id, ValueType.PARAM);
-
+                Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_user_code.key, data_user_code);
+                datalist.put(data_vip_id.key, data_vip_id);
+                vip_id = vip_id + vips;
                 DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
                 logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
                 String message1 = dataBox.data.get("message").value;
@@ -327,35 +351,16 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("vip_phone") + ",";
-                    vip_id = vip_id + vip_obj.getString("vip_id") + ",";
                     vip_name = vip_name + vip_obj.getString("vip_name") + ",";
                     if (!vip_obj.getString("open_id").equals("")) {
                         openids = openids + vip_obj.getString("open_id") + ",";
                     }
                 }
             }
-        } else {
-            String vips = sms_vips_obj.get("vips").toString();
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_vip_id.key, data_vip_id);
-            vip_id = vip_id + vips;
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-            logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
-            String message1 = dataBox.data.get("message").value;
-            JSONObject msg_obj = JSONObject.parseObject(message1);
-            JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-            for (int i = 0; i < vip_infos.size(); i++) {
-                JSONObject vip_obj = vip_infos.getJSONObject(i);
-                phone = phone + vip_obj.getString("vip_phone") + ",";
-                vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-                if (!vip_obj.getString("open_id").equals("")) {
-                    openids = openids + vip_obj.getString("open_id") + ",";
-                }
-            }
+        }else{
+
         }
+
         vipFsend.setSms_code(sms_code);
         vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipFsend.setCreater(user_id);
@@ -392,10 +397,10 @@ public class VipFsendServiceImpl implements VipFsendService {
 
                 }else if(send_scope.equals("vip_group")){
                     //发送范围：分组会员
-                   // status = Common.DATABEAN_CODE_SUCCESS;
+
                 }
 
-                return status;
+               return status;
             } else if (send_type.equals("wxmass")) {
                 //发送类型：微信群发消息
                 //发送范围：指定会员
