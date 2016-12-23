@@ -45,13 +45,9 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     private IceInterfaceService iceInterfaceService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private WxTemplateService wxTemplateService;
     @Autowired
     private StoreService storeService;
-    @Autowired
-    private ValidateCodeService validateService;
     @Autowired
     MongoDBClient mongodbClient;
     private static HttpClient httpClient = new HttpClient();
@@ -81,7 +77,7 @@ public class VipFsendServiceImpl implements VipFsendService {
 
 
         if (send_type.equals("sms")) {
-            if(send_scope.equals("vip")){
+
 
                 String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
@@ -125,15 +121,28 @@ public class VipFsendServiceImpl implements VipFsendService {
                     message = dataBox.data.get("message").value;
                 }
 
+
+            if(send_scope.equals("vip")){
                 return message;
             }else if(send_scope.equals("vip_group")){
-                message="会员分组";
+
+                JSONObject obj=new JSONObject();
+                JSONObject obj1=new JSONObject();
+                obj1.put("vip_name","彭旭丽");
+                obj1.put("cardno","13016691660");
+                obj1.put("vip_phone","13016691660");
+
+                JSONArray arr=new JSONArray();
+                arr.add(obj1);
+                obj.put("vip_info",arr);
+                JSONObject obj2=new JSONObject();
+                obj2.put("message",obj);
+                message=JSON.toJSONString(obj2);
+                return message;
             }
 
         } else if (send_type.equals("wxmass")) {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
-           
-            if(send_scope.equals("vip")){
                 JSONArray vip_infos=null;
                 String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
@@ -220,7 +229,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     if (message_list.size() == 0) {
                         JSONObject info=new JSONObject();
                         info.put("vip_info",vip_infos.toString());
-                        message = info.toString();
+                        message = JSON.toJSONString(info);
                     } else {
                         list.addAll(message_list);
                         JSONObject vips_info = new JSONObject();
@@ -230,10 +239,20 @@ public class VipFsendServiceImpl implements VipFsendService {
 
 
                 }
-                return message;
-            }else if(send_scope.equals("vip_group")){
-                message="会员分组";
-            }
+
+            JSONObject obj=new JSONObject();
+            JSONObject obj1=new JSONObject();
+            obj1.put("vip_name","彭旭丽");
+            obj1.put("cardno","13016691660");
+            obj1.put("vip_phone","13016691660");
+
+            JSONArray arr=new JSONArray();
+            arr.add(obj1);
+            obj.put("vip_info",arr);
+            JSONObject obj2=new JSONObject();
+            obj2.put("message",obj);
+            message=JSON.toJSONString(obj2);
+            return message;
 
         }else {
             message = "发送类型不合法";
@@ -410,7 +429,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             } else if (send_type.equals("wxmass")) {
                 //发送类型：微信群发消息
                 //发送范围：指定会员
-                if(send_scope.equals("vips")){
+                if(send_scope.equals("vip")){
                     //根据id查询微信模板信息
                     WxTemplate wxTemplate= wxTemplateService.getTemplateById(tem_id);
                     String app_user_name=wxTemplate.getApp_user_name();
