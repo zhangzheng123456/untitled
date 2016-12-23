@@ -8,6 +8,7 @@
         <result column="send_type" property="send_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="send_scope" property="send_scope" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sms_vips" property="sms_vips" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_group_code" property="vip_group_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="content" property="content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"  typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -27,6 +28,7 @@
          def_vip_fsendsms.send_type,
          def_vip_fsendsms.send_scope,
         def_vip_fsendsms.sms_vips,
+       def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
         def_vip_fsendsms.corp_code,
         def_vip_fsendsms.modified_date,
@@ -47,6 +49,7 @@
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
         def_vip_fsendsms.sms_vips,
+        def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
         def_vip_fsendsms.corp_code,
         def_vip_fsendsms.modified_date,
@@ -94,6 +97,9 @@
             <if test="sms_vips!=null">
                 sms_vips,
             </if>
+            <if test="vip_group_code!=null">
+                vip_group_code,
+            </if>
             <if test="content!=null">
                 content,
             </if>
@@ -129,6 +135,9 @@
             <if test="sms_vips!=null">
                 #{sms_vips},
             </if>
+            <if test="vip_group_code!=null">
+                #{vip_group_code},
+            </if>
             <if test="content!=null">
                 #{content},
             </if>
@@ -153,46 +162,6 @@
         </trim>
     </insert>
 
-    <update id="updateFsend" parameterType="com.bizvane.ishop.entity.VipFsend">
-        UPDATE def_vip_fsendsms
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="sms_code!=null">
-                sms_code=#{sms_code},
-            </if>
-            <if test="send_type!=null">
-                send_type=#{send_type},
-            </if>
-            <if test="send_scope!=null">
-                send_scope=#{send_scope},
-            </if>
-            <if test="sms_vips!=null">
-                sms_vips=#{sms_vips},
-            </if>
-            <if test="content!=null">
-                content=#{content},
-            </if>
-            <if test="corp_code!=null">
-                corp_code=#{corp_code},
-            </if>
-            <if test="modified_date!=null">
-                modified_date=#{modified_date},
-            </if>
-            <if test="modifier!=null">
-                modifier=#{modifier},
-            </if>
-            <if test="created_date!=null">
-                created_date=#{created_date},
-            </if>
-            <if test="creater!=null">
-                creater=#{creater},
-            </if>
-            <if test="isactive!=null">
-                isactive=#{isactive},
-            </if>
-        </trim>
-        WHERE id=#{id};
-    </update>
-
     <select id="selectAllFsendScreen" resultMap="VipFsend">
         SELECT
         def_vip_fsendsms.id,
@@ -200,6 +169,7 @@
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
         def_vip_fsendsms.sms_vips,
+        def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
         def_vip_fsendsms.corp_code,
         def_vip_fsendsms.modified_date,
@@ -243,6 +213,7 @@
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
         def_vip_fsendsms.sms_vips,
+         def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
         def_vip_fsendsms.corp_code,
         def_vip_fsendsms.modified_date,
