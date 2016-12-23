@@ -740,7 +740,7 @@ function deleteName(a) {
     $(a).parent("p").remove();
 }
 //新增关闭
-$("#edit_close").click(function () {
+$("#add_close").click(function () {
     sessionStorage.removeItem("state");
     $(window.parent.document).find('#iframepage').attr("src", "/task/task.html");
 });
