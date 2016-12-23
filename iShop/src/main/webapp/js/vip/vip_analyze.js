@@ -522,7 +522,7 @@ function vipTable_lg() {
     $("#side_bar").show();
     var arr=whir.loading.getPageSize();
     var w=arr[0];
-    var h=arr[1];console.log(h);
+    var h=arr[1];
     $(".vip_table_lg .right_shadow").css({"height":h,"width":w,"left":"-220px","top":"-50px"});
 }
 //点击标题返回
@@ -1728,6 +1728,9 @@ $().ready(function(){
     var strDate = date.getDate();
     date=year+"-"+month+"-"+strDate
     $(".date_title .date input").val(date);
+    $('#chart_analyze').dad({
+        draggable: '.drag_area'
+    });
 });
 var achv={
     elem: '#date',
@@ -1758,4 +1761,20 @@ $(".select_Date li").click(function () {
     }
     getData();
     $($(this).parent()).toggle()
-})
+});
+//图标新增
+$("#add_chart").click(function () {
+    var arr=whir.loading.getPageSize();
+    var w=arr[0];
+    var h=arr[1];
+    var left=(arr[0]-$("#chart_add_wrap").width())/2;
+    var tp=arr[3];
+    $("#chart_add_wrap").css({"left":left,"top":tp});
+    $("#p").css({"width":w,"height":h});
+    $("#chart_add_wrap").show();
+    $("#p").show();
+});
+$(".chart_close").click(function () {
+    $("#chart_add_wrap").hide();
+    $("#p").hide();
+});
