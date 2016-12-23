@@ -324,10 +324,12 @@ $("#screen_vip_que").click(function () {
                 var key = $(this).attr("data-kye");
                 var param = {};
                 var val = $(this).val();
-                param['key'] = key;
-                param['value'] = val;
-                param['type'] = "text";
-                screen.push(param);
+                if(val !== ""){
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['type'] = "text";
+                    screen.push(param);
+                }
             });
         });
     }
