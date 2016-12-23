@@ -1,5 +1,5 @@
 var oc = new ObjectControl();
-var vip_ground_info={
+var vip_group_info={
     pageNumber:1,//删除默认第一页
     pageSize:10,//默认传的每页多少行
     count:"",
@@ -17,13 +17,14 @@ var vip_ground_info={
         this.selectShowType();
         this.setPageSize();
         this.inputGo();
+        this.checkList();
     },
     setPage:function (container, count, pageindex,pageSize){
         count==0?count=1:'';
         var container = container;
         var count = count;
         var pageindex = pageindex;
-        var pageSize=pageSize;
+        //var pageSize=pageSize;
         var a = [];
         //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
         if (pageindex == 1) {
@@ -73,32 +74,32 @@ var vip_ground_info={
         container.innerHTML = a.join("");
         var pageClick = function() {
             var oAlink = container.getElementsByTagName("span");
-            inx = pageindex; //初始的页码
-            $("#input-txt").val(inx);
+            vip_group_info.inx = pageindex; //初始的页码
+            $("#input-txt").val(vip_group_info.inx);
             $(".foot-sum .zy").html("共 "+count+"页");
             oAlink[0].onclick = function() { //点击上一页
-                if (inx == 1) {
+                if (vip_group_info.inx == 1) {
                     return false;
                 }
-                inx--;
-                dian(vip_ground_info.inx,vip_ground_info.pageSize);
+                vip_group_info.inx--;
+                vip_group_info.dian(vip_group_info.inx,vip_group_info.pageSize);
                 // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             };
             for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
                 oAlink[i].onclick = function() {
-                    inx = parseInt(this.innerHTML);
-                    dian(vip_ground_info.inx,vip_ground_info.pageSize);
+                    vip_group_info.inx = parseInt(this.innerHTML);
+                    vip_group_info.dian(vip_group_info.inx,vip_group_info.pageSize);
                     // setPage(container, count, inx,pageSize,funcCode,value);
                     return false;
                 }
             }
             oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-                if (inx == count) {
+                if (vip_group_info.inx == count) {
                     return false;
                 }
-                inx++;
-                dian(vip_ground_info.inx,vip_ground_info.pageSize);
+                vip_group_info.inx++;
+                vip_group_info.dian(vip_group_info.inx,vip_group_info.pageSize);
                 // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
@@ -118,11 +119,33 @@ var vip_ground_info={
             }
         });
         $("#group_list li ul").on("click","li",function(){
-            vip_ground_info.nowId=$(this).attr("id");
+            vip_group_info.nowId=$(this).attr("id");
             $("#group_list li ul li").removeClass("active");
             $(this).addClass("active");
-            vip_ground_info.getList(vip_ground_info.id)
+            vip_group_info.getList(vip_group_info.id)
         })
+    },
+    //权限配置
+    jurisdiction:function(actions){
+        $('#jurisdiction').empty();
+        for(var i=0;i<actions.length;i++){
+            if(actions[i].act_name=="add"){
+                $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+            }else if(actions[i].act_name=="delete"){
+                $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+            }else if(actions[i].act_name=="edit"){
+                $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            }else if(actions[i].act_name=="chooseUser"){
+                $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
+            }else if(actions[i].act_name=="output"){
+                //$("#more_down").append("<div id='leading_out'>导出</div>");
+                $("#filtrate").before("<li id='leading_out' title='因会员数据量大，请筛选后再导出'> <span class='icon-ishopwebicon_6-24'></span> 导出</li>")
+            }else if(actions[i].act_name=="input"){
+                $("#more_down").append("<div id='guide_into'>导入</div>");
+            }else if(actions[i].act_name=="addLabel"){
+                $("#more_down").append("<div style='font-size:10px;' id='batch_label'>批量贴标签</div>");
+            }
+        }
     },
     qjia:function(){  //页面加载调权限接口
         var param={};
@@ -132,7 +155,7 @@ var vip_ground_info={
             var message=JSON.parse(data.message);
             var actions=message.actions;
             titleArray=message.columns;
-            //jurisdiction(actions);
+            self.jurisdiction(actions);
             //jumpBianse();
             //InitialState();
             self.tableTh();
@@ -148,6 +171,16 @@ var vip_ground_info={
             }
         }
         $("#tableOrder").after(TH);
+        var len = $(".table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $(".table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($(".table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'></span>");
+        vip_group_info.jumpBianse();
     },
     superaddition:function(data,num){ //页面加载循环
         if(data.length==1&&num>1){
@@ -174,7 +207,7 @@ var vip_ground_info={
                 data[i].sex="男"
             }
             if(num>=2){
-                var a=i+1+(num-1)*pageSize;
+                var a=i+1+(num-1)*vip_group_info.pageSize;
             }else{
                 var a=i+1;
             }
@@ -204,9 +237,9 @@ var vip_ground_info={
     getList:function(){
         whir.loading.add("",0.5);//加载等待框
         var getListParam={};
-        getListParam["id"]=vip_ground_info.nowId;
-        getListParam["pageNumber"]=vip_ground_info.inx;
-        getListParam["pageSize"]=vip_ground_info.pageSize;
+        getListParam["id"]=vip_group_info.nowId;
+        getListParam["pageNumber"]=vip_group_info.inx;
+        getListParam["pageSize"]=vip_group_info.pageSize;
         getListParam["type"]="list";
         getListParam["corp_code"]="C10000";
         oc.postRequire("post","/vipGroup/groupVips","",getListParam,function(data){
@@ -214,19 +247,19 @@ var vip_ground_info={
                 $(".table tbody").empty();
                 var messages=JSON.parse(data.message);
                 var list=messages.all_vip_list;
-                vip_ground_info.count=messages.pages;
+                vip_group_info.count=messages.pages;
                 var pageNum = messages.pageNum;
                 //var list=list.list;
-                vip_ground_info.superaddition(list,pageNum);
-                vip_ground_info.jumpBianse();
-                vip_ground_info.setPage($("#foot-num")[0],vip_ground_info.count,pageNum,vip_ground_info.pageSize);
+                vip_group_info.superaddition(list,pageNum);
+                vip_group_info.jumpBianse();
+                vip_group_info.setPage($("#foot-num")[0],vip_group_info.count,pageNum,vip_group_info.pageSize);
             }else if(data.code=="-1"){
                 alert(data.message);
             }
         });
     },
     dian:function(inx,pageSize){
-        vip_ground_info.getList(inx,pageSize);
+        vip_group_info.getList(inx,pageSize);
     },
     jumpBianse:function (){
         $(document).ready(function(){//隔行变色
@@ -278,8 +311,9 @@ var vip_ground_info={
         }
         $("#liebiao li").each(function(i,v){
             $(this).click(function(){
-                vip_ground_info.pageSize=$(this).attr('id');
-                vip_ground_info.getList();
+                vip_group_info.pageSize=$(this).attr('id');
+                vip_group_info.inx=1;
+                vip_group_info.getList();
                 $("#page_row").val($(this).html());
                 hideLi();
             })
@@ -288,19 +322,55 @@ var vip_ground_info={
     inputGo:function(){
         $("#input-txt").keydown(function() {
             var event=window.event||arguments[0];
-            var inx= this.value.replace(/[^0-9]/g, '');
-            var inx=parseInt(inx);
-            if (inx > vip_ground_info.count) {
-                inx = vip_ground_info.count
+            var index= this.value.replace(/[^0-9]/g, '');
+            var index=parseInt(index);
+            if (index > vip_group_info.count) {
+                index = vip_group_info.count;
             };
-            if (inx > 0) {
+            if (index > 0) {
                 if (event.keyCode == 13) {
-                    vip_ground_info.getList()
+                    vip_group_info.inx=index;
+                    vip_group_info.getList()
                 }
             }
         });
-    }
+    },
+    checkList:function () {
+        //全选
+        function checkAll(name){
+            var el=$("tbody input");
+            el.parents("tr").addClass("tr");
+            var len = el.length;
+
+            for(var i=0; i<len; i++)
+            {
+                if((el[i].type=="checkbox") && (el[i].name==name))
+                {
+                    el[i].checked = true;
+                }
+            }
+        };
+//取消全选
+        function clearAll(name){
+            var el=$("tbody input");
+            el.parents("tr").removeClass("tr");
+            var len = el.length;
+            for(var i=0; i<len; i++)
+            {
+                if((el[i].type=="checkbox") && (el[i].name==name))
+                {
+                    el[i].checked = false;
+                }
+            }
+        }
+        $("#checkboxTwoInput0").click(function(){
+           if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }
+        })
+    },
 };
 $(function(){
-    vip_ground_info.init();
+    vip_group_info.init();
+    $(".icon-ishop_6-07").parent().click(function () {
+        window.location.reload();
+    })
 });
