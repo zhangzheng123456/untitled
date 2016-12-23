@@ -115,7 +115,7 @@ public class StoreServiceImpl implements StoreService {
                 if (area != null) {
                     String area_name1 = area.getArea_name();
                     area_name.append(area_name1+",");
-                    area_code1.append(ids[i]+",");
+                    area_code1.append(area.getArea_code()+",");
                 }
             }
             String area_name1 = area_name.toString();
