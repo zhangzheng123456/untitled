@@ -19,7 +19,10 @@ public class VipFsend {
     private String modifier;
     //创建时间
     private String created_date;
+    //发送类型
     private String send_type;
+    //发送范围
+    private String send_scope;
     //创建者
     private String creater;
     //是否可用
@@ -58,6 +61,14 @@ public class VipFsend {
 
     public void setSms_vips(String sms_vips) {
         this.sms_vips = sms_vips;
+    }
+
+    public String getSend_scope() {
+        return send_scope;
+    }
+
+    public void setSend_scope(String send_scope) {
+        this.send_scope = send_scope;
     }
 
     public String getContent() {
