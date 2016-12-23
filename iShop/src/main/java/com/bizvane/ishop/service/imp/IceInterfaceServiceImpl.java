@@ -298,6 +298,24 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return dataBox;
     }
 
+    //会员筛选(Solr)
+    public DataBox vipScreenMethod2(String page_num,String page_size,String corp_code,String screen) throws Exception{
+        Data data_param = new Data("param", screen, ValueType.PARAM);
+        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+        Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+        Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_param.key, data_param);
+        datalist.put(data_corp_code.key, data_corp_code);
+        datalist.put(data_page_num.key, data_page_num);
+        datalist.put(data_page_size.key, data_page_size);
+
+        DataBox dataBox = iceInterfaceV2("AnalysisAllVip", datalist);
+        return dataBox;
+    }
+
+
     //会员筛选
     public DataBox vipScreen2ExeclMethod(String page_num,String page_size,String corp_code,String area_code,String brand_code,String store_code,String user_code,String output_message) throws Exception{
         DataBox dataBox = null;

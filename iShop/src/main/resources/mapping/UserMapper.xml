@@ -258,8 +258,17 @@
         SELECT *
         FROM def_user
         WHERE (phone = #{phone}
+        or email = #{phone})
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectC10016ByLogin" resultMap="BaseMap">
+        SELECT *
+        FROM def_user
+        WHERE (phone = #{phone}
         or email = #{phone}
         or user_code = #{phone})
+        AND corp_code = 'C10016'
         AND isactive = 'Y'
     </select>
 

@@ -18,6 +18,10 @@ var vip_group_info={
         this.setPageSize();
         this.inputGo();
         this.checkList();
+        this.showVipSelect();
+        this.goToVipInfo();
+        this.addLabel();
+        this.export();
     },
     setPage:function (container, count, pageindex,pageSize){
         count==0?count=1:'';
@@ -76,7 +80,7 @@ var vip_group_info={
             var oAlink = container.getElementsByTagName("span");
             vip_group_info.inx = pageindex; //初始的页码
             $("#input-txt").val(vip_group_info.inx);
-            $(".foot-sum .zy").html("共 "+count+"页");
+            //$(".foot-sum .zy").html("共 "+count+"页");
             oAlink[0].onclick = function() { //点击上一页
                 if (vip_group_info.inx == 1) {
                     return false;
@@ -138,7 +142,6 @@ var vip_group_info={
             }else if(actions[i].act_name=="chooseUser"){
                 $('.more_down').append("<div id='chooseUser' style='font-size: 10px'>设置所属导购</div>");
             }else if(actions[i].act_name=="output"){
-                //$("#more_down").append("<div id='leading_out'>导出</div>");
                 $("#filtrate").before("<li id='leading_out' title='因会员数据量大，请筛选后再导出'> <span class='icon-ishopwebicon_6-24'></span> 导出</li>")
             }else if(actions[i].act_name=="input"){
                 $("#more_down").append("<div id='guide_into'>导入</div>");
@@ -217,7 +220,7 @@ var vip_group_info={
                     TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 })(c)
             }
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            $(".table tbody").append("<tr id='"+data[i].vip_id+"' data-storeid='"+data[i].store_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                 + i
                 + 1
                 + "'/><label for='checkboxTwoInput"
@@ -232,7 +235,6 @@ var vip_group_info={
         }
         whir.loading.remove();//移除加载框
         $(".th th:first-child input").removeAttr("checked");
-        sessionStorage.removeItem("return_jump");
     },
     getList:function(){
         whir.loading.add("",0.5);//加载等待框
@@ -367,10 +369,351 @@ var vip_group_info={
            if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }
         })
     },
+    showVipSelect:function(){
+        //弹框关闭
+        $("#screen_wrapper_close").click(function(){
+            $("#screen_wrapper").hide();
+            $("#p").hide();
+        });
+    },
+    goToVipInfo:function(){
+        $("#table").on("click","tr td:not(:first-child)",function(){
+            var ID=$(this).parent().attr("id");
+            sessionStorage.setItem("id",ID);
+            sessionStorage.setItem("corp_code","C10000");
+            window.open("http://"+window.location.host+"/navigation_bar.html?url=/vip/vip_data.html&func_code=F0010");
+        })
+    },
+    //删除弹框
+    frame:function(){
+        var def= $.Deferred();
+        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+            def.resolve();
+        },2000);
+        return def;
+    },
+    //批量贴标签
+    addLabel:function(){
+        $("#more_down").on("click","#batch_label",function () {
+            var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+            if(tr.length == 0){
+                vip_group_info.frame();
+                $(".frame").html("请选择会员");
+            }else if(tr.length>0) {
+                var arr=whir.loading.getPageSize();
+                var left=(arr[0]-$("#batch_label_wrapper").width())/2;
+                var tp=(arr[3]-$("#batch_label_wrapper").height())/2;
+                $("#batch_label_wrapper").css({"left":+left+"px","top":+tp+"px","position":"fixrd"});
+                $("#p").css({"width":+arr[0]+"px","height":+arr[1]+"px"});
+                $("#p").show();
+                $("#batch_label_wrapper").show();
+                $("#batch_label_hot").empty();
+                var param={};
+                var vip_id="";
+                for(var j=0;j<tr.length;j++){
+                    vip_id+=$(tr[j]).attr("id")+",";
+                }
+                param['vip_id']=vip_id;
+                param["corp_code"]="C10000"
+                oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
+                    if(data.code=="0"){
+                        var msg=JSON.parse(data.message);
+                        msg=JSON.parse(msg.list);
+                        var html="";
+                        var classname="";
+                        for(var i=0;i<msg.length;i++){
+                            if(msg[i].label_type=="user"){
+                                classname="label_u";
+                            }else{
+                                classname="label_g";
+                            }
+                            html+="<span data-id="+msg[i].label_id+" class="+classname+" id="+i+">"+msg[i].label_name+"</span>"
+                        }
+                        $("#batch_label_hot").append(html);
+                    }
+                })
+            }
+        });
+        $("#close_label").click(function () {
+            $("#batch_label_wrapper").hide();
+            $("#p").hide();
+        });
+        //批量标签tabel页切换
+        $("#label_title li").click(function () {
+            $(this).children("a").addClass("liactive");
+            $(this).siblings("li").children("a").removeClass("liactive");
+            if($(this).children("a").html()=="热门"){
+                $("#batch_label_hot").show();
+                $("#batch_label_gov").hide();
+            }else if($(this).children("a").html()=="官方"){
+                $("#batch_label_gov").show();
+                $("#batch_label_hot").hide();
+                if($("#batch_label_gov span").length>0){
+                    return ;
+                }else {
+                    $("#batch_label_gov").empty();
+                    var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+                    var param={};
+                    var vip_id="";
+                    var page=1;
+                    for(var j=0;j<tr.length;j++){
+                        vip_id+=$(tr[j]).attr("id")+",";
+                    }
+                    param["type"]="2";
+                    param['vip_id']=vip_id;
+                    param["corp_code"]="C10000";
+                    param['pageNumber']=page;
+                    param['searchValue']="";
+                    oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+                        if(data.code=="0"){
+                            var msg=JSON.parse(data.message);
+                            var list=JSON.parse(msg.list)
+                            var hasNextPage=list.hasNextPage;
+                            list=list.list;
+                            var html="";
+                            var classname="";
+                            for(var i=0;i<list.length;i++){
+                                classname="label_g";
+                                html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+i+"g'>"+list[i].label_name+"</span>"
+                            }
+                            $("#batch_label_gov").append(html);
+                        }
+                    })
+                }
+            }
+        });
+        //批量添加标签
+        $("#batch_label_box").on("click","span",function () {
+            var that=$(this);
+            vip_group_info.addViplabel(that,"");
+        });
+//按钮添加
+        $("#label_add").click(function () {
+            var btn=$("#batch_search_label").val().trim();
+            if(btn==""){
+                return ;
+            }
+            vip_group_info.addViplabel("",btn);
+        });
+//搜索标签
+        $('#batch_search_label').bind('input propertychange', function() {
+            var thatFun=arguments.callee;
+            var that=this;
+            $(this).unbind("input propertychange",thatFun);
+            $(".batch_search_label ul").empty();
+            page=1;
+            vip_group_info.searchHotlabel();
+            setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
+        });
+    },
+    searchHotlabel:function () {
+        var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+        var param={};
+        var vip_id="";
+        for(var j=0;j<tr.length;j++){
+            vip_id+=$(tr[j]).attr("id")+",";
+        }
+        param["corp_code"]="C10000";
+        param['pageNumber']=page;
+        param['vip_id']=vip_id;
+        param['searchValue']=$('#batch_search_label').val().replace(/\s+/g,"");
+        param['type']="1";
+        oc.postRequire("post","/VIP/label/findViplabelByType","",param,function(data){
+            if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list);
+                var hasNextPage=msg.hasNextPage;
+                var list=msg.list;
+                var html="";
+                if(list.length>0){
+                    $(".batch_search_label ul").show();
+                    for(var i=0;i<list.length;i++){
+                        html+="<li data-id="+list[i].id+">"+list[i].label_name+"</li>"
+                    }
+                    $(".batch_search_label ul").append(html);
+                }else {
+                    $(".batch_search_label ul").hide();
+                }
+                if(hasNextPage==true){
+
+                }
+            }
+            //搜索下拉点击事件
+            $(".batch_search_label ul li").click(function () {
+                $("#batch_search_label").val($(this).html());
+            })
+        })
+    },
+    addViplabel:function(obj,btn) {
+        var tr = $("#table tbody input[type='checkbox']:checked").parents("tr");
+        var classname=$(obj).attr("class");
+        var param={};
+        var list=[];
+        for(var i=0;i<tr.length;i++){
+            var code=$(tr[i]).attr("id");
+            var store_id=$(tr[i]).attr("data-storeid");
+            var params={
+                "vip_code":code,
+                "store_code":store_id
+            }
+            list.push(params);
+        }
+        if(btn!==""){
+            param['label_name']=btn;
+        }else{
+            param['label_name']=$(obj).html();
+        }
+        param["corp_code"]="C10000";
+        param['label_id']="";
+        param['list']=list;
+        oc.postRequire("post","/VIP/label/addBatchRelViplabel","",param,function(data){
+            if(data.code=="0"){
+                if(btn!==""){
+                    var len_g = $("#batch_label_gov span").length;
+                    var len_h = $("#batch_label_hot span").length;
+                    for(var i=0;i<len_g;i++){
+                        if(btn == $($("#batch_label_gov span")[i]).html()){
+                            $($("#batch_label_gov span")[i]).removeClass("label_g").addClass("label_g_active");
+                        }
+                    }
+                    for(var j=0;j<len_h;j++){
+                        if(btn == $($("#batch_label_hot span")[j]).html()){
+                            var name = $($("#batch_label_hot span")[j]).attr("class");
+                            if(name=="label_u"){
+                                $($("#batch_label_hot span")[j]).removeClass("label_u").addClass("label_u_active");
+                            }else if(name=="label_g"){
+                                $($("#batch_label_hot span")[j]).removeClass("label_g").addClass("label_g_active");
+                            }
+                        }
+                    }
+                    vip_group_info.frame();
+                    $(".frame").html("添加成功");
+                }
+                if(classname=="label_u"){
+                    $(obj).removeClass(classname).addClass("label_u_active");
+                }else if(classname=="label_g"){
+                    $(obj).removeClass(classname).addClass("label_g_active");
+                }
+            }else if(data.code=="-1"){
+                vip_group_info.frame();
+                $('.frame').html('添加失败');
+            }
+        })
+    },
+    export: function () {
+        $(".action_r ul").on("click","#leading_out",function(){
+            var l=$(window).width();
+            var h=$(document.body).height();
+            $("#p").show();
+            $("#p").css({"width":+l+"px","height":+h+"px"});
+            $('.file').show();
+            $(".into_frame").hide();
+            var param={};
+            param["function_code"]=vip_group_info.funcCode;
+            whir.loading.add("",0.5);//加载等待框
+            oc.postRequire("post","/list/getCols","0",param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var message=JSON.parse(message.tableManagers);
+                    $("#file_list_l ul").empty();
+                    for(var i=0;i<message.length;i++){
+                        $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                            +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
+                    }
+                    vip_group_info.bianse();
+                    $("#file_list_r ul").empty();
+                    whir.loading.remove();//移除加载框
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                    whir.loading.remove();//移除加载框
+                }
+            })
+        });
+        //导出关闭按钮
+        $('#file_close').click(function(){
+            $("#p").hide();
+            $('.file').hide();
+            $('#file_submit').show();
+            $('#download').hide();
+        });
+        //导出提交的
+        $("#file_submit").click(function(){
+            var li=$("#file_list_r input[type='checkbox']").parents("li");
+            //var value = $("#search").val().trim();
+            var param={};
+            var tablemanager=[];
+            if(li.length=="0"){
+                vip_group_info.frame();
+                $('.frame').html('请把要导出的列移到右边');
+                return;
+            }
+            for(var i=0;i<li.length;i++){
+                var r=$(li[i]).attr("data-name");
+                var z=$(li[i]).children("span").html();
+                var param1={"column_name":r,"show_name":z};
+                tablemanager.push(param1);
+            }
+            tablemanager.reverse();
+            param["tablemanager"]=tablemanager;
+            param["searchValue"]="";
+            //if(filtrate==""){
+                param["screen_message"]="";
+            //}
+            //else if(filtrate!==""){
+            //    var list={};
+            //    list["brand_code"]=message.cache.brand_codes;
+            //    list["store_code"]=message.cache.store_codes;
+            //    list["area_code"]=message.cache.area_codes;
+            //    list["user_code"]=message.cache.user_codes;
+            //    param["screen_message"]=list;
+            //}
+            whir.loading.add("",0.5);//加载等待框
+            oc.postRequire("post","/vip/exportExecl","0",param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var path=message.path;
+                    var path=path.substring(1,path.length-1);
+                    $('#download').html("<a href='/"+path+"'>下载文件</a>");
+                    $('#download').addClass("download");
+                    $('#file_submit').hide();
+                    $('#download').show();
+                    //导出关闭按钮
+                    $('#file_close').click(function(){
+                        $('.file').hide();
+                    })
+                    $('#download').click(function(){
+                        $("#p").hide();
+                        $('.file').hide();
+                        $('#file_submit').show();
+                        $('#download').hide();
+                    })
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+                whir.loading.remove();//移除加载框
+            })
+        })
+    },
+    bianse:function (){
+    $("#file_list_l li:odd").css("backgroundColor","#fff");
+    $("#file_list_l li:even").css("backgroundColor","#ededed");
+    $("#file_list_r li:odd").css("backgroundColor","#fff");
+    $("#file_list_r li:even").css("backgroundColor","#ededed");
+}
 };
 $(function(){
     vip_group_info.init();
     $(".icon-ishop_6-07").parent().click(function () {
         window.location.reload();
-    })
+    });
+    setInterval(function(){
+        $("#left").height($("#left").next().height())
+    },0);
 });
