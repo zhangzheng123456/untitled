@@ -78,10 +78,11 @@ public class VipFsendServiceImpl implements VipFsendService {
         String sms_vips = vipFsend.getSms_vips();
 
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
-        String type = vips_obj.get("type").toString().trim();
+
 
         if (send_type.equals("sms")) {
             if(send_scope.equals("vip")){
+                String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
                     String area_code = vips_obj.get("area_code").toString();
                     String brand_code = vips_obj.get("brand_code").toString();
@@ -130,6 +131,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
             if(send_scope.equals("vip")){
                 JSONArray vip_infos=null;
+                String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
                     String area_code = vips_obj.get("area_code").toString();
                     String brand_code = vips_obj.get("brand_code").toString();
