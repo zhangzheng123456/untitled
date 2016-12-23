@@ -82,6 +82,7 @@ public class VipFsendServiceImpl implements VipFsendService {
 
         if (send_type.equals("sms")) {
             if(send_scope.equals("vip")){
+
                 String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
                     String area_code = vips_obj.get("area_code").toString();
@@ -123,12 +124,15 @@ public class VipFsendServiceImpl implements VipFsendService {
                     logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
                     message = dataBox.data.get("message").value;
                 }
-            }else if(send_scope.equals("vip_group")){
 
+                return message;
+            }else if(send_scope.equals("vip_group")){
+                message="会员分组";
             }
 
         } else if (send_type.equals("wxmass")) {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
+           
             if(send_scope.equals("vip")){
                 JSONArray vip_infos=null;
                 String type = vips_obj.get("type").toString().trim();
@@ -226,9 +230,9 @@ public class VipFsendServiceImpl implements VipFsendService {
 
 
                 }
-
+                return message;
             }else if(send_scope.equals("vip_group")){
-
+                message="会员分组";
             }
 
         }else {
