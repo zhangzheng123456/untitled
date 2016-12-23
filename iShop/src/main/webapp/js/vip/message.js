@@ -383,8 +383,7 @@ function jumpBianse() {
             send_type = "sms";
         }
         param["id"]=id;
-        param["send_type"]=send_type;
-        console.log(content);
+        // param["send_type"]=send_type;
         whir.loading.add("",0.5);//加载等待框
         console.log(param);
         oc.postRequire("post","/vipFsend/checkVipInfo","0",param,function(data){
