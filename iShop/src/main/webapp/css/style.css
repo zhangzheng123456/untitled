@@ -5,6 +5,9 @@
  *   version 2.2.0
  *
 */
+*{
+   font-family:"Microsoft YaHei","Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 h1,
 h2,
 h3,

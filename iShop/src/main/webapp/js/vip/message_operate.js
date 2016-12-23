@@ -90,6 +90,9 @@ var  message={
 			}
 			whir.loading.remove();//移除加载框
 		});
+	},
+	allEvent:function(){
+		
 	}
 };
 $(function(){
