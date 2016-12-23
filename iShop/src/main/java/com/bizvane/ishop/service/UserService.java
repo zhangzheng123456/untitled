@@ -35,9 +35,7 @@ public interface UserService {
 
     JSONObject login(HttpServletRequest request, String phone, String password) throws Exception;
 
-    JSONObject C10016login(HttpServletRequest request, String phone, String password) throws Exception;
-
-    JSONObject noPasswdlogin(HttpServletRequest request, String corp_code, String user_code,String password) throws Exception;
+    JSONObject selectLoginByUserCode(HttpServletRequest request,String corp_code, String phone, String password) throws Exception;
 
     PageInfo<User> selectBySearch(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception;
 

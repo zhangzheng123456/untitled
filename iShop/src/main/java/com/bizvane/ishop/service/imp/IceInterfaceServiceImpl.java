@@ -311,7 +311,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         datalist.put(data_page_num.key, data_page_num);
         datalist.put(data_page_size.key, data_page_size);
 
-        DataBox dataBox = iceInterfaceV2("AnalysisAllVip", datalist);
+        DataBox dataBox = iceInterfaceV3("VipSearchForWeb", datalist);
         return dataBox;
     }
 
