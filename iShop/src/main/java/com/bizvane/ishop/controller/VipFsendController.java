@@ -248,8 +248,8 @@ public class VipFsendController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String vipFsend_id = jsonObject.get("id").toString().trim();
-            String send_type=jsonObject.get("send_type").toString().trim();
-            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id),send_type);
+            //String send_type=jsonObject.get("send_type").toString().trim();
+            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id));
             if (info != null) {
                 bean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 bean.setId("1");

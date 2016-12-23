@@ -955,22 +955,7 @@ public class VipGroupController {
 
             DataBox dataBox = new DataBox();
             if (type.equals("list")){
-                Data data_user_id = new Data("user_id", "", ValueType.PARAM);
-                Data data_corp_code = new Data("corp_code", "C10000", ValueType.PARAM);
-                Data data_role_code = new Data("role_code", Common.ROLE_SM, ValueType.PARAM);
-                Data data_store_id = new Data("store_id", "", ValueType.PARAM);
-                Data data_area_code = new Data("area_code", "", ValueType.PARAM);
-                Data data_page_num = new Data("page_num", "1", ValueType.PARAM);
-                Data data_page_size = new Data("page_size", "20", ValueType.PARAM);
-
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_user_id.key, data_user_id);
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_store_id.key, data_store_id);
-                datalist.put(data_area_code.key, data_area_code);
-                datalist.put(data_role_code.key, data_role_code);
-                datalist.put(data_page_num.key, data_page_num);
-                datalist.put(data_page_size.key, data_page_size);
+                Map datalist = iceInterfaceService.vipBasicMethod(jsonObject, request);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             }
 

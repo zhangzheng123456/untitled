@@ -2,12 +2,12 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	font-family: "微软雅黑";
+	font-family:"Microsoft YaHei","Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 input{margin:0;padding:0;}
 body{
 	font-size: 14px;
-	font-family: "微软雅黑";
+	font-family:"Microsoft YaHei","Helvetica Neue", Helvetica, Arial, sans-serif;
 	margin-top: 81px;
 	height: inherit;
     background-color: #e8e8e8;

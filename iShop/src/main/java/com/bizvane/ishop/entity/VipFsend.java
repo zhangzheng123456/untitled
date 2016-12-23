@@ -11,6 +11,8 @@ public class VipFsend {
     private String corp_code;
     //接收群发短信的会员
     private String sms_vips;
+    //会员分组编号
+    private String vip_group_code;
     //群发短信内容
     private String content;
     //修改时间
@@ -19,7 +21,10 @@ public class VipFsend {
     private String modifier;
     //创建时间
     private String created_date;
+    //发送类型
     private String send_type;
+    //发送范围
+    private String send_scope;
     //创建者
     private String creater;
     //是否可用
@@ -58,6 +63,22 @@ public class VipFsend {
 
     public void setSms_vips(String sms_vips) {
         this.sms_vips = sms_vips;
+    }
+
+    public String getVip_group_code() {
+        return vip_group_code;
+    }
+
+    public void setVip_group_code(String vip_group_code) {
+        this.vip_group_code = vip_group_code;
+    }
+
+    public String getSend_scope() {
+        return send_scope;
+    }
+
+    public void setSend_scope(String send_scope) {
+        this.send_scope = send_scope;
     }
 
     public String getContent() {

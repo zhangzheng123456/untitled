@@ -894,16 +894,16 @@ public class UserController {
                         }
                         if (!store_code.equals("")) {
                             String[] codes = store_code.split(",");
-                            if (codes.length > 1) {
-                                result = "：第" + (i + 1) + "行角色为导购，只能属于一家店铺";
-                                int a = 5 / 0;
-                            }else{
+//                            if (codes.length > 1) {
+//                                result = "：第" + (i + 1) + "行角色为导购，只能属于一家店铺";
+//                                int a = 5 / 0;
+//                            }else{
                                 store_code="";
                                 for (int k = 0; k < codes.length; k++) {
                                     codes[k] = Common.SPECIAL_HEAD + codes[k] + ",";
                                     store_code = store_code + codes[k];
                                 }
-                            }
+                        //    }
                           //  System.out.println("----------导购店铺----------:"+store_code);
                         }
                         user.setStore_code(store_code);

@@ -48,7 +48,7 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26655">会员类型*</label><input type="text" id="vip_type" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空!"></div></div></span>
+                        <span><label style="color:#c26655">会员类型*</label><input type="text" id="vip_type" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down item_1">
                         <span><label>上级会员类型</label><input class="input_select" value="" id="high_vip_type" type="text" placeholder="" readonly="">
@@ -57,15 +57,17 @@
                         </span>
                     </div>
                     <div>
-                        <span class="t_parent"><label>会员折扣</label><input type="text" id="discount" maxlength="50"/><span class="holder_text">折</span></span>
+                        <span class="t_parent"><label>会员折扣</label><input verify="Number" type="text" id="discount" maxlength="50"/><span class="holder_text">折</span>
+                        <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
+                        </span>
                     </div>
                     <div>
                         <span class="t_parent"><label>招募门槛</label><span class="r">消费满</span><input type="text" id="join_threshold" class="join_threshold"  maxlength="50" placeholder="填写金额" verify="Number" ><span class="holder_text">元</span>
-                        <div class="hint"><div  hintinfo="金额只能为数字" class="error_tips"></div></div>
+                        <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
                         </span>
                     </div>
                     <div class="drop_down item_2 upgrade_amount">
-                        <span class="t_parent"><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input type="text" class="w" style="background-image: none;" id="upgrade_amount" placeholder="填写金额"><span class="holder_text">元</span>
+                        <span class="t_parent"><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input style="background-image: none;" verify="Number" type="text" class="w" id="upgrade_amount" placeholder="填写金额"><span class="holder_text">元</span>
                             <ul style="display: none;">
                                 <li data-value="1">最近一个月</li>
                                 <li data-value="2">最近二个月</li>
@@ -81,20 +83,22 @@
                                 <li data-value="12">最近一年</li>
                                 <li data-value="0">累计</li>
                             </ul>
+                            <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span class="t_parent"><label style="color:#c26655">积分比例*</label><span class="r">1元 =</span><input type="text" class="join_threshold" verify="Empty" id="points_value" maxlength="50"/><span class="holder_text">积分</span><span></span>
-                        <div class="hint"><div  hintinfo="积分比例不能为空!"></div></div>
+                        <span class="t_parent"><label style="color:#c26655">积分比例*</label><span class="r">1元 =</span><input type="text" class="join_threshold" verify="Number1" id="points_value" maxlength="50"/><span class="holder_text">积分</span><span></span>
+                        <div class="hint"><div  hintinfo="积分比例不能为空！"></div></div>
                         </span>
                     </div>
-                     <div>
-                        <span class="t_parent"><label>限制开卡店铺</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_shop"><label for="is_shop"></label></em><span class="r_text"></span></span><input type="text" class="join_threshold" id="shop_list" maxlength="50"/>
+                    <div>
+                        <span class="t_parent"><label>限制开卡店铺</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_shop" readonly=""><label for="is_shop"></label></em><span class="r_text"></span></span><input type="text" class="join_threshold arrow_right" id="shop_list" maxlength="50" />
                         </span>
                     </div>
                     <div>
                         <div>
-                            <label>赠送</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_point"><label for="is_present_point"></label></em><span class="r_text">积分</span></span><input type="text" class="join_threshold" id="present_point" maxlength="50"/>
+                            <label>赠送</label><span class="r"><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_present_point"><label for="is_present_point"></label></em><span class="r_text">积分</span></span><input type="text" class="join_threshold" id="present_point" verify="Number" maxlength="50"/>
+                            <div class="hint"><div  hintinfo="" class="error_tips"></div></div>
                         </div>
                         <div>
                             <div class="present_coupon drop_down item_2" >

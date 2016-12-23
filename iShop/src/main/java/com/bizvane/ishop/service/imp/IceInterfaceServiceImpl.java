@@ -143,7 +143,10 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
 
         String page_num = jsonObject.get("pageNumber").toString();
         String page_size = jsonObject.get("pageSize").toString();
-
+        String vip_group_code = "";
+        if (jsonObject.containsKey("vip_group_code")){
+            vip_group_code = jsonObject.get("vip_group_code").toString();
+        }
         String user_id = user_code;
         String area_code = "";
         String store_id = "";
@@ -234,6 +237,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
         Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
         Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+        Data data_vip_group_code = new Data("vip_group_code", vip_group_code, ValueType.PARAM);
 
         Map datalist = new HashMap<String, Data>();
         datalist.put(data_user_id.key, data_user_id);
@@ -243,6 +247,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         datalist.put(data_role_code.key, data_role_code);
         datalist.put(data_page_num.key, data_page_num);
         datalist.put(data_page_size.key, data_page_size);
+        datalist.put(data_vip_group_code.key, data_vip_group_code);
 
         return datalist;
     }
@@ -377,4 +382,29 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         DataBox dataBox = iceInterfaceV3("AddNewVip", datalist);
         return dataBox;
     }
+
+//    public DataBox saveVipExtendInfo(){
+//        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+//        Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+//        Data data_birthday = new Data("birthday", birthday, ValueType.PARAM);
+//        Data data_vip_card_type = new Data("vip_card_type", vip_card_type, ValueType.PARAM);
+//        Data data_card_no = new Data("card_no", card_no, ValueType.PARAM);
+//        Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
+//        Data data_user_code = new Data("user_code", user_code, ValueType.PARAM);
+//
+//        Map datalist = new HashMap<String, Data>();
+//        datalist.put(data_corp_code.key, data_corp_code);
+//        datalist.put(data_vip_id.key, data_vip_id);
+//        datalist.put(data_vip_name.key, data_vip_name);
+//        datalist.put(data_sex.key, data_sex);
+//        datalist.put(data_phone.key, data_phone);
+//        datalist.put(data_birthday.key, data_birthday);
+//        datalist.put(data_vip_card_type.key, data_vip_card_type);
+//        datalist.put(data_card_no.key, data_card_no);
+//        datalist.put(data_store_code.key, data_store_code);
+//        datalist.put(data_user_code.key, data_user_code);
+//
+//        DataBox dataBox = iceInterfaceV3("AddNewVip", datalist);
+//        return dataBox;
+//    }
 }

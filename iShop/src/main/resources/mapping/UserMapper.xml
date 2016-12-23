@@ -258,7 +258,8 @@
         SELECT *
         FROM def_user
         WHERE (phone = #{phone}
-        or email = #{phone})
+        or email = #{phone}
+        or user_code = #{phone})
         AND isactive = 'Y'
     </select>
 

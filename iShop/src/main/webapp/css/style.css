@@ -5,6 +5,9 @@
  *   version 2.2.0
  *
 */
+*{
+   font-family:"Microsoft YaHei","Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 h1,
 h2,
 h3,
@@ -8247,6 +8250,10 @@ li.select_index>a>label>i{
     width:410px;
     float:left;
     color:#fff;
+}
+.conpany_msg .arrow_right{
+    background: #ffffff url(../img/arrow_right.png) no-repeat 100% 50%;
+    background-size: 30px 30px;
 }
 .conpany_msg .add_quan{
     width:350px;
