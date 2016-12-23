@@ -65,13 +65,14 @@ $(function () {
                 } else if (msg.isactive == "N") {
                     input.checked = false;
                 }
-                all_select_vip_list=JSON.parse(msg.group_condition);
                 if(msg.group_type=="define"){
+                    all_select_vip_list=JSON.parse(msg.group_condition);
                     showSelect();
                 }else{
                     var list=JSON.parse(msg.group_condition);
                     showOtherGroup(list,msg.group_type);
                 }
+                console.log(all_select_vip_list)
                 getcorplist(Code);
             } else if (data.code == "-1") {
                 art.dialog({
@@ -1952,6 +1953,17 @@ $("#select_vip_que").click(function(){ //筛选确定
                         }
                     }
                 });
+                $(this).find("textarea").each(function () {
+                    var key = $(this).attr("data-kye");
+                    var param = {};
+                    var val = $(this).val();
+                    var name=$(this).prev().text();
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['type'] = "text";
+                    param["name"]=name;
+                    screen.push(param);
+                });
             });
         }
         //_param['screen'] = screen;
@@ -1993,7 +2005,7 @@ function showSelect(){
     for(var b=0;b<all_select_vip_list.length;b++){
         if(all_select_vip_list[b].type=="json"){
             html+="<div style='float: right'>" +
-                "<span style='text-align: right;display: inline-block;margin-right: 10px;'>"+all_select_vip_list[b].name+"</span>" +
+                "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px;'>"+all_select_vip_list[b].name+"</span>" +
                 "<input type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["start"]+"' readonly>" +
                 "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
                 "<input readonly type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["end"]+"'>" +
@@ -2002,14 +2014,14 @@ function showSelect(){
         }else if(all_select_vip_list[b].key=="brand_code" ||all_select_vip_list[b].key=="area_code" ||all_select_vip_list[b].key=="14" ||all_select_vip_list[b].key=="15"){
             if(all_select_vip_list[b].value!=""){
                 html+="<div style='float: right'>" +
-                    "<span style='text-align: right;display: inline-block;margin-right: 10px;'>"+all_select_vip_list[b].name+"</span>" +
+                    "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis'>"+all_select_vip_list[b].name+"</span>" +
                     "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].all_list_name+"' readonly>"+
                     "<i class='icon-ishop_6-12 q_remove'></i>"+
                     "</div>"
             }
         }else{
             html+="<div style='float: right'>" +
-                "<span style='text-align: right;display: inline-block;margin-right: 10px;'>"+all_select_vip_list[b].name+"</span>" +
+                "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width: 70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis '>"+all_select_vip_list[b].name+"</span>" +
                 "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].value+"' readonly>"+
                 "<i class='icon-ishop_6-12 q_remove'></i>"+
                 "</div>"
