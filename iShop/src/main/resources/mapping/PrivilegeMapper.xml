@@ -299,4 +299,15 @@
             #{item}
         </foreach>
     </delete>
+
+    <select id="selectColPrivilegeByUser" resultMap="privilege">
+        SELECT p.id,
+        p.function_code,
+        p.column_name,
+        p.master_code
+        FROM def_table_privilege p
+        WHERE p.function_code = #{function_code}
+        AND master_code = #{master_code}
+        AND p.isactive = 'Y'
+    </select>
 </mapper>

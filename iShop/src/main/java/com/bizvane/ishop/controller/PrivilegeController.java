@@ -1,11 +1,12 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Group;
+import com.bizvane.ishop.entity.Privilege;
 import com.bizvane.ishop.service.FunctionService;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-
+import java.util.List;
 /**
  * Created by Administrator on 2016/6/1.
  */
@@ -42,13 +43,13 @@ public class PrivilegeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String type = jsonObject.get("type").toString();
             String search_value = "";
-            if (jsonObject.has("searchValue")) {
+            if (jsonObject.containsKey("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
@@ -110,10 +111,10 @@ public class PrivilegeController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String del_act_id = jsonObject.get("del_act_id").toString();
             String del_col_id = jsonObject.get("del_col_id").toString();
             String add_action = jsonObject.get("add_action").toString();
@@ -146,6 +147,52 @@ public class PrivilegeController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     *
+     * 记住会员分析，会员列表页面的图表
+     */
+    @RequestMapping(value = "/vip/chartOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipChartOrder(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String type = jsonObject.get("type").toString();
+            String function_code = jsonObject.get("function_code").toString();
+            if (role_code.equals(Common.ROLE_SYS))
+                corp_code = jsonObject.get("corp_code").toString();
+
+            if (type.equals("show")){
+                List<Privilege> privileges = functionService.selectColPrivilegeByUser(function_code,corp_code+"U"+user_code);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(JSON.toJSONString(privileges));
+            }else {
+                String id = jsonObject.get("id").toString();
+                String order = jsonObject.get("order").toString();
+                functionService.updateColPrivilegeByUser(id,function_code,order,corp_code,user_code);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -496,17 +496,14 @@ public class VIPController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 corp_code = jsonObject.get("corp_code").toString();
             }
-
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
             JSONArray screen = jsonObject.getJSONArray("screen");
 
             List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
-
             String brand_code = "";
             String area_code = "";
             String store_code = "";
-            String user_code = "";
             String store_code_key = "";
             JSONArray post_array = new JSONArray();
             for (int i = 0; i < screen.size(); i++) {
@@ -540,11 +537,7 @@ public class VIPController {
                                 store_code = jsonObject.get(key).toString();
                                 store_code_key = key;
                             }
-                            if (key_name.equals("user_code")){
-                                user_code = jsonObject.get(key).toString();
-                            }
-                            break;
-                        }
+                            break;}
                     }
                 }
             }
@@ -561,7 +554,8 @@ public class VIPController {
                 post_array.add(post_obj);
             }
             logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
-            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+//            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+            DataBox dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
 
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -777,15 +771,12 @@ public class VIPController {
                 JSONArray array = new JSONArray();
                 if (jsonObject.containsKey("extend")) {
                     extend = jsonObject.get("extend").toString();
-//                    saveData.put("extend", extend);
                 }
                 if (jsonObject.containsKey("remark")) {
                     remark = jsonObject.get("remark").toString();
-//                    saveData.put("remark", remark);
                 }
                 if (jsonObject.containsKey("avatar")) {
                     avatar = jsonObject.get("avatar").toString();
-//                    saveData.put("avatar", avatar);
                 }
                 if (jsonObject.containsKey("image_url")) {
                     String image_url = jsonObject.get("image_url").toString();
@@ -793,7 +784,6 @@ public class VIPController {
                     image.put("image_url", image_url);
                     image.put("time", Common.DATETIME_FORMAT.format(now));
                     array.add(image);
-//                    saveData.put("album", array);
                 }
                 saveData.put("extend", extend);
                 saveData.put("remark", remark);
@@ -1237,4 +1227,6 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
+
 }

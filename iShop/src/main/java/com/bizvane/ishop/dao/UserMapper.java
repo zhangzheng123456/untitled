@@ -22,6 +22,8 @@ public interface UserMapper {
 
     List<User> selectByLogin(String phone) throws SQLException;
 
+    List<User> selectC10016ByLogin(String phone) throws SQLException;
+
     List<User> selectLogin(String phone, String password) throws SQLException;
 
     List<User> userEmailExist(@Param("email") String email) throws SQLException;

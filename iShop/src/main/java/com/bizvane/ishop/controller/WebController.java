@@ -559,7 +559,7 @@ public class WebController {
                 }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
                     msg = "timestamp time_out";
                 }else {
-                    org.json.JSONObject user_info = userService.login(request, account, password);
+                    org.json.JSONObject user_info = userService.C10016login(request, account, password);
 
 //                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code,password);
                     if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
