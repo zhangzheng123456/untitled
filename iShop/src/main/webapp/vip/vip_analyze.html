@@ -24,6 +24,45 @@
         .chart_head i {
             float: right;
         }
+        .vip_box{
+            position: relative;
+        }
+        .right_shadow{
+            display: none;
+            position: absolute;
+            z-index: 100;
+            top: 0;
+            width:100%;
+            height: 100%;
+            color: #FFFFFF;
+            background: rgba(0,0,0,0.3);
+        }
+        .right_shadow span{
+            font-size: 14px;
+            position: relative;
+            top:45%;
+            left: 45%;
+            display: block;
+            width: 130px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 10px;
+            background:rgba(0,0,0,0.6) ;
+        }
+        .right_shadow .left_shadow_title{
+            font-size: 12px;
+            position: relative;
+            top:40%;
+            left: 35%;
+            display: block;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 10px;
+            background:rgba(0,0,0,0.6) ;
+        }
     </style>
 </head>
 <body>
@@ -119,60 +158,65 @@
                            readonly="readonly">
                 </span>
         </div>
-        <!-- 所有VIP-->
-        <ul class="all_vip">
-            <span class="vip_kind">所有VIP <b class="vip_count"></b></span>
-            <li>
-                <table cellpadding="0" cellspacing="0">
-                    <thead>
-                    <th>业绩占比</th>
-                    <th>客件总价</th>
-                    <th>客件单价</th>
-                    <th>件单价</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
-        <!-- 新VIP-->
-        <ul class="new_vip">
-            <span class="vip_kind">新VIP <b class="vip_count"></b></span>
-            <li>
-                <table>
-                    <thead>
-                    <th width="91px">业绩占比</th>
-                    <th>客件总价</th>
-                    <th>客件单价</th>
-                    <th>件单价</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
-        <!-- 老VIP-->
-        <ul class="old_vip">
-            <span class="vip_kind">老VIP <b class="vip_count"></b></span>
-            <li>
-                <table>
-                    <thead>
-                    <th>业绩占比</th>
-                    <th>客件总价</th>
-                    <th>客件单价</th>
-                    <th>件单价</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
+        <div class="vip_box">
+            <!-- 所有VIP-->
+            <ul class="all_vip">
+                <span class="vip_kind">所有VIP <b class="vip_count"></b></span>
+                <li>
+                    <table cellpadding="0" cellspacing="0">
+                        <thead>
+                        <th>业绩占比</th>
+                        <th>客件总价</th>
+                        <th>客件单价</th>
+                        <th>件单价</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <!-- 新VIP-->
+            <ul class="new_vip">
+                <span class="vip_kind">新VIP <b class="vip_count"></b></span>
+                <li>
+                    <table>
+                        <thead>
+                        <th width="91px">业绩占比</th>
+                        <th>客件总价</th>
+                        <th>客件单价</th>
+                        <th>件单价</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <!-- 老VIP-->
+            <ul class="old_vip">
+                <span class="vip_kind">老VIP <b class="vip_count"></b></span>
+                <li>
+                    <table>
+                        <thead>
+                        <th>业绩占比</th>
+                        <th>客件总价</th>
+                        <th>客件单价</th>
+                        <th>件单价</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <div class="right_shadow" id="left_shadow">
+                <span class="left_shadow_title">加载中..</span>
+            </div>
+        </div>
     </div>
     <!-- 右侧表格数据分析-->
     <div id="table_analyze" class="col_lg_8 lf">
@@ -183,7 +227,6 @@
             <li>消费排行</li>
             <li>消费频率</li>
         </ul>
-
         <div class="birthVip">
             <ul class="date_btn">
                 <li><span>今日</span></li>
@@ -205,7 +248,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="newVip">
             <div class="newVip_title">
                 <ul class="new_btn">
@@ -235,7 +277,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="activeVip">
             <ul class="month_btn">
                 <li><span>活跃会员1.26%</span></li>
@@ -339,7 +380,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="rank">
             <ul class="month_btn">
                 <li><span>最近消费</span></li>
@@ -370,7 +410,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="freq">
             <ul class="new_btn">
                 <li><span>三个月</span></li>
@@ -456,12 +495,16 @@
                 </li>
             </ul>
         </div>
+        <div class="right_shadow" id="right_shadow">
+            <span>加载中..</span>
+        </div>
     </div>
     <!-- 分析数据图表描述-->
     <div id="chart_analyze" class="col_lg_12" style="display: inline-block">
         <div class="chart_module">
             <ul>
-                <span class="chart_head">消费类型  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head"><span>消费类型</span>
+                <i class="icon-ishop_9-05"></i></span>
                 <li id="main" style="padding-left: 10px;">
                 </li>
             </ul>
