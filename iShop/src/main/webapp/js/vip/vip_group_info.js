@@ -11,6 +11,7 @@ var vip_group_info={
     staff_num:1,
     staff_next:false,
     isscroll:false,
+    list_show:false,
     init:function(){
         var key_val=sessionStorage.getItem("key_val");//取页面的function_code
         key_val=JSON.parse(key_val);//取key_val的值
@@ -27,7 +28,23 @@ var vip_group_info={
         this.addLabel();
         this.export();
         this.chooseUser();
+        this.switchModel();
     },
+    switchModel:function(){
+        $("#show_chart").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            $("#list_show").hide();
+            $("#chart_analyze").show();
+            vip_group_info.list_show=false;
+        });
+        $("#show_list").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            $("#list_show").show();
+            $("#chart_analyze").hide();
+            vip_group_info.list_show=true;
+        })
+    }
+    ,
     setPage:function (container, count, pageindex,pageSize){
         count==0?count=1:'';
         var container = container;
@@ -131,6 +148,9 @@ var vip_group_info={
             vip_group_info.nowId=$(this).attr("id");
             $("#group_list li ul li").removeClass("active");
             $(this).addClass("active");
+            if(!vip_group_info.list_show){
+                return;
+            }
             vip_group_info.getList(vip_group_info.id)
         })
     },
