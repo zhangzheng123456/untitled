@@ -501,12 +501,12 @@ public class UserServiceImpl implements UserService {
 
         List<User> users = userMapper.selectByLogin(phone);
         if (users.size() > 1 || users.size() < 1 || users.get(0).getCan_login().equals("N")) {
-            user_info.put("error", "账号异常");
+            user_info.put("error", "account error");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             String user_password = users.get(0).getPassword();
             if (!password.equals(CheckUtils.encryptMD5Hash(user_password))) {
-                user_info.put("error", "密码错误");
+                user_info.put("error", "password error");
                 user_info.put("status", Common.DATABEAN_CODE_ERROR);
             } else {
                 User login_user = users.get(0);
