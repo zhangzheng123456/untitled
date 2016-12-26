@@ -481,7 +481,8 @@ public class GoodsController {
                     String quarter = rs.getCell(j++, i).getContents().toString().trim();
                     String wave = rs.getCell(j++, i).getContents().toString().trim();
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
-                    String cellTypeForDate = LuploadHelper.checkDate(rs.getCell(j++, i).getContents().toString().trim());
+                    String date= rs.getCell(j++, i).getContents().toString().trim();
+                    String cellTypeForDate = LuploadHelper.checkDate(date);
                     String goods_description = rs.getCell(j++, i).getContents().toString().trim();
                     String share_description = rs.getCell(j++, i).getContents().toString().trim();
 //                    String match_goods = rs.getCell(j++, i).getContents().toString().trim();
@@ -493,7 +494,7 @@ public class GoodsController {
                     if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && brand_code.equals("")){
                         continue;
                     }
-                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")){
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")|| date.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
