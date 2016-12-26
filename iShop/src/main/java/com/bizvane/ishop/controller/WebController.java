@@ -535,58 +535,49 @@ public class WebController {
         String msg = "请求失败";
         String status = "failed";
         String data = "";
-        JSONObject return_msg = new JSONObject();
         try {
             String sign= request.getParameter("sign");
+            String corp_code= request.getParameter("corp_code");
             String account= request.getParameter("account");
             String password= request.getParameter("password");
 
             if (sign == null || sign.equals("")) {
-                msg = "request%20param%20sign";
+                msg = "request_sign";
+            }else if (corp_code == null || corp_code.equals("")) {
+                msg = "request_corp_code";
             }else if (account == null || account.equals("")) {
-                msg = "request%20param%20account";
+                msg = "request_account";
             }else if (password == null || password.equals("")){
-                msg = "request%20param%20password";
+                msg = "request_password";
             } else {
                 password = AESUtils.Decryptor(password);
-                String timestamp = password.split("&&")[0];
-                password = password.split("&&")[1];
+                String[] aa = password.split("&&");
+                if (aa.length == 2){
+                    String timestamp = password.split("&&")[0];
+                    password = password.split("&&")[1];
 
-                long epoch = Long.valueOf(timestamp);
-                logger.debug(" range test:" + System.currentTimeMillis());
-                if (!sign.equals(SIGN)){
-                    msg = "param sign Invalid";
-                }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
-                    msg = "timestamp time_out";
-                }else {
-                    org.json.JSONObject user_info = userService.C10016login(request, account, password);
+                    long epoch = Long.valueOf(timestamp);
+                    logger.debug(" range test:" + System.currentTimeMillis());
+                    if (!sign.equals(SIGN)){
+                        msg = "param sign Invalid";
+                    }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
+                        msg = "timestamp time_out";
+                    }else {
+                        org.json.JSONObject user_info = userService.selectLoginByUserCode(request, corp_code, account, password);
 
-//                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code,password);
-                    if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
-                        msg = user_info.getString("error");
-                    } else {
-                        status = "success";
-                        msg = "请求成功";
-                        JSONObject result = new JSONObject();
-                        response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
-//                        result.put("redirect_url", CommonValue.ishop_url + "navigation_bar.html?url=/vip/vip.html&func_code=F0040");
-//                        data = result.toString();
-//                        return "/vip/vip.html";
+                        if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
+                            msg = user_info.getString("error");
+                        } else {
+                            response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+                        }
                     }
+                }else {
+                    msg = "password_without_&&";
                 }
             }
-            return_msg.put("id",id);
-            return_msg.put("status",status);
-            return_msg.put("msg",msg);
-            return_msg.put("data",data);
             response.sendRedirect(msg.toString());
         } catch (Exception ex) {
-            return_msg.put("id",id);
-            return_msg.put("status",status);
-            return_msg.put("msg",ex.getMessage());
-            return_msg.put("data","");
             ex.printStackTrace();
         }
-//        return return_msg.toString();
     }
 }

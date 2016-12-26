@@ -344,12 +344,12 @@ function jumpBianse() {
     $('#add').click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/vip/message_add.html");
     })
-    // //双击跳转
-    // $(".table tbody tr").dblclick(function(){
-    //     var id=$(this).attr("id");
-    //     sessionStorage.setItem("id",id);
-    //     $(window.parent.document).find('#iframepage').attr("src","/message/message_edit.html");
-    // })
+    //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        $(window.parent.document).find('#iframepage').attr("src","/vip/message_edit.html");
+    })
     //删除
     $("#remove").click(function () {
         var l = $(window).width();

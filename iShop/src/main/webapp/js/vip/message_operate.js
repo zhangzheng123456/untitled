@@ -1426,3 +1426,10 @@ $("#input-txt").keydown(function() {
 $("#send_close").click(function(){
 	 $(window.parent.document).find('#iframepage').attr("src", "/vip/message.html");
 })
+if(document.title=="消息内容"){
+	var param={};
+	param["id"]=sessionStorage.getItem("id");
+	oc.postRequire("post","/vipFsend/select","", param, function(data){
+
+	})
+}

@@ -91,7 +91,6 @@ var oc = new ObjectControl();
 				var param={};
 				var corp_code=$("#OWN_CORP").val().trim();//公司编号
 				var vip_type=$("#vip_type").val().trim();//会员类型
-				var high_vip_type=$("#high_vip_type").val().trim();//上级会员类型
 				var discount=$("#discount").val().trim();//会员折扣
 				var join_threshold=$("#join_threshold").val().trim();//招募门槛
 				var upgrade_time=$("#upgrade_time").attr("data-value");//升级门槛时间
@@ -104,6 +103,13 @@ var oc = new ObjectControl();
 				var input=$("#is_active")[0];//是否可用
 				var is_present_point=$("#is_present_point")[0];//是否赠送积分
 				var is_present_coupon=$("#is_present_coupon")[0];//是否赠送券
+				var is_shop=$("#is_shop")[0];//是否选择店铺
+				var high_vip_type="";
+				if($("#high_vip_type").val().trim()=="无上级会员类型"){
+					high_vip_type="";
+				}else{
+					high_vip_type=$("#high_vip_type").val().trim();
+				}
 				if(input.checked==true){//是否可用
 					isactive="Y";
 				}else if(input.checked==false){
@@ -111,9 +117,11 @@ var oc = new ObjectControl();
 				};
 				for(var i=0;i<quanList.length;i++){//券的list
 					var _param={};
-					_param["appid"]=$(quanList[i]).attr("data-appid");
-					_param["couponcode"]=$(quanList[i]).attr("data-couponcode");
-					present_coupon.push(_param);
+					if($(quanList[i]).attr("data-appid")!==""){
+						_param["appid"]=$(quanList[i]).attr("data-appid");
+						_param["couponcode"]=$(quanList[i]).attr("data-couponcode");
+						present_coupon.push(_param);
+					}
 				};
 				if(is_present_point.checked==true){
 					param["present_point"]=present_point;//送积分
@@ -125,6 +133,11 @@ var oc = new ObjectControl();
 				}else if(is_present_coupon.checked==false){
 					param["present_coupon"]="";//送券
 				}
+				if(is_shop.checked==true){
+					param["store_code"]=self.param.store_codes;//店铺编号
+				}else if(is_shop.checked==false){
+					param["store_code"]="";//店铺编号
+				}
 				param["corp_code"]=corp_code;//公司编号
 				param["vip_type"]=vip_type;//会员类型
 				param["high_vip_type"]=high_vip_type;//上级会员类型
@@ -134,7 +147,6 @@ var oc = new ObjectControl();
 				param["upgrade_amount"]=upgrade_amount;//升级门槛金额
 				param["points_value"]=points_value;//积分比例
 				param["isactive"]=isactive;//是否可用
-				param["store_code"]=self.param.store_codes;//店铺编号
 				var id=sessionStorage.getItem("id");//获取保存的id
 				if(id==null){
 					var command="/vipRules/add";
@@ -221,6 +233,7 @@ var oc = new ObjectControl();
 			$("#screen_shop .screen_content_l").unbind("scroll");
 			$("#screen_shop .screen_content_l ul").empty();
 			$("#screen_shop .screen_content_r ul").empty();
+			$(".input_search input").val("");
 			if(self.param.store_codes!==""){
 				var store_codes=self.param.store_codes.split(',');
 				var store_names=self.param.store_names.split(',');
@@ -327,6 +340,7 @@ var oc = new ObjectControl();
 		});
 		//店铺里面的区域点击
 		$("#shop_area").click(function(){
+			$(".input_search input").val("");
 			if(self.param.area_codes!==""){
 				var area_codes=self.param.area_codes.split(',');
 				var area_names=self.param.area_names.split(',');
@@ -353,6 +367,7 @@ var oc = new ObjectControl();
 		})
 		//店铺里面的品牌点击
 		$("#shop_brand").click(function(){
+			$(".input_search input").val("");
 			if(self.param.brand_codes!==""){
 				var brand_codes=self.param.brand_codes.split(',');
 				var brand_names=self.param.brand_names.split(',');
@@ -396,7 +411,7 @@ var oc = new ObjectControl();
 		});
 		//区域放大镜收索
 		$("#area_search_f").click(function(){
-			elf.param.area_num=1;
+			self.param.area_num=1;
 			self.param.isscroll=false;
 			$("#screen_area .screen_content_l").unbind("scroll");
 		    $("#screen_area .screen_content_l ul").empty();
@@ -564,7 +579,6 @@ var oc = new ObjectControl();
 				var message=JSON.parse(data.message);
 				var corp_code=message.corp_code;
 				$("#vip_type").val(message.vip_type);//会员类型
-				$("#high_vip_type").val(message.high_vip_type);//上级会员类型
 				$("#discount").val(message.discount);//会员折扣
 				$("#join_threshold").val(message.join_threshold);//招募门槛
 				$("#upgrade_amount").val(message.upgrade_amount);//升级门槛金额
@@ -575,6 +589,10 @@ var oc = new ObjectControl();
 				$("#modify_time").val(message.modified_date);//修改人
 				$("#modifier").val(message.modifier);//修改时间
 				$("#upgrade_time").attr("data-value",message.upgrade_time);//升级门槛时间
+				var input=$("#is_active")[0];//是否可用
+				var is_present_point=$("#is_present_point")[0];//是否赠送积分
+				var is_present_coupon=$("#is_present_coupon")[0];//是否赠送券
+				var is_shop=$("#is_shop")[0];//是否选择开卡店铺
 				var store_codes="";
 				var store_names="";
 				for(var i=0;i<message.stores.length;i++){
@@ -593,33 +611,41 @@ var oc = new ObjectControl();
 					var upgrade_time=$("#upgrade_time").siblings("ul").find("li[data-value='"+message.upgrade_time+"']").text();
 					$("#upgrade_time").val(upgrade_time);//升级门槛时间
 				}
-				var input=$("#is_active")[0];//是否可用
-				var is_present_point=$("#is_present_point")[0];//是否赠送积分
-				var is_present_coupon=$("#is_present_coupon")[0];//是否赠送券
 				//是否可用
 				if(message.isactive=="Y"){
 					input.checked=true;
 				}else if(message.isactive=="N"){
 					input.checked=false;
 				}
+				if(message.stores.length=="0"){
+					is_shop.checked=false;
+				}else if(message.stores.length>0){
+					is_shop.checked=true;
+				}
 				//是否赠送积分
 				if(message.present_point!==""){
-					is_present_point=true;
+					is_present_point.checked=true;
 				}else if(message.present_point==""){
-					is_present_point=false;
+					is_present_point.checked=false;
 				}
 				//是否赠送券
-				if(points_value!==""){
-					var points_value=JSON.parse(message.present_coupon);//券的list
-					if(points_value.length>0){
-						is_present_coupon=true;
+				if(message.present_coupon!==""){
+					var present_coupon=JSON.parse(message.present_coupon);//券的list
+					if(present_coupon.length>0){
+						is_present_coupon.checked=true;
 					}else{
-						is_present_coupon=false;
+						is_present_coupon.checked=false;
 					}
-					self.getQuanList(corp_code,points_value);
-				}else if(points_value==""){
+					self.getQuanList(corp_code,present_coupon);
+				}else if(present_coupon==""){
 					is_present_coupon=false;
 				}
+				if(message.high_vip_type==""){
+					$("#high_vip_type").val("无上级会员类型");
+				}else{
+					$("#high_vip_type").val(message.high_vip_type);//上级会员类型
+				}
+				
 				self.getcorplist(corp_code);
 			}else if(data.code=="-1"){
 				alert(data.message);
