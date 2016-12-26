@@ -31,7 +31,7 @@ var vip_group_info={
         this.chooseUser();
         this.switchModel();
         this.fsendMessage();
-        //this.showEcharts();
+        this.showEcharts();
     },
     showEcharts:function(){
         require.config({
@@ -480,7 +480,14 @@ var vip_group_info={
             $("#list_show").hide();
             $("#action").find(".action_r").hide();
             $("#chart_analyze").parent().show();
-            vip_group_info.showEcharts();
+            vip_group_info.list_show=false;
+            vip_group_info.charts.myChart.resize();
+            vip_group_info.charts.myChart1.resize();
+            vip_group_info.charts.myChart2.resize();
+            vip_group_info.charts.myChart3.resize();
+            vip_group_info.charts.myChart4.resize();
+            vip_group_info.charts.myChart5.resize();
+            vip_group_info.charts.myChart7.resize();
         });
         $("#show_list").click(function(){
            if( !vip_group_info.list_show && vip_group_info.nowId!=""){

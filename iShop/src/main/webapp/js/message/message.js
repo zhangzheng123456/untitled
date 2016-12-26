@@ -253,9 +253,7 @@ function superaddition(data, num) {//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td >"
-            + receiver_type
-            + "</td>" +
+            + "</td>"+
             TD+
             //"<td  class='message_code' data-code='"+data[i].message_code+"'>"
             //+ data[i].message_title
