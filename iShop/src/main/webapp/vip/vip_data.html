@@ -543,7 +543,7 @@
             <span id="vipAnalyze_return">会员信息</span>
         </div>
         <!--头部-->
-        <div class="header" style="overflow: hidden;">
+        <div class="header" style="overflow: hidden;margin-right: -0.5%">
             <div class="right">
                 <div class="person">
                     <div class="person-left">
@@ -700,7 +700,7 @@
             </div>
         </div>
         <!-- 分析数据图表描述-->
-        <div id="chart_analyze" class="col_lg_12" style="overflow: hidden;">
+        <div id="chart_analyze" style="overflow: hidden;margin-right: -0.5%">
             <div class="chart_module">
                 <ul>
                     <span class="chart_head">
@@ -1288,7 +1288,10 @@
         $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().show();
         $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").addClass("icon-ishop_8-01");
         $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().find("span").addClass("icon-ishop_8-02");
         if($(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").hasClass("icon-ishop_8-01")){
+            $(window.parent.document).find("#sidebar").scrollTop($(window.parent.document).find("#navbar li dd[data-code='F0010']").position().top);
             clearInterval(timer);
         }
     },0);
@@ -1421,7 +1424,7 @@
                                 {text: '周四', max: 100},
                                 {text: '周五', max: 100},
                                 {text: '周六', max: 100},
-                                {text: '周七', max: 100},
+                                {text: '周日', max: 100},
                                 {text: '无数据', max: 100}
                             ],
                             radius: 100,

@@ -22,10 +22,26 @@ var  message={
     	"corp_code":""
     },
 	init:function(){
-		this.getCorplist();
 		this.allEvent();
+		var id=sessionStorage.getItem("id");
+		if(id!==null){
+			this.getSelect(id);
+		}else if(id==null){
+			var group_vip=sessionStorage.getItem("group_vip");
+			if(group_vip!==null){
+				var corp=JSON.parse(group_vip).corp_code;
+				var group=JSON.parse(group_vip).group_code;
+				$(".item_2").find("input").attr("data-value","vip_group");
+				$(".item_2").find("input").val("指定会员分组");
+				$("#sendee").hide();
+				$("#group_select_parent").show();
+				this.getCorplist(corp,group);
+			}else {
+				this.getCorplist();
+			}
+		}
 	},
-	getCorplist:function(){//获取所属企业列表
+	getCorplist:function(corp,group){//获取所属企业列表
 		var self=this;
 	    var corp_command="/user/getCorpByUser";
 	    whir.loading.add("",0.5);//加载等待框
@@ -37,8 +53,11 @@ var  message={
 					corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
 				}
 				$("#OWN_CORP").append(corp_html);
+				if(corp!==""){
+					$("#OWN_CORP option[value='"+corp+"']").attr("selected","true");
+				}
 				var corp_code=$("#OWN_CORP").val();
-				self.getVipGroupList(corp_code);
+				self.getVipGroupList(corp_code,group);
 				$('#corp_select select').searchableSelect();
 				$('#corp_select .searchable-select-input').keydown(function(event){
 					var event=window.event||arguments[0];
@@ -95,7 +114,7 @@ var  message={
 			whir.loading.remove();//移除加载框
 		});
 	},
-	getVipGroupList:function(corp_code){
+	getVipGroupList:function(corp_code,group){
 		var param={};
 		param["corp_code"]=corp_code;
 		oc.postRequire("post","/vipGroup/getCorpGroups","",param, function(data){
@@ -108,9 +127,49 @@ var  message={
 					html+="<option value='"+list[i].vip_group_code+"'>"+list[i].vip_group_name+"</option>"
 				}
 				$("#vip_group").html(html);
+				if(group!==""){
+					$("#vip_group option[value='"+group+"']").attr("selected","true");
+				}
 				$('#vip_group').searchableSelect();
 			}
 		})
+	},
+	//编辑界面
+	getSelect:function(id){
+		var self=this;
+		var param={};
+		param["id"]=id;
+		oc.postRequire("post","/vipFsend/select","", param, function(data){
+			if(data.code=="0"){
+				var message=JSON.parse(data.message);
+				console.log(message);
+				var corp_code=message.corp_code;
+				var group_code=message.vip_group_code;
+				var send_scope=$("#send_scope").siblings("ul").find("li[data-value='"+message.send_scope+"']").text();
+				$("#send_scope").val(send_scope);
+				$("send_scope").attr("data-value",send_scope);
+				if(message.send_scope=="vip"){//
+					$("#group_select_parent").hide();
+					$("#sendee").show();
+					var sms_vips=JSON.parse(message.sms_vips)
+					var vip_id=sms_vips.vips;
+					self.cache.vip_id=vip_id;
+					var vipList=vip_id.split(',');
+					$("#sendee_r").val("已选"+vipList.length+"个");
+					self.getCorplist(corp_code);
+				}else if(message.send_scope=="vip_group"){
+					$("#group_select_parent").show();
+					$("#sendee").hide();
+					self.getCorplist(corp_code,group_code);
+				}
+				if(message.send_type=="wxmass"){
+					$("#MESSAGE_TYPE").val("微信群发消息");
+				}else if(message.send_type=="sms"){
+					$("#MESSAGE_TYPE").val("短信");
+				}
+				$("#message_content").val(message.content);
+			}
+		});
 	},
 	allEvent:function(){
 		$(".item_2").on("click","li",function(){
@@ -1284,7 +1343,7 @@ $("#send").click(function(){
 	var sms_vips={};
 	var corp_code=$("#OWN_CORP").val();//企业编号
 	var send_scope=$("#send_scope").attr("data-value");//发送范围
-	var content=$("#message_content").val();
+	var content=$("#message_content").val().trim();
 	sms_vips["type"]=message.cache.type;
 	var send_type="";
 	if($("#MESSAGE_TYPE").val() == "短信"){
@@ -1333,21 +1392,21 @@ $("#send").click(function(){
 	param["content"]=content;
 	param["send_type"]=send_type;
 	param["send_scope"]=send_scope;
-	if(content==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content: "发送内容不能为空"
-		});
-		return;
-	}
 	if(send_type == ""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
 			content: "发送类型不能为空"
+		});
+		return;
+	}
+	if(content==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "发送内容不能为空"
 		});
 		return;
 	}
@@ -1424,12 +1483,6 @@ $("#input-txt").keydown(function() {
 })
 //关闭按钮回到列表页
 $("#send_close").click(function(){
+	sessionStorage.removeItem("group_vip");
 	 $(window.parent.document).find('#iframepage').attr("src", "/vip/message.html");
 })
-if(document.title=="消息内容"){
-	var param={};
-	param["id"]=sessionStorage.getItem("id");
-	oc.postRequire("post","/vipFsend/select","", param, function(data){
-
-	})
-}

@@ -699,6 +699,7 @@ input::-webkit-input-placeholder{
 	border-radius: 3px;
 	display: block;
 	margin-bottom: 2px;
+	cursor: pointer;
 }
 #side_bar .gobottom{
 	width: 20px;
@@ -708,6 +709,7 @@ input::-webkit-input-placeholder{
 	border-radius: 3px;
 	display: block;
 	margin-bottom: 2px;
+	cursor: pointer;
 }
 /*********搜索的时候的字体的颜色***************/
 .color{

@@ -1368,7 +1368,7 @@ require(
                         {text : '周四', max  : 100},
                         {text : '周五', max  : 100},
                         {text : '周六', max  : 100},
-                        {text : '周七', max  : 100},
+                        {text : '周日', max  : 100},
                         {text : '无数据', max  : 100}
                     ],
                     radius : 100,
