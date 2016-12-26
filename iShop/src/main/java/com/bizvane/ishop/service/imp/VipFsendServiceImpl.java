@@ -220,7 +220,7 @@ public class VipFsendServiceImpl implements VipFsendService {
 
                     if (message_list.size() == 0) {
                         JSONObject info=new JSONObject();
-                        info.put("vip_info",vip_infos.toString());
+                        info.put("vip_info",vip_infos);
                         message = JSON.toJSONString(info);
                     } else {
                         list.addAll(message_list);
