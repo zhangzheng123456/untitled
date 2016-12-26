@@ -414,4 +414,18 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         DataBox dataBox = iceInterfaceV3("AddSearchField", datalist);
         return dataBox;
     }
+
+    public DataBox changeVipType(String corp_code,String vip_id,String card_type) throws Exception{
+        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+        Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+        Data data_card_type = new Data("card_type", card_type, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_corp_code.key, data_corp_code);
+        datalist.put(data_vip_id.key, data_vip_id);
+        datalist.put(data_card_type.key, data_card_type);
+
+        DataBox dataBox = iceInterfaceV3("VipCardTypeUp", datalist);
+        return dataBox;
+    }
 }

@@ -34,4 +34,6 @@ public interface IceInterfaceService {
                       String vip_card_type,String card_no,String store_code,String user_code) throws Exception;
 
     DataBox saveVipExtendInfo(String corp_code,String vip_id,String custom) throws Exception;
+
+    DataBox changeVipType(String corp_code,String vip_id,String card_type) throws Exception;
 }

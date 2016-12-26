@@ -304,6 +304,8 @@ public class VIPController {
                     avatar = obj.get("avatar").toString();
             }
             vip.put("vip_avatar", avatar);
+            extend_info = vip.get("custom").toString();
+
             JSONObject result = new JSONObject();
             result.put("list", vip);
             result.put("extend", extend);
@@ -1196,25 +1198,22 @@ public class VIPController {
             if (vipRules != null){
                 if (type.equals("upgrade")){
                     String high_vip_type = vipRules.getHigh_vip_type();
-                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                    Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-                    Data data_vip_card_type = new Data("vip_card_type", high_vip_type, ValueType.PARAM);
-
-                    Map datalist = new HashMap<String, Data>();
-                    datalist.put(data_vip_id.key, data_vip_id);
-                    datalist.put(data_corp_code.key, data_corp_code);
-                    datalist.put(data_vip_card_type.key, data_vip_card_type);
-
-//                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("", datalist);
-//                    if (dataBox.status.toString().equals("SUCCESS")){
-
-//                    }
+                    DataBox dataBox = iceInterfaceService.changeVipType(corp_code,vip_id, high_vip_type);
+                    if (dataBox.status.toString().equals("SUCCESS")){
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId("1");
+                        dataBean.setMessage("SUCCESS");
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId("1");
+                        dataBean.setMessage("升级失败");
+                    }
                 }
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("该会员已是最高级别会员");
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("SUCCESS");
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
