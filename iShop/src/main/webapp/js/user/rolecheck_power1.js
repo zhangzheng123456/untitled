@@ -25,7 +25,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].actions[j].is_die == "N" && list[i].actions[j].is_live == "Y") {
-                    color = "active";
+                    color = "active selected";
                 }
                 tr += "<li class='" + color + "' data-actionCode='" + list[i].actions[j].action_code + "' data-actionName='" + list[i].actions[j].action_name +
                     "' data-actionId='" + list[i].actions[j].action_id + "'>" +
@@ -132,7 +132,7 @@ var groupPower = {
                 };
                 for (var l = action_id_li.length - 1; l >= 0; l--) {
                     var class_name = $(action_id_li[l]).attr("class");
-                    if (class_name !== "die"&& class_name !=="active") {
+                    if (class_name !== "die"&& class_name !=="active"){
                         var action_id = $(action_id_li[l]).attr("data-actionid");
                         if (action_id !== "" && action_id !== undefined) {
                             del_act_id += action_id + ",";
@@ -141,7 +141,7 @@ var groupPower = {
                 };
                 for (var m = column_id_li.length-1; m >= 0; m--) {
                     var class_name = $(column_id_li[m]).attr("class");
-                    if (class_name !=="active") {
+                    if (class_name !== "die"&& class_name !=="active") {
                         var column_id = $(column_id_li[m]).attr("data-columnid");
                         if (column_id !== "" && column_id !== undefined) {
                             del_col_id += column_id + ",";

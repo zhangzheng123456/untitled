@@ -39,6 +39,7 @@ var  message={
 			}else {
 				this.getCorplist();
 			}
+			this.getCorplist();
 		}
 	},
 	getCorplist:function(corp,group){//获取所属企业列表
