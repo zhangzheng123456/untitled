@@ -604,11 +604,11 @@ public class UserController {
                 }
 
             }
-            String onlyCell1 = LuploadHelper.CheckOnly(column4);
-            if (onlyCell1.equals("存在重复值")) {
-                result = "：Execl中手机号码存在重复值";
-                int b = 5 / 0;
-            }
+//            String onlyCell1 = LuploadHelper.CheckOnly(column4);
+//            if (onlyCell1.equals("存在重复值")) {
+//                result = "：Execl中手机号码存在重复值";
+//                int b = 5 / 0;
+//            }
             String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";
@@ -2200,12 +2200,12 @@ public class UserController {
             JSONObject jsonObject2 = new JSONObject(message);
             String password = jsonObject2.get("password").toString();
             User user = null;
+            if (jsonObject2.has("phone")){
+                user = userService.userPhoneExist(jsonObject2.get("phone").toString()).get(0);
+            }
             if (jsonObject2.has("user_id")) {
                 int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
                 user = userService.selectUserById(user_id);
-            }
-            if (jsonObject2.has("phone")){
-                user = userService.userPhoneExist(jsonObject2.get("phone").toString()).get(0);
             }
             if (user != null) {
                 user.setPassword(password);
