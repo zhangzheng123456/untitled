@@ -2027,23 +2027,23 @@ function showSelect(){
         if(all_select_vip_list[b].type=="json"){
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px; max-width:70px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+all_select_vip_list[b].name+"</span>" +
-                "<input type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["start"]+"' readonly>" +
+                "<input type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
                 "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
-                "<input readonly type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["end"]+"'>" +
+                "<input readonly type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["end"]+"' title='"+all_select_vip_list[b].value["end"]+"'>" +
                 "<i class='icon-ishop_6-12 q_remove' title='删除'></i>"+
                 "</div>"
         }else if(all_select_vip_list[b].key=="brand_code" ||all_select_vip_list[b].key=="area_code" ||all_select_vip_list[b].key=="14" ||all_select_vip_list[b].key=="15" || all_select_vip_list[b].key=="16"){
             if(all_select_vip_list[b].value!=""){
                 html+="<div style='float: right'>" +
                     "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width:70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis'>"+all_select_vip_list[b].name+"</span>" +
-                    "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].all_list_name+"' readonly>"+
+                    "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].all_list_name+"' readonly  title='"+all_select_vip_list[b].all_list_name+"'>"+
                     "<i class='icon-ishop_6-12 q_remove'title='删除'></i>"+
                     "</div>"
             }
         }else{
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width: 70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis '>"+all_select_vip_list[b].name+"</span>" +
-                "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].value+"' readonly>"+
+                "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].value+"' readonly title='"+all_select_vip_list[b].value+"'>"+
                 "<i class='icon-ishop_6-12 q_remove'title='删除'></i>"+
                 "</div>"
         }
