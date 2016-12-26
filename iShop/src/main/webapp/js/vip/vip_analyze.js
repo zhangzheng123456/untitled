@@ -405,6 +405,48 @@ function fillVip(data,count,container){
     $(container).html(html);
     $("#left_shadow").hide();
 }
+//图表显示接口
+function chartShow(order) {
+    var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+    key_val=JSON.parse(key_val);
+    var funcCode=key_val.func_code;
+    if(order!==""&&order!==undefined){
+        var id=$("#chart_analyze").attr("data-id");
+        var param={
+            "corp_code":"C10000",
+            "function_code":funcCode,
+            "type":"order",
+            "id":id,
+            "order":order
+        };
+    }else {
+        var param={
+            "corp_code":"C10000",
+            "function_code":funcCode,
+            "type":"show"
+        };
+    }
+    oc.postRequire("post","/privilege/vip/chartOrder","0",param,function (data) {
+            if(data.code == 0){
+                var list = JSON.parse(data.message);
+                var id = list[0].id;
+                if(id!==undefined){
+                    $("#chart_analyze").attr("data-id",id);
+                    var column = JSON.parse(list[0].column_name);
+                    for(var i=0;i<column.length;i++){
+                        var a=column[i];
+                        $(".chart_module").each(function () {
+                            if(a==$(this).attr("data-id")){
+                                $("#add_chart").before($(this));
+                            }
+                        });
+                    }
+                }
+            }else if(data.code == -1){
+                console.log(data.message);
+            }
+    });
+}
 /******************************表格分析数据*************************************************************************/
 // 列表点击效果
 $(".vip_nav_bar li:nth-child(1)").click(function () {
@@ -423,7 +465,7 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     for(var i=0;i<lis.length;i++){
         $(lis[i]).find('span').css({"color":"","background":""});
     }
-})
+});
 $(".vip_nav_bar li:nth-child(2)").click(function () {
     $('.birthVip').hide();
     $(".newVip").show();
@@ -438,7 +480,7 @@ $(".vip_nav_bar li:nth-child(2)").click(function () {
     for(var i=0;i<lis.length;i++){
         $(lis[i]).find('span').css({"color":"","background":""});
     }
-})
+});
 $(".vip_nav_bar li:nth-child(3)").click(function () {
     $('.birthVip').hide();
     $(".newVip").hide();
@@ -1722,6 +1764,7 @@ $().ready(function(){
         consumefreq_sub(this);
         $("#page_row").val("10行/页");
     });
+    chartShow();
     var date = new Date();
     var year = date.getFullYear();
     var month = date.getMonth()+ 1 ;
@@ -1729,7 +1772,17 @@ $().ready(function(){
     date=year+"-"+month+"-"+strDate
     $(".date_title .date input").val(date);
     $('#chart_analyze').dad({
-        draggable: '.drag_area'
+        draggable: '.drag_area',
+        callback:function (data) {
+            // var index= $(data).index();
+            var order=[];
+            $(".chart_module").each(function () {
+                if($(this).attr("data-id")!==undefined && $(this).css("display")=="block"){
+                    order.push($(this).attr("data-id"));
+                }
+            });
+            chartShow(order);
+        }
     });
 });
 var achv={
@@ -1762,7 +1815,7 @@ $(".select_Date li").click(function () {
     getData();
     $($(this).parent()).toggle()
 });
-//图标新增
+//图标新增弹窗
 $("#add_chart").click(function () {
     var arr=whir.loading.getPageSize();
     var w=arr[0];
@@ -1773,8 +1826,54 @@ $("#add_chart").click(function () {
     $("#p").css({"width":w,"height":h});
     $("#chart_add_wrap").show();
     $("#p").show();
+    $("#chart_analyze .chart_module").each(function (i,e) {
+        var val=$(this).find(".drag_area").children("span").html();
+        if($(this).css("display")=="block"){
+            $("#chart_add_details li").each(function () {
+                if($(this).find(".chart_checkbox span").html()==val){
+                    $(this).find(".check").attr("checked",true);
+                }
+            });
+        }else {
+            $("#chart_add_details li").each(function () {
+                if($(this).find(".chart_checkbox span").html()==val){
+                    $(this).find(".check").attr("checked",false);
+                }
+            });
+        }
+    });
 });
 $(".chart_close").click(function () {
     $("#chart_add_wrap").hide();
     $("#p").hide();
+});
+$("#chart_add_enter").click(function () {
+     $("#chart_add_details input[type='checkbox']:checked").each(function () {
+         var val=$(this).nextAll("span").html();
+         $("#chart_analyze .chart_module").each(function () {
+             if($(this).css("display")=="none"&&val==$(this).find(".drag_area span").html()){
+                 $(this).show();
+             }
+         });
+     });
+    var order=[];
+    $(".chart_module").each(function () {
+        if($(this).attr("data-id")!==undefined && $(this).css("display")=="block"){
+            order.push($(this).attr("data-id"));
+        }
+    });
+    chartShow(order);
+    $("#chart_add_wrap").hide();
+    $("#p").hide();
+});
+//图表删除
+$(".chart_close_icon").click(function () {
+    $(this).parents(".chart_module").hide();
+    var order=[];
+    $(".chart_module").each(function () {
+        if($(this).attr("data-id")!==undefined && $(this).css("display")=="block"){
+            order.push($(this).attr("data-id"));
+        }
+    });
+    chartShow(order);
 });

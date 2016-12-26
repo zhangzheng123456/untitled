@@ -34,7 +34,8 @@
     position: relative;
 }
 #chart_analyze{
-    margin-top:0.5%;
+    margin-right: -0.5%;
+    margin-top:41%;
     clear: both;
 }
 /*select_analyze锟斤拷询*/
@@ -162,6 +163,7 @@
     margin:0 0.5% 0.5% 0;
     float:left;
     width:32.833%;
+    width:32.834%;
     height: 300px;
     background: #FFFFFF;
 }
@@ -523,7 +525,7 @@
 .chart_analyze_condition i{
     line-height: 15px;
 }
-.chart_head .chart_list_icon{
+.chart_head .chart_close_icon{
     color: #FFFFFF;
 }
 #chart_analyze .add_chart{
@@ -547,7 +549,6 @@
     position: absolute;
     z-index: 1000;
     width:250px;
-    height: 320px;
     padding: 10px 20px;
     color: #434960;
     background: #FFFFFF;
