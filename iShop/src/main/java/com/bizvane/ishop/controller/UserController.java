@@ -2200,12 +2200,12 @@ public class UserController {
             JSONObject jsonObject2 = new JSONObject(message);
             String password = jsonObject2.get("password").toString();
             User user = null;
+            if (jsonObject2.has("phone")){
+                user = userService.userPhoneExist(jsonObject2.get("phone").toString()).get(0);
+            }
             if (jsonObject2.has("user_id")) {
                 int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
                 user = userService.selectUserById(user_id);
-            }
-            if (jsonObject2.has("phone")){
-                user = userService.userPhoneExist(jsonObject2.get("phone").toString()).get(0);
             }
             if (user != null) {
                 user.setPassword(password);

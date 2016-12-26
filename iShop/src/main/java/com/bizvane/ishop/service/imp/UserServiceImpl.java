@@ -670,7 +670,15 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-
+    /**
+     * 验证手机号是否已注册
+     */
+    @Override
+    public List<User> userPhoneExist2(String phone) throws Exception {
+        List<User> user = this.userMapper.selectByPhone(phone);
+      //  List<User> user = new ArrayList<User>();
+        return user;
+    }
 
     /**
      * 验证邮箱是否已注册
@@ -1224,11 +1232,12 @@ public class UserServiceImpl implements UserService {
                     sign.setPhone(user.getPhone());
                     sign.setStatus(Common.STATUS_SIGN_IN);
                     sign.setDistance("");
+                    sign.setLocation("");
                     sign.setSign_time(Common.DATETIME_FORMAT.format(now));
                     if((user.getStore_code()==null && user.getArea_code()==null) || (user.getStore_code().equals("")&&user.getArea_code().equals(""))){
                         sign.setStore_name("");
                         sign.setStore_code("");
-                        sign.setLocation("");
+
                     }
                     if (user.getStore_code() != null && !user.getStore_code().equals("")) {
                         String[] store_code = user.getStore_code().replace(Common.SPECIAL_HEAD, "").split(",");
@@ -1239,11 +1248,7 @@ public class UserServiceImpl implements UserService {
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
                         }
-                        if(storeByCode==null||null==storeByCode.getStore_location()){
-                            sign.setLocation("");
-                        }else {
-                            sign.setLocation(storeByCode.getStore_location());
-                        }
+
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
@@ -1257,11 +1262,7 @@ public class UserServiceImpl implements UserService {
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
                         }
-                        if(storeByCode==null||null==storeByCode.getStore_location()){
-                            sign.setLocation("");
-                        }else {
-                            sign.setLocation(storeByCode.getStore_location());
-                        }
+
                     }
                     sign.setCorp_code(user.getCorp_code());
                     Corp corp = baseService.selectByCorpcode(sign.getCorp_code());
@@ -1303,11 +1304,11 @@ public class UserServiceImpl implements UserService {
                     sign.setPhone(user.getPhone());
                     sign.setDistance("");
                     sign.setStatus(Common.STATUS_SIGN_OUT);
+                    sign.setLocation("");
                     sign.setSign_time(Common.DATETIME_FORMAT.format(now));
                     if((user.getStore_code()==null && user.getArea_code()==null) || (user.getStore_code().equals("")&&user.getArea_code().equals(""))){
                         sign.setStore_name("");
                         sign.setStore_code("");
-                        sign.setLocation("");
                     }
                     if (user.getStore_code() != null && !user.getStore_code().equals("")) {
                         String[] store_code = user.getStore_code().replace(Common.SPECIAL_HEAD, "").split(",");
@@ -1318,11 +1319,7 @@ public class UserServiceImpl implements UserService {
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
                         }
-                        if(storeByCode==null||null==storeByCode.getStore_location()){
-                            sign.setLocation("");
-                        }else {
-                            sign.setLocation(storeByCode.getStore_location());
-                        }
+
                     }
                     if (user.getArea_code() != null && !user.getArea_code().equals("")) {
                         String[] area_code = user.getArea_code().replace(Common.SPECIAL_HEAD, "").split(",");
@@ -1335,11 +1332,6 @@ public class UserServiceImpl implements UserService {
                             sign.setStore_name("");
                         }else {
                             sign.setStore_name(storeByCode.getStore_name());
-                        }
-                        if(storeByCode==null||null==storeByCode.getStore_location()){
-                            sign.setLocation("");
-                        }else {
-                            sign.setLocation(storeByCode.getStore_location());
                         }
                     }
                     sign.setCorp_code(user.getCorp_code());

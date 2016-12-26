@@ -59,6 +59,8 @@ public interface UserService {
 
     List<User> userPhoneExist(String phone) throws Exception;
 
+    List<User> userPhoneExist2(String phone) throws Exception;
+
     List<User> userEmailExist(String email) throws Exception;
 
     List<User> userIdExist(String user_id,String corp_code) throws Exception;
