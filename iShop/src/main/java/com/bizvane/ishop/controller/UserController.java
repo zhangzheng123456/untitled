@@ -604,11 +604,11 @@ public class UserController {
                 }
 
             }
-            String onlyCell1 = LuploadHelper.CheckOnly(column4);
-            if (onlyCell1.equals("存在重复值")) {
-                result = "：Execl中手机号码存在重复值";
-                int b = 5 / 0;
-            }
+//            String onlyCell1 = LuploadHelper.CheckOnly(column4);
+//            if (onlyCell1.equals("存在重复值")) {
+//                result = "：Execl中手机号码存在重复值";
+//                int b = 5 / 0;
+//            }
             String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";

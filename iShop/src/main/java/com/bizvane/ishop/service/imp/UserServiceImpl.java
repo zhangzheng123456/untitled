@@ -665,7 +665,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> userPhoneExist(String phone) throws Exception {
-        List<User> user = this.userMapper.selectByPhone(phone);
+      //  List<User> user = this.userMapper.selectByPhone(phone);
+        List<User> user = new ArrayList<User>();
         return user;
     }
 
