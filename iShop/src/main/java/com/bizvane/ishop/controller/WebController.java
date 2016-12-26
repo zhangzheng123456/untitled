@@ -551,23 +551,28 @@ public class WebController {
                 msg = "request_password";
             } else {
                 password = AESUtils.Decryptor(password);
-                String timestamp = password.split("&&")[0];
-                password = password.split("&&")[1];
+                String[] aa = password.split("&&");
+                if (aa.length == 2){
+                    String timestamp = password.split("&&")[0];
+                    password = password.split("&&")[1];
 
-                long epoch = Long.valueOf(timestamp);
-                logger.debug(" range test:" + System.currentTimeMillis());
-                if (!sign.equals(SIGN)){
-                    msg = "param sign Invalid";
-                }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
-                    msg = "timestamp time_out";
-                }else {
-                    org.json.JSONObject user_info = userService.selectLoginByUserCode(request, corp_code, account, password);
+                    long epoch = Long.valueOf(timestamp);
+                    logger.debug(" range test:" + System.currentTimeMillis());
+                    if (!sign.equals(SIGN)){
+                        msg = "param sign Invalid";
+                    }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
+                        msg = "timestamp time_out";
+                    }else {
+                        org.json.JSONObject user_info = userService.selectLoginByUserCode(request, corp_code, account, password);
 
-                    if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
-                        msg = user_info.getString("error");
-                    } else {
-                        response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+                        if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
+                            msg = user_info.getString("error");
+                        } else {
+                            response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+                        }
                     }
+                }else {
+                    msg = "password_without_&&";
                 }
             }
             response.sendRedirect(msg.toString());
