@@ -1255,13 +1255,17 @@ public class UserServiceImpl implements UserService {
                         List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, null, null, Common.IS_ACTIVE_Y);
                         if (stores.size() > 0) {
                             sign.setStore_code(stores.get(0).getStore_code());
-                        }
-                        Store storeByCode = storeService.getStoreByCode(user.getCorp_code(), stores.get(0).getStore_code(), "");
-                        if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                            Store storeByCode = storeService.getStoreByCode(user.getCorp_code(), stores.get(0).getStore_code(), "");
+                            if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                                sign.setStore_name("");
+                            }else {
+                                sign.setStore_name(storeByCode.getStore_name());
+                            }
+                        }else{
+                            sign.setStore_code("");
                             sign.setStore_name("");
-                        }else {
-                            sign.setStore_name(storeByCode.getStore_name());
                         }
+
 
                     }
                     sign.setCorp_code(user.getCorp_code());
@@ -1326,13 +1330,17 @@ public class UserServiceImpl implements UserService {
                         List<Store> stores = storeService.selectByAreaBrand(user.getCorp_code(), area_code, null, null, Common.IS_ACTIVE_Y);
                         if (stores.size() > 0) {
                             sign.setStore_code(stores.get(0).getStore_code());
-                        }
-                        Store storeByCode = storeService.getStoreByCode(user.getCorp_code(), stores.get(0).getStore_code(), "");
-                        if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                            Store storeByCode = storeService.getStoreByCode(user.getCorp_code(), stores.get(0).getStore_code(), "");
+                            if(storeByCode==null||storeByCode.getStore_name()==null||storeByCode.getStore_name().equals("")){
+                                sign.setStore_name("");
+                            }else {
+                                sign.setStore_name(storeByCode.getStore_name());
+                            }
+                        }else{
+                            sign.setStore_code("");
                             sign.setStore_name("");
-                        }else {
-                            sign.setStore_name(storeByCode.getStore_name());
                         }
+
                     }
                     sign.setCorp_code(user.getCorp_code());
                     Corp corp = baseService.selectByCorpcode(sign.getCorp_code());
