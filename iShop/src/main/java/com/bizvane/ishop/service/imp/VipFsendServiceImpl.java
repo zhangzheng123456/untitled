@@ -74,11 +74,9 @@ public class VipFsendServiceImpl implements VipFsendService {
         String sms_vips = vipFsend.getSms_vips();
 
         JSONObject vips_obj = JSONObject.parseObject(sms_vips);
-
-
         if (send_type.equals("sms")) {
 
-
+            if(send_scope.equals("vip")){
                 String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
                     String area_code = vips_obj.get("area_code").toString();
@@ -120,9 +118,6 @@ public class VipFsendServiceImpl implements VipFsendService {
                     logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
                     message = dataBox.data.get("message").value;
                 }
-
-
-            if(send_scope.equals("vip")){
                 return message;
             }else if(send_scope.equals("vip_group")){
 
@@ -135,15 +130,14 @@ public class VipFsendServiceImpl implements VipFsendService {
                 JSONArray arr=new JSONArray();
                 arr.add(obj1);
                 obj.put("vip_info",arr);
-                JSONObject obj2=new JSONObject();
-                obj2.put("message",obj);
-                message=JSON.toJSONString(obj2);
+                message=JSON.toJSONString(obj);
                 return message;
             }
 
         } else if (send_type.equals("wxmass")) {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
-                JSONArray vip_infos=null;
+            JSONArray vip_infos=null;
+            if(send_scope.equals("vip")){
                 String type = vips_obj.get("type").toString().trim();
                 if (type.equals("1")) {
                     String area_code = vips_obj.get("area_code").toString();
@@ -216,7 +210,6 @@ public class VipFsendServiceImpl implements VipFsendService {
 
                 List<Map<String, Object>> list = new ArrayList();
                 String vip = "";
-
                 for (int i = 0; i < vipid.length; i++) {
                     vip = vipid[i];
                     Map query_key = new HashMap();
@@ -224,7 +217,6 @@ public class VipFsendServiceImpl implements VipFsendService {
                     query_key.put("mass", sms_code);
                     query_key.put("vip_id", vip);
                     List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-
 
                     if (message_list.size() == 0) {
                         JSONObject info=new JSONObject();
@@ -236,23 +228,22 @@ public class VipFsendServiceImpl implements VipFsendService {
                         vips_info.put("vip_info", list);
                         message = JSON.toJSONString(vips_info);
                     }
-
-
                 }
+                return message;
+            }else if(send_scope.equals("vip_group")){
 
-            JSONObject obj=new JSONObject();
-            JSONObject obj1=new JSONObject();
-            obj1.put("vip_name","彭旭丽");
-            obj1.put("cardno","13016691660");
-            obj1.put("vip_phone","13016691660");
+                JSONObject obj=new JSONObject();
+                JSONObject obj1=new JSONObject();
+                obj1.put("vip_name","彭旭丽");
+                obj1.put("vip_id","316424");
+                obj1.put("is_send","未发送");
+                JSONArray arr=new JSONArray();
+                arr.add(obj1);
+                obj.put("vip_info",arr);
 
-            JSONArray arr=new JSONArray();
-            arr.add(obj1);
-            obj.put("vip_info",arr);
-            JSONObject obj2=new JSONObject();
-            obj2.put("message",obj);
-            message=JSON.toJSONString(obj2);
-            return message;
+                message=JSON.toJSONString(obj);
+                return message;
+            }
 
         }else {
             message = "发送类型不合法";
