@@ -25,7 +25,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].actions[j].is_die == "N" && list[i].actions[j].is_live == "Y") {
-                    color = "active";
+                    color = "active selected";
                 }
                 tr += "<li class='" + color + "' data-actionCode='" + list[i].actions[j].action_code + "' data-actionName='" + list[i].actions[j].action_name +
                     "' data-actionId='" + list[i].actions[j].action_id + "'>" +
@@ -41,7 +41,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].columns[k].is_die == "N" && list[i].columns[k].is_live == "Y") {
-                    color = "active";
+                    color = "active selected";
                 }
                 tr += "<li class='" + color + "' data-columnId='" + list[i].columns[k].column_id + "' data-columnName='" + list[i].columns[k].column_name + "'>" +
                     list[i].columns[k].show_name + "</li>"
@@ -91,11 +91,15 @@ var groupPower = {
         })
         $(".power_table").on("click", "ul li", function() {//点击选中状态
             var class_name = $(this).attr("class");
+            console.log(class_name);
             if (class_name == "die") {
                 return;
             }
-            if (class_name !== "die") {
+            if (class_name !== "die"||class_name!=="selected") {
+                if($(this).attr("data-columnid")!==""||$(this).attr("data-actionid")!==""){
+                $(this).removeClass("selected");
                 $(this).toggleClass("active");
+                }
             }
         });
         $("#save").click(function() { //点击保存按钮获取列表内容
@@ -113,7 +117,7 @@ var groupPower = {
                 var function_code = $(tr[i]).attr("data-function");
                 var action_li = $(tr[i]).find(".action_name ul li.active"); //动作的选中项
                 var column_li = $(tr[i]).find(".modify_options ul li.active"); //修改项的选中项
-                var action_id_li = $(tr[i]).find(".action_name ul li"); //动作多有的项
+                var action_id_li = $(tr[i]).find(".action_name ul li"); //动作所有的项
                 var column_id_li = $(tr[i]).find(".modify_options ul li"); //允许修改项的所有项
                 for (var j = 0; j < action_li.length; j++) {
                     if($(action_li[j]).attr("data-actionid")==""){
@@ -137,7 +141,7 @@ var groupPower = {
                 };
                 for (var l = action_id_li.length - 1; l >= 0; l--) {
                     var class_name = $(action_id_li[l]).attr("class");
-                    if (class_name !== "die"&& class_name !=="active") {
+                    if (class_name !== "die"&& class_name !=="active selected") {
                         var action_id = $(action_id_li[l]).attr("data-actionid");
                         if (action_id !== "" && action_id !== undefined) {
                             del_act_id += action_id + ",";
@@ -146,13 +150,13 @@ var groupPower = {
                 };
                 for (var m = column_id_li.length-1; m >= 0; m--) {
                     var class_name = $(column_id_li[m]).attr("class");
-                    if (class_name !=="active") {
+                    if (class_name !== "die"&& class_name !=="active selected") {
                         var column_id = $(column_id_li[m]).attr("data-columnid");
                         if (column_id !== "" && column_id !== undefined) {
                             del_col_id += column_id + ",";
                         }
                     }
-                }
+                };
             }
             param["add_action"] = add_action;
             param["add_column"] = add_column;
