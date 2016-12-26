@@ -718,11 +718,6 @@ public class VIPController {
                 updateCondition.put("_id", corp_code + vip_id);
 
                 DBObject updatedValue = new BasicDBObject();
-                if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
-                    //扩展信息
-                    String extend = jsonObject.get("extend").toString();
-                    updatedValue.put("extend", extend);
-                }
                 if (jsonObject.containsKey("remark")) {
                     //备注
                     String remark = jsonObject.get("remark").toString();
@@ -732,11 +727,6 @@ public class VIPController {
                     //头像
                     String avatar = jsonObject.get("avatar").toString();
                     updatedValue.put("avatar", avatar);
-                }
-                if (jsonObject.containsKey("vip_group_code") && !jsonObject.get("vip_group_code").toString().equals("")) {
-                    //会员分组
-                    String vip_group_code = jsonObject.get("vip_group_code").toString();
-                    updatedValue.put("vip_group_code", vip_group_code);
                 }
                 if (jsonObject.containsKey("image_url") && !jsonObject.get("image_url").toString().equals("")) {
                     //相册
@@ -756,6 +746,12 @@ public class VIPController {
                 }
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 cursor.update(updateCondition, updateSetValue);
+                if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
+                    //扩展信息
+                    String extend = jsonObject.get("extend").toString();
+                    iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,extend);
+                }
+
             } else {
                 //记录不存在，插入
                 DBObject saveData = new BasicDBObject();
@@ -769,9 +765,6 @@ public class VIPController {
                 String remark = "";
                 String avatar = "";
                 JSONArray array = new JSONArray();
-                if (jsonObject.containsKey("extend")) {
-                    extend = jsonObject.get("extend").toString();
-                }
                 if (jsonObject.containsKey("remark")) {
                     remark = jsonObject.get("remark").toString();
                 }
@@ -785,11 +778,14 @@ public class VIPController {
                     image.put("time", Common.DATETIME_FORMAT.format(now));
                     array.add(image);
                 }
-                saveData.put("extend", extend);
                 saveData.put("remark", remark);
                 saveData.put("avatar", avatar);
                 saveData.put("album", array);
                 cursor.save(saveData);
+                if (jsonObject.containsKey("extend")) {
+                    extend = jsonObject.get("extend").toString();
+                    iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,extend);
+                }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
