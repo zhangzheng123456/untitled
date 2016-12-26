@@ -272,6 +272,8 @@ public class VIPController {
             String extend_info = "";
             String remark = "";
             String avatar = "";
+            if (vip.get("custom") != null || !vip.get("custom").toString().equals("null"))
+                extend_info = vip.get("custom").toString();
 
             JSONArray extend = new JSONArray();
             List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
@@ -296,22 +298,18 @@ public class VIPController {
 
             while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
-                if (obj.containsField("extend"))
-                    extend_info = obj.get("extend").toString();
                 if (obj.containsField("remark"))
                     remark = obj.get("remark").toString();
                 if (obj.containsField("avatar"))
                     avatar = obj.get("avatar").toString();
             }
             vip.put("vip_avatar", avatar);
-            extend_info = vip.get("custom").toString();
 
             JSONObject result = new JSONObject();
             result.put("list", vip);
             result.put("extend", extend);
             result.put("extend_info", extend_info);
             result.put("remark", remark);
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -707,86 +705,81 @@ public class VIPController {
             String card_no = jsonObject.get("card_no").toString();
             String phone = jsonObject.get("phone").toString();
 
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-            Map keyMap = new HashMap();
-            keyMap.put("_id", corp_code + vip_id);
-            BasicDBObject queryCondition = new BasicDBObject();
-            queryCondition.putAll(keyMap);
-            DBCursor dbCursor1 = cursor.find(queryCondition);
-            if (dbCursor1.size() > 0) {
-                //记录存在，更新
-                DBObject updateCondition = new BasicDBObject();
-                updateCondition.put("_id", corp_code + vip_id);
+            if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
+                //扩展信息
+                String extend = jsonObject.get("extend").toString();
+                iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,extend);
+            }else {
+                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+                DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+                Map keyMap = new HashMap();
+                keyMap.put("_id", corp_code + vip_id);
+                BasicDBObject queryCondition = new BasicDBObject();
+                queryCondition.putAll(keyMap);
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                if (dbCursor1.size() > 0) {
+                    //记录存在，更新
+                    DBObject updateCondition = new BasicDBObject();
+                    updateCondition.put("_id", corp_code + vip_id);
 
-                DBObject updatedValue = new BasicDBObject();
-                if (jsonObject.containsKey("remark")) {
-                    //备注
-                    String remark = jsonObject.get("remark").toString();
-                    updatedValue.put("remark", remark);
-                }
-                if (jsonObject.containsKey("avatar") && !jsonObject.get("avatar").toString().equals("")) {
-                    //头像
-                    String avatar = jsonObject.get("avatar").toString();
-                    updatedValue.put("avatar", avatar);
-                }
-                if (jsonObject.containsKey("image_url") && !jsonObject.get("image_url").toString().equals("")) {
-                    //相册
-                    DBObject obj = dbCursor1.next();
-                    JSONArray array = new JSONArray();
-                    if (obj.containsField("album")) {
-                        String album = obj.get("album").toString();
-                        array = JSON.parseArray(album);
+                    DBObject updatedValue = new BasicDBObject();
+                    if (jsonObject.containsKey("remark")) {
+                        //备注
+                        String remark = jsonObject.get("remark").toString();
+                        updatedValue.put("remark", remark);
                     }
-                    String image_url = jsonObject.get("image_url").toString();
-                    JSONObject image = new JSONObject();
-                    image.put("image_url", image_url);
-                    image.put("time", Common.DATETIME_FORMAT.format(now));
-                    array.add(image);
+                    if (jsonObject.containsKey("avatar") && !jsonObject.get("avatar").toString().equals("")) {
+                        //头像
+                        String avatar = jsonObject.get("avatar").toString();
+                        updatedValue.put("avatar", avatar);
+                    }
+                    if (jsonObject.containsKey("image_url") && !jsonObject.get("image_url").toString().equals("")) {
+                        //相册
+                        DBObject obj = dbCursor1.next();
+                        JSONArray array = new JSONArray();
+                        if (obj.containsField("album")) {
+                            String album = obj.get("album").toString();
+                            array = JSON.parseArray(album);
+                        }
+                        String image_url = jsonObject.get("image_url").toString();
+                        JSONObject image = new JSONObject();
+                        image.put("image_url", image_url);
+                        image.put("time", Common.DATETIME_FORMAT.format(now));
+                        array.add(image);
 
-                    updatedValue.put("album", array);
-                }
-                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
-                cursor.update(updateCondition, updateSetValue);
-                if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
-                    //扩展信息
-                    String extend = jsonObject.get("extend").toString();
-                    iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,extend);
-                }
-
-            } else {
-                //记录不存在，插入
-                DBObject saveData = new BasicDBObject();
-                saveData.put("_id", corp_code + vip_id);
-                saveData.put("vip_id", vip_id);
-                saveData.put("corp_code", corp_code);
-                saveData.put("card_no", card_no);
-                saveData.put("phone", phone);
-                saveData.put("corp_code", corp_code);
-                String extend = "";
-                String remark = "";
-                String avatar = "";
-                JSONArray array = new JSONArray();
-                if (jsonObject.containsKey("remark")) {
-                    remark = jsonObject.get("remark").toString();
-                }
-                if (jsonObject.containsKey("avatar")) {
-                    avatar = jsonObject.get("avatar").toString();
-                }
-                if (jsonObject.containsKey("image_url")) {
-                    String image_url = jsonObject.get("image_url").toString();
-                    JSONObject image = new JSONObject();
-                    image.put("image_url", image_url);
-                    image.put("time", Common.DATETIME_FORMAT.format(now));
-                    array.add(image);
-                }
-                saveData.put("remark", remark);
-                saveData.put("avatar", avatar);
-                saveData.put("album", array);
-                cursor.save(saveData);
-                if (jsonObject.containsKey("extend")) {
-                    extend = jsonObject.get("extend").toString();
-                    iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,extend);
+                        updatedValue.put("album", array);
+                    }
+                    DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                    cursor.update(updateCondition, updateSetValue);
+                } else {
+                    //记录不存在，插入
+                    DBObject saveData = new BasicDBObject();
+                    saveData.put("_id", corp_code + vip_id);
+                    saveData.put("vip_id", vip_id);
+                    saveData.put("corp_code", corp_code);
+                    saveData.put("card_no", card_no);
+                    saveData.put("phone", phone);
+                    saveData.put("corp_code", corp_code);
+                    String remark = "";
+                    String avatar = "";
+                    JSONArray array = new JSONArray();
+                    if (jsonObject.containsKey("remark")) {
+                        remark = jsonObject.get("remark").toString();
+                    }
+                    if (jsonObject.containsKey("avatar")) {
+                        avatar = jsonObject.get("avatar").toString();
+                    }
+                    if (jsonObject.containsKey("image_url")) {
+                        String image_url = jsonObject.get("image_url").toString();
+                        JSONObject image = new JSONObject();
+                        image.put("image_url", image_url);
+                        image.put("time", Common.DATETIME_FORMAT.format(now));
+                        array.add(image);
+                    }
+                    saveData.put("remark", remark);
+                    saveData.put("avatar", avatar);
+                    saveData.put("album", array);
+                    cursor.save(saveData);
                 }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
