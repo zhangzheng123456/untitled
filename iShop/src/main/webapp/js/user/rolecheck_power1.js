@@ -41,7 +41,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].columns[k].is_die == "N" && list[i].columns[k].is_live == "Y") {
-                    color = "active selected";
+                    color = "active";
                 }
                 tr += "<li class='" + color + "' data-columnId='" + list[i].columns[k].column_id + "' data-columnName='" + list[i].columns[k].column_name + "'>" +
                     list[i].columns[k].show_name + "</li>"
@@ -89,8 +89,7 @@ var groupPower = {
             if (class_name == "die") {
                 return;
             }
-            if (class_name !== "die"||class_name!=="selected") {
-                $(this).removeClass("selected");
+            if (class_name !== "die") {
                 $(this).toggleClass("active");
             }
         });
@@ -133,7 +132,7 @@ var groupPower = {
                 };
                 for (var l = action_id_li.length - 1; l >= 0; l--) {
                     var class_name = $(action_id_li[l]).attr("class");
-                    if (class_name !== "die"&& class_name !=="active selected"){
+                    if (class_name !== "die"&& class_name !=="active"){
                         var action_id = $(action_id_li[l]).attr("data-actionid");
                         if (action_id !== "" && action_id !== undefined) {
                             del_act_id += action_id + ",";
@@ -142,7 +141,7 @@ var groupPower = {
                 };
                 for (var m = column_id_li.length-1; m >= 0; m--) {
                     var class_name = $(column_id_li[m]).attr("class");
-                    if (class_name !== "die"&& class_name !=="active selected") {
+                    if (class_name !== "die"&& class_name !=="active") {
                         var column_id = $(column_id_li[m]).attr("data-columnid");
                         if (column_id !== "" && column_id !== undefined) {
                             del_col_id += column_id + ",";

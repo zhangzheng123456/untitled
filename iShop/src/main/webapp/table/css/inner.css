@@ -1712,10 +1712,10 @@ input::-webkit-input-placeholder{
 	color: #fff;
 	background-color: #6CC1C8;
 }
-.power_table tbody tr .action_name ul li.selected,.power_table tbody tr .modify_options ul li.selected{
-	opacity: 0.5;
-}
 .power_table tbody tr .action_name ul li.die,.power_table tbody tr .modify_options ul li.die{
+	border:1px solid #6CC1C8;
+	color: #fff;
+	background-color: #6CC1C8;
 	opacity: 0.4;
 }
 .power_table tbody tr .modify_options{

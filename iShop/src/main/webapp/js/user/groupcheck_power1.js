@@ -25,7 +25,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].actions[j].is_die == "N" && list[i].actions[j].is_live == "Y") {
-                    color = "active selected";
+                    color = "active";
                 }
                 tr += "<li class='" + color + "' data-actionCode='" + list[i].actions[j].action_code + "' data-actionName='" + list[i].actions[j].action_name +
                     "' data-actionId='" + list[i].actions[j].action_id + "'>" +
@@ -41,7 +41,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].columns[k].is_die == "N" && list[i].columns[k].is_live == "Y") {
-                    color = "active selected";
+                    color = "active";
                 }
                 tr += "<li class='" + color + "' data-columnId='" + list[i].columns[k].column_id + "' data-columnName='" + list[i].columns[k].column_name + "'>" +
                     list[i].columns[k].show_name + "</li>"
@@ -95,11 +95,8 @@ var groupPower = {
             if (class_name == "die") {
                 return;
             }
-            if (class_name !== "die"||class_name!=="selected") {
-                if($(this).attr("data-columnid")!==""||$(this).attr("data-actionid")!==""){
-                $(this).removeClass("selected");
+            if (class_name !== "die") {
                 $(this).toggleClass("active");
-                }
             }
         });
         $("#save").click(function() { //点击保存按钮获取列表内容
@@ -141,7 +138,7 @@ var groupPower = {
                 };
                 for (var l = action_id_li.length - 1; l >= 0; l--) {
                     var class_name = $(action_id_li[l]).attr("class");
-                    if (class_name !== "die"&& class_name !=="active selected") {
+                    if (class_name !== "die"&& class_name !=="active") {
                         var action_id = $(action_id_li[l]).attr("data-actionid");
                         if (action_id !== "" && action_id !== undefined) {
                             del_act_id += action_id + ",";
@@ -150,7 +147,7 @@ var groupPower = {
                 };
                 for (var m = column_id_li.length-1; m >= 0; m--) {
                     var class_name = $(column_id_li[m]).attr("class");
-                    if (class_name !== "die"&& class_name !=="active selected") {
+                    if (class_name !== "die"&& class_name !=="active") {
                         var column_id = $(column_id_li[m]).attr("data-columnid");
                         if (column_id !== "" && column_id !== undefined) {
                             del_col_id += column_id + ",";
