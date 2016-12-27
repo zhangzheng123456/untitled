@@ -23,6 +23,7 @@
         .start_analyze_wrap{
             display: none;
             position: absolute;
+            z-index: 200;
             top: 30px;
             left: 0;
             width: 100%;
@@ -215,7 +216,7 @@
                 <span class="left_shadow_title">加载中..</span>
             </div>
         </div>
-        <div class="start_analyze_wrap_left">
+        <div class="start_analyze_wrap_left" id="start_analyze_left">
             <span>根据您的筛选条件,数据量较大</span>
             <span>分析需要5分钟,请耐心等待...</span>
             <span class="start_analyze_btn">开始分析</span>
@@ -501,7 +502,7 @@
         <div class="right_shadow" id="right_shadow">
             <span>加载中..</span>
         </div>
-        <div class="start_analyze_wrap">
+        <div class="start_analyze_wrap" id="start_analyze_right">
             <span>根据您的筛选条件,数据量较大</span>
             <span>分析需要5分钟,请耐心等待...</span>
             <span class="start_analyze_btn">开始分析</span>
@@ -689,11 +690,13 @@
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/jquery.dad.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="../js/dist/echarts.js"></script>
+<!--<script src="../js/dist/echarts.js"></script>-->
+<script src="../js/silide.js?20161217"></script>
+<script src="../js/echarts.js?20161116"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/loading.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js?20161116"></script>
-<script src="../js/vip/vip_analyze.js?20161116"></script>
+<script src="../js/vip/vip_analyze.js?20161227"></script>
 <script>
     $(".scroll_bar").niceScroll({
         cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,

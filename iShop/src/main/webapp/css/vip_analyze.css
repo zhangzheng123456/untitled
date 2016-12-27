@@ -160,7 +160,7 @@
 }
 /*图锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞�*/
 #chart_analyze .chart_module{
-    display: none;
+    /*display: none;*/
     margin:0 0.5% 0.5% 0;
     float:left;
     width:32.834%;

@@ -176,44 +176,6 @@ $("#simple_state_select li").click(function () {
     $("#simple_state").val($(this).html());
     $("#simple_state_select").hide();
 });
-$("#age_l").click(function () {
-    $(".age_l").toggle();
-});
-$("#age_r").click(function () {
-    $(".age_r").toggle();
-});
-$(".age_l").on("click", "li", function () {
-    var max = $("#age_r").val();
-    var val = parseInt($(this).html());
-    if (val >= max && max !== "") {
-        art.dialog({
-            zIndex: 10003,
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "不能大于右边的年龄哦"
-        });
-        return;
-    }
-    $("#age_l").val($(this).html());
-    $(".age_l").hide();
-});
-$(".age_r").on("click", "li", function () {
-    var min = $("#age_l").val();
-    var val = parseInt($(this).html());
-    if (val <= min && min !== "") {
-        art.dialog({
-            zIndex: 10003,
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "不能小于右边的年龄哦"
-        });
-        return;
-    }
-    $("#age_r").val($(this).html());
-    $(".age_r").hide();
-});
 $("#expend_attribute").on("click",".select",function () {
     $(this).next(".sex_select").toggle();
 });
@@ -465,12 +427,6 @@ $(document).click(function (e) {
     }
     if (!($(e.target).is("#simple_state_select") || $(e.target).is("#simple_state"))) {
         $("#simple_state_select").hide();
-    }
-    if (!($(e.target).is(".age_l") || $(e.target).is("#age_l"))) {
-        $(".age_l").hide()
-    }
-    if (!($(e.target).is(".age_r") || $(e.target).is("#age_r"))) {
-        $(".age_r").hide();
     }
     if (!($(e.target).is("#filter_group") || $(e.target).is(".filter_group input"))) {
         $(".filter_group").hide();
