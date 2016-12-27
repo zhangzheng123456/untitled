@@ -287,5 +287,13 @@
         WHERE id = #{id}
     </delete>
 
+    <select id="selectByCorpRole" resultType="com.bizvane.ishop.entity.Group">
+        SELECT *
+        FROM def_group
+        WHERE role_code = #{role_code}
+        AND corp_code = #{corp_code}
+        GROUP By id
+        ORDER BY id DESC
+    </select>
 
 </mapper>
