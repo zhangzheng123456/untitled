@@ -37,4 +37,5 @@ public interface GroupService {
 
     String selRoleByGroupCode(String corp_code,String group_code) throws Exception;
 
+    List<Group> selectByCorpRole(String corp_code, String role_code) throws Exception;
 }

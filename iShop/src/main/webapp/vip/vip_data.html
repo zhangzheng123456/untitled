@@ -543,7 +543,7 @@
             <span id="vipAnalyze_return">会员信息</span>
         </div>
         <!--头部-->
-        <div class="header" style="overflow: hidden;">
+        <div class="header" style="overflow: hidden;margin-right: -0.5%">
             <div class="right">
                 <div class="person">
                     <div class="person-left">
@@ -1282,18 +1282,6 @@
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!--充值、退款弹窗页面-->
 <script src="../js/vip/vip_dataPage.js"></script>
-<script>
-    var timer = setInterval(function () {
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().show();
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").addClass("icon-ishop_8-01");
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("a").css({color: "#6cc1c8"});
-        if ($(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").hasClass("icon-ishop_8-01")) {
-            clearInterval(timer);
-        }
-    }, 0);
-
-
-</script>
 <script type="text/javascript">
     require.config({
         paths: {
@@ -1420,7 +1408,7 @@
                                 {text: '周四', max: 100},
                                 {text: '周五', max: 100},
                                 {text: '周六', max: 100},
-                                {text: '周七', max: 100},
+                                {text: '周日', max: 100},
                                 {text: '无数据', max: 100}
                             ],
                             radius: 100,

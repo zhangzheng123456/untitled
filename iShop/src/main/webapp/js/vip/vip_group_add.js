@@ -15,6 +15,24 @@ var user_num=1;
 var param = {};//搜索参数
 var choose_this_group='';//当前已选择
 var all_select_vip_list=[];
+var  message={
+    cache:{//缓存变量
+        //"vip_id":"",
+        //"area_codes":"",
+        //"area_names":"",
+        //"brand_codes":"",
+        //"brand_names":"",
+        //"store_codes":"",
+        //"store_names":"",
+        //"user_codes":"",
+        //"user_names":"",
+        "group_codes":"",
+        //"group_name":"",
+        //"type":"",
+        //"count":"",
+        //"corp_code":""
+    }
+};
 $(function () {
     window.vip.init();
     if ($(".pre_title label").text() == "编辑会员分组") {
@@ -326,7 +344,16 @@ $(function () {
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
                     _params["group_condition"]=group_condition;
-                    vipjs.ajaxSubmit(_command, _params, opt);
+                    if($("#group_list input").val().trim()==""){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"至少输入一项条件"
+                        });
+                    }else{
+                        vipjs.ajaxSubmit(_command, _params, opt);
+                    }
                 }
             } else {
                 return;
@@ -1910,7 +1937,7 @@ $("#select_vip_que").click(function(){ //筛选确定
                             param['name']=name;
                             screen.push(param);
                         }
-                    } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
+                    } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15" || key == "16") {
                         if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                             var param = {};
                             var val = $(input[0]).attr("data-code");
@@ -1921,6 +1948,7 @@ $("#select_vip_que").click(function(){ //筛选确定
                             param['type'] = "text";
                             param["name"]=name;
                             param["all_list_name"]=all_list_name;
+                            console.log(all_list_name)
                             screen.push(param);
                         }
                     } else if (key == "17") {
@@ -2007,25 +2035,25 @@ function showSelect(){
     for(var b=0;b<all_select_vip_list.length;b++){
         if(all_select_vip_list[b].type=="json"){
             html+="<div style='float: right'>" +
-                "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px;'>"+all_select_vip_list[b].name+"</span>" +
-                "<input type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["start"]+"' readonly>" +
+                "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px; max-width:70px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+all_select_vip_list[b].name+"</span>" +
+                "<input type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
                 "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
-                "<input readonly type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["end"]+"'>" +
-                "<i class='icon-ishop_6-12 q_remove' ></i>"+
+                "<input readonly type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["end"]+"' title='"+all_select_vip_list[b].value["end"]+"'>" +
+                "<i class='icon-ishop_6-12 q_remove' title='删除'></i>"+
                 "</div>"
-        }else if(all_select_vip_list[b].key=="brand_code" ||all_select_vip_list[b].key=="area_code" ||all_select_vip_list[b].key=="14" ||all_select_vip_list[b].key=="15"){
+        }else if(all_select_vip_list[b].key=="brand_code" ||all_select_vip_list[b].key=="area_code" ||all_select_vip_list[b].key=="14" ||all_select_vip_list[b].key=="15" || all_select_vip_list[b].key=="16"){
             if(all_select_vip_list[b].value!=""){
                 html+="<div style='float: right'>" +
-                    "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis'>"+all_select_vip_list[b].name+"</span>" +
-                    "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].all_list_name+"' readonly>"+
-                    "<i class='icon-ishop_6-12 q_remove'></i>"+
+                    "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width:70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis'>"+all_select_vip_list[b].name+"</span>" +
+                    "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].all_list_name+"' readonly  title='"+all_select_vip_list[b].all_list_name+"'>"+
+                    "<i class='icon-ishop_6-12 q_remove'title='删除'></i>"+
                     "</div>"
             }
         }else{
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width: 70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis '>"+all_select_vip_list[b].name+"</span>" +
-                "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].value+"' readonly>"+
-                "<i class='icon-ishop_6-12 q_remove'></i>"+
+                "<input type='text' style='width: 290px;' value='"+all_select_vip_list[b].value+"' readonly title='"+all_select_vip_list[b].value+"'>"+
+                "<i class='icon-ishop_6-12 q_remove'title='删除'></i>"+
                 "</div>"
         }
     }

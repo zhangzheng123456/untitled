@@ -342,6 +342,8 @@ function jumpBianse() {
     })
     //点击新增时页面进行的跳转
     $('#add').click(function () {
+        sessionStorage.removeItem("group_vip");
+        sessionStorage.removeItem("id");
         $(window.parent.document).find('#iframepage').attr("src", "/vip/message_add.html");
     })
     //双击跳转

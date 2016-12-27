@@ -30,4 +30,7 @@ public interface GroupMapper {
     int deleteByGroupId(Integer id) throws SQLException;
 
     Group selectByName(@Param("corp_code")String corp_code,@Param("group_name") String group_name,@Param("isactive")String isactive) throws SQLException;
+
+    List<Group> selectByCorpRole(@Param("corp_code")String corp_code,@Param("role_code")String role_code) throws SQLException;
+
 }

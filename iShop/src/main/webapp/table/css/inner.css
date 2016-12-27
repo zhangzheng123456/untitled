@@ -699,6 +699,7 @@ input::-webkit-input-placeholder{
 	border-radius: 3px;
 	display: block;
 	margin-bottom: 2px;
+	cursor: pointer;
 }
 #side_bar .gobottom{
 	width: 20px;
@@ -708,6 +709,7 @@ input::-webkit-input-placeholder{
 	border-radius: 3px;
 	display: block;
 	margin-bottom: 2px;
+	cursor: pointer;
 }
 /*********搜索的时候的字体的颜色***************/
 .color{
@@ -1713,6 +1715,9 @@ input::-webkit-input-placeholder{
 	background-color: #6CC1C8;
 }
 .power_table tbody tr .action_name ul li.die,.power_table tbody tr .modify_options ul li.die{
+	border:1px solid #6CC1C8;
+	color: #fff;
+	background-color: #6CC1C8;
 	opacity: 0.4;
 }
 .power_table tbody tr .modify_options{

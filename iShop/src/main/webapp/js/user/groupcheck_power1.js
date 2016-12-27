@@ -91,6 +91,7 @@ var groupPower = {
         })
         $(".power_table").on("click", "ul li", function() {//点击选中状态
             var class_name = $(this).attr("class");
+            console.log(class_name);
             if (class_name == "die") {
                 return;
             }
@@ -113,7 +114,7 @@ var groupPower = {
                 var function_code = $(tr[i]).attr("data-function");
                 var action_li = $(tr[i]).find(".action_name ul li.active"); //动作的选中项
                 var column_li = $(tr[i]).find(".modify_options ul li.active"); //修改项的选中项
-                var action_id_li = $(tr[i]).find(".action_name ul li"); //动作多有的项
+                var action_id_li = $(tr[i]).find(".action_name ul li"); //动作所有的项
                 var column_id_li = $(tr[i]).find(".modify_options ul li"); //允许修改项的所有项
                 for (var j = 0; j < action_li.length; j++) {
                     if($(action_li[j]).attr("data-actionid")==""){
@@ -146,13 +147,13 @@ var groupPower = {
                 };
                 for (var m = column_id_li.length-1; m >= 0; m--) {
                     var class_name = $(column_id_li[m]).attr("class");
-                    if (class_name !=="active") {
+                    if (class_name !== "die"&& class_name !=="active") {
                         var column_id = $(column_id_li[m]).attr("data-columnid");
                         if (column_id !== "" && column_id !== undefined) {
                             del_col_id += column_id + ",";
                         }
                     }
-                }
+                };
             }
             param["add_action"] = add_action;
             param["add_column"] = add_column;
