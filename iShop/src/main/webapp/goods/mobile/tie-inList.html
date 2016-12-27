@@ -45,19 +45,18 @@
 
 //    页面加载获取数据
     function getVal(){
-        var img = 'image/img_kong.png';
         var num = '5';
-        pageVal(img,num);
+        pageVal(num);
     }
-    function pageVal(img,num){
+    function pageVal(num){
         var tempHTML = '<ul class="goods_box"> <li class="the_img"><img src="${img}" alt=""/></li> <li class="the_list"> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <span class="num">${num}</span> </li> <li class="add"> <div><img src="image/icon_点赞@2x.png" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="image/icon_收藏@2x.png" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
         var html = ''
         for(i=0;i<10;i++){
             var nowHTML = tempHTML;
-            nowHTML = nowHTML.replace('${img}',img);
-            nowHTML = nowHTML.replace('${img}',img);
-            nowHTML = nowHTML.replace('${img}',img);
-            nowHTML = nowHTML.replace('${img}',img);
+            nowHTML = nowHTML.replace('${img}','image/list_item_00.jpg');
+            nowHTML = nowHTML.replace('${img}','image/list_item_01.jpg');
+            nowHTML = nowHTML.replace('${img}','image/list_item_02.jpg');
+            nowHTML = nowHTML.replace('${img}','image/list_item_02.jpg');
             nowHTML = nowHTML.replace('${num}',num);
             nowHTML = nowHTML.replace('${num}',num);
             nowHTML = nowHTML.replace('${num}',num);
