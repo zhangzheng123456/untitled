@@ -2036,7 +2036,7 @@ function showSelect(){
         if(all_select_vip_list[b].type=="json"){
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px; max-width:70px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+all_select_vip_list[b].name+"</span>" +
-                "<input type='text' style='width: 140px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
+                "<input type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
                 "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
                 "<input readonly type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["end"]+"' title='"+all_select_vip_list[b].value["end"]+"'>" +
                 "<i class='icon-ishop_6-12 q_remove' title='删除'></i>"+
