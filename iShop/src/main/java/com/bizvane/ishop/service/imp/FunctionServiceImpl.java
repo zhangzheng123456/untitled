@@ -516,10 +516,13 @@ public class FunctionServiceImpl implements FunctionService {
      */
     @Transactional
     public int updateColPrivilegeByUser(String id,String function_code,String chart_order,String corp_code,String user_code) throws Exception{
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("ids",id);
+       if (!id.equals("")){
+           String[] ids = id.split(",");
+           Map<String,Object> map = new HashMap<String, Object>();
+           map.put("ids",ids);
+           privilegeMapper.deleteColPrivileges(map);
+       }
         String master_code = corp_code + "U" + user_code;
-        privilegeMapper.deleteColPrivileges(map);
         TablePrivilege p = new TablePrivilege();
         p.setFunction_code(function_code);
         p.setColumn_name(chart_order);
