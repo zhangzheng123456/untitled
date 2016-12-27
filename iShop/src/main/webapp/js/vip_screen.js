@@ -319,6 +319,7 @@ $("#screen_vip_que").click(function () {
         filtrates(inx, pageSize);
     }
     $("#search").val("");
+    value="";
     $("#screen_wrapper").hide();
     $("#p").hide();
 });
