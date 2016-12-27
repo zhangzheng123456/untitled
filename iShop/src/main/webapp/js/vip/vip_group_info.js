@@ -32,6 +32,8 @@ var vip_group_info={
         this.switchModel();
         this.fsendMessage();
         this.showEcharts();
+        this.transAnalysis();
+        this.transShowModel();
     },
     showEcharts:function(){
         require.config({
@@ -1376,6 +1378,27 @@ var vip_group_info={
             sessionStorage.setItem("group_vip",JSON.stringify(group_vip));
             window.open("http://"+window.location.host+"/navigation_bar.html?url=/vip/message_add.html&func_code=F0041");
         });
+    },
+    transAnalysis:function(){
+        $(".chart_analyze_condition i,.chart_analyze_condition span").click(function(){
+            $(this).siblings("ul").toggle();
+        });
+        $(".chart_analyze_condition ul li").click(function(){
+            var val=$(this).text();
+            $(this).parent().siblings("span").html(val);
+            $(this).parent().hide();
+        })
+    },
+    transShowModel:function(){
+        $(".chart_list_icon").click(function(){
+            if($(this).parent().siblings("li").is(":hidden")){
+                $(this).parent().siblings("li").show();
+                $(this).parent().siblings(".data_table").hide();
+            }else {
+                $(this).parent().siblings("li").hide();
+                $(this).parent().siblings(".data_table").show();
+            }
+        })
     }
 
 };
