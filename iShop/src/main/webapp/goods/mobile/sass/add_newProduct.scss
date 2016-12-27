@@ -57,6 +57,9 @@ address,cite,dfn,em,var{font-style:normal;}
     background: #eedeed;
     float: left;
     margin-right: rem(10);
+    img{
+      width: 100%;
+    }
   }
   .list_describe{
     margin-left: rem(95);
@@ -78,4 +81,7 @@ address,cite,dfn,em,var{font-style:normal;}
       color:#dd6c5e;
     }
   }
+}
+.changeBcColor{
+  background-color: #bae4e8;
 }

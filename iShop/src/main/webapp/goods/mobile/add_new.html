@@ -29,24 +29,10 @@
       </div>
   </div>
   <ul class="container_picture">
-      <li class="picture">
-      <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
+      <!--商品模板-->
+      <!--<li class="picture">-->
+          <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
+      <!--</li>-->
       <li class="picture_add">
           <div class="picture_add_new"><img src="image/icon_add_14x14px@3x.png" width="100%"height="100%"alt="add"></div>
       </li>
@@ -59,5 +45,88 @@
       <textarea name="" id="describe" placeholder="请填写搭配简介"></textarea>
   </div>
 <script src="js/jquery-1.11.1.js"></script>
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script>
+    //照片按钮
+    function addImg(){
+        var self=this;
+        self.client=self.client || new OSS.Wrapper({
+                    region: 'oss-cn-hangzhou',
+                    accessKeyId: 'O2zXL39br8rSn1zC',
+                    accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+                    bucket: 'products-image'
+                });
+        $(".action_picture").click(function(e){
+            var file = e.target.files[0];
+            var pos=file.name.lastIndexOf(".");
+            var imgclass=file.name.substring(pos+1,file.name.length);
+            if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
+                var urlType = $.cookie('urlType');
+                var corp_code= $.cookie('corp_code');
+                var time = new Date().getTime();
+                if(urlType == 'weixin'){
+                    //企业编号+时间戳+open_id（微信）
+                    var open_id = $.cookie('open_id');
+                    var storeAs='/MessageImage/'+corp_code+'/'+corp_code+"-"+time+"-"+ open_id +"."+imgclass;
+                }else if(urlType == 'tourist'){
+                    //企业编号+时间戳+cookie（游客）
+                    var touristId = $.cookie('wechat_cook_id');
+                    var storeAs='/MessageImage/'+corp_code+'/'+corp_code+"-"+time+"-"+ touristId +"."+imgclass;
+                }
+                self.client.multipartUpload(storeAs, file).then(function (result) {
+                    console.log(result);
+                    var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
+                    showImg(storeAs);
+                    //var h = date.getHours();
+                    //var m = date.getMinutes();
+                    //var sendTime=h+":"+m;
+                    //self.sendMsgChange(sendTime,storeAs,"image");
+                    console.log('发送图片的地址是：'+storeAs);
+//                    sendImg(storeAs);
+                    $("#upFile").val("");
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }else
+            {
+                alert("请确保文件为图像类型");
+                return false;
+            }
+        })
+    }
+    function showImg(storeAs){
+        var tempHTML = '<li class="picture"> <div class="picture_btn"><img src="${storeAs}"width="100%"height="100%" alt="delete"></div> </li>';
+        var html='';
+        var nowHTML = tempHTML;
+        nowHTML = nowHTML.replace('${storeAs}',storeAs);
+        html+=nowHTML;
+        $('.picture_add').before(html);
+        deleteIt();
+    }
+    //商品按钮
+    $('.action_product').click(function () {
+        window.location='add_newProduct.html';
+    });
+    //添加功能
+    $('.picture_add img').click(function () {
+        var tempHTML = '<li class="picture"> <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div> </li>';
+        var html='';
+        var nowHTML = tempHTML;
+        html+=nowHTML;
+        $('.picture_add').before(html)
+        deleteIt();
+    });
+    //删除功能
+    function deleteIt(){
+        $('.picture img').click(function () {
+           $(this).parents('.picture').remove();
+        });
+    }
+
+    $(document).ready(function () {
+        addImg();
+    });
+
+</script>
 </body>
 </html>

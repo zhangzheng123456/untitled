@@ -102,6 +102,8 @@ address, cite, dfn, em, var {
     background: #eedeed;
     float: left;
     margin-right: 0.24155rem; }
+    .list .list_picture img {
+      width: 100%; }
   .list .list_describe {
     margin-left: 2.29469rem; }
     .list .list_describe p {
@@ -124,5 +126,8 @@ address, cite, dfn, em, var {
       margin-bottom: 0.24155rem; }
     .list .list_describe .list_price {
       color: #dd6c5e; }
+
+.changeBcColor {
+  background-color: #bae4e8; }
 
 /*# sourceMappingURL=add_newProduct.css.map */

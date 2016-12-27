@@ -477,7 +477,7 @@ public class VIPController {
     }
 
     /**
-     * 会员列表（目前只支持导购店铺）
+     * 会员列表
      * 筛选
      */
     @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
@@ -554,9 +554,13 @@ public class VIPController {
                 post_array.add(post_obj);
             }
             logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
-//            DataBox dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
-            DataBox dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
-
+            DataBox dataBox;
+            if (post_array.size()>0) {
+                dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
+            }else {
+                Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            }
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
