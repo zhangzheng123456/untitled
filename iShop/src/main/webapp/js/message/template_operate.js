@@ -348,7 +348,7 @@ function getcorplist(a,b){
 					var event=window.event||arguments[0];
 					if(event.keyCode == 13){
 						var corp_code1=$("#OWN_CORP").val();
-						getTemplateGroup(c,b);
+						getTemplateGroup(corp_code1,b);
 					}
 				})
 		}else if(data.code=="-1"){

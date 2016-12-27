@@ -25,7 +25,7 @@ var groupPower = {
                     color = "";
                 }
                 if (list[i].actions[j].is_die == "N" && list[i].actions[j].is_live == "Y") {
-                    color = "active selected";
+                    color = "active";
                 }
                 tr += "<li class='" + color + "' data-actionCode='" + list[i].actions[j].action_code + "' data-actionName='" + list[i].actions[j].action_name +
                     "' data-actionId='" + list[i].actions[j].action_id + "'>" +
