@@ -343,8 +343,14 @@ function getcorplist(a,b){
 				$("input[verify='Code']").attr("data-mark","");
 				$("#STORE_NAME").attr("data-mark","");
 
-			})
-
+			});
+			$('#corp_select .searchable-select-input').keydown(function(event){
+					var event=window.event||arguments[0];
+					if(event.keyCode == 13){
+						var corp_code1=$("#OWN_CORP").val();
+						getTemplateGroup(c,b);
+					}
+				})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,

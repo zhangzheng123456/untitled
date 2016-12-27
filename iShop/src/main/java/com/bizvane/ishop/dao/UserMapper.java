@@ -22,7 +22,7 @@ public interface UserMapper {
 
     List<User> selectByLogin(String phone) throws SQLException;
 
-    List<User> selectLogin(String phone, String password) throws SQLException;
+    List<User> selectLoginByUserCode(@Param("phone")String phone,@Param("corp_code")String corp_code) throws SQLException;
 
     List<User> userEmailExist(@Param("email") String email) throws SQLException;
 

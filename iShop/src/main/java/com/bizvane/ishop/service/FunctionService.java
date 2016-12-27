@@ -40,4 +40,8 @@ public interface FunctionService {
     JSONArray selectPrivilegeStatus(String user_code,String group_code,String role_code,String live_status,String die_status,JSONArray privilege_array) throws Exception;
 
     String updateACPrivilege(String master_code, String user_code, String del_act_id, JSONArray add_act,String del_col_id,JSONArray add_col) throws Exception;
+
+    List<Privilege> selectColPrivilegeByUser(String function_code,String master_code) throws Exception;
+
+    int updateColPrivilegeByUser(String id,String function_code,String chart_order,String corp_code,String user_code) throws Exception;
 }

@@ -9,6 +9,8 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.AESUtils;
+import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -535,58 +537,211 @@ public class WebController {
         String msg = "请求失败";
         String status = "failed";
         String data = "";
-        JSONObject return_msg = new JSONObject();
         try {
             String sign= request.getParameter("sign");
+            String corp_code= request.getParameter("corp_code");
             String account= request.getParameter("account");
             String password= request.getParameter("password");
 
             if (sign == null || sign.equals("")) {
-                msg = "request%20param%20sign";
+                msg = "request_sign";
+            }else if (corp_code == null || corp_code.equals("")) {
+                msg = "request_corp_code";
             }else if (account == null || account.equals("")) {
-                msg = "request%20param%20account";
+                msg = "request_account";
             }else if (password == null || password.equals("")){
-                msg = "request%20param%20password";
+                msg = "request_password";
             } else {
                 password = AESUtils.Decryptor(password);
-                String timestamp = password.split("&&")[0];
-                password = password.split("&&")[1];
+                String[] aa = password.split("&&");
+                if (aa.length == 2){
+                    String timestamp = password.split("&&")[0];
+                    password = password.split("&&")[1];
 
+                    long epoch = Long.valueOf(timestamp);
+                    logger.debug(" range test:" + System.currentTimeMillis());
+                    if (!sign.equals(SIGN)){
+                        msg = "param sign Invalid";
+                    }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
+                        msg = "timestamp time_out";
+                    }else {
+                        org.json.JSONObject user_info = userService.selectLoginByUserCode(request, corp_code, account, password);
+
+                        if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
+                            msg = user_info.getString("error");
+                        } else {
+                            response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
+                        }
+                    }
+                }else {
+                    msg = "password_without_&&";
+                }
+            }
+            response.sendRedirect(msg.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 新增员工
+     */
+    @RequestMapping(value = "/api/addUser", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String addUser(HttpServletRequest request,HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String id = "";
+        String msg = "";
+        String status = "failed";
+        try{
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String post_data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(post_data);
+            id = jsonObj.containsKey("id")?jsonObj.get("id").toString():"";
+            if (!jsonObj.containsKey("sign")){
+                msg = "request_sign";
+            }else if (!jsonObj.containsKey("timestamp")){
+                msg = "request_timestamp";
+            }else if (!jsonObj.containsKey("data")){
+                msg = "request_data";
+            }else {
+                String sign= jsonObj.getString("sign");
+                String timestamp = jsonObj.getString("timestamp");
                 long epoch = Long.valueOf(timestamp);
-                logger.debug(" range test:" + System.currentTimeMillis());
                 if (!sign.equals(SIGN)){
                     msg = "param sign Invalid";
                 }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
                     msg = "timestamp time_out";
                 }else {
-                    org.json.JSONObject user_info = userService.login(request, account, password);
-
-//                    org.json.JSONObject user_info = userService.noPasswdlogin(request, corp_code, user_code,password);
-                    if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
-                        msg = user_info.getString("error");
-                    } else {
-                        status = "success";
-                        msg = "请求成功";
-                        JSONObject result = new JSONObject();
-                        response.sendRedirect("/navigation_bar.html?url=/vip/vip.html&func_code=F0040");
-//                        result.put("redirect_url", CommonValue.ishop_url + "navigation_bar.html?url=/vip/vip.html&func_code=F0040");
-//                        data = result.toString();
-//                        return "/vip/vip.html";
+                    String data = jsonObj.getString("data");
+                    org.json.JSONObject data_obj = new org.json.JSONObject(data);
+                    if (!data_obj.has("corp_code")) {
+                        msg = "request corp_code";
+                    } else if (!data_obj.has("user_code")) {
+                        msg = "request user_code";
+                    } else if (!data_obj.has("phone")) {
+                        msg = "request phone";
+                    }else {
+                        String corp_code = data_obj.getString("corp_code");
+//                        String phone = data_obj.getString("phone");
+                        List<Group> groups = groupService.selectByCorpRole(corp_code,Common.ROLE_STAFF);
+                        User user = WebUtils.JSON2Bean(data_obj, User.class);
+                        if (data_obj.has("store_code") && !data_obj.getString("store_code").equals("")){
+                            String store_code = data_obj.getString("store_code");
+                            String[] store_codes = store_code.split(",");
+                            String code = "";
+                            for (int i = 0; i < store_codes.length; i++) {
+                                code = Common.SPECIAL_HEAD + store_codes[i] + ",";
+                            }
+                            user.setStore_code(code);
+                        }
+//                        String password = CheckUtils.encryptMD5Hash(phone);
+//                        user.setPassword(password);
+                        user.setGroup_code(groups.get(0).getGroup_code());
+                        user.setCan_login(Common.IS_ACTIVE_Y);
+                        user.setIsactive(Common.IS_ACTIVE_Y);
+                        msg = userService.insert(user);
+                        if (msg.equals(Common.DATABEAN_CODE_SUCCESS)){
+                            result.put("id",id);
+                            result.put("status","success");
+                            result.put("message","");
+                            return result.toString();
+                        }
                     }
                 }
             }
-            return_msg.put("id",id);
-            return_msg.put("status",status);
-            return_msg.put("msg",msg);
-            return_msg.put("data",data);
-            response.sendRedirect(msg.toString());
         } catch (Exception ex) {
-            return_msg.put("id",id);
-            return_msg.put("status",status);
-            return_msg.put("msg",ex.getMessage());
-            return_msg.put("data","");
             ex.printStackTrace();
+            msg = ex.getMessage();
         }
-//        return return_msg.toString();
+        result.put("id",id);
+        result.put("status",status);
+        result.put("message",msg);
+        return result.toString();
+    }
+
+    /**
+     * 修改员工信息
+     */
+    @RequestMapping(value = "/api/editUser", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String editUser(HttpServletRequest request,HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String id = "";
+        String msg = "";
+        String status = "failed";
+        try{
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String post_data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(post_data);
+            id = jsonObj.containsKey("id")?jsonObj.get("id").toString():"";
+            if (!jsonObj.containsKey("sign")){
+                msg = "request_sign";
+            }else if (!jsonObj.containsKey("timestamp")){
+                msg = "request_timestamp";
+            }else if (!jsonObj.containsKey("data")){
+                msg = "request_data";
+            }else {
+                String sign= jsonObj.getString("sign");
+                String timestamp = jsonObj.getString("timestamp");
+                long epoch = Long.valueOf(timestamp);
+                if (!sign.equals(SIGN)){
+                    msg = "param sign Invalid";
+                }else if (System.currentTimeMillis() - epoch < -NETWORK_DELAY_SECONDS || System.currentTimeMillis() - epoch > NETWORK_DELAY_SECONDS) {
+                    msg = "timestamp time_out";
+                }else {
+                    String data = jsonObj.getString("data");
+                    org.json.JSONObject data_obj = new org.json.JSONObject(data);
+                    if (!data_obj.has("corp_code")) {
+                        msg = "request corp_code";
+                    } else if (!data_obj.has("user_code")) {
+                        msg = "request user_code";
+                    } else if (!data_obj.has("user_code")) {
+                        msg = "request user_code";
+                    }else {
+                        String corp_code = data_obj.getString("corp_code");
+                        String user_code = data_obj.getString("user_code");
+                        List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
+                        User user = users.get(0);
+                        String sex = data_obj.has("sex")?data_obj.get("sex").toString():"";
+                        String user_name = data_obj.has("user_name")?data_obj.get("user_name").toString():"";
+                        String position = data_obj.has("position")?data_obj.get("position").toString():"";
+                        String password = data_obj.has("password")?data_obj.get("password").toString():"";
+                        if (!sex.equals(""))
+                            user.setSex(sex);
+                        if (!user_name.equals(""))
+                            user.setUser_name(user_name);
+                        if (!position.equals(""))
+                            user.setPosition(position);
+                        if (!password.equals(""))
+                            user.setPassword(password);
+                        userService.updateUser(user);
+                        result.put("id",id);
+                        result.put("status","success");
+                        result.put("message","");
+                        return result.toString();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            msg = ex.getMessage();
+        }
+        result.put("id",id);
+        result.put("status",status);
+        result.put("message",msg);
+        return result.toString();
     }
 }

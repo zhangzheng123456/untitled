@@ -543,7 +543,7 @@
             <span id="vipAnalyze_return">会员信息</span>
         </div>
         <!--头部-->
-        <div class="header" style="overflow: hidden;">
+        <div class="header" style="overflow: hidden;margin-right: -0.5%">
             <div class="right">
                 <div class="person">
                     <div class="person-left">
@@ -700,26 +700,41 @@
             </div>
         </div>
         <!-- 分析数据图表描述-->
-        <div id="chart_analyze" class="col_lg_12" style="overflow: hidden;">
+        <div id="chart_analyze" style="overflow: hidden;margin-right: -0.5%">
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">消费类型  <i class="icon-ishop_9-05"></i></span>
+                    <span class="chart_head">
+                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                    <span>消费类型</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                </span>
                     <li id="main" style="padding-left: 10px;">
                     </li>
                 </ul>
             </div>
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">星期偏好  <i class="icon-ishop_9-05"></i></span>
+                   <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>星期偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                </span>
                     <li id="main1" style="height: 270px;">
                     </li>
                 </ul>
             </div>
             <div class="chart_module">
                 <ul>
-                <span class="chart_head">
-                    价格偏好
-                    <i class="icon-ishop_9-05"></i>
+               <span class="chart_head">
+                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                    <span>价格偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
                 </span>
                     <li id="main2" style="height: 270px;">
                     </li>
@@ -727,21 +742,39 @@
             </div>
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">购买时段  <i class="icon-ishop_9-05"></i></span>
+                    <span class="chart_head">
+                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                    <span>购买时段</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                </span>
                     <li id="main3" style="height: 270px;">
                     </li>
                 </ul>
             </div>
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">月份偏好  <i class="icon-ishop_9-05"></i></span>
+                    <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>月份偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                </span>
                     <li id="main4" style="height: 270px;">
                     </li>
                 </ul>
             </div>
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">系列偏好  <i class="icon-ishop_9-05"></i></span>
+                   <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>系列偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                </span>
                     <li id="main5" style="height: 270px;padding-left: 10px;">
                     </li>
                 </ul>
@@ -755,7 +788,13 @@
             <!--</div>-->
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">地域分布  <i class="icon-ishop_9-05"></i></span>
+                  <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>地域分布</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_list_icon"></i>
+                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                </span>
                     <li id="main7" style="height:270px;">
                     </li>
                 </ul>
@@ -1249,6 +1288,8 @@
         $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().show();
         $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").addClass("icon-ishop_8-01");
         $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().find("span").addClass("icon-ishop_8-02");
         if($(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").hasClass("icon-ishop_8-01")){
             clearInterval(timer);
         }
@@ -1382,7 +1423,7 @@
                                 {text: '周四', max: 100},
                                 {text: '周五', max: 100},
                                 {text: '周六', max: 100},
-                                {text: '周七', max: 100},
+                                {text: '周日', max: 100},
                                 {text: '无数据', max: 100}
                             ],
                             radius: 100,
@@ -1709,7 +1750,9 @@
                 ul.hide();
             }
         });
-        $("#chart_analyze").dad()
+        $("#chart_analyze").dad({
+            draggable: '.drag_area'
+        })
     });
     //    ***********************************************************
     //    滚动条

@@ -258,19 +258,18 @@
         SELECT *
         FROM def_user
         WHERE (phone = #{phone}
-        or email = #{phone}
-        or user_code = #{phone})
+        or email = #{phone})
         AND isactive = 'Y'
     </select>
 
-    <select id="selectLogin" resultMap="BaseMap">
+    <select id="selectLoginByUserCode" resultMap="BaseMap">
         SELECT *
         FROM def_user
-        WHERE (phone = #{0}
-        OR email = #{0})
-        AND password = #{1}
+        WHERE (phone = #{phone}
+        or email = #{phone}
+        or user_code = #{phone})
+        AND corp_code = #{corp_code}
         AND isactive = 'Y'
-        AND can_login = 'Y'
     </select>
 
     <select id="selectUserCode" resultMap="BaseMap">

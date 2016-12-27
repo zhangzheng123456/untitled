@@ -5,10 +5,148 @@
     <title>分组会员</title>
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" href="../css/vip_analyze.css">
+    <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <style>
-
+        /*批量标签*/
+        .batch_label_wrapper{
+            display: none;
+            position: absolute;
+            top:20%;
+            left:30%;
+            z-index: 1000;
+            width:400px;
+            height: 400px;
+            border-radius: 5px;
+            border: 1px solid #d1d1d1;
+            background: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .batch_search_label{
+            display: inline-flex;
+            height: 30px;
+            padding: 10px;
+            margin-top: 10px;
+            position: relative;
+            color: #888;
+        }
+        .batch_search_label ul{
+            display: none;
+            position: absolute;
+            top: 41px;
+            text-indent: 10px;
+            width: 270px;
+            height: 100px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            overflow-y: scroll;
+        }
+        .batch_search_label ul li{
+            width: 100%;
+            height: 25px;
+            line-height: 25px;
+            cursor: pointer;
+        }
+        .batch_search_label ul li:hover{
+            color: #FFFFFF;
+            background: #4a5f7c;
+        }
+        .batch_search_label input{
+            width: 270px;
+            height: 30px;
+            color: #888888;
+            border: 1px solid #e8e8e8;
+            outline: none;
+            border-radius: 5px;
+            text-indent: 10px;
+        }
+        .add_label{
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background: #6cc1c8;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 15px;
+        }
+        .batch_label_box{
+            height: 300px;
+            /*overflow-y: scroll;*/
+            margin-top: 10px;
+            padding: 0 20px;
+        }
+        .batch_label_box span{
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 8px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .batch_label_box span:first-child{
+            margin-right: 5px;
+        }
+        .batch_label_box span + span{
+            margin-right: 5px;
+        }
+        .label_u{
+            color: #9d9d9d;
+            border: 1px dashed #9d9d9d;
+        }
+        .label_u_active{
+            color: #fff;
+            background: #9b9b9b;
+        }
+        .label_g{
+            color: #6dc1c8;
+            border: 1px dashed #6dc1c8;
+        }
+        .label_g_active{
+            background: #6cc1c8;
+            color: #fff;
+        }
+        .batch_label_wrapper .icon-ishop_6-12{
+            display: block;
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: right;
+            right: 3px;
+            top: 3px;
+            color: #888;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .label_title{
+            width:100%;
+            height: 30px;
+            line-height: 30px;
+            color: #888;
+        }
+        .label_title li{
+            width:50%;
+            float: left;
+            text-align: center;
+            cursor: pointer;
+        }
+        .label_title li a{
+            display: block;
+            color: #888888;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .label_title .liactive{
+            color: #6dc1c8;
+            border-bottom: 1px solid #6dc1c8;
+        }
+        /*标签结束*/
         .group_left li div,.group_left li ul li{
             height: 40px;
             line-height: 40px;
@@ -38,7 +176,7 @@
             color: #6abfc6;
         }
         .select_show_type{
-            position: absolute;right: 22px;top: 92px;
+            margin-top: 10px;
         }
         .select_show_type div{
             text-align: center;
@@ -58,22 +196,28 @@
             background-color: #6cc1c8;
             color: #FFFFFF;
         }
+        #expend_attribute{
+            max-height: 250px;
+            overflow-y: scroll;
+        }
+        #chart_analyze .chart_module{
+            width: 49.5%;
+        }
     </style>
 </head>
 <body>
-<!-- <div id="navbar">
-
-</div> -->
 <div class="content">
     <div class="con_table" id="con_table">
-        <div class="select_show_type" id="select_show_type"><div class="icon-ishop_9-04"></div><div class="icon-ishop_9-05 active"></div></div>
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
             <span>分组会员</span>
         </div>
-        <div class="action">
-            <div class="action_r">
+        <div class="action" id="action">
+            <div class="action_l">
+                <div class="select_show_type" id="select_show_type"><div class="icon-ishop_9-04 active" title="图表模式" id="show_chart"></div><div class="icon-ishop_9-05" title="列表模式" id="show_list"></div></div>
+            </div>
+            <div class="action_r" style="display: none">
                 <ul>
                     <li id="filtrate" class="bg">
                         <span class="icon-ishop_6-05"></span>
@@ -90,6 +234,8 @@
                     <li id="more" class="bg">
                         <span class="icon-ishop_6-08"></span>
                         更多
+                        <div class="more_down" id="more_down">
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -142,7 +288,7 @@
                 <ul></ul>
             </div>
         </div>
-        <div style="width: 170px;height: 100%;background-color: #FFFFFF;position: absolute;padding: 10px 10px 0 0;box-sizing: border-box">
+        <div style="width: 170px;background-color: #FFFFFF;position: absolute;padding: 10px 10px 0 0;box-sizing: border-box" id="left">
             <div style="border-right:1px solid #e8e8e8;width: 100%;height: 100%;" class="group_left">
                 <ul id="group_list">
                     <li data-type="brand">
@@ -181,8 +327,9 @@
             </div>
         </div>
         <div style="margin-left:170px; ">
-            <div class="table">
-            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+            <div id="list_show"  style="display: none">
+                <div class="table">
+                <table id="table" cellpadding="0" cellspacing="0" width="100%">
                 <thead>
                 <tr class="th">
                     <th width="50px;" style="text-align: left;"><div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
@@ -192,8 +339,8 @@
                 <tbody>
                 </tbody>
             </table>
-        </div>
-        <div class="foot">
+            </div>
+                <div class="foot">
             <ul>
                 <li class="foot-jum">
                     <span>跳转至</span>
@@ -219,11 +366,289 @@
                         </ul>
                         <span class="icon-ishop_8-02 icon"></span>
                     </div>
-                    <span class="zy">共 0 页</span>
+                    <!--<span class="zy">共 0 页</span>-->
                 </li>
             </ul>
-        </div></div>
+        </div>
+            </div>
+            <div style="background-color: #FFFFFF;padding:10px 10px 10px 0;">
+                <div id="chart_analyze" style="overflow:hidden;margin:0 -0.5% 0 0;background-color: #e8e8e8">
+                <div class="chart_module">
+                    <ul>
+                    <span class="chart_head">
+                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                    <span>消费类型</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main" style="padding-left: 10px;">
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart_module">
+                    <ul>
+                   <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>星期偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main1" style="height: 270px;">
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart_module">
+                    <ul>
+               <span class="chart_head">
+                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                    <span>价格偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main2" style="height: 270px;">
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart_module">
+                    <ul>
+                    <span class="chart_head">
+                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                    <span>购买时段</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main3" style="height: 270px;">
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart_module">
+                    <ul>
+                    <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>月份偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main4" style="height: 270px;">
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart_module">
+                    <ul>
+                   <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>系列偏好</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main5" style="height: 270px;padding-left: 10px;">
+                        </li>
+                    </ul>
+                </div>
+                <!--<div class="chart_module">-->
+                <!--<ul>-->
+                <!--<span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>-->
+                <!--<li id="main6" style="height: 270px;padding-left: 10px;">-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <div class="chart_module">
+                    <ul>
+                  <span class="chart_head">
+                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                    <span>地域分布</span></span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
+                        <li id="main7" style="height:270px;">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
+</div>
+<!-- 选择导购  -->
+<div id="choose_staff" class="screen_area">
+    <div class="screen_title">
+        <h4>选择导购</h4>
+        <div class="screen_close" id="close_choose_staff"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="search_staff">
+            <span class="icon-ishop_3-05" id="search_staff_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que">确定</div>
+</div>
+<!--批量贴标签-->
+<div class="batch_label_wrapper" id="batch_label_wrapper">
+    <span class="icon-ishop_6-12" id="close_label"></span>
+    <div class="batch_search_label">
+        <input type="text" id="batch_search_label" maxlength="8" placeholder="添加标签"><div class="add_label" id="label_add">贴上</div>
+        <ul>
+        </ul>
+    </div>
+    <div class="label_title" id="label_title">
+        <ul>
+            <li><a href="####" class="liactive">热门</a></li>
+            <li><a href="####">官方</a></li>
+        </ul>
+    </div>
+    <div id="batch_label_box">
+        <div class="batch_label_box" id="batch_label_hot">
+        </div>
+        <div class="batch_label_box" id="batch_label_gov">
+
+        </div>
+    </div>
+</div>
+<!--筛选会员-->
+<div class="screen_wrapper" id="screen_wrapper">
+    <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+    <div id="simple_filter">
+        <div class="filter_condition" id="simple_filter_condition">
+            <ul>
+                <li><a href="####" class="condition_active">按生日</a></li>
+                <li><a href="####">按纪念日</a></li>
+                <li><a href="####">按消费次数</a></li>
+                <li><a href="####">按消费金额</a></li>
+                <li><a href="####">按可用积分</a></li>
+                <li><a href="####">冻结会员</a></li>
+            </ul>
+        </div>
+        <div class="contion" id="simple_contion">
+            <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
+            <div class="contion_input" style="display: none"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
+            <div class="contion_input" style="display: none"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+            <div class="contion_input" style="display: none"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            <div class="contion_input" style="display: none"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+            <div class="contion_input" style="display: none"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+                <li>已冻结</li>
+                <li>未冻结</li>
+                <li>全部</li>
+            </ul></div>
+        </div>
+        <!--<div class="ensure"><span>确定</span></div>-->
+        <a href="####" id="more_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">高级筛选</a>
+    </div>
+    <div style="display: none" id="senior_filter">
+        <div class="filter_condition" id="filter_condition">
+            <ul>
+                <li><a href="####" class="condition_active">按基本属性</a></li>
+                <li><a href="####">按会员属性</a></li>
+                <li><a href="####">按消费属性</a></li>
+                <li><a href="####">按所属关系</a></li>
+                <li><a href="####">按会员分组</a></li>
+                <li><a href="####">按拓展资料</a></li>
+                <!--<li><a href="####">按券查询</a></li>-->
+            </ul>
+        </div>
+        <div class="contion" id="contion">
+            <div id="basic_message">
+                <div class="contion_input"><label>姓名</label><input data-kye="7" class="input" type="text"></div>
+                <div class="contion_input">
+                    <label>性别</label><input data-kye="8" class="select" type="text" value="全部" readonly="readonly" id="sex">
+                    <ul class="sex_select" id="sex_select">
+                        <li>男</li>
+                        <li>女</li>
+                        <li>全部</li>
+                    </ul>
+                </div>
+                <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
+                        class="short_input" id="age_r" readonly/><ul class="age_r"></ul></div>
+                <div class="contion_input"><label>生日</label><input data-kye="1" id="birth_start" class="short_input_date laydate-icon" readonly><label class="jian">~</label><input id="birth_end" class="short_input_date laydate-icon" readonly></div>
+                <div class="contion_input"><label>手机号</label><input data-kye="10" class="input" type="text"></div>
+            </div>
+            <div id="vip_attribute" style="display: none">
+                <div class="contion_input"><label>卡号</label><input data-kye="11" class="input" type="text"></div>
+                <div class="contion_input"><label>卡类型</label><input data-kye="12" class="select" type="text" id="vip_card_type" value="全部" readonly><ul class="sex_select" id="card_type_select"><li>东鹏玖姿贵宾卡</li><li>玖姿贵宾卡</li><li>南阳贵宾卡</li><li>玖姿累积卡</li><li>全部</li></ul></div>
+                <div class="contion_input"><label>开卡日期</label><input data-kye="13" id="activate_card_start" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end" class="short_input_date laydate-icon" type="text" readonly/></div>
+                <div class="contion_input"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                <div class="contion_input"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="state" type="text" readonly><ul class="sex_select" id="state_select">
+                    <li>已冻结</li>
+                    <li>未冻结</li>
+                    <li>全部</li>
+                </ul></div>
+            </div>
+            <div id="consume_attribute" style="display: none">
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date" readonly><ul class="sex_select" id="consume_select">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+                <div class="contion_input"><label>消费总额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            </div>
+            <div id="relation" style="display: none">
+                <div class="contion_input"><label>所属品牌</label><input data-kye="brand_code" id="screen_brand_num" class="input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                <div class="contion_input"><label>所属区域</label><input data-kye="area_code" id="screen_area_num" class="input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+                <div class="contion_input"><label>所属店铺</label><input data-kye="14" id="screen_shop_num" class="input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+                <div class="contion_input"><label>所属导购</label><input data-kye="15" id="screen_stff_num" class="input" type="text"
+                                                                     readonly="true" data-code=""><span
+                        class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+            </div>
+            <div id="vip_group" style="display: none">
+                <!--<div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>-->
+                <div class="contion_input">
+                    <label>分组</label><input data-kye="16" id="filter_group" class="input" type="text" data-code="" readonly="readonly"><span
+                        class="icon_r icon-ishop_8-03" id="screen_group_icon"></span>
+                    <!--<div class="filter_group">-->
+                    <!--<input type="text" id="search_filter_group">-->
+                    <!--<ul id="ul">-->
+
+                    <!--</ul>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div id="expend_attribute" style="display: none"></div>
+            <div id="ticket" style="display: none">
+                <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
+                <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
+            </div>
+        </div>
+        <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
+    </div>
+    <a id="empty_filter" href="####" style="position: absolute;left: 25px;bottom: 30px;text-decoration: underline;color: #888">清空筛选</a>
+    <div class="ensure"><span id="screen_vip_que">确定</span></div>
 </div>
 <div class="p" id="p"></div>
 <div class="tk" id="tk">
@@ -244,8 +669,30 @@
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js?20161116"></script>
+<script src="../js/dist/echarts.js?20161116"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
 <script src="../js/silide.js?20161116"></script>
+<script src="../js/laydate/laydate.js"></script>
+<script src="../js/vip_screen.js"></script>
+<script src="../js/jquery.dad.min.js"></script>
 <script src="../js/vip/vip_group_info.js"></script>
 </body>
+<script type="text/javascript">
+    //    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
+    //    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
+    //   扩展模块JS
+    $(function () {
+        $(".item_1 .input_select").click(function (e) {
+            var ul = $($(e.target).next());
+            if (ul.css("display") == "none") {
+                ul.show();
+            } else {
+                ul.hide();
+            }
+        });
+    });
+    $("#chart_analyze").dad({
+        draggable: '.drag_area'
+    })
+</script>
 </html>

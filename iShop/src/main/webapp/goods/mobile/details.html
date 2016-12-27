@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>搭配详情</title>
+    <link rel="stylesheet" href="css/swiper.3.1.7.min.css?20161209">
+    <link rel="stylesheet" href="css/details.css"/>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <meta content="telephone=no,email=no" name="format-detection">
+    <script src="js/flexible.js?20161209"></script>
+    <script src="js/jquery-1.11.1.js"></script>
+</head>
+<body>
+    <ul class="warp">
+        <li class="main_img">
+            <img src="image/list_item_00.jpg" alt=""/>
+        </li>
+        <li class="main_list">
+            <div class="main_list_title">共<span class="num">4</span>件搭配</div>
+            <div class="main_list_main">
+                <img src="image/list_item_00.jpg" alt=""/>
+                <img src="image/list_item_01.jpg" alt=""/>
+                <img src="image/list_item_02.jpg" alt=""/>
+                <img src="image/list_item_03.jpg" alt=""/>
+            </div>
+        </li>
+        <li class="main_select">
+            <div>搭配说明</div>
+            <div>评论</div>
+        </li>
+        <!--搭配说明-->
+        <li class="main_content">
+            <div>图文详情</div>
+        </li>
+        <!--评论-->
+        <li class="main_content">
+            <div>暂无评论</div>
+        </li>
+        <li class="bottom">
+            <div><img src="image/icon_点赞@2x.png" alt=""/><span class="num">0</span></div>
+            <div style="border: none"><img src="image/icon_收藏@2x.png" alt=""/><span class="num">0</span></div>
+            <div style="border: none;float: right;"><img src="image/icon_评论@2x.png" alt=""/><span class="num">0</span></div>
+        </li>
+    </ul>
+</body>
+<script>
+//    选项卡
+    $('.main_select div').click(function () {
+        $('.main_select div').css('background-color','#ededed');
+        $(this).css('background-color','white');
+    })
+    $('.main_select div').eq(0).click(function () {
+        $('.main_content').eq(0).css('display','block');
+        $('.main_content').eq(1).css('display','none');
+    });
+    $('.main_select div').eq(1).click(function () {
+        $('.main_content').eq(1).css('display','block');
+        $('.main_content').eq(0).css('display','none');
+    });
+//    底部
+    $('.bottom div img').click(function () {
+        var src = $(this).attr("src");
+        //    点赞
+        if(src =='image/icon_点赞@2x.png'){
+            $(this).attr('src','image/icon_点赞_已点赞@2x.png');
+            var val = $(this).next('.num').text();
+            console.log(val);
+            $(this).next('.num').text(parseInt(val)+1);
+        }else if (src =='image/icon_点赞_已点赞@2x.png'){
+            $(this).attr('src','image/icon_点赞@2x.png');
+            var val = $(this).next('.num').text();
+            $(this).next('.num').text(parseInt(val)-1);
+        }
+        //    评论
+        if(src =='image/icon_评论@2x.png'){
+            alert('暂无该功能')
+        }
+        //    收藏
+        if(src =='image/icon_收藏@2x.png'){
+            $(this).attr('src','image/icon_收藏_已收藏@2x.png');
+            var val = $(this).next('.num').text();
+            $(this).next('.num').text(parseInt(val)+1);
+        }else if (src =='image/icon_收藏_已收藏@2x.png'){
+            $(this).attr('src','image/icon_收藏@2x.png');
+            var val = $(this).next('.num').text();
+            $(this).next('.num').text(parseInt(val)-1);
+        }
+    });
+    window.onload = function () {
+        setInterval(function () {
+            var heightVal = document.body.clientWidth;
+            $('.main_img').css('height',heightVal);
+            $('.main_img img').css('height',heightVal);
+            var imgHeight = $('.main_list_main img').height();
+            $('.main_list_main img').css('width',imgHeight);
+        },1);
+        $('.main_select div').eq(0).click();
+    }
+</script>
+</html>

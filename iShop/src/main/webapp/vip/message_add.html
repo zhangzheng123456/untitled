@@ -39,20 +39,23 @@
                 </ul>
             </div>
             <div class="drop_down item_2">
-                <span><label style="color:#c26555;">发送范围*</label><input data-value="" class="input_select" type="text" id="send_scope" placeholder="请选发送范围" readonly/>
+                <span><label style="color:#c26555;">发送范围*</label><input data-value="vip" value="指定会员" class="input_select" type="text" id="send_scope" placeholder="请选发送范围" readonly/>
                     <ul>
                         <li data-value='vip'>指定会员</li>
                         <li data-value='vip_group'>指定会员分组</li>
                     </ul>
                 </span>
             </div>
-            <div class="drop_down item_2">
-                <span><label style="color:#c26555;">会员分组*</label><input class="input_select" type="text" id="MESSAGE_TYPE" placeholder="请选择分组" readonly/>
-                    <ul>
-                        <li>指定会员</li>
-                        <li>指定会员分组</li>
-                    </ul>
-                </span>
+            <div id="group_select_parent" style="display: none;">
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">会员分组*</label></li>
+                    <li id="group_select">
+                        <span class="corp_select">
+                            <select id="vip_group" style="display:inline-flex">
+                            </select>
+                        </span>
+                    </li>
+                </ul>
             </div>
             <div class="check_per" id="sendee">
                 <span><label style="color:#c26555;">接收会员*</label><input type="text" id="sendee_r" value="已选0个"data-code="" data-name="" data-phone=""readonly=""><span class="check_icon"id="add_sendee">选择会员<i class="icon-ishop_8-03"></i></span></span>
@@ -102,10 +105,6 @@
         </div>
         <div class="list">
             <div class="list_r">
-                <div class="save" id="save_all" style="margin-right: 20px;display:none;">
-                    <i class="icon-ishop_6-04"></i>
-                    保存全部
-                </div>
                 <div class="save" id="save">
                     <i class="icon-ishop_6-04"></i>保存
                 </div>
@@ -519,6 +518,19 @@
 <!-- moni select -->
 <script type="text/javascript" src="../js/moni_select.js?20161116"></script>
 <script src="../js/vip_screen.js?20161214"></script>
-<script type="text/javascript" src="../js/vip/message_operate.js?20161207"></script>
+<script type="text/javascript" src="../js/vip/message_operate.js?20161225"></script>
 </body>
+<script type="text/javascript">
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0041']").find("span").hasClass("icon-ishop_8-01")){
+            $(window.parent.document).find("#sidebar").scrollTop($(window.parent.document).find("#navbar li dd[data-code='F0041']").position().top);
+            clearInterval(timer);
+        }
+    },0);
+</script>
 </html>

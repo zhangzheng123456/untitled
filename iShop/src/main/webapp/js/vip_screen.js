@@ -324,10 +324,12 @@ $("#screen_vip_que").click(function () {
                 var key = $(this).attr("data-kye");
                 var param = {};
                 var val = $(this).val();
-                param['key'] = key;
-                param['value'] = val;
-                param['type'] = "text";
-                screen.push(param);
+                if(val !== ""){
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['type'] = "text";
+                    screen.push(param);
+                }
             });
         });
     }
@@ -370,6 +372,7 @@ $("#empty_filter").click(function () {
 //分组弹窗
 $("#screen_group_icon").click(function () {
     if(message.cache.group_codes!==""){
+        console.log(222)
         var group_codes=message.cache.group_codes.split(',');
         var group_names=message.cache.group_names.split(',');
         var group_html_right="";
@@ -419,6 +422,7 @@ $("#screen_que_group").click(function () {
     $("#screen_wrapper").show();
     $("#filter_group").val("已选"+li.length+"个");
     $("#filter_group").attr("data-code",group_codes);
+    $("#filter_group").attr("data-code_name",group_names);
 });
 //分组搜索
 $("#group_search").keydown(function () {

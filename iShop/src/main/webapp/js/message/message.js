@@ -14,7 +14,6 @@ var filtrate = "";//筛选的定义的值
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
-
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -254,9 +253,7 @@ function superaddition(data, num) {//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td >"
-            + receiver_type
-            + "</td>" +
+            + "</td>"+
             TD+
             //"<td  class='message_code' data-code='"+data[i].message_code+"'>"
             //+ data[i].message_title

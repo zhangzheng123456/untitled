@@ -19,7 +19,7 @@
         }
         .screen_area{
             position: fixed;
-            top: 100px;
+            top: 60px;
             left: 0px;
             right: 0px;
             bottom: 0px;
@@ -27,6 +27,7 @@
             height:530px;
         }
         .shop{
+            top:100px;
             height:570px;
         }
     </style>
@@ -51,7 +52,7 @@
                         <span><label style="color:#c26655">会员类型*</label><input type="text" id="vip_type" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down item_1">
-                        <span><label>上级会员类型</label><input class="input_select" value="" id="high_vip_type" type="text" placeholder="" readonly="">
+                        <span><label>上级会员类型</label><input class="input_select" value="无上级会员类型" id="high_vip_type" type="text" placeholder="" readonly="">
                             <ul style="display: none;">
                             </ul>
                         </span>
@@ -167,7 +168,7 @@
         <div class="screen_que" id="screen_que_area">确定</div>
     </div>
     <!-- 拉取店铺 -->
-    <div id="screen_shop" class="screen_area shop">
+    <div id="screen_shop" class="screen_area shop" style="display: block;">
         <div class="screen_title">
             <h4>筛选店铺</h4>
             <div class="xuanzhong">

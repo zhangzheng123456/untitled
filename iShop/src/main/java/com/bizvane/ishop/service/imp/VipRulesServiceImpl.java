@@ -55,33 +55,31 @@ public class VipRulesServiceImpl implements VipRulesService {
                 store_array.add(obj);
             }
             rules.setStores(store_array);
-            JSONArray coupons = JSONArray.parseArray(present_coupon);
-
-            String coupon_info = getCouponInfo1(rules.getCorp_code());
-            if (!coupon_info.equals(Common.DATABEAN_CODE_ERROR)){
-                JSONArray array = JSONArray.parseArray(coupon_info);
-
-                String app_name = "";
-                String coupon_name = "";
-                for (int i = 0; i <coupons.size() ; i++) {
-                    JSONObject obj = coupons.getJSONObject(i);
-                    String app_id = obj.getString("appid");
-                    String coupon_code = obj.getString("couponcode");
-                    for (int j = 0; j < array.size(); j++) {
-                        JSONObject coupon = array.getJSONObject(j);
-                        if (app_id.equals(coupon.getString("appid")) && coupon_code.equals(coupon.getString("couponcode"))){
-                            app_name = coupon.getString("appname");
-                            coupon_name = coupon.getString("name");
-                            obj.put("appname",app_name);
-                            obj.put("name",coupon_name);
+            if (present_coupon != null && !present_coupon.equals("") && !present_coupon.equals("[]") ){
+                JSONArray coupons = JSONArray.parseArray(present_coupon);
+                String coupon_info = getCouponInfo1(rules.getCorp_code());
+                if (!coupon_info.equals(Common.DATABEAN_CODE_ERROR)){
+                    JSONArray array = JSONArray.parseArray(coupon_info);
+                    String app_name = "";
+                    String coupon_name = "";
+                    for (int i = 0; i <coupons.size() ; i++) {
+                        JSONObject obj = coupons.getJSONObject(i);
+                        String app_id = obj.getString("appid");
+                        String coupon_code = obj.getString("couponcode");
+                        for (int j = 0; j < array.size(); j++) {
+                            JSONObject coupon = array.getJSONObject(j);
+                            if (app_id.equals(coupon.getString("appid")) && coupon_code.equals(coupon.getString("couponcode"))){
+                                app_name = coupon.getString("appname");
+                                coupon_name = coupon.getString("name");
+                                obj.put("appname",app_name);
+                                obj.put("name",coupon_name);
+                            }
                         }
                     }
                 }
-
+                rules.setPresent_coupon(coupons.toJSONString());
             }
-            rules.setPresent_coupon(coupons.toJSONString());
         }
-
         return rules;
     }
 

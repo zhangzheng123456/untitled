@@ -501,4 +501,42 @@ public class FunctionServiceImpl implements FunctionService {
         }
         return Common.DATABEAN_CODE_SUCCESS;
     }
+
+    /**
+     * 列出用户的权限(会员图表用)
+     *
+     */
+    public List<Privilege> selectColPrivilegeByUser(String function_code,String master_code) throws Exception{
+        return privilegeMapper.selectColPrivilegeByUser(function_code,master_code);
+    }
+
+    /**
+     * 更新用户的权限(会员图表用)
+     *
+     */
+    @Transactional
+    public int updateColPrivilegeByUser(String id,String function_code,String chart_order,String corp_code,String user_code) throws Exception{
+       if (!id.equals("")){
+           String[] ids = id.split(",");
+           Map<String,Object> map = new HashMap<String, Object>();
+           map.put("ids",ids);
+           privilegeMapper.deleteColPrivileges(map);
+       }
+        String master_code = corp_code + "U" + user_code;
+        TablePrivilege p = new TablePrivilege();
+        p.setFunction_code(function_code);
+        p.setColumn_name(chart_order);
+        p.setMaster_code(master_code);
+        p.setIsactive(Common.IS_ACTIVE_Y);
+        p.setEnable(Common.IS_ACTIVE_Y);
+        Date now = new Date();
+        p.setModified_date(Common.DATETIME_FORMAT.format(now));
+        p.setCreated_date(Common.DATETIME_FORMAT.format(now));
+        p.setCreater(user_code);
+        p.setModifier(user_code);
+
+        int i = privilegeMapper.insertColPrivilege(p);
+        return i;
+    }
+
 }

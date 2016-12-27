@@ -22,9 +22,26 @@ var  message={
     	"corp_code":""
     },
 	init:function(){
-		this.getCorplist();
+		this.allEvent();
+		var id=sessionStorage.getItem("id");
+		if(id!==null){
+			this.getSelect(id);
+		}else if(id==null){
+			var group_vip=sessionStorage.getItem("group_vip");
+			if(group_vip!==null){
+				var corp=JSON.parse(group_vip).corp_code;
+				var group=JSON.parse(group_vip).group_code;
+				$(".item_2").find("input").attr("data-value","vip_group");
+				$(".item_2").find("input").val("指定会员分组");
+				$("#sendee").hide();
+				$("#group_select_parent").show();
+				this.getCorplist(corp,group);
+			}else {
+				this.getCorplist();
+			}
+		}
 	},
-	getCorplist:function(){//获取所属企业列表
+	getCorplist:function(corp,group){//获取所属企业列表
 		var self=this;
 	    var corp_command="/user/getCorpByUser";
 	    whir.loading.add("",0.5);//加载等待框
@@ -36,9 +53,13 @@ var  message={
 					corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
 				}
 				$("#OWN_CORP").append(corp_html);
+				if(corp!==""){
+					$("#OWN_CORP option[value='"+corp+"']").attr("selected","true");
+				}
 				var corp_code=$("#OWN_CORP").val();
-				$('.corp_select select').searchableSelect();
-				$('.corp_select .searchable-select-input').keydown(function(event){
+				self.getVipGroupList(corp_code,group);
+				$('#corp_select select').searchableSelect();
+				$('#corp_select .searchable-select-input').keydown(function(event){
 					var event=window.event||arguments[0];
 					if(event.keyCode == 13){
 						var corp_code1=$("#OWN_CORP").val();
@@ -57,10 +78,11 @@ var  message={
     						corp_code=corp_code1;
     						$("#sendee_r").val("已选0个");
     						$("#message_content").val("");
+    						self.getVipGroupList(corp_code);
 						}
 					}
 				})
-				$('.searchable-select-item').click(function(){
+				$('#corp_select .searchable-select-item').click(function(){
 					var corp_code1=$("#OWN_CORP").val();
 					if(corp_code!==corp_code1){
 						console.log(123123);
@@ -78,6 +100,7 @@ var  message={
     					corp_code=corp_code1;
     					$("#sendee_r").val("已选0个");
     					$("#message_content").val("");
+    					self.getVipGroupList(corp_code);
 					}
 				})
 			}else if(data.code=="-1"){
@@ -91,8 +114,75 @@ var  message={
 			whir.loading.remove();//移除加载框
 		});
 	},
+	getVipGroupList:function(corp_code,group){
+		var param={};
+		param["corp_code"]=corp_code;
+		oc.postRequire("post","/vipGroup/getCorpGroups","",param, function(data){
+			if(data.code=="0"){
+				var message=JSON.parse(data.message);
+				var list=JSON.parse(message.list);
+				var html=""
+				$('#group_select .searchable-select').remove();
+				for(var i=0;i<list.length;i++){
+					html+="<option value='"+list[i].vip_group_code+"'>"+list[i].vip_group_name+"</option>"
+				}
+				$("#vip_group").html(html);
+				if(group!==""){
+					$("#vip_group option[value='"+group+"']").attr("selected","true");
+				}
+				$('#vip_group').searchableSelect();
+			}
+		})
+	},
+	//编辑界面
+	getSelect:function(id){
+		var self=this;
+		var param={};
+		param["id"]=id;
+		oc.postRequire("post","/vipFsend/select","", param, function(data){
+			if(data.code=="0"){
+				var message=JSON.parse(data.message);
+				console.log(message);
+				var corp_code=message.corp_code;
+				var group_code=message.vip_group_code;
+				var send_scope=$("#send_scope").siblings("ul").find("li[data-value='"+message.send_scope+"']").text();
+				$("#send_scope").val(send_scope);
+				$("send_scope").attr("data-value",send_scope);
+				if(message.send_scope=="vip"){//
+					$("#group_select_parent").hide();
+					$("#sendee").show();
+					var sms_vips=JSON.parse(message.sms_vips)
+					var vip_id=sms_vips.vips;
+					self.cache.vip_id=vip_id;
+					var vipList=vip_id.split(',');
+					$("#sendee_r").val("已选"+vipList.length+"个");
+					self.getCorplist(corp_code);
+				}else if(message.send_scope=="vip_group"){
+					$("#group_select_parent").show();
+					$("#sendee").hide();
+					self.getCorplist(corp_code,group_code);
+				}
+				if(message.send_type=="wxmass"){
+					$("#MESSAGE_TYPE").val("微信群发消息");
+				}else if(message.send_type=="sms"){
+					$("#MESSAGE_TYPE").val("短信");
+				}
+				$("#message_content").val(message.content);
+			}
+		});
+	},
 	allEvent:function(){
-		
+		$(".item_2").on("click","li",function(){
+			var text=$(this).attr("data-value");
+			if(text=="vip"){
+				$("#group_select_parent").hide();
+				$("#sendee").show();
+			}
+			if(text=="vip_group"){
+				$("#sendee").hide();
+				$("#group_select_parent").show();
+			}
+		})
 	}
 };
 $(function(){
@@ -1247,45 +1337,21 @@ $("#save").click(function(){
     $("#page-wrapper").show();
 	$(".content").hide();
 });
-//点击保存全部
-$("#save_all").click(function(){
-	if(message.cache.count>500){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content: "选择的会员不能大于500个"
-		});
-		return;
-	};
-	message.cache.type="1";
-	message.cache.vip_id="";
-	$("#sendee_r").val("已选"+message.cache.count+"个");
-	$("#page-wrapper").show();
-	$(".content").hide();
-})
 //点击发送按钮
 $("#send").click(function(){
 	var param={};
 	var sms_vips={};
+	var corp_code=$("#OWN_CORP").val();//企业编号
+	var send_scope=$("#send_scope").attr("data-value");//发送范围
+	var content=$("#message_content").val().trim();
 	sms_vips["type"]=message.cache.type;
-	if(message.cache.type=="1"){
-		sms_vips["area_code"]=message.cache.area_codes;
-		sms_vips["brand_code"]=message.cache.brand_codes;
-		sms_vips["store_code"]=message.cache.store_codes;
-		sms_vips["user_code"]=message.cache.user_codes;
-		if(message.cache.count==""){
-			art.dialog({
-				time: 1,
-				lock: true,
-				cancel: false,
-				content: "接收会员不能为空"
-			});
-			return;
-		};
-	};
-	if(message.cache.type=="2"){
-		sms_vips["vips"]=message.cache.vip_id;
+	var send_type="";
+	if($("#MESSAGE_TYPE").val() == "短信"){
+		send_type = "sms";
+	}else if($("#MESSAGE_TYPE").val() == "微信群发消息"){
+		send_type = "wxmass";
+	}
+	if(send_scope=="vip"){
 		if(message.cache.vip_id==""){
 			art.dialog({
 				time: 1,
@@ -1295,43 +1361,52 @@ $("#send").click(function(){
 			});
 			return;
 		};
-	};
-	if(message.cache.type==""){
-		art.dialog({
+		sms_vips["vips"]=message.cache.vip_id;
+		param["sms_vips"]=sms_vips;
+		param["vip_group_code"]="";
+	}
+	if(send_scope=="vip_group"){
+		var vip_group_code=$("#vip_group").val();
+		if(vip_group_code==""||vip_group_code==null){
+			art.dialog({
 				time: 1,
 				lock: true,
 				cancel: false,
-				content: "接收会员不能为空"
-		});
-		return;
+				content: "会员分组不能为空"
+			});
+			return;
+		};
+		param["vip_group_code"]=vip_group_code;
+		param["sms_vips"]="";
 	}
-	var corp_code=$("#OWN_CORP").val();
-	var content=$("#message_content").val();
-	var send_type="";
-	if($("#MESSAGE_TYPE").val() == "短信"){
-		send_type = "sms";
-	}else if($("#MESSAGE_TYPE").val() == "微信群发消息"){
-		send_type = "wxmass";
-	}
-	param["corp_code"]=corp_code;
-	param["content"]=content;
-	param["sms_vips"]=sms_vips;
-	param["send_type"]=send_type;
-	if(content==""){
+	if(send_type==""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
-			content: "群发内容不能为空"
+			content: "发送类型不能为空"
 		});
 		return;
 	}
+	param["corp_code"]=corp_code;
+	param["content"]=content;
+	param["send_type"]=send_type;
+	param["send_scope"]=send_scope;
 	if(send_type == ""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
 			content: "发送类型不能为空"
+		});
+		return;
+	}
+	if(content==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "发送内容不能为空"
 		});
 		return;
 	}
@@ -1408,5 +1483,6 @@ $("#input-txt").keydown(function() {
 })
 //关闭按钮回到列表页
 $("#send_close").click(function(){
+	sessionStorage.removeItem("group_vip");
 	 $(window.parent.document).find('#iframepage').attr("src", "/vip/message.html");
 })

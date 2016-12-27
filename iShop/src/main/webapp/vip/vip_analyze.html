@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../table/css/inner.css?20161116">
     <link rel="stylesheet" href="../css/font_style.css?20161116">
     <link rel="stylesheet" href="../css/vip_analyze.css?20161116">
+    <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
     <style>
         #select_analyze ul li.choose_li, #select_analyze_brand ul li.choose_li, #select_analyze_shop ul li.choose_li {
             background: #6cc1c8;
@@ -19,10 +20,46 @@
         .no_data {
             height: 46px;
         }
-
-        /*数据图图标*/
-        .chart_head i {
-            float: right;
+        .start_analyze_wrap{
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            height: 415px;
+            background: #fff;
+        }
+        .start_analyze_wrap_left{
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 243px;
+            background: #fff;
+        }
+        .start_analyze_wrap span,.start_analyze_wrap_left span{
+            display: block;
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+        }
+        .start_analyze_wrap span:first-child{
+            margin-top: 160px;
+        }
+        .start_analyze_wrap_left span:first-child{
+            margin-top: 75px;
+        }
+        .start_analyze_wrap .start_analyze_btn,.start_analyze_wrap_left .start_analyze_btn{
+            width: 160px;
+            height: 30px;
+            margin: 10px auto;
+            line-height: 30px;
+            background: #6cc1c8;
+            color: #FFFFFF;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -119,60 +156,70 @@
                            readonly="readonly">
                 </span>
         </div>
-        <!-- 所有VIP-->
-        <ul class="all_vip">
-            <span class="vip_kind">所有VIP <b class="vip_count"></b></span>
-            <li>
-                <table cellpadding="0" cellspacing="0">
-                    <thead>
-                    <th>业绩占比</th>
-                    <th>客件总价</th>
-                    <th>客件单价</th>
-                    <th>件单价</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
-        <!-- 新VIP-->
-        <ul class="new_vip">
-            <span class="vip_kind">新VIP <b class="vip_count"></b></span>
-            <li>
-                <table>
-                    <thead>
-                    <th width="91px">业绩占比</th>
-                    <th>客件总价</th>
-                    <th>客件单价</th>
-                    <th>件单价</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
-        <!-- 老VIP-->
-        <ul class="old_vip">
-            <span class="vip_kind">老VIP <b class="vip_count"></b></span>
-            <li>
-                <table>
-                    <thead>
-                    <th>业绩占比</th>
-                    <th>客件总价</th>
-                    <th>客件单价</th>
-                    <th>件单价</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
+        <div class="vip_box">
+            <!-- 所有VIP-->
+            <ul class="all_vip">
+                <span class="vip_kind">所有VIP <b class="vip_count"></b></span>
+                <li>
+                    <table cellpadding="0" cellspacing="0">
+                        <thead>
+                        <th>业绩占比</th>
+                        <th>客件总价</th>
+                        <th>客件单价</th>
+                        <th>件单价</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <!-- 新VIP-->
+            <ul class="new_vip">
+                <span class="vip_kind">新VIP <b class="vip_count"></b></span>
+                <li>
+                    <table>
+                        <thead>
+                        <th width="91px">业绩占比</th>
+                        <th>客件总价</th>
+                        <th>客件单价</th>
+                        <th>件单价</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <!-- 老VIP-->
+            <ul class="old_vip">
+                <span class="vip_kind">老VIP <b class="vip_count"></b></span>
+                <li>
+                    <table>
+                        <thead>
+                        <th>业绩占比</th>
+                        <th>客件总价</th>
+                        <th>客件单价</th>
+                        <th>件单价</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <div class="right_shadow" id="left_shadow">
+                <span class="left_shadow_title">加载中..</span>
+            </div>
+        </div>
+        <div class="start_analyze_wrap_left">
+            <span>根据您的筛选条件,数据量较大</span>
+            <span>分析需要5分钟,请耐心等待...</span>
+            <span class="start_analyze_btn">开始分析</span>
+        </div>
     </div>
     <!-- 右侧表格数据分析-->
     <div id="table_analyze" class="col_lg_8 lf">
@@ -183,7 +230,6 @@
             <li>消费排行</li>
             <li>消费频率</li>
         </ul>
-
         <div class="birthVip">
             <ul class="date_btn">
                 <li><span>今日</span></li>
@@ -205,7 +251,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="newVip">
             <div class="newVip_title">
                 <ul class="new_btn">
@@ -235,7 +280,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="activeVip">
             <ul class="month_btn">
                 <li><span>活跃会员1.26%</span></li>
@@ -339,7 +383,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="rank">
             <ul class="month_btn">
                 <li><span>最近消费</span></li>
@@ -370,7 +413,6 @@
                 </tbody>
             </table>
         </div>
-
         <div style="display: none" class="freq">
             <ul class="new_btn">
                 <li><span>三个月</span></li>
@@ -456,47 +498,103 @@
                 </li>
             </ul>
         </div>
+        <div class="right_shadow" id="right_shadow">
+            <span>加载中..</span>
+        </div>
+        <div class="start_analyze_wrap">
+            <span>根据您的筛选条件,数据量较大</span>
+            <span>分析需要5分钟,请耐心等待...</span>
+            <span class="start_analyze_btn">开始分析</span>
+        </div>
     </div>
     <!-- 分析数据图表描述-->
-    <div id="chart_analyze" class="col_lg_12" style="display: inline-block">
-        <div class="chart_module">
+    <div id="chart_analyze">
+        <div class="chart_module" data-id="type">
             <ul>
-                <span class="chart_head">消费类型  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                        <i class="icon-ishop_6-27"></i>
+                        <span>消费类型</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main" style="padding-left: 10px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="weeks">
             <ul>
-                <span class="chart_head">星期偏好  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>星期偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main1" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module" style="margin-right: 0px">
+        <div class="chart_module" data-id="price">
             <ul>
-                <span class="chart_head">价格偏好  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                        <i class="icon-ishop_6-27"></i>
+                        <span>价格偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main2" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="times">
             <ul>
-                <span class="chart_head">购买时段  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                        <i class="icon-ishop_6-27"></i>
+                        <span>购买时段</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main3" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="month">
             <ul>
-                <span class="chart_head">月份偏好  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>月份偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main4" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module" style="margin-right: 0px">
+        <div class="chart_module" data-id="series">
             <ul>
-                <span class="chart_head">系列偏好  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>系列偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main5" style="height: 270px;padding-left: 10px;">
                 </li>
             </ul>
@@ -508,17 +606,88 @@
                 <!--</li>-->
             <!--</ul>-->
         <!--</div>-->
-        <div class="chart_module" style="margin-right: 0px">
+        <div class="chart_module" data-id="areas">
             <ul>
-                <span class="chart_head">地域分布  <i class="icon-ishop_9-05"></i></span>
+                <span class="chart_head">
+                    <span class="drag_area">
+                         <i class="icon-ishop_6-27"></i>
+                         <span>地域偏好</span>
+                    </span>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                </span>
                 <li id="main7" style="height:270px;">
                 </li>
             </ul>
         </div>
+        <div class="chart_module add_chart" id="add_chart">
+            <span>+</span>
+            <span>添加图表</span>
+        </div>
     </div>
+    <!--添加图表弹窗-->
+    <div class="chart_add_wrap" id="chart_add_wrap">
+        <span class="chart_add_title">选择要展示的图表</span>
+        <i class="icon-ishop_6-12 chart_close"></i>
+        <div class="chart_add_details" id="chart_add_details">
+            <ul>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box1"><label for="check_box1"></label>
+                        <span>消费类型</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box2"><label for="check_box2"></label>
+                        <span>价格偏好</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box3"><label for="check_box3"></label>
+                        <span>购买时段</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box4"><label for="check_box4"></label>
+                        <span>月份偏好</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box5"><label for="check_box5"></label>
+                        <span>系列偏好</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box7"><label for="check_box7"></label>
+                        <span>地域偏好</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="chart_checkbox">
+                        <input type="checkbox" class="check" type="text" id="check_box8"><label for="check_box8"></label>
+                        <span>星期偏好</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="chart_add_bottom">
+            <ul>
+                <li class="chart_close">取消</li>
+                <li id="chart_add_enter">完成</li>
+            </ul>
+        </div>
+    </div>
+    <div class="p" id="p"></div>
 </div>
 </body>
 <script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/jquery.dad.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="../js/dist/echarts.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
@@ -526,8 +695,6 @@
 <script type="text/javascript" src="../js/laydate/laydate.js?20161116"></script>
 <script src="../js/vip/vip_analyze.js?20161116"></script>
 <script>
-    //    $('input').on('focus',function(){$(this)[0].style.outline='none';console.log('OK')});
-    console.log($(".scroll_bar"));
     $(".scroll_bar").niceScroll({
         cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
         cursorcolor: "#999",

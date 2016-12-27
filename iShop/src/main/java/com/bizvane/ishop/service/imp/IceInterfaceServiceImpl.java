@@ -298,6 +298,24 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return dataBox;
     }
 
+    //会员筛选(Solr)
+    public DataBox vipScreenMethod2(String page_num,String page_size,String corp_code,String screen) throws Exception{
+        Data data_param = new Data("param", screen, ValueType.PARAM);
+        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+        Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+        Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_param.key, data_param);
+        datalist.put(data_corp_code.key, data_corp_code);
+        datalist.put(data_page_num.key, data_page_num);
+        datalist.put(data_page_size.key, data_page_size);
+
+        DataBox dataBox = iceInterfaceV3("VipSearchForWeb", datalist);
+        return dataBox;
+    }
+
+
     //会员筛选
     public DataBox vipScreen2ExeclMethod(String page_num,String page_size,String corp_code,String area_code,String brand_code,String store_code,String user_code,String output_message) throws Exception{
         DataBox dataBox = null;
@@ -383,28 +401,31 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return dataBox;
     }
 
-//    public DataBox saveVipExtendInfo(){
-//        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-//        Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-//        Data data_birthday = new Data("birthday", birthday, ValueType.PARAM);
-//        Data data_vip_card_type = new Data("vip_card_type", vip_card_type, ValueType.PARAM);
-//        Data data_card_no = new Data("card_no", card_no, ValueType.PARAM);
-//        Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
-//        Data data_user_code = new Data("user_code", user_code, ValueType.PARAM);
-//
-//        Map datalist = new HashMap<String, Data>();
-//        datalist.put(data_corp_code.key, data_corp_code);
-//        datalist.put(data_vip_id.key, data_vip_id);
-//        datalist.put(data_vip_name.key, data_vip_name);
-//        datalist.put(data_sex.key, data_sex);
-//        datalist.put(data_phone.key, data_phone);
-//        datalist.put(data_birthday.key, data_birthday);
-//        datalist.put(data_vip_card_type.key, data_vip_card_type);
-//        datalist.put(data_card_no.key, data_card_no);
-//        datalist.put(data_store_code.key, data_store_code);
-//        datalist.put(data_user_code.key, data_user_code);
-//
-//        DataBox dataBox = iceInterfaceV3("AddNewVip", datalist);
-//        return dataBox;
-//    }
+    public DataBox saveVipExtendInfo(String corp_code,String vip_id,String custom) throws Exception{
+        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+        Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+        Data data_custom = new Data("custom", custom, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_corp_code.key, data_corp_code);
+        datalist.put(data_vip_id.key, data_vip_id);
+        datalist.put(data_custom.key, data_custom);
+
+        DataBox dataBox = iceInterfaceV3("AddSearchField", datalist);
+        return dataBox;
+    }
+
+    public DataBox changeVipType(String corp_code,String vip_id,String card_type) throws Exception{
+        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+        Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+        Data data_card_type = new Data("card_type", card_type, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_corp_code.key, data_corp_code);
+        datalist.put(data_vip_id.key, data_vip_id);
+        datalist.put(data_card_type.key, data_card_type);
+
+        DataBox dataBox = iceInterfaceV3("VipCardTypeUp", datalist);
+        return dataBox;
+    }
 }

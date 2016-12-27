@@ -342,14 +342,16 @@ function jumpBianse() {
     })
     //点击新增时页面进行的跳转
     $('#add').click(function () {
+        sessionStorage.removeItem("group_vip");
+        sessionStorage.removeItem("id");
         $(window.parent.document).find('#iframepage').attr("src", "/vip/message_add.html");
     })
-    // //双击跳转
-    // $(".table tbody tr").dblclick(function(){
-    //     var id=$(this).attr("id");
-    //     sessionStorage.setItem("id",id);
-    //     $(window.parent.document).find('#iframepage').attr("src","/message/message_edit.html");
-    // })
+    //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        $(window.parent.document).find('#iframepage').attr("src","/vip/message_edit.html");
+    })
     //删除
     $("#remove").click(function () {
         var l = $(window).width();
@@ -383,8 +385,7 @@ function jumpBianse() {
             send_type = "sms";
         }
         param["id"]=id;
-        param["send_type"]=send_type;
-        console.log(content);
+        // param["send_type"]=send_type;
         whir.loading.add("",0.5);//加载等待框
         console.log(param);
         oc.postRequire("post","/vipFsend/checkVipInfo","0",param,function(data){
@@ -432,7 +433,6 @@ function jumpBianse() {
                             "<th>会员名称</th>" +
                             "<th>发送状态</th>" +
                             "</tr>");
-                        list=JSON.parse(list);
                         for(var j=0;j<list.length;j++) {
                             var a = j + 1;
                             $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
