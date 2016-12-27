@@ -86,7 +86,7 @@ var oc = new ObjectControl();
 		$("#edit_save").click(function(){
 			if(regimejs.firstStep()){
 				if(!self.param.price){
-
+					return;
 				}
 				var param={};
 				var corp_code=$("#OWN_CORP").val().trim();//公司编号
