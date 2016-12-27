@@ -171,7 +171,29 @@ var oc = new ObjectControl();
 		//添加券
 		$("#add_quan").click(function(){
 			var corp_code=$("#OWN_CORP").val();
+			var is_present_coupon=$("#is_present_coupon")[0];
+			if(is_present_coupon.checked==false){
+				art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:"请先选中左侧按钮"
+                });
+				return;
+			}
 			self.getQuanList(corp_code);
+		})
+		$("#present_point").click(function(){
+			var is_present_point=$("#is_present_point")[0];
+			if(is_present_point.checked==false){
+				art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:"请先选中左侧按钮"
+                });
+				return;
+			}
 		})
 		//删除券
 		$("#quan_select").on("click",".q_remove",function(){
@@ -249,6 +271,16 @@ var oc = new ObjectControl();
 			}else{
 				$("#screen_shop .s_pitch span").html("0");
 				$("#screen_shop .screen_content_r ul").empty();
+			}
+			var is_shop=$("#is_shop")[0];
+			if(is_shop.checked==false){
+				art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content:"请先选中左侧按钮"
+                });
+				return;
 			}
 			whir.loading.add("",0.5);
 			$("#loading").remove();
@@ -538,6 +570,13 @@ var oc = new ObjectControl();
 			var div=$(this);
 			removeLeft(left,div);
 		})
+		$("#is_present_point").change(function(){
+			if($(this)[0].checked==true){
+				$("#present_point").removeAttr("readonly");
+			}else if($(this)[0].checked==false){
+				$("#present_point").attr("readonly","true");
+			}
+		})
 	};
 	regimejs.getQuanList=function(corp_code,points_value){//获取券的list
 		var param={};
@@ -633,6 +672,7 @@ var oc = new ObjectControl();
 					var present_coupon=JSON.parse(message.present_coupon);//券的list
 					if(present_coupon.length>0){
 						is_present_coupon.checked=true;
+						$("#present_point").removeAttr("readonly");
 					}else{
 						is_present_coupon.checked=false;
 					}
@@ -729,6 +769,7 @@ var oc = new ObjectControl();
 			for(var i=0;i<list.length;i++){
 				html+="<li data-value='"+list[i].vip_type+"'>"+list[i].vip_type+"</li>";
 			}
+			$("#high_vip_type").val('无上级会员类型');
 			$("#high_vip_type").siblings("ul").html(html);
 			whir.loading.remove();//移除加载框
 		})
