@@ -32,10 +32,18 @@
   <script>
       $(document).ready(function () {
           //注入
-          var tempHTML = '<li class="list"> <div class="list_picture"></div> <div class="list_describe"> <p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p> <p>货号：<span class="list_number">89898989CX</span></p> <p>价格：<span class="list_price">￥10000</span></p> </div> </li>';
+          var img = 'image/list_item_01.jpg'
+          var content = '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称';
+          var num = '89898989CX';
+          var pay='10000'
+          var tempHTML = '<li class="list"> <div class="list_picture"><img src="${img}" alt=""/></div> <div class="list_describe"> <p class="list_name">${content}</p> <p>货号：<span class="list_number">${num}</span></p> <p>价格：<span class="list_price">￥${pay}</span></p> </div> </li>';
           var html='';
           for(i=0;i<10;i++){
               var nowHTML = tempHTML;
+              nowHTML = nowHTML.replace('${img}',img);
+              nowHTML = nowHTML.replace('${content}',content);
+              nowHTML = nowHTML.replace('${num}',num);
+              nowHTML = nowHTML.replace('${pay}',pay);
               html+=nowHTML;
               $('.list_box').html(html)
           }

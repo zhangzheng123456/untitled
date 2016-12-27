@@ -29,7 +29,7 @@
       </div>
   </div>
   <ul class="container_picture">
-      <!--//商品模板-->
+      <!--商品模板-->
       <!--<li class="picture">-->
           <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
       <!--</li>-->
@@ -61,14 +61,19 @@
         var nowHTML = tempHTML;
         html+=nowHTML;
         $('.picture_add').before(html)
+        deleteIt();
     });
     //删除功能
-    $('.picture .picture_btn img').click(function () {
-        console.log(2133333333333)
-        $(this).parents('.picture').remove();
-    });
+    function deleteIt(){
+        $('.picture img').click(function () {
+           $(this).parents('.picture').remove();
+        });
+    }
+
     $(document).ready(function () {
+
     });
+
 </script>
 </body>
 </html>
