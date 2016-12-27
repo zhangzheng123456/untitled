@@ -3,6 +3,7 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.*;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -254,53 +256,50 @@ public class VipAnalysisController {
             String area_code = "";
             String store_id = "";
 
-
-
-            if (role_code.equals(Common.ROLE_SYS)) {
-                corp_code = jsonObject.get("corp_code").toString();
-            } else if (role_code.equals(Common.ROLE_GM)){
-                if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
-                    area_code = jsonObject.get("area_code").toString();
+            if (role_code.equals(Common.ROLE_AM)){
+                store_id = jsonObject.get("store_code").toString().trim();
+                area_code = jsonObject.get("area_code").toString().trim();
+                String brand_code = jsonObject.get("brand_code").toString().trim();
+                String area_store_code = "";
+                if (store_id.equals("")){
+                    if (area_code.equals("")){
+                        area_code = request.getSession().getAttribute("area_code").toString();
+                        area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                        area_store_code = request.getSession().getAttribute("store_code").toString();
+                        area_store_code = area_store_code.replace(Common.SPECIAL_HEAD,"");
+                    }
+                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "",area_store_code);
+                    for (int i = 0; i < storeList.size(); i++) {
+                        store_id = store_id + storeList.get(i).getStore_code() + ",";
+                    }
                 }
-            } else if (role_code.equals(Common.ROLE_AM) ){
-                if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
-                    area_code = jsonObject.get("area_code").toString();
-                }else {
-                    area_code = request.getSession().getAttribute("area_code").toString().replace(Common.SPECIAL_HEAD,"");
-                    String[] area_codes = area_code.split(",");
-                    area_code = area_codes[0];
+            }else {
+                if (role_code.equals(Common.ROLE_SYS)){
+                    corp_code = jsonObject.get("corp_code").toString();
                 }
-                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
-                    store_id = jsonObject.get("store_code").toString();
-                }
-            } else if (role_code.equals(Common.ROLE_SM)){
-                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
-                    store_id = jsonObject.get("store_code").toString();
-                }else {
-                    String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.SPECIAL_HEAD, "");
-                    String[] store_codes = store_code.split(",");
-                    store_id = store_codes[0];
-                }
-            } else if (role_code.equals(Common.ROLE_STAFF)){
-                user_id = user_code;
-                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
-                    store_id = jsonObject.get("store_code").toString();
+                store_id = jsonObject.get("store_code").toString().trim();
+                if (store_id.equals("")) {
+                    area_code = jsonObject.get("area_code").toString().trim();
+                    String brand_code = jsonObject.get("brand_code").toString().trim();
+                    List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "","");
+                    for (int i = 0; i < storeList.size(); i++) {
+                        store_id = store_id + storeList.get(i).getStore_code() + ",";
+                    }
                 }
             }
+
 
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
             Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
-            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
             Data data_query_type=new Data("query_type", type, ValueType.PARAM);
             Data data_date_time=new Data("date_time",date_time, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_id.key, data_store_id);
-            datalist.put(data_area_code.key, data_area_code);
-           datalist.put(data_role_code.key, data_role_code);
+            datalist.put(data_role_code.key, data_role_code);
             datalist.put(data_query_type.key, data_query_type);
             datalist.put(data_date_time.key, data_date_time);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipCostDetail", datalist);
