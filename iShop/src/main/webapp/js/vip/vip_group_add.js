@@ -1891,7 +1891,7 @@ $("#select_vip_que").click(function(){ //筛选确定
                 var input = $(this).find("input");
                 var key = $(input[0]).attr("data-kye");
                 var classname = $(input[0]).attr("class");
-                if (classname.indexOf("short") == 0) {
+                if (classname.indexOf("short") == 0 && key != "3" && key != "4" && key!='17') {
                     if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                         var param = {};
                         var val = {};
@@ -1904,7 +1904,24 @@ $("#select_vip_que").click(function(){ //筛选确定
                         param["name"]=name;
                         screen.push(param);
                     }
-                } else {
+                }else if(key=='17'){
+
+                }else if (key == "3" || key == "4") {
+                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                        var param = {};
+                        var val = {};
+                        var date =$("#simple_filter").find("input[data-kye='"+key+"']").parent().siblings().find("#consume_date_basic_"+key).attr("data-date");
+                        var name=$(input[0]).prev().text();
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val();
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['date'] = date;
+                        param["name"]=name;
+                        screen.push(param);
+                    }
+                }else {
                     if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                         var param = {};
                         var val = $(input[0]).val();
@@ -1948,7 +1965,7 @@ $("#select_vip_que").click(function(){ //筛选确定
                             param['type'] = "text";
                             param["name"]=name;
                             param["all_list_name"]=all_list_name;
-                            console.log(all_list_name)
+                            console.log(all_list_name);
                             screen.push(param);
                         }
                     } else if (key == "17") {
@@ -2033,7 +2050,7 @@ $("#select_vip_que").click(function(){ //筛选确定
 function showSelect(){
     var html="";
     for(var b=0;b<all_select_vip_list.length;b++){
-        if(all_select_vip_list[b].type=="json"){
+        if(all_select_vip_list[b].type=="json" && all_select_vip_list[b].key!=="3" && all_select_vip_list[b].key!="4"){
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px; max-width:70px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+all_select_vip_list[b].name+"</span>" +
                 "<input type='text' style='width: 130px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
@@ -2049,6 +2066,17 @@ function showSelect(){
                     "<i class='icon-ishop_6-12 q_remove'title='删除'></i>"+
                     "</div>"
             }
+        }else if(all_select_vip_list[b].key=="3" || all_select_vip_list[b].key=="4"){
+            html+="<div style='float: right'>" +
+                "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px; max-width:70px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+all_select_vip_list[b].name+"</span>" +
+                "<input readonly type='text' style='width: 90px;margin-right: 10px;' value='最近"+all_select_vip_list[b].date+"个月' title='"+all_select_vip_list[b].value["end"]+"'>" +
+                "<input type='text' style='width: 90px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
+                "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
+                "<input readonly type='text' style='width: 90px;' value='"+all_select_vip_list[b].value["end"]+"' title='"+all_select_vip_list[b].value["end"]+"'>" +
+                "<i class='icon-ishop_6-12 q_remove' title='删除111'></i>"+
+                "</div>"
+        }else if(all_select_vip_list[b].key=="17"){
+
         }else{
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width: 70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis '>"+all_select_vip_list[b].name+"</span>" +

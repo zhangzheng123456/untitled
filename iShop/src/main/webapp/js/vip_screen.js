@@ -157,10 +157,26 @@ $("#sex_select li").click(function () {
 $("#consume_date").click(function () {
     $("#consume_select").toggle();
 });
+$("#consume_date_basic_3").click(function () {
+    $("#consume_select_basic_3").toggle();
+});
+$("#consume_date_basic_4").click(function () {
+    $("#consume_select_basic_4").toggle();
+});
 $("#consume_select li").click(function () {
     $("#consume_date").val($(this).html());
     $("#consume_date").attr("data-date", $(this).attr("data-date"));
     $("#consume_select").hide();
+});
+$("#consume_select_basic_3 li").click(function () {
+    $("#consume_date_basic_3").val($(this).html());
+    $("#consume_date_basic_3").attr("data-date", $(this).attr("data-date"));
+    $("#consume_select_basic_3").hide();
+});
+$("#consume_select_basic_4 li").click(function () {
+    $("#consume_date_basic_4").val($(this).html());
+    $("#consume_date_basic_4").attr("data-date", $(this).attr("data-date"));
+    $("#consume_select_basic_4").hide();
 });
 $("#state").click(function () {
     $("#state_select").toggle();
@@ -441,6 +457,12 @@ $(document).click(function (e) {
     }
     if (!($(e.target).is("#consume_date"))) {
         $("#consume_select").hide();
+    }
+    if (!($(e.target).is("#consume_date_basic_3"))) {
+        $("#consume_select_basic_3").hide();
+    }
+    if (!($(e.target).is("#consume_date_basic_4"))) {
+        $("#consume_select_basic_4").hide();
     }
 });
 $(function () {
