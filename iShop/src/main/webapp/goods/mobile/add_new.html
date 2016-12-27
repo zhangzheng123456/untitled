@@ -29,24 +29,10 @@
       </div>
   </div>
   <ul class="container_picture">
-      <li class="picture">
-      <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
-      <li class="picture">
-          <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>
-      </li>
+      <!--//商品模板-->
+      <!--<li class="picture">-->
+          <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
+      <!--</li>-->
       <li class="picture_add">
           <div class="picture_add_new"><img src="image/icon_add_14x14px@3x.png" width="100%"height="100%"alt="add"></div>
       </li>
@@ -59,5 +45,30 @@
       <textarea name="" id="describe" placeholder="请填写搭配简介"></textarea>
   </div>
 <script src="js/jquery-1.11.1.js"></script>
+<script>
+    //照片按钮
+    $('.action_picture').click(function () {
+
+    });
+    //商品按钮
+    $('.action_product').click(function () {
+        window.location='add_newProduct.html';
+    });
+    //添加功能
+    $('.picture_add img').click(function () {
+        var tempHTML = '<li class="picture"> <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div> </li>';
+        var html='';
+        var nowHTML = tempHTML;
+        html+=nowHTML;
+        $('.picture_add').before(html)
+    });
+    //删除功能
+    $('.picture .picture_btn img').click(function () {
+        console.log(2133333333333)
+        $(this).parents('.picture').remove();
+    });
+    $(document).ready(function () {
+    });
+</script>
 </body>
 </html>

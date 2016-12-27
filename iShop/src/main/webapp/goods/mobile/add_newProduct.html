@@ -18,31 +18,42 @@
       </div>
   </div>
   <ul class="list_box">
-      <li class="list">
-          <div class="list_picture"></div>
-          <div class="list_describe">
-              <p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-              <p>货号：<span class="list_number">89898989CX</span></p>
-              <p>价格：<span class="list_price">￥10000</span></p>
-          </div>
-      </li>
-      <li class="list">
-          <div class="list_picture"></div>
-          <div class="list_describe">
-              <p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-              <p>货号：<span class="list_number">89898989CX</span></p>
-              <p>价格：<span class="list_price">￥10000</span></p>
-          </div>
-      </li>
-      <li class="list">
-          <div class="list_picture"></div>
-          <div class="list_describe">
-              <p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-              <p>货号：<span class="list_number">89898989CX</span></p>
-              <p>价格：<span class="list_price">￥10000</span></p>
-          </div>
-      </li>
+      <!--数据加载-->
+      <!--<li class="list">-->
+          <!--<div class="list_picture"></div>-->
+          <!--<div class="list_describe">-->
+              <!--<p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>-->
+              <!--<p>货号：<span class="list_number">89898989CX</span></p>-->
+              <!--<p>价格：<span class="list_price">￥10000</span></p>-->
+          <!--</div>-->
+      <!--</li>-->
   </ul>
 <script src="js/jquery-1.11.1.js"></script>
+  <script>
+      $(document).ready(function () {
+          //注入
+          var tempHTML = '<li class="list"> <div class="list_picture"></div> <div class="list_describe"> <p class="list_name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p> <p>货号：<span class="list_number">89898989CX</span></p> <p>价格：<span class="list_price">￥10000</span></p> </div> </li>';
+          var html='';
+          for(i=0;i<10;i++){
+              var nowHTML = tempHTML;
+              html+=nowHTML;
+              $('.list_box').html(html)
+          }
+          //点击效果
+          $('.list').click(function () {
+              $(this).toggleClass("changeBcColor");
+          });
+          //输入框显示控制
+          $('.search_box input').focus(function(){
+              $('.search_box .search').css('display','none');
+          });
+          $('.search_box input').blur(function(){
+              var val = $('.search_box input').val();
+              if(val==''){
+                  $('.search_box .search').css('display','block');
+              }
+          });
+      })
+  </script>
 </body>
 </html>

@@ -125,4 +125,7 @@ address, cite, dfn, em, var {
     .list .list_describe .list_price {
       color: #dd6c5e; }
 
+.changeBcColor {
+  background-color: #bae4e8; }
+
 /*# sourceMappingURL=add_newProduct.css.map */
