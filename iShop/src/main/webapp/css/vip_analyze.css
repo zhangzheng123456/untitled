@@ -160,6 +160,7 @@
 }
 /*图锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞�*/
 #chart_analyze .chart_module{
+    display: none;
     margin:0 0.5% 0.5% 0;
     float:left;
     width:32.834%;
@@ -182,9 +183,6 @@
     color: #6dc1c8;
     float: right;
     text-align: center;
-}
-#main{
-    height:270px;
 }
 /*锟揭诧拷锟斤拷锟斤拷*/
 .vip_nav_bar{
