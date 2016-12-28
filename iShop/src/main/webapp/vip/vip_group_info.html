@@ -10,6 +10,9 @@
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <style>
+        .chart_module{
+            display: block!important;
+        }
         /*批量标签*/
         .batch_label_wrapper{
             display: none;
@@ -176,7 +179,7 @@
             color: #6abfc6;
         }
         .select_show_type{
-            position: absolute;left: 220px;top: 140px;z-index: 2;
+            margin-top: 10px;
         }
         .select_show_type div{
             text-align: center;
@@ -200,22 +203,84 @@
             max-height: 250px;
             overflow-y: scroll;
         }
+        #chart_analyze .chart_module{
+            position: relative;
+            width: 49.5%;
+        }
+        .chart_analyze_condition{
+            position: relative;
+            cursor: pointer;
+        }
+        .chart_analyze_condition ul{
+            z-index: 2;
+            top:23px;
+            left: 0px;
+            position: absolute;
+            width: 90px;
+            color: #4a5f7d;
+            background-color: #e8e8e8;
+            display: none;
+        }
+        .chart_analyze_condition ul li{
+            padding-left:10px;
+            line-height:25px;
+            height: 25px;
+            cursor: pointer;
+        }
+        .chart_analyze_condition ul li:hover{
+            background-color: #434960;
+            color: #FFFFFF;
+        }
+        .data_table{
+            display: none;
+            left: 50%;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+        .data_table.time ul li{
+            width: 8%;
+        }
+        .data_table.month ul li{
+            width: 7.5%;
+        }
+        .data_table ul{
+            padding: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        .data_table ul li:last-child{
+            border-right: 1px solid #d4d4d4;
+        }
+        .data_table ul:first-child li{
+            margin-top:50px;
+            border-top: 1px solid #d4d4d4;
+        }
+        .data_table ul li{
+            height: 50px;
+            line-height:50px;
+            text-align: center;
+            float: left;
+            width: 11%;
+            border-left: 1px solid #d4d4d4;
+            border-bottom: 1px solid #d4d4d4;
+        }
     </style>
 </head>
 <body>
-<!-- <div id="navbar">
-
-</div> -->
 <div class="content">
     <div class="con_table" id="con_table">
-        <div class="select_show_type" id="select_show_type"><div class="icon-ishop_9-04 active" title="图表模式" id="show_chart"></div><div class="icon-ishop_9-05" title="列表模式" id="show_list"></div></div>
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
             <span>分组会员</span>
         </div>
-        <div class="action">
-            <div class="action_r">
+        <div class="action" id="action">
+            <div class="action_l">
+                <div class="select_show_type" id="select_show_type"><div class="icon-ishop_9-04 active" title="图表模式" id="show_chart"></div><div class="icon-ishop_9-05" title="列表模式" id="show_list"></div></div>
+            </div>
+            <div class="action_r" style="display: none">
                 <ul>
                     <li id="filtrate" class="bg">
                         <span class="icon-ishop_6-05"></span>
@@ -324,8 +389,8 @@
                 </ul>
             </div>
         </div>
-        <div style="margin-left:170px; ">
-            <div id="list_show" style="display: none">
+        <div style="margin-left:170px; min-height: 600px">
+            <div id="list_show"  style="display: none">
                 <div class="table">
                 <table id="table" cellpadding="0" cellspacing="0" width="100%">
                 <thead>
@@ -369,83 +434,137 @@
             </ul>
         </div>
             </div>
-            <div id="chart_analyze" class="col_lg_12" style="overflow:hidden;margin-top: 0;">
-                <div class="chart_module">
+            <div style="min-height:600px;background-color: #FFFFFF;padding:10px 10px 10px 0;">
+                <div id="chart_analyze" style="overflow:hidden;margin:0 -0.5% 0 0;background-color: #e8e8e8">
+                <div class="chart_module" data-id="type">
                     <ul>
                     <span class="chart_head">
                     <span class="drag_area"><i class="icon-ishop_6-27"></i>
                     <span>消费类型</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="main" style="padding-left: 10px;">
+                        <li id="type" style="padding-left: 10px;height: 270px;">
                         </li>
+                        <div class="data_table">
+                           <ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>
+                           <ul><li>金额</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
+                        </div>
                     </ul>
                 </div>
-                <div class="chart_module">
+                <div class="chart_module" data-id="weeks">
                     <ul>
                    <span class="chart_head">
                    <span class="drag_area"> <i class="icon-ishop_6-27"></i>
                     <span>星期偏好</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
-                </span>
-                        <li id="main1" style="height: 270px;">
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
+                    </span>
+                        <li id="weeks" style="height: 270px;">
                         </li>
+                        <div class="data_table">
+                            <ul><li></li><li>周一</li><li>周二</li><li>周三</li><li>周四</li><li>周五</li><li>周六</li><li>周日</li><li>无数据</li></ul>
+                            <ul><li>金额</li><li>97</li><li>42</li><li>88</li><li>94</li><li>90</li><li>86</li><li>90</li><li></li></ul>
+                        </div>
                     </ul>
                 </div>
-                <div class="chart_module">
+                <div class="chart_module" data-id="price">
                     <ul>
                <span class="chart_head">
                     <span class="drag_area"><i class="icon-ishop_6-27"></i>
                     <span>价格偏好</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="main2" style="height: 270px;">
+                        <li id="price" style="height: 270px;">
                         </li>
+                        <div class="data_table" style="font-size: 12px;">
+                            <ul><li></li><li>200以下</li><li>200-399</li><li>400-599</li><li>600-799</li><li>800-999</li><li>1000-1999</li><li>2000-10000</li><li>10000以上</li></ul>
+                            <ul><li>金额</li><li>97</li><li>42</li><li>88</li><li>94</li><li>90</li><li>86</li><li>90</li><li>100</li></ul>
+                        </div>
                     </ul>
                 </div>
-                <div class="chart_module">
+                <div class="chart_module" data-id="times">
                     <ul>
                     <span class="chart_head">
                     <span class="drag_area"><i class="icon-ishop_6-27"></i>
                     <span>购买时段</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="main3" style="height: 270px;">
+                        <li id="times" style="height: 270px;">
                         </li>
+                        <div class="data_table time" style="font-size: 12px;">
+                        <ul><li></li><li>10:00</li><li>11:00</li><li>12:00</li><li>13:00</li><li>14:00</li><li>15:00</li><li>16:00</li><li>17:00</li><li>18:00</li><li>19:00</li><li>20:00</li></ul>
+                        <ul><li>金额</li><li>1000</li><li>3000</li><li>1500</li><li>2800</li><li>1000</li><li>5000</li><li>4444</li><li>6666</li><li>3333</li><li>2222</li><li>5555</li></ul>
+                </div>
                     </ul>
                 </div>
-                <div class="chart_module">
+                <div class="chart_module" data-id="month">
                     <ul>
                     <span class="chart_head">
                    <span class="drag_area"> <i class="icon-ishop_6-27"></i>
                     <span>月份偏好</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="main4" style="height: 270px;">
+                        <li id="month" style="height: 270px;">
                         </li>
+                        <div class="data_table month" style="font-size: 12px;">
+                            <ul><li></li><li>一月</li><li>二月</li><li>三月</li><li>四月</li><li>五月</li><li>六月</li><li>七月</li><li>八月</li><li>九月</li><li>十月</li><li>十一月</li><li>十二月</li></ul>
+                            <ul><li>金额</li><li>97</li><li>42</li><li>88</li><li>94</li><li>90</li><li>86</li><li>69</li><li>60</li><li>33</li><li>44</li><li>55</li><li>44</li></ul>
                     </ul>
                 </div>
-                <div class="chart_module">
+                <div class="chart_module" data-id="series">
                     <ul>
                    <span class="chart_head">
                    <span class="drag_area"> <i class="icon-ishop_6-27"></i>
                     <span>系列偏好</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="main5" style="height: 270px;padding-left: 10px;">
+                        <li id="series" style="height: 270px;padding-left: 10px;">
                         </li>
+                        <div class="data_table">
+                            <ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>
+                            <ul><li>金额</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
+                        </div>
                     </ul>
                 </div>
                 <!--<div class="chart_module">-->
@@ -455,19 +574,25 @@
                 <!--</li>-->
                 <!--</ul>-->
                 <!--</div>-->
-                <div class="chart_module">
+                <div class="chart_module" data-id="areas">
                     <ul>
                   <span class="chart_head">
                    <span class="drag_area"> <i class="icon-ishop_6-27"></i>
                     <span>地域分布</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                    <ul>
+                        <li>按件数分析</li>
+                        <li>按金额分析</li>
+                    </ul>
+                    </span>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="main7" style="height:270px;">
+                        <li id="areas" style="height:270px;">
                         </li>
                     </ul>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -476,20 +601,6 @@
 <div id="choose_staff" class="screen_area">
     <div class="screen_title">
         <h4>选择导购</h4>
-        <!--<div class="xuanzhong">-->
-        <!--<div class="xuanzhong_p">-->
-        <!--<label>选择区域</label><input type="text" value="" readonly="true" id="staff_choose_area" data-areacode="">-->
-        <!--<span class="icon_r icon-ishop_8-03"></span>-->
-        <!--</div>-->
-        <!--<div class="xuanzhong_p">-->
-        <!--<label>选择品牌</label><input type="text" value="" id="staff_choose_brand" data-brandcode="">-->
-        <!--<span class="icon_r icon-ishop_8-03"></span>-->
-        <!--</div>-->
-        <!--<div class="xuanzhong_p">-->
-        <!--<label>选择店铺</label><input type="text" value="" id="staff_choose_shop" data-storecode="">-->
-        <!--<span class="icon_r icon-ishop_8-03"></span>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="screen_close" id="close_choose_staff"><span class="icon-ishop_6-12"></span></div>
         <div class="xian"></div>
     </div>
@@ -506,7 +617,6 @@
     <div class="screen_content">
         <div class="screen_content_l">
             <ul>
-
             </ul>
         </div>
         <div class="screen_content_z">
@@ -517,7 +627,6 @@
         </div>
         <div class="screen_content_r">
             <ul>
-
             </ul>
         </div>
     </div>
@@ -681,455 +790,16 @@
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script src="/js/loading.js?20161116"></script>
-<script src="../js/dist/echarts.js?20161116"></script>
+<script src="../js/echarts.js"></script>
+<script src="../js/dist/chart/china.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
 <script src="../js/silide.js?20161116"></script>
-<script src="../js/vip/vip_group_info.js"></script>
 <script src="../js/laydate/laydate.js"></script>
 <script src="../js/vip_screen.js"></script>
 <script src="../js/jquery.dad.min.js"></script>
+<script src="../js/vip/vip_group_info.js"></script>
 </body>
 <script type="text/javascript">
-    require.config({
-        paths: {
-            echarts: '../js/dist'
-        }
-    });
-    require(
-            [
-                'echarts',
-                'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-                'echarts/chart/radar',
-                'echarts/chart/map',
-                'echarts/chart/bar',
-                'echarts/chart/line'
-            ],
-            function (ec) {
-                var aa = [
-                    {value: 122, name: "衬衫"},
-                    {value: 310, name: '背心'},
-                    {value: 234, name: 'T恤'},
-                    {value: 135, name: '外套'},
-                    {value: 1548, name: '长裙'},
-                    {value: 1548, name: '短裙'},
-                    {value: 1548, name: '连衣裙'},
-                    {value: 1548, name: '裤子'}
-                ];
-                var myChart = ec.init(document.getElementById('main'));
-                var myChart1 = ec.init(document.getElementById('main1'));
-                var myChart2 = ec.init(document.getElementById('main2'));
-                var myChart3 = ec.init(document.getElementById('main3'));
-                var myChart4 = ec.init(document.getElementById('main4'));
-                var myChart5 = ec.init(document.getElementById('main5'));
-//                var myChart6 = ec.init(document.getElementById('main6'));
-                var myChart7 = ec.init(document.getElementById('main7'));
-                var option = {
-                    color: ['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2', '#5C778F', '#4D5F7C', '#444960', '#2C3244'],
-                    tooltip: {
-                        textStyle: {
-                            fontSize: '10',
-                        },
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    legend: {
-                        show: 'true',
-                        orient: 'vertical',
-                        x: 'left',
-                        y: 'center',
-                        data: [{
-                            name: '衬衫',
-                            icon: '2'
-                        }, {
-                            name: '背心',
-                            icon: '12'
-                        }, {
-                            name: '连衣裙',
-                            icon: '12'
-                        }, {
-                            name: 'T恤',
-                            icon: '12'
-                        }, {
-                            name: '外套',
-                            icon: '12'
-                        }, {
-                            name: '长裙',
-                            icon: '12'
-                        }, {
-                            name: '短裙',
-                            icon: '12'
-                        }, {
-                            name: '裤子',
-                            icon: '12'
-                        }]
-                    },
-                    series: [
-                        {
-                            name: '消费分类',
-                            center: ['60%', '50%'],
-                            type: 'pie',
-                            radius: ['50%', '60%'],
-                            itemStyle: {
-                                normal: {
-
-                                    label: {
-                                        show: false
-                                    },
-                                    labelLine: {
-                                        show: false
-                                    }
-                                },
-                                emphasis: {
-
-                                    label: {
-                                        show: true,
-
-                                        position: 'center',
-                                        textStyle: {
-                                            fontSize: '20',
-                                            fontWeight: 'bold'
-                                        }
-                                    }
-                                }
-                            },
-                            data: aa
-                        }
-                    ]
-                };
-                var option1 = {
-                    color: ['#A7DADE'],
-                    axis: {
-                        areaStyle: {
-                            color: ['red']
-                        }
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    polar: [
-                        {
-                            indicator: [
-                                {text: '周一', max: 100},
-                                {text: '周二', max: 100},
-                                {text: '周三', max: 100},
-                                {text: '周四', max: 100},
-                                {text: '周五', max: 100},
-                                {text: '周六', max: 100},
-                                {text: '周七', max: 100},
-                                {text: '无数据', max: 100}
-                            ],
-                            radius: 100,
-                            splitNumber: 8,
-                            startAngle: 68,
-                            splitArea: {
-                                show: true,
-                                areaStyle: {
-                                    color: '#fff'
-                                }
-                            }
-                        }
-                    ],
-                    series: [
-                        {
-                            symbol: 'circle',
-                            type: 'radar',
-                            itemStyle: {
-                                normal: {
-                                    areaStyle: {
-                                        type: 'default'
-                                    },
-                                    lineStyle: {
-                                        width: '0'
-                                    }
-                                }
-                            },
-                            symbolSize: '0',
-                            data: [
-                                {
-                                    value: [97, 42, 88, 94, 90, 86, '20', 'null'],
-                                    name: '周变'
-                                }
-                            ]
-                        }
-                    ]
-                };
-                var option2 = {
-                    color: ['#A7DADE'],
-                    axis: {
-                        areaStyle: {
-                            color: ['red']
-                        }
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    polar: [
-                        {
-                            indicator: [
-                                {text: '一月', max: 100},
-                                {text: '二月', max: 100},
-                                {text: '三月', max: 100},
-                                {text: '四月', max: 100},
-                                {text: '五月', max: 100},
-                                {text: '六月', max: 100},
-                                {text: '七月', max: 100},
-                                {text: '八月', max: 100},
-                                {text: '九月', max: 100},
-                                {text: '十月', max: 100},
-                                {text: '十一月', max: 100},
-                                {text: '十二月', max: 100}
-                            ],
-                            radius: 100,
-                            splitNumber: 8,
-                            startAngle: 45,
-                            splitArea: {
-                                show: true,
-                                areaStyle: {
-                                    color: '#fff'
-                                }
-                            }
-                        }
-                    ],
-                    series: [
-                        {
-                            symbol: 'circle',
-                            type: 'radar',
-                            itemStyle: {
-                                normal: {
-                                    areaStyle: {
-                                        type: 'default'
-                                    },
-                                    lineStyle: {
-                                        width: '0'
-                                    }
-                                }
-                            },
-                            symbolSize: '0',
-                            data: [
-                                {
-                                    value: [97, 42, 88, 94, 90, 86, 69, 66, 33, 58, 44, 55, 66],
-                                    name: '月变'
-                                }
-                            ]
-                        }
-                    ]
-                };
-                var option3 = {
-                    tooltip: {
-                        trigger: 'item'
-                    },
-                    dataRange: {
-                        itemWidth: 5,
-                        itemGap: 0.2,
-                        color: ['#A7CFD5', '#3C95A2'],
-                        splitNumber: '20',
-                        orient: 'horizontal',
-                        min: 0,
-                        max: 2500,
-                        x: 'left',
-                        y: 'top',
-                        text: ['高', '低']      // 文本，默认为数值文本
-                    },
-                    series: [
-                        {
-                            name: 'iphone3',
-                            type: 'map',
-                            mapType: 'china',
-                            roam: false,
-                            itemStyle: {
-                                normal: {
-                                    label: {
-                                        show: true, textStyle: {
-                                            color: "#434960",
-                                            fontSize: 10
-                                        }
-                                    }
-                                },
-                                emphasis: {label: {show: true}}
-                            },
-                            data: [
-                                {name: '北京', value: Math.round(Math.random() * 1000)},
-                                {name: '天津', value: Math.round(Math.random() * 1000)},
-                                {name: '上海', value: Math.round(Math.random() * 1000)},
-                                {name: '重庆', value: Math.round(Math.random() * 1000)},
-                                {name: '河北', value: Math.round(Math.random() * 1000)},
-                                {name: '河南', value: Math.round(Math.random() * 1000)},
-                                {name: '云南', value: Math.round(Math.random() * 1000)},
-                                {name: '辽宁', value: Math.round(Math.random() * 1000)},
-                                {name: '黑龙江', value: Math.round(Math.random() * 1000)},
-                                {name: '湖南', value: Math.round(Math.random() * 1000)},
-                                {name: '安徽', value: Math.round(Math.random() * 1000)},
-                                {name: '山东', value: Math.round(Math.random() * 1000)},
-                                {name: '新疆', value: Math.round(Math.random() * 1000)},
-                                {name: '江苏', value: Math.round(Math.random() * 1000)},
-                                {name: '浙江', value: Math.round(Math.random() * 1000)},
-                                {name: '江西', value: Math.round(Math.random() * 1000)},
-                                {name: '湖北', value: Math.round(Math.random() * 1000)},
-                                {name: '广西', value: Math.round(Math.random() * 1000)},
-                                {name: '甘肃', value: Math.round(Math.random() * 1000)},
-                                {name: '山西', value: Math.round(Math.random() * 1000)},
-                                {name: '内蒙古', value: Math.round(Math.random() * 1000)},
-                                {name: '陕西', value: Math.round(Math.random() * 1000)},
-                                {name: '吉林', value: Math.round(Math.random() * 1000)},
-                                {name: '福建', value: Math.round(Math.random() * 1000)},
-                                {name: '贵州', value: Math.round(Math.random() * 1000)},
-                                {name: '广东', value: Math.round(Math.random() * 1000)},
-                                {name: '青海', value: Math.round(Math.random() * 1000)},
-                                {name: '西藏', value: Math.round(Math.random() * 1000)},
-                                {name: '四川', value: Math.round(Math.random() * 1000)},
-                                {name: '宁夏', value: Math.round(Math.random() * 1000)},
-                                {name: '海南', value: Math.round(Math.random() * 1000)},
-                                {name: '台湾', value: Math.round(Math.random() * 1000)},
-                                {name: '香港', value: Math.round(Math.random() * 1000)},
-                                {name: '澳门', value: Math.round(Math.random() * 1000)}
-                            ]
-                        }
-                    ]
-                };
-                var option4 = {
-                    color: ['#6CC1C8'],
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: function (params) {
-                            return params.seriesName + ' :' + params.value;
-                        }
-                    },
-                    grid: {
-                        borderWidth: 0,
-                        x: '100',
-                        y: '20',
-                        x2: '0',
-                        y2: '20'
-                    },
-                    xAxis: [
-
-                        {
-                            show: false,
-                            type: 'value',
-                            boundaryGap: [0, 0.01]
-
-                        }
-                    ],
-                    yAxis: [
-                        {
-                            axisLine: {
-                                show: false
-                            },
-                            axisTick: {
-                                show: false
-                            },
-                            splitLine: {
-                                show: false
-                            },
-                            type: 'category',
-                            data: ['10000以上', '2000-10000', '1000-1999', '800-999', '600-799', '400-599', '200-399', '200以下']
-                        }
-                    ],
-                    series: [
-                        {
-                            itemStyle: {
-                                normal: {
-                                    barBorderRadius: 0
-                                }
-                            },
-                            name: '价格偏好',
-                            type: 'bar',
-                            barWidth: 10,
-                            data: [100, 600, 650, 470, 1000, 900, 750, 500]
-                        }
-                    ]
-                };
-                var option5 = {
-                    color: ['#6DADC8'],
-                    tooltip: {
-                        trigger: 'item'
-                    },
-                    grid: {
-                        borderWidth: 0,
-                        x: '50',
-                        y: '20',
-                        x2: '20',
-                        y2: '50'
-                    },
-                    xAxis: [
-                        {
-                            axisLine: {
-                                lineStyle: {color: '#58A0C0'}
-                            },
-                            splitLine: {
-                                show: false
-                            },
-                            axisLabel: {
-                                rotate: 45
-                            },
-                            axisTick: {
-                                show: false
-                            },
-                            type: 'category',
-                            boundaryGap: false,
-                            data: ['10.00', '11;00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']
-                        }
-                    ],
-                    yAxis: [
-                        {
-                            axisLine: {
-                                show: false
-                            },
-                            splitArea: {
-                                show: false
-                            },
-                            splitLine: {
-                                lineStyle: {
-                                    color: '#999',
-                                    type: 'dashed'
-                                }
-                            },
-                            type: 'value'
-                        }
-                    ],
-                    series: [
-                        {
-                            itemStyle: {
-                                symbolSize: '0',
-                                normal: {
-                                    borderRadius: 0,
-                                    nodeStyle: {
-                                        borderRadius: 0
-                                    }
-                                }
-                            },
-                            name: '购买时段',
-                            type: 'line',
-                            stack: '总量',
-                            symbolSize: 0,
-                            smooth: false,
-                            data: [1000, 3000, 1500, 2800, 1000, 5000, 4444, 6666, 3333, 2222, 5555]
-                        }
-                    ]
-                };
-
-//            myChart.showLoading();
-                myChart.setOption(option);
-                myChart1.setOption(option1);
-                myChart2.setOption(option4);
-                myChart3.setOption(option5);
-                myChart4.setOption(option2);
-                myChart5.setOption(option);
-//                myChart6.setOption(option);
-                myChart7.setOption(option3);
-//            myChart.hideLoading();
-                window.addEventListener("resize", function () {
-                    myChart.resize();
-                    myChart1.resize();
-                    myChart2.resize();
-                    myChart3.resize();
-                    myChart4.resize();
-                    myChart5.resize();
-//                    myChart6.resize();
-                    myChart7.resize();
-                });
-            }
-    );
     //    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
     //    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
     //   扩展模块JS

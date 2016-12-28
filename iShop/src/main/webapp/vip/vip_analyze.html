@@ -20,7 +20,48 @@
         .no_data {
             height: 46px;
         }
-
+        .start_analyze_wrap{
+            display: none;
+            position: absolute;
+            z-index: 200;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            height: 415px;
+            background: #fff;
+        }
+        .start_analyze_wrap_left{
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 243px;
+            background: #fff;
+        }
+        .start_analyze_wrap span,.start_analyze_wrap_left span{
+            display: block;
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+        }
+        .start_analyze_wrap span:first-child{
+            margin-top: 160px;
+        }
+        .start_analyze_wrap_left span:first-child{
+            margin-top: 75px;
+        }
+        .start_analyze_wrap .start_analyze_btn,.start_analyze_wrap_left .start_analyze_btn{
+            width: 160px;
+            height: 30px;
+            margin: 10px auto;
+            line-height: 30px;
+            background: #6cc1c8;
+            color: #FFFFFF;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -174,6 +215,11 @@
             <div class="right_shadow" id="left_shadow">
                 <span class="left_shadow_title">加载中..</span>
             </div>
+        </div>
+        <div class="start_analyze_wrap_left" id="start_analyze_left">
+            <span>根据您的筛选条件,数据量较大</span>
+            <span>分析需要较长时间,请耐心等待...</span>
+            <span class="start_analyze_btn">开始分析</span>
         </div>
     </div>
     <!-- 右侧表格数据分析-->
@@ -456,10 +502,15 @@
         <div class="right_shadow" id="right_shadow">
             <span>加载中..</span>
         </div>
+        <div class="start_analyze_wrap" id="start_analyze_right">
+            <span>根据您的筛选条件,数据量较大</span>
+            <span>分析需要教长时间,请耐心等待...</span>
+            <span class="start_analyze_btn">开始分析</span>
+        </div>
     </div>
     <!-- 分析数据图表描述-->
-    <div id="chart_analyze" class="col_lg_12" style="display: inline-block">
-        <div class="chart_module">
+    <div id="chart_analyze"  data-id="">
+        <div class="chart_module" data-id="type">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -467,14 +518,14 @@
                         <span>消费类型</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main" style="padding-left: 10px;">
+                <li id="type" style="padding-left: 10px;height: 270px">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="weeks">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -482,14 +533,14 @@
                          <span>星期偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main1" style="height: 270px;">
+                <li id="weeks" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="price">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -497,14 +548,14 @@
                         <span>价格偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main2" style="height: 270px;">
+                <li id="price" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="times">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -512,14 +563,14 @@
                         <span>购买时段</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main3" style="height: 270px;">
+                <li id="times" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="month">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -527,14 +578,14 @@
                          <span>月份偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main4" style="height: 270px;">
+                <li id="month" style="height: 270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module">
+        <div class="chart_module" data-id="series">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -542,10 +593,10 @@
                          <span>系列偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main5" style="height: 270px;padding-left: 10px;">
+                <li id="series" style="height: 270px;padding-left: 10px;">
                 </li>
             </ul>
         </div>
@@ -556,22 +607,22 @@
                 <!--</li>-->
             <!--</ul>-->
         <!--</div>-->
-        <div class="chart_module">
+        <div class="chart_module" data-id="areas">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
                          <i class="icon-ishop_6-27"></i>
-                         <span>地域分布</span>
+                         <span>地域偏好</span>
                     </span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i></span>
-                    <i class="icon-ishop_6-12 chart_list_icon"></i>
-                    <i class="icon-ishop_9-05 chart_close_icon"></i>
+                    <i class="icon-ishop_6-12 chart_close_icon"></i>
+                    <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                <li id="main7" style="height:270px;">
+                <li id="areas" style="height:270px;">
                 </li>
             </ul>
         </div>
-        <div class="chart_module add_chart" id="add_chart">
+        <div class="chart_module add_chart" id="add_chart" style="display: block">
             <span>+</span>
             <span>添加图表</span>
         </div>
@@ -580,18 +631,12 @@
     <div class="chart_add_wrap" id="chart_add_wrap">
         <span class="chart_add_title">选择要展示的图表</span>
         <i class="icon-ishop_6-12 chart_close"></i>
-        <div class="chart_add_details">
+        <div class="chart_add_details" id="chart_add_details">
             <ul>
                 <li>
                     <div class="chart_checkbox">
                         <input type="checkbox" class="check" type="text" id="check_box1"><label for="check_box1"></label>
                         <span>消费类型</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="chart_checkbox">
-                        <input type="checkbox" class="check" type="text" id="check_box8"><label for="check_box8"></label>
-                        <span>星期偏好</span>
                     </div>
                 </li>
                 <li>
@@ -620,14 +665,14 @@
                 </li>
                 <li>
                     <div class="chart_checkbox">
-                        <input type="checkbox" class="check" type="text" id="check_box6"><label for="check_box6"></label>
-                        <span>消费频率</span>
+                        <input type="checkbox" class="check" type="text" id="check_box7"><label for="check_box7"></label>
+                        <span>地域偏好</span>
                     </div>
                 </li>
                 <li>
                     <div class="chart_checkbox">
-                        <input type="checkbox" class="check" type="text" id="check_box7"><label for="check_box7"></label>
-                        <span>地域偏好</span>
+                        <input type="checkbox" class="check" type="text" id="check_box8"><label for="check_box8"></label>
+                        <span>星期偏好</span>
                     </div>
                 </li>
             </ul>
@@ -635,7 +680,7 @@
         <div class="chart_add_bottom">
             <ul>
                 <li class="chart_close">取消</li>
-                <li>完成</li>
+                <li id="chart_add_enter">完成</li>
             </ul>
         </div>
     </div>
@@ -645,11 +690,14 @@
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/jquery.dad.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="../js/dist/echarts.js"></script>
+<!--<script src="../js/dist/echarts.js"></script>-->
+<script src="../js/silide.js?20161217"></script>
+<script src="../js/echarts.js?20161116"></script>
+<script src="../js/dist/chart/china.js?20161227"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/loading.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js?20161116"></script>
-<script src="../js/vip/vip_analyze.js?20161116"></script>
+<script src="../js/vip/vip_analyze.js?20161227"></script>
 <script>
     $(".scroll_bar").niceScroll({
         cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,

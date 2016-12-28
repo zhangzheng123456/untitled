@@ -20,7 +20,9 @@
         html, body {
             background: #e8e8e8;
         }
-
+        #chart_analyze .chart_module{
+            display: block;
+        }
         .warp {
             background-color: #000000;
             opacity: 0.25;
@@ -543,7 +545,7 @@
             <span id="vipAnalyze_return">会员信息</span>
         </div>
         <!--头部-->
-        <div class="header" style="overflow: hidden;">
+        <div class="header" style="overflow: hidden;margin-right: -0.5%">
             <div class="right">
                 <div class="person">
                     <div class="person-left">
@@ -558,9 +560,8 @@
                           <span class="margin-right10">会员卡号</span><span id="vip_card_no"></span>
                       </span>
                       <span class="vip">
-                         <span class="margin-right10">会员卡类型</span><span class="vipClass" id="vip_card_type"></span><i
-                              id="grade_up" style="color:#6cc1c8;margin-left: 5px" class="icon-ishop_6-25"></i><i
-                              id="grade_down" style="color:#c4c4c4;margin-left: 5px" class="icon-ishop_6-26"></i>
+                         <span class="margin-right10">会员卡类型</span><span class="vipClass" id="vip_card_type"></span>
+                          <span id="grade_change" style="display: none"><i id="grade_up" style="color:#6cc1c8;margin-left: 5px" class="icon-ishop_6-25"></i><i id="grade_down" style="color:#c4c4c4;margin-left: 5px" class="icon-ishop_6-26"></i></span>
                       </span>
                     </div>
                 </div>
@@ -700,7 +701,7 @@
             </div>
         </div>
         <!-- 分析数据图表描述-->
-        <div id="chart_analyze" class="col_lg_12" style="overflow: hidden;">
+        <div id="chart_analyze" class="col_lg_12" style="margin-top:0.5%;overflow: hidden;">
             <div class="chart_module">
                 <ul>
                     <span class="chart_head">
@@ -710,7 +711,7 @@
                     <i class="icon-ishop_6-12 chart_list_icon"></i>
                     <i class="icon-ishop_9-05 chart_close_icon"></i>
                 </span>
-                    <li id="main" style="padding-left: 10px;">
+                    <li id="main" style="height:270px;padding-left: 10px;">
                     </li>
                 </ul>
             </div>
@@ -780,11 +781,11 @@
                 </ul>
             </div>
             <!--<div class="chart_module">-->
-                <!--<ul>-->
-                    <!--<span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>-->
-                    <!--<li id="main6" style="height: 270px;padding-left: 10px;">-->
-                    <!--</li>-->
-                <!--</ul>-->
+            <!--<ul>-->
+            <!--<span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>-->
+            <!--<li id="main6" style="height: 270px;padding-left: 10px;">-->
+            <!--</li>-->
+            <!--</ul>-->
             <!--</div>-->
             <div class="chart_module">
                 <ul>
@@ -916,7 +917,7 @@
                                 <div class="operedit_btn">
                                     <ul>
                                         <li class='edit_save' id="change_save"
-                                            style="cursor: pointer;margin-left:140px"></i>保存
+                                            style="cursor: pointer;margin-left:140px;display: none"><i class="icon-ishop_6-04"></i>保存
                                         </li>
                                     </ul>
                                 </div>
@@ -1166,7 +1167,7 @@
                 <div class="viplabel">
                     <div class="label_left_box col-lg-6 col-sm-6">
                         <div class="labeladd_box">
-                            <input type="text" id="search_input" placeholder="添加标签">
+                            <input type="text" id="search_input" maxlength="10" placeholder="添加标签">
                             <div class="search_box">
                                 <ul class="search_list">
                                 </ul>
@@ -1249,7 +1250,7 @@
                         <label>备注</label>
                         <textarea id="remark_value"></textarea>
                     </span>
-                    <div class="remark_save" id="remark_keep">保存</div>
+                    <div class="remark_save" id="remark_keep"><i class="icon-ishop_6-04"></i>保存</div>
                 </div>
             </div>
         </div>
@@ -1283,18 +1284,6 @@
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!--充值、退款弹窗页面-->
 <script src="../js/vip/vip_dataPage.js"></script>
-<script>
-    var timer=setInterval(function(){
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().show();
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").addClass("icon-ishop_8-01");
-        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("a").css({color:"#6cc1c8"});
-        if($(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").hasClass("icon-ishop_8-01")){
-            clearInterval(timer);
-        }
-    },0);
-
-
-</script>
 <script type="text/javascript">
     require.config({
         paths: {
@@ -1421,7 +1410,7 @@
                                 {text: '周四', max: 100},
                                 {text: '周五', max: 100},
                                 {text: '周六', max: 100},
-                                {text: '周七', max: 100},
+                                {text: '周日', max: 100},
                                 {text: '无数据', max: 100}
                             ],
                             radius: 100,

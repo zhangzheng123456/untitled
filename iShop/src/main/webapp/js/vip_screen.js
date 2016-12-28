@@ -157,10 +157,26 @@ $("#sex_select li").click(function () {
 $("#consume_date").click(function () {
     $("#consume_select").toggle();
 });
+$("#consume_date_basic_3").click(function () {
+    $("#consume_select_basic_3").toggle();
+});
+$("#consume_date_basic_4").click(function () {
+    $("#consume_select_basic_4").toggle();
+});
 $("#consume_select li").click(function () {
     $("#consume_date").val($(this).html());
     $("#consume_date").attr("data-date", $(this).attr("data-date"));
     $("#consume_select").hide();
+});
+$("#consume_select_basic_3 li").click(function () {
+    $("#consume_date_basic_3").val($(this).html());
+    $("#consume_date_basic_3").attr("data-date", $(this).attr("data-date"));
+    $("#consume_select_basic_3").hide();
+});
+$("#consume_select_basic_4 li").click(function () {
+    $("#consume_date_basic_4").val($(this).html());
+    $("#consume_date_basic_4").attr("data-date", $(this).attr("data-date"));
+    $("#consume_select_basic_4").hide();
 });
 $("#state").click(function () {
     $("#state_select").toggle();
@@ -175,44 +191,6 @@ $("#simple_state").click(function () {
 $("#simple_state_select li").click(function () {
     $("#simple_state").val($(this).html());
     $("#simple_state_select").hide();
-});
-$("#age_l").click(function () {
-    $(".age_l").toggle();
-});
-$("#age_r").click(function () {
-    $(".age_r").toggle();
-});
-$(".age_l").on("click", "li", function () {
-    var max = $("#age_r").val();
-    var val = parseInt($(this).html());
-    if (val >= max && max !== "") {
-        art.dialog({
-            zIndex: 10003,
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "不能大于右边的年龄哦"
-        });
-        return;
-    }
-    $("#age_l").val($(this).html());
-    $(".age_l").hide();
-});
-$(".age_r").on("click", "li", function () {
-    var min = $("#age_l").val();
-    var val = parseInt($(this).html());
-    if (val <= min && min !== "") {
-        art.dialog({
-            zIndex: 10003,
-            time: 1,
-            lock: true,
-            cancel: false,
-            content: "不能小于右边的年龄哦"
-        });
-        return;
-    }
-    $("#age_r").val($(this).html());
-    $(".age_r").hide();
 });
 $("#expend_attribute").on("click",".select",function () {
     $(this).next(".sex_select").toggle();
@@ -245,12 +223,40 @@ $("#screen_vip_que").click(function () {
             var input = $(this).find("input");
             var key = $(input[0]).attr("data-kye");
             var classname = $(input[0]).attr("class");
-            if (classname.indexOf("short") == 0) {
+            if(key == "17"){
+                 return ;
+            }else if (key == "4") {
+                if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                    var param = {};
+                    var val = {};
+                    var date = $("#consume_date_basic_4").attr("data-date");
+                    val['start'] = $(input[0]).val();
+                    val['end'] = $(input[1]).val();
+                    param['type'] = "json";
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['date'] = date;
+                    screen.push(param);
+                }
+            }else if (key == "3") {
+                if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                    var param = {};
+                    var val = {};
+                    var date = $("#consume_date_basic_3").attr("data-date");
+                    val['start'] = $(input[0]).val();
+                    val['end'] = $(input[1]).val();
+                    param['type'] = "json";
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['date'] = date;
+                    screen.push(param);
+                }
+            }else if (classname.indexOf("short") == 0 && (key !== "3" || key !== "4")) {
                 if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                     var param = {};
                     var val = {};
                     val['start'] = $(input[0]).val();
-                    val['end'] = $(input[1]).val()
+                    val['end'] = $(input[1]).val();
                     param['type'] = "json";
                     param['key'] = key;
                     param['value'] = val;
@@ -260,6 +266,7 @@ $("#screen_vip_que").click(function () {
                 if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                     var param = {};
                     var val = $(input[0]).val();
+                    val=="已冻结"? val="Y" : val="N";
                     param['key'] = key;
                     param['value'] = val;
                     param['type'] = "text";
@@ -313,6 +320,7 @@ $("#screen_vip_que").click(function () {
                     if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                         var param = {};
                         var val = $(input[0]).val();
+                        val=="已冻结"? val="Y" : val="N";
                         param['key'] = key;
                         param['value'] = val;
                         param['type'] = "text";
@@ -341,6 +349,7 @@ $("#screen_vip_que").click(function () {
         filtrates(inx, pageSize);
     }
     $("#search").val("");
+    value="";
     $("#screen_wrapper").hide();
     $("#p").hide();
 });
@@ -372,6 +381,7 @@ $("#empty_filter").click(function () {
 //分组弹窗
 $("#screen_group_icon").click(function () {
     if(message.cache.group_codes!==""){
+        console.log(222)
         var group_codes=message.cache.group_codes.split(',');
         var group_names=message.cache.group_names.split(',');
         var group_html_right="";
@@ -421,6 +431,7 @@ $("#screen_que_group").click(function () {
     $("#screen_wrapper").show();
     $("#filter_group").val("已选"+li.length+"个");
     $("#filter_group").attr("data-code",group_codes);
+    $("#filter_group").attr("data-code_name",group_names);
 });
 //分组搜索
 $("#group_search").keydown(function () {
@@ -466,12 +477,6 @@ $(document).click(function (e) {
     if (!($(e.target).is("#simple_state_select") || $(e.target).is("#simple_state"))) {
         $("#simple_state_select").hide();
     }
-    if (!($(e.target).is(".age_l") || $(e.target).is("#age_l"))) {
-        $(".age_l").hide()
-    }
-    if (!($(e.target).is(".age_r") || $(e.target).is("#age_r"))) {
-        $(".age_r").hide();
-    }
     if (!($(e.target).is("#filter_group") || $(e.target).is(".filter_group input"))) {
         $(".filter_group").hide();
     }
@@ -483,6 +488,12 @@ $(document).click(function (e) {
     }
     if (!($(e.target).is("#consume_date"))) {
         $("#consume_select").hide();
+    }
+    if (!($(e.target).is("#consume_date_basic_3"))) {
+        $("#consume_select_basic_3").hide();
+    }
+    if (!($(e.target).is("#consume_date_basic_4"))) {
+        $("#consume_select_basic_4").hide();
     }
 });
 $(function () {

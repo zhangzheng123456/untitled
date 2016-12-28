@@ -1,0 +1,142 @@
+@import "mixin-fun";
+@charset "utf-8";
+html,body{color:#000;background:#fff;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;box-sizing: border-box}
+body{font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;}
+img{border:none;}
+em,strong{font-style:normal;font-weight:normal;}
+li{list-style:none;}
+table {border-collapse:collapse;border-spacing:0;}
+h1{font-size:18px;}
+h2{font-size:16px;}
+h3{font-size:14px;}
+h4, h5, h6{font-size:100%;}
+q:before,q:after{content:'';}
+button,input,select,textarea{font-size:100%;border:none;background:white}
+input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+address,cite,dfn,em,var{font-style:normal;}
+.header_bg{
+  height: rem(10);
+  background: #ededed;
+}
+@mixin  file{
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1000;
+}
+@mixin title {
+  height: rem(44);
+  margin-left: rem(20);
+  padding-right: rem(10);
+  line-height: rem(44);
+  @include font(15);
+  color: #888;
+}
+.header_title{
+  @include title;
+  border-bottom: rem(1) solid #ededed;
+  .header_title_r{
+    float: right;
+  }
+}
+.action{
+  height: rem(50);
+  padding-left: rem(20);
+  line-height:rem(50);
+  @include font(15);
+  color: #888;
+  @mixin action_btn {
+    @include font(15);
+  　height: rem(34);
+    width: rem(70);
+    color:#fff;
+    line-height: rem(34);
+    text-align: center;
+    border-radius: rem(5);
+    float: right;
+    margin-top: rem(8);
+    margin-right:rem(10);
+    div{
+      display: inline-block;
+      width: rem(14);
+      margin-right: rem(5);
+      height: rem(14);
+    }
+  }
+  .action_picture{
+    @include action_btn;
+    background: #8fbae2;
+    position: relative;
+    .file{
+     @include file;
+    }
+  }
+  .action_product{
+    @include action_btn;
+    background: #81c7cd;
+  }
+}
+.container_picture{
+  padding:rem(5) rem(5) rem(5) rem(12);
+  overflow: hidden;
+  @mixin container_picture_li {
+    position: relative;
+    float: left;
+    height:rem(74);
+    width:rem(74);
+    background: #f3f3f3;
+    margin-right:rem(5) ;
+    margin-bottom: rem(5);
+    border:rem(1) solid #dfdfdf;
+  }
+  .picture{
+    @include container_picture_li;
+    .picture_btn{
+      width: rem(20);
+      height: rem(20);
+      border-radius: 50%;
+      position: absolute;
+      top: rem(1);
+      right: rem(1);
+    }
+  }
+  .picture_add{
+    @include container_picture_li;
+    .picture_add_new{
+      width: rem(20);
+      height: rem(20);
+      position: absolute;
+      top:50%;
+      left:50%;
+      transform: translate(-50%,-50%);
+    }
+      .file{
+        @include file;
+      }
+  }
+}
+.line{
+  margin-left: rem(20);
+  border-bottom: rem(1) solid #ededed;
+}
+.introduction{
+  @include title;
+}
+.describe_box{
+  padding-left:rem(20) ;
+  padding-top: rem(5);
+}
+#describe{
+  resize: none;
+  width: 100%;
+  outline: none;
+  height: rem(90);
+}
+#describe::-webkit-input-placeholder{font-size: rem(15);color:#bbb}
+#describe:-moz-placeholder{font-size: rem(15);color:#bbb}
+#describe::-moz-placeholder{font-size: rem(15);color:#bbb}
+#describe:-ms-input-placeholder{font-size: rem(15);color:#bbb}

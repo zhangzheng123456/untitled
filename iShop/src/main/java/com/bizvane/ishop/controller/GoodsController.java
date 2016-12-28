@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -409,7 +410,7 @@ public class GoodsController {
                     continue;
                 }
                 String images = column5[i].getContents().toString().trim();
-                String[] splitImages = images.split(",");
+
 //                if(splitImages.length>5){
 //                    result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
 //                    int b = 5 / 0;
@@ -509,7 +510,15 @@ public class GoodsController {
                     if(goods_image==null||goods_image.equals("")){
                         goods.setGoods_image("");
                     }else{
-                        goods.setGoods_image(goods_image);
+                        String[] splitImages = goods_image.split(",");
+                        JSONArray images_array = new JSONArray();
+                        for (int k = 0; k < splitImages.length; k++) {
+                            JSONObject obj = new JSONObject();
+                            obj.put("image",splitImages[k]);
+                            obj.put("is_public","N");
+                            images_array.add(obj);
+                        }
+                        goods.setGoods_image(images_array.toJSONString());
                     }
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("");

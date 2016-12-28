@@ -34,7 +34,8 @@
     position: relative;
 }
 #chart_analyze{
-    margin-top:0.5%;
+    margin-right: -0.5%;
+    margin-top:41%;
     clear: both;
 }
 /*select_analyze锟斤拷询*/
@@ -159,9 +160,10 @@
 }
 /*图锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞�*/
 #chart_analyze .chart_module{
+    display: none;
     margin:0 0.5% 0.5% 0;
     float:left;
-    width:32.83501%;
+    width:32.833%;
     height: 300px;
     background: #FFFFFF;
 }
@@ -181,9 +183,6 @@
     color: #6dc1c8;
     float: right;
     text-align: center;
-}
-#main{
-    height:270px;
 }
 /*锟揭诧拷锟斤拷锟斤拷*/
 .vip_nav_bar{
@@ -410,7 +409,6 @@
     background: #fff;
     margin-top: 15px;
     margin-left: 0;
-    padding-left: 10px;
 }
 .vip_table_lg .date_btn li{
     width:10%;
@@ -427,7 +425,7 @@
     margin-top: 10px;
 }
 .vip_table_lg .month_btn li{
-    width:13%;
+    width:12%;
 }
 .vip_table_lg .month_btn li span{
     margin-left: 10px;
@@ -523,7 +521,7 @@
 .chart_analyze_condition i{
     line-height: 15px;
 }
-.chart_head .chart_list_icon{
+.chart_head .chart_close_icon{
     color: #FFFFFF;
 }
 #chart_analyze .add_chart{
@@ -547,7 +545,6 @@
     position: absolute;
     z-index: 1000;
     width:250px;
-    height: 320px;
     padding: 10px 20px;
     color: #434960;
     background: #FFFFFF;

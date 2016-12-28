@@ -160,4 +160,10 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupMapper.selectByCode(corp_code, group_code, "");
         return group.getRole_code();
     }
+
+    @Override
+    public List<Group> selectByCorpRole(String corp_code, String role_code) throws Exception {
+        List<Group> group = groupMapper.selectByCorpRole(corp_code, role_code);
+        return group;
+    }
 }

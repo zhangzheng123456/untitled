@@ -50,6 +50,13 @@
             max-height: 250px;
             overflow-y: scroll;
         }
+        #custom_vip_list{
+            padding-top: 10px;
+            border-top: 1px solid #d4d4d4;
+        }
+        #custom_vip_list div:last-child{
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -110,15 +117,15 @@
                      <input class="input_select" type="text" readonly id="type" style="width: 180px;display: none">
                      <ul style="display: none;width:180px;margin-left:362px;cursor: pointer">
                     </ul>
-                    <span  id="select_vip" style="display: inline-block;cursor: pointer;width: 96px;background-color: #6dc1c8;color: #FFFFFF;height: 30px;border-radius: 4px;line-height: 30px;text-align: center">选择会员<i class="icon-ishop_8-03" style="color: #FFFFFF;font-size: 12px"></i>
+                    <span  id="select_vip" style="display: inline-block;cursor: pointer;width: 96px;background-color: #6dc1c8;color: #FFFFFF;height: 30px;border-radius: 4px;line-height: 30px;text-align: center">筛选条件<i class="icon-ishop_8-03" style="color: #FFFFFF;font-size: 12px"></i>
                     </span>
                 </span>
             </div>
             <div style="width: 418px;margin-left: 125px;">
-                <div id="group_list" style="display: none;border-top: 1px solid #d4d4d4;border-bottom: 1px solid #d4d4d4;padding: 10px 0;width: 100%">
-                    <div id="consume_amount"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费金额</span><input type="text" style="width: 160px;"  value="1000"><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 160px;" value="10000"></div>
-                    <div id="consume_piece"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费件数</span><input type="text" style="width: 160px;"  value="100"><span style="display: inline-block;width: 30px;text-align: center">~</span><input   type="text" style="width: 160px;" value="2000"></div>
-                    <div id="consume_discount" style="margin: 0"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费折扣</span><input type="text" style="width: 160px;" value="0.5"><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 160px;" value="0.8"></div>
+                <div id="group_list" style="display: none;border-top: 1px solid #d4d4d4;padding-top: 10px;width: 100%">
+                    <div id="consume_amount"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费金额</span><input type="text" style="width: 137px;"  ><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 137px;" > （元）</div>
+                    <div id="consume_piece"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费件数</span><input type="text" style="width: 137px;"  ><span style="display: inline-block;width: 30px;text-align: center">~</span><input   type="text" style="width: 137px;" > （件）</div>
+                    <div id="consume_discount" style="margin: 0"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费折扣</span><input type="text" style="width: 137px;" ><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 137px;" > （折）</div>
                 </div>
                 <div id="custom_vip_list" style="overflow:hidden;">
 
@@ -340,6 +347,43 @@
         </div>
     </div>
 </div>
+<!-- 拉取导购  -->
+<div id="screen_group" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选</h4>
+        <div class="screen_close" id="screen_close_group"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="group_search">
+            <span class="icon-ishop_3-05" id="group_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_group">确定</div>
+</div>
 <!--筛选会员-->
 <div class="screen_wrapper" id="screen_wrapper">
     <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
@@ -357,8 +401,30 @@
         <div class="contion" id="simple_contion">
             <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
             <div class="contion_input" style="display: none"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input" style="display: none"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
-            <div class="contion_input" style="display: none"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            <!--<div class="contion_input" style="display: none">-->
+                <!---->
+                <!--<label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>-->
+            <div class="consume_attribute" style="display: none">
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_3" readonly><ul class="sex_select" id="consume_select_basic_3">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>
+            </div>
+            <div class="consume_attribute" style="display: none">
+                <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_4" readonly><ul class="sex_select" id="consume_select_basic_4">
+                    <li data-date="3">最近3个月</li>
+                    <li data-date="6">最近6个月</li>
+                    <li data-date="9">最近9个月</li>
+                    <li data-date="12">最近12个月</li>
+                    <li data-date="24">最近24个月</li>
+                </ul></div>
+                <div class="contion_input"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>
+            </div>
+
             <div class="contion_input" style="display: none"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
             <div class="contion_input" style="display: none"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
                 <li>已冻结</li>
@@ -392,8 +458,8 @@
                         <li>全部</li>
                     </ul>
                 </div>
-                <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input" id="age_l" readonly/><ul class="age_l"></ul><label class="jian">~</label><input
-                        class="short_input" id="age_r" readonly/><ul class="age_r"></ul></div>
+                <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input_date" id="age_l" /><ul class="age_l"></ul><label class="jian">~</label><input
+                        class="short_input_date" id="age_r" /><ul class="age_r"></ul></div>
                 <div class="contion_input"><label>生日</label><input data-kye="1" id="birth_start" class="short_input_date laydate-icon" readonly><label class="jian">~</label><input id="birth_end" class="short_input_date laydate-icon" readonly></div>
                 <div class="contion_input"><label>手机号</label><input data-kye="10" class="input" type="text"></div>
             </div>

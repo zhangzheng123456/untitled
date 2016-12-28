@@ -518,6 +518,19 @@
 <!-- moni select -->
 <script type="text/javascript" src="../js/moni_select.js?20161116"></script>
 <script src="../js/vip_screen.js?20161214"></script>
-<script type="text/javascript" src="../js/vip/message_operate.js?20161207"></script>
+<script type="text/javascript" src="../js/vip/message_operate.js?20161225"></script>
 </body>
+<script type="text/javascript">
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0041']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0041']").find("span").hasClass("icon-ishop_8-01")){
+            $(window.parent.document).find("#sidebar").scrollTop($(window.parent.document).find("#navbar li dd[data-code='F0041']").position().top);
+            clearInterval(timer);
+        }
+    },0);
+</script>
 </html>

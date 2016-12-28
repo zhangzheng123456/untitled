@@ -5,6 +5,9 @@ var cls="";//标签搜索下class名
 var txt="";//标签搜索下标签名
 var val="";//贴上input值
 var swip_image = [];//图片切换播放
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+key_val=JSON.parse(key_val);//取key_val的值
+var funcCode=key_val.func_code;
 function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     whir.loading.add("",0.5);//加载等待框
@@ -519,7 +522,7 @@ $("#labeladd_btn").click(function () {
     var a="btn";
     cls="";
     val=$("#search_input").val().replace(/\s+/g,"");
-    val=val.substring(0,8);
+    // val=val.substring(0,8);
     if(val==""){
         return;
     }
@@ -666,6 +669,22 @@ function getNowFormatDate() {//获取当前日期
     var currentdate = ""+year+month+strDate+H+M+S+m;
     return currentdate
 }
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        for(var i=0;i<actions.length;i++){
+           if(actions[i].act_name=="changeVipType"){
+                $("#grade_change").show();
+            }else if(actions[i].act_name=="edit"){
+               $("#change_save").show();
+           }
+        }
+    })
+}
 //会员资料基本信息更改
 $('#change_save').click(function () {
     var param={}
@@ -701,6 +720,7 @@ $(function(){
     getConsumCount();
     upLoadAlbum();
     moreSearch();
+    qjia();
 });
 
 
