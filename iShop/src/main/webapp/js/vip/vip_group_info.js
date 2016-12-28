@@ -615,6 +615,8 @@ var vip_group_info={
             }
         });
         $("#group_list li ul").on("click","li",function(){
+            vip_group_info.inx=1;
+            vip_group_info.pageSize=10;
             vip_group_info.nowId=$(this).attr("id");
             $("#group_list li ul li").removeClass("active");
             $(this).addClass("active");
@@ -801,6 +803,12 @@ var vip_group_info={
                     case "define":
                        $("#group_list li[data-type='define'] ul").append("<li id='"+list[i].id+"' data-code='"+list[i].corp_code+"' data-group-code='"+list[i].vip_group_code+"'>"+list[i].vip_group_name+"</li>");
                         break;
+                }
+                if(list.length>0){
+                    $("#group_list li[data-type='"+list[0].group_type+"'] ul").show();
+                    $("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).addClass("active");
+                    $("#group_list li[data-type='"+list[0].group_type+"']").find("div i").show();
+                    vip_group_info.nowId=$("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).attr("id")
                 }
             }
         })

@@ -244,13 +244,13 @@ public class VipGroupServiceImpl implements VipGroupService {
                 //筛选区域下会员
                 area_code = value;
             }else {
+                JSONObject post_obj = new JSONObject();
+                post_obj.put("key",key);
+                post_obj.put("type",type);
+                post_obj.put("value",value);
+                post_array.add(post_obj);
                 //根据key值，找出其对应name
                 for (int j = 0; j < tableManagers.size(); j++) {
-                    JSONObject post_obj = new JSONObject();
-                    post_obj.put("key",key);
-                    post_obj.put("type",type);
-                    post_obj.put("value",value);
-                    post_array.add(post_obj);
                     if (key.equals(tableManagers.get(j).getFilter_weight())){
                         String key_name = tableManagers.get(j).getColumn_name();
                         if (key_name.equals("store_code")){
