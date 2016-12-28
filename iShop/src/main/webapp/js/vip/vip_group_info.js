@@ -802,6 +802,11 @@ var vip_group_info={
                        $("#group_list li[data-type='define'] ul").append("<li id='"+list[i].id+"' data-code='"+list[i].corp_code+"' data-group-code='"+list[i].vip_group_code+"'>"+list[i].vip_group_name+"</li>");
                         break;
                 }
+                if(list.length>0){
+                    $("#group_list li[data-type='"+list[0].group_type+"'] ul").show();
+                    $("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).addClass("active");
+                    vip_group_info.nowId=$("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).attr("id")
+                }
             }
         })
     },
