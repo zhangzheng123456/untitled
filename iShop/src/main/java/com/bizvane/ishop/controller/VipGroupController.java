@@ -607,7 +607,6 @@ public class VipGroupController {
     @ResponseBody
     public String groupVips(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -634,15 +633,21 @@ public class VipGroupController {
                     dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
                 }
             }
-            String result = dataBox.data.get("message").value;
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
+            if (dataBox.status.toString().equals("SUCCESS")){
+                String result = dataBox.data.get("message").value;
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("fail");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
 
