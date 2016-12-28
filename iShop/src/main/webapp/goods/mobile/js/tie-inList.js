@@ -27,7 +27,7 @@ function getVal(){
     pageVal(num);
 }
 function pageVal(num){
-    var tempHTML = '<ul class="goods_box"> <li class="the_img"><img src="${img}" alt=""/></li> <li class="the_list"> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <span class="num">${num}</span> </li> <li class="add"> <div><img src="image/icon_点赞@2x.png" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="image/icon_收藏@2x.png" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
+    var tempHTML = '<ul class="goods_box" id="${id}" title="${id}"> <li class="the_img"><img src="${img}" alt=""/></li> <li class="the_list"> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <span class="num">${num}</span> </li> <li class="add"> <div><img src="image/icon_点赞@2x.png" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="image/icon_收藏@2x.png" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
     var html = ''
     for(i=0;i<10;i++){
         var nowHTML = tempHTML;
@@ -39,6 +39,8 @@ function pageVal(num){
         nowHTML = nowHTML.replace('${num}',num);
         nowHTML = nowHTML.replace('${num}',num);
         nowHTML = nowHTML.replace('${num}',num);
+        nowHTML = nowHTML.replace('${id}','id_'+i);
+        nowHTML = nowHTML.replace('${id}','id_'+i);
         html+= nowHTML;
         $('.main').eq(0).html(html);
         if(i<2){
@@ -46,6 +48,7 @@ function pageVal(num){
         }
     }
 }
+//   控制宽高
 function setTime(){
     var val =  $('.the_img').width();
     $('.the_img').css('height',val);
@@ -87,6 +90,7 @@ window.onload = function () {
             $(this).next('.add_num').text(parseInt(val)-1);
         }
     });
+    //跳转
     $('.the_img img').click(function () {
         window.location = 'details.html';
     })
@@ -94,3 +98,31 @@ window.onload = function () {
         window.location = 'details.html';
     })
 }
+//交互
+//oc.postRequire("post", _command,"",_params, function(data){
+//    if(data.code=="0"){
+//        if(_command=="/defmatch/addMatch"){
+//            var message=JSON.parse(data.message);
+//            sessionStorage.setItem("goods_match_code",message.goods_match_code);
+//            sessionStorage.setItem("corp_code",message.corp_code);
+//            $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
+//        }
+//        if(_command=="/goods/fab/edit"){
+//            art.dialog({
+//                time: 2,
+//                lock: true,
+//                cancel: false,
+//                content:"保存成功"
+//            });
+//            window.location.reload();
+//        }
+//    }else if(data.code=="-1"){
+//        art.dialog({
+//            time: 1,
+//            lock:true,
+//            cancel: false,
+//            content: data.message
+//        });
+//    }
+//    whir.loading.remove();//移除加载框
+//});
