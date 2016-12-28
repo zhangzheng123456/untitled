@@ -3,8 +3,8 @@
  */
 var oc = new ObjectControl();
 var corp_code = 'C10000';
-var pageNumber = '0';
-var pageSize = '';
+var pageNumber = '1';
+var pageSize = '20';
 var user_code = '';
 
 //    选项卡-推荐
@@ -16,15 +16,14 @@ $('.title div').eq(0).click(function () {
     $('.title div').eq(1).css('color','#888888');
     $('.title div').eq(1).css('background-color','#ededed');
     var type = 'rec';
-    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber" + pageNumber + "pageSize" + pageSize+"user_code"+user_code+"type"+type+"", "0", "", function (data) {
+    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log(data);
             //pageVal(num);
         }else if(data.code =='-1'){
-            console.log(data);
+            alert(data);
         }
     });
-
 });
 //    选项卡-我的
 $('.title div').eq(1).click(function () {
@@ -35,7 +34,7 @@ $('.title div').eq(1).click(function () {
     $('.title div').eq(0).css('color','#888888');
     $('.title div').eq(0).css('background-color','#ededed');
     var type = 'my';
-    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber" + pageNumber + "pageSize" + pageSize+"user_code"+user_code+"type"+type+"", "0", "", function (data) {
+    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber=" + pageNumber + "pageSize=" + pageSize+"user_code="+user_code+"type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log(data);
             //pageVal(num);

@@ -10,6 +10,9 @@ body {
   overflow-x: hidden;
   overflow-y: auto; }
 
+.warp::-webkit-scrollbar {
+  width: 0px;}
+
 .main_img {
   width: 100%;
   background-color: #fff;
@@ -92,7 +95,7 @@ body {
   float: left; }
 
 .bottom div img {
-  width: 16%;
+  width: 20%;
   margin-right: 4%; }
 
 .bottom .num {
