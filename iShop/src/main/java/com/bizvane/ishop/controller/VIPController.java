@@ -564,10 +564,16 @@ public class VIPController {
 //            }
 
             DataBox dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
-            String result = dataBox.data.get("message").value;
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result);
+            if (dataBox.status.toString().equals("SUCCESS")){
+                String result = dataBox.data.get("message").value;
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(result);
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("筛选失败");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
