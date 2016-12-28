@@ -1360,6 +1360,18 @@
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!--充值、退款弹窗页面-->
 <script src="../js/vip/vip_dataPage.js"></script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0010']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0010']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
 <script type="text/javascript">
     function chartShow(order) {
         var key_val = sessionStorage.getItem("key_val");//取页面的function_code
