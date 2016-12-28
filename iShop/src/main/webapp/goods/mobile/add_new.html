@@ -26,6 +26,7 @@
               <img src="image/icon_xiuda_add_img@2x.png" width="100%"height="100%" alt="照片">
           </div>
           照片
+          <input class="file" type="file">
       </div>
   </div>
   <ul class="container_picture">
@@ -56,23 +57,12 @@
                     accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
                     bucket: 'products-image'
                 });
-        $(".action_picture").click(function(e){
+        $(".file").on('change','',function(e){
             var file = e.target.files[0];
             var pos=file.name.lastIndexOf(".");
             var imgclass=file.name.substring(pos+1,file.name.length);
             if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
-                var urlType = $.cookie('urlType');
-                var corp_code= $.cookie('corp_code');
-                var time = new Date().getTime();
-                if(urlType == 'weixin'){
-                    //企业编号+时间戳+open_id（微信）
-                    var open_id = $.cookie('open_id');
-                    var storeAs='/MessageImage/'+corp_code+'/'+corp_code+"-"+time+"-"+ open_id +"."+imgclass;
-                }else if(urlType == 'tourist'){
-                    //企业编号+时间戳+cookie（游客）
-                    var touristId = $.cookie('wechat_cook_id');
-                    var storeAs='/MessageImage/'+corp_code+'/'+corp_code+"-"+time+"-"+ touristId +"."+imgclass;
-                }
+                var storeAs='/MessageImage/'+pos;
                 self.client.multipartUpload(storeAs, file).then(function (result) {
                     console.log(result);
                     var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
