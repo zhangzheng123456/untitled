@@ -520,6 +520,7 @@
     line-height: 15px;
 }
 .chart_head .chart_close_icon{
+    cursor: pointer;
     color: #FFFFFF;
 }
 #chart_analyze .add_chart{

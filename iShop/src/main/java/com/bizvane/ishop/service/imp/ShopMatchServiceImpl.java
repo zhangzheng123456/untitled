@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.Corp;
+
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.ShopMatchService;
 import com.bizvane.ishop.utils.MongoUtils;
@@ -106,7 +106,7 @@ public class ShopMatchServiceImpl implements ShopMatchService {
     public  DBObject selectByCode(String corp_code,String d_match_code)throws Exception{
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
-        BasicDBObject basicDBObject = MongoUtils.andOperation3(corp_code, d_match_code);
+        BasicDBObject basicDBObject = MongoUtils.andOperation2(corp_code, d_match_code);
         DBCursor dbObjects = cursor.find(basicDBObject);
         DBObject object=null;
         while (dbObjects.hasNext()) {
