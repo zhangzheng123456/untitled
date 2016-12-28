@@ -564,6 +564,7 @@ function init_chart(id) {
                 center: ['60%', '50%'],
                 type: 'pie',
                 radius: ['50%', '60%'],
+                avoidLabelOverlap: false,
                 itemStyle: {
                     normal: {
                         label: {
@@ -577,7 +578,6 @@ function init_chart(id) {
                     emphasis: {
                         label: {
                             show: true,
-                            position: 'center',
                             textStyle: {
                                 fontSize: '20',
                                 fontWeight: 'bold'
