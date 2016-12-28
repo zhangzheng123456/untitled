@@ -501,68 +501,6 @@ public class VIPController {
             String page_size = jsonObject.get("pageSize").toString();
             JSONArray screen = jsonObject.getJSONArray("screen");
 
-//            List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
-//            String brand_code = "";
-//            String area_code = "";
-//            String store_code = "";
-//            String store_code_key = "";
-//            JSONArray post_array = new JSONArray();
-//            for (int i = 0; i < screen.size(); i++) {
-//                JSONObject screen_obj = screen.getJSONObject(i);
-//                String key = screen_obj.getString("key");
-//                String type = screen_obj.getString("type");
-//                String value = screen_obj.getString("value");
-//                if (type.equals("text") && value.equals("")){
-//                    //筛选值为空
-//                    continue;
-//                }else if (type.equals("json") && value.equals("{}")){
-//                    //筛选值为空
-//                    continue;
-//                }else if (key.equals("brand_code")){
-//                    //筛选品牌下会员
-//                    brand_code = value;
-//                }else if (key.equals("area_code")){
-//                    //筛选区域下会员
-//                    area_code = value;
-//                }else {
-//                    //根据key值，找出其对应name
-//                    for (int j = 0; j < tableManagers.size(); j++) {
-//                        JSONObject post_obj = new JSONObject();
-//                        post_obj.put("key",key);
-//                        post_obj.put("type",type);
-//                        post_obj.put("value",value);
-//                        post_array.add(post_obj);
-//                        if (key.equals(tableManagers.get(j).getFilter_weight())){
-//                            String key_name = tableManagers.get(j).getColumn_name();
-//                            if (key_name.equals("store_code")){
-//                                store_code = value;
-//                                store_code_key = key;
-//                            }
-//                            break;}
-//                    }
-//                }
-//            }
-//            //若选择了区域和品牌，记住品牌区域下的store_code
-//            if (store_code.equals("") && (!area_code.equals("") || !brand_code.equals(""))){
-//                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-//                for (int i = 0; i < storeList.size(); i++) {
-//                    store_code = store_code + storeList.get(i).getStore_code() + ",";
-//                }
-//                JSONObject post_obj = new JSONObject();
-//                post_obj.put("key",store_code_key);
-//                post_obj.put("type","text");
-//                post_obj.put("value",store_code);
-//                post_array.add(post_obj);
-//            }
-//            logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
-//            DataBox dataBox;
-//            if (post_array.size()>0) {
-//                dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
-//            }else {
-//                Map datalist = iceInterfaceService.vipBasicMethod1(page_num, page_size, corp_code,request);
-//                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
-//            }
-
             DataBox dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
             if (dataBox.status.toString().equals("SUCCESS")){
                 String result = dataBox.data.get("message").value;

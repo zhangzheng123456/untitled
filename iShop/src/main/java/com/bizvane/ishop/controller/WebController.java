@@ -15,6 +15,7 @@ import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 
+import com.bizvane.sun.v1.common.DataBox;
 import com.github.pagehelper.PageInfo;
 import com.mongodb.*;
 import org.apache.log4j.Logger;
@@ -47,6 +48,10 @@ public class WebController {
 
     private static String SIGN = "41bfa82252f31bef46ccffca4ec22b5e";
 
+    String id;
+
+    private static final Logger logger = Logger.getLogger(WebController.class);
+
     @Autowired
     WebService webService;
     @Autowired
@@ -67,16 +72,34 @@ public class WebController {
     WeimobService weimobService;
     @Autowired
     ActivityVipService activityVipService;
-    String id;
-
     @Autowired
     MongoDBClient mongodbClient;
     @Autowired
-    private BaseService baseService;
-
-    @Autowired
     ShopMatchService shopMatchService;
-    private static final Logger logger = Logger.getLogger(WebController.class);
+    @Autowired
+    IceInterfaceService iceInterfaceService;
+
+    /**
+     *
+     */
+    @RequestMapping(value = "/api/testData", method = RequestMethod.GET)
+    @ResponseBody
+    public String testData(HttpServletRequest request) {
+        String result = "";
+        try {
+            List<Corp> corps = corpService.selectAllCorp();
+
+            Map datalist = new HashMap();
+            DataBox dataBox = iceInterfaceService.iceInterface("AppStartUp",datalist);
+            if (!dataBox.status.toString().equals("SUCCESS"))
+                result = "ice error";
+
+        } catch (Exception ex) {
+            result = "errorr";
+            ex.printStackTrace();
+        }
+        return result;
+    }
 
     /**
      *
