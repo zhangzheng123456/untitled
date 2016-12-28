@@ -633,9 +633,7 @@ public class VipGroupController {
                     Map datalist = iceInterfaceService.vipBasicMethod1(page_size,page_num,corp_code,request);
                     dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
                 }
-
             }
-
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
