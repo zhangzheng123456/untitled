@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.entity.Corp;
+
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.ShopMatchService;
 import com.bizvane.ishop.utils.MongoUtils;
