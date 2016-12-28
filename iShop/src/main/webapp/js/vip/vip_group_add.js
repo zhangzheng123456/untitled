@@ -1993,15 +1993,24 @@ $("#select_vip_que").click(function(){ //筛选确定
                             param["name"]=name;
                             screen.push(param);
                         }
-                    } else {
+                    } else if(key == "6" && $(input[0]).val() !== "全部"){
+                        var param = {};
+                        var val = $(input[0]).val();
+                        var name=$(input[0]).prev().text();
+                        if(val=="已冻结"){
+                            val="Y"
+                        }else if(val=="未冻结"){
+                            val="N"
+                        }
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        param["name"]=name;
+                        screen.push(param);
+                    }else {
                         if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                             var param = {};
                             var val = $(input[0]).val();
-                            if(val=="已冻结"){
-                                val="Y"
-                            }else if(val=="未冻结"){
-                                val="N"
-                            }
                             var name=$(input[0]).prev().text();
                             param['key'] = key;
                             param['value'] = val;
