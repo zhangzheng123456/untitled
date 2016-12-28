@@ -205,34 +205,37 @@
     float: left;
     height:40px;
     cursor: pointer;
+    text-align: center;
 }
 .date_btn li span,.new_btn li span{
+    display: inline-block;
     width: 100px;
     height: 30px;
     line-height: 30px;
     text-align: center;
     border:1px solid #e8e8e8;
     border-radius: 5px;
-    float: left;
     margin-top:5px;
-    margin-left: 85px;
 }
 .month_btn li{
     width:20%;
     float: left;
     height:40px;
     cursor: pointer;
+    text-align: center;
 }
 .month_btn li span{
+    display: inline-block;
     width: 120px;
     height: 30px;
     line-height: 30px;
     text-align: center;
     border:1px solid #c1c3c4;
     border-radius: 5px;
-    float: left;
     margin-top:5px;
-    margin-left: 10px;
+}
+.rank .month_btn li{
+    width: 25%;
 }
 .vip_table{
     width: 98%;
@@ -266,18 +269,13 @@
     bottom: 0;
     left: 45%;
 }
-.newVip_title{
-    line-height: 40px;
-    margin-left: 10px;
-}
-
 /*/!*下拉框定位*!/*/
 #select_analyze,#select_analyze_shop,#select_analyze_brand,#select_analyze_group{
     position: absolute;
     display:none;
     left: 2%;
     top:79px;
-    z-index: 100;
+    z-index: 300;
     background: #E8E8E8;
     border: 1px solid #e8e8e8;
     color: #888888;
@@ -425,7 +423,7 @@
     margin-top: 10px;
 }
 .vip_table_lg .month_btn li{
-    width:13%;
+    width:12%;
 }
 .vip_table_lg .month_btn li span{
     margin-left: 10px;
@@ -522,6 +520,7 @@
     line-height: 15px;
 }
 .chart_head .chart_close_icon{
+    cursor: pointer;
     color: #FFFFFF;
 }
 #chart_analyze .add_chart{

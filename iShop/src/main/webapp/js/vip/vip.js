@@ -1934,7 +1934,13 @@ function filtrates(a,b){
             }
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
-            alert(data.message);
+            whir.loading.remove();//移除加载框
+            art.dialog({
+                time: 3,
+                lock: true,
+                cancel: false,
+                content: "筛选失败"
+            });
         }
     })
 }

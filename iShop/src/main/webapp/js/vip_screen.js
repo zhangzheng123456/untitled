@@ -223,18 +223,54 @@ $("#screen_vip_que").click(function () {
             var input = $(this).find("input");
             var key = $(input[0]).attr("data-kye");
             var classname = $(input[0]).attr("class");
-            if (classname.indexOf("short") == 0) {
+            if(key == "17"){
+                 return ;
+            }else if (key == "4") {
+                if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                    var param = {};
+                    var val = {};
+                    var date = $("#consume_date_basic_4").attr("data-date");
+                    val['start'] = $(input[0]).val();
+                    val['end'] = $(input[1]).val();
+                    param['type'] = "json";
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['date'] = date;
+                    screen.push(param);
+                }
+            }else if (key == "3") {
+                if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                    var param = {};
+                    var val = {};
+                    var date = $("#consume_date_basic_3").attr("data-date");
+                    val['start'] = $(input[0]).val();
+                    val['end'] = $(input[1]).val();
+                    param['type'] = "json";
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['date'] = date;
+                    screen.push(param);
+                }
+            }else if (classname.indexOf("short") == 0 && (key !== "3" || key !== "4")) {
                 if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                     var param = {};
                     var val = {};
                     val['start'] = $(input[0]).val();
-                    val['end'] = $(input[1]).val()
+                    val['end'] = $(input[1]).val();
                     param['type'] = "json";
                     param['key'] = key;
                     param['value'] = val;
                     screen.push(param);
                 }
-            } else {
+            }else if(key == "6" && $(input[0]).val() !== "全部"){
+                var param = {};
+                var val = $(input[0]).val();
+                val == "已冻结"? val="Y":val="N";
+                param['key'] = key;
+                param['value'] = val;
+                param['type'] = "text";
+                screen.push(param);
+            }else {
                 if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                     var param = {};
                     var val = $(input[0]).val();
@@ -287,7 +323,15 @@ $("#screen_vip_que").click(function () {
                         param['date'] = date;
                         screen.push(param);
                     }
-                } else {
+                }else if(key == "6" && $(input[0]).val() !== "全部" ){
+                        var param = {};
+                        var val = $(input[0]).val();
+                        val == "已冻结"?val="Y":val="N";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        screen.push(param);
+                }else {
                     if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                         var param = {};
                         var val = $(input[0]).val();

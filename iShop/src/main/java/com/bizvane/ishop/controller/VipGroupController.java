@@ -613,25 +613,41 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
             String id = jsonObject.get("id").toString();
             String type = jsonObject.get("type").toString();
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
+            String corp_code = vipGroup.getCorp_code();
 
             DataBox dataBox = new DataBox();
             if (type.equals("list")){
-                Map datalist = iceInterfaceService.vipBasicMethod(jsonObject, request);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
-            }
 
-            String result = dataBox.data.get("message").value;
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
+                String group_type = vipGroup.getGroup_type();
+                if (group_type.equals("define")){
+                    String group_condition = vipGroup.getGroup_condition();
+                    JSONArray screen = JSONArray.parseArray(group_condition);
+                    dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
+                }else {
+                    Map datalist = iceInterfaceService.vipBasicMethod1(page_num,page_size,corp_code,request);
+                    dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+                }
+            }
+            if (dataBox.status.toString().equals("SUCCESS")){
+                String result = dataBox.data.get("message").value;
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("fail");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
 

@@ -73,6 +73,28 @@ public class MongoUtils {
         queryCondition.put("$and", values);
         return queryCondition;
     }
+
+    //多个“and”查询(搜索)
+    public static BasicDBObject andOperation2(String corp_code, String user_code) {
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        values.add(new BasicDBObject("corp_code", corp_code));
+        values.add(new BasicDBObject("creater", user_code));
+        queryCondition.put("$and", values);
+        return queryCondition;
+    }
+
+    //多个“and”查询(搜索)
+    public static BasicDBObject andOperation3(String corp_code, String d_match_code,String user_code,String operate_type) {
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        values.add(new BasicDBObject("corp_code", corp_code));
+        values.add(new BasicDBObject("d_match_code", d_match_code));
+        values.add(new BasicDBObject("operate_userCode", user_code));
+        values.add(new BasicDBObject("operate_type", operate_type));
+        queryCondition.put("$and", values);
+        return queryCondition;
+    }
     //in查询
     public static BasicDBObject inOperation(String[] args, String condition) {
         BasicDBObject queryCondition = new BasicDBObject();

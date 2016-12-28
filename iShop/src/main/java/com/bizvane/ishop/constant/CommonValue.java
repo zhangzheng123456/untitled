@@ -43,10 +43,14 @@ public class CommonValue {
     public final static String table_login_log = "login_log";
     //用户签到记录
     public final static String table_sign_content="staff_sign";
-    //错误日志
-    public final static String table_error_log = "error_log";
+    //秀搭主表
+    public final static String table_shop_match_def = "shop_match_def";
+    //秀搭附表
+    public final static String table_shop_match_rel = "shop_match_rel";
     //会员标签
     public final static String table_vip_label_def = "vip_label_def";
+    //错误日志
+    public final static String table_error_log = "error_log";
     //会员活动执行
     public final static String table_vip_activity_allocation = "vip_activity_allocation";
 
