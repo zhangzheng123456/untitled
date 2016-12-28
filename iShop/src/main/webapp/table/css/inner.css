@@ -1647,6 +1647,7 @@ input::-webkit-input-placeholder{
 	position: absolute;
 	z-index: 100;
 	right: 0;
+	top:-5px;
 	display: inline-block;
 	width: 30px;
 	height: 30px;

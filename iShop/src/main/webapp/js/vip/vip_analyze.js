@@ -433,20 +433,23 @@ function getData() {
     param["time"] = $($('.date_title .date input')[0]).val();
     $("#left_shadow").show();
     oc.postRequire("post", "/vipAnalysis/vipScale", "", param, function (data) {
-        var message = JSON.parse(data.message);
-        var message = JSON.parse(data.message);
-        for (var key in message) {
-            switch (key) {
-                case 'all':
-                    fillVip(message[key], $('.all_vip span b'), $('.all_vip table tbody tr'));
-                    break;
-                case 'new':
-                    fillVip(message[key], $('.new_vip span b'), $('.new_vip table tbody tr'));
-                    break;
-                case 'old':
-                    fillVip(message[key], $('.old_vip span b'), $('.old_vip table tbody tr'));
-                    break;
+        if(data.code == 0){
+            var message = JSON.parse(data.message);
+            for (var key in message) {
+                switch (key) {
+                    case 'all':
+                        fillVip(message[key], $('.all_vip span b'), $('.all_vip table tbody tr'));
+                        break;
+                    case 'new':
+                        fillVip(message[key], $('.new_vip span b'), $('.new_vip table tbody tr'));
+                        break;
+                    case 'old':
+                        fillVip(message[key], $('.old_vip span b'), $('.old_vip table tbody tr'));
+                        break;
+                }
             }
+        }else if(data.code == -1){
+            console.log("error");
         }
     })
 }
@@ -2453,6 +2456,14 @@ $("#chart_add_enter").click(function () {
     chartShow(order);
     $("#chart_add_wrap").hide();
     $("#p").hide();
+});
+$("#chart_add_details li").click(function () {
+    var input = $(this).find("input")[0];
+    if(input.checked==true){
+        input.checked=false;
+    }else {
+        input.checked=true;
+    }
 });
 //图表删除
 $(".chart_close_icon").click(function () {
