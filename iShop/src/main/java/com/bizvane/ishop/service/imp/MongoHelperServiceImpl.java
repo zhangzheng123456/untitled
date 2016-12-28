@@ -278,6 +278,17 @@ public class MongoHelperServiceImpl {
         return  list;
     }
 
-
+    //DBCursor数据集转arrayList+id
+    public static ArrayList dbCursorToList_shop(DBCursor dbCursor,String user_code) {
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            obj.put("id", id);
+            obj.removeField("_id");
+            list.add(obj.toMap());
+        }
+        return list;
+    }
 
 }
