@@ -3,10 +3,14 @@ package com.bizvane.ishop.service.imp;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.mongodb.*;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -278,13 +282,39 @@ public class MongoHelperServiceImpl {
         return  list;
     }
 
+    public static DBObject selectByCode(String corp_code,String d_match_code,String user_code,String operate_type)throws Exception{
+        MongoDBClient mongodbClient=new MongoDBClient();
+        MongoTemplate mongoTemplate = mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_rel);
+        BasicDBObject basicDBObject = MongoUtils.andOperation3(corp_code, d_match_code,user_code,operate_type);
+        DBCursor dbObjects = cursor.find(basicDBObject);
+        DBObject object=null;
+        while (dbObjects.hasNext()) {
+            object  = dbObjects.next();
+        }
+        return object;
+    }
+
     //DBCursor数据集转arrayList+id
-    public static ArrayList dbCursorToList_shop(DBCursor dbCursor,String user_code) {
+    public static ArrayList dbCursorToList_shop(DBCursor dbCursor,String user_code) throws Exception {
         ArrayList list = new ArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
-            obj.put("id", id);
+            String corp_code = obj.get("corp_code").toString();
+            String d_match_code = obj.get("d_match_code").toString();
+            DBObject object = selectByCode(corp_code, d_match_code, user_code, "like");
+            String like_status="N";
+            String collect_status="N";
+            if(object!=null){
+                like_status = object.get("status").toString();
+            }
+            DBObject object2 = selectByCode(corp_code, d_match_code, user_code, "collect");
+            if(object2!=null){
+                collect_status = object.get("status").toString();
+            }
+            obj.put("like_status", like_status);
+            obj.put("collect_status", collect_status);
             obj.removeField("_id");
             list.add(obj.toMap());
         }
