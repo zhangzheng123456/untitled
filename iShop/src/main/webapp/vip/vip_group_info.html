@@ -10,9 +10,6 @@
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <style>
-        .chart_module{
-            display: block!important;
-        }
         /*批量标签*/
         .batch_label_wrapper{
             display: none;
@@ -351,7 +348,7 @@
                 <ul></ul>
             </div>
         </div>
-        <div style="width: 170px;background-color: #FFFFFF;position: absolute;padding: 10px 10px 0 0;box-sizing: border-box" id="left">
+        <div style="width: 170px;min-height:600px;background-color: #FFFFFF;position: absolute;padding: 10px 10px 0 0;box-sizing: border-box" id="left">
             <div style="border-right:1px solid #e8e8e8;width: 100%;height: 100%;" class="group_left">
                 <ul id="group_list">
                     <li data-type="brand">
@@ -434,8 +431,8 @@
             </ul>
         </div>
             </div>
-            <div style="min-height:600px;background-color: #FFFFFF;padding:10px 10px 10px 0;">
-                <div id="chart_analyze" style="overflow:hidden;margin:0 -0.5% 0 0;background-color: #e8e8e8">
+            <div style="background-color: #FFFFFF;padding:10px 10px 10px 0;">
+                <div id="chart_analyze" style="min-height: 600px; margin:0 -0.5% 0 0;background-color: #e8e8e8">
                 <div class="chart_module" data-id="type">
                     <ul>
                     <span class="chart_head">
@@ -567,18 +564,11 @@
                         </div>
                     </ul>
                 </div>
-                <!--<div class="chart_module">-->
-                <!--<ul>-->
-                <!--<span class="chart_head">消费频率  <i class="icon-ishop_9-05"></i></span>-->
-                <!--<li id="main6" style="height: 270px;padding-left: 10px;">-->
-                <!--</li>-->
-                <!--</ul>-->
-                <!--</div>-->
                 <div class="chart_module" data-id="areas">
                     <ul>
                   <span class="chart_head">
                    <span class="drag_area"> <i class="icon-ishop_6-27"></i>
-                    <span>地域分布</span></span>
+                    <span>地域偏好</span></span>
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
                     <ul>
                         <li>按件数分析</li>
@@ -591,6 +581,10 @@
                         <li id="areas" style="height:270px;">
                         </li>
                     </ul>
+                </div>
+                <div class="chart_module add_chart dads-children" id="add_chart" style="display: block" data-dad-id="8" data-dad-position="8">
+                    <span>+</span>
+                    <span>添加图表</span>
                 </div>
             </div>
             </div>
@@ -771,6 +765,63 @@
     <a id="empty_filter" href="####" style="position: absolute;left: 25px;bottom: 30px;text-decoration: underline;color: #888">清空筛选</a>
     <div class="ensure"><span id="screen_vip_que">确定</span></div>
 </div>
+<!--添加图表弹窗-->
+<div class="chart_add_wrap" id="chart_add_wrap">
+    <span class="chart_add_title">选择要展示的图表</span>
+    <i class="icon-ishop_6-12 chart_close"></i>
+    <div class="chart_add_details" id="chart_add_details">
+        <ul>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box1"><label for="check_box1"></label>
+                    <span>消费类型</span>
+                </div>
+            </li>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box2"><label for="check_box2"></label>
+                    <span>价格偏好</span>
+                </div>
+            </li>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box3"><label for="check_box3"></label>
+                    <span>购买时段</span>
+                </div>
+            </li>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box4"><label for="check_box4"></label>
+                    <span>月份偏好</span>
+                </div>
+            </li>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box5"><label for="check_box5"></label>
+                    <span>系列偏好</span>
+                </div>
+            </li>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box7"><label for="check_box7"></label>
+                    <span>地域偏好</span>
+                </div>
+            </li>
+            <li>
+                <div class="chart_checkbox">
+                    <input type="checkbox" class="check" type="text" id="check_box8"><label for="check_box8"></label>
+                    <span>星期偏好</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="chart_add_bottom">
+        <ul>
+            <li class="chart_close">取消</li>
+            <li id="chart_add_enter">完成</li>
+        </ul>
+    </div>
+</div>
 <div class="p" id="p"></div>
 <div class="tk" id="tk">
     <span class="icon-ishop_6-12" id="X"></span>
@@ -813,8 +864,19 @@
             }
         });
     });
-    $("#chart_analyze").dad({
-        draggable: '.drag_area'
-    })
+    $('#chart_analyze').dad({
+        draggable: '.drag_area',
+        callback: function (data) {
+            var index = $(data).index();
+            var order = [];
+            $(".chart_module").each(function () {
+                if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
+                    order.push($(this).attr("data-id"));
+                }
+            });
+            order.pop();
+            vip_group_info.getCharts(order);
+        }
+    });
 </script>
 </html>
