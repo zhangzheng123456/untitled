@@ -151,9 +151,10 @@ var vip_group_info={
                         }
                     },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        confine:true
                     },
-                    polar: [
+                    radar: [
                         {
                             indicator: [
                                 {text: '周一', max: 100},
@@ -180,6 +181,9 @@ var vip_group_info={
                         {
                             symbol: 'circle',
                             type: 'radar',
+                            tooltip: {
+                                trigger: 'item',
+                            },
                             itemStyle: {
                                 normal: {
                                     areaStyle: {
@@ -208,7 +212,7 @@ var vip_group_info={
                         }
                     },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'axis',
                     },
                     polar: [
                         {
@@ -305,7 +309,10 @@ var vip_group_info={
                                 {name: '辽宁', value: Math.round(Math.random() * 1000)},
                                 {name: '黑龙江', value: Math.round(Math.random() * 1000)},
                                 {name: '湖南', value: Math.round(Math.random() * 1000)},
-                                {name: '安徽', value: Math.round(Math.random() * 1000)},
+                                {name: '安徽', value: Math.round(Math.random() * 1000),
+                                    textStyle: {
+                                    color: 'red'
+                                }},
                                 {name: '山东', value: Math.round(Math.random() * 1000)},
                                 {name: '新疆', value: Math.round(Math.random() * 1000)},
                                 {name: '江苏', value: Math.round(Math.random() * 1000)},
@@ -1594,7 +1601,7 @@ var vip_group_info={
         tooltip : {
             trigger: 'axis'
         },
-        polar : [
+        radar : [
             {
                 indicator : [
                     {text : '一月', max  : 100},
@@ -1644,8 +1651,8 @@ var vip_group_info={
             trigger: 'item'
         },
         dataRange: {
-            itemWidth:5,
-            itemGap:0.2,
+            itemWidth:7 ,
+            itemGap:0.5,
             color:['#A7CFD5','#3C95A2'],
             splitNumber:'20',
             orient:'horizontal',
@@ -1653,7 +1660,7 @@ var vip_group_info={
             max: 2500,
             x: 'left',
             y: 'top',
-            text:['高','低']      // 文本，默认为数值文本
+            text:['  低','高  '],      // 文本，默认为数值文本
         },
         series : [
             {
