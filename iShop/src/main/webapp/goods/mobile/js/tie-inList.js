@@ -3,8 +3,8 @@
  */
 var oc = new ObjectControl();
 var corp_code = 'C10000';
-var pageNumber = '0';
-var pageSize = '';
+var pageNumber = '1';
+var pageSize = '20';
 var user_code = '';
 
 //    选项卡-推荐
@@ -21,10 +21,9 @@ $('.title div').eq(0).click(function () {
             console.log(data);
             //pageVal(num);
         }else if(data.code =='-1'){
-            console.log(data);
+            alert(data);
         }
     });
-
 });
 //    选项卡-我的
 $('.title div').eq(1).click(function () {
