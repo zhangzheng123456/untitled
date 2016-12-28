@@ -1,18 +1,28 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.dao.VipGroupMapper;
+import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.VipGroup;
+import com.bizvane.ishop.service.IceInterfaceService;
+import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.sun.v1.common.DataBox;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +37,14 @@ public class VipGroupServiceImpl implements VipGroupService {
     VipGroupMapper vipGroupMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    StoreService storeService;
+    @Autowired
+    IceInterfaceService iceInterfaceService;
+    @Autowired
+    TableManagerService tableManagerService;
+
+    private static final Logger logger = Logger.getLogger(VipGroupServiceImpl.class);
 
     /**
      * 根据id
@@ -82,12 +100,8 @@ public class VipGroupServiceImpl implements VipGroupService {
         String vip_group_name = vipGroup.getVip_group_name().trim();
         String corp_code = vipGroup.getCorp_code();
 
-        VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
-
-        if (vipGroup1 != null) {
-            result = "该会员分组编号已存在";
-        } else if (vipGroup2 != null) {
+        if (vipGroup2 != null) {
             result = "该会员分组名称已存在";
         } else {
             String group_type = vipGroup.getGroup_type();
@@ -133,16 +147,11 @@ public class VipGroupServiceImpl implements VipGroupService {
     public String update(VipGroup vipGroup, String user_code) throws Exception {
         String result = "";
         int id = vipGroup.getId();
-//        String vip_group_code = vipGroup.getVip_group_code().trim();
         String vip_group_name = vipGroup.getVip_group_name().trim();
         String corp_code = vipGroup.getCorp_code();
 
-//        VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
-//        if (vipGroup1 != null && vipGroup1.getId() != id) {
-//            result = "该会员分组编号已存在";
-//        } else
         if (vipGroup2 != null && vipGroup2.getId() != id) {
             result = "该会员分组名称已存在";
         } else {
@@ -210,4 +219,68 @@ public class VipGroupServiceImpl implements VipGroupService {
         }
     }
 
+    public DataBox vipScreenBySolr(JSONArray screen,String corp_code,String page_num,String page_size,HttpServletRequest request) throws Exception{
+        List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
+        String brand_code = "";
+        String area_code = "";
+        String store_code = "";
+        String store_code_key = "";
+        JSONArray post_array = new JSONArray();
+        for (int i = 0; i < screen.size(); i++) {
+            JSONObject screen_obj = screen.getJSONObject(i);
+            String key = screen_obj.getString("key");
+            String type = screen_obj.getString("type");
+            String value = screen_obj.getString("value");
+            if (type.equals("text") && value.equals("")){
+                //筛选值为空
+                continue;
+            }else if (type.equals("json") && value.equals("{}")){
+                //筛选值为空
+                continue;
+            }else if (key.equals("brand_code")){
+                //筛选品牌下会员
+                brand_code = value;
+            }else if (key.equals("area_code")){
+                //筛选区域下会员
+                area_code = value;
+            }else {
+                //根据key值，找出其对应name
+                for (int j = 0; j < tableManagers.size(); j++) {
+                    JSONObject post_obj = new JSONObject();
+                    post_obj.put("key",key);
+                    post_obj.put("type",type);
+                    post_obj.put("value",value);
+                    post_array.add(post_obj);
+                    if (key.equals(tableManagers.get(j).getFilter_weight())){
+                        String key_name = tableManagers.get(j).getColumn_name();
+                        if (key_name.equals("store_code")){
+                            store_code = value;
+                            store_code_key = key;
+                        }
+                        break;}
+                }
+            }
+        }
+        //若选择了区域和品牌，记住品牌区域下的store_code
+        if (store_code.equals("") && (!area_code.equals("") || !brand_code.equals(""))){
+            List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+            for (int i = 0; i < storeList.size(); i++) {
+                store_code = store_code + storeList.get(i).getStore_code() + ",";
+            }
+            JSONObject post_obj = new JSONObject();
+            post_obj.put("key",store_code_key);
+            post_obj.put("type","text");
+            post_obj.put("value",store_code);
+            post_array.add(post_obj);
+        }
+        logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
+        DataBox dataBox;
+        if (post_array.size()>0) {
+            dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
+        }else {
+            Map datalist = iceInterfaceService.vipBasicMethod1(page_num, page_size, corp_code,request);
+            dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+        }
+        return dataBox;
+    }
 }

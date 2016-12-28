@@ -607,20 +607,33 @@ public class VipGroupController {
     @ResponseBody
     public String groupVips(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
             String id = jsonObject.get("id").toString();
             String type = jsonObject.get("type").toString();
+            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
+            String corp_code = vipGroup.getCorp_code();
 
             DataBox dataBox = new DataBox();
             if (type.equals("list")){
-                Map datalist = iceInterfaceService.vipBasicMethod(jsonObject, request);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+
+                String group_type = vipGroup.getGroup_type();
+                if (group_type.equals("define")){
+                    String group_condition = vipGroup.getGroup_condition();
+                    JSONArray screen = JSONArray.parseArray(group_condition);
+                    dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
+                }else {
+                    Map datalist = iceInterfaceService.vipBasicMethod1(page_size,page_num,corp_code,request);
+                    dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+                }
+
             }
 
             String result = dataBox.data.get("message").value;

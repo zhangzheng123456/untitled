@@ -650,7 +650,7 @@ public class WebController {
                         if (msg.equals(Common.DATABEAN_CODE_SUCCESS)){
                             result.put("id",id);
                             result.put("status","success");
-                            result.put("message","");
+                            result.put("message","请求成功");
                             return result.toString();
                         }
                     }
@@ -730,7 +730,7 @@ public class WebController {
                         userService.updateUser(user);
                         result.put("id",id);
                         result.put("status","success");
-                        result.put("message","");
+                        result.put("message","请求成功");
                         return result.toString();
                     }
                 }
