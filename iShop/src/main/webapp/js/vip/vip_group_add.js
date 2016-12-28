@@ -344,7 +344,15 @@ $(function () {
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
                     _params["group_condition"]=group_condition;
-                    if($("#group_list input").val().trim()==""){
+                   var allInput=$("#group_list input");
+                   var isNoValue=true;
+                    for(var i=0;i<allInput.length;i++){
+                        if(!$(allInput[i]).parent().is(":hidden") && $(allInput[i]).val().trim()!=""){
+                             isNoValue=false;
+                            break;
+                        }
+                    }
+                    if(isNoValue ){
                         art.dialog({
                             time: 1,
                             lock: true,
@@ -2069,7 +2077,7 @@ function showSelect(){
         }else if(all_select_vip_list[b].key=="3" || all_select_vip_list[b].key=="4"){
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='text-align: right;display: inline-block;margin-right: 10px; max-width:70px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+all_select_vip_list[b].name+"</span>" +
-                "<input readonly type='text' style='width: 90px;margin-right: 10px;' value='最近"+all_select_vip_list[b].date+"个月' title='"+all_select_vip_list[b].value["end"]+"'>" +
+                "<input readonly type='text' style='width: 90px;margin-right: 10px;' value='最近"+all_select_vip_list[b].date+"个月'>" +
                 "<input type='text' style='width: 90px;' value='"+all_select_vip_list[b].value["start"]+"' readonly title='"+all_select_vip_list[b].value["start"]+"'>" +
                 "<span style='display: inline-block;width: 30px;text-align: center'>~</span>" +
                 "<input readonly type='text' style='width: 90px;' value='"+all_select_vip_list[b].value["end"]+"' title='"+all_select_vip_list[b].value["end"]+"'>" +

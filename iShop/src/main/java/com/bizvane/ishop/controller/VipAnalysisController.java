@@ -53,7 +53,14 @@ public class VipAnalysisController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            if (role_code.equals(Common.ROLE_SYS)){
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            Map datalist = iceInterfaceService.vipBasicMethod1(page_num,page_size,corp_code,request);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             logger.info("------AnalysisAllVip-vip列表" + dataBox.status.toString());
             String result = dataBox.data.get("message").value;

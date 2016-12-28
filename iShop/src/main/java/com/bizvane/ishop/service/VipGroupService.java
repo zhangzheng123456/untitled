@@ -3,8 +3,10 @@ package com.bizvane.ishop.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.VipGroup;
+import com.bizvane.sun.v1.common.DataBox;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +36,5 @@ public interface VipGroupService {
 
     PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 
+    DataBox vipScreenBySolr(JSONArray screen, String corp_code, String page_num, String page_size, HttpServletRequest request) throws Exception;
 }
