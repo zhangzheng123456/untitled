@@ -16,7 +16,7 @@ $('.title div').eq(0).click(function () {
     $('.title div').eq(1).css('color','#888888');
     $('.title div').eq(1).css('background-color','#ededed');
     var type = 'rec';
-    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber" + pageNumber + "pageSize" + pageSize+"user_code"+user_code+"type"+type+"", "0", "", function (data) {
+    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log(data);
             //pageVal(num);
@@ -35,7 +35,7 @@ $('.title div').eq(1).click(function () {
     $('.title div').eq(0).css('color','#888888');
     $('.title div').eq(0).css('background-color','#ededed');
     var type = 'my';
-    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber" + pageNumber + "pageSize" + pageSize+"user_code"+user_code+"type"+type+"", "0", "", function (data) {
+    oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber=" + pageNumber + "pageSize=" + pageSize+"user_code="+user_code+"type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log(data);
             //pageVal(num);
