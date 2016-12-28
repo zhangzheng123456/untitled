@@ -1425,7 +1425,7 @@ var vip_group_info={
             var id=$("#chart_analyze").attr("data-id");
             param={
                 "corp_code":"C10000",
-                "function_code":"F0036",
+                "function_code":funcCode,
                 "type":"order",
                 "id":id,
                 "order":order
@@ -1433,7 +1433,7 @@ var vip_group_info={
         }else {
            param={
                 "corp_code":"C10000",
-                "function_code":"F0036",
+                "function_code":funcCode,
                 "type":"show"
             };
         }
@@ -1461,6 +1461,8 @@ var vip_group_info={
                                 });
                             }
                         }
+                    }else{
+
                     }
                 }
             }else if(data.code == -1){
