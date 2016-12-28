@@ -1399,7 +1399,7 @@ var vip_group_info={
                 $(this).parent().siblings(".data_table").show();
             }
         })
-    }
+    },
 
 };
 //删除弹框

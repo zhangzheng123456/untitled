@@ -344,7 +344,15 @@ $(function () {
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
                     _params["group_condition"]=group_condition;
-                    if($("#group_list input").val().trim()==""){
+                   var allInput=$("#group_list input");
+                   var isNoValue=true;
+                    for(var i=0;i<allInput.length;i++){
+                        if(!$(allInput[i]).parent().is(":hidden") && $(allInput[i]).val().trim()!=""){
+                             isNoValue=false;
+                            break;
+                        }
+                    }
+                    if(isNoValue ){
                         art.dialog({
                             time: 1,
                             lock: true,
