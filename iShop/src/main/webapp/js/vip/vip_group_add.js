@@ -1997,7 +1997,11 @@ $("#select_vip_que").click(function(){ //筛选确定
                         if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                             var param = {};
                             var val = $(input[0]).val();
-                            val=="已冻结"? val="Y" : val="N";
+                            if(val=="已冻结"){
+                                val="Y"
+                            }else if(val=="未冻结"){
+                                val="N"
+                            }
                             var name=$(input[0]).prev().text();
                             param['key'] = key;
                             param['value'] = val;
