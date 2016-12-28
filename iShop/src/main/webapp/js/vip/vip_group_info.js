@@ -1508,27 +1508,25 @@ var vip_group_info={
         },
         series : [
             {   name:'消费分类',
-                center:['60%','50%'],
                 type:'pie',
                 radius : ['50%', '60%'],
-                itemStyle : {
-                    normal : {
-                        label : {
-                            show : false
-                        },
-                        labelLine : {
-                            show : false
-                        }
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
                     },
-                    emphasis : {
-                        label : {
-                            show : true,
-                            position : 'center',
-                            textStyle : {
-                                fontSize : '20',
-                                fontWeight : 'bold'
-                            }
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '20',
+                            fontWeight: 'bold'
                         }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
                     }
                 },
                 data:aa
