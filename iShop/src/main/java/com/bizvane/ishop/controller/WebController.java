@@ -823,18 +823,33 @@ public class WebController {
         DataBean dataBean = new DataBean();
         try {
             String errorLog_id = request.getParameter("id");
+            String user_code = request.getParameter("user_code");
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
             DBObject deleteRecord = new BasicDBObject();
             deleteRecord.put("_id",errorLog_id);
             DBCursor dbObjects = cursor.find(deleteRecord);
-            DBObject errorlog=null;
+            DBObject dbObject=null;
             while (dbObjects.hasNext()) {
-                errorlog  = dbObjects.next();
+                dbObject  = dbObjects.next();
             }
+            String corp_code = dbObject.get("corp_code").toString();
+            String d_match_code = dbObject.get("d_match_code").toString();
+            DBObject object = MongoHelperServiceImpl.selectByCode(corp_code, d_match_code, user_code, "like");
+            String like_status="N";
+            String collect_status="N";
+            if(object!=null){
+                like_status = object.get("status").toString();
+            }
+            DBObject object2 = MongoHelperServiceImpl.selectByCode(corp_code, d_match_code, user_code, "collect");
+            if(object2!=null){
+                collect_status = object.get("status").toString();
+            }
+            dbObject.put("like_status", like_status);
+            dbObject.put("collect_status", collect_status);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(errorlog.toString());
+            dataBean.setMessage(dbObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -874,27 +889,21 @@ public class WebController {
     @ResponseBody
     public String addGoodsByWx(HttpServletRequest request,HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        JSONObject result = new JSONObject();
         try {
 
-            InputStream inputStream = request.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String buffer = null;
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((buffer = bufferedReader.readLine()) != null) {
-                stringBuffer.append(buffer);
-            }
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String data = stringBuffer.toString();
-            JSONObject jsonObj = JSONObject.parseObject(data);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String d_match_code  ="P"+sdf.format(new Date()) + Math.round(Math.random() * 9);
-            String corp_code = jsonObj.getString("corp_code");
-            String d_match_title = jsonObj.getString("d_match_title");
-            String d_match_image = jsonObj.getString("d_match_image");
-            String d_match_desc = jsonObj.getString("d_match_desc");
-            JSONArray r_match_goods= JSON.parseArray(jsonObj.getString("r_match_goods"));
-            String user_code = jsonObj.getString("user_code");
+            String corp_code = jsonObject.getString("corp_code");
+            String d_match_title = jsonObject.getString("d_match_title");
+            String d_match_image = jsonObject.getString("d_match_image");
+            String d_match_desc = jsonObject.getString("d_match_desc");
+            JSONArray r_match_goods= JSON.parseArray(jsonObject.getString("r_match_goods"));
+            String user_code = jsonObject.getString("user_code");
 
             shopMatchService.insert(corp_code,d_match_code,d_match_title,d_match_image,d_match_desc,r_match_goods,user_code);
 
@@ -920,22 +929,17 @@ public class WebController {
         DBCollection collection_def = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
         try {
 
-            InputStream inputStream = request.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String buffer = null;
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((buffer = bufferedReader.readLine()) != null) {
-                stringBuffer.append(buffer);
-            }
-            String data = stringBuffer.toString();
-            JSONObject jsonObj = JSONObject.parseObject(data);
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String corp_code = jsonObj.getString("corp_code");
-            String d_match_code = jsonObj.getString("d_match_code");
-            String operate_userCode = jsonObj.getString("operate_userCode");
-            String operate_type = jsonObj.getString("operate_type");
-            String status = jsonObj.getString("status");
-            String comment_text = jsonObj.getString("comment_text");
+            String corp_code = jsonObject.getString("corp_code");
+            String d_match_code = jsonObject.getString("d_match_code");
+            String operate_userCode = jsonObject.getString("operate_userCode");
+            String operate_type = jsonObject.getString("operate_type");
+            String status = jsonObject.getString("status");
+            String comment_text = jsonObject.getString("comment_text");
 
             shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
 
