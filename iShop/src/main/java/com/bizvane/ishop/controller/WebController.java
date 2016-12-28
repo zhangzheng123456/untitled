@@ -1,5 +1,6 @@
 package com.bizvane.ishop.controller;
 
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -9,11 +10,15 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.AESUtils;
-import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
+
 import com.github.pagehelper.PageInfo;
+import com.mongodb.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,9 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -62,7 +66,15 @@ public class WebController {
     WeimobService weimobService;
     @Autowired
     ActivityVipService activityVipService;
+    String id;
 
+    @Autowired
+    MongoDBClient mongodbClient;
+    @Autowired
+    private BaseService baseService;
+
+    @Autowired
+    ShopMatchService shopMatchService;
     private static final Logger logger = Logger.getLogger(WebController.class);
 
     /**
@@ -582,7 +594,6 @@ public class WebController {
             ex.printStackTrace();
         }
     }
-
     /**
      * 新增员工
      */
@@ -743,5 +754,244 @@ public class WebController {
         result.put("status",status);
         result.put("message",msg);
         return result.toString();
+    }
+    /**
+<<<<<<< HEAD
+     *
+     * 推荐
+     */
+    @RequestMapping(value = "/api/shopMatch/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getShopMatchList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+        int pages = 0;
+        try {
+            String corp_code = request.getParameter("corp_code");
+            String pageNumber = request.getParameter("pageNumber");
+            String pageSize = request.getParameter("pageSize");
+
+            String type = request.getParameter("type");
+            int page_number = Integer.valueOf(pageNumber);
+            int page_size = Integer.valueOf(pageSize);
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+
+            DBCursor dbCursor = null;
+            if(type.equals("rec")) {
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor2, page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "d_match_likeCount", -1);
+            }else{
+                String user_code = request.getParameter("user_code");
+                BasicDBObject queryCondition = MongoUtils.andOperation2(corp_code,user_code);
+                BasicDBList value = new BasicDBList();
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor2,page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
+            }
+            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/api/shopMatch/selectById", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getfindById(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String errorLog_id = request.getParameter("id");
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+            DBObject deleteRecord = new BasicDBObject();
+            deleteRecord.put("_id",errorLog_id);
+            DBCursor dbObjects = cursor.find(deleteRecord);
+            DBObject errorlog=null;
+            while (dbObjects.hasNext()) {
+                errorlog  = dbObjects.next();
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(errorlog.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage("信息异常");
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/api/shopMatch/getGoodsByWx", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getGoodsByWx(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String corp_code = request.getParameter("corp_code");
+            String pageSize = request.getParameter("pageSize");
+            String pageIndex = request.getParameter("pageIndex");
+            String categoryId = request.getParameter("categoryId");
+            String row_num = request.getParameter("row_num");
+            String productName = request.getParameter("productName");
+
+            JSONObject goodsByWx = shopMatchService.getGoodsByWx(corp_code, pageSize, pageIndex, categoryId, row_num, productName);
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(goodsByWx.toJSONString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage("信息异常");
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/api/shopMatch/addGoodsByWx", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String addGoodsByWx(HttpServletRequest request,HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
+        try {
+
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+
+            String data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(data);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            String d_match_code  ="P"+sdf.format(new Date()) + Math.round(Math.random() * 9);
+            String corp_code = jsonObj.getString("corp_code");
+            String d_match_title = jsonObj.getString("d_match_title");
+            String d_match_image = jsonObj.getString("d_match_image");
+            String d_match_desc = jsonObj.getString("d_match_desc");
+            JSONArray r_match_goods= JSON.parseArray(jsonObj.getString("r_match_goods"));
+            String user_code = jsonObj.getString("user_code");
+
+            shopMatchService.insert(corp_code,d_match_code,d_match_title,d_match_image,d_match_desc,r_match_goods,user_code);
+
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("成功");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
+
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/api/shopMatch/addRelByType", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String addRelByType(HttpServletRequest request,HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+
+        DBCollection collection_def = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+        try {
+
+
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(data);
+
+            String corp_code = jsonObj.getString("corp_code");
+            String d_match_code = jsonObj.getString("d_match_code");
+            String operate_userCode = jsonObj.getString("operate_userCode");
+            String operate_type = jsonObj.getString("operate_type");
+            String status = jsonObj.getString("status");
+            String comment_text = jsonObj.getString("comment_text");
+
+            shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
+
+            DBObject dbObject = shopMatchService.selectByCode(corp_code, d_match_code);
+            if(operate_type.equals("like")){
+                int d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
+                d_match_likeCount = d_match_likeCount+1;
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("corp_code", corp_code));
+                values.add(new BasicDBObject("d_match_code", d_match_code));
+                queryCondition.put("$and", values);
+
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("d_match_likeCount", d_match_likeCount);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                collection_def.update(queryCondition, updateSetValue);
+            }else if(operate_type.equals("collect")){
+                int d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
+                d_match_collectCount = d_match_collectCount+1;
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("corp_code", corp_code));
+                values.add(new BasicDBObject("d_match_code", d_match_code));
+                queryCondition.put("$and", values);
+
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("d_match_collectCount", d_match_collectCount);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                collection_def.update(queryCondition, updateSetValue);
+            }else if(operate_type.equals("comment")){
+                int d_match_commentCount = Integer.parseInt(dbObject.get("d_match_commentCount").toString());
+                d_match_commentCount = d_match_commentCount+1;
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("corp_code", corp_code));
+                values.add(new BasicDBObject("d_match_code", d_match_code));
+                queryCondition.put("$and", values);
+
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("d_match_commentCount", d_match_commentCount);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                collection_def.update(queryCondition, updateSetValue);
+            }
+
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("成功");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
+
+        return dataBean.getJsonStr();
     }
 }

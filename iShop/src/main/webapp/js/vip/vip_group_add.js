@@ -1997,6 +1997,7 @@ $("#select_vip_que").click(function(){ //筛选确定
                         if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                             var param = {};
                             var val = $(input[0]).val();
+                            val=="已冻结"? val="Y" : val="N";
                             var name=$(input[0]).prev().text();
                             param['key'] = key;
                             param['value'] = val;
@@ -2085,6 +2086,13 @@ function showSelect(){
                 "</div>"
         }else if(all_select_vip_list[b].key=="17"){
 
+        }else if(all_select_vip_list[b].key=="6"){
+            var value=all_select_vip_list[b].value=="N"?"未冻结":"已冻结";
+            html+="<div style='float: right'>" +
+                "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width: 70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis '>"+all_select_vip_list[b].name+"</span>" +
+                "<input type='text' style='width: 290px;' value='"+value+"' readonly title='"+value+"'>"+
+                "<i class='icon-ishop_6-12 q_remove'title='删除'></i>"+
+                "</div>"
         }else{
             html+="<div style='float: right'>" +
                 "<span title='"+all_select_vip_list[b].name+"' style='vertical-align:middle;text-align: right;display: inline-block;margin-right: 10px;max-width: 70px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis '>"+all_select_vip_list[b].name+"</span>" +

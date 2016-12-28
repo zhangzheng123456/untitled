@@ -135,24 +135,24 @@ public class TestFeedbackService {
 
 
 //---------------新增系统管理员列表权限----------------------------------------------------
-            List<TableManager> tableManagers = managerService.selTableList();
-            int i1=0;
-            for (int i = 0; i < tableManagers.size(); i++) {
-                TablePrivilege tablePrivilege=new TablePrivilege();
-                tablePrivilege.setColumn_name(tableManagers.get(i).getColumn_name());
-                tablePrivilege.setFunction_code(tableManagers.get(i).getFunction_code());
-                tablePrivilege.setMaster_code("R6000");
-                tablePrivilege.setEnable("Y");
-                Date now = new Date();
-                tablePrivilege.setCreater("10000");
-                tablePrivilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                tablePrivilege.setModified_date(Common.DATETIME_FORMAT.format(now));
-                tablePrivilege.setModifier("10000");
-                tablePrivilege.setIsactive("Y");
-                i1+= managerService.insert(tablePrivilege);
-
-            }
-            System.out.println("-----------:"+i1);
+//            List<TableManager> tableManagers = managerService.selTableList();
+//            int i1=0;
+//            for (int i = 0; i < tableManagers.size(); i++) {
+//                TablePrivilege tablePrivilege=new TablePrivilege();
+//                tablePrivilege.setColumn_name(tableManagers.get(i).getColumn_name());
+//                tablePrivilege.setFunction_code(tableManagers.get(i).getFunction_code());
+//                tablePrivilege.setMaster_code("R6000");
+//                tablePrivilege.setEnable("Y");
+//                Date now = new Date();
+//                tablePrivilege.setCreater("10000");
+//                tablePrivilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//                tablePrivilege.setModified_date(Common.DATETIME_FORMAT.format(now));
+//                tablePrivilege.setModifier("10000");
+//                tablePrivilege.setIsactive("Y");
+//                i1+= managerService.insert(tablePrivilege);
+//
+//            }
+            System.out.println("-----------:");
 
          //   ------------------------------测试登录次数------------------------------------------------
 //            Map<String, String> map=new HashMap<String, String>();
