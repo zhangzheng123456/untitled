@@ -629,7 +629,7 @@ public class VipGroupController {
                     JSONArray screen = JSONArray.parseArray(group_condition);
                     dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
                 }else {
-                    Map datalist = iceInterfaceService.vipBasicMethod1(page_size,page_num,corp_code,request);
+                    Map datalist = iceInterfaceService.vipBasicMethod1(page_num,page_size,corp_code,request);
                     dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
                 }
             }
