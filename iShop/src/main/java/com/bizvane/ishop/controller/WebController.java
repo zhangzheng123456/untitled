@@ -9,6 +9,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.AESUtils;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
@@ -756,7 +757,6 @@ public class WebController {
         return result.toString();
     }
     /**
-<<<<<<< HEAD
      *
      * 推荐
      */
@@ -774,7 +774,7 @@ public class WebController {
             String type = request.getParameter("type");
             int page_number = Integer.valueOf(pageNumber);
             int page_size = Integer.valueOf(pageSize);
-
+            String user_code = request.getParameter("user_code");
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
 
@@ -788,7 +788,7 @@ public class WebController {
                 pages = MongoUtils.getPages(dbCursor2, page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "d_match_likeCount", -1);
             }else{
-                String user_code = request.getParameter("user_code");
+
                 BasicDBObject queryCondition = MongoUtils.andOperation2(corp_code,user_code);
                 BasicDBList value = new BasicDBList();
                 value.add(queryCondition);
@@ -798,7 +798,7 @@ public class WebController {
                 pages = MongoUtils.getPages(dbCursor2,page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
             }
-            ArrayList list = MongoUtils.dbCursorToList_id(dbCursor);
+            ArrayList list = MongoHelperServiceImpl.dbCursorToList_shop(dbCursor,user_code);
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -919,7 +919,6 @@ public class WebController {
 
         DBCollection collection_def = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
         try {
-
 
             InputStream inputStream = request.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
