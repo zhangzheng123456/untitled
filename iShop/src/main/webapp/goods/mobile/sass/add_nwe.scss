@@ -19,6 +19,15 @@ address,cite,dfn,em,var{font-style:normal;}
   height: rem(10);
   background: #ededed;
 }
+@mixin  file{
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1000;
+}
 @mixin title {
   height: rem(44);
   margin-left: rem(20);
@@ -63,13 +72,7 @@ address,cite,dfn,em,var{font-style:normal;}
     background: #8fbae2;
     position: relative;
     .file{
-      position: absolute;
-      top:0;
-      left:0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      z-index: 1000;
+     @include file;
     }
   }
   .action_product{
@@ -111,6 +114,9 @@ address,cite,dfn,em,var{font-style:normal;}
       left:50%;
       transform: translate(-50%,-50%);
     }
+      .file{
+        @include file;
+      }
   }
 }
 .line{
