@@ -19,10 +19,12 @@ $('.title div').eq(0).click(function () {
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber" + pageNumber + "pageSize" + pageSize+"user_code"+user_code+"type"+type+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log(data);
+            //pageVal(num);
+        }else if(data.code =='-1'){
+            console.log(data);
         }
     });
-    //var num = '5';
-    //pageVal(num);
+
 });
 //    选项卡-我的
 $('.title div').eq(1).click(function () {
@@ -36,11 +38,14 @@ $('.title div').eq(1).click(function () {
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code + "pageNumber" + pageNumber + "pageSize" + pageSize+"user_code"+user_code+"type"+type+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log(data);
+            //pageVal(num);
+        }else if(data.code =='-1'){
+            console.log(data);
         }
     });
 });
 
-//    页面加载获取数据
+//页面加载获取数据
 function pageVal(num){
     var tempHTML = '<ul class="goods_box" id="${id}" title="${id}"> <li class="the_img"><img src="${img}" alt=""/></li> <li class="the_list"> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <img src="${img}" alt=""/> <span class="num">${num}</span> </li> <li class="add"> <div><img src="image/icon_点赞@2x.png" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="image/icon_收藏@2x.png" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
     var html = ''
@@ -63,7 +68,7 @@ function pageVal(num){
         }
     }
 }
-//   控制宽高
+//控制宽高
 function setTime(){
     var val =  $('.the_img').width();
     $('.the_img').css('height',val);
@@ -76,6 +81,7 @@ function setTime(){
 window.onload = function () {
     //默认推荐
     $('.title div').eq(0).click();
+    //控制宽高
     setTime()
     $('.add div img').click(function () {
         var src = $(this).attr("src");
