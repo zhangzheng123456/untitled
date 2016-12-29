@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.ShopMatchService;
+import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +34,8 @@ public class ShopMatchServiceImpl implements ShopMatchService {
     private IceInterfaceService iceInterfaceService;
     @Autowired
     MongoDBClient mongodbClient;
+    @Autowired
+    private UserService userService;
     public JSONObject getGoodsByWx(String corp_code, String pageSize, String pageIndex, String categoryId, String row_num, String productName) throws Exception {
         JSONObject jsonObject = new JSONObject();
 
@@ -87,7 +92,10 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         DBObject saveData=new BasicDBObject();
         saveData.put("corp_code", corp_code);
         saveData.put("d_match_code", d_match_code);
+        List<User> userList = userService.userCodeExist(operate_userCode, corp_code, Common.IS_ACTIVE_Y);
+        String user_name = userList.get(0).getUser_name();
         saveData.put("operate_userCode", operate_userCode);
+        saveData.put("operate_userName", user_name);
         saveData.put("operate_type", operate_type);
         saveData.put("status", status);
         saveData.put("comment_text", comment_text);
@@ -104,18 +112,17 @@ public class ShopMatchServiceImpl implements ShopMatchService {
 
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection collection_rel = mongoTemplate.getCollection(CommonValue.table_shop_match_rel);
-        BasicDBObject queryCondition = new BasicDBObject();
-        BasicDBList values = new BasicDBList();
-        values.add(new BasicDBObject("corp_code", corp_code));
-        values.add(new BasicDBObject("d_match_code", d_match_code));
-        values.add(new BasicDBObject("operate_type", operate_type));
-        values.add(new BasicDBObject("operate_userCode", operate_userCode));
-        queryCondition.put("$and", values);
 
-        DBObject updatedValue = new BasicDBObject();
-        updatedValue.put("status", "N");
-        DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
-        collection_rel.update(queryCondition, updateSetValue);
+        BasicDBList value = new BasicDBList();
+        value.add(new BasicDBObject("corp_code", corp_code));
+        value.add(new BasicDBObject("d_match_code", d_match_code));
+        value.add(new BasicDBObject("operate_type", operate_type));
+        value.add(new BasicDBObject("operate_userCode", operate_userCode));
+        BasicDBObject queryCondition1 = new BasicDBObject();
+        queryCondition1.put("$and", value);
+
+        WriteResult remove = collection_rel.remove(queryCondition1);
+        System.out.println("--------删除成功？？？？-------------"+remove.toString());
     }
 
     public  DBObject selectByCode(String corp_code,String d_match_code)throws Exception{
@@ -129,4 +136,22 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         }
         return object;
     }
+
+    public void deleteAll(String corp_code,String d_match_code)throws  Exception{
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection collection_rel = mongoTemplate.getCollection(CommonValue.table_shop_match_rel);
+
+        DBCollection collection_def = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+
+        BasicDBList value = new BasicDBList();
+        value.add(new BasicDBObject("corp_code", corp_code));
+        value.add(new BasicDBObject("d_match_code", d_match_code));
+        BasicDBObject queryCondition1 = new BasicDBObject();
+        queryCondition1.put("$and", value);
+
+        collection_def.remove(queryCondition1);
+        collection_rel.remove(queryCondition1);
+    }
+
+
 }

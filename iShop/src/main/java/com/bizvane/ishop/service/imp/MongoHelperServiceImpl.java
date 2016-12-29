@@ -301,6 +301,7 @@ public class MongoHelperServiceImpl {
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
+            obj.put("id", id);
             String corp_code = obj.get("corp_code").toString();
             String d_match_code = obj.get("d_match_code").toString();
             DBObject object = selectByCode(corp_code, d_match_code, user_code, "like");
@@ -311,7 +312,7 @@ public class MongoHelperServiceImpl {
             }
             DBObject object2 = selectByCode(corp_code, d_match_code, user_code, "collect");
             if(object2!=null){
-                collect_status = object.get("status").toString();
+                collect_status = object2.get("status").toString();
             }
             obj.put("like_status", like_status);
             obj.put("collect_status", collect_status);

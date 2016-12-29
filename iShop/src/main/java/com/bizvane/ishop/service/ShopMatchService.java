@@ -18,4 +18,7 @@ public interface ShopMatchService {
 
     DBObject selectByCode(String corp_code, String d_match_code) throws Exception;
 
-}
+    void deleteAll(String corp_code,String d_match_code)throws  Exception;
+
+
+    }
