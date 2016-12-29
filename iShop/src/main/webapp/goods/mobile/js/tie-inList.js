@@ -196,11 +196,52 @@ function toNext(){
     $('.the_img img').click(function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
         $.cookie('d_match_code',d_match_code);
-        window.location = 'details.html';
+        var host=window.location.host;
+        var param={}
+        //param["type"]="FAB";
+        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code="+d_match_code;
+        doAppWebRefresh(param);
+        //window.location = 'details.html?d_match_code'+d_match_code;
     })
     //$('.the_list img').click(function () {
     //    window.location = 'details.html';
     //})
+}
+
+//获取手机系统
+function getWebOSType() {
+    var browser = navigator.userAgent;
+    var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端
+    var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if(isAndroid){
+        return "Android";
+    }else if (isiOS) {
+        return "iOS";
+    }else{
+        return "Unknown"
+    }
+}
+//获取iShop用户信息
+function getAppUserInfo(){
+    var osType = getWebOSType();
+    var userInfo = null;
+    if(osType=="iOS"){
+        userInfo = NSReturnUserInfo();
+    }else if(osType == "Android"){
+        userInfo = iShop.ReturnUserInfo();
+    }
+    return userInfo;
+}
+//调用APP方法传参 param 格式 type：** ;url:**
+function doAppWebRefresh(param){
+     var param=JSON.stringify(param);
+    var osType = this.getWebOSType();
+    if(osType=="iOS"){
+        window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+    }else if(osType == "Android"){
+        //iShop.returnAddResult(param);
+        iShop.jumpToWebViewForWeb(param);
+    }
 }
 window.onload = function () {
     //默认推荐
