@@ -15,12 +15,15 @@
     this.element = element;
     this.options = options || {};
     this.init();
-
+    this.status = 'hide';
     var _this = this;
-
-    this.searchableElement.click(function(event){
+    this.holder.click(function(event){
       // event.stopPropagation();
-      _this.show();
+      if(_this.status=="show"){
+         _this.hide();
+      }else if(_this.status=="hide"){
+         _this.show();
+      }
     }).on('keydown', function(event){
       if (event.which === 13 || event.which === 40 || event.which == 38){
         event.preventDefault();
