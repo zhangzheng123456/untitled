@@ -788,10 +788,10 @@ public class WebController {
                 pages = MongoUtils.getPages(dbCursor2, page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "d_match_likeCount", -1);
             }else{
-
-                BasicDBObject queryCondition = MongoUtils.andOperation2(corp_code,user_code);
+               // BasicDBObject queryCondition = MongoUtils.andOperation2(corp_code,user_code);
                 BasicDBList value = new BasicDBList();
-                value.add(queryCondition);
+                value.add(new BasicDBObject("creater", user_code));
+                value.add(new BasicDBObject("corp_code", corp_code));
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and", value);
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
@@ -911,6 +911,61 @@ public class WebController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("成功");
         } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
+
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/api/shopMatch/updGoodsByWx", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String updGoodsByWx(HttpServletRequest request,HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+
+        DBCollection collection_def = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+        try {
+            Date now = new Date();
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+         //   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            String d_match_code  =jsonObject.getString("d_match_code");
+            String corp_code = jsonObject.getString("corp_code");
+            String d_match_title = jsonObject.getString("d_match_title");
+            String d_match_image = jsonObject.getString("d_match_image");
+            String d_match_desc = jsonObject.getString("d_match_desc");
+            JSONArray r_match_goods= JSON.parseArray(jsonObject.getString("r_match_goods"));
+            String user_code = jsonObject.getString("user_code");
+
+
+            BasicDBObject queryCondition = new BasicDBObject();
+            BasicDBList values = new BasicDBList();
+            values.add(new BasicDBObject("corp_code", corp_code));
+            values.add(new BasicDBObject("d_match_code", d_match_code));
+            queryCondition.put("$and", values);
+
+            DBObject updatedValue = new BasicDBObject();
+            updatedValue.put("d_match_title", d_match_title);
+            updatedValue.put("d_match_image", d_match_image);
+            updatedValue.put("d_match_desc", d_match_desc);
+            updatedValue.put("r_match_goods", r_match_goods);
+            updatedValue.put("modified_date",  Common.DATETIME_FORMAT.format(now));
+            updatedValue.put("modifier", user_code);
+            DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+            collection_def.update(queryCondition, updateSetValue);
+
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("成功");
+        } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -941,12 +996,14 @@ public class WebController {
             String status = jsonObject.getString("status");
             String comment_text = jsonObject.getString("comment_text");
 
-            shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
+
 
             DBObject dbObject = shopMatchService.selectByCode(corp_code, d_match_code);
             if(operate_type.equals("like")){
+                shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
                 int d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
                 d_match_likeCount = d_match_likeCount+1;
+                System.out.println("-------点赞数--------------------------------"+d_match_likeCount);
                 BasicDBObject queryCondition = new BasicDBObject();
                 BasicDBList values = new BasicDBList();
                 values.add(new BasicDBObject("corp_code", corp_code));
@@ -958,6 +1015,7 @@ public class WebController {
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
             }else if(operate_type.equals("collect")){
+                shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
                 int d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
                 d_match_collectCount = d_match_collectCount+1;
                 BasicDBObject queryCondition = new BasicDBObject();
@@ -971,6 +1029,7 @@ public class WebController {
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
             }else if(operate_type.equals("comment")){
+                shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
                 int d_match_commentCount = Integer.parseInt(dbObject.get("d_match_commentCount").toString());
                 d_match_commentCount = d_match_commentCount+1;
                 BasicDBObject queryCondition = new BasicDBObject();
@@ -983,12 +1042,43 @@ public class WebController {
                 updatedValue.put("d_match_commentCount", d_match_commentCount);
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
+            }else if(operate_type.equals("dislike")){
+                shopMatchService.updRelByType(corp_code,d_match_code,operate_userCode,operate_type);
+
+                int d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
+                d_match_likeCount = d_match_likeCount-1;
+                System.out.println("-------取消点赞数--------------------------------"+d_match_likeCount);
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("corp_code", corp_code));
+                values.add(new BasicDBObject("d_match_code", d_match_code));
+                queryCondition.put("$and", values);
+
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("d_match_likeCount", d_match_likeCount);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                collection_def.update(queryCondition, updateSetValue);
+            }else if(operate_type.equals("discollect")){
+                shopMatchService.updRelByType(corp_code,d_match_code,operate_userCode,operate_type);
+                int d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
+                d_match_collectCount = d_match_collectCount-1;
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("corp_code", corp_code));
+                values.add(new BasicDBObject("d_match_code", d_match_code));
+                queryCondition.put("$and", values);
+
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("d_match_collectCount", d_match_collectCount);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                collection_def.update(queryCondition, updateSetValue);
             }
 
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("成功");
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());

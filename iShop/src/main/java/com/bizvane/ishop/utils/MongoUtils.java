@@ -84,6 +84,17 @@ public class MongoUtils {
         return queryCondition;
     }
 
+
+    //多个“and”查询(搜索)
+    public static BasicDBObject andOperation3(String corp_code, String d_match_code) {
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        values.add(new BasicDBObject("corp_code", corp_code));
+        values.add(new BasicDBObject("d_match_code", d_match_code));
+        queryCondition.put("$and", values);
+        return queryCondition;
+    }
+
     //多个“and”查询(搜索)
     public static BasicDBObject andOperation3(String corp_code, String d_match_code,String user_code,String operate_type) {
         BasicDBObject queryCondition = new BasicDBObject();
