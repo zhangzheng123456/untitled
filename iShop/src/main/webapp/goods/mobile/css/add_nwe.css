@@ -163,7 +163,8 @@ address, cite, dfn, em, var {
     background: #f3f3f3;
     margin-right: 0.12077rem;
     margin-bottom: 0.12077rem;
-    border: 0.02415rem solid #dfdfdf; }
+    border: 0.02415rem solid #dfdfdf;
+    text-align: center; }
     .container_picture .picture .picture_btn {
       width: 0.48309rem;
       height: 0.48309rem;
@@ -171,6 +172,9 @@ address, cite, dfn, em, var {
       position: absolute;
       top: 0.02415rem;
       right: 0.02415rem; }
+    .container_picture .picture img {
+      max-height: 100%;
+      max-width: 100%; }
   .container_picture .picture_add {
     position: relative;
     float: left;

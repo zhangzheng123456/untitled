@@ -110,6 +110,7 @@ address,cite,dfn,em,var{font-style:normal;}
   }
   .picture{
     @include container_picture_li;
+    text-align: center;
     .picture_btn{
       width: rem(20);
       height: rem(20);
@@ -117,6 +118,10 @@ address,cite,dfn,em,var{font-style:normal;}
       position: absolute;
       top: rem(1);
       right: rem(1);
+    }
+    img{
+      max-height: 100%;
+      max-width: 100%;
     }
   }
   .picture_add{
