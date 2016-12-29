@@ -64,7 +64,6 @@ function getPage(){
         }
     });
 }
-
 //    点赞-收藏-评论
 $('.bottom div img').click(function () {
     var src = $(this).attr("src");
@@ -134,6 +133,12 @@ $('.editor').click(function () {
     str=encodeURIComponent(str);
     window.location = "add_new.html?"+str;
 });
+//删除
+$('.delete').click(function () {
+    ///api/shopMatch/delete          get //删除
+    //传corp_code，d_match_code
+    
+}
 window.onload = function () {
     getPage();
     setInterval(function () {

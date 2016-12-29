@@ -9,9 +9,7 @@ body {
 .warp {
   position: fixed;
   top: 0rem;
-  background-color: #ededed;
-  overflow-y: auto;
-  overflow-x: hidden; }
+  background-color: #ededed; }
 
 .title {
   background-color: white;
