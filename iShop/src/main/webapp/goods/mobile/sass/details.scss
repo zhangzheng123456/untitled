@@ -17,6 +17,37 @@ body{
   width: 100%;
   background-color: #fff;
   margin-bottom: rem(10);
+  position: relative;
+}
+.main_img img{
+  margin: 0 auto;
+}
+.main_btn{
+  position: absolute;
+  bottom: 15px;
+  right: 0%;
+  width: 30%;
+  height: rem(50);
+}
+.main_btn .editor{
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url(../image/editor_00.jpg);
+  height: rem(50);
+  width: 40%;
+  float: left;
+  border-radius: 300px;
+}
+.main_btn .delete{
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url(../image/editor_01.jpg);
+  height: rem(50);
+  width: 40%;
+  float: left;
+  border-radius: 300px
 }
 .main_list{
   width: 100%;
