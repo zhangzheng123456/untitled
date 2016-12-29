@@ -98,6 +98,11 @@ $('.bottom div img').click(function () {
         }
     })
 });
+//点击编辑
+$('.editor').click(function () {
+    var d_match_code = $.cookie('d_match_code');
+    window.location = "add_new.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_code="+user_code+"";
+});
 window.onload = function () {
     getPage();
     setInterval(function () {

@@ -16,15 +16,31 @@ body {
 .main_img {
   width: 100%;
   background-color: #fff;
-  margin-bottom: 0.24155rem; }
+  margin-bottom: 0.24155rem;
+  position: relative; }
 
-.main_img_btn {
+.main_btn {
   position: absolute;
-  width: 30%; }
+  bottom: 15px;
+  right: 1.5%;
+  width: 25%;
+  height: 1.20773rem; }
 
-.main_img_btn img {
-  position: absolute;
-  width: 100%; }
+.main_btn .editor {
+  background-size: contain;
+  background-position: 50% 50%;
+  background: url("../image/editor_00.jpg") no-repeat;
+  height: 1.20773rem;
+  width: 1.20773rem;
+  float: left; }
+
+.main_btn .delete {
+  background-size: contain;
+  background-position: 50% 50%;
+  background: url("../image/editor_01.jpg") no-repeat;
+  height: 1.20773rem;
+  width: 1.20773rem;
+  float: left; }
 
 .main_list {
   width: 100%;

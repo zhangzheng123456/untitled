@@ -55,7 +55,7 @@ function getMy(){
 function  pageVal(list,type){
     var tempHTML = '<ul class="goods_box" id="${d_match_code}" title="${d_match_title}" > <li class="the_img" id="${id}"><img src="${d_match_image}" alt=""/></li> <li class="the_list"> ';
     var tempHTML2 =' <img src="${r_match_goodsImage}" alt="" id="${r_match_goodsCode}"/>';
-    var tempHTML3 =' <span class="num">${num}</span> </li> <li class="add"> <div><img src="image/icon_点赞@2x.png" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="image/icon_收藏@2x.png" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
+    var tempHTML3 =' <span class="num">${num}</span> </li> <li class="add"> <div><img src="${imgLick}" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="${imgSave}" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
     var html = ''
     for(i=0;i<list.length;i++){
         var d_match_code = list[i].d_match_code;
@@ -95,23 +95,22 @@ function  pageVal(list,type){
         nowHTML3 = nowHTML3.replace('${num}',d_match_likeCount); //点赞数
         nowHTML3 = nowHTML3.replace('${num}',d_match_commentCount); //评论数
         nowHTML3 = nowHTML3.replace('${num}',d_match_collectCount); //收藏数
+        console.log('点赞'+like_status+'收藏'+collect_status);
+        if(like_status=='Y'){
+            nowHTML3 = nowHTML3.replace('${imgLick}','image/icon_点赞_已点赞@2x.png');
+        }else if(like_status=='N'){
+            nowHTML3 = nowHTML3.replace('${imgLick}','image/icon_点赞@2x.png');
+        }
+        if(collect_status=='Y'){
+            nowHTML3 = nowHTML3.replace('${imgSave}','image/icon_收藏_已收藏@2x.png');
+        }else if(collect_status=='N'){
+            nowHTML3 = nowHTML3.replace('${imgSave}','image/icon_收藏@2x.png');
+        }
         html += nowHTML3;
         if(type=='rec'){
             $('.main').eq(0).html(html);
         }else if(type =='my'){
             $('.main').eq(1).html(html);
-        }
-        if(like_status=='Y'){
-            $('.add div img').eq(0).attr('src','image/icon_点赞_已点赞@2x.png');
-            console.log(123123213);
-        }else if(like_status=='N'){
-            $('.add div img').eq(0).attr('src','image/icon_点赞@2x.png');
-        }
-        if(collect_status=='Y'){
-            console.log(like_status);
-            $('.add div img').eq(2).attr('src','image/icon_收藏_已收藏@2x.png');
-        }else if(collect_status=='N'){
-            $('.add div img').eq(2).attr('src','image/icon_收藏@2x.png');
         }
     }
     toNext();
