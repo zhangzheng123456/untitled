@@ -262,11 +262,18 @@ $("#screen_vip_que").click(function () {
                     param['value'] = val;
                     screen.push(param);
                 }
-            } else {
+            }else if(key == "6" && $(input[0]).val() !== "全部"){
+                var param = {};
+                var val = $(input[0]).val();
+                val == "已冻结"? val="Y":val="N";
+                param['key'] = key;
+                param['value'] = val;
+                param['type'] = "text";
+                screen.push(param);
+            }else {
                 if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                     var param = {};
                     var val = $(input[0]).val();
-                    val=="已冻结"? val="Y" : val="N";
                     param['key'] = key;
                     param['value'] = val;
                     param['type'] = "text";
@@ -316,11 +323,18 @@ $("#screen_vip_que").click(function () {
                         param['date'] = date;
                         screen.push(param);
                     }
-                } else {
+                }else if(key == "6" && $(input[0]).val() !== "全部" ){
+                        var param = {};
+                        var val = $(input[0]).val();
+                        val == "已冻结"?val="Y":val="N";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        screen.push(param);
+                }else {
                     if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                         var param = {};
                         var val = $(input[0]).val();
-                        val=="已冻结"? val="Y" : val="N";
                         param['key'] = key;
                         param['value'] = val;
                         param['type'] = "text";

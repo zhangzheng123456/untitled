@@ -117,31 +117,3 @@ window.onload = function () {
         window.location = 'details.html';
     })
 }
-//交互
-//oc.postRequire("post", _command,"",_params, function(data){
-//    if(data.code=="0"){
-//        if(_command=="/defmatch/addMatch"){
-//            var message=JSON.parse(data.message);
-//            sessionStorage.setItem("goods_match_code",message.goods_match_code);
-//            sessionStorage.setItem("corp_code",message.corp_code);
-//            $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
-//        }
-//        if(_command=="/goods/fab/edit"){
-//            art.dialog({
-//                time: 2,
-//                lock: true,
-//                cancel: false,
-//                content:"保存成功"
-//            });
-//            window.location.reload();
-//        }
-//    }else if(data.code=="-1"){
-//        art.dialog({
-//            time: 1,
-//            lock:true,
-//            cancel: false,
-//            content: data.message
-//        });
-//    }
-//    whir.loading.remove();//移除加载框
-//});
