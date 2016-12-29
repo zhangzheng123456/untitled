@@ -193,16 +193,16 @@ function  click(){
 }
 //跳转
 function toNext(){
-    $('.the_img img').click(function () {
+    $('.the_img img').unbind("click").bind(function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
         $.cookie('d_match_code',d_match_code);
         var host=window.location.host;
-        var param={}
+        var param={};
         //param["type"]="FAB";
         param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code="+d_match_code;
         doAppWebRefresh(param);
-        //window.location = 'details.html?d_match_code'+d_match_code;
-    })
+        window.location = 'details.html?d_match_code'+d_match_code;
+    });
     //$('.the_list img').click(function () {
     //    window.location = 'details.html';
     //})
