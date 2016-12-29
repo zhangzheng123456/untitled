@@ -60,7 +60,8 @@ public class VIPController {
     TableManagerService tableManagerService;
     @Autowired
     VipRulesService vipRulesService;
-
+    @Autowired
+    VipGroupService vipGroupService;
     /**
      * 新增会员信息
      */
@@ -458,7 +459,7 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             logger.info("json-----555555555555555555---------corp_code-" + corp_code);
 
-            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject, request);
+            Map datalist = iceInterfaceService.vipBasicMethod1(page_num, page_size,corp_code, request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
             datalist.put(data_search_value.key, data_search_value);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
@@ -500,71 +501,17 @@ public class VIPController {
             String page_size = jsonObject.get("pageSize").toString();
             JSONArray screen = jsonObject.getJSONArray("screen");
 
-            List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
-            String brand_code = "";
-            String area_code = "";
-            String store_code = "";
-            String store_code_key = "";
-            JSONArray post_array = new JSONArray();
-            for (int i = 0; i < screen.size(); i++) {
-                JSONObject screen_obj = screen.getJSONObject(i);
-                String key = screen_obj.getString("key");
-                String type = screen_obj.getString("type");
-                String value = screen_obj.getString("value");
-                if (type.equals("text") && value.equals("")){
-                    //筛选值为空
-                    continue;
-                }else if (type.equals("json") && value.equals("{}")){
-                    //筛选值为空
-                    continue;
-                }else if (key.equals("brand_code")){
-                    //筛选品牌下会员
-                    brand_code = value;
-                }else if (key.equals("area_code")){
-                    //筛选区域下会员
-                    area_code = value;
-                }else {
-                    //根据key值，找出其对应name
-                    for (int j = 0; j < tableManagers.size(); j++) {
-                        JSONObject post_obj = new JSONObject();
-                        post_obj.put("key",key);
-                        post_obj.put("type",type);
-                        post_obj.put("value",value);
-                        post_array.add(post_obj);
-                        if (key.equals(tableManagers.get(j).getFilter_weight())){
-                            String key_name = tableManagers.get(j).getColumn_name();
-                            if (key_name.equals("store_code")){
-                                store_code = jsonObject.get(key).toString();
-                                store_code_key = key;
-                            }
-                            break;}
-                    }
-                }
-            }
-            //若选择了区域和品牌，记住品牌区域下的store_code
-            if (store_code.equals("") && (!area_code.equals("") || !brand_code.equals(""))){
-                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-                for (int i = 0; i < storeList.size(); i++) {
-                    store_code = store_code + storeList.get(i).getStore_code() + ",";
-                }
-                JSONObject post_obj = new JSONObject();
-                post_obj.put("key",store_code_key);
-                post_obj.put("type","text");
-                post_obj.put("value",store_code);
-                post_array.add(post_obj);
-            }
-            logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
-            DataBox dataBox;
-            if (post_array.size()>0) {
-                dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
+            DataBox dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
+            if (dataBox.status.toString().equals("SUCCESS")){
+                String result = dataBox.data.get("message").value;
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(result);
             }else {
-                Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("筛选失败");
             }
-            String result = dataBox.data.get("message").value;
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result);
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -607,12 +554,8 @@ public class VIPController {
             logger.info("json--------------corp_code-" + corp_code);
             DataBox dataBox = null;
             if (!searchValue.equals("")) {
-                JSONObject object = new JSONObject();
-                object.put("searchValue",searchValue);
-                object.put("pageNumber",1);
-                object.put("pageSize",10000);
-                object.put("corp_code",corp_code);
-                Map datalist = iceInterfaceService.vipBasicMethod(object, request);
+
+                Map datalist = iceInterfaceService.vipBasicMethod1("1","10000",corp_code,request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
@@ -625,12 +568,7 @@ public class VIPController {
 //                datalist.put(data_output_type.key, data_output_type);
 //                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(screen_message.equals("") && searchValue.equals("")){
-                JSONObject object = new JSONObject();
-                object.put("searchValue",searchValue);
-                object.put("pageNumber",1);
-                object.put("pageSize",10000);
-                object.put("corp_code",corp_code);
-                Map datalist = iceInterfaceService.vipBasicMethod(object,request);
+                Map datalist = iceInterfaceService.vipBasicMethod1("1","10000",corp_code,request);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
 
 //                Data data_output_message = new Data("message", output_message, ValueType.PARAM);

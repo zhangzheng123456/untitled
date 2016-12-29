@@ -258,6 +258,12 @@ var getNewVip={
 function checkStart(data) {
     getNewVip.testInput($('#content .birthday')[0]);
 }
+function scroll() {
+    console.log('触发');
+}
 $(document).ready(function () {
     getNewVip.init();
+    $('#content').scroll(function () {
+        laydate.reset();
+    })
 });
