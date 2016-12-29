@@ -2,7 +2,10 @@ package com.bizvane.ishop.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by PC on 2016/12/28.
@@ -20,5 +23,6 @@ public interface ShopMatchService {
 
     void deleteAll(String corp_code,String d_match_code)throws  Exception;
 
+     ArrayList dbCursorToList_shop(DBCursor dbCursor) ;
 
     }

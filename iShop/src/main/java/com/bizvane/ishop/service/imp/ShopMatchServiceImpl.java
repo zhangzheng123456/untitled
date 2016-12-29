@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by PC on 2016/12/27.
@@ -153,5 +150,33 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         collection_rel.remove(queryCondition1);
     }
 
+    //DBCursor数据集转arrayList+id
+    public  ArrayList dbCursorToList_shop(DBCursor dbCursor) {
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            String corp_code = obj.get("corp_code").toString();
+            String d_match_code = obj.get("d_match_code").toString();
+            obj.put("id", id);
+            obj.removeField("_id");
+
+
+            DBObject deleteRecord = new BasicDBObject();
+            deleteRecord.put("corp_code",corp_code);
+            deleteRecord.put("d_match_code",d_match_code);
+            DBCursor dbObjects = cursor.find(deleteRecord);
+            DBObject dbObject=null;
+            while (dbObjects.hasNext()) {
+                dbObject  = dbObjects.next();
+            }
+            obj.put("shop", dbObject);
+            list.add(obj.toMap());
+        }
+        return list;
+    }
 
 }

@@ -8,6 +8,16 @@ var swip_image = [];//图片切换播放
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);//取key_val的值
 var funcCode=key_val.func_code;
+var chart_data;//图表数据
+var chart={
+    "myChart":"",
+    "myChart1":"",
+    "myChart2":"",
+    "myChart3":"",
+    "myChart4":"",
+    "myChart5":"",
+    "myChart6":""
+};
 function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     whir.loading.add("",0.5);//加载等待框
@@ -60,13 +70,637 @@ function getConsumCount(){//获取会员信息
         whir.loading.remove();
     })
 }
-    //点击图片放大
-    $("#images").on("click","span",function(){
+function compare(value1, value2) {
+    if (value1 < value2) {
+        return -1;
+    } else if (value1 > value2) {
+        return 1;
+    } else {
+        return 0;
+    }
+
+}
+function chartShow(order) {
+    var key_val = sessionStorage.getItem("key_val");//取页面的function_code
+    key_val = JSON.parse(key_val);
+    var funcCode = key_val.func_code;
+    if (order !== "" && order !== undefined) {
+        var id = $("#chart_analyze").attr("data-id");
+        var param = {
+            "corp_code": "C10000",
+            "function_code": funcCode,
+            "type": "order",
+            "id": id,
+            "order": order
+        };
+    } else {
+        var param = {
+            "corp_code": "C10000",
+            "function_code": funcCode,
+            "type": "show"
+        };
+    }
+    oc.postRequire("post", "/privilege/vip/chartOrder", "0", param, function (data) {
+        if (data.code == 0) {
+            if (data.message == "success") {
+                console.log("成功");
+            } else {
+                var list = JSON.parse(data.message);
+                if (list.length == 0) {
+                    return;
+                }
+                var l = list.length - 1;
+                var id = list[l].id;
+                if (id !== undefined) {
+                    $("#chart_analyze").attr("data-id", id);
+                    var column = JSON.parse(list[l].column_name);
+                    for (var i = 0; i < column.length; i++) {
+                        var a = column[i];
+                        $(".chart_module").each(function () {
+                            if (a == $(this).attr("data-id")) {
+                                $(this).show();
+                                var ID = $(this).attr("data-id");
+                                init_chart(ID);
+                                $("#add_chart").before($(this));
+                            }
+                        });
+                    }
+                }
+            }
+        } else if (data.code == -1) {
+            console.log(data.message);
+        }
+    });
+}
+function init_chart(id,type) {
+    if (id == "type") {
+        var data = chart_data.Type;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr = [];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].name);
+        }
+        var option_pie = {
+            color: ['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2', '#5C778F', '#4D5F7C', '#444960', '#2C3244'],
+            tooltip: {
+                textStyle: {
+                    fontSize: '10',
+                },
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                show: 'true',
+                orient: 'vertical',
+                x: 'left',
+                y: 'center',
+                data: Arr
+            },
+            series: [
+                {
+                    name: '消费分类',
+                    center: ['60%', '50%'],
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: arr
+                }
+            ]
+        };
+        chart.myChart = echarts.init(document.getElementById('type'));
+        chart.myChart.setOption(option_pie);
+        reSize(chart.myChart);
+    }
+    if (id == "series") {
+        var data = chart_data.Series;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr = [];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].name);
+        }
+        var option_pie_series = {
+            color: ['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2', '#5C778F', '#4D5F7C', '#444960', '#2C3244'],
+            tooltip: {
+                textStyle: {
+                    fontSize: '10',
+                },
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                show: 'true',
+                orient: 'vertical',
+                x: 'left',
+                y: 'center',
+                data: Arr
+            },
+            series: [
+                {
+                    name: '消费分类',
+                    center: ['60%', '50%'],
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: arr
+                }
+            ]
+        };
+        chart.myChart5 = echarts.init(document.getElementById('series'));
+        chart.myChart5.setOption(option_pie_series);
+        reSize(chart.myChart5);
+    }
+    if (id == "weeks") {
+        var data = chart_data.Week;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr=[];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].value);
+        }
+        var option_week_radar = {
+            color: ['#A7DADE'],
+            axis: {
+                areaStyle: {
+                    color: ['red']
+                }
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            polar: [
+                {
+                    indicator: [
+                        {text: '周一', max: 100},
+                        {text: '周二', max: 100},
+                        {text: '周三', max: 100},
+                        {text: '周四', max: 100},
+                        {text: '周五', max: 100},
+                        {text: '周六', max: 100},
+                        {text: '周日', max: 100}
+                    ],
+                    radius: 100,
+                    splitNumber: 7,
+                    startAngle: 68,
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    symbol: 'circle',
+                    type: 'radar',
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    symbolSize: '0',
+                    data: [
+                        {
+                            value: Arr,
+                            name: '周变'
+                        }
+                    ]
+                }
+            ]
+        };
+        Arr.sort(compare);
+        for(var j=0;j<option_week_radar.polar[0].indicator.length;j++){
+            option_week_radar.polar[0].indicator[j].max=Arr[Arr.length-1]*1.1;
+        }
+        chart.myChart1 = echarts.init(document.getElementById('weeks'));
+        chart.myChart1.setOption(option_week_radar);
+        reSize(chart.myChart1);
+    }
+    if (id == "price") {
+        var data=chart_data.Price;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var ArrName=[];
+        var ArrValue=[];
+        for(var i=0;i<arr.length;i++){
+            ArrName.push(arr[i].name);
+            ArrValue.push(arr[i].value);
+        }
+        chart.myChart2 = echarts.init(document.getElementById('price'));
+        var option_bar = {
+            color: ['#6CC1C8'],
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    return params.seriesName + ' :' + params.value;
+                }
+            },
+            grid: {
+                borderWidth: 0,
+                x: '100',
+                y: '20',
+                x2: '0',
+                y2: '20'
+            },
+            xAxis: [
+
+                {
+                    show: false,
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+
+                }
+            ],
+            yAxis: [
+                {
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    type: 'category',
+                    data: ArrName
+                }
+            ],
+            series: [
+                {
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: 0
+                        }
+                    },
+                    name: '价格偏好',
+                    type: 'bar',
+                    barWidth: 10,
+                    data: ArrValue
+                }
+            ]
+        };
+        chart.myChart2.setOption(option_bar);
+        reSize(chart.myChart2);
+    }
+    if (id == "times") {
+        var data=chart_data.Time;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var ArrName=[];
+        var ArrValue=[];
+        for(var i=0;i<arr.length;i++){
+            ArrName.push(arr[i].name);
+            ArrValue.push(arr[i].value);
+        }
+        chart.myChart3 = echarts.init(document.getElementById('times'));
+        var option_line = {
+            color: ['#6DADC8'],
+            tooltip: {
+                trigger: 'item'
+            },
+            grid: {
+                borderWidth: 0,
+                x: '50',
+                y: '20',
+                x2: '20',
+                y2: '50'
+            },
+            xAxis: [
+                {
+                    axisLine: {
+                        lineStyle: {color: '#58A0C0'}
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        rotate: 45
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ArrName
+                }
+            ],
+            yAxis: [
+                {
+                    axisLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#999',
+                            type: 'dashed'
+                        }
+                    },
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    itemStyle: {
+                        symbolSize: '0',
+                        normal: {
+                            borderRadius: 0,
+                            nodeStyle: {
+                                borderRadius: 0
+                            }
+                        }
+                    },
+                    name: '购买时段',
+                    type: 'line',
+                    stack: '总量',
+                    symbolSize: 0,
+                    smooth: false,
+                    data: ArrValue
+                }
+            ]
+        };
+        chart.myChart3.setOption(option_line);
+        reSize(chart.myChart3);
+    }
+    if (id == "month") {
+        var data=chart_data.Month;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr=[];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].value);
+        }
+        var option_month_radar = {
+            color: ['#A7DADE'],
+            axis: {
+                areaStyle: {
+                    color: ['red']
+                }
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            polar: [
+                {
+                    indicator: [
+                        {text: '一月', max: 100},
+                        {text: '二月', max: 100},
+                        {text: '三月', max: 100},
+                        {text: '四月', max: 100},
+                        {text: '五月', max: 100},
+                        {text: '六月', max: 100},
+                        {text: '七月', max: 100},
+                        {text: '八月', max: 100},
+                        {text: '九月', max: 100},
+                        {text: '十月', max: 100},
+                        {text: '十一月', max: 100},
+                        {text: '十二月', max: 100}
+                    ],
+                    radius: 100,
+                    splitNumber: 8,
+                    startAngle: 45,
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    symbol: 'circle',
+                    type: 'radar',
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    symbolSize: '0',
+                    data: [
+                        {
+                            value: Arr,
+                            name: '月变'
+                        }
+                    ]
+                }
+            ]
+        };
+        Arr.sort(compare);
+        for(var j=0;j<option_month_radar.polar[0].indicator.length;j++){
+            option_month_radar.polar[0].indicator[j].max=Arr[Arr.length-1]*1.1;
+        }
+        chart.myChart4 = echarts.init(document.getElementById('month'));
+        chart.myChart4.setOption(option_month_radar);
+        reSize(chart.myChart4);
+    }
+    if (id == "areas") {
+        var data=chart_data.Area;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        chart.myChart6 = echarts.init(document.getElementById('areas'));
+        var option_map = {
+            tooltip: {
+                trigger: 'item'
+            },
+            dataRange: {
+                itemWidth: 5,
+                itemGap: 0.2,
+                color: ['#A7CFD5', '#3C95A2'],
+                splitNumber: '20',
+                orient: 'horizontal',
+                min: 0,
+                max: 2500,
+                x: 'left',
+                y: 'top',
+                text: ['低','高']      // 文本，默认为数值文本
+            },
+            series: [
+                {
+                    name: 'iphone3',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true, textStyle: {
+                                    color: "#434960",
+                                    fontSize: 10
+                                }
+                            }
+                        },
+                        emphasis: {label: {show: true}}
+                    },
+                    data:arr
+                }
+            ]
+        };
+        chart.myChart6.setOption(option_map);
+        reSize(chart.myChart6);
+    }
+    function reSize(chart) {
+        window.addEventListener("resize", function () {
+            chart.resize();
+        });
+    }
+}
+//图表数据
+function chartData() {
+    var param={};
+    param["type"]="vipInfo";
+    param['corp_code'] = localStorage.getItem('corp_code');
+    param["vip_id"] = sessionStorage.getItem("id");
+    oc.postRequire("post","/vipAnalysis/vipChart","0",param,function (data) {
+        if(data.code == 0){
+            var msg = JSON.parse(data.message);
+            chart_data= msg;
+            chartShow();
+        }else if(data.code == -1){
+            console.log(data.message);
+        }
+    });
+}
+//图标新增弹窗
+$("#add_chart").click(function () {
+    var arr = whir.loading.getPageSize();
+    var w = arr[0];
+    var h = arr[1];
+    var left = (arr[0] - $("#chart_add_wrap").width()) / 2;
+    var tp = (arr[3] - $("#chart_add_wrap").height()) / 2;
+    $("#chart_add_wrap").css({"left": left, "top": tp, "position": "fixed"});
+    $("#p").css({"width": w, "height": h});
+    $("#chart_add_wrap").show();
+    $("#p").show();
+    $("#chart_analyze .chart_module").each(function (i, e) {
+        var val = $(this).find(".drag_area").children("span").html();
+        if ($(this).css("display") == "block") {
+            $("#chart_add_details li").each(function () {
+                if ($(this).find(".chart_checkbox span").html() == val) {
+                    $(this).find(".check")[0].checked = true;
+                }
+            });
+        } else {
+            $("#chart_add_details li").each(function () {
+                if ($(this).find(".chart_checkbox span").html() == val) {
+                    $(this).find(".check")[0].checked = false;
+                }
+            });
+        }
+    });
+});
+$(".chart_close").click(function () {
+    $("#chart_add_wrap").hide();
+    $("#p").hide();
+});
+$("#chart_add_enter").click(function () {
+    $("#chart_add_details input[type='checkbox']:checked").each(function () {
+        var val = $(this).nextAll("span").html();
+        $("#chart_analyze .chart_module").each(function () {
+            if ($(this).css("display") == "none" && val == $(this).find(".drag_area span").html()) {
+                $(this).show();
+                var ID = $(this).attr("data-id");
+                init_chart(ID);
+            } else {
+                return;
+            }
+        });
+    });
+    var order = [];
+    $(".chart_module").each(function () {
+        if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
+            order.push($(this).attr("data-id"));
+        }
+    });
+    chartShow(order);
+    $("#chart_add_wrap").hide();
+    $("#p").hide();
+});
+//图表分析下拉
+$(".chart_analyze_condition").click(function () {
+    $(this).children("ul").toggle();
+});
+$('.chart_analyze_condition ul li').click(function () {
+    $(this).parent().prevAll("span").html($(this).html());
+    var ID=$(this).parents(".chart_module").attr("data-id");
+    var type=$(this).html();
+    type=="按金额分析"?type="amt":"";
+    init_chart(ID,type);
+});
+//图表删除
+$(".chart_close_icon").click(function () {
+    $(this).parents(".chart_module").hide();
+    var order = [];
+    $(".chart_module").each(function () {
+        if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
+            order.push($(this).attr("data-id"));
+        }
+    });
+    chartShow(order);
+});
+$("#chart_analyze").dad({
+    draggable: '.drag_area',
+    callback: function (data) {
+        var index = $(data).index();
+        var order = [];
+        $(".chart_module").each(function () {
+            if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
+                order.push($(this).attr("data-id"));
+            }
+        });
+        order.pop();
+        chartShow(order);
+    }
+});
+//点击图片放大
+$("#images").on("click","span",function(){
         var src=$(this).children().attr("src");
         whir.loading.add("",0.8,src);//显示图片
     });
-
-    $(".album").on("click","li img",function(){
+$(".album").on("click","li img",function(){
         var src=$(this).attr("src");
         whir.loading.add("",0.8,src);
     });
@@ -721,6 +1355,8 @@ $(function(){
     upLoadAlbum();
     moreSearch();
     qjia();
+    chartData();
+    chartShow();
 });
 
 

@@ -257,6 +257,7 @@ function fuzhi(data){
         $("#USER_SEX").val("女");
     }
     $("#vip_name").html(data.vip_name);
+    $("#vip_name").attr("data-id",data.vip_id);
     $('#vip_name_edit').attr('data_vip_id',data.vip_id);
     $("#vip_name_edit").val(data.vip_name);
     $("#vip_card_no").html(data.cardno);
