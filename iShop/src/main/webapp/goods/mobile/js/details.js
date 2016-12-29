@@ -3,6 +3,8 @@
  */
 var oc = new ObjectControl();
 var user_code = '10000';
+var corp_code = 'C10000';
+
 //    选项卡
 $('.main_select div').click(function () {
     $('.main_select div').css('background-color','#ededed');
@@ -17,8 +19,8 @@ $('.main_select div').eq(1).click(function () {
     $('.main_content').eq(0).css('display','none');
 });
 function getPage(){
-   var id = $.cookie('id');
-    oc.postRequire("get", "/api/shopMatch/selectById?id=" + id +"&user_code=" + user_code+"", "0", "", function (data) {
+   var d_match_code = $.cookie('d_match_code');
+    oc.postRequire("get", "/api/shopMatch/selectById?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"", "0", "", function (data) {
         if (data.code == "0") {
             //var message = JSON.parse(data.message);
             //var list = message.list;

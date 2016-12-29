@@ -112,7 +112,6 @@ function  pageVal(list,type){
         }else if(collect_status=='N'){
             $('.add div img').eq(2).attr('src','image/icon_收藏@2x.png');
         }
-
     }
     toNext();
     click();
@@ -128,7 +127,7 @@ function setTime(){
 }
 //点击事件-点赞-评论-收藏
 function  click(){
-    $('.add div img').unbind().bind("click",function () {
+    $('.add div img').unbind("click").bind("click",function () {
         var src = $(this).attr("src");
         var corp_code = 'C10000';
         var d_match_code = $(this).parents('.goods_box').attr('id');  //秀搭编号
@@ -196,8 +195,8 @@ function  click(){
 //跳转
 function toNext(){
     $('.the_img img').click(function () {
-        var id  = $(this).parents('.goods_box').attr('id');
-        $.cookie('id',id);
+        var d_match_code  = $(this).parents('.goods_box').attr('id');
+        $.cookie('d_match_code',d_match_code);
         window.location = 'details.html';
     })
     //$('.the_list img').click(function () {
