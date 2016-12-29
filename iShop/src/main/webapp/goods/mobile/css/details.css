@@ -11,12 +11,20 @@ body {
   overflow-y: auto; }
 
 .warp::-webkit-scrollbar {
-  width: 0px;}
+  width: 0px; }
 
 .main_img {
   width: 100%;
   background-color: #fff;
   margin-bottom: 0.24155rem; }
+
+.main_img_btn {
+  position: absolute;
+  width: 30%; }
+
+.main_img_btn img {
+  position: absolute;
+  width: 100%; }
 
 .main_list {
   width: 100%;

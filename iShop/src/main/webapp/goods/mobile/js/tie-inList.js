@@ -62,8 +62,9 @@ function  pageVal(list,type){
         var id = list[i].id;
         var d_match_title = list[i].d_match_title;
         var d_match_image = list[i].d_match_image;
+        var like_status = list[i].like_status; //点赞
+        var collect_status = list[i].collect_status; //收藏
         var d_match_image_num = d_match_image.indexOf(",");
-        console.log(d_match_image_num)
         //多张图取首张
         if(d_match_image_num>=0){
             d_match_image = d_match_image.substr(0,d_match_image_num);
@@ -100,14 +101,14 @@ function  pageVal(list,type){
         }else if(type =='my'){
             $('.main').eq(1).html(html);
         }
-        var like_status = list[i].like_status; //点赞
-        var collect_status = list[i].collect_status; //收藏
         if(like_status=='Y'){
             $('.add div img').eq(0).attr('src','image/icon_点赞_已点赞@2x.png');
+            console.log(123123213);
         }else if(like_status=='N'){
             $('.add div img').eq(0).attr('src','image/icon_点赞@2x.png');
         }
         if(collect_status=='Y'){
+            console.log(like_status);
             $('.add div img').eq(2).attr('src','image/icon_收藏_已收藏@2x.png');
         }else if(collect_status=='N'){
             $('.add div img').eq(2).attr('src','image/icon_收藏@2x.png');
