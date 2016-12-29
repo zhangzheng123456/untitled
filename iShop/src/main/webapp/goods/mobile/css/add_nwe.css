@@ -59,23 +59,35 @@ address, cite, dfn, em, var {
   background: #ededed; }
 
 .header_title {
+  background: #fff;
   height: 1.0628rem;
-  margin-left: 0.48309rem;
+  padding-left: 0.48309rem;
   padding-right: 0.24155rem;
   line-height: 1.0628rem;
   color: #888;
-  border-bottom: 0.02415rem solid #ededed; }
+  position: relative; }
   [data-dpr="1"] .header_title {
     font-size: 15px; }
   [data-dpr="2"] .header_title {
     font-size: 30px; }
   [data-dpr="3"] .header_title {
     font-size: 45px; }
+  .header_title .header_title_l {
+    float: left;
+    height: 100%; }
   .header_title .header_title_r {
-    float: right; }
+    float: right;
+    outline: none;
+    color: #888;
+    margin-left: 0.24155rem;
+    line-height: 1.0628rem;
+    height: 100%;
+    padding-right: 0.24155rem;
+    text-align: right; }
 
 .action {
   height: 1.20773rem;
+  background: #fff;
   padding-left: 0.48309rem;
   line-height: 1.20773rem;
   color: #888; }
@@ -140,6 +152,7 @@ address, cite, dfn, em, var {
       height: 0.33816rem; }
 
 .container_picture {
+  background: #fff;
   padding: 0.12077rem 0.12077rem 0.12077rem 0.28986rem;
   overflow: hidden; }
   .container_picture .picture {
@@ -150,7 +163,8 @@ address, cite, dfn, em, var {
     background: #f3f3f3;
     margin-right: 0.12077rem;
     margin-bottom: 0.12077rem;
-    border: 0.02415rem solid #dfdfdf; }
+    border: 0.02415rem solid #dfdfdf;
+    text-align: center; }
     .container_picture .picture .picture_btn {
       width: 0.48309rem;
       height: 0.48309rem;
@@ -158,6 +172,9 @@ address, cite, dfn, em, var {
       position: absolute;
       top: 0.02415rem;
       right: 0.02415rem; }
+    .container_picture .picture img {
+      max-height: 100%;
+      max-width: 100%; }
   .container_picture .picture_add {
     position: relative;
     float: left;
@@ -188,8 +205,9 @@ address, cite, dfn, em, var {
   border-bottom: 0.02415rem solid #ededed; }
 
 .introduction {
+  background: #fff;
   height: 1.0628rem;
-  margin-left: 0.48309rem;
+  padding-left: 0.48309rem;
   padding-right: 0.24155rem;
   line-height: 1.0628rem;
   color: #888; }
@@ -201,6 +219,7 @@ address, cite, dfn, em, var {
     font-size: 45px; }
 
 .describe_box {
+  background: #fff;
   padding-left: 0.48309rem;
   padding-top: 0.12077rem; }
 
@@ -208,7 +227,8 @@ address, cite, dfn, em, var {
   resize: none;
   width: 100%;
   outline: none;
-  height: 2.17391rem; }
+  height: 2.17391rem;
+  color: #888; }
 
 #describe::-webkit-input-placeholder {
   font-size: 0.36232rem;
@@ -225,5 +245,134 @@ address, cite, dfn, em, var {
 #describe:-ms-input-placeholder {
   font-size: 0.36232rem;
   color: #bbb; }
+
+.product_list {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; }
+
+.search_box {
+  padding: 0.24155rem;
+  height: 1.30435rem;
+  position: fixed;
+  background: #fff;
+  top: 0;
+  left: 0;
+  right: 0; }
+  .search_box input {
+    width: 100%;
+    border-radius: 0.12077rem;
+    outline: none;
+    padding-left: 0.12077rem;
+    color: #888;
+    line-height: 0.82126rem;
+    height: 0.82126rem;
+    border: 0.02415rem solid #dedede; }
+    [data-dpr="1"] .search_box input {
+      font-size: 14px; }
+    [data-dpr="2"] .search_box input {
+      font-size: 28px; }
+    [data-dpr="3"] .search_box input {
+      font-size: 42px; }
+  .search_box .search {
+    position: absolute;
+    color: #acacac;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+    [data-dpr="1"] .search_box .search {
+      font-size: 14px; }
+    [data-dpr="2"] .search_box .search {
+      font-size: 28px; }
+    [data-dpr="3"] .search_box .search {
+      font-size: 42px; }
+    .search_box .search .icon {
+      display: inline-block;
+      position: relative;
+      top: -0.04831rem;
+      vertical-align: middle;
+      width: 0.36232rem;
+      height: 0.36232rem;
+      margin-right: 0.12077rem; }
+
+.list_box {
+  margin-top: 1.78744rem;
+  margin-bottom: 1.54589rem; }
+
+.list {
+  padding: 0.24155rem;
+  overflow: hidden; }
+  .list .list_picture {
+    width: 2.05314rem;
+    height: 2.05314rem;
+    float: left;
+    text-align: center;
+    margin-right: 0.24155rem; }
+    .list .list_picture img {
+      max-width: 100%;
+      max-height: 100%; }
+  .list .list_describe {
+    margin-left: 2.29469rem; }
+    .list .list_describe p {
+      color: #888; }
+      [data-dpr="1"] .list .list_describe p {
+        font-size: 15px; }
+      [data-dpr="2"] .list .list_describe p {
+        font-size: 30px; }
+      [data-dpr="3"] .list .list_describe p {
+        font-size: 45px; }
+    .list .list_describe p:nth-child(2) {
+      margin-bottom: 0.24155rem; }
+    .list .list_describe .list_name {
+      width: 100%;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      margin-bottom: 0.24155rem; }
+    .list .list_describe .list_price {
+      color: #dd6c5e; }
+
+.changeBcColor {
+  background-color: #bae4e8; }
+
+.complete_box {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.3285rem;
+  background: #fff;
+  box-shadow: 0rem 0.72464rem 1.44928rem #000; }
+  .complete_box .btn_box {
+    padding: 0.24155rem; }
+    .complete_box .btn_box .count {
+      color: #888; }
+      [data-dpr="1"] .complete_box .btn_box .count {
+        font-size: 14px; }
+      [data-dpr="2"] .complete_box .btn_box .count {
+        font-size: 28px; }
+      [data-dpr="3"] .complete_box .btn_box .count {
+        font-size: 42px; }
+    .complete_box .btn_box .complete_btn {
+      float: right;
+      width: 1.93237rem;
+      height: 0.84541rem;
+      border-radius: 0.12077rem;
+      background: #8fbae2;
+      color: #fff;
+      line-height: 0.84541rem;
+      text-align: center; }
+      [data-dpr="1"] .complete_box .btn_box .complete_btn {
+        font-size: 15px; }
+      [data-dpr="2"] .complete_box .btn_box .complete_btn {
+        font-size: 30px; }
+      [data-dpr="3"] .complete_box .btn_box .complete_btn {
+        font-size: 45px; }
 
 /*# sourceMappingURL=add_nwe.css.map */

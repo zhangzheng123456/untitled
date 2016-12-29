@@ -223,7 +223,6 @@ jQuery(function(){
 	//获取手机系统
 	function getWebOSType(){
 		var browser = navigator.userAgent;
-		var browser = navigator.userAgent;
 		var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端 
 		var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 		if(isAndroid){
@@ -250,10 +249,23 @@ jQuery(function(){
 		var param=JSON.stringify(param);
 		var osType = getWebOSType();
 		if(osType=="iOS"){
-			NSJumpToWebViewForWeb(param);
+			try{
+                window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+                
+            } catch(err){
+                NSJumpToWebViewForWeb(param);
+            }
 		}else if(osType == "Android"){
 			iShop.jumpToWebViewForWeb(param);
 		}
 	}
 });
+function doAppWebHeaderRefresh(param){
+	alert(param);
+	if(param=="headerRefresh"){
+		$(".header_line").css({"position":"absolute"});
+	}else{
+		$(".header_line").css({"position":"fixed"});
+	}
+}
 

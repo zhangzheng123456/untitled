@@ -166,7 +166,8 @@ public class MessageServiceImpl implements MessageService {
         String message_receiver = json.get("message_receiver").toString();
         String message_title = json.get("message_title").toString();
         String message_content = json.get("message_content").toString();
-        String message_type = json.get("message_type").toString();
+//        String message_type = json.get("message_type").toString();
+        String message_type = "后台通知";
 
         Data data_group_code = new Data("group_code", "", ValueType.PARAM);
         Data data_phone = new Data("phone", "", ValueType.PARAM);

@@ -1,4 +1,3 @@
-
     jQuery('#buy').click(function () {
         jQuery(this).css({backgroundColor: "#fff", color: "#dd6c5e"});
         jQuery('#match').css({backgroundColor: "#dfdfdf", color: "#8d8d8d"});
@@ -65,7 +64,7 @@
                 }
             }
             jQuery('#content').html(list.goods_description);
-            jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
+            jQuery('.detail').html('<p class="product_code">商品编号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
         }
         document.title = list.goods_name;
         goodsName=list.goods_name;
@@ -114,11 +113,13 @@
                                     
                                 }
                             }
-                            if(dapei_goodsimage[0].indexOf("http")!==-1){
-                                goods_image=dapei_goodsimage[0];
-                            }
-                            if(dapei_goodsimage[0].indexOf("http")==-1){
-                                goods_image="image/goods_default_image.png";
+                            if(dapei_goodsimage.length>0){
+                                if(dapei_goodsimage[0].indexOf("http")!==-1){
+                                    goods_image=dapei_goodsimage[0];
+                                }
+                                if(dapei_goodsimage[0].indexOf("http")==-1){
+                                    goods_image="image/goods_default_image.png";
+                                }
                             }
                             li+='<a href="goods.html?corp_code='
                                 + corp_code
@@ -192,7 +193,11 @@
         var param=JSON.stringify(param);
         var osType = getWebOSType();
         if(osType=="iOS"){
-            NSJumpToWebViewForWeb(param);
+            try{
+                window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+            } catch(err){
+                NSJumpToWebViewForWeb(param);
+            }
         }else if(osType == "Android"){
             iShop.jumpToWebViewForWeb(param);
         }

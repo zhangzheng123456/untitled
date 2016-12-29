@@ -400,6 +400,7 @@ function POST(a,b) {
     param["area_code"] = area_code;
     param["corp_code"] = corp_code;
     param["searchValue"] = value;
+    console.log(param.searchAreaCode);
     oc.postRequire("post", "/area/stores/check", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -411,7 +412,11 @@ function POST(a,b) {
             $(".table tbody").empty();
             if (list.length <= 0) {
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
+                if(param.searchAreaCode!==""){
+                    $(".table").append("<p>当前区域下无店铺</p>");
+                }else if(param.searchAreaCode==""){
+                    $(".table").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
+                }
             } else if (list.length > 0) {
                 $(".table p").remove();
                 superaddition(list, inx);
