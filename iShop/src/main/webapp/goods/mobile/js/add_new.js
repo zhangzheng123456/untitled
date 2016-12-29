@@ -7,6 +7,7 @@ var addProduct={
      html:'',
      next:false,
      searchName:'',
+     r_match_goods:[],
      oc:new ObjectControl(),
      oss:new OSS.Wrapper({
     region: 'oss-cn-hangzhou',
@@ -34,28 +35,12 @@ var addProduct={
                 return false;
             }
         }.bind(this));
-        $('button').click(function () {
-            var img=[];
-            $('.picture>img').each(function () {
-                img.push(this.src)
-            });
-            param.corp_code='C10000';
-            param.d_match_title=$('.header_title_r').html();
-            param.d_match_image=img.join(',');
-            param.d_match_desc='';
-            param.user_code='';
-            console.log(param)
-            // doAppWebRefresh(param);
-        });
+        $('#submit').click(this.completeToApp.bind(this));
         //获取商品列表
         var me=this;
         $('#picture').click(function () {
             $('.bg').hide();
             me.getList();
-            //点击效果
-            $('.list_box').on('click','.list',function () {
-                $(this).toggleClass("changeBcColor");
-            });
             //显示商品列表
             $('.product_list').show();
             //输入框显示控制
@@ -70,16 +55,43 @@ var addProduct={
             });
         });
         $(window).bind('scroll',this.scroll.bind(this));
-        $('.complete_btn').click(this.choose);
+        $('.complete_btn').click(this.choose.bind(this));
         $('.search_box input').keydown(function (e) {
             if(e.keyCode==13){
                 me.searchName=$(this).val();
+                me.html='';
                 me.getList();
             }
         });
+        $('.search_box .search').click(function () {
+            $('.search_box input').trigger('focus')
+        });
+        //点击效果
+        $('.list_box').on('click','.list',function () {
+            $(this).toggleClass("changeBcColor");
+        });
+    },
+    completeToApp:function (){
+        var img=[];
+        $('.picture>img').each(function () {
+            img.push(this.src)
+        });
+        this.param.corp_code='10000';
+        this.param.d_match_title=$('.header_title_r').html();
+        this.param.d_match_image=img.join(',');
+        this.param.d_match_desc='';
+        this.param.user_code='';
+        this.param.r_match_goods=this.r_match_goods;
+        console.log(this.param);
+        //请求/api/shopMatch/addGoodsByWx
+        this.oc.postRequire("post","/api/shopMatch/addGoodsByWx",'',this.param,function(data){
+            console.log(data)
+        })
+        // doAppWebRefresh(param);
     },
     choose:function () {
-        var  r_match_goods=[];
+         this.r_match_goods=[];
+        var me=this;
         $('.list_box').find('.changeBcColor').each(function () {
             var r_match_goodsCode=$(this).find('.list_number').html();
             var r_match_goodsImage=$(this).find('img').attr('src');
@@ -91,9 +103,17 @@ var addProduct={
                         "r_match_goodsName":r_match_goodsName
 
             };
-            r_match_goods.push(param);
+            me.r_match_goods.push(param);
         });
-        $('.count').html('已选择'+r_match_goods.length+'个');
+        console.log(this.r_match_goods);
+        $('.count').html('已选择'+this.r_match_goods.length+'个');
+        $('.bg').show();
+        $('.product_list' ).hide();
+        //添加商品图片
+        for(var i=0;i<this.r_match_goods.length;i++){
+            this.showImg(this.r_match_goods[i].r_match_goodsImage,'');
+        }
+
     },
     scroll:function () {
         var bot = 50; //bot是底部距离的高度
@@ -112,7 +132,7 @@ var addProduct={
         var nowHTML = tempHTML;
         nowHTML = nowHTML.replace('${storeAs}',storeAs);
         html+=nowHTML;
-        $('#photo').before(html);
+        arguments.length==1? $('#photo').before(html): $('#picture').before(html);
         this.deleteIt();
     },
     deleteIt:function (){
@@ -128,7 +148,6 @@ var addProduct={
         var row_num=0;
         var productName=this.searchName;
         var me=this;
-        //取消解绑
         this.oc.postRequire("get","/api/shopMatch/getGoodsByWx?corp_code="+corp_code+"&pageSize="+pageSize+"&pageIndex="+pageIndex+"&categoryId="+categoryId+"&row_num="+row_num+"&productName="+productName,'','',function(data){
         console.log(data);
         console.log(JSON.parse(data.message));
@@ -194,8 +213,5 @@ var addProduct={
 }
 jQuery(function(){
     //完成时的操作
-    function completeToApp() {
-
-    }
     addProduct.init();
 });

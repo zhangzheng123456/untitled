@@ -40,9 +40,20 @@ address,cite,dfn,em,var{font-style:normal;}
 .header_title{
   background: #fff;
   @include title;
-  //border-bottom: rem(1) solid #ededed;
+  position:relative;
+  .header_title_l{
+    float: left;
+    height: 100%;
+  }
   .header_title_r{
     float: right;
+    outline: none;
+    color:#888;
+    margin-left: rem(10);
+    line-height: rem(44);
+    height: 100%;
+    padding-right: rem(10);
+    text-align: right;
   }
 }
 .action{
@@ -141,6 +152,7 @@ address,cite,dfn,em,var{font-style:normal;}
   width: 100%;
   outline: none;
   height: rem(90);
+  color:#888;
 }
 #describe::-webkit-input-placeholder{font-size: rem(15);color:#bbb}
 #describe:-moz-placeholder{font-size: rem(15);color:#bbb}
@@ -193,8 +205,8 @@ address,cite,dfn,em,var{font-style:normal;}
   }
 }
 .list_box{
-margin-top: rem(74);
-  margin-bottom: rem(54);
+  margin-top: rem(74);
+  margin-bottom: rem(64);
 }
 .list{
   padding: rem(10);
@@ -202,11 +214,13 @@ margin-top: rem(74);
   .list_picture{
     width: rem(85);
     height: rem(85);
-    background: #eedeed;
+    //background: #eedeed;
     float: left;
+    text-align: center;
     margin-right: rem(10);
     img{
-      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
     }
   }
   .list_describe{
