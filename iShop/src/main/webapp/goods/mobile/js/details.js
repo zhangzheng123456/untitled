@@ -134,11 +134,11 @@ $('.editor').click(function () {
     window.location = "add_new.html?"+str;
 });
 //删除
-$('.delete').click(function () {
-    ///api/shopMatch/delete          get //删除
-    //传corp_code，d_match_code
-    
-}
+//$('.delete').click(function () {
+//    ///api/shopMatch/delete          get //删除
+//    //传corp_code，d_match_code
+//
+//}
 window.onload = function () {
     getPage();
     setInterval(function () {

@@ -239,7 +239,8 @@ input::-webkit-input-placeholder {
   z-index: 1; }
   .header_line .search {
     padding-left: 10px;
-    margin-right: 90px; }
+    margin-right: 90px;
+    background-color: #e8e8e8; }
   .header_line .screen {
     width: 70px;
     height: 30px;
@@ -266,7 +267,8 @@ input::-webkit-input-placeholder {
     border-radius: 5px;
     color: #8e8e93;
     font-size: 18px;
-    margin-top: 12px; }
+    margin-top: 12px;
+    background-color: #fff; }
 
 .allShops {
   width: 100%;
