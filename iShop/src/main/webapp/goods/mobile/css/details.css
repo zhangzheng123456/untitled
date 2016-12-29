@@ -22,25 +22,29 @@ body {
 .main_btn {
   position: absolute;
   bottom: 15px;
-  right: 1.5%;
-  width: 25%;
+  right: 0%;
+  width: 30%;
   height: 1.20773rem; }
 
 .main_btn .editor {
   background-size: contain;
   background-position: 50% 50%;
-  background: url("../image/editor_00.jpg") no-repeat;
+  background-repeat: no-repeat;
+  background-image: url(../image/editor_00.jpg);
   height: 1.20773rem;
-  width: 1.20773rem;
-  float: left; }
+  width: 40%;
+  float: left;
+  border-radius: 300px; }
 
 .main_btn .delete {
   background-size: contain;
   background-position: 50% 50%;
-  background: url("../image/editor_01.jpg") no-repeat;
+  background-repeat: no-repeat;
+  background-image: url(../image/editor_01.jpg);
   height: 1.20773rem;
-  width: 1.20773rem;
-  float: left; }
+  width: 40%;
+  float: left;
+  border-radius: 300px; }
 
 .main_list {
   width: 100%;

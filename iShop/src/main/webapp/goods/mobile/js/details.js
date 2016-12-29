@@ -101,7 +101,9 @@ $('.bottom div img').click(function () {
 //点击编辑
 $('.editor').click(function () {
     var d_match_code = $.cookie('d_match_code');
-    window.location = "add_new.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_code="+user_code+"";
+    var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_code="+user_code;
+    str=encodeURIComponent(str);
+    window.location = "add_new.html?"+str;
 });
 window.onload = function () {
     getPage();
