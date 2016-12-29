@@ -53,12 +53,13 @@ function getMy(){
 }
 //页面加载获取数据
 function  pageVal(list,type){
-    var tempHTML = '<ul class="goods_box" id="${d_match_code}" title="${d_match_title}"> <li class="the_img"><img src="${d_match_image}" alt=""/></li> <li class="the_list"> ';
+    var tempHTML = '<ul class="goods_box" id="${d_match_code}" title="${d_match_title}" > <li class="the_img" id="${id}"><img src="${d_match_image}" alt=""/></li> <li class="the_list"> ';
     var tempHTML2 =' <img src="${r_match_goodsImage}" alt="" id="${r_match_goodsCode}"/>';
     var tempHTML3 =' <span class="num">${num}</span> </li> <li class="add"> <div><img src="image/icon_点赞@2x.png" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="image/icon_收藏@2x.png" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
     var html = ''
     for(i=0;i<list.length;i++){
         var d_match_code = list[i].d_match_code;
+        var id = list[i].id;
         var d_match_title = list[i].d_match_title;
         var d_match_image = list[i].d_match_image;
         var d_match_image_num = d_match_image.indexOf(",");
@@ -70,6 +71,7 @@ function  pageVal(list,type){
         var r_match_goods = list[i].r_match_goods;
         var nowHTML = tempHTML;
         nowHTML = nowHTML.replace('${d_match_code}',d_match_code);
+        nowHTML = nowHTML.replace('${id}',id);
         nowHTML = nowHTML.replace('${d_match_title}',d_match_title);
         nowHTML = nowHTML.replace('${d_match_image}',d_match_image);
         html+= nowHTML;
@@ -100,7 +102,6 @@ function  pageVal(list,type){
         }
         var like_status = list[i].like_status; //点赞
         var collect_status = list[i].collect_status; //收藏
-        click();
         if(like_status=='Y'){
             $('.add div img').eq(0).attr('src','image/icon_点赞_已点赞@2x.png');
         }else if(like_status=='N'){
@@ -111,8 +112,10 @@ function  pageVal(list,type){
         }else if(collect_status=='N'){
             $('.add div img').eq(2).attr('src','image/icon_收藏@2x.png');
         }
-        toNext();
+
     }
+    toNext();
+    click();
 }
 //控制宽高
 function setTime(){
@@ -125,7 +128,7 @@ function setTime(){
 }
 //点击事件-点赞-评论-收藏
 function  click(){
-    $('.add div img').click(function () {
+    $('.add div img').unbind().bind("click",function () {
         var src = $(this).attr("src");
         var corp_code = 'C10000';
         var d_match_code = $(this).parents('.goods_box').attr('id');  //秀搭编号
@@ -145,7 +148,7 @@ function  click(){
             $(this).attr('src','image/icon_点赞@2x.png');
             var val = $(this).next('.add_num').text();
             $(this).next('.add_num').text(parseInt(val)-1);
-            operate_type = 'like';
+            operate_type = 'dislike';
             comment_text='';
             status = 'N';
         }
@@ -168,7 +171,7 @@ function  click(){
             $(this).attr('src','image/icon_收藏@2x.png');
             var val = $(this).next('.add_num').text();
             $(this).next('.add_num').text(parseInt(val)-1);
-            operate_type = 'collect';
+            operate_type = 'discollect';
             comment_text='';
             status = 'N';
         }
@@ -181,6 +184,7 @@ function  click(){
         param["comment_text"]=comment_text;
         oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
             if (data.code == "0") {
+                console.log('调用事件执行')
                 console.log(data);
                 //pageVal(num);
             }else if(data.code =='-1'){
@@ -192,11 +196,13 @@ function  click(){
 //跳转
 function toNext(){
     $('.the_img img').click(function () {
+        var id  = $(this).parents('.goods_box').attr('id');
+        $.cookie('id',id);
         window.location = 'details.html';
     })
-    $('.the_list img').click(function () {
-        window.location = 'details.html';
-    })
+    //$('.the_list img').click(function () {
+    //    window.location = 'details.html';
+    //})
 }
 window.onload = function () {
     //默认推荐

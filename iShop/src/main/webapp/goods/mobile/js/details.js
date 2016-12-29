@@ -2,6 +2,7 @@
  * Created by huxue on 2016/12/28.
  */
 var oc = new ObjectControl();
+var user_code = '10000';
 //    选项卡
 $('.main_select div').click(function () {
     $('.main_select div').css('background-color','#ededed');
@@ -15,6 +16,21 @@ $('.main_select div').eq(1).click(function () {
     $('.main_content').eq(1).css('display','block');
     $('.main_content').eq(0).css('display','none');
 });
+function getPage(){
+   var id = $.cookie('id');
+    oc.postRequire("get", "/api/shopMatch/selectById?id=" + id +"&user_code=" + user_code+"", "0", "", function (data) {
+        if (data.code == "0") {
+            //var message = JSON.parse(data.message);
+            //var list = message.list;
+            //pageVal(list,type);
+        }else if(data.code =='-1'){
+            console.log(data);
+        }
+    });
+}
+function pagaVal(){
+
+}
 //    点赞-收藏-评论
 $('.bottom div img').click(function () {
     var src = $(this).attr("src");
@@ -79,6 +95,7 @@ $('.bottom div img').click(function () {
     })
 });
 window.onload = function () {
+    getPage();
     setInterval(function () {
         var heightVal = document.body.clientWidth;
         $('.main_img').css('height',heightVal);
