@@ -148,6 +148,7 @@ public class MongoUtils {
             DBObject obj = dbCursor.next();
             String id = obj.get("_id").toString();
             obj.put("id", id);
+            obj.removeField("_id");
             list.add(obj.toMap());
         }
         return list;

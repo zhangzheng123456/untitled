@@ -152,7 +152,7 @@ public class TestFeedbackService {
 //                i1+= managerService.insert(tablePrivilege);
 //
 //            }
-            System.out.println("-----------:");
+            System.out.println("-----------:"+Math.round(Math.random() * 9)+ Math.round(Math.random() * 9)+ Math.round(Math.random() * 9));
 
          //   ------------------------------测试登录次数------------------------------------------------
 //            Map<String, String> map=new HashMap<String, String>();
