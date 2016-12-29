@@ -20,12 +20,12 @@ $('.main_select div').eq(1).click(function () {
 });
 function getPage(){
    var d_match_code = $.cookie('d_match_code');
-    oc.postRequire("get", "/api/shopMatch/selectById?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"", "0", "", function (data) {
+    oc.postRequire("get", "/api/shopMatch/selectById?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"user_code"+user_code+"", "0", "", function (data) {
         if (data.code == "0") {
             //var message = JSON.parse(data.message);
             //var list = message.list;
             //pageVal(list,type);
-        }else if(data.code =='-1'){
+        }else if(data.code =='-1'){+
             console.log(data);
         }
     });
