@@ -21,23 +21,27 @@ var addProduct={
         //判断是否进入编辑页面
         this.theRequest.d_match_code?this.getValue():'';
         $("#file").on('change','',function(e){
-            var file = e.target.files[0];
-            var pos=file.name.lastIndexOf(".");
-            var imgclass=file.name.substring(pos+1,file.name.length);
-            if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
-                var storeAs='ShowImage/'+pos;
-                var me=this;
-                this.oss.multipartUpload(storeAs, file).then(function (result) {
-                    var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
-                    me.showImg(storeAs);
-                }).catch(function (err) {
-                    console.log(err);
-                });
-            }else
-            {
-                alert("请确保文件为图像类型");
-                return false;
+            var files= e.target.files;
+            for(var key in files){
+                if(!files[key].type)return;
+                var pos=files[key].name.lastIndexOf(".");
+                var imgclass=files[key].name.substring(pos+1,files[key].name.length);
+                if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
+                    var storeAs='ShowImage/'+pos;
+                    var me=this;
+                    this.oss.multipartUpload(storeAs, files[key]).then(function (result) {
+                        var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
+                        me.showImg(storeAs);
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }else
+                {
+                    alert("请确保文件为图像类型");
+                    return false;
+                }
             }
+
         }.bind(this));
         //模拟APP
         $('#submit').click(this.completeToApp.bind(this));
@@ -45,9 +49,10 @@ var addProduct={
         var me=this;
         $('#picture').click(function () {
             $('.bg').hide();
-            me.r_match_goods=[];
-            $('#picture_box .picture').remove();
             me.getList();
+            //联通APP
+            var type={type:'新增商品列表'}
+            me.doAppWebRefresh(JSON.stringify(type));
             //显示商品列表
             $('.product_list').show();
             //输入框显示控制
@@ -95,6 +100,7 @@ var addProduct={
         this.oc.postRequire("post","/api/shopMatch/addGoodsByWx",'',this.param,function(data){
             console.log(data);
             if(data.code==0){
+                //联通APP
                 this.doAppWebRefresh('success');
             }else if(data.code==-1){
                 this.doAppWebRefresh(' defeat');
@@ -102,7 +108,12 @@ var addProduct={
         }.bind(this))
     },
     choose:function () {
-         this.r_match_goods=[];
+        //联通APP
+        var remove={'removeView':'完成'}
+        this.doAppWebRefresh(JSON.stringify(remove));
+
+        this.r_match_goods=[];
+        $('#picture_box .picture').remove();
         var me=this;
         $('.list_box').find('.changeBcColor').each(function () {
             var r_match_goodsCode=$(this).find('.list_number').html();
@@ -116,14 +127,12 @@ var addProduct={
             };
             me.r_match_goods.push(param);
         });
-        console.log(this.r_match_goods);
         $('.bg').show();
         $('.product_list' ).hide();
         //添加商品图片
         for(var i=0;i<this.r_match_goods.length;i++){
             this.showImg(this.r_match_goods[i].r_match_goodsImage,'');
         }
-
     },
     scroll:function () {
         var bot = 50; //bot是底部距离的高度
@@ -151,7 +160,7 @@ var addProduct={
     });
 },
     getList:function() {
-        var corp_code='C10160';
+        var corp_code=this.theRequest.corp_code;
         var pageSize=10;
         var pageIndex=this.page;
         var categoryId='';
@@ -159,8 +168,6 @@ var addProduct={
         var productName=$('.search_box input').val().trim();
         var me=this;
         this.oc.postRequire("get","/api/shopMatch/getGoodsByWx?corp_code="+corp_code+"&pageSize="+pageSize+"&pageIndex="+pageIndex+"&categoryId="+categoryId+"&row_num="+row_num+"&productName="+productName,'','',function(data){
-        console.log(data);
-        console.log(JSON.parse(data.message));
         if(data.code==0){
             var list=JSON.parse(data.message).productList;
             if (list.length <= 0) {
@@ -168,13 +175,25 @@ var addProduct={
                     me.next = false;
                 }
             } else {
+                var arr_match=me.r_match_goods;
+                var arr_code=[];
+                for(var i=0;i<arr_match.length;i++){
+                    arr_code.push(arr_match[i].r_match_goodsCode);
+                }
                 for (var i = 0; i < list.length; i++) {
-                    me.html += '<li class="list"> <div class="list_picture"><img src="' + list[i].imageUrl +
-                        '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
-                        '</p> <p>货号：<span class="list_number">' + list[i].productId +
-                        '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
-                        '</span></p> </div> </li>';
-
+                    if(arr_code.indexOf(list[i].productId)!=-1){
+                        me.html += '<li class="list changeBcColor"> <div class="list_picture"><img src="' + list[i].imageUrl +
+                            '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
+                            '</p> <p>货号：<span class="list_number">' + list[i].productId +
+                            '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
+                            '</span></p> </div> </li>';
+                    }else{
+                        me.html += '<li class="list"> <div class="list_picture"><img src="' + list[i].imageUrl +
+                            '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
+                            '</p> <p>货号：<span class="list_number">' + list[i].productId +
+                            '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
+                            '</span></p> </div> </li>';
+                    }
                 }
                 me.next=true;
                 me.searchName='';
@@ -201,6 +220,11 @@ var addProduct={
     getValue:function () {
         //编辑页面
         console.log(this.theRequest);
+    },
+    returnToApp:function () {
+        $('.bg').show();
+        //显示商品列表
+        $('.product_list').hide();
     },
     //获取手机系统
     getWebOSType:function (){
@@ -241,4 +265,5 @@ jQuery(function(){
     //完成时的操作
     addProduct.init();
     // addProduct.completeToApp();
+    // addProduct.returnToApp()
 });
