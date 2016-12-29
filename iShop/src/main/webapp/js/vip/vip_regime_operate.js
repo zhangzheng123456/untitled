@@ -4,7 +4,7 @@ var oc = new ObjectControl();
 }(this,function(){
 	var regimejs={};
 	regimejs.param={//定义参数类型
-		"price":"",
+		"price":true,
     	"area_codes":"",
     	"area_names":"",
     	"brand_codes":"",
@@ -17,7 +17,8 @@ var oc = new ObjectControl();
 		"shop_next":false,
 		"staff_num":1,
 		"staff_next":false,
-		"isscroll":false
+		"isscroll":false,
+		"vip_type":""
 	};
 	regimejs.isEmpty=function(obj){
 		if(obj.trim() == "" || obj.trim() == undefined){
@@ -86,6 +87,8 @@ var oc = new ObjectControl();
 		$("#edit_save").click(function(){
 			if(regimejs.firstStep()){
 				if(!self.param.price){
+					$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
+					$("#vip_type").next('.hint').children().addClass("error_tips");
 					return;
 				}
 				var param={};
@@ -234,19 +237,22 @@ var oc = new ObjectControl();
 		//获取vip类型
 		$("#vip_type").blur(function(){
 			var param={};
+			var vip_type=$("#vip_type").val();
 			param["corp_code"]=$("#OWN_CORP").val();//企业编号
-			param["vip_type"]=$("#vip_type").val();//会员类型
+			param["vip_type"]=vip_type;//会员类型
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/vipRules/vipTypeExist","",param, function(data){
-				if(data.code=="0"){
-					div.html("");
-					self.param.price=true;
-				}else if(data.code=="-1"){
-					div.addClass("error_tips");
-					div.html(data.message);
-					self.param.price=false;
-				}
-			})
+			if(vip_type!==""&&vip_type!==self.param.vip_type){
+				oc.postRequire("post","/vipRules/vipTypeExist","",param, function(data){
+					if(data.code=="0"){
+						div.html("");
+						self.param.price=true;
+					}else if(data.code=="-1"){
+						div.addClass("error_tips");
+						div.html(data.message);
+						self.param.price=false;
+					}
+				})
+			}
 		});
 		//点击input框显示出店铺列表
 		$("#shop_list").click(function(){
@@ -618,6 +624,7 @@ var oc = new ObjectControl();
 				var message=JSON.parse(data.message);
 				var corp_code=message.corp_code;
 				$("#vip_type").val(message.vip_type);//会员类型
+				self.param.vip_type=message.vip_type;
 				$("#discount").val(message.discount);//会员折扣
 				$("#join_threshold").val(message.join_threshold);//招募门槛
 				$("#upgrade_amount").val(message.upgrade_amount);//升级门槛金额
@@ -721,6 +728,7 @@ var oc = new ObjectControl();
     						self.param.brand_names="";
     						self.param.store_codes="";
     						self.param.store_names="";
+    						self.param.vip_type="";
     						code=corp_code1;
     						$("#shop_list").val("已选0个");
     						$("#vip_type").val("");
@@ -739,6 +747,7 @@ var oc = new ObjectControl();
     					self.param.brand_names="";
     					self.param.store_codes="";
     					self.param.store_names="";
+    					self.param.vip_type="";
     					code=corp_code1;
     					$("#shop_list").val("已选0个");
     					$("#vip_type").val("");
