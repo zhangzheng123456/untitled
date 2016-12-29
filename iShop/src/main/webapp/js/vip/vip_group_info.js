@@ -948,6 +948,13 @@ var vip_group_info={
             var val=$(this).text();
             $(this).parent().siblings("span").html(val);
             $(this).parent().hide();
+            $(this).parent().siblings("span").attr("data-type",$(this).attr("data-type"));
+           if($(this).parents(".chart_head").siblings(".data_table").is(":hidden")){
+               var type= $(this).parent().siblings("span").attr("data-type")=="piece"?"trade_amt":"trade_num";
+               var chartType=$(this).parents(".chart_module").attr("data-id");
+               vip_group_info.init_chart(type,chartType);
+           }
+
         })
     },
     transShowModel:function(){
@@ -1025,7 +1032,7 @@ var vip_group_info={
             }
         });
     },
-    init_chart:function(id) {
+    init_chart:function(id,showType) {
         var myChart = echarts.init(document.getElementById(id));
         var option_pie = {
             color:['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2','#5C778F','#4D5F7C','#444960','#2C3244'] ,
@@ -1326,8 +1333,8 @@ var vip_group_info={
             ]
         };
         if(id == "type"){
-            var typeData=vip_group_info.allChartsData.Type.trade_amt;
-            var typeLegendAll=vip_group_info.allChartsData.Type.trade_amt;
+            var typeData=vip_group_info.allChartsData.Type.trade_num;
+            var typeLegendAll=vip_group_info.allChartsData.Type.trade_num;
             for(var i=0;i<typeLegendAll.length;i++){
                 typeLegendAll[i].icon="12"
             }
@@ -1336,8 +1343,8 @@ var vip_group_info={
             myChart.setOption(option_pie);
         }
         if(id == "series"){
-            var typeData=vip_group_info.allChartsData.Series.trade_amt;
-            var typeLegendAll=vip_group_info.allChartsData.Series.trade_amt;
+            var typeData=vip_group_info.allChartsData.Series.trade_num;
+            var typeLegendAll=vip_group_info.allChartsData.Series.trade_num;
             for(var i=0;i<typeLegendAll.length;i++){
                 typeLegendAll[i].icon="12"
             }
@@ -1346,20 +1353,20 @@ var vip_group_info={
             myChart.setOption(option_pie);
         }
         if(id == "weeks"){
-            var weekData=vip_group_info.allChartsData.Week.trade_amt;
-            weekData.sort();
+            var weekData=vip_group_info.allChartsData.Week.trade_num;
             var weekDataArray=[];
             for(var i=0;i<weekData.length;i++){
                 weekDataArray.push(weekData[i].value);
             }
+            weekDataArray.sort(vip_group_info.sortNumber);
             for(var b=0;b<option_radar_week.radar[0].indicator.length;b++){
-                option_radar_week.radar[0].indicator[b].max=weekData[weekData.length-1].value;
+                option_radar_week.radar[0].indicator[b].max=weekDataArray[weekDataArray.length-1]*1.1;
             }
             option_radar_week.series[0].data[0].value=weekDataArray;
             myChart.setOption(option_radar_week);
         }
         if(id == "price"){
-            var priceData=vip_group_info.allChartsData.Price.trade_amt;
+            var priceData=vip_group_info.allChartsData.Price.trade_num;
             var name=[];
             var value=[];
             for(var i=0;i<priceData.length;i++){
@@ -1371,11 +1378,11 @@ var vip_group_info={
             myChart.setOption(option_bar);
         }
         if(id == "times"){
-            var TimeData=vip_group_info.allChartsData.Time.trade_amt;
+            var TimeData=vip_group_info.allChartsData.Time.trade_num;
             var name=[];
             var value=[];
             for(var i=0;i<TimeData.length;i++){
-                name.push(TimeData[i].name);
+                name.push(TimeData[i].name+":00");
                 value.push(TimeData[i].value);
             }
             option_line.xAxis[0].data=name;
@@ -1383,19 +1390,20 @@ var vip_group_info={
             myChart.setOption(option_line);
         }
         if(id == "month"){
-            var monthData=vip_group_info.allChartsData.Month.trade_amt;
+            var monthData=vip_group_info.allChartsData.Month.trade_num;
             var monthDataArray=[];
+            monthDataArray.sort(vip_group_info.sortNumber);
             for(var i=0;i<monthData.length;i++){
                 monthDataArray.push(monthData[i].value)
             }
             for(var b=0;b<option_radar_month.radar[0].indicator.length;b++){
-                option_radar_month.radar[0].indicator[b].max=monthData[monthData.length-1].value;
+                option_radar_month.radar[0].indicator[b].max=monthDataArray[monthDataArray.length-1]*1.1
             }
             option_radar_month.series[0].data[0].value=monthDataArray;
             myChart.setOption(option_radar_month);
         }
         if(id == "areas"){
-            var areaData=vip_group_info.allChartsData.Area.trade_amt;
+            var areaData=vip_group_info.allChartsData.Area.trade_num;
             option_map.series[0].data=areaData;
             myChart.setOption(option_map);
         }
@@ -1466,7 +1474,11 @@ var vip_group_info={
             });
             vip_group_info.getCharts(order);
         });
-    }
+    },
+    sortNumber:function(a,b)
+        {
+            return a - b
+        }
 };
 //删除弹框
 function frame(){
