@@ -135,7 +135,6 @@ function  click(){
         var operate_type = '';//type
         var comment_text = '';//评论内容
         var status = '';  //是否点赞or收藏
-        var status
         if(src =='image/icon_点赞@2x.png'){
             $(this).attr('src','image/icon_点赞_已点赞@2x.png');
             var val = $(this).next('.add_num').text();
@@ -154,9 +153,9 @@ function  click(){
         //    评论
         if(src =='image/icon_评论@2x.png'){
             alert('暂无该功能')
-            //operate_type = 'comment';
-            //comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
-            //status = '';
+            operate_type = 'comment';
+            comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
+            status = '';
         }
         //    收藏
         if(src =='image/icon_收藏@2x.png'){
@@ -213,28 +212,3 @@ window.onload = function () {
     //获取我的
     getMy();
 }
-//var src = $(this).attr("src");
-////    点赞
-//if(src =='image/icon_点赞@2x.png'){
-//    $(this).attr('src','image/icon_点赞_已点赞@2x.png');
-//    var val = $(this).next('.add_num').text();
-//    $(this).next('.add_num').text(parseInt(val)+1);
-//}else if (src =='image/icon_点赞_已点赞@2x.png'){
-//    $(this).attr('src','image/icon_点赞@2x.png');
-//    var val = $(this).next('.add_num').text();
-//    $(this).next('.add_num').text(parseInt(val)-1);
-//}
-////    评论
-//if(src =='image/icon_评论@2x.png'){
-//    alert('暂无该功能')
-//}
-////    收藏
-//if(src =='image/icon_收藏@2x.png'){
-//    $(this).attr('src','image/icon_收藏_已收藏@2x.png');
-//    var val = $(this).next('.add_num').text();
-//    $(this).next('.add_num').text(parseInt(val)+1);
-//}else if (src =='image/icon_收藏_已收藏@2x.png'){
-//    $(this).attr('src','image/icon_收藏@2x.png');
-//    var val = $(this).next('.add_num').text();
-//    $(this).next('.add_num').text(parseInt(val)-1);
-//}

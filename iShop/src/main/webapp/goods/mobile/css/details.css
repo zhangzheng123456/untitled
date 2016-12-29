@@ -19,6 +19,9 @@ body {
   margin-bottom: 0.24155rem;
   position: relative; }
 
+.main_img img {
+  margin: 0 auto; }
+
 .main_btn {
   position: absolute;
   bottom: 15px;
