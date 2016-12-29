@@ -11,12 +11,43 @@ body {
   overflow-y: auto; }
 
 .warp::-webkit-scrollbar {
-  width: 0px;}
+  width: 0px; }
 
 .main_img {
   width: 100%;
   background-color: #fff;
-  margin-bottom: 0.24155rem; }
+  margin-bottom: 0.24155rem;
+  position: relative; }
+
+.main_img img {
+  margin: 0 auto; }
+
+.main_btn {
+  position: absolute;
+  bottom: 15px;
+  right: 0%;
+  width: 30%;
+  height: 1.20773rem; }
+
+.main_btn .editor {
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url(../image/editor_00.jpg);
+  height: 1.20773rem;
+  width: 40%;
+  float: left;
+  border-radius: 300px; }
+
+.main_btn .delete {
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url(../image/editor_01.jpg);
+  height: 1.20773rem;
+  width: 40%;
+  float: left;
+  border-radius: 300px; }
 
 .main_list {
   width: 100%;

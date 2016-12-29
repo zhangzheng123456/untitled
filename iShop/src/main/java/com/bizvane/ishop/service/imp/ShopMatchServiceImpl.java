@@ -13,10 +13,7 @@ import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -103,10 +100,28 @@ public class ShopMatchServiceImpl implements ShopMatchService {
     }
 
 
+    public  void updRelByType(String corp_code,String d_match_code,String operate_userCode,String operate_type)throws Exception{
+
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection collection_rel = mongoTemplate.getCollection(CommonValue.table_shop_match_rel);
+        BasicDBObject queryCondition = new BasicDBObject();
+        BasicDBList values = new BasicDBList();
+        values.add(new BasicDBObject("corp_code", corp_code));
+        values.add(new BasicDBObject("d_match_code", d_match_code));
+        values.add(new BasicDBObject("operate_type", operate_type));
+        values.add(new BasicDBObject("operate_userCode", operate_userCode));
+        queryCondition.put("$and", values);
+
+        DBObject updatedValue = new BasicDBObject();
+        updatedValue.put("status", "N");
+        DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+        collection_rel.update(queryCondition, updateSetValue);
+    }
+
     public  DBObject selectByCode(String corp_code,String d_match_code)throws Exception{
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
-        BasicDBObject basicDBObject = MongoUtils.andOperation2(corp_code, d_match_code);
+        BasicDBObject basicDBObject = MongoUtils.andOperation3(corp_code, d_match_code);
         DBCursor dbObjects = cursor.find(basicDBObject);
         DBObject object=null;
         while (dbObjects.hasNext()) {
