@@ -278,7 +278,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         if (post_array.size()>0) {
             dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
         }else {
-            Map datalist = iceInterfaceService.vipBasicMethod1(page_num, page_size, corp_code,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(page_num, page_size, corp_code,request);
             dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
         }
         return dataBox;

@@ -13,6 +13,7 @@ import java.util.Map;
 public interface VipFsendService {
 
     String getVipFsendById(int id) throws Exception;
+
     VipFsend getVipFsendInfoById(int id) throws Exception;
 
     PageInfo<VipFsend> getAllVipFsendByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
