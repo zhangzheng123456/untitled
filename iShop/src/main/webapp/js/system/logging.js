@@ -331,8 +331,8 @@ function GET(a,b){
             var pageNum = message.page_number;
             superaddition(list,pageNum);
             jumpBianse();
-            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
-            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
             setPage($("#foot-num")[0],cout,pageNum,b,funcCode);
         }else if(data.code=="-1"){
             // alert(data.message);
@@ -418,10 +418,9 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;
-            var pageNum = message.page_number;
             $(".table tbody").empty();
-            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
-            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+            $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
+            $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
@@ -663,9 +662,9 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 +"'><label>"
                 +filter[i].show_name
                 +"</label>"                                                         
-                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkStart})\">"
+                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})\">"
                 +"<label class='tm20'>至</label>"
-                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})\">"
+                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})\">"
                 +"</li>";
             }else if(filter[i].type=='number'){
                 li+="<li class='isActive_select2' id='"
@@ -712,10 +711,10 @@ $('#sxk .inputs').on("keydown","input",function(){
     }
 })
 function checkStart(data){
-    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD',choose:checkEnd})");
+    $("#end").attr("onclick","laydate({elem:'#end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
 };
 function checkEnd(data){
-    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD',choose:checkStart})");
+    $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
 };
 function filtrateDown(){
     //筛选select框
