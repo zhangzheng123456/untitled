@@ -40,21 +40,6 @@ var oc = new ObjectControl();
 			return true;
 		}
 	};
-	vipCardTypeJs.checkNumber1=function(obj,hint){//检查必须是数字还要非空的状态
-		var isCode=/^[0-9]+([.]{1}[0-9]+){0,1}$/;
-		if(!this.isEmpty(obj)){
-			if(isCode.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"此处仅支持输入数字！");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	}
 	vipCardTypeJs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -75,11 +60,16 @@ var oc = new ObjectControl();
 		var self=this;
 		$("#edit_save").click(function(){
 			if(vipCardTypeJs.firstStep()){
-				if(!self.param.price){
-					$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
-					$("#vip_type").next('.hint').children().addClass("error_tips");
-					return;
-				}
+				// if(!self.param.card){
+				// 	$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
+				// 	$("#vip_type").next('.hint').children().addClass("error_tips");
+				// 	return;
+				// }
+				// if(!self.param.name){
+				// 	$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
+				// 	$("#vip_type").next('.hint').children().addClass("error_tips");
+				// 	return;
+				// }
 				var param={};
 				var corp_code=$("#OWN_CORP").val().trim();//公司编号
 				var vip_card_type_code=$("#vip_type_code").val().trim();//会员类型定义编号
@@ -94,6 +84,7 @@ var oc = new ObjectControl();
 				param["corp_code"]=corp_code;//公司编号
 				param["vip_card_type_code"]=vip_card_type_code;//上级会员类型
 				param["vip_card_type_name"]=vip_card_type_name;//会员类型
+				param["degree"]=degree;
 				param["isactive"]=isactive;//是否可用
 				var id=sessionStorage.getItem("id");//获取保存的id
 				if(id==null){
@@ -116,22 +107,42 @@ var oc = new ObjectControl();
 		$("#back_regime").click(function(){
 			$(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type.html");
 		});
-		//获取vip类型
-		$("#vip_type").blur(function(){
+		//验证会员定义编号是否唯一
+		$("#vip_type_code").blur(function(){
 			var param={};
-			var vip_type=$("#vip_type").val();
+			var vip_type_code=$("#vip_type_code").val();
 			param["corp_code"]=$("#OWN_CORP").val();//企业编号
-			param["vip_type"]=vip_type;//会员类型
+			param["vip_type_code"]=vip_type_code;//会员类型
 			var div=$(this).next('.hint').children();
-			if(vip_type!==""&&vip_type!==self.param.vip_type){
-				oc.postRequire("post","/vipRules/vipTypeExist","",param, function(data){
+			if(vip_type_code!==""&&vip_type_code!==self.param.vip_type_code){
+				oc.postRequire("post","/vipCardType/vipCardTypeCodeExist","",param, function(data){
 					if(data.code=="0"){
 						div.html("");
-						self.param.price=true;
+						self.param.code=true;
 					}else if(data.code=="-1"){
 						div.addClass("error_tips");
 						div.html(data.message);
-						self.param.price=false;
+						self.param.code=false;
+					}
+				})
+			}
+		});
+		//验证会员定义编号是否唯一
+		$("#vip_type_name").blur(function(){
+			var param={};
+			var vip_type_name=$("#vip_type_name").val();
+			param["corp_code"]=$("#OWN_CORP").val();//企业编号
+			param["vip_type_name"]=vip_type_name;//会员类型
+			var div=$(this).next('.hint').children();
+			if(vip_type_name!==""&&vip_type_name!==self.param.vip_type_name){
+				oc.postRequire("post","/vipCardType/vipCardTypeNameExist","",param, function(data){
+					if(data.code=="0"){
+						div.html("");
+						self.param.name=true;
+					}else if(data.code=="-1"){
+						div.addClass("error_tips");
+						div.html(data.message);
+						self.param.name=false;
 					}
 				})
 			}
@@ -143,15 +154,28 @@ var oc = new ObjectControl();
 		param["id"]=id;
 		whir.loading.add("",0.5);
 		oc.postRequire("post","/vipCardType/select","",param,function(data){
+			console.log(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var corp_code=message.corp_code;
 				$("#vip_type_code").val(message.vip_card_type_code);
-				$("#vip_type_name").val(message.vip_type_name);
-				$("#vip_type_degree").attr("data-value",degree);
-				var degree=$("#vip_type_degree").siblings("ul").find("li[data-value='"+message.upgrade_time+"']").text();
-				$("#vip_type_degree").val(upgrade_time);//升级门槛时间
+				$("#vip_type_name").val(message.vip_card_type_name);
+				$("#vip_type_degree").attr("data-value",message.degree);
+				$("#created_time").val(message.created_date);//创建时间
+				$("#creator").val(message.creater);//创建人
+				$("#modify_time").val(message.modified_date);//修改人
+				$("#modifier").val(message.modifier);//修改时间
+				self.param.vip_type_code=message.vip_card_type_code;
+    		    self.param.vip_type_name=message.vip_card_type_name;
+				var degree=$("#vip_type_degree").siblings("ul").find("li[data-value='"+message.degree+"']").text();
+				$("#vip_type_degree").val(degree);//
 				var input=$("#is_active")[0];//是否可用
+				//是否可用
+				if(message.isactive=="Y"){
+					input.checked=true;
+				}else if(message.isactive=="N"){
+					input.checked=false;
+				};
 				self.getcorplist(corp_code);
 			}else if(data.code=="-1"){
 				alert(data.message);
@@ -175,44 +199,23 @@ var oc = new ObjectControl();
 				}
 				$('.corp_select select').searchableSelect();
 				var code=$("#OWN_CORP").val();
-				self.getVipType(code);
 				$('.corp_select .searchable-select-input').keydown(function(event){
 					var event=window.event||arguments[0];
 					if(event.keyCode == 13){
 						var corp_code1=$("#OWN_CORP").val();
 						if(code!==corp_code1){
-							self.param.area_codes="";
-    						self.param.area_names="";
-    						self.param.brand_codes="";
-    						self.param.brand_names="";
-    						self.param.store_codes="";
-    						self.param.store_names="";
-    						self.param.vip_type="";
+							self.param.vip_type_code="";
+    						self.param.vip_type_name="";
     						code=corp_code1;
-    						$("#shop_list").val("已选0个");
-    						$("#vip_type").val("");
-    						$("#high_vip_type").val("");
-    						$("#quan_select").empty();
-    						self.getVipType(code);
 						}
 					}
 				})
 				$('.searchable-select-item').click(function(){
 					var corp_code1=$("#OWN_CORP").val();
 					if(code!==corp_code1){
-						self.param.area_codes="";
-    					self.param.area_names="";
-    					self.param.brand_codes="";
-    					self.param.brand_names="";
-    					self.param.store_codes="";
-    					self.param.store_names="";
-    					self.param.vip_type="";
+						self.param.vip_type_code="";
+    				    self.param.vip_type_name="";
     					code=corp_code1;
-    					$("#shop_list").val("已选0个");
-    					$("#vip_type").val("");
-    					$("#high_vip_type").val("");
-    					$("#quan_select").empty();
-    					self.getVipType(code);
 					}
 				})
 			}else if(data.code=="-1"){
@@ -294,5 +297,5 @@ var oc = new ObjectControl();
 	return obj;
 }));
 $(function(){
-	window.regime.init();//初始化
+	window.vipCardType.init();//初始化
 });

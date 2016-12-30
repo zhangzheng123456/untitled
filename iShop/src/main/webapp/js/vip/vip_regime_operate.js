@@ -716,7 +716,7 @@ var oc = new ObjectControl();
 				}
 				$('.corp_select select').searchableSelect();
 				var code=$("#OWN_CORP").val();
-				self.getVipType(code);
+				self.getVipCardTypes(code);
 				$('.corp_select .searchable-select-input').keydown(function(event){
 					var event=window.event||arguments[0];
 					if(event.keyCode == 13){
@@ -734,7 +734,7 @@ var oc = new ObjectControl();
     						$("#vip_type").val("");
     						$("#high_vip_type").val("");
     						$("#quan_select").empty();
-    						self.getVipType(code);
+    						self.getVipCardTypes(code);
 						}
 					}
 				})
@@ -753,7 +753,7 @@ var oc = new ObjectControl();
     					$("#vip_type").val("");
     					$("#high_vip_type").val("");
     					$("#quan_select").empty();
-    					self.getVipType(code);
+    					self.getVipCardTypes(code);
 					}
 				})
 			}else if(data.code=="-1"){
@@ -767,11 +767,29 @@ var oc = new ObjectControl();
 			whir.loading.remove();//移除加载框
 		});
 	};
-	regimejs.getVipCardTypes=function(){
+	regimejs.getVipCardTypes=function(corp_code){
+		var self=this;
 		var param={};
-		var corp_code=$("#OWN_CORP").val();
+		param["corp_code"]=corp_code;
 		oc.postRequire("post","/vipCardType/getVipCardTypes","", param, function(data) {
-			console.log(data);
+			if(data.code=="0"){
+				var list=JSON.parse(data.message).list;
+				var list=JSON.parse(list);
+				var html="<li data-value=''>无会员类型</li>";
+				for(var i=0;i<list.length;i++){
+					html+="<li data-value='"+list[i].vip_card_type_code+"' data-degree='"+list[i].degree+"'>"+list[i].vip_card_type_name+"</li>"
+				}
+				$("#vip_type").siblings("ul").html(html);
+				var degree=list[0].degree;
+				self.getHighVipCardTypes(corp_code,degree);
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: data.message
+				});
+			}
 		})
 	}
 	regimejs.getHighVipCardTypes=function(corp_code,degree){//获取vip上级会员类型
@@ -784,7 +802,7 @@ var oc = new ObjectControl();
 			var list=JSON.parse(list);
 			var html="<li data-value=''>无上级会员类型</li>";
 			for(var i=0;i<list.length;i++){
-				html+="<li data-value='"+list[i].vip_type+"'>"+list[i].vip_type+"</li>";
+				html+="<li data-value='"+list[i].vip_card_type_code+"' data-degree='"+list[i].degree+"'>"+list[i].vip_card_type_name+"</li>"
 			}
 			$("#high_vip_type").val('无上级会员类型');
 			$("#high_vip_type").siblings("ul").html(html);

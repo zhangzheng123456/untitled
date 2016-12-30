@@ -186,11 +186,6 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    // if(data.length>=1&&num>1&&num==cout){
-    //     pageNumber=num-1;
-    // }else{
-    //     pageNumber=num;
-    // }
     pageNumber=num;
     if(data.length == 0){
         var len = $(".table thead tr th").length;
@@ -203,7 +198,7 @@ function superaddition(data,num){//页面加载循环
         }
         $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
     }
-    if(data.length>0){
+    if(data.length>0&&titleArray.length>0){
         for (var i = 0; i < data.length; i++) {
             var TD="";
             var text="";
@@ -215,20 +210,7 @@ function superaddition(data,num){//页面加载循环
             for (var c=0;c<titleArray.length;c++){
                 (function(j){
                     var code=titleArray[j].column_name;
-                    if(code!=="upgrade_time"&&code!=="upgrade_amount"){
-                        TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
-                    }
-                    if(code=="upgrade_time"){
-                        if(data[i][code]!=="0"&&data[i][code]!==""){
-                           text+="最近"+data[i][code]+"个月" 
-                        }   
-                    }
-                    if(code=="upgrade_amount"){
-                        if(data[i][code]!==""){
-                            text+="累计消费满"+data[i][code]+"元";
-                        }
-                        TD+="<td><span title='"+text+"'>"+text+"</span></td>";
-                    }
+                    TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 })(c)
             }
             $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -328,10 +310,12 @@ function qjia(){
 }
 function tableTh(){ //table  的表头
     var TH="";
-    for(var i=0;i<titleArray.length;i++){
-        TH+="<th>"+titleArray[i].show_name+"</th>"
+    if(titleArray.length>1){
+        for(var i=0;i<titleArray.length;i++){
+            TH+="<th>"+titleArray[i].show_name+"</th>"
+        }
+        $("#tableOrder").after(TH);
     }
-    $("#tableOrder").after(TH);
 }
 qjia();
 //页面加载时list请求
@@ -382,7 +366,7 @@ $("#table").on("click","tbody tr",function(){
 //点击新增时页面进行的跳转
 $('#jurisdiction').on("click","#add",function(){
     sessionStorage.removeItem("id");
-    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_add.html");
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type_add.html");
 })
 //点击编辑的时候进行跳转
 $('#jurisdiction').on("click","#compile",function(){
@@ -399,7 +383,7 @@ $('#jurisdiction').on("click","#compile",function(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type_edit.html");
     }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -424,7 +408,7 @@ $("#table").on("dblclick","tbody tr",function(){
     if(id == "" || id == undefined){
          return ;
     }else{
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type_edit.html");
     }
 });
 //删除
