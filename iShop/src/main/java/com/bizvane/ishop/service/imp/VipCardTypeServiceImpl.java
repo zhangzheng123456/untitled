@@ -68,8 +68,8 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
             num = vipCardTypeMapper.insertVipCardType(vipCardType);
             if (num > 0) {
                 VipCardType vipCardType1 = getVipCardTypeByCode(vipCardType.getCorp_code(), vipCardType.getVip_card_type_code(), vipCardType.getIsactive());
-                status = String.valueOf(vipCardType1.getId());
-                System.out.print(String.valueOf(vipCardType1.getId()));
+                status = vipCardType1.getId();
+                System.out.print(vipCardType1.getId());
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
@@ -93,17 +93,19 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         String vip_card_type_name = jsonObject.get("vip_card_type_name").toString().trim();
         String degree = jsonObject.get("degree").toString().trim();
         String id = jsonObject.get("id").toString().trim();
+        int ids=Integer.valueOf(id);
         VipCardType vipCardType = getVipCardTypeById(Integer.parseInt(id));
         VipCardType vipCardType1 = getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
-
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
         int num = 0;
+
+        System.out.print(vipCardType2.getId()+"=======");
         if (list != null) {
-            if (vipCardType1 != null && id != vipCardType1.getId()) {
+            if (vipCardType1 != null && !id.equals(vipCardType1.getId())) {
                 status = "该编号已存在";
-            } else if (vipCardType2 != null && id != vipCardType2.getId()) {
-                status = "该名称已存在";
+            } else if (vipCardType2 != null&&!id.equals(vipCardType2.getId()) ) {
+                    status = "该名称已存在";
             } else {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
@@ -120,7 +122,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                     status = Common.DATABEAN_CODE_ERROR;
                 }
             }
-
         } else {
             if (vipCardType1 == null && vipCardType2 == null) {
                 vipCardType.setCorp_code(corp_code);
