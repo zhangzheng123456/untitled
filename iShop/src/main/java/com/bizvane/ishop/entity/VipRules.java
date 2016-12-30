@@ -41,6 +41,10 @@ public class VipRules {
     private String creater;
     //是否可用
     private String isactive;
+    //会员类型编号
+    private String vip_card_type_code;
+    //会员等级
+    private String degree;
 
     private Corp corp;
     private String corp_name;
@@ -205,5 +209,21 @@ public class VipRules {
 
     public void setStores(JSONArray stores) {
         this.stores = stores;
+    }
+
+    public String getVip_card_type_code() {
+        return vip_card_type_code;
+    }
+
+    public void setVip_card_type_code(String vip_card_type_code) {
+        this.vip_card_type_code = vip_card_type_code;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
     }
 }
