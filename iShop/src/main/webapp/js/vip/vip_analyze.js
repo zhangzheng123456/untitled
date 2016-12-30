@@ -310,6 +310,7 @@ $(document).on('click', function (e) {
         || e.target == $('#select_analyze_group div ul')[0]
         || e.target == $('#select_analyze_group div ul li')[0]
         || e.target == $('#select_analyze_group div s')[0]))$('#select_analyze_group').hide();
+
 });
 //加载更多
 function getMore(e) {
@@ -2020,7 +2021,7 @@ var achv = {
     choose: function (datas) {
         getData();
     }
-}
+};
 laydate(achv);
 /*****************************************************************************************************************/
 //左侧业绩选择日周年月
@@ -2124,7 +2125,10 @@ $('.chart_analyze_condition ul li').click(function () {
     init_chart(ID,type);
 });
 //图表双击放大
-$("#chart_analyze").on("dblclick",".chart_head",function () {
+$("#chart_analyze").on("dblclick",".chart_head",function (e) {
+    if(!($(e.target).is(".chart_head"))){
+        return ;
+    }
     var is_lg = $(this).parents(".chart_module").hasClass("chart_lg");
     if(is_lg == true){
         $(this).find(".chart_close_icon").trigger("click");
@@ -2148,8 +2152,8 @@ $("#chart_analyze").on("dblclick",".chart_head",function () {
 $(".chart_close_icon").click(function () {
     var is_lg = $(this).parents(".chart_module").hasClass("chart_lg");
     if(is_lg == true){
-        $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
         $(this).parents(".chart_module").removeClass("chart_lg");
+        $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
         var ID=$(this).parents(".chart_head").next().attr("id");
         switch (ID){
             case "type" :chart.myChart.resize();break;
