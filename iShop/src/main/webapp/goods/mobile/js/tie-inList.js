@@ -177,10 +177,10 @@ function  click(){
         }
         //    评论
         if(src =='image/icon_评论@2x.png'){
-            alert('暂无该功能')
             operate_type = 'comment';
             comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
             status = '';
+            return;
         }
         //    收藏
         if(src =='image/icon_收藏@2x.png'){

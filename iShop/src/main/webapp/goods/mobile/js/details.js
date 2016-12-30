@@ -28,24 +28,29 @@ function getPage(){
             //搭配名称
             var d_match_title = message.d_match_title;
             $(document).attr("title",d_match_title);
+            setDocumentTitle(d_match_title)
+            console.log('秀搭名称:'+ d_match_title)
             //主图-多张图取首张
             var d_match_image = message.d_match_image;
             var d_match_image_num = d_match_image.indexOf(",");
             if(d_match_image_num>=0){
                 d_match_image = d_match_image.substr(0,d_match_image_num);
             }
+            console.log(d_match_image)
+            //大图更改
+            $('.main_img #mainImg').attr('src',d_match_image);
             //秀搭简介
             var d_match_desc = message.d_match_desc;
-            $('.main_content').eq(0).html(d_match_desc)
-            //评论
+            console.log('秀搭简介:'+ d_match_desc)
+            $('.main_content').eq(0).find('div').html(d_match_desc)
+            //评论暂无
             var like_status = message.like_status; //点赞
             var collect_status = message.collect_status;//收藏
             console.log('点赞'+like_status+'收藏'+collect_status)
             var d_match_likeCount = message.d_match_likeCount;
             var d_match_commentCount = message.d_match_commentCount;
             var d_match_collectCount = message.d_match_collectCount;
-            //小图更改
-           $('.main_img #mainImg').attr('src',d_match_image);
+
             var r_match_goods = message.r_match_goods;
             var tempHTML = '<img src="${img}" alt="" id="${id}" title="${title}"/>';
             var html='';
@@ -90,53 +95,52 @@ $('.bottom div img').click(function () {
     if(src =='image/icon_点赞@2x.png'){
         $(this).attr('src','image/icon_点赞_已点赞@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)+1);
+        //$(this).next('.num').text(parseInt(val)+1);
         operate_type = 'like';
         comment_text='';
         status = 'Y';
     }else if (src =='image/icon_点赞_已点赞@2x.png'){
         $(this).attr('src','image/icon_点赞@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)-1);
+        //$(this).next('.num').text(parseInt(val)-1);
         operate_type = 'dislike';
         comment_text='';
         status = 'N';
     }
     //    评论
     if(src =='image/icon_评论@2x.png'){
-        alert('暂无该功能')
         operate_type = 'comment';
         comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
         status = '';
+        return;
     }
     //    收藏
     if(src =='image/icon_收藏@2x.png'){
         $(this).attr('src','image/icon_收藏_已收藏@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)+1);
+        //$(this).next('.num').text(parseInt(val)+1);
         operate_type = 'collect';
         comment_text='';
         status = 'Y';
     }else if (src =='image/icon_收藏_已收藏@2x.png'){
         $(this).attr('src','image/icon_收藏@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)-1);
+        //$(this).next('.num').text(parseInt(val)-1);
         operate_type = 'discollect';
         comment_text='';
         status = 'N';
     }
     var param={};
-    param["d_match_code"]=d_match_code;
-    param["corp_code"]=corp_code;
-    param["user_code"]=user_code;
-    param["operate_userCode"]=operate_userCode;
+    param["d_match_code"]=GetRequest().d_match_code;
+    param["corp_code"]=GetRequest().corp_code;
+    param["user_code"]=GetRequest().user_id;
+    param["operate_userCode"]=GetRequest().user_id;
     param["operate_type"]=operate_type;
     param["status"]=status;
     param["comment_text"]=comment_text;
     oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
         if (data.code == "0") {
-            console.log(data);
-            //pageVal(num);
+
         }else if(data.code =='-1'){
             //alert(data);
         }
@@ -212,6 +216,21 @@ function GetRequest() {
         }
     }
     return theRequest;
+}
+//ios修改title
+function setDocumentTitle(d_match_title) {
+    document.title = d_match_title;
+    if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
+        var i = document.createElement('iframe');
+        i.src = 'baidu.com';
+        i.style.display = 'none';
+        i.onload = function() {
+            setTimeout(function(){
+                i.remove();
+            }, 9)
+        }
+        document.body.appendChild(i);
+    }
 }
 window.onload = function () {
     getPage();
