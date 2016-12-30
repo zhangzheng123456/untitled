@@ -325,7 +325,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

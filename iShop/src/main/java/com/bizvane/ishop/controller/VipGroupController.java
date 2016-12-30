@@ -621,7 +621,7 @@ public class VipGroupController {
                     dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
                 }else {
                     String vip_group_code = vipGroup.getVip_group_code();
-                    Data data_vip_group_code = new Data("vip_group_code", vip_group_code, ValueType.PARAM);
+                    Data data_vip_group_code = new Data("group_code", vip_group_code, ValueType.PARAM);
                     Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
 
                     Map datalist = new HashMap<String, Data>();

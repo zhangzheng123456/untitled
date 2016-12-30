@@ -188,7 +188,7 @@ public class VipParamController {
             VipParam vipParam = WebUtils.JSON2Bean(jsonObject, VipParam.class);
             String corp_code = jsonObject.getString("corp_code");
 //            String param_name = jsonObject.getString("param_name");
-            String param_name = "E"+System.currentTimeMillis()+"_CUST";
+            String param_name = "CUST_"+System.currentTimeMillis();
             vipParam.setParam_name(param_name);
             //------------操作日期-------------
             Date date = new Date();
@@ -288,8 +288,8 @@ public class VipParamController {
             //------------操作日期-------------
             Date date = new Date();
             String param_name = vipParam.getParam_name();
-            if (!param_name.endsWith("_CUST"))
-                param_name = param_name + "_CUST";
+            if (!param_name.startsWith("CUST_"))
+                param_name = "CUST_"+param_name;
             vipParam.setParam_name(param_name.toUpperCase());
             vipParam.setModified_date(Common.DATETIME_FORMAT.format(date));
             vipParam.setModifier(user_id);
