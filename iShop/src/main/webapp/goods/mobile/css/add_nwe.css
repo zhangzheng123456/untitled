@@ -190,7 +190,11 @@ address, cite, dfn, em, var {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%); }
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%); }
     .container_picture .picture_add .file {
       position: absolute;
       top: 0;
@@ -283,7 +287,11 @@ address, cite, dfn, em, var {
     color: #acacac;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); }
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%); }
     [data-dpr="1"] .search_box .search {
       font-size: 14px; }
     [data-dpr="2"] .search_box .search {

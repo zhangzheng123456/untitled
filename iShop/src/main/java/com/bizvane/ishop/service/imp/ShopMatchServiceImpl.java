@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by PC on 2016/12/27.
@@ -74,9 +71,9 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         saveData.put("d_match_image", d_match_image);
         saveData.put("d_match_desc", d_match_desc);
         saveData.put("r_match_goods", r_match_goods);
-        saveData.put("d_match_likeCount", "0");
-        saveData.put("d_match_commentCount", "0");
-        saveData.put("d_match_collectCount", "0");
+        saveData.put("d_match_likeCount", 0);
+        saveData.put("d_match_commentCount", 0);
+        saveData.put("d_match_collectCount", 0);
         saveData.put("modified_date",  Common.DATETIME_FORMAT.format(now));
         saveData.put("created_date",  Common.DATETIME_FORMAT.format(now));
         saveData.put("creater", user_code);
@@ -93,7 +90,13 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         saveData.put("corp_code", corp_code);
         saveData.put("d_match_code", d_match_code);
         List<User> userList = userService.userCodeExist(operate_userCode, corp_code, Common.IS_ACTIVE_Y);
-        String user_name = userList.get(0).getUser_name();
+        String user_name="";
+        if(userList.size()==0 || userList.size()>1){
+            user_name="未知";
+        }else{
+            user_name  = userList.get(0).getUser_name();
+        }
+        System.out.println("==============user_name点赞人======================"+user_name);
         saveData.put("operate_userCode", operate_userCode);
         saveData.put("operate_userName", user_name);
         saveData.put("operate_type", operate_type);
@@ -153,5 +156,33 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         collection_rel.remove(queryCondition1);
     }
 
+    //DBCursor数据集转arrayList+id
+    public  ArrayList dbCursorToList_shop(DBCursor dbCursor) {
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
+
+        ArrayList list = new ArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            String id = obj.get("_id").toString();
+            String corp_code = obj.get("corp_code").toString();
+            String d_match_code = obj.get("d_match_code").toString();
+            obj.put("id", id);
+            obj.removeField("_id");
+
+
+            DBObject deleteRecord = new BasicDBObject();
+            deleteRecord.put("corp_code",corp_code);
+            deleteRecord.put("d_match_code",d_match_code);
+            DBCursor dbObjects = cursor.find(deleteRecord);
+            DBObject dbObject=null;
+            while (dbObjects.hasNext()) {
+                dbObject  = dbObjects.next();
+            }
+            obj.put("shop", dbObject);
+            list.add(obj.toMap());
+        }
+        return list;
+    }
 
 }

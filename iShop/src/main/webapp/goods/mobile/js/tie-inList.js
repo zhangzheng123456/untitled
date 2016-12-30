@@ -2,11 +2,24 @@
  * Created by huxue on 2016/12/28.
  */
 var oc = new ObjectControl();
-var corp_code = 'C10000';
+var corp_code = $.cookie('corp_code');
 var pageNumber = '1';
 var pageSize = '20';
-var user_code = '10000';
+var user_code = $.cookie('user_code');
 
+//获取？后缀
+function GetRequest() {
+    var url = decodeURI(location.search); //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+}
 //    选项卡-推荐
 $('.title div').eq(0).click(function () {
     $('.main').eq(0).css('display','block');
@@ -28,6 +41,12 @@ $('.title div').eq(1).click(function () {
 //推荐列表
 function getRec(){
     var type = 'rec';
+    var urlMsg = GetRequest();
+    var user_code = urlMsg.user_id;
+    var corp_code = urlMsg.corp_code;
+    //$.cookie('user_code',user_code);
+    //$.cookie('corp_code',corp_code);
+    //alert(user_code);
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -41,6 +60,11 @@ function getRec(){
 //我的列表
 function getMy(){
     var type = 'my';
+    var urlMsg = GetRequest();
+    var user_code = urlMsg.user_id;
+    var corp_code = urlMsg.corp_code;
+    //$.cookie('user_code',user_code);
+    //$.cookie('corp_code',corp_code);
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -129,9 +153,10 @@ function setTime(){
 function  click(){
     $('.add div img').unbind("click").bind("click",function () {
         var src = $(this).attr("src");
-        var corp_code = 'C10000';
+        var corp_code = GetRequest().corp_code;
+        var user_code=GetRequest().user_id;
+        var operate_userCode = GetRequest().user_id;; //操作人user_code
         var d_match_code = $(this).parents('.goods_box').attr('id');  //秀搭编号
-        var operate_userCode = '10000'; //操作人user_code
         var operate_type = '';//type
         var comment_text = '';//评论内容
         var status = '';  //是否点赞or收藏
@@ -193,22 +218,65 @@ function  click(){
 }
 //跳转
 function toNext(){
-    $('.the_img img').click(function () {
+    $('.the_img img').unbind("click").bind('click',function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
-        $.cookie('d_match_code',d_match_code);
-        window.location = 'details.html';
-    })
+        var host=window.location.host;
+        var param={};
+        //param["type"]="FAB";
+        var corp_code = GetRequest().corp_code;
+        var user_code = GetRequest().user_id;
+        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code;
+        console.log(param);
+        doAppWebRefresh(param);
+        //window.location = 'details.html?d_match_code'+d_match_code;
+    });
     //$('.the_list img').click(function () {
     //    window.location = 'details.html';
     //})
 }
+
+//获取手机系统
+function getWebOSType() {
+    var browser = navigator.userAgent;
+    var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端
+    var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if(isAndroid){
+        return "Android";
+    }else if (isiOS) {
+        return "iOS";
+    }else{
+        return "Unknown"
+    }
+}
+//获取iShop用户信息
+function getAppUserInfo(){
+    var osType = getWebOSType();
+    var userInfo = null;
+    if(osType=="iOS"){
+        userInfo = NSReturnUserInfo();
+    }else if(osType == "Android"){
+        userInfo = iShop.ReturnUserInfo();
+    }
+    return userInfo;
+}
+//调用APP方法传参 param 格式 type：** ;url:**
+function doAppWebRefresh(param){
+     var param=JSON.stringify(param);
+    var osType = this.getWebOSType();
+    if(osType=="iOS"){
+        window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+    }else if(osType == "Android"){
+        //iShop.returnAddResult(param);
+        iShop.jumpToWebViewForWeb(param);
+    }
+}
 window.onload = function () {
     //默认推荐
     $('.title div').eq(0).click();
-    //控制宽高
-    setTime();
     //获取推荐
     getRec();
     //获取我的
     getMy();
+    //控制宽高
+    setTime();
 }

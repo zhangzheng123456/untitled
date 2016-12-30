@@ -9,16 +9,17 @@ body{
   background-color: #ededed;
 }
 .warp{
-  position: fixed;
+  position: relative;
   top: rem(0);
   background-color: #ededed;
+  width: 100%;
   //overflow-y: auto;
   //overflow-x: hidden;
 }
 .title{
   background-color: white;
   width: 100%;
-  position: fixed;
+  position: absolute;
   top: rem(10);
 }
 .title div{
@@ -39,13 +40,14 @@ body{
   clear: both;
   width: 100%;
   background-color: white;
-  position: fixed;
+  position: relative;
   top: rem(54);
   bottom: rem(0);
   padding-top: rem(10);
   padding-left:3.3%;
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 //Казг
 .goods_box{

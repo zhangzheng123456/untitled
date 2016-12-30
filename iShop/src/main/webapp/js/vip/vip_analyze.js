@@ -14,6 +14,16 @@ var page_area = 1;
 var page_group = 1;
 var next_shop_page = '';
 var next_area_page = '';
+var chart={
+    "myChart":"",
+    "myChart1":"",
+    "myChart2":"",
+    "myChart3":"",
+    "myChart4":"",
+    "myChart5":"",
+    "myChart6":""
+};
+var chart_data;
 // var echarts;
 /**********************左侧数据**************************************************************************************/
 //获取品牌
@@ -142,6 +152,8 @@ function getStore(a, b, btn) {
         $('#side_analyze ul li:nth-child(3) s').html(first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store', first_store_code);
         $('#select_analyze_shop ul').append(ul);
+        chartData();
+        chartShow();
         // un_push?un_push=0;page=1:brithVipGet();getData();//正常调用当为加载更多时不调用
         if (un_push) {
             un_push = 0;
@@ -249,6 +261,7 @@ function showNameClick(e) {
         //添加店铺时，找到显示的DIV发起请求
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
         getData();
+        chartData();
     } else if ($(d).attr('id') == 'select_analyze_group') {
         var group_code = $(e).attr('group_code');
         $('#side_analyze ul li:nth-child(4) s').html($(e).html());
@@ -256,6 +269,7 @@ function showNameClick(e) {
         $('#select_analyze_group').toggle();
         //添加分组时，找到显示的DIV发起请求
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
+        chartData();
     }
 }
 //取消下拉框
@@ -466,6 +480,16 @@ function fillVip(data, count, container) {
     $(container).html(html);
     $("#left_shadow").hide();
 }
+function compare(value1, value2) {
+    if (value1 < value2) {
+        return -1;
+    } else if (value1 > value2) {
+        return 1;
+    } else {
+        return 0;
+    }
+
+}
 //图表显示接口
 function chartShow(order) {
     var key_val = sessionStorage.getItem("key_val");//取页面的function_code
@@ -519,427 +543,480 @@ function chartShow(order) {
         }
     });
 }
-function init_chart(id) {
-    // var myChart = echarts.init(document.getElementById(id));
-    var option = {
-        color: ['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2', '#5C778F', '#4D5F7C', '#444960', '#2C3244'],
-        tooltip: {
-            textStyle: {
-                fontSize: '10',
-            },
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-            show: 'true',
-            orient: 'vertical',
-            x: 'left',
-            y: 'center',
-            data: [{
-                name: '衬衫',
-                icon: '2'
-            }, {
-                name: '背心',
-                icon: '12'
-            }, {
-                name: '连衣裙',
-                icon: '12'
-            }, {
-                name: 'T恤',
-                icon: '12'
-            }, {
-                name: '外套',
-                icon: '12'
-            }, {
-                name: '长裙',
-                icon: '12'
-            }, {
-                name: '短裙',
-                icon: '12'
-            }, {
-                name: '裤子',
-                icon: '12'
-            }]
-        },
-        series: [
-            {
-                name: '消费分类',
-                center: ['60%', '50%'],
-                type: 'pie',
-                radius: ['50%', '60%'],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    normal: {
-                        label: {
-                            show: false,
-                            position: 'center'
-                        },
-                        labelLine: {
-                            show: false
-                        }
-                    },
-                    emphasis: {
-                        label: {
-                            show: true,
-                            textStyle: {
-                                fontSize: '20',
-                                fontWeight: 'bold'
-                            }
-                        }
-                    }
-                },
-                data: [
-                    {value: 122, name: "衬衫"},
-                    {value: 310, name: '背心'},
-                    {value: 234, name: 'T恤'},
-                    {value: 135, name: '外套'},
-                    {value: 1548, name: '长裙'},
-                    {value: 1548, name: '短裙'},
-                    {value: 1548, name: '连衣裙'},
-                    {value: 1548, name: '裤子'}
-                ]
-            }
-        ]
-    };
-    var option1 = {
-        color: ['#A7DADE'],
-        axis: {
-            areaStyle: {
-                color: ['red']
-            }
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        polar: [
-            {
-                indicator: [
-                    {text: '周一', max: 100},
-                    {text: '周二', max: 100},
-                    {text: '周三', max: 100},
-                    {text: '周四', max: 100},
-                    {text: '周五', max: 100},
-                    {text: '周六', max: 100},
-                    {text: '周日', max: 100},
-                    {text: '无数据', max: 100}
-                ],
-                radius: 100,
-                splitNumber: 8,
-                startAngle: 68,
-                splitArea: {
-                    show: true,
-                    areaStyle: {
-                        color: '#fff'
-                    }
-                }
-            }
-        ],
-        series: [
-            {
-                symbol: 'circle',
-                type: 'radar',
-                tooltip: {
-                    trigger: 'item'
-                },
-                itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                symbolSize: '0',
-                data: [
-                    {
-                        value: [97, 42, 88, 94, 90, 86, 20, 0],
-                        name: '周变'
-                    }
-                ]
-            }
-        ]
-    };
-    var option2 = {
-        color: ['#A7DADE'],
-        axis: {
-            areaStyle: {
-                color: ['red']
-            }
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        polar: [
-            {
-                indicator: [
-                    {text: '一月', max: 100},
-                    {text: '二月', max: 100},
-                    {text: '三月', max: 100},
-                    {text: '四月', max: 100},
-                    {text: '五月', max: 100},
-                    {text: '六月', max: 100},
-                    {text: '七月', max: 100},
-                    {text: '八月', max: 100},
-                    {text: '九月', max: 100},
-                    {text: '十月', max: 100},
-                    {text: '十一月', max: 100},
-                    {text: '十二月', max: 100}
-                ],
-                radius: 100,
-                splitNumber: 8,
-                startAngle: 45,
-                splitArea: {
-                    show: true,
-                    areaStyle: {
-                        color: '#fff'
-                    }
-                }
-            }
-        ],
-        series: [
-            {
-                symbol: 'circle',
-                type: 'radar',
-                tooltip: {
-                    trigger: 'item'
-                },
-                itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                symbolSize: '0',
-                data: [
-                    {
-                        value: [97, 42, 88, 94, 90, 86, 69, 66, 33, 58, 44, 55, 66],
-                        name: '月变'
-                    }
-                ]
-            }
-        ]
-    };
-    var option3 = {
-        tooltip: {
-            trigger: 'item'
-        },
-        dataRange: {
-            itemWidth: 5,
-            itemGap: 0.2,
-            color: ['#A7CFD5', '#3C95A2'],
-            splitNumber: '20',
-            orient: 'horizontal',
-            min: 0,
-            max: 2500,
-            x: 'left',
-            y: 'top',
-            text: ['高', '低']      // 文本，默认为数值文本
-        },
-        series: [
-            {
-                name: 'iphone3',
-                type: 'map',
-                mapType: 'china',
-                roam: false,
-                itemStyle: {
-                    normal: {
-                        label: {
-                            show: true, textStyle: {
-                                color: "#434960",
-                                fontSize: 10
-                            }
-                        }
-                    },
-                    emphasis: {label: {show: true}}
-                },
-                data: [
-                    {name: '北京', value: Math.round(Math.random() * 1000)},
-                    {name: '天津', value: Math.round(Math.random() * 1000)},
-                    {name: '上海', value: Math.round(Math.random() * 1000)},
-                    {name: '重庆', value: Math.round(Math.random() * 1000)},
-                    {name: '河北', value: Math.round(Math.random() * 1000)},
-                    {name: '河南', value: Math.round(Math.random() * 1000)},
-                    {name: '云南', value: Math.round(Math.random() * 1000)},
-                    {name: '辽宁', value: Math.round(Math.random() * 1000)},
-                    {name: '黑龙江', value: Math.round(Math.random() * 1000)},
-                    {name: '湖南', value: Math.round(Math.random() * 1000)},
-                    {name: '安徽', value: Math.round(Math.random() * 1000)},
-                    {name: '山东', value: Math.round(Math.random() * 1000)},
-                    {name: '新疆', value: Math.round(Math.random() * 1000)},
-                    {name: '江苏', value: Math.round(Math.random() * 1000)},
-                    {name: '浙江', value: Math.round(Math.random() * 1000)},
-                    {name: '江西', value: Math.round(Math.random() * 1000)},
-                    {name: '湖北', value: Math.round(Math.random() * 1000)},
-                    {name: '广西', value: Math.round(Math.random() * 1000)},
-                    {name: '甘肃', value: Math.round(Math.random() * 1000)},
-                    {name: '山西', value: Math.round(Math.random() * 1000)},
-                    {name: '内蒙古', value: Math.round(Math.random() * 1000)},
-                    {name: '陕西', value: Math.round(Math.random() * 1000)},
-                    {name: '吉林', value: Math.round(Math.random() * 1000)},
-                    {name: '福建', value: Math.round(Math.random() * 1000)},
-                    {name: '贵州', value: Math.round(Math.random() * 1000)},
-                    {name: '广东', value: Math.round(Math.random() * 1000)},
-                    {name: '青海', value: Math.round(Math.random() * 1000)},
-                    {name: '西藏', value: Math.round(Math.random() * 1000)},
-                    {name: '四川', value: Math.round(Math.random() * 1000)},
-                    {name: '宁夏', value: Math.round(Math.random() * 1000)},
-                    {name: '海南', value: Math.round(Math.random() * 1000)},
-                    {name: '台湾', value: Math.round(Math.random() * 1000)},
-                    {name: '香港', value: Math.round(Math.random() * 1000)},
-                    {name: '澳门', value: Math.round(Math.random() * 1000)}
-                ]
-            }
-        ]
-    };
-    var option4 = {
-        color: ['#6CC1C8'],
-        tooltip: {
-            trigger: 'item',
-            formatter: function (params) {
-                return params.seriesName + ' :' + params.value;
-            }
-        },
-        grid: {
-            borderWidth: 0,
-            x: '100',
-            y: '20',
-            x2: '0',
-            y2: '20'
-        },
-        xAxis: [
-
-            {
-                show: false,
-                type: 'value',
-                boundaryGap: [0, 0.01]
-
-            }
-        ],
-        yAxis: [
-            {
-                axisLine: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                splitLine: {
-                    show: false
-                },
-                type: 'category',
-                data: ['10000以上', '2000-10000', '1000-1999', '800-999', '600-799', '400-599', '200-399', '200以下']
-            }
-        ],
-        series: [
-            {
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: 0
-                    }
-                },
-                name: '价格偏好',
-                type: 'bar',
-                barWidth: 10,
-                data: [100, 600, 650, 470, 1000, 900, 750, 500]
-            }
-        ]
-    };
-    var option5 = {
-        color: ['#6DADC8'],
-        tooltip: {
-            trigger: 'item'
-        },
-        grid: {
-            borderWidth: 0,
-            x: '50',
-            y: '20',
-            x2: '20',
-            y2: '50'
-        },
-        xAxis: [
-            {
-                axisLine: {
-                    lineStyle: {color: '#58A0C0'}
-                },
-                splitLine: {
-                    show: false
-                },
-                axisLabel: {
-                    rotate: 45
-                },
-                axisTick: {
-                    show: false
-                },
-                type: 'category',
-                boundaryGap: false,
-                data: ['10.00', '11;00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00']
-            }
-        ],
-        yAxis: [
-            {
-                axisLine: {
-                    show: false
-                },
-                splitArea: {
-                    show: false
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: '#999',
-                        type: 'dashed'
-                    }
-                },
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                itemStyle: {
-                    symbolSize: '0',
-                    normal: {
-                        borderRadius: 0,
-                        nodeStyle: {
-                            borderRadius: 0
-                        }
-                    }
-                },
-                name: '购买时段',
-                type: 'line',
-                stack: '总量',
-                symbolSize: 0,
-                smooth: false,
-                data: [1000, 3000, 1500, 2800, 1000, 5000, 4444, 6666, 3333, 2222, 5555]
-            }
-        ]
-    };
+function init_chart(id,type) {
     if (id == "type") {
-        var myChart = echarts.init(document.getElementById('type'));
-        myChart.setOption(option);
-        reSize(myChart);
+        var data = chart_data.Type;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr = [];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].name);
+        }
+        var option_pie = {
+            color: ['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2', '#5C778F', '#4D5F7C', '#444960', '#2C3244'],
+            tooltip: {
+                textStyle: {
+                    fontSize: '10',
+                },
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                show: 'true',
+                orient: 'vertical',
+                x: 'left',
+                y: 'center',
+                data: Arr
+            },
+            series: [
+                {
+                    name: '消费分类',
+                    center: ['60%', '50%'],
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: arr
+                }
+            ]
+        };
+        chart.myChart = echarts.init(document.getElementById('type'));
+        chart.myChart.setOption(option_pie);
+        reSize(chart.myChart);
     }
     if (id == "series") {
-        var myChart5 = echarts.init(document.getElementById('series'));
-        myChart5.setOption(option);
-        reSize(myChart5);
+        var data = chart_data.Series;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr = [];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].name);
+        }
+        var option_pie_series = {
+            color: ['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2', '#5C778F', '#4D5F7C', '#444960', '#2C3244'],
+            tooltip: {
+                textStyle: {
+                    fontSize: '10',
+                },
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                show: 'true',
+                orient: 'vertical',
+                x: 'left',
+                y: 'center',
+                data: Arr
+            },
+            series: [
+                {
+                    name: '消费分类',
+                    center: ['60%', '50%'],
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: arr
+                }
+            ]
+        };
+        chart.myChart5 = echarts.init(document.getElementById('series'));
+        chart.myChart5.setOption(option_pie_series);
+        reSize(chart.myChart5);
     }
     if (id == "weeks") {
-        var myChart1 = echarts.init(document.getElementById('weeks'));
-        myChart1.setOption(option1);
-        reSize(myChart1);
+        var data = chart_data.Week;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr=[];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].value);
+        }
+        var option_week_radar = {
+            color: ['#A7DADE'],
+            axis: {
+                areaStyle: {
+                    color: ['red']
+                }
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            polar: [
+                {
+                    indicator: [
+                        {text: '周一', max: 100},
+                        {text: '周二', max: 100},
+                        {text: '周三', max: 100},
+                        {text: '周四', max: 100},
+                        {text: '周五', max: 100},
+                        {text: '周六', max: 100},
+                        {text: '周日', max: 100}
+                    ],
+                    radius: 100,
+                    splitNumber: 7,
+                    startAngle: 68,
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    symbol: 'circle',
+                    type: 'radar',
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    symbolSize: '0',
+                    data: [
+                        {
+                            value: Arr,
+                            name: '周变'
+                        }
+                    ]
+                }
+            ]
+        };
+        Arr.sort(compare);
+        for(var j=0;j<option_week_radar.polar[0].indicator.length;j++){
+            option_week_radar.polar[0].indicator[j].max=Arr[Arr.length-1]*1.1;
+        }
+        chart.myChart1 = echarts.init(document.getElementById('weeks'));
+        chart.myChart1.setOption(option_week_radar);
+        reSize(chart.myChart1);
     }
     if (id == "price") {
-        var myChart2 = echarts.init(document.getElementById('price'));
-        myChart2.setOption(option4);
-        reSize(myChart2);
+        var data=chart_data.Price;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var ArrName=[];
+        var ArrValue=[];
+        for(var i=0;i<arr.length;i++){
+            ArrName.push(arr[i].name);
+            ArrValue.push(arr[i].value);
+        }
+        chart.myChart2 = echarts.init(document.getElementById('price'));
+        var option_bar = {
+            color: ['#6CC1C8'],
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    return params.seriesName + ' :' + params.value;
+                }
+            },
+            grid: {
+                borderWidth: 0,
+                x: '100',
+                y: '20',
+                x2: '0',
+                y2: '20'
+            },
+            xAxis: [
+
+                {
+                    show: false,
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+
+                }
+            ],
+            yAxis: [
+                {
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    type: 'category',
+                    data: ArrName
+                }
+            ],
+            series: [
+                {
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: 0
+                        }
+                    },
+                    name: '价格偏好',
+                    type: 'bar',
+                    barWidth: 10,
+                    data: ArrValue
+                }
+            ]
+        };
+        chart.myChart2.setOption(option_bar);
+        reSize(chart.myChart2);
     }
     if (id == "times") {
-        var myChart3 = echarts.init(document.getElementById('times'));
-        myChart3.setOption(option5);
-        reSize(myChart3);
+        var data=chart_data.Time;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var ArrName=[];
+        var ArrValue=[];
+        for(var i=0;i<arr.length;i++){
+            ArrName.push(arr[i].name);
+            ArrValue.push(arr[i].value);
+        }
+        chart.myChart3 = echarts.init(document.getElementById('times'));
+        var option_line = {
+            color: ['#6DADC8'],
+            tooltip: {
+                trigger: 'item'
+            },
+            grid: {
+                borderWidth: 0,
+                x: '50',
+                y: '20',
+                x2: '20',
+                y2: '50'
+            },
+            xAxis: [
+                {
+                    axisLine: {
+                        lineStyle: {color: '#58A0C0'}
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        rotate: 45
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ArrName
+                }
+            ],
+            yAxis: [
+                {
+                    axisLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#999',
+                            type: 'dashed'
+                        }
+                    },
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    itemStyle: {
+                        symbolSize: '0',
+                        normal: {
+                            borderRadius: 0,
+                            nodeStyle: {
+                                borderRadius: 0
+                            }
+                        }
+                    },
+                    name: '购买时段',
+                    type: 'line',
+                    stack: '总量',
+                    symbolSize: 0,
+                    smooth: false,
+                    data: ArrValue
+                }
+            ]
+        };
+        chart.myChart3.setOption(option_line);
+        reSize(chart.myChart3);
     }
     if (id == "month") {
-        var myChart4 = echarts.init(document.getElementById('month'));
-        myChart4.setOption(option2);
-        reSize(myChart4);
+        var data=chart_data.Month;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        var Arr=[];
+        for(var i=0;i<arr.length;i++){
+            Arr.push(arr[i].value);
+        }
+        var option_month_radar = {
+            color: ['#A7DADE'],
+            axis: {
+                areaStyle: {
+                    color: ['red']
+                }
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            polar: [
+                {
+                    indicator: [
+                        {text: '一月', max: 100},
+                        {text: '二月', max: 100},
+                        {text: '三月', max: 100},
+                        {text: '四月', max: 100},
+                        {text: '五月', max: 100},
+                        {text: '六月', max: 100},
+                        {text: '七月', max: 100},
+                        {text: '八月', max: 100},
+                        {text: '九月', max: 100},
+                        {text: '十月', max: 100},
+                        {text: '十一月', max: 100},
+                        {text: '十二月', max: 100}
+                    ],
+                    radius: 100,
+                    splitNumber: 8,
+                    startAngle: 45,
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    symbol: 'circle',
+                    type: 'radar',
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    symbolSize: '0',
+                    data: [
+                        {
+                            value: Arr,
+                            name: '月变'
+                        }
+                    ]
+                }
+            ]
+        };
+        Arr.sort(compare);
+        for(var j=0;j<option_month_radar.polar[0].indicator.length;j++){
+            option_month_radar.polar[0].indicator[j].max=Arr[Arr.length-1]*1.1;
+        }
+        chart.myChart4 = echarts.init(document.getElementById('month'));
+        chart.myChart4.setOption(option_month_radar);
+        reSize(chart.myChart4);
     }
     if (id == "areas") {
-        var myChart6 = echarts.init(document.getElementById('areas'));
-        myChart6.setOption(option3);
-        reSize(myChart6);
+        var data=chart_data.Area;
+        var arr=[];
+        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+        chart.myChart6 = echarts.init(document.getElementById('areas'));
+        var option_map = {
+            tooltip: {
+                trigger: 'item'
+            },
+            dataRange: {
+                itemWidth: 5,
+                itemGap: 0.2,
+                color: ['#A7CFD5', '#3C95A2'],
+                splitNumber: '20',
+                orient: 'horizontal',
+                min: 0,
+                max: 2500,
+                x: 'left',
+                y: 'top',
+                text: ['低','高']      // 文本，默认为数值文本
+            },
+            series: [
+                {
+                    name: 'iphone3',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true, textStyle: {
+                                    color: "#434960",
+                                    fontSize: 10
+                                }
+                            }
+                        },
+                        emphasis: {label: {show: true}}
+                    },
+                    data:arr
+                }
+            ]
+        };
+        chart.myChart6.setOption(option_map);
+        reSize(chart.myChart6);
     }
     function reSize(chart) {
         window.addEventListener("resize", function () {
           chart.resize();
         });
     }
+}
+//图表数据
+function chartData() {
+    var param={};
+    param["type"]="analysis";
+    param['corp_code'] = localStorage.getItem('corp_code');
+    param["area_code"] = $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param['brand_code'] = $($('#side_analyze ul li:nth-child(1) s')[0]).attr('brand_code');
+    param['vip_group_code'] = $($('#side_analyze ul li:nth-child(4) s')[0]).attr('group_code');
+    param['store_code'] = $($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
+    oc.postRequire("post","/vipAnalysis/vipChart","0",param,function (data) {
+        if(data.code == 0){
+            var msg = JSON.parse(data.message);
+            chart_data= msg;
+            chartShow();
+        }else if(data.code == -1){
+            console.log(data.message);
+        }
+    });
 }
 /******************************表格分析数据*************************************************************************/
 // 列表点击效果
@@ -1867,436 +1944,6 @@ $("#start_analyze_right").click(function () {
 //         $($('#table_analyze .foot .foot-sum')[0]).show();
 //     }
 // }
-/***************************图表分析数据***************************************/
-//图表
-// require.config({
-//     paths: {
-//         echarts: '../js/dist'
-//     }
-// });
-// require(
-//     [
-//         'echarts',
-//         'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-//         'echarts/chart/radar',
-//         'echarts/chart/map',
-//         'echarts/chart/bar',
-//         'echarts/chart/line'
-//     ],
-//     function (ec) {
-//         echarts = ec;
-//         var aa=[
-//             {value:122,name:"衬衫"},
-//             {value:310, name:'背心'},
-//             {value:234, name:'T恤'},
-//             {value:135, name:'外套'},
-//             {value:1548, name:'长裙'},
-//             {value:1548, name:'短裙'},
-//             {value:1548, name:'连衣裙'},
-//             {value:1548, name:'裤子'}
-//         ];
-//         var myChart = ec.init(document.getElementById('type'));
-//         var myChart1 = ec.init(document.getElementById('weeks'));
-//         var myChart2 = ec.init(document.getElementById('price'));
-//         var myChart3 = ec.init(document.getElementById('times'));
-//         var myChart4 = ec.init(document.getElementById('month'));
-//         var myChart5 = ec.init(document.getElementById('series'));
-//         // var myChart6 = ec.init(document.getElementById('main6'));
-//         var myChart7 = ec.init(document.getElementById('areas'));
-//         var option = {
-//             color:['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2','#5C778F','#4D5F7C','#444960','#2C3244'] ,
-//             tooltip : {
-//                 textStyle : {
-//                     fontSize : '10',
-//                 },
-//                 trigger: 'item',
-//                 formatter: "{a} <br/>{b} : {c} ({d}%)"
-//             },
-//             legend: {
-//                 show:'true',
-//                 orient : 'vertical',
-//                 x : 'left',
-//                 y:'center',
-//                 data:[{
-//                     name : '衬衫',
-//                     icon : '2'
-//                 },{
-//                     name : '背心',
-//                     icon : '12'
-//                 },{
-//                     name : '连衣裙',
-//                     icon : '12'
-//                 },{
-//                     name : 'T恤',
-//                     icon : '12'
-//                 },{
-//                     name : '外套',
-//                     icon : '12'
-//                 },{
-//                     name : '长裙',
-//                     icon : '12'
-//                 },{
-//                     name : '短裙',
-//                     icon : '12'
-//                 },{
-//                     name : '裤子',
-//                     icon : '12'
-//                 }]
-//             },
-//             series : [
-//                 {   name:'消费分类',
-//                     center:['60%','50%'],
-//                     type:'pie',
-//                     radius : ['50%', '60%'],
-//                     itemStyle : {
-//                         normal : {
-//                             label : {
-//                                 show : false
-//                             },
-//                             labelLine : {
-//                                 show : false
-//                             }
-//                         },
-//                         emphasis : {
-//                             label : {
-//                                 show : true,
-//                                 position : 'center',
-//                                 textStyle : {
-//                                     fontSize : '20',
-//                                     fontWeight : 'bold'
-//                                 }
-//                             }
-//                         }
-//                     },
-//                     data:aa
-//                 }
-//             ]
-//         };
-//         var option1 = {
-//             color:['#A7DADE'],
-//             axis:{
-//                 areaStyle:{
-//                     color:['red']
-//                 }
-//             },
-//             tooltip : {
-//                 trigger: 'axis'
-//             },
-//             polar : [
-//                 {
-//                     indicator : [
-//                         {text : '周一', max  : 100},
-//                         {text : '周二', max  : 100},
-//                         {text : '周三', max  : 100},
-//                         {text : '周四', max  : 100},
-//                         {text : '周五', max  : 100},
-//                         {text : '周六', max  : 100},
-//                         {text : '周七', max  : 100},
-//                         {text : '无数据', max  : 100}
-//                     ],
-//                     radius : 100,
-//                     splitNumber: 8,
-//                     startAngle: 68,
-//                     splitArea : {
-//                         show : true,
-//                         areaStyle : {
-//                             color: '#fff'
-//                         }
-//                     }
-//                 }
-//             ],
-//             series : [
-//                 {
-//                     symbol:'circle',
-//                     type: 'radar',
-//                     itemStyle: {
-//                         normal: {
-//                             areaStyle: {
-//                                 type: 'default'
-//                             },
-//                             lineStyle:{
-//                                 width:'0'
-//                             }
-//                         }
-//                     },
-//                     symbolSize:'0',
-//                     data : [
-//                         {
-//                             value : [97, 42, 88, 94, 90, 86,'20','null'],
-//                             name : '周变'
-//                         }
-//                     ]
-//                 }
-//             ]
-//         };
-//         var option2 = {
-//             color:['#A7DADE'],
-//             axis:{
-//                 areaStyle:{
-//                     color:['red']
-//                 }
-//             },
-//             tooltip : {
-//                 trigger: 'axis'
-//             },
-//             polar : [
-//                 {
-//                     indicator : [
-//                         {text : '一月', max  : 100},
-//                         {text : '二月', max  : 100},
-//                         {text : '三月', max  : 100},
-//                         {text : '四月', max  : 100},
-//                         {text : '五月', max  : 100},
-//                         {text : '六月', max  : 100},
-//                         {text : '七月', max  : 100},
-//                         {text : '八月', max  : 100},
-//                         {text : '九月', max  : 100},
-//                         {text : '十月', max  : 100},
-//                         {text : '十一月', max  : 100},
-//                         {text : '十二月', max  : 100}
-//                     ],
-//                     radius : 100,
-//                     splitNumber: 8,
-//                     startAngle: 45,
-//                     splitArea : {
-//                         show : true,
-//                         areaStyle : {
-//                             color: '#fff'
-//                         }
-//                     }
-//                 }
-//             ],
-//             series : [
-//                 {
-//                     symbol:'circle',
-//                     type: 'radar',
-//                     itemStyle: {
-//                         normal: {
-//                             areaStyle: {
-//                                 type: 'default'
-//                             },
-//                             lineStyle:{
-//                                 width:'0'
-//                             }
-//                         }
-//                     },
-//                     symbolSize:'0',
-//                     data : [
-//                         {
-//                             value : [97, 42, 88, 94, 90, 86,69,66,33,58,44,55,66],
-//                             name : '月变'
-//                         }
-//                     ]
-//                 }
-//             ]
-//         };
-//         var option3 = {
-//             tooltip : {
-//                 trigger: 'item'
-//             },
-//             dataRange: {
-//                 itemWidth:5,
-//                 itemGap:0.2,
-//                 color:['#A7CFD5','#3C95A2'],
-//                 splitNumber:'20',
-//                 orient:'horizontal',
-//                 min: 0,
-//                 max: 2500,
-//                 x: 'left',
-//                 y: 'top',
-//                 text:['高','低']      // 文本，默认为数值文本
-//             },
-//             series : [
-//                 {
-//                     name: 'iphone3',
-//                     type: 'map',
-//                     mapType: 'china',
-//                     roam: false,
-//                     itemStyle:{
-//                         normal:{label:{show:true, textStyle: {
-//                             color: "#434960",
-//                             fontSize:10
-//                         }}},
-//                         emphasis:{label:{show:true}}
-//                     },
-//                     data:[
-//                         {name: '北京',value: Math.round(Math.random()*1000)},
-//                         {name: '天津',value: Math.round(Math.random()*1000)},
-//                         {name: '上海',value: Math.round(Math.random()*1000)},
-//                         {name: '重庆',value: Math.round(Math.random()*1000)},
-//                         {name: '河北',value: Math.round(Math.random()*1000)},
-//                         {name: '河南',value: Math.round(Math.random()*1000)},
-//                         {name: '云南',value: Math.round(Math.random()*1000)},
-//                         {name: '辽宁',value: Math.round(Math.random()*1000)},
-//                         {name: '黑龙江',value: Math.round(Math.random()*1000)},
-//                         {name: '湖南',value: Math.round(Math.random()*1000)},
-//                         {name: '安徽',value: Math.round(Math.random()*1000)},
-//                         {name: '山东',value: Math.round(Math.random()*1000)},
-//                         {name: '新疆',value: Math.round(Math.random()*1000)},
-//                         {name: '江苏',value: Math.round(Math.random()*1000)},
-//                         {name: '浙江',value: Math.round(Math.random()*1000)},
-//                         {name: '江西',value: Math.round(Math.random()*1000)},
-//                         {name: '湖北',value: Math.round(Math.random()*1000)},
-//                         {name: '广西',value: Math.round(Math.random()*1000)},
-//                         {name: '甘肃',value: Math.round(Math.random()*1000)},
-//                         {name: '山西',value: Math.round(Math.random()*1000)},
-//                         {name: '内蒙古',value: Math.round(Math.random()*1000)},
-//                         {name: '陕西',value: Math.round(Math.random()*1000)},
-//                         {name: '吉林',value: Math.round(Math.random()*1000)},
-//                         {name: '福建',value: Math.round(Math.random()*1000)},
-//                         {name: '贵州',value: Math.round(Math.random()*1000)},
-//                         {name: '广东',value: Math.round(Math.random()*1000)},
-//                         {name: '青海',value: Math.round(Math.random()*1000)},
-//                         {name: '西藏',value: Math.round(Math.random()*1000)},
-//                         {name: '四川',value: Math.round(Math.random()*1000)},
-//                         {name: '宁夏',value: Math.round(Math.random()*1000)},
-//                         {name: '海南',value: Math.round(Math.random()*1000)},
-//                         {name: '台湾',value: Math.round(Math.random()*1000)},
-//                         {name: '香港',value: Math.round(Math.random()*1000)},
-//                         {name: '澳门',value: Math.round(Math.random()*1000)}
-//                     ]
-//                 }
-//             ]
-//         };
-//         var option4 = {
-//             color:['#6CC1C8'],
-//             tooltip : {
-//                 trigger: 'item',
-//                 formatter : function (params) {
-//                     return params.seriesName + ' :'+params.value;
-//                 }
-//             },
-//             grid:{
-//                 borderWidth:0,
-//                 x:'100',
-//                 y:'20',
-//                 x2:'0',
-//                 y2:'20'
-//             },
-//             xAxis : [
-//
-//                 {	show:false,
-//                     type : 'value',
-//                     boundaryGap:[0,0.01]
-//
-//                 }
-//             ],
-//             yAxis : [
-//                 {   axisLine:{
-//                     show:false
-//                 },
-//                     axisTick:{
-//                         show:false
-//                     },
-//                     splitLine:{
-//                         show:false
-//                     },
-//                     type : 'category',
-//                     data : ['10000以上','2000-10000','1000-1999','800-999','600-799','400-599','200-399','200以下']
-//                 }
-//             ],
-//             series : [
-//                 {	itemStyle: {
-//                     normal: {
-//                         barBorderRadius:0
-//                     }
-//                 },
-//                     name:'价格偏好',
-//                     type:'bar',
-//                     barWidth:10,
-//                     data:[100, 600, 650, 470, 1000, 900,750,500]
-//                 }
-//             ]
-//         };
-//         var option5= {
-//             color:['#6DADC8'],
-//             tooltip : {
-//                 trigger: 'item'
-//             },
-//             grid:{
-//                 borderWidth:0,
-//                 x:'50',
-//                 y:'20',
-//                 x2:'20',
-//                 y2:'50'
-//             },
-//             xAxis : [
-//                 { axisLine:{
-//                     lineStyle:{color:'#58A0C0'}
-//                 },
-//                     splitLine:{
-//                         show:false
-//                     },
-//                     axisLabel:{
-//                         rotate:45
-//                     },
-//                     axisTick:{
-//                         show:false
-//                     },
-//                     type : 'category',
-//                     boundaryGap : false,
-//                     data : ['10.00','11;00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00']
-//                 }
-//             ],
-//             yAxis : [
-//                 {	axisLine:{
-//                     show:false
-//                 },
-//                     splitArea:{
-//                         show:false
-//                     },
-//                     splitLine:{
-//                         lineStyle:{
-//                             color:'#999',
-//                             type: 'dashed'
-//                         }
-//                     },
-//                     type : 'value'
-//                 }
-//             ],
-//             series : [
-//                 {
-//                     itemStyle: {
-//                         symbolSize:'0',
-//                         normal: {
-//                             borderRadius:0,
-//                             nodeStyle:{
-//                                 borderRadius:0
-//                             }
-//                         }
-//                     },
-//                     name:'购买时段',
-//                     type:'line',
-//                     stack: '总量',
-//                     symbolSize:0,
-//                     smooth:false,
-//                     data:[1000, 3000, 1500, 2800, 1000,5000,4444,6666,3333,2222,5555]
-//                 }
-//             ]
-//         };
-//
-// //            myChart.showLoading();
-//         myChart.setOption(option);
-//         myChart1.setOption(option1);
-//         myChart2.setOption(option4);
-//         myChart3.setOption(option5);
-//         myChart4.setOption(option2);
-//         myChart5.setOption(option);
-//         // myChart6.setOption(option);
-//         myChart7.setOption(option3);
-// //            myChart.hideLoading();
-//         window.addEventListener("resize", function () {
-//             myChart.resize();
-//             myChart1.resize();
-//             myChart2.resize();
-//             myChart3.resize();
-//             myChart4.resize();
-//             myChart5.resize();
-//             // myChart6.resize();
-//             myChart7.resize();
-//         });
-//     }
-// );
 /*********************页面加载时**********************************************/
 $().ready(function () {
     //页面加载时，异步加载显示的数据
@@ -2342,7 +1989,6 @@ $().ready(function () {
         consumefreq_sub(this);
         $("#page_row").val("10行/页");
     });
-    chartShow();
     var date = new Date();
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -2464,6 +2110,17 @@ $("#chart_add_details li").click(function () {
     }else {
         input.checked=true;
     }
+});
+//图表分析下拉
+$(".chart_analyze_condition").click(function () {
+    $(this).children("ul").toggle();
+});
+$('.chart_analyze_condition ul li').click(function () {
+    $(this).parent().prevAll("span").html($(this).html());
+    var ID=$(this).parents(".chart_module").attr("data-id");
+    var type=$(this).html();
+    type=="按金额分析"?type="amt":"";
+    init_chart(ID,type);
 });
 //图表删除
 $(".chart_close_icon").click(function () {

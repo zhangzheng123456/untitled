@@ -249,10 +249,23 @@ jQuery(function(){
 		var param=JSON.stringify(param);
 		var osType = getWebOSType();
 		if(osType=="iOS"){
-			NSJumpToWebViewForWeb(param);
+			try{
+                window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+                
+            } catch(err){
+                NSJumpToWebViewForWeb(param);
+            }
 		}else if(osType == "Android"){
 			iShop.jumpToWebViewForWeb(param);
 		}
 	}
 });
+function doAppWebHeaderRefresh(param){
+	alert(param);
+	if(param=="headerRefresh"){
+		$(".header_line").css({"position":"absolute"});
+	}else{
+		$(".header_line").css({"position":"fixed"});
+	}
+}
 

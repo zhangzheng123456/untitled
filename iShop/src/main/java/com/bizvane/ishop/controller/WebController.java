@@ -832,6 +832,62 @@ public class WebController {
         }
         return dataBean.getJsonStr();
     }
+
+
+
+
+    //拉取我的收藏或评论列表
+    @RequestMapping(value = "/api/shopMatch/selectCollect", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getShopCollectList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+        int pages = 0;
+        try {
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_rel);
+
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            String corp_code =jsonObject.getString("corp_code");
+            String pageNumber = jsonObject.getString("pageNumber");
+            String pageSize = jsonObject.getString("pageSize");
+            String user_code =jsonObject.getString("user_code");
+            String operate_type =jsonObject.getString("operate_type");
+
+            int page_number = Integer.valueOf(pageNumber);
+            int page_size = Integer.valueOf(pageSize);
+
+            BasicDBList value = new BasicDBList();
+            value.add(new BasicDBObject("corp_code", corp_code));
+            value.add(new BasicDBObject("operate_userCode", user_code));
+            value.add(new BasicDBObject("operate_type", operate_type));
+            BasicDBObject queryCondition1 = new BasicDBObject();
+            queryCondition1.put("$and", value);
+            DBCursor dbCursor2 = cursor.find(queryCondition1);
+            pages = MongoUtils.getPages(dbCursor2,page_size);
+            DBCursor  dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
+            ArrayList list =  shopMatchService.dbCursorToList_shop(dbCursor);
+
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      *
      * 推荐
@@ -854,6 +910,7 @@ public class WebController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
 
+            System.out.println("===========拉取列表接口corp_code============"+corp_code+"----"+user_code);
             DBCursor dbCursor = null;
             if(type.equals("rec")) {
                 BasicDBList value = new BasicDBList();
@@ -875,6 +932,7 @@ public class WebController {
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
             }
             ArrayList list = MongoHelperServiceImpl.dbCursorToList_shop(dbCursor,user_code);
+            System.out.println("===========拉取列表接口============"+list.size());
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
@@ -1187,5 +1245,7 @@ public class WebController {
         }
         return dataBean.getJsonStr();
     }
+
+
 
 }

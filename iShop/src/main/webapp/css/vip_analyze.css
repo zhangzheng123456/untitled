@@ -292,7 +292,7 @@
     display:none;
     left: 2%;
     top:39px;
-    z-index: 100;
+    z-index: 200;
     background: #E8E8E8;
     border: 1px solid #e8e8e8;
     color: #888888;
@@ -519,6 +519,28 @@
     height: 15px;
     line-height: 15px;
     padding-left: 10px;
+    position: relative;
+    cursor: pointer;
+}
+.chart_analyze_condition ul{
+    display: none;
+    z-index: 2;
+    top: 23px;
+    left: 0px;
+    position: absolute;
+    width: 90px;
+    color: #4a5f7d;
+    background-color: #e8e8e8;
+}
+.chart_analyze_condition ul li{
+    padding-left: 10px;
+    line-height: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+.chart_analyze_condition ul li:hover{
+    background-color: #434960;
+    color: #FFFFFF;
 }
 .chart_analyze_condition{
     position: relative;

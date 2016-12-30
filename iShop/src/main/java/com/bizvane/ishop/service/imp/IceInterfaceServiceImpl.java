@@ -136,7 +136,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
     }
 
     //会员列表
-    public Map vipBasicMethod1(String page_num,String page_size,String corp_code, HttpServletRequest request) throws Exception{
+    public Map vipBasicMethod(String page_num, String page_size, String corp_code, HttpServletRequest request) throws Exception{
         String user_code = request.getSession().getAttribute("user_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
 
