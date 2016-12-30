@@ -1134,14 +1134,20 @@ public class WebController {
             String operate_type = jsonObject.getString("operate_type");
             String status = jsonObject.getString("status");
             String comment_text = jsonObject.getString("comment_text");
-
-
-
+            String count ="0";
             DBObject dbObject = shopMatchService.selectByCode(corp_code, d_match_code);
             if(operate_type.equals("like")){
                 shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
-                int d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
+                int d_match_likeCount=0;
+                if(null==dbObject.get("d_match_likeCount") || dbObject.get("d_match_likeCount").toString().equals("")){
+                    d_match_likeCount = 0;
+                }else{
+                    d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
+                }
                 d_match_likeCount = d_match_likeCount+1;
+                if(d_match_likeCount<0){
+                    d_match_likeCount=0;
+                }
                 System.out.println("-------点赞数--------------------------------"+d_match_likeCount);
                 BasicDBObject queryCondition = new BasicDBObject();
                 BasicDBList values = new BasicDBList();
@@ -1153,10 +1159,24 @@ public class WebController {
                 updatedValue.put("d_match_likeCount", d_match_likeCount);
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
+
+                DBObject result_dbObject =   shopMatchService.selectByCode(corp_code, d_match_code);
+                count =  result_dbObject.get("d_match_likeCount").toString();
             }else if(operate_type.equals("collect")){
                 shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
-                int d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
+
+                int d_match_collectCount=0;
+                if(null==dbObject.get("d_match_collectCount") || dbObject.get("d_match_collectCount").toString().equals("")){
+                    d_match_collectCount = 0;
+                }else{
+                    d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
+                }
+
                 d_match_collectCount = d_match_collectCount+1;
+
+                if(d_match_collectCount<0){
+                    d_match_collectCount=0;
+                }
                 BasicDBObject queryCondition = new BasicDBObject();
                 BasicDBList values = new BasicDBList();
                 values.add(new BasicDBObject("corp_code", corp_code));
@@ -1167,10 +1187,23 @@ public class WebController {
                 updatedValue.put("d_match_collectCount", d_match_collectCount);
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
+
+                DBObject result_dbObject =   shopMatchService.selectByCode(corp_code, d_match_code);
+                count =  result_dbObject.get("d_match_collectCount").toString();
             }else if(operate_type.equals("comment")){
                 shopMatchService.addRelByType(corp_code,d_match_code,operate_userCode,operate_type,status,comment_text);
-                int d_match_commentCount = Integer.parseInt(dbObject.get("d_match_commentCount").toString());
+                int d_match_commentCount=0;
+                if(null==dbObject.get("d_match_commentCount") || dbObject.get("d_match_commentCount").toString().equals("")){
+                    d_match_commentCount = 0;
+                }else{
+                    d_match_commentCount = Integer.parseInt(dbObject.get("d_match_commentCount").toString());
+                }
+
                 d_match_commentCount = d_match_commentCount+1;
+
+                if(d_match_commentCount<0){
+                    d_match_commentCount=0;
+                }
                 BasicDBObject queryCondition = new BasicDBObject();
                 BasicDBList values = new BasicDBList();
                 values.add(new BasicDBObject("corp_code", corp_code));
@@ -1181,11 +1214,21 @@ public class WebController {
                 updatedValue.put("d_match_commentCount", d_match_commentCount);
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
-            }else if(operate_type.equals("dislike")){
-                shopMatchService.updRelByType(corp_code,d_match_code,operate_userCode,"like");
 
-                int d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
+                DBObject result_dbObject =   shopMatchService.selectByCode(corp_code, d_match_code);
+                count =  result_dbObject.get("d_match_commentCount").toString();
+            }else if(operate_type.equals("dislike")){
+                int d_match_likeCount=0;
+                shopMatchService.updRelByType(corp_code,d_match_code,operate_userCode,"like");
+                if(null==dbObject.get("d_match_likeCount") || dbObject.get("d_match_likeCount").toString().equals("")){
+                    d_match_likeCount = 0;
+                }else{
+                    d_match_likeCount = Integer.parseInt(dbObject.get("d_match_likeCount").toString());
+                }
                 d_match_likeCount = d_match_likeCount-1;
+                if(d_match_likeCount<0){
+                    d_match_likeCount=0;
+                }
                 System.out.println("-------取消点赞数--------------------------------"+d_match_likeCount);
                 BasicDBObject queryCondition = new BasicDBObject();
                 BasicDBList values = new BasicDBList();
@@ -1197,10 +1240,21 @@ public class WebController {
                 updatedValue.put("d_match_likeCount", d_match_likeCount);
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
+
+                DBObject result_dbObject =   shopMatchService.selectByCode(corp_code, d_match_code);
+                count =  result_dbObject.get("d_match_likeCount").toString();
             }else if(operate_type.equals("discollect")){
+                int d_match_collectCount=0;
                 shopMatchService.updRelByType(corp_code,d_match_code,operate_userCode,"collect");
-                int d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
+                if(null==dbObject.get("d_match_collectCount") || dbObject.get("d_match_collectCount").toString().equals("")){
+                    d_match_collectCount = 0;
+                }else{
+                    d_match_collectCount = Integer.parseInt(dbObject.get("d_match_collectCount").toString());
+                }
                 d_match_collectCount = d_match_collectCount-1;
+                if(d_match_collectCount<0){
+                    d_match_collectCount=0;
+                }
                 BasicDBObject queryCondition = new BasicDBObject();
                 BasicDBList values = new BasicDBList();
                 values.add(new BasicDBObject("corp_code", corp_code));
@@ -1211,11 +1265,13 @@ public class WebController {
                 updatedValue.put("d_match_collectCount", d_match_collectCount);
                 DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
                 collection_def.update(queryCondition, updateSetValue);
-            }
 
+                DBObject result_dbObject =   shopMatchService.selectByCode(corp_code, d_match_code);
+                count =  result_dbObject.get("d_match_collectCount").toString();
+            }
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("成功");
+            dataBean.setMessage(count);
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

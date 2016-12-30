@@ -7,20 +7,22 @@ var addProduct={
      html:'',
      next:false,
      searchName:'',
+     first:true,
      r_match_goods:[],
-    theRequest:{},
+     theRequest:{},
      oc:new ObjectControl(),
-     oss:new OSS.Wrapper({
-    region: 'oss-cn-hangzhou',
-    accessKeyId: 'O2zXL39br8rSn1zC',
-    accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
-    bucket: 'products-image'
-}),
+
     init:function () {
         this.getUrl();
         //判断是否进入编辑页面
         this.theRequest.d_match_code?this.getValue():'';
         $("#file").on('change','',function(e){
+            var oss=new OSS.Wrapper({
+                region: 'oss-cn-hangzhou',
+                accessKeyId: 'O2zXL39br8rSn1zC',
+                accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+                bucket: 'products-image'
+            });
             var files= e.target.files;
             for(var key in files){
                 if(!files[key].type)return;
@@ -29,7 +31,7 @@ var addProduct={
                 if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
                     var storeAs='ShowImage/'+pos;
                     var me=this;
-                    this.oss.multipartUpload(storeAs, files[key]).then(function (result) {
+                    oss.multipartUpload(storeAs, files[key]).then(function (result) {
                         var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
                         me.showImg(storeAs);
                     }).catch(function (err) {
@@ -48,13 +50,10 @@ var addProduct={
         //获取商品列表
         var me=this;
         $('#picture').click(function () {
+            console.log(me.r_match_goods);
             $('.bg').hide();
-            me.getList();
-            //联通APP
-            var type={type:'新增商品列表'}
-            me.doAppWebRefresh(JSON.stringify(type));
-            //显示商品列表
             $('.product_list').show();
+            $(window).bind('scroll',me.scroll.bind(me));
             //输入框显示控制
             $('.search_box input').focus(function(){
                 $('.search_box .search').css('display','none');
@@ -65,6 +64,16 @@ var addProduct={
                     $('.search_box .search').css('display','block');
                 }
             });
+            if(!me.first){
+                return
+            }
+            me.first=false;
+            me.getList();
+            // //联通APP
+            // var type={type:'新增商品列表'}
+            // me.doAppWebRefresh(JSON.stringify(type));
+            //显示商品列表
+
         });
         $(window).bind('scroll',this.scroll.bind(this));
         $('.complete_btn').click(this.choose.bind(this));
@@ -72,6 +81,8 @@ var addProduct={
             if(e.keyCode==13){
                 me.searchName=$(this).val();
                 me.html='';
+                me.page=1;
+                $('.list_box').empty();
                 me.getList();
             }
         });
@@ -90,28 +101,28 @@ var addProduct={
             img.push(this.src)
         });
         this.param.corp_code=this.theRequest.corp_code;
-        this.param.d_match_title=$('.header_title_r').html();
+        this.param.d_match_title=$('.header_title_r').val();
         this.param.d_match_image=img.join(',');
-        this.param.d_match_desc='';
-        this.param.user_code=this.theRequest.user_code;
+        this.param.d_match_desc=$('#').val();
+        this.param.user_code=this.theRequest.user_id;
         this.param.r_match_goods=this.r_match_goods;
         console.log(this.param);
         //请求/api/shopMatch/addGoodsByWx
         this.oc.postRequire("post","/api/shopMatch/addGoodsByWx",'',this.param,function(data){
             console.log(data);
-            if(data.code==0){
-                //联通APP
-                this.doAppWebRefresh('success');
-            }else if(data.code==-1){
-                this.doAppWebRefresh(' defeat');
-            }
+            // if(data.code==0){
+            //     //联通APP
+            //     this.doAppWebRefresh('success');
+            // }else if(data.code==-1){
+            //     this.doAppWebRefresh(' defeat');
+            // }
         }.bind(this))
     },
     choose:function () {
-        //联通APP
-        var remove={'removeView':'完成'}
-        this.doAppWebRefresh(JSON.stringify(remove));
-
+        $(window).unbind('scroll');
+        // //联通APP
+        // var remove={'removeView':'完成'}
+        // this.doAppWebRefresh(JSON.stringify(remove));
         this.r_match_goods=[];
         $('#picture_box .picture').remove();
         var me=this;
@@ -127,6 +138,7 @@ var addProduct={
             };
             me.r_match_goods.push(param);
         });
+        console.log( this.r_match_goods);
         $('.bg').show();
         $('.product_list' ).hide();
         //添加商品图片
@@ -160,6 +172,7 @@ var addProduct={
     });
 },
     getList:function() {
+        this.html='';
         var corp_code=this.theRequest.corp_code;
         var pageSize=10;
         var pageIndex=this.page;
@@ -175,30 +188,16 @@ var addProduct={
                     me.next = false;
                 }
             } else {
-                var arr_match=me.r_match_goods;
-                var arr_code=[];
-                for(var i=0;i<arr_match.length;i++){
-                    arr_code.push(arr_match[i].r_match_goodsCode);
-                }
                 for (var i = 0; i < list.length; i++) {
-                    if(arr_code.indexOf(list[i].productId)!=-1){
-                        me.html += '<li class="list changeBcColor"> <div class="list_picture"><img src="' + list[i].imageUrl +
-                            '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
-                            '</p> <p>货号：<span class="list_number">' + list[i].productId +
-                            '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
-                            '</span></p> </div> </li>';
-                    }else{
-                        me.html += '<li class="list"> <div class="list_picture"><img src="' + list[i].imageUrl +
-                            '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
-                            '</p> <p>货号：<span class="list_number">' + list[i].productId +
-                            '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
-                            '</span></p> </div> </li>';
-                    }
+                    me.html += '<li class="list"> <div class="list_picture"><img src="' + list[i].imageUrl +
+                        '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
+                        '</p> <p>货号：<span class="list_number">' + list[i].productId +
+                        '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
+                        '</span></p> </div> </li>';
                 }
                 me.next=true;
-                me.searchName='';
             }
-            $('.list_box').html(me.html);
+            $('.list_box').append(me.html);
             //绑定
         }else if(data.code==-1){
             alert(data.message);

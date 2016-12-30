@@ -46,11 +46,11 @@ $('#record .screen_close').click(function () {
     $('#topUp').css('display','block');
     $('.warp').css('display','block');
 });
-$('.warp').click(function () {
-    $('#topUp').css('display','none');
-    $('#refund').css('display','none');
-    $('.warp').css('display','none');
-});
+//$('.warp').click(function () {
+//    $('#topUp').css('display','none');
+//    $('#refund').css('display','none');
+//    $('.warp').css('display','none');
+//});
 //单据编号
 var mydate = new Date();
 var str = "" + mydate.getFullYear() + "";
@@ -98,7 +98,7 @@ laydate(chooseDate);
 laydate(refundDate);
 //充值类型
 $('#execution_input').click(function () {
-    $('#refunShopSelcet').css('display','none');
+    $('#topUpShopSelcet').css('display','none');
     $('#topUpPeopleSelect').css('display','none');
     $('#execution').toggle();
 });
@@ -112,6 +112,7 @@ $("#execution li").click(function () {
 });
 //退款类型
 $('#refunTypeInput').click(function () {
+    $('#refunShopSelcet').css('display','none');
     $('#refunType').toggle();
 })
 //下拉选择
@@ -158,6 +159,8 @@ function topUpShopShow(listList){
     }
 }
 $('#topUpShop').click(function(){
+    $('#execution').css('display','none');
+    $('#topUpPeopleSelect').css('display','none');
     $('#topUpShopSelcet').toggle();
 });
 //下拉选择
@@ -169,8 +172,7 @@ function topUpShopSelcetClick(dom){
 }
 //退款店仓
 $('#refunShop').click(function () {
-    $('#execution').css('display','none');
-    $('#topUpPeopleSelect').css('display','none');
+    $('#refunType').css('display','none');
     $('#refunShopSelcet').toggle();
 })
 //下拉选择

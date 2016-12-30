@@ -5,7 +5,9 @@ var oc = new ObjectControl();
 	var vipCardTypeJs={};
 	vipCardTypeJs.param={//定义参数类型
 		"card":true,
-		"name":true
+		"name":true,
+		"vip_type_code":"",
+		"vip_type_name":""
 	};
 	vipCardTypeJs.isEmpty=function(obj){
 		if(obj.trim() == "" || obj.trim() == undefined){
@@ -80,24 +82,26 @@ var oc = new ObjectControl();
 				}
 				var param={};
 				var corp_code=$("#OWN_CORP").val().trim();//公司编号
-				var vip_type=$("#vip_type").val().trim();//会员类型
-				var discount=$("#discount").val().trim();//会员折扣
+				var vip_card_type_code=$("#vip_type_code").val().trim();//会员类型定义编号
+				var vip_card_type_name=$("#vip_type_name").val().trim();//会员类型定义名称
+				var degree=$("#vip_type_degree").attr("data-value");//会员类型等级
+				var input=$("#is_active")[0];//是否可用
+				if(input.checked==true){//是否可用
+					isactive="Y";
+				}else if(input.checked==false){
+					isactive="N";
+				};
 				param["corp_code"]=corp_code;//公司编号
-				param["vip_type"]=vip_type;//会员类型
-				param["high_vip_type"]=high_vip_type;//上级会员类型
-				param["discount"]=discount;//会员折扣
-				param["join_threshold"]=join_threshold;//招募门槛
-				param["upgrade_time"]=upgrade_time;//升级门槛时间
-				param["upgrade_amount"]=upgrade_amount;//升级门槛金额
-				param["points_value"]=points_value;//积分比例
+				param["vip_card_type_code"]=vip_card_type_code;//上级会员类型
+				param["vip_card_type_name"]=vip_card_type_name;//会员类型
 				param["isactive"]=isactive;//是否可用
 				var id=sessionStorage.getItem("id");//获取保存的id
 				if(id==null){
-					var command="/vipRules/add";
+					var command="/vipCardType/add";
 					vipCardTypeJs.ajaxSubmit(command,param);
 				}else if(id!==null){
 					param["id"]=id;
-					var command="/vipRules/edit";
+					var command="/vipCardType/edit";
 					vipCardTypeJs.ajaxSubmit(command,param);
 				}
 			}else{
@@ -106,74 +110,11 @@ var oc = new ObjectControl();
 		});
 		//关闭
 		$("#edit_close").click(function(){
-			$(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime.html");
+			$(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type.html");
 		});
 		//回到列表
 		$("#back_regime").click(function(){
-			$(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime.html");
-		});
-		//添加券
-		$("#add_quan").click(function(){
-			var corp_code=$("#OWN_CORP").val();
-			var is_present_coupon=$("#is_present_coupon")[0];
-			if(is_present_coupon.checked==false){
-				art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content:"请先选中左侧按钮"
-                });
-				return;
-			}
-			self.getQuanList(corp_code);
-		})
-		$("#present_point").click(function(){
-			var is_present_point=$("#is_present_point")[0];
-			if(is_present_point.checked==false){
-				art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content:"请先选中左侧按钮"
-                });
-				return;
-			}
-		})
-		//删除券
-		$("#quan_select").on("click",".q_remove",function(){
-			$(this).parent().remove();
-		})
-		//券点击li赋值
-		$(".item_1").on("click","ul li",function(){
-			var txt = $(this).text();
-			$(".item_1 .input_select").val(txt);
-			$(".item_1 ul").hide();
-		});
-		//券input框点击显示和隐藏
-		$("#quan_select").on("click",".item_2 .input_select",function(){
-			var ul = $(this).parent().find("ul");
-			if(ul.css("display")=="none"){
-				ul.show();
-			}else{
-				ul.hide();
-			}
-		});
-		//点击li给input赋值
-		$("#quan_select").on("click",".item_2 ul li",function(){
-			var txt = $(this).text();
-			var couponcode=$(this).attr("data-couponcode");
-			var appid=$(this).attr("data-appid");
-			$(this).parent().siblings('.input_select').val(txt);
-			$(this).parent().siblings('.input_select').attr("data-couponcode",couponcode);
-			$(this).parent().siblings('.input_select').attr("data-appid",appid);
-			$(".item_2 ul").hide();
-		});
-		//券的input框失去焦点的时候隐藏
-		$("#quan_select").on("blur",".item_2 .input_select",function(){
-			var ul = $(this).parent().find("ul");
-			setTimeout(function(){
-				ul.hide();
-			},200);
+			$(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type.html");
 		});
 		//获取vip类型
 		$("#vip_type").blur(function(){
@@ -195,445 +136,22 @@ var oc = new ObjectControl();
 				})
 			}
 		});
-		//点击input框显示出店铺列表
-		$("#shop_list").click(function(){
-			var shop_num=1;
-			self.param.isscroll=false;
-			$("#screen_shop .screen_content_l").unbind("scroll");
-			$("#screen_shop .screen_content_l ul").empty();
-			$("#screen_shop .screen_content_r ul").empty();
-			$(".input_search input").val("");
-			if(self.param.store_codes!==""){
-				var store_codes=self.param.store_codes.split(',');
-				var store_names=self.param.store_names.split(',');
-				var store_html_right="";
-			    for(var h=0;h<store_codes.length;h++){
-					store_html_right+="<li id='"+store_codes[h]+"'>\
-					<div class='checkbox1'><input type='checkbox' value='"+store_codes[h]+"'  data-storename='"+store_names[h]+"' name='test' class='check'>\
-					<label></div><span class='p16'>"+store_names[h]+"</span>\
-					\</li>"
-				}
-				$("#screen_shop .s_pitch span").html(h);
-				$("#screen_shop .screen_content_r ul").html(store_html_right);
-			}else{
-				$("#screen_shop .s_pitch span").html("0");
-				$("#screen_shop .screen_content_r ul").empty();
-			}
-			var is_shop=$("#is_shop")[0];
-			if(is_shop.checked==false){
-				art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content:"请先选中左侧按钮"
-                });
-				return;
-			}
-			whir.loading.add("",0.5);
-			$("#loading").remove();
-			$("#screen_shop").show();
-			self.getStoreList(shop_num);
-		});
-		//点击x号关闭
-		$(".screen_close").click(function(){
-			$(this).parents(".screen_area").hide();
-			whir.loading.remove();//移除加载框
-		})
-		//点击区域确定按钮
-		$("#screen_que_area").click(function(){
-			var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
-		    var area_codes="";
-		    var area_names="";
-		    for(var i=li.length-1;i>=0;i--){
-		        var r=$(li[i]).attr("id");
-		        var p=$(li[i]).find(".p16").html();
-		        if(i>0){
-		            area_codes+=r+",";
-		            area_names+=p+",";
-		        }else{
-		            area_codes+=r;
-		            area_names+=p;
-		        }
-		    };
-		    self.param.area_codes=area_codes;
-		    self.param.area_names=area_names;
-		    $("#screen_area").hide();
-		    $("#screen_shop").show();
-		    $("#screen_area_num").val("已选"+li.length+"个");
-		    $(".area_num").val("已选"+li.length+"个");
-		    var shop_num=1;
-			self.param.isscroll=false;
-			$("#screen_shop .screen_content_l").unbind("scroll");
-			$("#screen_shop .screen_content_l ul").empty();
-			self.getStoreList(shop_num);
-		});
-		//点击品牌确定按钮
-		$("#screen_que_brand").click(function(){
-			var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
-			var brand_codes="";
-			var brand_names="";
-			for(var i=li.length-1;i>=0;i--){
-		        var r=$(li[i]).attr("id");
-		        var p=$(li[i]).find(".p16").html();
-		        if(i>0){
-		            brand_codes+=r+",";
-		            brand_names+=p+",";
-		        }else{
-		            brand_codes+=r;
-		            brand_names+=p;
-		        }
-		    };
-		    self.param.brand_codes=brand_codes;
-		    self.param.brand_names=brand_names;
-		    $("#screen_brand").hide();
-		    $("#screen_shop").show();
-		    $("#screen_brand_num").val("已选"+li.length+"个");
-		    $(".brand_num").val("已选"+li.length+"个");
-			var shop_num=1;
-			self.param.isscroll=false;
-			$("#screen_shop .screen_content_l").unbind("scroll");
-			$("#screen_shop .screen_content_l ul").empty();
-			self.getStoreList(shop_num);
-		});
-		//点击店铺确定按钮
-		$("#screen_que_shop").click(function(){
-			var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
-			var store_codes="";
-			var store_names="";
-			for(var i=li.length-1;i>=0;i--){
-		        var r=$(li[i]).attr("id");
-		        var p=$(li[i]).find(".p16").html();
-		        if(i>0){
-		            store_codes+=r+",";
-		            store_names+=p+",";
-		        }else{
-		            store_codes+=r;
-		            store_names+=p;
-		        }
-		    };
-		    self.param.store_codes=store_codes;
-		    self.param.store_names=store_names;
-		    $("#screen_shop").hide();
-		    $("#shop_list").val("已选"+li.length+"个");
-		   	whir.loading.remove();//移除加载框
-		});
-		//店铺里面的区域点击
-		$("#shop_area").click(function(){
-			$(".input_search input").val("");
-			if(self.param.area_codes!==""){
-				var area_codes=self.param.area_codes.split(',');
-				var area_names=self.param.area_names.split(',');
-				var area_html_right="";
-			    for(var h=0;h<area_codes.length;h++){
-					area_html_right+="<li id='"+area_codes[h]+"'>\
-					<div class='checkbox1'><input type='checkbox' value='"+area_codes[h]+"'  data-storename='"+area_names[h]+"' name='test' class='check'>\
-					<label></div><span class='p16'>"+area_names[h]+"</span>\
-					\</li>"
-				}
-				$("#screen_area .s_pitch span").html(h);
-				$("#screen_area .screen_content_r ul").html(area_html_right);
-			}else{
-				$("#screen_area .s_pitch span").html("0");
-				$("#screen_area .screen_content_r ul").empty();
-			}
-			self.param.isscroll=false;
-			self.param.area_num=1;
-			$("#screen_area .screen_content_l").unbind("scroll");
-			$("#screen_area .screen_content_l ul").empty();
-			$("#screen_area").show();
-			$("#screen_shop").hide();
-			self.getAreaList(self.param.area_num);
-		})
-		//店铺里面的品牌点击
-		$("#shop_brand").click(function(){
-			$(".input_search input").val("");
-			if(self.param.brand_codes!==""){
-				var brand_codes=self.param.brand_codes.split(',');
-				var brand_names=self.param.brand_names.split(',');
-				var brand_html_right="";
-			    for(var h=0;h<brand_codes.length;h++){
-					brand_html_right+="<li id='"+brand_codes[h]+"'>\
-					<div class='checkbox1'><input type='checkbox' value='"+brand_codes[h]+"'  data-storename='"+brand_names[h]+"' name='test' class='check'>\
-					<label></div><span class='p16'>"+brand_names[h]+"</span>\
-					\</li>"
-				}
-				$("#screen_brand .s_pitch span").html(h);
-				$("#screen_brand .screen_content_r ul").html(brand_html_right);
-			}else{
-				$("#screen_brand .s_pitch span").html("0");
-				$("#screen_brand .screen_content_r ul").empty();
-			}
-			$("#screen_brand .screen_content_l ul").empty();
-			$("#screen_brand").show();
-			$("#screen_shop").hide();
-			self.getBrandList();
-		})
-		//点击列表显示选中状态
-		$(".screen_content").on("click", "li", function () {
-		    var input = $(this).find("input")[0];
-		    if (input.type == "checkbox" && input.checked == false) {
-		        input.checked = true;
-		    } else if (input.type == "checkbox" && input.checked == true) {
-		        input.checked = false;
-		    }
-		});
-		//搜索
-		$("#area_search").keydown(function(){
-		    var event=window.event||arguments[0];
-		    self.param.area_num=1;
-		    if(event.keyCode == 13){
-		    	self.param.isscroll=false;
-			    $("#screen_area .screen_content_l").unbind("scroll");
-		    	$("#screen_area .screen_content_l ul").empty();
-		        self.getAreaList(self.param.area_num);
-		    }
-		});
-		//区域放大镜收索
-		$("#area_search_f").click(function(){
-			self.param.area_num=1;
-			self.param.isscroll=false;
-			$("#screen_area .screen_content_l").unbind("scroll");
-		    $("#screen_area .screen_content_l ul").empty();
-		    self.getAreaList(self.param.area_num);
-		})
-		//店铺搜索
-		$("#store_search").keydown(function(){
-			var event=window.event||arguments[0];
-			self.param.shop_num=1;
-			if(event.keyCode==13){
-				self.param.isscroll=false;
-				$("#screen_shop .screen_content_l ul").unbind("scroll");
-				$("#screen_shop .screen_content_l ul").empty();
-				self.getStoreList(self.param.shop_num);
-			}
-		})
-		//店铺放大镜搜索
-		$("#store_search_f").click(function(){
-			self.param.shop_num=1;
-			self.param.isscroll=false;
-			$("#screen_shop .screen_content_l").unbind("scroll");
-			$("#screen_shop .screen_content_l ul").empty();
-			self.getStoreList(self.param.shop_num);
-		})
-		//品牌搜索
-		$("#brand_search").keydown(function(){
-			var event=window.event||arguments[0];
-			if(event.keyCode==13){
-				$("#screen_brand .screen_content_l ul").empty();
-				self.getBrandList();
-			}
-		})
-		//品牌放大镜收索
-		$("#brand_search_f").click(function(){
-			$("#screen_brand .screen_content_l ul").empty();
-			self.getBrandList();
-		})
-		//移到右边
-		function removeRight(a,b){
-			var li="";
-			if(a=="only"){
-				li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
-			}
-			if(a=="all"){
-				li=$(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
-			}
-			if(li.length=="0"){
-				art.dialog({
-					zIndex:10003,
-					time: 1,
-					lock: true,
-					cancel: false,
-					content: "请先选择"
-				});
-				return;
-			}
-			if(li.length>0){
-				for(var i=0;i<li.length;i++){
-					var html=$(li[i]).html();
-					var id=$(li[i]).find("input[type='checkbox']").val();
-					$(li[i]).find("input[type='checkbox']")[0].checked=true;
-					var input=$(b).parents(".screen_content").find(".screen_content_r li");
-					for(var j=0;j<input.length;j++){
-						if($(input[j]).attr("id")==id){
-							$(input[j]).remove();
-						}
-					}
-					$(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>");
-					$(b).parents(".screen_content").find(".screen_content_r input[value='"+id+"']").removeAttr("checked");
-				}
-			}
-			var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
-			$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-		}
-		//移到左边
-		function removeLeft(a,b){
-			var li="";
-			if(a=="only"){
-				li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']:checked").parents("li");
-			}
-			if(a=="all"){
-				li=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li");
-			}
-			if(li.length=="0"){
-				art.dialog({
-					zIndex:10003,
-					time: 1,
-					lock: true,
-					cancel: false,
-					content: "请先选择"
-				});
-				return;
-			}
-			if(li.length>0){
-				for(var i=li.length-1;i>=0;i--){
-					$(li[i]).remove();
-					$(b).parents(".screen_content").find(".screen_content_l input[value='"+$(li[i]).attr("id")+"']").removeAttr("checked");
-				}
-			}
-			var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
-			$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
-		}
-		//点击右移
-		$(".shift_right").click(function(){
-			var right="only";
-			var div=$(this);
-			removeRight(right,div);
-		})
-		//点击右移全部
-		$(".shift_right_all").click(function(){
-			var right="all";
-			var div=$(this);
-			removeRight(right,div);
-		})
-		//点击左移
-		$(".shift_left").click(function(){
-			var left="only";
-			var div=$(this);
-			removeLeft(left,div);
-		})
-		//点击左移全部
-		$(".shift_left_all").click(function(){
-			var left="all";
-			var div=$(this);
-			removeLeft(left,div);
-		})
-		$("#is_present_point").change(function(){
-			if($(this)[0].checked==true){
-				$("#present_point").removeAttr("readonly");
-			}else if($(this)[0].checked==false){
-				$("#present_point").attr("readonly","true");
-			}
-		})
-	};
-	vipCardTypeJs.getQuanList=function(corp_code,points_value){//获取券的list
-		var param={};
-		param["corp_code"]=corp_code;
-		var li="";
-		whir.loading.add("",0.5);
-		oc.postRequire("post","/vipRules/getCoupon","",param, function(data){
-			var list=JSON.parse(data.message);
-			for(var i=0;i<list.length;i++){
-				li+="<li data-appid='"+list[i].appid+"' data-couponcode='"+list[i].couponcode+"'>"+list[i].name+"\("+list[i].appname+"\)</li>";
-			}
-			if(points_value!==undefined){
-			for(var i=0;i<points_value.length;i++){
-				var html="<div class='quan_select item_2'><input type='text' data-appid='"
-				+points_value[i].appid+"' data-couponcode='"
-				+points_value[i].couponcode+"'value='"
-				+points_value[i].name+"\("+points_value[i].appname
-				+"\)' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
-				html+=li;
-				html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
-				$("#quan_select").append(html);
-			}
-			}else{
-				var html="<div class='quan_select item_2'><input type='text' data-appid='' data-couponcode='' class='input_select quan' class='present_coupon' maxlength='50'/><ul style='display:none'>"
-				html+=li;
-				html+="</ul><span class='icon-ishop_6-12 q_remove'></span></div>"
-				$("#quan_select").append(html);
-			}
-			whir.loading.remove();//移除加载框
-		})
 	};
 	vipCardTypeJs.getInputValue=function(id){//编辑时给input赋值
 		var param={};
 		var self=this;
 		param["id"]=id;
 		whir.loading.add("",0.5);
-		oc.postRequire("post","/vipRules/select","",param,function(data){
+		oc.postRequire("post","/vipCardType/select","",param,function(data){
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var corp_code=message.corp_code;
-				$("#vip_type").val(message.vip_type);//会员类型
-				self.param.vip_type=message.vip_type;
-				$("#discount").val(message.discount);//会员折扣
-				$("#join_threshold").val(message.join_threshold);//招募门槛
-				$("#upgrade_amount").val(message.upgrade_amount);//升级门槛金额
-				$("#points_value").val(message.points_value);//积分比例
-				$("#present_point").val(message.present_point);//送积分
-				$("#created_time").val(message.created_date);//创建时间
-				$("#creator").val(message.creater);//创建人
-				$("#modify_time").val(message.modified_date);//修改人
-				$("#modifier").val(message.modifier);//修改时间
-				$("#upgrade_time").attr("data-value",message.upgrade_time);//升级门槛时间
+				$("#vip_type_code").val(message.vip_card_type_code);
+				$("#vip_type_name").val(message.vip_type_name);
+				$("#vip_type_degree").attr("data-value",degree);
+				var degree=$("#vip_type_degree").siblings("ul").find("li[data-value='"+message.upgrade_time+"']").text();
+				$("#vip_type_degree").val(upgrade_time);//升级门槛时间
 				var input=$("#is_active")[0];//是否可用
-				var is_present_point=$("#is_present_point")[0];//是否赠送积分
-				var is_present_coupon=$("#is_present_coupon")[0];//是否赠送券
-				var is_shop=$("#is_shop")[0];//是否选择开卡店铺
-				var store_codes="";
-				var store_names="";
-				for(var i=0;i<message.stores.length;i++){
-					if(i<message.stores.length-1){
-						store_codes+=message.stores[i].store_code+",";
-						store_names+=message.stores[i].store_name+","
-					}else{
-						store_codes+=message.stores[i].store_code;
-						store_names+=message.stores[i].store_name;
-					}
-				}
-				$("#shop_list").val("已选"+message.stores.length+"个");
-				self.param.store_codes=store_codes;
-				self.param.store_names=store_names;
-				if(message.upgrade_time!==""){
-					var upgrade_time=$("#upgrade_time").siblings("ul").find("li[data-value='"+message.upgrade_time+"']").text();
-					$("#upgrade_time").val(upgrade_time);//升级门槛时间
-				}
-				//是否可用
-				if(message.isactive=="Y"){
-					input.checked=true;
-				}else if(message.isactive=="N"){
-					input.checked=false;
-				}
-				if(message.stores.length=="0"){
-					is_shop.checked=false;
-				}else if(message.stores.length>0){
-					is_shop.checked=true;
-				}
-				//是否赠送积分
-				if(message.present_point!==""){
-					is_present_point.checked=true;
-				}else if(message.present_point==""){
-					is_present_point.checked=false;
-				}
-				//是否赠送券
-				if(message.present_coupon!==""){
-					var present_coupon=JSON.parse(message.present_coupon);//券的list
-					if(present_coupon.length>0){
-						is_present_coupon.checked=true;
-						$("#present_point").removeAttr("readonly");
-					}else{
-						is_present_coupon.checked=false;
-					}
-					self.getQuanList(corp_code,present_coupon);
-				}else if(present_coupon==""){
-					is_present_coupon=false;
-				}
-				if(message.high_vip_type==""){
-					$("#high_vip_type").val("无上级会员类型");
-				}else{
-					$("#high_vip_type").val(message.high_vip_type);//上级会员类型
-				}
-				
 				self.getcorplist(corp_code);
 			}else if(data.code=="-1"){
 				alert(data.message);
@@ -708,229 +226,15 @@ var oc = new ObjectControl();
 			whir.loading.remove();//移除加载框
 		});
 	};
-	vipCardTypeJs.getVipType=function(corp_code){//获取vip上级会员类型
-		var param={};
-		param["corp_code"]=corp_code;
-		whir.loading.add("",0.5);
-		oc.postRequire("post","/vipRules/getVipTypes","",param, function(data){
-			var list=JSON.parse(data.message).list;
-			var list=JSON.parse(list);
-			var html="<li data-value=''>无上级会员类型</li>";
-			for(var i=0;i<list.length;i++){
-				html+="<li data-value='"+list[i].vip_type+"'>"+list[i].vip_type+"</li>";
-			}
-			$("#high_vip_type").val('无上级会员类型');
-			$("#high_vip_type").siblings("ul").html(html);
-			whir.loading.remove();//移除加载框
-		})
-	};
-	vipCardTypeJs.getStoreList=function(pageNumber){
-		var self=this;
-		var corp_code=$("#OWN_CORP").val();
-		var corp_code = $('#OWN_CORP').val();
-		var searchValue=$("#store_search").val();
-		var pageSize=20;
-		var pageNumber=pageNumber;
-		var param={};
-		param['corp_code']=corp_code;
-		param['area_code']=self.param.area_codes;
-		param['brand_code']=self.param.brand_codes;
-		param['searchValue']=searchValue;
-		param['pageNumber']=pageNumber;
-		param['pageSize']=pageSize;
-		whir.loading.add("",0.5);//加载等待框
-		$("#mask").css("z-index","10002");
-		oc.postRequire("post","/shop/selectByAreaCode","", param, function(data) {
-		if (data.code == "0") {
-				var message=JSON.parse(data.message);
-	            var list=JSON.parse(message.list);
-	            var hasNextPage=list.hasNextPage;
-	            var cout=list.pages;
-	            var list=list.list;
-				var store_html = '';
-				if (list.length == 0){
-					
-				} else {
-					if(list.length>0){
-						for (var i = 0; i < list.length; i++) {
-					    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
-	                        + i
-	                        + pageNumber
-	                        + 1
-	                        + "'/><label for='checkboxTowInput"
-	                        + i
-	                        + pageNumber
-	                        + 1
-	                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
-						}
-					}
-				}
-				if(hasNextPage==true){
-					self.param.shop_num++;
-					self.param.shop_next=false;
-				}
-				if(hasNextPage==false){
-					self.param.shop_next=true;
-				}
-				$("#screen_shop .screen_content_l ul").append(store_html);
-				if(!self.param.isscroll){
-					$("#screen_shop .screen_content_l").bind("scroll",function () {
-						var nScrollHight = $(this)[0].scrollHeight;
-					    var nScrollTop = $(this)[0].scrollTop;
-					    var nDivHight=$(this).height();
-					    if(nScrollTop + nDivHight >= nScrollHight){
-					    	if(self.param.shop_next){
-					    		return;
-					    	}
-					    	self.getStoreList(self.param.shop_num);
-					    };
-					})
-			    }
-			    self.param.isscroll=true;
-				var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
-				for(var k=0;k<li.length;k++){
-					$("#screen_shop .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
-				}
-				whir.loading.remove();//移除加载框
-			} else if (data.code == "-1") {
-				art.dialog({
-					time: 1,
-					lock: true,
-					cancel: false,
-					content: data.message
-				});
-			}
-		})
-	};
-	vipCardTypeJs.getBrandList=function(){//获取品牌列表
-		var corp_code = $('#OWN_CORP').val();
-		var searchValue=$("#brand_search").val();
-		var param={};
-		param["corp_code"]=corp_code;
-		param["searchValue"]=searchValue;
-		whir.loading.add("",0.5);//加载等待框
-		$("#mask").css("z-index","10002");
-		oc.postRequire("post","/shop/brand", "",param, function(data){
-			if (data.code == "0") {
-				var message=JSON.parse(data.message);
-	            var list=message.brands;
-				var brand_html_left = '';
-				var brand_html_right='';
-				if (list.length == 0){
-				} else {
-					if(list.length>0){
-						for (var i = 0; i < list.length; i++) {
-						    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
-		                        + i
-		                        + 1
-		                        + "'/><label for='checkboxThreeInput"
-		                        + i
-		                        + 1
-		                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
-						}
-					}
-				}
-				$("#screen_brand .screen_content_l ul").append(brand_html_left);
-				var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
-				for(var k=0;k<li.length;k++){
-					$("#screen_brand .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
-				}
-				whir.loading.remove();//移除加载框
-			} else if (data.code == "-1") {
-				art.dialog({
-					time: 1,
-					lock: true,
-					cancel: false,
-					content: data.message
-				});
-			}
-		})
-	};
-	vipCardTypeJs.getAreaList=function(pageNumber){
-		var self=this;
-		var corp_code = $('#OWN_CORP').val();
-		var searchValue=$("#area_search").val().trim();
-		var pageSize=20;
-		var pageNumber=pageNumber;
-		var param={};
-		param["corp_code"] = corp_code;
-		param["searchValue"]=searchValue;
-		param["pageSize"]=pageSize;
-		param["pageNumber"]=pageNumber;
-		whir.loading.add("",0.5);//加载等待框
-		$("#mask").css("z-index","10002");
-		oc.postRequire("post", "/area/selAreaByCorpCode", "",param, function(data) {
-			if (data.code == "0") {
-				var message=JSON.parse(data.message);
-	            var list=JSON.parse(message.list);
-	            var hasNextPage=list.hasNextPage;
-	            var cout=list.pages;
-	            var list=list.list;
-				var area_html_left ='';
-				var area_html_right='';
-				if (list.length == 0) {
-
-				} else {
-					if(list.length>0){
-						for (var i = 0; i < list.length; i++) {
-						    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-		                        + i
-		                        + pageNumber
-		                        + 1
-		                        + "'/><label for='checkboxOneInput"
-		                        + i
-		                        + pageNumber
-		                        + 1
-		                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
-						}
-					}
-				}
-				if(hasNextPage==true){
-					self.param.area_num++;
-					self.param.area_next=false;
-				}
-				if(hasNextPage==false){
-					self.param.area_next=true;
-				}
-				$("#screen_area .screen_content_l ul").append(area_html_left);
-				if(!self.param.isscroll){
-					$("#screen_area .screen_content_l").bind("scroll",function () {
-						var nScrollHight = $(this)[0].scrollHeight;
-					    var nScrollTop = $(this)[0].scrollTop;
-					    var nDivHight=$(this).height();
-					    if(nScrollTop + nDivHight >= nScrollHight){
-					    	if(self.param.area_next){
-					    		return;
-					    	}
-					    	self.getAreaList(self.param.area_num);
-					    };
-					})
-				}
-				self.param.isscroll=true;
-				var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
-				for(var k=0;k<li.length;k++){
-					$("#screen_area .screen_content_l input[value='"+$(li[k]).attr("id")+"']").attr("checked","true"); 
-				}
-				whir.loading.remove();//移除加载框
-			} else if (data.code == "-1") {
-				art.dialog({
-					time: 1,
-					lock: true,
-					cancel: false,
-					content: data.message
-				});
-			}
-		})
-	};
 	vipCardTypeJs.ajaxSubmit=function(command,param){//提交接口
 		whir.loading.add("",0.5);
 		oc.postRequire("post", command,"",param, function(data){
 			if(data.code=="0"){
-				if(command=="/vipRules/add"){
+				if(command=="/vipCardType/add"){
                     sessionStorage.setItem("id",data.message);
-                    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_regime_edit.html");
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/vip_card_type_edit.html");
                 }
-                if(command=="/vipRules/edit"){
+                if(command=="/vipCardType/edit"){
                     art.dialog({
                         time: 1,
                         lock: true,

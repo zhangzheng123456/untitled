@@ -13,7 +13,6 @@ body{
   top: rem(0);
   background-color: #ededed;
   width: 100%;
-  //overflow-y: auto;
   //overflow-x: hidden;
 }
 .title{
@@ -38,7 +37,7 @@ body{
 }
 .main{
   clear: both;
-  width: 100%;
+  width: 96.7%;
   background-color: white;
   position: relative;
   top: rem(54);
@@ -53,8 +52,8 @@ body{
 .goods_box{
   float: left;
   margin-bottom: rem(20);
-  margin-right:3.3%;
-  width: 45%;
+  margin-right:3.35%;
+  width: 46.5%;
 }
 .the_img{
   width: 100%;

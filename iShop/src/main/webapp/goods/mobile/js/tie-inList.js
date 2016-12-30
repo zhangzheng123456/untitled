@@ -162,44 +162,45 @@ function  click(){
         var status = '';  //是否点赞or收藏
         if(src =='image/icon_点赞@2x.png'){
             $(this).attr('src','image/icon_点赞_已点赞@2x.png');
-            var val = $(this).next('.add_num').text();
-            $(this).next('.add_num').text(parseInt(val)+1);
+            //var val = $(this).next('.add_num').text();
+            //$(this).next('.add_num').text(parseInt(val)+1);
             operate_type = 'like';
             comment_text='';
             status = 'Y';
         }else if (src =='image/icon_点赞_已点赞@2x.png'){
             $(this).attr('src','image/icon_点赞@2x.png');
-            var val = $(this).next('.add_num').text();
-            $(this).next('.add_num').text(parseInt(val)-1);
+            //var val = $(this).next('.add_num').text();
+            //$(this).next('.add_num').text(parseInt(val)-1);
             operate_type = 'dislike';
             comment_text='';
             status = 'N';
         }
         //    评论
         if(src =='image/icon_评论@2x.png'){
-            alert('暂无该功能')
             operate_type = 'comment';
             comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
             status = '';
+            return;
         }
         //    收藏
         if(src =='image/icon_收藏@2x.png'){
             $(this).attr('src','image/icon_收藏_已收藏@2x.png');
-            var val = $(this).next('.add_num').text();
-            $(this).next('.add_num').text(parseInt(val)+1);
+            //var val = $(this).next('.add_num').text();
+            //$(this).next('.add_num').text(parseInt(val)+1);
             operate_type = 'collect';
             comment_text='';
             status = 'Y';
         }else if (src =='image/icon_收藏_已收藏@2x.png'){
             $(this).attr('src','image/icon_收藏@2x.png');
-            var val = $(this).next('.add_num').text();
-            $(this).next('.add_num').text(parseInt(val)-1);
+            //var val = $(this).next('.add_num').text();
+            //$(this).next('.add_num').text(parseInt(val)-1);
             operate_type = 'discollect';
             comment_text='';
             status = 'N';
         }
         var param={};
-        param["corp_code"]=corp_code;
+        param["user_code"]=GetRequest().user_id;
+        param["corp_code"]=GetRequest().corp_code;
         param["d_match_code"]=d_match_code;
         param["operate_userCode"]=operate_userCode;
         param["operate_type"]=operate_type;
@@ -207,9 +208,22 @@ function  click(){
         param["comment_text"]=comment_text;
         oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
             if (data.code == "0") {
-                console.log('调用事件执行')
-                console.log(data);
-                //pageVal(num);
+                var message = data.message;
+                $('.goods_box').each(function () {
+                    var id = $(this).attr('id')
+                    if(id == d_match_code){
+                        if(operate_type=='like'||operate_type=='dislike'){
+                            $(this).find('.add div').eq(0).find('.add_num').text(message);
+                        }else if(operate_type=='collect'||operate_type=='discollect'){
+                            $(this).find('.add div').eq(2).find('.add_num').text(message);
+                        }else if(operate_type=='comment'){
+                            $(this).find('.add div').eq(1).find('.add_num').text(message);
+                        }else{
+                            console.log('error');
+                        }
+                    }
+                })
+
             }else if(data.code =='-1'){
                 //alert(data);
             }
