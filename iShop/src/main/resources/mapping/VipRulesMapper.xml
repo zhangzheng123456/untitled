@@ -345,29 +345,16 @@
         dvr.modifier,
         dvr.created_date,
         dvr.creater,
-        dvr.isactive
+        dvr.isactive,
         dvr.vip_card_type_code,
         dvr.degree
-        FROM def_vip_rules dvr
+        FROM def_vip_rules dvr,def_corp
         WHERE dvr.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND dvr.CORP_CODE = #{corp_code}
         </if>
         AND  dvr.vip_type= #{vip_type}
          AND  dvr.isactive= #{isactive}
-    </select>
-
-    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.VipRules">
-        SELECT
-        dvr.id,
-        dvr.corp_code,
-        dvr.vip_type
-        FROM def_vip_rules dvr,def_corp dc
-       WHERE dvr.corp_code = dc.corp_code
-        <if test="corp_code!=null and corp_code!=''">
-            AND dvr.corp_code=#{corp_code}
-       </if>
-         AND dvr.isactive = #{isactive}
     </select>
 
 </mapper>

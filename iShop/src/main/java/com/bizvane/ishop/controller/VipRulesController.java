@@ -232,32 +232,7 @@ public class VipRulesController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/getVipTypes", method = RequestMethod.POST)
-    @ResponseBody
-    public String getVipRulesType(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json-select-------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSON.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            JSONObject result = new JSONObject();
-            List<VipRules> list = vipRulesService.getVipRulesType(corp_code, Common.IS_ACTIVE_Y);
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+
 
     /**
      * 根据id查看

@@ -286,8 +286,5 @@ public class VipRulesServiceImpl implements VipRulesService {
         return array.toJSONString();
     }
 
-    @Override
-    public List<VipRules> getVipRulesType(String corp_code, String isactive) throws Exception {
-        return vipRulesMapper.selectByCorp(corp_code, isactive);
-    }
+
 }
