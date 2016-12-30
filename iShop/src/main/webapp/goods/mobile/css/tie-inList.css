@@ -34,7 +34,7 @@ body {
 
 .main {
   clear: both;
-  width: 100%;
+  width: 96.7%;
   background-color: white;
   position: relative;
   top: 1.30435rem;
@@ -48,8 +48,8 @@ body {
 .goods_box {
   float: left;
   margin-bottom: 0.48309rem;
-  margin-right: 3.3%;
-  width: 45%; }
+  margin-right: 3.35%;
+  width: 46.5%; }
 
 .the_img {
   width: 100%;

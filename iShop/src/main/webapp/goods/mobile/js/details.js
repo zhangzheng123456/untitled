@@ -95,14 +95,14 @@ $('.bottom div img').click(function () {
     if(src =='image/icon_点赞@2x.png'){
         $(this).attr('src','image/icon_点赞_已点赞@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)+1);
+        //$(this).next('.num').text(parseInt(val)+1);
         operate_type = 'like';
         comment_text='';
         status = 'Y';
     }else if (src =='image/icon_点赞_已点赞@2x.png'){
         $(this).attr('src','image/icon_点赞@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)-1);
+        //$(this).next('.num').text(parseInt(val)-1);
         operate_type = 'dislike';
         comment_text='';
         status = 'N';
@@ -118,14 +118,14 @@ $('.bottom div img').click(function () {
     if(src =='image/icon_收藏@2x.png'){
         $(this).attr('src','image/icon_收藏_已收藏@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)+1);
+        //$(this).next('.num').text(parseInt(val)+1);
         operate_type = 'collect';
         comment_text='';
         status = 'Y';
     }else if (src =='image/icon_收藏_已收藏@2x.png'){
         $(this).attr('src','image/icon_收藏@2x.png');
         var val = $(this).next('.num').text();
-        $(this).next('.num').text(parseInt(val)-1);
+        //$(this).next('.num').text(parseInt(val)-1);
         operate_type = 'discollect';
         comment_text='';
         status = 'N';
@@ -140,8 +140,7 @@ $('.bottom div img').click(function () {
     param["comment_text"]=comment_text;
     oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
         if (data.code == "0") {
-            console.log(data);
-            //pageVal(num);
+
         }else if(data.code =='-1'){
             //alert(data);
         }
