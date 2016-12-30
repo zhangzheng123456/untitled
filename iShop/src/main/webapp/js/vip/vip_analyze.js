@@ -993,11 +993,11 @@ function init_chart(id,type) {
         chart.myChart6.setOption(option_map);
         reSize(chart.myChart6);
     }
-    function reSize(chart) {
-        window.addEventListener("resize", function () {
-          chart.resize();
-        });
-    }
+}
+function reSize(chart) {
+    window.addEventListener("resize", function () {
+        chart.resize();
+    });
 }
 //图表数据
 function chartData() {
@@ -1946,6 +1946,7 @@ $("#start_analyze_right").click(function () {
 // }
 /*********************页面加载时**********************************************/
 $().ready(function () {
+    $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
     //页面加载时，异步加载显示的数据
     $($(".date_btn span")[0]).css({"color": "#fff", "background": "#6cc1c8"});
     $('#select_analyze ul').on('click', 'li', showNameClick);
@@ -2122,14 +2123,52 @@ $('.chart_analyze_condition ul li').click(function () {
     type=="按金额分析"?type="amt":"";
     init_chart(ID,type);
 });
+//图表双击放大
+$("#chart_analyze").on("dblclick",".chart_head",function () {
+    var is_lg = $(this).parents(".chart_module").hasClass("chart_lg");
+    if(is_lg == true){
+        $(this).find(".chart_close_icon").trigger("click");
+    }else if(is_lg == false){
+        whir.loading.add("mask",0.5);
+        $(this).parents(".chart_module").addClass("chart_lg");
+        $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_lg").height()-30);
+        var ID = $(this).next().attr("id");
+        switch (ID){
+            case "type" :chart.myChart.resize();break;
+            case "series" :chart.myChart5.resize();break;
+            case "weeks" :chart.myChart1.resize();break;
+            case "month" :chart.myChart4.resize();break;
+            case "times" :chart.myChart3.resize();break;
+            case "areas" :chart.myChart6.resize();break;
+            case "price" :chart.myChart2.resize();break;
+        }
+    }
+});
 //图表删除
 $(".chart_close_icon").click(function () {
-    $(this).parents(".chart_module").hide();
-    var order = [];
-    $(".chart_module").each(function () {
-        if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
-            order.push($(this).attr("data-id"));
+    var is_lg = $(this).parents(".chart_module").hasClass("chart_lg");
+    if(is_lg == true){
+        $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
+        $(this).parents(".chart_module").removeClass("chart_lg");
+        var ID=$(this).parents(".chart_head").next().attr("id");
+        switch (ID){
+            case "type" :chart.myChart.resize();break;
+            case "series" :chart.myChart5.resize();break;
+            case "weeks" :chart.myChart1.resize();break;
+            case "month" :chart.myChart4.resize();break;
+            case "times" :chart.myChart3.resize();break;
+            case "areas" :chart.myChart6.resize();break;
+            case "price" :chart.myChart2.resize();break;
         }
-    });
-    chartShow(order);
+        whir.loading.remove("mask");
+    }else if(is_lg == false){
+        $(this).parents(".chart_module").hide();
+        var order = [];
+        $(".chart_module").each(function () {
+            if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
+                order.push($(this).attr("data-id"));
+            }
+        });
+        chartShow(order);
+    }
 });

@@ -1,6 +1,6 @@
 $(function(){
 	$(".item_1 .input_select").click(function(){
-		var ul = $(".item_1 ul");
+		var ul = $(this).parent().find("ul");
 		if(ul.css("display")=="none"){
 			ul.show();
 		}else{
@@ -33,7 +33,7 @@ $(function(){
 	});
 	$(".item_1 ul li").click(function(){
 		var txt = $(this).text();
-		$(".item_1 .input_select").val(txt);
+		$(this).parents(".item_1").find(".input_select").val(txt);
 		var value = $(this).attr("rel");
 		$(".item_1 ul").hide();
 	});
@@ -51,8 +51,10 @@ $(function(){
 		$(".item_2 ul").hide();
 	});
 	$(".item_1 .input_select").blur(function(){
-		var ul = $(".item_1 ul");
-		setTimeout(hideLi,200);
+		var ul = $(this).parent().find("ul");
+		setTimeout(function(){
+			ul.hide();
+		},200);
 	})
 	$(".item_2 .input_select").blur(function(){
 		var ul = $(this).parent().find("ul");

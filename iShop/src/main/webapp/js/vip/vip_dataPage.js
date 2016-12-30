@@ -98,6 +98,8 @@ laydate(chooseDate);
 laydate(refundDate);
 //充值类型
 $('#execution_input').click(function () {
+    $('#topUpShopSelcet').css('display','none');
+    $('#topUpPeopleSelect').css('display','none');
     $('#execution').toggle();
 });
 
@@ -110,6 +112,7 @@ $("#execution li").click(function () {
 });
 //退款类型
 $('#refunTypeInput').click(function () {
+    $('#refunShopSelcet').css('display','none');
     $('#refunType').toggle();
 })
 //下拉选择
@@ -156,6 +159,8 @@ function topUpShopShow(listList){
     }
 }
 $('#topUpShop').click(function(){
+    $('#execution').css('display','none');
+    $('#topUpPeopleSelect').css('display','none');
     $('#topUpShopSelcet').toggle();
 });
 //下拉选择
@@ -167,6 +172,7 @@ function topUpShopSelcetClick(dom){
 }
 //退款店仓
 $('#refunShop').click(function () {
+    $('#refunType').css('display','none');
     $('#refunShopSelcet').toggle();
 })
 //下拉选择
@@ -208,6 +214,8 @@ function topUpPeopleShow(msg){
     }
 }
 $('#topUpPeople').click(function(){
+    $('#execution').css('display','none');
+    $('#refunShopSelcet').css('display','none');
     $('#topUpPeopleSelect').toggle();
 });
 

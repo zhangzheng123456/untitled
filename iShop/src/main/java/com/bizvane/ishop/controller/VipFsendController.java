@@ -34,38 +34,6 @@ public class VipFsendController {
 
     String id;
 
-    /**
-     * 群发消息
-     * 列表
-     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String activityVipList(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            JSONObject result = new JSONObject();
-//            PageInfo<VipFsend> list = null;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = this.vipFsendService.getAllVipFsendByPage(page_number, page_size, "", "");
-//            } else {
-//                list = vipFsendService.getAllVipFsendByPage(page_number, page_size, corp_code, "");
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 群发消息

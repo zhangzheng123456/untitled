@@ -27,6 +27,8 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
+        <result column="vip_card_type_code" property="vip_card_type_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="degree" property="degree" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -51,6 +53,8 @@
           dvr.created_date,
           dvr.creater,
           dvr.isactive,
+           dvr.vip_card_type_code,
+            dvr.degree,
            dc.corp_name
         FROM def_vip_rules dvr,def_corp dc
         WHERE dvr.corp_code = dc.corp_code
@@ -75,6 +79,8 @@
         dvr.created_date,
         dvr.creater,
         dvr.isactive,
+        dvr.vip_card_type_code,
+        dvr.degree,
         dc.corp_name
         FROM def_vip_rules dvr,def_corp dc
         WHERE dvr.corp_code = dc.corp_code
@@ -151,6 +157,12 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="degree!=null">
+                degree,
+            </if>
+            <if test="vip_card_type_code!=null">
+                vip_card_type_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -197,6 +209,12 @@
             </if>
             <if test="creater!=null">
                 #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
             </if>
             <if test="isactive!=null">
                 #{isactive},
@@ -255,6 +273,12 @@
             <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
+            <if test="vip_card_type_code!=null">
+                vip_card_type_code=#{vip_card_type_code},
+            </if>
+            <if test="degree!=null">
+                degree=#{degree},
+            </if>
         </trim>
         WHERE id=#{id};
     </update>
@@ -277,6 +301,8 @@
         dvr.created_date,
         dvr.creater,
         dvr.isactive,
+        dvr.vip_card_type_code,
+        dvr.degree,
         dc.corp_name
         FROM def_vip_rules dvr,def_corp dc
         WHERE dvr.corp_code = dc.corp_code
@@ -320,8 +346,13 @@
         dvr.created_date,
         dvr.creater,
         dvr.isactive
+        dvr.vip_card_type_code,
+        dvr.degree
         FROM def_vip_rules dvr
-        WHERE dvr.CORP_CODE = #{corp_code}
+        WHERE dvr.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvr.CORP_CODE = #{corp_code}
+        </if>
         AND  dvr.vip_type= #{vip_type}
          AND  dvr.isactive= #{isactive}
     </select>

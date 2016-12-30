@@ -459,7 +459,7 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             logger.info("json-----555555555555555555---------corp_code-" + corp_code);
 
-            Map datalist = iceInterfaceService.vipBasicMethod1(page_num, page_size,corp_code, request);
+            Map datalist = iceInterfaceService.vipBasicMethod(page_num, page_size,corp_code, request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
             datalist.put(data_search_value.key, data_search_value);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
@@ -555,7 +555,7 @@ public class VIPController {
             DataBox dataBox = null;
             if (!searchValue.equals("")) {
 
-                Map datalist = iceInterfaceService.vipBasicMethod1("1","10000",corp_code,request);
+                Map datalist = iceInterfaceService.vipBasicMethod("1","10000",corp_code,request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
@@ -568,7 +568,7 @@ public class VIPController {
 //                datalist.put(data_output_type.key, data_output_type);
 //                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(screen_message.equals("") && searchValue.equals("")){
-                Map datalist = iceInterfaceService.vipBasicMethod1("1","10000",corp_code,request);
+                Map datalist = iceInterfaceService.vipBasicMethod("1","10000",corp_code,request);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
 
 //                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
@@ -650,7 +650,18 @@ public class VIPController {
             if (jsonObject.containsKey("extend") && !jsonObject.get("extend").toString().equals("")) {
                 //扩展信息
                 String extend = jsonObject.get("extend").toString();
-                iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,extend);
+                JSONObject extend_obj = JSONObject.parseObject(extend);
+                Iterator<String> iter = extend_obj.keySet().iterator();
+                JSONArray array = new JSONArray();
+                while (iter.hasNext()) {
+                    JSONObject obj = new JSONObject();
+                    String name = iter.next();
+                    String value = jsonObject.get(name).toString();
+                    obj.put("column",name);
+                    obj.put("value",value);
+                    array.add(obj);
+                }
+                iceInterfaceService.saveVipExtendInfo(corp_code,vip_id,JSON.toJSONString(array));
             }else {
                 MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
                 DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
