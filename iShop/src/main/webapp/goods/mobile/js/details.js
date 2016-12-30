@@ -140,7 +140,8 @@ $('.bottom div img').click(function () {
     param["comment_text"]=comment_text;
     oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
         if (data.code == "0") {
-
+            var message = data.message;
+            //$(this).next('.num').text(parseInt(val)-1);
         }else if(data.code =='-1'){
             //alert(data);
         }
