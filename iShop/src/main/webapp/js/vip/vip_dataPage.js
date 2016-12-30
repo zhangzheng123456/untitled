@@ -46,11 +46,11 @@ $('#record .screen_close').click(function () {
     $('#topUp').css('display','block');
     $('.warp').css('display','block');
 });
-$('.warp').click(function () {
-    $('#topUp').css('display','none');
-    $('#refund').css('display','none');
-    $('.warp').css('display','none');
-});
+//$('.warp').click(function () {
+//    $('#topUp').css('display','none');
+//    $('#refund').css('display','none');
+//    $('.warp').css('display','none');
+//});
 //单据编号
 var mydate = new Date();
 var str = "" + mydate.getFullYear() + "";
