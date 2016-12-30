@@ -204,6 +204,14 @@ function doAppWebRefresh(param){
 }
 //删除
 $('.delete').click(function () {
+    var val = confirm('是否删除');
+    if(val==true){
+        deleteAction();
+    }else{
+
+    }
+});
+function deleteAction(){
     oc.postRequire("get", "/api/shopMatch/delete?corp_code=" + corp_code +"&d_match_code=" + d_match_code+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log('删除成功');
@@ -212,7 +220,7 @@ $('.delete').click(function () {
             console.log(data);
         }
     });
-});
+}
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
