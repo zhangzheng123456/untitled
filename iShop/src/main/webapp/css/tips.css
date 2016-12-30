@@ -67,6 +67,7 @@
 #week_p .year{
 	position:absolute;
 	left: 128px;
+	top:32px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;
@@ -74,6 +75,7 @@
 #week_p .month{
 	position:absolute;
 	left: 232px;
+	top:32px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;

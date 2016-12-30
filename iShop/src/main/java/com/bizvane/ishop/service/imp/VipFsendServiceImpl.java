@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 
 
+import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.entity.WxTemplate;
 import com.bizvane.sun.common.service.http.HttpClient;
 import com.bizvane.ishop.dao.VipFsendMapper;
@@ -49,7 +50,10 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     private StoreService storeService;
     @Autowired
+    private VipGroupService vipGroupService;
+    @Autowired
     MongoDBClient mongodbClient;
+
     private static HttpClient httpClient = new HttpClient();
     private static final Logger logger = Logger.getLogger(VipFsendServiceImpl.class);
 
@@ -287,80 +291,27 @@ public class VipFsendServiceImpl implements VipFsendService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
         VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
-        String sms_vips = jsonObject.get("sms_vips").toString().trim();
         String content = vipFsend.getContent();
-        JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
+        String sms_vips = vipFsend.getSms_vips().trim();
+
         String openids = "";
         String phone = "";
         String vip_id = "";
         String vip_name = "";
+        String vip_group_code = "";
+        String group_type = "";
         if(send_scope.equals("vip")){
-            String type = sms_vips_obj.getString("type");
-            if (type.equals("1")) {
-                String area_code = sms_vips_obj.get("area_code").toString();
-                String brand_code = sms_vips_obj.get("brand_code").toString();
-                String store_code = sms_vips_obj.get("store_code").toString();
-                String vip_user_code = sms_vips_obj.get("user_code").toString();
-                if (vip_user_code.equals("")) {
-                    if (store_code.equals("")) {
-                        List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-                        for (int i = 0; i < storeList.size(); i++) {
-                            store_code = store_code + storeList.get(i).getStore_code() + ",";
-                        }
-                    }
-                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                    Data data_store_code = new Data("store_codes", store_code, ValueType.PARAM);
-
-                    Map datalist = new HashMap<String, Data>();
-                    datalist.put(data_corp_code.key, data_corp_code);
-                    datalist.put(data_store_code.key, data_store_code);
-                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-                    logger.info("------vipFsend群发消息查看详情-vip列表" + dataBox.status.toString());
-                    String message1 = dataBox.data.get("message").value;
-                    JSONObject msg_obj = JSONObject.parseObject(message1);
-                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-                    for (int i = 0; i < vip_infos.size(); i++) {
-                        JSONObject vip_obj = vip_infos.getJSONObject(i);
-                        phone = phone + vip_obj.getString("vip_phone") + ",";
-                        vip_id = vip_id + vip_obj.getString("vip_id") + ",";
-                        if (!vip_obj.getString("open_id").equals("")) {
-                            openids = openids + vip_obj.getString("open_id") + ",";
-                        }
-                        vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-
-                    }
-                } else {
-                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                    Data data_user_code = new Data("user_codes", user_id, ValueType.PARAM);
-
-                    Map datalist = new HashMap<String, Data>();
-                    datalist.put(data_corp_code.key, data_corp_code);
-                    datalist.put(data_user_code.key, data_user_code);
-                    DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-                    logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
-                    String message1 = dataBox.data.get("message").value;
-                    JSONObject msg_obj = JSONObject.parseObject(message1);
-                    JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
-                    for (int i = 0; i < vip_infos.size(); i++) {
-                        JSONObject vip_obj = vip_infos.getJSONObject(i);
-                        phone = phone + vip_obj.getString("vip_phone") + ",";
-                        vip_id = vip_id + vip_obj.getString("vip_id") + ",";
-                        vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-                        if (!vip_obj.getString("open_id").equals("")) {
-                            openids = openids + vip_obj.getString("open_id") + ",";
-                        }
-                    }
-                }
-            } else {
-                String vips = sms_vips_obj.get("vips").toString();
-                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_vip_id.key, data_vip_id);
-                vip_id = vip_id + vips;
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
-                logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
+            JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
+            String vips = sms_vips_obj.get("vips").toString();
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_ids", vips, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_vip_id.key, data_vip_id);
+//            vip_id = vip_id + vips;
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+            logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
+            if (dataBox.status.toString().equals("SUCCESS")){
                 String message1 = dataBox.data.get("message").value;
                 JSONObject msg_obj = JSONObject.parseObject(message1);
                 JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
@@ -368,13 +319,110 @@ public class VipFsendServiceImpl implements VipFsendService {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("vip_phone") + ",";
                     vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-                    if (!vip_obj.getString("open_id").equals("")) {
+
+                    if (!vip_obj.containsKey("open_id") ) {
+                        openids = openids + "null" + ",";
+                    }else {
                         openids = openids + vip_obj.getString("open_id") + ",";
                     }
                 }
             }
-        }else{
+        }
+        //插表成功后调用接口
+        if (send_type.equals("sms")) {
+            //发送类型：短信
+            //发送范围：指定会员
+            if(send_scope.equals("vip")){
 
+                Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+                Data data_phone = new Data("phone", phone, ValueType.PARAM);
+                Data data_text = new Data("text", content, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_channel.key, data_channel);
+                datalist.put(data_phone.key, data_phone);
+                datalist.put(data_text.key, data_text);
+                DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS", datalist);
+                logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
+                if (!dataBox.status.toString().equals("SUCCESS")) {
+                    status = "发送失败";
+                    return status;
+                }
+            }else if(send_scope.equals("vip_group")){
+                //发送范围：分组会员
+
+            }
+        } else if (send_type.equals("wxmass")) {
+            //发送类型：微信群发消息
+            //发送范围：指定会员
+            if(send_scope.equals("vip")){
+                //根据id查询微信模板信息
+                WxTemplate wxTemplate= wxTemplateService.getTemplateById(tem_id);
+                String app_user_name=wxTemplate.getApp_user_name();
+                String template_id=wxTemplate.getTemplate_id();
+                //逗号分割
+                String openid[] = openids.split(",");
+                String vipid[] = vip_id.split(",");
+                String vipname[] = vip_name.split(",");
+//                String open_id="";
+                String id="";
+                String name="";
+                //message_id 插入MongoDB,主键
+                String message_id = app_user_name + openid + System.currentTimeMillis();
+
+                JSONObject template_content = new JSONObject();
+                String  result="";
+                if(openid.length>=2){
+                    //调用微信群发消息接口
+                    String trans_open_ids = "";
+                    for (int i = 0; i < openid.length; i++) {
+                        if (!openid[i].equals("") && !openid[i].equals("null"))
+                            trans_open_ids = trans_open_ids + openid[i] + ",";
+                    }
+                    template_content.put("content", content);//微信群发内容
+                    template_content.put("app_user_name", app_user_name); //app_user_name
+                    template_content.put("openid", trans_open_ids);//所选择会员的openid
+                    result = sendWxMass(template_content);
+
+                }else if(openid.length>=1){
+                    //调用微信模板消息接口
+                    JSONObject con=new JSONObject();
+                    con.put("first", "您好，您的专属导购给您发了一条消息");
+                    con.put("keyword1", System.currentTimeMillis()); //关键词
+                    con.put("keyword2", Common.DATETIME_FORMAT.format(now)); //关键词
+                    con.put("remark", "请点击查看！"); //备注
+                    template_content.put("content",con);
+                    template_content.put("app_user_name",app_user_name);
+                    template_content.put("template_id",template_id);
+                    template_content.put("openid",openid[0]);
+                    template_content.put("message_id",message_id);
+                    result = sendTemplate(template_content);
+                }
+                JSONObject info = JSONObject.parseObject(result);
+
+                //群发消息发送成功之后存入mongoDB
+                if ("0".equals(info.getString("errcode"))) {
+                    for (int i = 0; i < openid.length; i++) {
+                        String open_id = openid[i];
+                        for (int j = 0; j < vipid.length; j++) {
+                            id = vipid[i];
+                            for (int k = 0; k <vipname.length ; k++) {
+                                name = vipname[i];
+                            }
+                        }
+                        insertMongoDB(open_id,corp_code, id, app_user_name, name,content,sms_code,message_id);
+                    }
+                    return status;
+                } else {
+                    status = info.get("errmsg").toString();
+                    return status;
+                }
+            }else if(send_scope.equals("vip_group")){
+                // status = Common.DATABEAN_CODE_SUCCESS;
+            }
+        } else {
+            status = "发送类型不合法";
+            return status;
         }
 
         vipFsend.setSms_code(sms_code);
@@ -386,110 +434,8 @@ public class VipFsendServiceImpl implements VipFsendService {
         vipFsend.setContent(content);
         vipFsend.setIsactive(Common.IS_ACTIVE_Y);
         vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
-        int num = 0;
-        num = vipFsendMapper.insertFsend(vipFsend);
-        System.out.print(num);
-        if (num > 0) {
-            //插表成功后调用接口
-            if (send_type.equals("sms")) {
-                //发送类型：短信
-                //发送范围：指定会员
-                if(send_scope.equals("vip")){
+        vipFsendMapper.insertFsend(vipFsend);
 
-                    Data data_channel = new Data("channel", "santong", ValueType.PARAM);
-                    Data data_phone = new Data("phone", phone, ValueType.PARAM);
-                    Data data_text = new Data("text", content, ValueType.PARAM);
-
-                    Map datalist = new HashMap<String, Data>();
-                    datalist.put(data_channel.key, data_channel);
-                    datalist.put(data_phone.key, data_phone);
-                    datalist.put(data_text.key, data_text);
-                    DataBox dataBox = iceInterfaceService.iceInterfaceV3("SendSMS", datalist);
-                    logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
-                    if (!dataBox.status.toString().equals("SUCCESS")) {
-                        status = "发送失败";
-                        return status;
-                    }
-
-                }else if(send_scope.equals("vip_group")){
-                    //发送范围：分组会员
-
-                }
-
-               return status;
-            } else if (send_type.equals("wxmass")) {
-                //发送类型：微信群发消息
-                //发送范围：指定会员
-                if(send_scope.equals("vip")){
-                    //根据id查询微信模板信息
-                    WxTemplate wxTemplate= wxTemplateService.getTemplateById(tem_id);
-                    String app_user_name=wxTemplate.getApp_user_name();
-                    String template_id=wxTemplate.getTemplate_id();
-                    //逗号分割
-                    String openid[] = openids.split(",");
-                    String vipid[] = vip_id.split(",");
-                    String vipname[] = vip_name.split(",");
-                    String open_id="";
-                    String id="";
-                    String name="";
-                    //message_id 插入MongoDB,主键
-                    String message_id = app_user_name + openid + System.currentTimeMillis();
-
-                    JSONObject template_content = new JSONObject();
-                    String  result="";
-                    if(openid.length>=2){
-                        //调用微信群发消息接口
-                        template_content.put("content", content);//微信群发内容
-                        template_content.put("app_user_name", app_user_name); //app_user_name
-                        template_content.put("openid", openids);//所选择会员的openid
-                        result = sendWxMass(template_content);
-
-                    }else if(openid.length>=1){
-                        //调用微信模板消息接口
-                        JSONObject con=new JSONObject();
-                        con.put("first", "您好，您的专属导购给您发了一条消息");
-                        con.put("keyword1", System.currentTimeMillis()); //关键词
-                        con.put("keyword2", Common.DATETIME_FORMAT.format(now)); //关键词
-                        con.put("remark", "请点击查看！"); //备注
-                        template_content.put("content",con);
-                        template_content.put("app_user_name",app_user_name);
-                        template_content.put("template_id",template_id);
-                        template_content.put("openid",openid[0]);
-                        template_content.put("message_id",message_id);
-                        result = sendTemplate(template_content);
-                    }
-                    JSONObject info = JSONObject.parseObject(result);
-
-
-                    //群发消息发送成功之后存入mongoDB
-                    if ("0".equals(info.getString("errcode"))) {
-                        for (int i = 0; i < openid.length; i++) {
-                            open_id = openid[i];
-                            for (int j = 0; j < vipid.length; j++) {
-                                id = vipid[i];
-                                for (int k = 0; k <vipname.length ; k++) {
-                                    name = vipname[i];
-                                }
-                            }
-                            insertMongoDB(open_id,corp_code, id, app_user_name, name,content,sms_code,message_id);
-                        }
-                        return status;
-                    } else {
-                        status = info.get("errmsg").toString();
-                        return status;
-                    }
-
-                }else if(send_scope.equals("vip_group")){
-                    // status = Common.DATABEAN_CODE_SUCCESS;
-                }
-            } else {
-                status = "发送类型不合法";
-                return status;
-            }
-        } else {
-            status = "发送失败";
-            return status;
-        }
         return status;
     }
 

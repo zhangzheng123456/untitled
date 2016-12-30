@@ -949,19 +949,75 @@ var vip_group_info={
             $(this).parent().siblings("span").html(val);
             $(this).parent().hide();
             $(this).parent().siblings("span").attr("data-type",$(this).attr("data-type"));
-           if($(this).parents(".chart_head").siblings(".data_table").is(":hidden")){
-               var type= $(this).parent().siblings("span").attr("data-type")=="piece"?"trade_amt":"trade_num";
+           if($(this).parents(".chart_head").siblings(".data_table").is(":hidden") ||  $(this).parents(".chart_module").attr("data-id")=="areas"){
+               var type= $(this).parent().siblings("span").attr("data-type")=="piece"?"trade_num":"trade_amt";
                var chartType=$(this).parents(".chart_module").attr("data-id");
-               vip_group_info.init_chart(type,chartType);
+               vip_group_info.init_chart(chartType,type);
+               console.log(chartType)
+               console.log(type)
+           }
+        });
+        $(".chart_head").dblclick(function(){
+            if($(this).parents(".chart_module").hasClass("chart_lg")) return ;
+            whir.loading.add("mask",0.8);
+            $(this).parents(".chart_module").addClass("chart_lg");
+            $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_lg").height()-30);
+            var chartShow=$(this).parents(".chart_module").attr("data-id");
+           switch (chartShow){
+               case "type":
+                   vip_group_info.myChart_type.resize();
+                   break;
+               case "weeks":
+                   vip_group_info.myChart_weeks.resize();
+                   break;
+               case "price":
+                   vip_group_info.myChart_price.resize();
+                   break;
+               case "times":
+                   vip_group_info.myChart_times.resize();
+                   break;
+               case "month":
+                   vip_group_info.myChart_month.resize();
+                   break;
+               case "series":
+                   vip_group_info.myChart_series.resize();
+                   break;
+               case "areas":
+                   vip_group_info.myChart_areas.resize();
+                   break;
            }
 
-        })
+        });
     },
     transShowModel:function(){
         $(".chart_list_icon").click(function(){
             if($(this).parent().siblings("li").is(":hidden")){
                 $(this).parent().siblings("li").show();
                 $(this).parent().siblings(".data_table").hide();
+                var chartShow=$(this).parents(".chart_module").attr("data-id");
+                switch (chartShow){
+                    case "type":
+                        vip_group_info.myChart_type.resize();
+                        break;
+                    case "weeks":
+                        vip_group_info.myChart_weeks.resize();
+                        break;
+                    case "price":
+                        vip_group_info.myChart_price.resize();
+                        break;
+                    case "times":
+                        vip_group_info.myChart_times.resize();
+                        break;
+                    case "month":
+                        vip_group_info.myChart_month.resize();
+                        break;
+                    case "series":
+                        vip_group_info.myChart_series.resize();
+                        break;
+                    case "areas":
+                        vip_group_info.myChart_areas.resize();
+                        break;
+                }
             }else {
                 $(this).parent().siblings("li").hide();
                 $(this).parent().siblings(".data_table").show();
@@ -1033,7 +1089,6 @@ var vip_group_info={
         });
     },
     init_chart:function(id,showType) {
-        var myChart = echarts.init(document.getElementById(id));
         var option_pie = {
             color:['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2','#5C778F','#4D5F7C','#444960','#2C3244'] ,
             tooltip : {
@@ -1051,7 +1106,7 @@ var vip_group_info={
                 data:[]
             },
             series : [
-                {   name:'消费分类',
+                {   name:'',
                     type:'pie',
                     radius : ['50%', '60%'],
                     avoidLabelOverlap: false,
@@ -1121,7 +1176,7 @@ var vip_group_info={
                     data : [
                         {
                             value : [97, 42, 88, 94, 90, 86,69,99],
-                            name : '一周数据'
+                            name : '星期偏好'
                         }
                     ]
                 }
@@ -1176,7 +1231,7 @@ var vip_group_info={
                     data : [
                         {
                             value : [97, 42, 88, 94, 90, 86,69,66,33,58,44,55,66],
-                            name : '一月数据'
+                            name : '月份偏好'
                         }
                     ]
                 }
@@ -1200,7 +1255,7 @@ var vip_group_info={
             },
             series : [
                 {
-                    name: 'iphone3',
+                    name: '地域偏好',
                     type: 'map',
                     mapType: 'china',
                     roam: false,
@@ -1333,27 +1388,34 @@ var vip_group_info={
             ]
         };
         if(id == "type"){
-            var typeData=vip_group_info.allChartsData.Type.trade_num;
-            var typeLegendAll=vip_group_info.allChartsData.Type.trade_num;
+            vip_group_info.myChart_type=echarts.init(document.getElementById(id));
+            var typeData=showType==undefined ? vip_group_info.allChartsData.Type["trade_num"]:vip_group_info.allChartsData.Type[showType];
+            var typeLegendAll=showType==undefined ? vip_group_info.allChartsData.Type["trade_num"]:vip_group_info.allChartsData.Type[showType];
             for(var i=0;i<typeLegendAll.length;i++){
                 typeLegendAll[i].icon="12"
             }
             option_pie.legend.data=typeLegendAll;
             option_pie.series[0].data=typeData;
-            myChart.setOption(option_pie);
+            option_pie.series[0].name="消费类型";
+            vip_group_info.myChart_type.setOption(option_pie);
+            vip_group_info.resize(vip_group_info.myChart_type)
         }
         if(id == "series"){
-            var typeData=vip_group_info.allChartsData.Series.trade_num;
-            var typeLegendAll=vip_group_info.allChartsData.Series.trade_num;
-            for(var i=0;i<typeLegendAll.length;i++){
-                typeLegendAll[i].icon="12"
+           vip_group_info.myChart_series= echarts.init(document.getElementById(id));
+            var seriesData= showType==undefined ? vip_group_info.allChartsData.Series["trade_num"]:vip_group_info.allChartsData.Series[showType];
+            var seriesDataLegendAll= showType==undefined ? vip_group_info.allChartsData.Series["trade_num"]:vip_group_info.allChartsData.Series[showType];
+            for(var i=0;i<seriesDataLegendAll.length;i++){
+                seriesDataLegendAll[i].icon="12"
             }
-            option_pie.legend.data=typeLegendAll;
-            option_pie.series[0].data=typeData;
-            myChart.setOption(option_pie);
+            option_pie.legend.data=seriesDataLegendAll;
+            option_pie.series[0].data=seriesData;
+            option_pie.series[0].name="系列偏好";
+            vip_group_info.myChart_series.setOption(option_pie);
+            vip_group_info.resize(vip_group_info.myChart_series)
         }
         if(id == "weeks"){
-            var weekData=vip_group_info.allChartsData.Week.trade_num;
+            vip_group_info.myChart_weeks= echarts.init(document.getElementById(id));
+            var weekData=showType==undefined ? vip_group_info.allChartsData.Week["trade_num"]:vip_group_info.allChartsData.Week[showType];
             var weekDataArray=[];
             for(var i=0;i<weekData.length;i++){
                 weekDataArray.push(weekData[i].value);
@@ -1363,10 +1425,12 @@ var vip_group_info={
                 option_radar_week.radar[0].indicator[b].max=weekDataArray[weekDataArray.length-1]*1.1;
             }
             option_radar_week.series[0].data[0].value=weekDataArray;
-            myChart.setOption(option_radar_week);
+            vip_group_info.myChart_weeks.setOption(option_radar_week);
+            vip_group_info.resize(vip_group_info.myChart_weeks)
         }
         if(id == "price"){
-            var priceData=vip_group_info.allChartsData.Price.trade_num;
+            vip_group_info.myChart_price= echarts.init(document.getElementById(id));
+            var priceData=showType==undefined ? vip_group_info.allChartsData.Price["trade_num"]:vip_group_info.allChartsData.Price[showType];
             var name=[];
             var value=[];
             for(var i=0;i<priceData.length;i++){
@@ -1375,10 +1439,12 @@ var vip_group_info={
             }
             option_bar.yAxis[0].data=name;
             option_bar.series[0].data=value;
-            myChart.setOption(option_bar);
+            vip_group_info.myChart_price.setOption(option_bar);
+            vip_group_info.resize(vip_group_info.myChart_price)
         }
         if(id == "times"){
-            var TimeData=vip_group_info.allChartsData.Time.trade_num;
+            vip_group_info.myChart_times= echarts.init(document.getElementById(id));
+            var TimeData=showType==undefined ? vip_group_info.allChartsData.Time["trade_num"]:vip_group_info.allChartsData.Time[showType];
             var name=[];
             var value=[];
             for(var i=0;i<TimeData.length;i++){
@@ -1387,10 +1453,12 @@ var vip_group_info={
             }
             option_line.xAxis[0].data=name;
             option_line.series[0].data=value;
-            myChart.setOption(option_line);
+            vip_group_info.myChart_times.setOption(option_line);
+            vip_group_info.resize(vip_group_info.myChart_times)
         }
         if(id == "month"){
-            var monthData=vip_group_info.allChartsData.Month.trade_num;
+            vip_group_info.myChart_month= echarts.init(document.getElementById(id));
+            var monthData=showType==undefined ? vip_group_info.allChartsData.Month["trade_num"]:vip_group_info.allChartsData.Month[showType];
             var monthDataArray=[];
             monthDataArray.sort(vip_group_info.sortNumber);
             for(var i=0;i<monthData.length;i++){
@@ -1400,13 +1468,21 @@ var vip_group_info={
                 option_radar_month.radar[0].indicator[b].max=monthDataArray[monthDataArray.length-1]*1.1
             }
             option_radar_month.series[0].data[0].value=monthDataArray;
-            myChart.setOption(option_radar_month);
+            vip_group_info.myChart_month.setOption(option_radar_month);
+            vip_group_info.resize(vip_group_info.myChart_month)
         }
         if(id == "areas"){
-            var areaData=vip_group_info.allChartsData.Area.trade_num;
+            vip_group_info.myChart_areas= echarts.init(document.getElementById(id));
+            var areaData=showType==undefined ? vip_group_info.allChartsData.Area["trade_num"]:vip_group_info.allChartsData.Area[showType];
             option_map.series[0].data=areaData;
-            myChart.setOption(option_map);
+            vip_group_info.myChart_areas.setOption(option_map);
+            vip_group_info.resize(vip_group_info.myChart_areas)
         }
+    },
+    resize:function(chart){
+        window.addEventListener("resize",function(){
+            chart.resize();
+        });
     },
     addChart:function(){    //图标新增弹窗
         $(".chart_close").click(function () {
@@ -1465,14 +1541,44 @@ var vip_group_info={
         });
         //图表删除
         $(".chart_close_icon").click(function () {
-            $(this).parents(".chart_module").hide();
-            var order = [];
-            $(".chart_module").each(function () {
-                if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
-                    order.push($(this).attr("data-id"));
+            if($(this).parents(".chart_module").hasClass("chart_lg")){
+                whir.loading.remove("mask");
+                $(this).parents(".chart_module").removeClass("chart_lg");
+                $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
+                var chartShow=$(this).parents(".chart_module").attr("data-id");
+                switch (chartShow){
+                    case "type":
+                        vip_group_info.myChart_type.resize();
+                        break;
+                    case "weeks":
+                        vip_group_info.myChart_weeks.resize();
+                        break;
+                    case "price":
+                        vip_group_info.myChart_price.resize();
+                        break;
+                    case "times":
+                        vip_group_info.myChart_times.resize();
+                        break;
+                    case "month":
+                        vip_group_info.myChart_month.resize();
+                        break;
+                    case "series":
+                        vip_group_info.myChart_series.resize();
+                        break;
+                    case "areas":
+                        vip_group_info.myChart_areas.resize();
+                        break;
                 }
-            });
-            vip_group_info.getCharts(order);
+            }else if(!$(this).parents(".chart_module").hasClass("chart_lg")){
+                $(this).parents(".chart_module").hide();
+                var order = [];
+                $(".chart_module").each(function () {
+                    if ($(this).attr("data-id") !== undefined && $(this).css("display") == "block") {
+                        order.push($(this).attr("data-id"));
+                    }
+                });
+                vip_group_info.getCharts(order);
+            }
         });
     },
     sortNumber:function(a,b)
@@ -1496,6 +1602,7 @@ function frame(){
     return def;
 }
 $(function(){
+    $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
     vip_group_info.init();
     $(".icon-ishop_6-07").parent().click(function () {
         window.location.reload();

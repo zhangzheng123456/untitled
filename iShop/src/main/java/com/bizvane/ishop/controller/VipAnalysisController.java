@@ -61,7 +61,7 @@ public class VipAnalysisController {
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
-            Map datalist = iceInterfaceService.vipBasicMethod1(page_num,page_size,corp_code,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(page_num,page_size,corp_code,request);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             logger.info("------AnalysisAllVip-vip列表" + dataBox.status.toString());
             String result = dataBox.data.get("message").value;

@@ -233,6 +233,7 @@
         def_vip_card_type.corp_code,
         def_vip_card_type.vip_card_type_code,
         def_vip_card_type.vip_card_type_name,
+        def_vip_card_type.degree,
         def_corp.corp_name,
         def_vip_card_type.created_date,
         def_vip_card_type.modified_date,
@@ -252,7 +253,8 @@
         SELECT def_vip_card_type.id,
         def_vip_card_type.corp_code,
         def_vip_card_type.vip_card_type_code,
-        def_vip_card_type.vip_card_type_name
+        def_vip_card_type.vip_card_type_name,
+        def_vip_card_type.degree
         FROM def_vip_card_type,def_corp
         WHERE def_vip_card_type.corp_code = def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">

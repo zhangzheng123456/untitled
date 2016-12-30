@@ -44,8 +44,9 @@ function getRec(){
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    $.cookie('user_code',user_code);
-    $.cookie('corp_code',corp_code);
+    //$.cookie('user_code',user_code);
+    //$.cookie('corp_code',corp_code);
+    //alert(user_code);
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -62,8 +63,8 @@ function getMy(){
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    $.cookie('user_code',user_code);
-    $.cookie('corp_code',corp_code);
+    //$.cookie('user_code',user_code);
+    //$.cookie('corp_code',corp_code);
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -152,9 +153,10 @@ function setTime(){
 function  click(){
     $('.add div img').unbind("click").bind("click",function () {
         var src = $(this).attr("src");
-        var corp_code = 'C10000';
+        var corp_code = GetRequest().corp_code;
+        var user_code=GetRequest().user_id;
+        var operate_userCode = GetRequest().user_id;; //操作人user_code
         var d_match_code = $(this).parents('.goods_box').attr('id');  //秀搭编号
-        var operate_userCode = '10000'; //操作人user_code
         var operate_type = '';//type
         var comment_text = '';//评论内容
         var status = '';  //是否点赞or收藏
@@ -218,11 +220,13 @@ function  click(){
 function toNext(){
     $('.the_img img').unbind("click").bind('click',function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
-        $.cookie('d_match_code',d_match_code);
         var host=window.location.host;
         var param={};
         //param["type"]="FAB";
-        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code="+d_match_code;
+        var corp_code = GetRequest().corp_code;
+        var user_code = GetRequest().user_id;
+        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code;
+        console.log(param);
         doAppWebRefresh(param);
         //window.location = 'details.html?d_match_code'+d_match_code;
     });

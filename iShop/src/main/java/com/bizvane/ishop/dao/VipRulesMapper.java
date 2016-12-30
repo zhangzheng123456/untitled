@@ -27,6 +27,6 @@ public interface VipRulesMapper {
 
     VipRules selectByVipType(@Param("corp_code") String corp_code,@Param("vip_type") String vip_type,@Param("isactive") String isactive)throws SQLException;
 
-
     List<VipRules> selectByCorp(@Param("corp_code") String corp_code,@Param("isactive") String isactive)throws SQLException;
+
 }
