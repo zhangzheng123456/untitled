@@ -957,8 +957,15 @@ var vip_group_info={
                console.log(type)
            }
         });
-        $(".chart_head").dblclick(function(){
-            if($(this).parents(".chart_module").hasClass("chart_lg")) return ;
+        $(".chart_head").dblclick(function(e){
+            var e=e || window.event;
+            if(!($(e.target).is(".chart_head"))){
+                return ;
+            }
+            if($(this).parents(".chart_module").hasClass("chart_lg")) {
+                $(this).find(".chart_close_icon").trigger("click");
+                return ;
+            }
             whir.loading.add("mask",0.8);
             $(this).parents(".chart_module").addClass("chart_lg");
             $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_lg").height()-30);
