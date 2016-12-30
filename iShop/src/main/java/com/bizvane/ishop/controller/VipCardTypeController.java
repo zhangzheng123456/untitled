@@ -50,17 +50,13 @@ public class VipCardTypeController {
             String message = jsonObj.get("message").toString();
             String result = this.vipCardTypeService.insert(message, user_id);
 
-            if (result.equals("该企业已存在该会员类型")) {
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(result);
-            } else if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
             } else {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {
@@ -71,6 +67,7 @@ public class VipCardTypeController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 编辑
      */
@@ -228,6 +225,7 @@ public class VipCardTypeController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 根据id查看
      *
@@ -263,6 +261,7 @@ public class VipCardTypeController {
 
     /**
      * 验证会员类型编号的唯一性
+     *
      * @param request
      * @return
      */
@@ -296,8 +295,10 @@ public class VipCardTypeController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 验证会员类型名称的唯一性
+     *
      * @param request
      * @return
      */
@@ -358,6 +359,7 @@ public class VipCardTypeController {
         }
         return dataBean.getJsonStr();
     }
+
     @RequestMapping(value = "/getHighVipCardTypes", method = RequestMethod.POST)
     @ResponseBody
     public String getHighVipCardType(HttpServletRequest request) {
@@ -374,10 +376,10 @@ public class VipCardTypeController {
             String degree = jsonObject.get("degree").toString();
             JSONObject result = new JSONObject();
             List<VipCardType> list = vipCardTypeService.getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
-            for (int i = 0; i <list.size() ; i++) {
-               if (Integer.valueOf(list.get(i).getDegree())<=Integer.valueOf(degree)){
-                   list.remove(i);
-               }
+            for (int i = 0; i < list.size(); i++) {
+                if (Integer.valueOf(list.get(i).getDegree()) <= Integer.valueOf(degree)) {
+                    list.remove(i);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
