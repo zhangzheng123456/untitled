@@ -260,25 +260,16 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_vip_id.key, data_vip_id);
-            datalist.put(data_corp_code.key, data_corp_code);
-
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipDetail", datalist);
-            String vip_info = dataBox.data.get("message").value;
-            JSONObject vip = JSONObject.parseObject(vip_info);
-
             String extend_info = "";
             String remark = "";
             String avatar = "";
-            if (vip.get("custom") != null || !vip.get("custom").toString().equals("null"))
-                extend_info = vip.get("custom").toString();
+
 
             JSONArray extend = new JSONArray();
             List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
+            String cust_col = "";
             for (int i = 0; i < vipParams.size(); i++) {
+                cust_col = cust_col + vipParams.get(i).getParam_name() + ",";
                 JSONObject extend_obj = new JSONObject();
                 extend_obj.put("name", vipParams.get(i).getParam_desc());
                 extend_obj.put("key", vipParams.get(i).getParam_name());
@@ -304,8 +295,23 @@ public class VIPController {
                 if (obj.containsField("avatar"))
                     avatar = obj.get("avatar").toString();
             }
+
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+            Data data_cust = new Data("cust_col", cust_col, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_vip_id.key, data_vip_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_cust.key, data_cust);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipDetail", datalist);
+            String vip_info = dataBox.data.get("message").value;
+            JSONObject vip = JSONObject.parseObject(vip_info);
             vip.put("vip_avatar", avatar);
 
+            if (vip.get("custom") != null || !vip.get("custom").toString().equals("null"))
+                extend_info = vip.get("custom").toString();
             JSONObject result = new JSONObject();
             result.put("list", vip);
             result.put("extend", extend);
@@ -656,7 +662,7 @@ public class VIPController {
                 while (iter.hasNext()) {
                     JSONObject obj = new JSONObject();
                     String name = iter.next();
-                    String value = jsonObject.get(name).toString();
+                    String value = extend_obj.get(name).toString();
                     obj.put("column",name);
                     obj.put("value",value);
                     array.add(obj);
@@ -742,7 +748,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

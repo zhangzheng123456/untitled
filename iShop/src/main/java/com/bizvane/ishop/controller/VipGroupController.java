@@ -10,7 +10,9 @@ import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -618,8 +620,14 @@ public class VipGroupController {
                     JSONArray screen = JSONArray.parseArray(group_condition);
                     dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
                 }else {
-                    Map datalist = iceInterfaceService.vipBasicMethod(page_num,page_size,corp_code,request);
-                    dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+                    String vip_group_code = vipGroup.getVip_group_code();
+                    Data data_vip_group_code = new Data("vip_group_code", vip_group_code, ValueType.PARAM);
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_vip_group_code.key, data_vip_group_code);
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    dataBox = iceInterfaceService.iceInterfaceV3("VipGroupSearchForWeb", datalist);
                 }
             }
             if (dataBox.status.toString().equals("SUCCESS")){

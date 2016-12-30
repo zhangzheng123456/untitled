@@ -96,7 +96,6 @@ public class VipGroupServiceImpl implements VipGroupService {
     @Override
     public String insert(VipGroup vipGroup, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        String vip_group_code = vipGroup.getVip_group_code().trim();
         String vip_group_name = vipGroup.getVip_group_name().trim();
         String corp_code = vipGroup.getCorp_code();
 
@@ -104,33 +103,6 @@ public class VipGroupServiceImpl implements VipGroupService {
         if (vipGroup2 != null) {
             result = "该会员分组名称已存在";
         } else {
-            String group_type = vipGroup.getGroup_type();
-            String group_condition = vipGroup.getGroup_condition();
-//            if (!group_type.equals("define")){
-//                JSONObject obj = new JSONObject();
-//                JSONObject con_obj = JSONObject.parseObject(group_condition);
-//                String consume_amount = con_obj.getString("consume_amount");
-//                JSONObject amt_obj = JSONObject.parseObject(consume_amount);
-//                String start_amt = amt_obj.getString("start");
-//                String end_amt = amt_obj.getString("end");
-//                if (!start_amt.equals("") || !end_amt.equals(""))
-//                    obj.put("consume_amount",consume_amount);
-//
-//                String consume_piece = con_obj.getString("consume_piece");
-//                JSONObject piece_obj = JSONObject.parseObject(consume_piece);
-//                String start_piece = piece_obj.getString("start");
-//                String end_piece = piece_obj.getString("end");
-//                if (!start_piece.equals("") || !end_piece.equals(""))
-//                    obj.put("consume_piece",consume_piece);
-//
-//                String consume_discount = con_obj.getString("consume_discount");
-//                JSONObject discount_obj = JSONObject.parseObject(consume_discount);
-//                String start_discount = discount_obj.getString("start");
-//                String end_discount = discount_obj.getString("end");
-//                if (!start_discount.equals("") || !end_discount.equals(""))
-//                    obj.put("consume_discount",consume_discount);
-//                vipGroup.setGroup_condition(obj.toString());
-//            }
             Date now = new Date();
             vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setCreater(user_code);

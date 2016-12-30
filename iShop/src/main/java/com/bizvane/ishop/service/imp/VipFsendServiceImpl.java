@@ -142,7 +142,6 @@ public class VipFsendServiceImpl implements VipFsendService {
 
     @Override
     public String insert(String message, String user_id,int tem_id) throws Exception {
-
         String status = Common.DATABEAN_CODE_SUCCESS;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
@@ -154,7 +153,6 @@ public class VipFsendServiceImpl implements VipFsendService {
         VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
         String content = vipFsend.getContent();
         String sms_vips = vipFsend.getSms_vips().trim();
-
 
         if(send_scope.equals("vip")){
             String open_id = "";
