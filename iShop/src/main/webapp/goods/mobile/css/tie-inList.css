@@ -42,7 +42,8 @@ body {
   padding-top: 0.24155rem;
   padding-left: 3.3%;
   overflow-y: auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; }
 
 .goods_box {
   float: left;

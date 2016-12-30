@@ -98,6 +98,8 @@ laydate(chooseDate);
 laydate(refundDate);
 //充值类型
 $('#execution_input').click(function () {
+    $('#refunShopSelcet').css('display','none');
+    $('#topUpPeopleSelect').css('display','none');
     $('#execution').toggle();
 });
 
@@ -167,6 +169,8 @@ function topUpShopSelcetClick(dom){
 }
 //退款店仓
 $('#refunShop').click(function () {
+    $('#execution').css('display','none');
+    $('#topUpPeopleSelect').css('display','none');
     $('#refunShopSelcet').toggle();
 })
 //下拉选择
@@ -208,6 +212,8 @@ function topUpPeopleShow(msg){
     }
 }
 $('#topUpPeople').click(function(){
+    $('#execution').css('display','none');
+    $('#refunShopSelcet').css('display','none');
     $('#topUpPeopleSelect').toggle();
 });
 

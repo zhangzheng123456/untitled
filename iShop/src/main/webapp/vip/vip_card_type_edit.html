@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>编辑会员类型定义</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../table/css/inner.css?20161216" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161216">
+    <link href="../css/style.css?20161116" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20161216">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161216">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161216">
+    <link rel="stylesheet" href="../table/css/inner.css?20161214">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+<body>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="col-lg-12 pre_title"><span id="back_regime">会员类型定义</span><i class="icon-ishop_8-03"></i><label>编辑会员类型定义</label></div>
+            <div class="editor_1 col-lg-7 editor_line animated fadeInRight">
+                <form class="conpany_msg">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span><label style="color:#c26655">会员类型编号*</label><input type="text" id="vip_type_code" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型编号不能为空！"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label style="color:#c26655">会员类型名称*</label><input type="text" id="vip_type_name" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空！"></div></div></span>
+                    </div>
+                    <div class="drop_down item_1">
+                        <span><label style="color:#c26655">会员类型等级*</label><input class="input_select" value="1(最小)" id="vip_type_grade" type="text" placeholder="" readonly="">
+                            <ul style="display: none;">
+                                <li>1(最小)</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li>5</li>
+                                <li>6</li>
+                                <li>7</li>
+                                <li>8</li>
+                                <li>9</li>
+                                <li>10</li>
+                            </ul>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+                <div class="areaedit_oper_btn">
+                    <ul>
+                        <li class="edit_save" id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    </ul>
+                </div>
+                 <form class="msg_detail">
+                    <div>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+                    </div>
+                    <div>
+                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                    </div>
+                </form>
+            </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <script type="text/javascript" src="../js/moni_select.js?20161116"></script>
+    <script src="../js/loading.js?20161116"></script>
+   <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
+    <script type="text/javascript" src="../js/vip/vip_card_type_operate.js?20161227"></script>
+</body>
+
+</html>

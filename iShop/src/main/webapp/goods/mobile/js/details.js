@@ -2,8 +2,8 @@
  * Created by huxue on 2016/12/28.
  */
 var oc = new ObjectControl();
-var user_code = '10000';
-var corp_code = 'C10000';
+var user_code = $.cookie('user_code');
+var corp_code = $.cookie('corp_code');
 var d_match_code = $.cookie('d_match_code');
 
 //    选项卡
@@ -127,18 +127,63 @@ $('.bottom div img').click(function () {
     })
 });
 //点击编辑
-$('.editor').click(function () {
+$('.editor').unbind("click").bind('click',function () {
     var d_match_code = $.cookie('d_match_code');
+    var host=window.location.host;
+    var param={};
     var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_code="+user_code;
+    param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
+    doAppWebRefresh(param);
     str=encodeURIComponent(str);
     window.location = "add_new.html?"+str;
 });
+
+//获取手机系统
+function getWebOSType() {
+    var browser = navigator.userAgent;
+    var isAndroid = browser.indexOf('Android') > -1 || browser.indexOf('Adr') > -1; //android终端
+    var isiOS = !!browser.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if(isAndroid){
+        return "Android";
+    }else if (isiOS) {
+        return "iOS";
+    }else{
+        return "Unknown"
+    }
+}
+//获取iShop用户信息
+function getAppUserInfo(){
+    var osType = getWebOSType();
+    var userInfo = null;
+    if(osType=="iOS"){
+        userInfo = NSReturnUserInfo();
+    }else if(osType == "Android"){
+        userInfo = iShop.ReturnUserInfo();
+    }
+    return userInfo;
+}
+//调用APP方法传参 param 格式 type：** ;url:**
+function doAppWebRefresh(param){
+    var param=JSON.stringify(param);
+    var osType = this.getWebOSType();
+    if(osType=="iOS"){
+        window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+    }else if(osType == "Android"){
+        //iShop.returnAddResult(param);
+        iShop.jumpToWebViewForWeb(param);
+    }
+}
 //删除
-//$('.delete').click(function () {
-//    ///api/shopMatch/delete          get //删除
-//    //传corp_code，d_match_code
-//
-//}
+$('.delete').click(function () {
+    oc.postRequire("get", "/api/shopMatch/delete?corp_code=" + corp_code +"&d_match_code=" + d_match_code+"", "0", "", function (data) {
+        if (data.code == "0") {
+            console.log('删除成功');
+            window.location = "tie-inList.html";
+        }else if(data.code =='-1'){
+            console.log(data);
+        }
+    });
+});
 window.onload = function () {
     getPage();
     setInterval(function () {

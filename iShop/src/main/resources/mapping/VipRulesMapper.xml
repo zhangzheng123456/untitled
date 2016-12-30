@@ -321,7 +321,10 @@
         dvr.creater,
         dvr.isactive
         FROM def_vip_rules dvr
-        WHERE dvr.CORP_CODE = #{corp_code}
+        WHERE dvr.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvr.CORP_CODE = #{corp_code}
+        </if>
         AND  dvr.vip_type= #{vip_type}
          AND  dvr.isactive= #{isactive}
     </select>
