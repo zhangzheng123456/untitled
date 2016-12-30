@@ -141,7 +141,15 @@ $('.bottom div img').click(function () {
     oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
         if (data.code == "0") {
             var message = data.message;
-            //$(this).next('.num').text(parseInt(val)-1);
+            if(operate_type=='like'||operate_type=='dislike'){
+                $('.bottom div').eq(0).find('.num').text(message);
+            }else if(operate_type=='collect'||operate_type=='discollect'){
+                $('.bottom div').eq(1).find('.num').text(message);
+            }else if(operate_type=='comment'){
+                $('.bottom div').eq(2).find('.num').text(message);
+            }else{
+                console.log('error');
+            }
         }else if(data.code =='-1'){
             //alert(data);
         }
