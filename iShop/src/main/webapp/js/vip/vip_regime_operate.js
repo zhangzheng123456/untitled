@@ -205,7 +205,7 @@ var oc = new ObjectControl();
 		//券点击li赋值
 		$(".item_1").on("click","ul li",function(){
 			var txt = $(this).text();
-			$(".item_1 .input_select").val(txt);
+			$(this).parents(".item_1").find(".input_select").val(txt);
 			$(".item_1 ul").hide();
 		});
 		//券input框点击显示和隐藏
@@ -767,11 +767,19 @@ var oc = new ObjectControl();
 			whir.loading.remove();//移除加载框
 		});
 	};
-	regimejs.getVipType=function(corp_code){//获取vip上级会员类型
+	regimejs.getVipCardTypes=function(){
+		var param={};
+		var corp_code=$("#OWN_CORP").val();
+		oc.postRequire("post","/vipCardType/getVipCardTypes","", param, function(data) {
+			console.log(data);
+		})
+	}
+	regimejs.getHighVipCardTypes=function(corp_code,degree){//获取vip上级会员类型
 		var param={};
 		param["corp_code"]=corp_code;
+		param["degree"]=degree;
 		whir.loading.add("",0.5);
-		oc.postRequire("post","/vipRules/getVipTypes","",param, function(data){
+		oc.postRequire("post","/vipCardType/getHighVipCardTypes","",param, function(data){
 			var list=JSON.parse(data.message).list;
 			var list=JSON.parse(list);
 			var html="<li data-value=''>无上级会员类型</li>";
