@@ -104,7 +104,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 status = "该编号已存在";
             } else if (vipCardType2 != null && id != vipCardType2.getId()) {
                 status = "该名称已存在";
-            }else{
+            } else {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
@@ -122,11 +122,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
             }
 
         } else {
-            if (vipCardType1 != null ) {
-                status = "该编号已存在";
-            } else if (vipCardType2 != null ) {
-                status = "该名称已存在";
-            }else{
+            if (vipCardType1 == null && vipCardType2 == null) {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
@@ -141,9 +137,11 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 } else {
                     status = Common.DATABEAN_CODE_ERROR;
                 }
+            } else if (vipCardType1 != null) {
+                status = "该编号已存在";
+            } else {
+                status = "该名称已存在";
             }
-
-
         }
 
         return status;
