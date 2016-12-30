@@ -2,11 +2,26 @@
  * Created by huxue on 2016/12/28.
  */
 var oc = new ObjectControl();
-var corp_code = 'C10000';
+var urlMsg = GetRequest();
+var corp_code = urlMsg.corp_code;
+$.cookie('corp_code',corp_code);
 var pageNumber = '1';
 var pageSize = '20';
-var user_code = '10000';
-
+var user_code = urlMsg.user_code;
+$.cookie('user_code',user_code);
+//获取？后缀
+function GetRequest() {
+    var url = decodeURI(location.search); //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+}
 //    选项卡-推荐
 $('.title div').eq(0).click(function () {
     $('.main').eq(0).css('display','block');
@@ -193,7 +208,7 @@ function  click(){
 }
 //跳转
 function toNext(){
-    $('.the_img img').unbind("click").bind(function () {
+    $('.the_img img').unbind("click").bind('click',function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
         $.cookie('d_match_code',d_match_code);
         var host=window.location.host;
@@ -201,7 +216,7 @@ function toNext(){
         //param["type"]="FAB";
         param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code="+d_match_code;
         doAppWebRefresh(param);
-        window.location = 'details.html?d_match_code'+d_match_code;
+        //window.location = 'details.html?d_match_code'+d_match_code;
     });
     //$('.the_list img').click(function () {
     //    window.location = 'details.html';
@@ -246,10 +261,10 @@ function doAppWebRefresh(param){
 window.onload = function () {
     //默认推荐
     $('.title div').eq(0).click();
-    //控制宽高
-    setTime();
     //获取推荐
     getRec();
     //获取我的
     getMy();
+    //控制宽高
+    setTime();
 }
