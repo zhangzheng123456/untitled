@@ -910,6 +910,7 @@ public class WebController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
 
+            System.out.println("===========拉取列表接口corp_code============"+corp_code+"----"+user_code);
             DBCursor dbCursor = null;
             if(type.equals("rec")) {
                 BasicDBList value = new BasicDBList();
@@ -931,6 +932,7 @@ public class WebController {
                 dbCursor = MongoUtils.sortAndPage(dbCursor2,page_number,page_size,"created_date",-1);
             }
             ArrayList list = MongoHelperServiceImpl.dbCursorToList_shop(dbCursor,user_code);
+            System.out.println("===========拉取列表接口============"+list.size());
             result.put("list", list);
             result.put("pages", pages);
             result.put("page_number", page_number);
