@@ -2,13 +2,11 @@
  * Created by huxue on 2016/12/28.
  */
 var oc = new ObjectControl();
-var urlMsg = GetRequest();
-var corp_code = urlMsg.corp_code;
-$.cookie('corp_code',corp_code);
+var corp_code = $.cookie('corp_code');
 var pageNumber = '1';
 var pageSize = '20';
-var user_code = urlMsg.user_code;
-$.cookie('user_code',user_code);
+var user_code = $.cookie('user_code');
+
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -43,6 +41,11 @@ $('.title div').eq(1).click(function () {
 //推荐列表
 function getRec(){
     var type = 'rec';
+    var urlMsg = GetRequest();
+    var user_code = urlMsg.user_id;
+    var corp_code = urlMsg.corp_code;
+    $.cookie('user_code',user_code);
+    $.cookie('corp_code',corp_code);
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -56,6 +59,11 @@ function getRec(){
 //我的列表
 function getMy(){
     var type = 'my';
+    var urlMsg = GetRequest();
+    var user_code = urlMsg.user_id;
+    var corp_code = urlMsg.corp_code;
+    $.cookie('user_code',user_code);
+    $.cookie('corp_code',corp_code);
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);

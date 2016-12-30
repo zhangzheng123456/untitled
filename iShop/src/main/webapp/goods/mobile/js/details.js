@@ -132,7 +132,7 @@ $('.editor').unbind("click").bind('click',function () {
     var host=window.location.host;
     var param={};
     var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_code="+user_code;
-    param["url"]="http://"+host+"/goods/mobile/details.html?"+str;
+    param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
     doAppWebRefresh(param);
     str=encodeURIComponent(str);
     window.location = "add_new.html?"+str;
