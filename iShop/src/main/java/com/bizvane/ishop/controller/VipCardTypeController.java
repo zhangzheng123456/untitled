@@ -379,7 +379,6 @@ public class VipCardTypeController {
                    list.remove(i);
                }
             }
-
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

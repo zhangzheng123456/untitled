@@ -48,8 +48,16 @@
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <span><label style="color:#c26655">会员类型*</label><input type="text" id="vip_type" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空！"></div></div></span>
+                    <div class="drop_down item_1">
+                        <span><label style="color:#c26655">会员类型*</label><input class="input_select" type="text" id="vip_type" verify="Empty" maxlength="50" placeholder="" readonly=""/>
+                            <ul style="display: none;">
+                                <li>123</li>
+                                <li>123</li>
+                                <li>123</li>
+                                <li>123</li>
+                                <li>123</li>
+                            </ul>
+                        </span>
                     </div>
                     <div class="drop_down item_1">
                         <span><label>上级会员类型</label><input class="input_select" value="无上级会员类型" id="high_vip_type" type="text" placeholder="" readonly="">
@@ -265,7 +273,7 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/vip/vip_regime_operate.js?20161227"></script>
+    <!-- <script type="text/javascript" src="../js/vip/vip_regime_operate.js?20161227"></script> -->
 </body>
 
 </html>

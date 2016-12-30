@@ -2,9 +2,9 @@
 var simple_birth_start = {
     elem: '#simple_birth_start',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59', //最大日期
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         simple_birth_end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -14,9 +14,9 @@ var simple_birth_start = {
 var simple_birth_end = {
     elem: '#simple_birth_end',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59',
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         simple_birth_start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -25,9 +25,9 @@ var simple_birth_end = {
 var mark_start = {
     elem: '#simple_mark_start',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59', //最大日期
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         mark_end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -37,9 +37,9 @@ var mark_start = {
 var mark_end = {
     elem: '#simple_mark_end',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59',
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         mark_start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -48,9 +48,9 @@ var mark_end = {
 var start = {
     elem: '#birth_start',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59', //最大日期
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -60,9 +60,9 @@ var start = {
 var end = {
     elem: '#birth_end',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59',
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -71,9 +71,9 @@ var end = {
 var activity_start = {
     elem: '#activate_card_start',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59', //最大日期
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         activity_end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -83,9 +83,9 @@ var activity_start = {
 var activity_end = {
     elem: '#activate_card_end',
     format: 'YYYY-MM-DD',
-    istime: true,
+    istime: false,
     max: '2099-06-16 23:59:59',
-    istoday: false,
+    istoday: true,
     fixed: false,
     choose: function (datas) {
         activity_start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -223,6 +223,7 @@ $("#screen_vip_que").click(function () {
             var input = $(this).find("input");
             var key = $(input[0]).attr("data-kye");
             var classname = $(input[0]).attr("class");
+            var expend_key = $(input[0]).attr("data-expend");
             if(key == "17"){
                  return ;
             }else if (key == "4") {
@@ -251,7 +252,7 @@ $("#screen_vip_que").click(function () {
                     param['date'] = date;
                     screen.push(param);
                 }
-            }else if (classname.indexOf("short") == 0 && (key !== "3" || key !== "4")) {
+            }else if ((key !== "3" && key !== "4" && classname.indexOf("short") == 0)||expend_key=="date") {
                 if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                     var param = {};
                     var val = {};
@@ -680,10 +681,14 @@ function expend_data() {
            var msg = JSON.parse(data.message);
            var list = JSON.parse(msg.list);
            var html="";
+           var simple_html="";
            if(list.length>0){
                for(var i=0;i<list.length;i++){
                    var param_type = list[i].param_type;
                    if(param_type=="date"){
+                       simple_html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                           + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'s" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'s\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                           + '<input readonly="true" id="end'+i+'s" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'s\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>' 
                            + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
                            + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
@@ -716,6 +721,7 @@ function expend_data() {
                }
            }
            $("#expend_attribute").append(html);
+           $("#memorial_day").append(simple_html);
        }else if(data.code == -1){
            console.log(data.message);
        }
