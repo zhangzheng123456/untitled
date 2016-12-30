@@ -71,9 +71,9 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         saveData.put("d_match_image", d_match_image);
         saveData.put("d_match_desc", d_match_desc);
         saveData.put("r_match_goods", r_match_goods);
-        saveData.put("d_match_likeCount", "0");
-        saveData.put("d_match_commentCount", "0");
-        saveData.put("d_match_collectCount", "0");
+        saveData.put("d_match_likeCount", 0);
+        saveData.put("d_match_commentCount", 0);
+        saveData.put("d_match_collectCount", 0);
         saveData.put("modified_date",  Common.DATETIME_FORMAT.format(now));
         saveData.put("created_date",  Common.DATETIME_FORMAT.format(now));
         saveData.put("creater", user_code);
@@ -90,7 +90,13 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         saveData.put("corp_code", corp_code);
         saveData.put("d_match_code", d_match_code);
         List<User> userList = userService.userCodeExist(operate_userCode, corp_code, Common.IS_ACTIVE_Y);
-        String user_name = userList.get(0).getUser_name();
+        String user_name="";
+        if(userList.size()==0 || userList.size()>1){
+            user_name="未知";
+        }else{
+            user_name  = userList.get(0).getUser_name();
+        }
+        System.out.println("==============user_name点赞人======================"+user_name);
         saveData.put("operate_userCode", operate_userCode);
         saveData.put("operate_userName", user_name);
         saveData.put("operate_type", operate_type);

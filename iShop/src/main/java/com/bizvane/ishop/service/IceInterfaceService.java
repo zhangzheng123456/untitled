@@ -19,10 +19,7 @@ public interface IceInterfaceService {
 
     DataBox iceInterfaceV3(String method ,Map datalist) throws Exception;
 
-
-    Map vipBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception;
-
-    Map vipBasicMethod1(String page_num,String page_size,String corp_code, HttpServletRequest request) throws Exception;
+    Map vipBasicMethod(String page_num, String page_size, String corp_code, HttpServletRequest request) throws Exception;
 
     Map vipAnalysisBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception;
 
