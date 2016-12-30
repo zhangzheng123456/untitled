@@ -10,6 +10,16 @@
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?20161116"></script>
     <style>
+        .chart_lg{
+            position: fixed!important;
+            width: 70% !important;
+            height: 80% !important;
+            max-width: 1024px;
+            max-height: 768px;
+            z-index: 10001;
+            left: 20%;
+            top:100px;
+        }
         /*批量标签*/
         .batch_label_wrapper{
             display: none;
@@ -389,10 +399,11 @@
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
                     <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="type" style="padding-left: 10px;height: 270px;">
+                        <li id="type" style="padding-left: 10px;">
                         </li>
                         <div class="data_table">
                            <ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>
+                           <ul><li>件数</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
                            <ul><li>金额</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
                         </div>
                     </ul>
@@ -411,7 +422,7 @@
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
                     <i class="icon-ishop_9-05 chart_list_icon"></i>
                     </span>
-                        <li id="weeks" style="height: 270px;">
+                        <li id="weeks" >
                         </li>
                         <div class="data_table">
                             <ul><li></li><li>周一</li><li>周二</li><li>周三</li><li>周四</li><li>周五</li><li>周六</li><li>周日</li><li>无数据</li></ul>
@@ -427,13 +438,13 @@
                     <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
                     <ul>
                         <li data-type="piece">按件数分析</li>
-                        <li data-type="money" 按金额分析</li>
+                        <li data-type="money" >按金额分析</li>
                     </ul>
                     </span>
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
                     <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="price" style="height: 270px;">
+                        <li id="price" >
                         </li>
                         <div class="data_table" style="font-size: 12px;">
                             <ul><li></li><li>200以下</li><li>200-399</li><li>400-599</li><li>600-799</li><li>800-999</li><li>1000-1999</li><li>2000-10000</li><li>10000以上</li></ul>
@@ -455,7 +466,7 @@
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
                     <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="times" style="height: 270px;">
+                        <li id="times" >
                         </li>
                         <div class="data_table time" style="font-size: 12px;">
                         <ul><li></li><li>10:00</li><li>11:00</li><li>12:00</li><li>13:00</li><li>14:00</li><li>15:00</li><li>16:00</li><li>17:00</li><li>18:00</li><li>19:00</li><li>20:00</li></ul>
@@ -477,7 +488,7 @@
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
                     <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="month" style="height: 270px;">
+                        <li id="month" >
                         </li>
                         <div class="data_table month" style="font-size: 12px;">
                             <ul><li></li><li>一月</li><li>二月</li><li>三月</li><li>四月</li><li>五月</li><li>六月</li><li>七月</li><li>八月</li><li>九月</li><li>十月</li><li>十一月</li><li>十二月</li></ul>
@@ -498,7 +509,7 @@
                     <i class="icon-ishop_6-12 chart_close_icon"></i>
                     <i class="icon-ishop_9-05 chart_list_icon"></i>
                 </span>
-                        <li id="series" style="height: 270px;padding-left: 10px;">
+                        <li id="series" style="padding-left: 10px;">
                         </li>
                         <div class="data_table">
                             <ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>
@@ -507,21 +518,21 @@
                     </ul>
                 </div>
                 <div class="chart_module" data-id="areas">
-                    <ul>
-                  <span class="chart_head">
-                   <span class="drag_area"> <i class="icon-ishop_6-27"></i>
-                    <span>地域偏好</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
-                    <ul>
-                        <li data-type="piece">按件数分析</li>
-                        <li data-type="money">按金额分析</li>
-                    </ul>
+                    <ul style="height: 100%">
+                      <span class="chart_head">
+                       <span class="drag_area"> <i class="icon-ishop_6-27"></i>
+                        <span>地域偏好</span></span>
+                        <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                        <ul>
+                            <li data-type="piece">按件数分析</li>
+                            <li data-type="money">按金额分析</li>
+                        </ul>
+                        </span>
+                        <i class="icon-ishop_6-12 chart_close_icon"></i>
+                        <i class="icon-ishop_9-05 chart_list_icon"></i>
                     </span>
-                    <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
-                </span>
-                        <li id="areas" style="height:270px;">
-                        </li>
+                            <li id="areas" style="height:100%">
+                            </li>
                     </ul>
                 </div>
                 <div class="chart_module add_chart dads-children" id="add_chart" style="display: block" data-dad-id="8" data-dad-position="8">
