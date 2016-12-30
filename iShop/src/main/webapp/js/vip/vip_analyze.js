@@ -2125,7 +2125,10 @@ $('.chart_analyze_condition ul li').click(function () {
     init_chart(ID,type);
 });
 //图表双击放大
-$("#chart_analyze").on("dblclick",".chart_head",function () {
+$("#chart_analyze").on("dblclick",".chart_head",function (e) {
+    if(!($(e.target).is(".chart_head"))){
+        return ;
+    }
     var is_lg = $(this).parents(".chart_module").hasClass("chart_lg");
     if(is_lg == true){
         $(this).find(".chart_close_icon").trigger("click");
