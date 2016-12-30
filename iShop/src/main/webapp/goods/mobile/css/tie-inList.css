@@ -7,7 +7,7 @@ body {
   background-color: #ededed; }
 
 .warp {
-  position: absolute;
+  position: relative;
   top: 0rem;
   background-color: #ededed;
   width: 100%; }
@@ -36,13 +36,14 @@ body {
   clear: both;
   width: 100%;
   background-color: white;
-  position: fixed;
+  position: relative;
   top: 1.30435rem;
   bottom: 0rem;
   padding-top: 0.24155rem;
   padding-left: 3.3%;
   overflow-y: auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; }
 
 .goods_box {
   float: left;
