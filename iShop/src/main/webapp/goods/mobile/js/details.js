@@ -188,11 +188,11 @@ $('.main_content').unbind('click').bind('click',function () {
 });
 //提交评论
 function setConmments(){
-    var val = $('.bottom_input input').val();
+    var msg = $('.bottom_input input').val();
     var time = getNowFormatDate();
     var name = GetRequest().user_id;
     var img = 'image/img_kong.png'
-    if(val.trim()!=''){
+    if(msg.trim()!=''){
         var tempHTML = '<li class="box"> <div class="top"> <img src="${img}" alt=""/> <div class="title"> <span>${name}</span> <span>${time}</span> </div> </div> <div class="msg">${msg}</div> </li>'
         var html ='';
         var nowHTML = tempHTML;
@@ -200,6 +200,8 @@ function setConmments(){
         nowHTML = nowHTML.replace('${name}',name)
         nowHTML = nowHTML.replace('${time}',time)
         nowHTML = nowHTML.replace('${msg}',msg)
+        html+=nowHTML;
+        $('.area').html(html);
     }else{
         console.log('不可发送空消息');
     }
