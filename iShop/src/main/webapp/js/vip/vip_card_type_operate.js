@@ -60,16 +60,16 @@ var oc = new ObjectControl();
 		var self=this;
 		$("#edit_save").click(function(){
 			if(vipCardTypeJs.firstStep()){
-				// if(!self.param.card){
-				// 	$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
-				// 	$("#vip_type").next('.hint').children().addClass("error_tips");
-				// 	return;
-				// }
-				// if(!self.param.name){
-				// 	$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
-				// 	$("#vip_type").next('.hint').children().addClass("error_tips");
-				// 	return;
-				// }
+				if(!self.param.card){
+					$("#vip_type_code").next('.hint').children().html("当前企业下该会员类型编号已存在！");
+					$("#vip_type_code").next('.hint').children().addClass("error_tips");
+					return;
+				}
+				if(!self.param.name){
+					$("#vip_type_name").next('.hint').children().html("当前企业下该会员类型名称已存在！");
+					$("#vip_type_name").next('.hint').children().addClass("error_tips");
+					return;
+				}
 				var param={};
 				var corp_code=$("#OWN_CORP").val().trim();//公司编号
 				var vip_card_type_code=$("#vip_type_code").val().trim();//会员类型定义编号
@@ -112,17 +112,17 @@ var oc = new ObjectControl();
 			var param={};
 			var vip_type_code=$("#vip_type_code").val();
 			param["corp_code"]=$("#OWN_CORP").val();//企业编号
-			param["vip_type_code"]=vip_type_code;//会员类型
+			param["vip_card_type_code"]=vip_type_code;//会员类型
 			var div=$(this).next('.hint').children();
 			if(vip_type_code!==""&&vip_type_code!==self.param.vip_type_code){
 				oc.postRequire("post","/vipCardType/vipCardTypeCodeExist","",param, function(data){
 					if(data.code=="0"){
 						div.html("");
-						self.param.code=true;
+						self.param.card=true;
 					}else if(data.code=="-1"){
 						div.addClass("error_tips");
-						div.html(data.message);
-						self.param.code=false;
+						div.html(data.message+"！");
+						self.param.card=false;
 					}
 				})
 			}
@@ -132,7 +132,7 @@ var oc = new ObjectControl();
 			var param={};
 			var vip_type_name=$("#vip_type_name").val();
 			param["corp_code"]=$("#OWN_CORP").val();//企业编号
-			param["vip_type_name"]=vip_type_name;//会员类型
+			param["vip_card_type_name"]=vip_type_name;//会员类型
 			var div=$(this).next('.hint').children();
 			if(vip_type_name!==""&&vip_type_name!==self.param.vip_type_name){
 				oc.postRequire("post","/vipCardType/vipCardTypeNameExist","",param, function(data){
@@ -141,7 +141,7 @@ var oc = new ObjectControl();
 						self.param.name=true;
 					}else if(data.code=="-1"){
 						div.addClass("error_tips");
-						div.html(data.message);
+						div.html(data.message+"！");
 						self.param.name=false;
 					}
 				})

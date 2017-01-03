@@ -2016,7 +2016,7 @@ var achv = {
     elem: '#date',
     format: 'YYYY-MM-DD',
     max: laydate.now(), //最大日期
-    istime: true,
+    istime:false,
     istoday: false,
     choose: function (datas) {
         getData();

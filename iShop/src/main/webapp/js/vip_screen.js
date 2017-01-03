@@ -600,8 +600,8 @@ $("#screen_wrapper .contion_input").on("blur", "input", function () {
     }
 });
 function testInputNumber(val, min, max) {//验证数字
-    var reg = /^[0-9]*$/;
-    var phpne = /^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/;
+    // var reg = /^[0-9]*$/;
+    var reg = /^\d+(\.\d+)?$/;
     var def=$.Deferred();
     if (!reg.test(val)) {
         art.dialog({
