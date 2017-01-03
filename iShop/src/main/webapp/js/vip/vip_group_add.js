@@ -2239,7 +2239,7 @@ function showOtherGroup(list,type){
     }
 }
     $("#group_list").find("input").blur(function(){
-        var reg=new RegExp("^(0|([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$");
+        var reg=/^\d+(\.\d+)?$/
         if(!reg.test($(this).val().trim()) && $(this).val()!=""){
             art.dialog({
                 zIndex: 10010,
