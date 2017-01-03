@@ -99,8 +99,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
         int num = 0;
-
-        System.out.print(vipCardType2.getId()+"=======");
         if (list != null) {
             if (vipCardType1 != null && !id.equals(vipCardType1.getId())) {
                 status = "该编号已存在";
