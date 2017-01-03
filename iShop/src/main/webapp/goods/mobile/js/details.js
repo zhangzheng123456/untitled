@@ -93,7 +93,14 @@ function getConmments(){
         if (data.code == "0") {
             console.log(data)
             var message = JSON.parse(data.message);
-            getConmmentsVal();
+            var list = message.list;
+            for(i=0;i<list.length;i++){
+                var img = ''
+                var name = list[i].operate_userName;
+                var time = list[i].created_date;
+                var msg = list[i].comment_text
+                conmmentsVal(img,name,time,msg)
+            }
         } else if(data.code =='-1'){
             //alert(data);
         }
@@ -131,7 +138,6 @@ $('.bottom div img').click(function () {
         operate_type = 'comment';
         comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
         status = '';
-        $("body").scrollTop($("body")[0].scrollHeight);
         return;
     }
     //    收藏
@@ -194,23 +200,41 @@ function setConmments(){
     var name = GetRequest().user_id;
     var img = 'image/img_kong.png'
     if(msg.trim()!=''){
-        var tempHTML = '<li class="box"> <div class="top"> <img src="${img}" alt=""/> <div class="title"> <span>${name}</span> <span>${time}</span> </div> </div> <div class="msg">${msg}</div> </li>'
-        var html ='';
-        var nowHTML = tempHTML;
-        nowHTML = nowHTML.replace('${img}',img)
-        nowHTML = nowHTML.replace('${name}',name)
-        nowHTML = nowHTML.replace('${time}',time)
-        nowHTML = nowHTML.replace('${msg}',msg)
-        html+=nowHTML;
-        $('.area').append(html);
-        $("body").scrollTop($("body")[0].scrollHeight);
+        var param={};
+        param["corp_code"]=GetRequest().corp_code;
+        param["d_match_code"]=GetRequest().d_match_code;
+        param["operate_userCode"]=GetRequest().user_id;
+        param["operate_type"]='comment';
+        param["comment_text"]=msg;
+        oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
+            if((data.code =='0')){
+                //conmmentsVal(img,name,time,msg);
+                //拉取评论
+                getConmments();
+            }else if(data.code =='-1'){
+            }
+        })
     }else{
         console.log('不可发送空消息');
     }
 }
+//评论显示
+function conmmentsVal(img,name,time,msg){
+    var tempHTML = '<li class="box"> <div class="top"> <img src="${img}" alt=""/> <div class="title"> <span>${name}</span> <span>${time}</span> </div> </div> <div class="msg">${msg}</div> </li>'
+    var html ='';
+    var nowHTML = tempHTML;
+    nowHTML = nowHTML.replace('${img}',img)
+    nowHTML = nowHTML.replace('${name}',name)
+    nowHTML = nowHTML.replace('${time}',time)
+    nowHTML = nowHTML.replace('${msg}',msg)
+    html+=nowHTML;
+    $('.area').append(html);
+    $("body").scrollTop($("body")[0].scrollHeight);
+}
 //表情
 $('.bottom_input img').click(function(){
     setConmments();
+    $('.bottom_input input').val('');
 });
 //获取当前时间
 function getNowFormatDate() {
@@ -330,7 +354,9 @@ function setDocumentTitle(d_match_title) {
     }
 }
 window.onload = function () {
+    //拉取页面
     getPage();
+    //拉取评论
     getConmments();
     setInterval(function () {
         var heightVal = document.body.clientWidth;
