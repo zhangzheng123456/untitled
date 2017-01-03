@@ -292,7 +292,5 @@ window.onload = function () {
     //获取我的
     getMy();
     //控制宽高
-    setInterval(function () {
-        setTime();
-    },1);
+    setTime();
 }

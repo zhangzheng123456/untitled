@@ -183,13 +183,12 @@ $('.bottom div img').click(function () {
 });
 //底部评论按钮点击切换
 $('.bottom div').eq(2).find('img').unbind('click').bind('click',function () {
-    console.log('显示输入框')
     $('.bottom').toggle();
     $('.bottom_input').toggle();
     $('.main_select div').eq(1).click();
+    $("body").scrollTop($("body")[0].scrollHeight);
 });
 $('.main_content').unbind('click').bind('click',function () {
-    console.log('显示动作条')
     $('.bottom').toggle();
     $('.bottom_input').toggle();
 });
@@ -210,6 +209,7 @@ function setConmments(){
             if((data.code =='0')){
                 //conmmentsVal(img,name,time,msg);
                 //拉取评论
+                $('.main_content').eq(1).find('.box').remove();
                 getConmments();
             }else if(data.code =='-1'){
             }
