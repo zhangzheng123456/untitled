@@ -1,21 +1,15 @@
 package com.bizvane.ishop.service.imp;
 
-import com.alibaba.fastjson.JSONObject;
+
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.constant.CommonValue;
+
 import com.bizvane.ishop.dao.VipParamMapper;
 import com.bizvane.ishop.entity.VipParam;
 import com.bizvane.ishop.service.VipParamService;
 import com.bizvane.ishop.utils.CheckUtils;
-import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

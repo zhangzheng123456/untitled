@@ -60,7 +60,11 @@ public class VipRulesController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
-            } else {
+            }  else if (result.equals("该企业会员类型对应的高级会员类型已存在")) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(result);
+        } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
@@ -264,42 +268,6 @@ public class VipRulesController {
         }
 
 
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 验证会员类型得唯一性
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/vipTypeExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipTypeExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String viptype = jsonObject.get("vip_type").toString().trim();
-            String corp_code = jsonObject.get("corp_code").toString();
-            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code, viptype, Common.IS_ACTIVE_Y);
-            if (vipRules != null) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("当前企业下该会员类型已存在");
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("当前企业下该会员类型不存在");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
         return dataBean.getJsonStr();
     }
 

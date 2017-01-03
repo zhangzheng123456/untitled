@@ -1145,11 +1145,12 @@ public class VIPController {
             String corp_code = jsonObject.get("corp_code").toString();
             String type = jsonObject.get("type").toString();
             String vip_card_type = jsonObject.get("vip_card_type").toString();
+            String high_vip_type = jsonObject.get("high_vip_type").toString();
 
-            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code,vip_card_type,Common.IS_ACTIVE_Y);
+            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code,vip_card_type,high_vip_type,Common.IS_ACTIVE_Y);
             if (vipRules != null){
                 if (type.equals("upgrade")){
-                    String high_vip_type = vipRules.getHigh_vip_type();
+                     high_vip_type = vipRules.getHigh_vip_type();
                     DataBox dataBox = iceInterfaceService.changeVipType(corp_code,vip_id, high_vip_type);
                     if (dataBox.status.toString().equals("SUCCESS")){
                         dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
