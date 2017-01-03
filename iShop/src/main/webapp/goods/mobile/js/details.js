@@ -50,8 +50,8 @@ function getPage(){
             var d_match_likeCount = message.d_match_likeCount;
             var d_match_commentCount = message.d_match_commentCount;
             var d_match_collectCount = message.d_match_collectCount;
-
             var r_match_goods = message.r_match_goods;
+            $('.main_list_title .num').text(r_match_goods.length);
             var tempHTML = '<img src="${img}" alt="" id="${id}" title="${title}"/>';
             var html='';
             for(i=0;i<r_match_goods.length;i++){
@@ -82,6 +82,25 @@ function getPage(){
             console.log(data);
         }
     });
+}
+function getConmments(){
+    var param={};
+    param["pageNumber"]='0';
+    param["corp_code"]=GetRequest().corp_code;
+    param["d_match_code"]=GetRequest().d_match_code;
+    param["pageSize"]='20';
+    oc.postRequire("post","/api/shopMatch/commentList","0",param,function(data){
+        if (data.code == "0") {
+            console.log(data)
+            var message = JSON.parse(data.message);
+            getConmmentsVal();
+        } else if(data.code =='-1'){
+            //alert(data);
+        }
+    })
+}
+function getConmmentsVal(){
+    console.log('评论显示')
 }
 //    点赞-收藏-评论
 $('.bottom div img').click(function () {
@@ -155,11 +174,23 @@ $('.bottom div img').click(function () {
         }
     })
 });
+//底部评论按钮点击切换
+$('.bottom div').eq(2).find('img').unbind('click').bind('click',function () {
+    console.log('显示输入框')
+    $('.bottom').toggle();
+    $('.bottom_input').toggle();
+    $('.main_select div').eq(1).click();
+});
+$('.main_content').unbind('click').bind('click',function () {
+    console.log('显示动作条')
+    $('.bottom').toggle();
+    $('.bottom_input').toggle();
+});
 //点击编辑
 $('.editor').unbind("click").bind('click',function () {
     var host=window.location.host;
     var param={};
-    var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
+    //var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
     param["url"]="http://"+host+"/goods/mobile/add_new.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
     console.log(param);
     doAppWebRefresh(param);
@@ -215,9 +246,14 @@ function deleteAction(){
     oc.postRequire("get", "/api/shopMatch/delete?corp_code=" + corp_code +"&d_match_code=" + d_match_code+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log('删除成功');
-            window.location = "tie-inList.html?corp_code="+corp_code+'&user_id='+user_code;
+            var host=window.location.host;
+            var param={};
+            param["result"]="success";
+            doAppWebRefresh(param);
         }else if(data.code =='-1'){
             console.log(data);
+            param["result"]= "failed";
+            doAppWebRefresh(param);
         }
     });
 }
@@ -251,6 +287,7 @@ function setDocumentTitle(d_match_title) {
 }
 window.onload = function () {
     getPage();
+    getConmments();
     setInterval(function () {
         var heightVal = document.body.clientWidth;
         $('.main_img').css('height',heightVal);

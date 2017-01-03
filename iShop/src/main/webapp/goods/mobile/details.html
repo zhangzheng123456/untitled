@@ -20,7 +20,7 @@
             </div>
         </li>
         <li class="main_list">
-            <div class="main_list_title">共<span class="num">4</span>件搭配</div>
+            <div class="main_list_title">共<span class="num"></span>件搭配</div>
             <div class="main_list_main">
             </div>
         </li>
@@ -34,12 +34,28 @@
         </li>
         <!--评论-->
         <li class="main_content">
-            <div>暂无评论</div>
+            <ul class="area">
+                <!--评论模板-->
+                <li class="box">
+                    <div class="top">
+                        <img src="image/img_kong.png" alt=""/>
+                        <div class="title">
+                            <span>${name}</span>
+                            <span>${time}</span>
+                        </div>
+
+                    </div>
+                    <div class="msg">${msg}</div>
+                </li>
+            </ul>
         </li>
         <li class="bottom">
             <div><img src="image/icon_点赞@2x.png" alt=""/><span class="num">0</span></div>
             <div style="border: none"><img src="image/icon_收藏@2x.png" alt=""/><span class="num">0</span></div>
             <div style="border: none;float: right;"><img src="image/icon_评论@2x.png" alt=""/><span class="num">0</span></div>
+        </li>
+        <li class="bottom_input">
+            <input type="text"/><img src="image/face.jpg" alt=""/>
         </li>
     </ul>
 <script src="js/flexible.js?20161209"></script>

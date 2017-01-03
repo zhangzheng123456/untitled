@@ -51,7 +51,7 @@ body{
   border-radius: 300px
 }
 .main_list{
-  width: 100%;
+  max-width: 100%;
   height: rem(100);
   background-color: white;
   margin-bottom: rem(10);
@@ -67,11 +67,12 @@ body{
   color: #929eae;
 }
 .main_list_main{
-  width: 98%;
+  max-width: 98%;
   height: rem(54);
   padding-top:rem(8);
   padding-bottom: rem(8);
   padding-left: 2%;
+  overflow-x: auto;
 }
 .main_list_main img{
   float: left;
@@ -95,18 +96,38 @@ body{
   padding-top: rem(10);
   clear: both;
   width: 100%;
-  height: rem(200);
   background-color: white;
   color: #929eae;
+  margin-bottom: rem(54);
 }
-.main_content div{
-  width: 97%;
-  margin-left: 1.5%;
-  background-color: #e8e8e8;
-  text-align: center;
-  height: rem(160);
-  padding-top: rem(20);
-  font-size: rem(13);
+//ÆÀÂÛ
+.area .box{
+  padding-top: rem(3);
+  padding-bottom: rem(3);
+  width: 92%;
+  margin-left: 4%;
+}
+.box .top{
+  width: 100%;
+}
+.box .top img{
+  width: 11%;
+  float: left;
+}
+.box .top .title{
+  width: 85%;
+  margin-left: 3%;
+  float: left;
+  height: rem(40);
+  line-height: rem(40);
+}
+.box .msg{
+  clear: both;  
+  width: 85%;
+  margin-left: 14%;
+  word-break: break-all;
+  border-bottom: 1px solid #e8e8e8;
+  padding-bottom: rem(6);
 }
 .bottom{
   position: fixed;
@@ -133,4 +154,32 @@ body{
 .bottom .num{
   height: rem(16);
   line-height: rem(16);
+}
+.bottom_input{
+  position: fixed;
+  bottom: 0;
+  height: rem(54);
+  width: 100%;
+  color: #b2b2b2;
+  font-size: rem(13);
+  background-color: #e8e8e8;
+  display: none;
+}
+.bottom_input input{
+  position: absolute;
+  bottom: rem(5);
+  left: 2%;
+  border: none;
+  border-radius: 5px;
+  width: 80%;
+  padding-left: 3%;
+  height:rem(44);
+  line-height: rem(44);
+
+}
+.bottom_input img{
+  position: absolute;
+  right: 3%;
+  bottom: rem(10);
+  height: rem(34);
 }
