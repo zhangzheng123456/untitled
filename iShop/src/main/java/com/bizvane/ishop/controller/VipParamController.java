@@ -347,7 +347,38 @@ public class VipParamController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String param_name = jsonObject.get("param_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            List<VipParam> vipParams = vipParamService.checkParamName(corp_code, param_name);
+            List<VipParam> vipParams = vipParamService.selectByParamName(corp_code, param_name,Common.IS_ACTIVE_Y);
+            if(vipParams.size()>0){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("会员参数名称已被使用");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("会员参数名称可以使用");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/checkDescOnly", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkDescOnly(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String param_desc = jsonObject.get("param_desc").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<VipParam> vipParams = vipParamService.selectByParamDesc(corp_code, param_desc,Common.IS_ACTIVE_Y);
             if(vipParams.size()>0){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
