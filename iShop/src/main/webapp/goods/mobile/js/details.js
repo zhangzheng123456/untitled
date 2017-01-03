@@ -131,6 +131,7 @@ $('.bottom div img').click(function () {
         operate_type = 'comment';
         comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
         status = '';
+        $("body").scrollTop($("body")[0].scrollHeight);
         return;
     }
     //    收藏
@@ -201,7 +202,8 @@ function setConmments(){
         nowHTML = nowHTML.replace('${time}',time)
         nowHTML = nowHTML.replace('${msg}',msg)
         html+=nowHTML;
-        $('.area').html(html);
+        $('.area').append(html);
+        $("body").scrollTop($("body")[0].scrollHeight);
     }else{
         console.log('不可发送空消息');
     }
