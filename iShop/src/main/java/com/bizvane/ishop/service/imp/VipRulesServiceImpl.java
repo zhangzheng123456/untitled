@@ -108,9 +108,9 @@ public class VipRulesServiceImpl implements VipRulesService {
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
         int num = 0;
-        if (vipRules1 != null) {
-            status = "该企业已存在该会员类型";
-        } else {
+//        if (vipRules1 != null) {
+//            status = "该企业已存在该会员类型";
+//        } else {
             String upgrade_amount = vipRules.getUpgrade_amount();
             if (upgrade_amount.equals("")) {
                 vipRules.setUpgrade_time("");
@@ -130,7 +130,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
-        }
+       // }
         return status;
     }
 
@@ -152,13 +152,15 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
         String vip_card_type_code = jsonObject.get("vip_card_type_code").toString().trim();
         String degree = jsonObject.get("degree").toString().trim();
+        String high_vip_card_type_code = jsonObject.get("high_vip_card_type_code").toString().trim();
+        String high_degree = jsonObject.get("high_degree").toString().trim();
         String isactive = jsonObject.get("isactive").toString().trim();
         String store_code = jsonObject.get("store_code").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
 
-        if (vipRules1 == null || vipRules1.getId() == id) {
+    //    if (vipRules1 == null || vipRules1.getId() == id) {
             Date now = new Date();
             if (upgrade_amount.equals("")){
                 vipRules.setUpgrade_time("");
@@ -176,21 +178,19 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
+            vipRules.setUpgrade_time(upgrade_time);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setIsactive(isactive);
             vipRules.setVip_card_type_code(vip_card_type_code);
             vipRules.setDegree(degree);
+            vipRules.setHigh_vip_card_type_code(high_vip_card_type_code);
+            vipRules.setHigh_degree(high_degree);
             int num = vipRulesMapper.updateVipRules(vipRules);
             if (num > 0) {
                 return status;
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
-        } else {
-            status = "该企业已存在该会员类型";
-        }
-
-
         return status;
     }
 

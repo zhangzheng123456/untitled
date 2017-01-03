@@ -2016,7 +2016,7 @@ var achv = {
     elem: '#date',
     format: 'YYYY-MM-DD',
     max: laydate.now(), //最大日期
-    istime: true,
+    istime:false,
     istoday: false,
     choose: function (datas) {
         getData();
@@ -2174,5 +2174,16 @@ $(".chart_close_icon").click(function () {
             }
         });
         chartShow(order);
+    }
+});
+//列表图表切换
+$(".chart_list_icon").click(function () {
+    var li = $(this).parent(".chart_head").nextAll("div");
+    if($(li).css("display") == "block"){
+        $(li).hide();
+        $(li).prev("li").show();
+    }else if($(li).css("display") == "none"){
+        $(li).show();
+        $(li).prev("li").hide();
     }
 });

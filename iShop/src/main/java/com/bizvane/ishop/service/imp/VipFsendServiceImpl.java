@@ -50,10 +50,6 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     private WxTemplateService wxTemplateService;
     @Autowired
-    private StoreService storeService;
-    @Autowired
-    private VipGroupService vipGroupService;
-    @Autowired
     MongoDBClient mongodbClient;
 
     private static HttpClient httpClient = new HttpClient();
@@ -74,46 +70,93 @@ public class VipFsendServiceImpl implements VipFsendService {
         String sms_code=vipFsend.getSms_code();
         String corp_code = vipFsend.getCorp_code();
         String send_scope = vipFsend.getSend_scope();
+        String send_type = vipFsend.getSend_type();
 
-        //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
-        if(send_scope.equals("vip")){
-            String sms_vips = vipFsend.getSms_vips();
-            JSONObject vips_obj = JSONObject.parseObject(sms_vips);
-            String vip_id = vips_obj.get("vips").toString();
-            //查询MongoDB数据库获取列表
-            String vipid[] = vip_id.split(",");
-            List<Map<String, Object>> list = new ArrayList();
-            for (int i = 0; i < vipid.length; i++) {
-                String vip = vipid[i];
-                Map query_key = new HashMap();
-                query_key.put("sms_code", sms_code);
-                query_key.put("vip_id", vip);
-                query_key.put("corp_code", corp_code);
+                if(send_type.equals("sms")){
+//如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
+                    if(send_scope.equals("vip")){
+                        String sms_vips = vipFsend.getSms_vips();
+                        JSONObject vips_obj = JSONObject.parseObject(sms_vips);
+                        String vip_id = vips_obj.get("vips").toString();
+                        //查询MongoDB数据库获取列表
+                        String vipid[] = vip_id.split(",");
+                        List<Map<String, Object>> list = new ArrayList();
+                        for (int i = 0; i < vipid.length; i++) {
+                            String vip = vipid[i];
+                            Map query_key = new HashMap();
+                            query_key.put("sms_code", sms_code);
+                            query_key.put("vip_id", vip);
+                            query_key.put("corp_code", corp_code);
 
-                List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-                if (message_list.size() == 0) {
-                    JSONObject info=new JSONObject();
-                    info.put("vip_info",null);
-                    message = JSON.toJSONString(info);
-                } else {
-                    list.addAll(message_list);
-                    JSONObject vips_info = new JSONObject();
-                    vips_info.put("vip_info", list);
-                    message = JSON.toJSONString(vips_info);
+                            List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
+                            if (message_list.size() == 0) {
+                                JSONObject info=new JSONObject();
+                                info.put("vip_info",null);
+                                message = JSON.toJSONString(info);
+                            } else {
+                                list.addAll(message_list);
+                                JSONObject vips_info = new JSONObject();
+                                vips_info.put("vip_info", list);
+                                message = JSON.toJSONString(vips_info);
+                            }
+                        }
+                    }else if(send_scope.equals("vip_group")){
+                        JSONObject obj=new JSONObject();
+                        JSONObject obj1=new JSONObject();
+                        obj1.put("vip_name","彭旭丽");
+                        obj1.put("vip_id","316424");
+                        obj1.put("is_send","未发送");
+                        obj1.put("cardno","13016691660");
+                        JSONArray arr=new JSONArray();
+                        arr.add(obj1);
+                        obj.put("vip_info",arr);
+
+                        message=JSON.toJSONString(obj);
+                    }
+                }else if(send_type.equals("wxmass")){
+                    //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
+                    if(send_scope.equals("vip")){
+                        String sms_vips = vipFsend.getSms_vips();
+                        JSONObject vips_obj = JSONObject.parseObject(sms_vips);
+                        String vip_id = vips_obj.get("vips").toString();
+                        //查询MongoDB数据库获取列表
+                        String vipid[] = vip_id.split(",");
+                        List<Map<String, Object>> list = new ArrayList();
+                        for (int i = 0; i < vipid.length; i++) {
+                            String vip = vipid[i];
+                            Map query_key = new HashMap();
+                            query_key.put("sms_code", sms_code);
+                            query_key.put("vip_id", vip);
+                            query_key.put("corp_code", corp_code);
+
+                            List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
+                            if (message_list.size() == 0) {
+                                JSONObject info=new JSONObject();
+                                info.put("vip_info",null);
+                                message = JSON.toJSONString(info);
+                            } else {
+                                list.addAll(message_list);
+                                JSONObject vips_info = new JSONObject();
+                                vips_info.put("vip_info", list);
+                                message = JSON.toJSONString(vips_info);
+                            }
+                        }
+                    }else if(send_scope.equals("vip_group")){
+                        JSONObject obj=new JSONObject();
+                        JSONObject obj1=new JSONObject();
+                        obj1.put("vip_name","彭旭丽");
+                        obj1.put("vip_id","316424");
+                        obj1.put("is_send","未发送");
+                        obj1.put("is_read","未读");
+                        obj1.put("cardno","13016691660");
+                        JSONArray arr=new JSONArray();
+                        arr.add(obj1);
+                        obj.put("vip_info",arr);
+
+                        message=JSON.toJSONString(obj);
+                    }
                 }
-            }
-        }else if(send_scope.equals("vip_group")){
-            JSONObject obj=new JSONObject();
-            JSONObject obj1=new JSONObject();
-            obj1.put("vip_name","彭旭丽");
-            obj1.put("vip_id","316424");
-            obj1.put("is_send","未发送");
-            JSONArray arr=new JSONArray();
-            arr.add(obj1);
-            obj.put("vip_info",arr);
 
-            message=JSON.toJSONString(obj);
-        }
         return message;
     }
 
@@ -159,6 +202,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             String phone = "";
             String vip_id = "";
             String vip_name = "";
+            String cardno = "";
             JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
             vip_id = sms_vips_obj.get("vips").toString();
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -175,8 +219,9 @@ public class VipFsendServiceImpl implements VipFsendService {
                 for (int i = 0; i < vip_infos.size(); i++) {
                     JSONObject vip_obj = vip_infos.getJSONObject(i);
                     phone = phone + vip_obj.getString("vip_phone") + ",";
+                    cardno = cardno + vip_obj.getString("cardno") + ",";
                     vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-                    if (!vip_obj.containsKey("open_id") ) {
+                    if (!vip_obj.containsKey("open_id") || vip_obj.getString("open_id").equals("")) {
                         open_id = open_id + "null" + ",";
                     }else {
                         open_id = open_id + vip_obj.getString("open_id") + ",";
@@ -185,11 +230,13 @@ public class VipFsendServiceImpl implements VipFsendService {
             }
             //逗号分割
             String[] phones = phone.split(",");
+            String[] cardnos = cardno.split(",");
             String[] open_ids = open_id.split(",");
             String[] vip_ids = vip_id.split(",");
             String[] vip_names = vip_name.split(",");
 
             String send_phone = "";
+            String send_cardno = "";
             String send_open_id = "";
             String send_vip_id = "";
             String send_vip_name = "";
@@ -200,9 +247,10 @@ public class VipFsendServiceImpl implements VipFsendService {
                     Matcher matcher = pattern4.matcher(phones[i].trim());
                     String message_id = corp_code + vip_ids[i] + System.currentTimeMillis();
                     if (matcher.matches() == false) {
-                        insertMongoDB(corp_code, user_id, "", "", vip_ids[i], vip_names[i], sms_code, "", content, message_id, "N");
+                        insertMongoDB(corp_code, user_id, "", "", vip_ids[i], vip_names[i],cardnos[i],phones[i], sms_code, "", content, message_id, "N");
                     } else {
                         send_phone = send_phone + phones[i] + ",";
+                        send_cardno = send_cardno + cardnos[i] + ",";
                         send_vip_id = send_vip_id + vip_ids[i] + ",";
                         send_vip_name = send_vip_name + vip_names[i] + ",";
                     }
@@ -220,11 +268,12 @@ public class VipFsendServiceImpl implements VipFsendService {
                     logger.info("------vipFsend群发消息-vip列表" + dataBox1.status.toString());
 
                     String[] send_phones = send_phone.split(",");
+                    String[] send_cardnos = send_cardno.split(",");
                     String[] send_vip_ids = send_vip_id.split(",");
                     String[] send_vip_names = send_vip_name.split(",");
                     for (int i = 0; i < send_phones.length; i++) {
                         String message_id = corp_code + send_vip_ids[i] + System.currentTimeMillis();
-                        insertMongoDB(corp_code, user_id, "", "", send_vip_ids[i], send_vip_names[i], sms_code, "", content, message_id, "Y");
+                        insertMongoDB(corp_code, user_id, "", "", send_vip_ids[i], send_vip_names[i],send_cardnos[i],send_phones[i], sms_code, "", content, message_id, "Y");
                     }
                 }
             }else {
@@ -238,17 +287,21 @@ public class VipFsendServiceImpl implements VipFsendService {
                     String message_id = corp_code + vip_ids[i] + System.currentTimeMillis();
                     String openid = open_ids[i];
                     if (openid.equals("") || openid.equals("null")){
-                        insertMongoDB(corp_code,user_id,template_id,"",vip_ids[i],vip_names[i],sms_code,app_id,content,message_id,"N");
+                        insertMongoDB(corp_code,user_id,template_id,"",vip_ids[i],vip_names[i],cardnos[i],phones[i],sms_code,app_id,content,message_id,"N");
                     }else {
                         send_open_id = send_open_id + open_ids[i] + ",";
                         send_vip_id = send_vip_id + vip_ids[i] + ",";
                         send_vip_name = send_vip_name + vip_names[i] + ",";
+                        send_cardno = send_cardno + cardnos[i] + ",";
+                        send_phone = send_phone + phones[i] + ",";
                     }
                 }
                 if (!send_open_id.equals("")){
                     String[] send_open_ids = send_open_id.split(",");
                     String[] send_vip_ids = send_vip_id.split(",");
                     String[] send_vip_names = send_vip_name.split(",");
+                    String[] send_phones = send_phone.split(",");
+                    String[] send_cardnos = send_cardno.split(",");
 
                     String  result="";
                     if(send_open_ids.length >= 2){
@@ -279,9 +332,9 @@ public class VipFsendServiceImpl implements VipFsendService {
                         JSONObject info = JSONObject.parseObject(result);
                         //群发消息发送成功之后存入mongoDB
                          if ("0".equals(info.getString("errcode"))) {
-                             insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],sms_code,"",content,message_id,"Y");
+                             insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"Y");
                          } else {
-                             insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],sms_code,"",content,message_id,"N");
+                             insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"N");
                              status = info.get("errmsg").toString();
                              return status;
                          }
@@ -368,8 +421,8 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @param content
      * @throws Exception
      */
-    public void insertMongoDB(String corp_code,String user_code, String template_id,String openid, String vip_id,String vip_name,String sms_code, String app_id,
-                              String content,String message_id,String send_status) throws Exception {
+    public void insertMongoDB(String corp_code,String user_code, String template_id,String openid, String vip_id,String vip_name,String cardno,String vip_phone,
+                              String sms_code, String app_id, String content,String message_id,String send_status) throws Exception {
         Date now = new Date();
         String message_date = Common.DATETIME_FORMAT.format(now);
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -380,6 +433,8 @@ public class VipFsendServiceImpl implements VipFsendService {
         saveData.put("corp_code", corp_code);
         saveData.put("open_id", openid);
         saveData.put("vip_id", vip_id);
+        saveData.put("cardno", cardno);
+        saveData.put("vip_phone", vip_phone);
         saveData.put("sms_code", sms_code);
         saveData.put("message_type", "text");
         saveData.put("message_content", content);
