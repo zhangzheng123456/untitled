@@ -105,7 +105,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                         JSONObject obj1=new JSONObject();
                         obj1.put("vip_name","彭旭丽");
                         obj1.put("vip_id","316424");
-                        obj1.put("is_send","未发送");
+                        obj1.put("is_send","N");
                         obj1.put("cardno","13016691660");
                         JSONArray arr=new JSONArray();
                         arr.add(obj1);
@@ -146,8 +146,8 @@ public class VipFsendServiceImpl implements VipFsendService {
                         JSONObject obj1=new JSONObject();
                         obj1.put("vip_name","彭旭丽");
                         obj1.put("vip_id","316424");
-                        obj1.put("is_send","未发送");
-                        obj1.put("is_read","未读");
+                        obj1.put("is_send","N");
+                        obj1.put("is_read","N");
                         obj1.put("cardno","13016691660");
                         JSONArray arr=new JSONArray();
                         arr.add(obj1);

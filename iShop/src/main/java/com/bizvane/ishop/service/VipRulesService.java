@@ -22,7 +22,7 @@ public interface VipRulesService {
 
     PageInfo<VipRules> getAllVipRulesScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 
-    VipRules getVipRulesByType(String corp_code,String vip_type,String isactive)throws Exception;
+    VipRules getVipRulesByType(String corp_code,String vip_type,String high_vip_type,String isactive)throws Exception;
 
      String getCouponInfo(String corp_code)throws Exception;
      String  getCouponInfo1(String corp_code)throws Exception;
