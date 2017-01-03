@@ -25,6 +25,7 @@
     margin-right:0.5%;
     position: relative;
     height:100%;
+    margin-bottom: 0.5%;
 }
 #table_analyze{
     background: #fff;
@@ -32,10 +33,10 @@
     /*min-width: 704px;*/
     height: 445px;
     position: relative;
+    margin-bottom: 0.5%;
 }
 #chart_analyze{
     margin-right: -0.5%;
-    margin-top:41%;
     clear: both;
 }
 /*select_analyze锟斤拷询*/
@@ -167,6 +168,7 @@
     background: #FFFFFF;
     height: 300px;
     box-sizing: border-box;
+    position: relative;
 }
 #chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li{
     width: 100%

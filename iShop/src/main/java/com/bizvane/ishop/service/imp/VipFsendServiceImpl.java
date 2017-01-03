@@ -50,10 +50,6 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     private WxTemplateService wxTemplateService;
     @Autowired
-    private StoreService storeService;
-    @Autowired
-    private VipGroupService vipGroupService;
-    @Autowired
     MongoDBClient mongodbClient;
 
     private static HttpClient httpClient = new HttpClient();
@@ -108,6 +104,7 @@ public class VipFsendServiceImpl implements VipFsendService {
             obj1.put("vip_name","彭旭丽");
             obj1.put("vip_id","316424");
             obj1.put("is_send","未发送");
+            obj1.put("cardno","13016691660");
             JSONArray arr=new JSONArray();
             arr.add(obj1);
             obj.put("vip_info",arr);
@@ -178,7 +175,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     phone = phone + vip_obj.getString("vip_phone") + ",";
                     cardno = cardno + vip_obj.getString("cardno") + ",";
                     vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-                    if (!vip_obj.containsKey("open_id") ) {
+                    if (!vip_obj.containsKey("open_id") || vip_obj.getString("open_id").equals("")) {
                         open_id = open_id + "null" + ",";
                     }else {
                         open_id = open_id + vip_obj.getString("open_id") + ",";

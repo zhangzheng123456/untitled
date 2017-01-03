@@ -152,6 +152,8 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
         String vip_card_type_code = jsonObject.get("vip_card_type_code").toString().trim();
         String degree = jsonObject.get("degree").toString().trim();
+        String high_vip_card_type_code = jsonObject.get("high_vip_card_type_code").toString().trim();
+        String high_degree = jsonObject.get("high_degree").toString().trim();
         String isactive = jsonObject.get("isactive").toString().trim();
         String store_code = jsonObject.get("store_code").toString().trim();
 
@@ -180,6 +182,8 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setIsactive(isactive);
             vipRules.setVip_card_type_code(vip_card_type_code);
             vipRules.setDegree(degree);
+            vipRules.setHigh_vip_card_type_code(high_vip_card_type_code);
+            vipRules.setHigh_degree(high_degree);
             int num = vipRulesMapper.updateVipRules(vipRules);
             if (num > 0) {
                 return status;
