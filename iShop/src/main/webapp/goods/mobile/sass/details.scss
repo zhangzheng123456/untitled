@@ -73,9 +73,12 @@ body{
   padding-bottom: rem(8);
   padding-left: 2%;
   overflow-x: auto;
+  overflow-y: auto;
+  white-spacing:nowrap;
 }
 .main_list_main img{
   float: left;
+  display:inline-block;
   height: rem(54);
   margin-right: 2%;
 }

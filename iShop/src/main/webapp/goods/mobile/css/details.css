@@ -72,10 +72,13 @@ body {
   padding-top: 0.19324rem;
   padding-bottom: 0.19324rem;
   padding-left: 2%;
-  overflow-x: auto; }
+  overflow-x: auto;
+  overflow-y: auto;
+  white-spacing: nowrap; }
 
 .main_list_main img {
   float: left;
+  display: inline-block;
   height: 1.30435rem;
   margin-right: 2%; }
 

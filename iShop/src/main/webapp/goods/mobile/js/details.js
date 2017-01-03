@@ -186,6 +186,46 @@ $('.main_content').unbind('click').bind('click',function () {
     $('.bottom').toggle();
     $('.bottom_input').toggle();
 });
+//提交评论
+function setConmments(){
+    var val = $('.bottom_input input').val();
+    var time = getNowFormatDate();
+    var name = GetRequest().user_id;
+    var img = 'image/img_kong.png'
+    if(val.trim()!=''){
+        var tempHTML = '<li class="box"> <div class="top"> <img src="${img}" alt=""/> <div class="title"> <span>${name}</span> <span>${time}</span> </div> </div> <div class="msg">${msg}</div> </li>'
+        var html ='';
+        var nowHTML = tempHTML;
+        nowHTML = nowHTML.replace('${img}',img)
+        nowHTML = nowHTML.replace('${name}',name)
+        nowHTML = nowHTML.replace('${time}',time)
+        nowHTML = nowHTML.replace('${msg}',msg)
+    }else{
+        console.log('不可发送空消息');
+    }
+}
+//表情
+$('.bottom_input img').click(function(){
+    setConmments();
+});
+//获取当前时间
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+        + " " + date.getHours() + seperator2 + date.getMinutes()
+        + seperator2 + date.getSeconds();
+    return currentdate;
+}
 //点击编辑
 $('.editor').unbind("click").bind('click',function () {
     var host=window.location.host;
