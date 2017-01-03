@@ -178,7 +178,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     phone = phone + vip_obj.getString("vip_phone") + ",";
                     cardno = cardno + vip_obj.getString("cardno") + ",";
                     vip_name = vip_name + vip_obj.getString("vip_name") + ",";
-                    if (!vip_obj.containsKey("open_id") ) {
+                    if (!vip_obj.containsKey("open_id") || vip_obj.getString("open_id").equals("")) {
                         open_id = open_id + "null" + ",";
                     }else {
                         open_id = open_id + vip_obj.getString("open_id") + ",";
