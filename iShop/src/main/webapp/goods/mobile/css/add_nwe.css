@@ -190,11 +190,8 @@ address, cite, dfn, em, var {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      -webkit-transform: translate(-50%, -50%);
-      -moz-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      -o-transform: translate(-50%, -50%); }
+      margin-top: -0.24155rem;
+      margin-left: -0.24155rem; }
     .container_picture .picture_add .file {
       position: absolute;
       top: 0;
@@ -233,6 +230,12 @@ address, cite, dfn, em, var {
   outline: none;
   height: 2.17391rem;
   color: #888; }
+  [data-dpr="1"] #describe {
+    font-size: 13px; }
+  [data-dpr="2"] #describe {
+    font-size: 26px; }
+  [data-dpr="3"] #describe {
+    font-size: 39px; }
 
 #describe::-webkit-input-placeholder {
   font-size: 0.36232rem;
@@ -382,5 +385,44 @@ address, cite, dfn, em, var {
         font-size: 30px; }
       [data-dpr="3"] .complete_box .btn_box .complete_btn {
         font-size: 45px; }
+
+.tips {
+  display: none;
+  z-index: 10000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  width: 6.03865rem;
+  height: 2.41546rem;
+  background: #3b3b3b;
+  color: #fff;
+  border-radius: 0.12077rem; }
+  .tips .tip_box {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%); }
+  .tips .icon_err {
+    display: inline-block;
+    width: 0.60386rem;
+    height: 0.60386rem; }
+  .tips .err_txt {
+    margin-top: 0.12077rem; }
+    [data-dpr="1"] .tips .err_txt {
+      font-size: 13px; }
+    [data-dpr="2"] .tips .err_txt {
+      font-size: 26px; }
+    [data-dpr="3"] .tips .err_txt {
+      font-size: 39px; }
 
 /*# sourceMappingURL=add_nwe.css.map */
