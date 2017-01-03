@@ -2238,6 +2238,40 @@ function showOtherGroup(list,type){
           }
     }
 }
+    $("#group_list").find("input").blur(function(){
+        var reg=new RegExp("^(0|([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$");
+        if(!reg.test($(this).val().trim()) && $(this).val()!=""){
+            art.dialog({
+                zIndex: 10010,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "只能输入数字"
+            });
+            $(this).val("")
+        }
+        if($(this).index()=="1" && Number($(this).val())-Number($(this).siblings("input").val())>0 && $(this).siblings("input").val()!=""){
+            art.dialog({
+                zIndex: 10010,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能大于后面的值"
+            });
+            $(this).val("")
+        }
+        if($(this).index()=="3" && Number($(this).val())-Number($(this).siblings("input").val())<0 && $(this).val()!=""){
+            art.dialog({
+                zIndex: 10010,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能小于前面的的值"
+            });
+            $(this).val("")
+        }
+        //Number($(this).val())-Number($(this).val())
+    });
 $("#group_type").click(function(){
     $("#group_all_list").is(":hidden")==true?$("#group_all_list").show():$("#group_all_list").hide();
 });

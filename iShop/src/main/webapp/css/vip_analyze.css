@@ -692,14 +692,15 @@
 }
 .data_table ul{
     padding: 0;
-    width: 100%;
+    /*width: 100%;*/
     overflow: hidden;
 }
 .data_table ul li:last-child{
     border-right: 1px solid #d4d4d4;
 }
 .data_table ul:first-child li{
-    margin-top:50px;
+    /*margin-top:50px;*/
+    box-sizing: border-box;
     border-top: 1px solid #d4d4d4;
 }
 .data_table ul li{
