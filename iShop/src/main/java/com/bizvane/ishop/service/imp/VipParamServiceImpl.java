@@ -30,8 +30,6 @@ import java.util.Map;
 public class VipParamServiceImpl implements VipParamService {
     @Autowired
     VipParamMapper vipParamMapper;
-    @Autowired
-    MongoDBClient mongodbClient;
 
     @Override
     public VipParam selectById(int id) throws Exception {
@@ -39,12 +37,13 @@ public class VipParamServiceImpl implements VipParamService {
     }
 
     @Override
-    public List<VipParam> checkParamName(String corp_code, String param_name) throws Exception {
-        return vipParamMapper.checkParamName(corp_code,param_name,Common.IS_ACTIVE_Y);
-    }
-    @Override
     public List<VipParam> selectByParamName(String corp_code, String param_name,String isactive) throws Exception {
         return vipParamMapper.checkParamName(corp_code,param_name,isactive);
+    }
+
+    @Override
+    public List<VipParam> selectByParamDesc(String corp_code, String param_desc,String isactive) throws Exception {
+        return vipParamMapper.checkParamDesc(corp_code,param_desc,isactive);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class VipParamServiceImpl implements VipParamService {
     @Override
     @Transactional
     public String insert(VipParam vipParam) throws Exception {
-        List<VipParam> vipParams= checkParamName(vipParam.getCorp_code().trim(), vipParam.getParam_name().trim());
+        List<VipParam> vipParams= selectByParamDesc(vipParam.getCorp_code().trim(), vipParam.getParam_desc().trim(),Common.IS_ACTIVE_Y);
         String result=Common.DATABEAN_CODE_ERROR;
         if(vipParams.size()==0){
             String order = vipParamMapper.selectMaxOrderByCorp(vipParam.getCorp_code().trim());
@@ -79,53 +78,14 @@ public class VipParamServiceImpl implements VipParamService {
     @Transactional
     public String update(VipParam vipParam) throws Exception {
         String corp_code = vipParam.getCorp_code().trim();
-        String param_name_new = vipParam.getParam_name().trim();
-
-        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
-
-        List<VipParam> vipParams= checkParamName(corp_code, param_name_new);
+        String param_desc_new = vipParam.getParam_desc().trim();
+        List<VipParam> vipParams= selectByParamDesc(corp_code, vipParam.getParam_desc().trim(),Common.IS_ACTIVE_Y);
         String result=Common.DATABEAN_CODE_ERROR;
-        VipParam vipParam1 = selectById(vipParam.getId());
-        String param_name_old = vipParam1.getParam_name();
 
-        if(vipParams.size()==0||vipParam1.getParam_name().equals(param_name_new)){
-            if (!vipParam1.getParam_name().equals(param_name_new)){
-
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code", corp_code);
-                BasicDBObject queryCondition = new BasicDBObject();
-                queryCondition.putAll(keyMap);
-                DBCursor dbCursor1 = cursor.find(queryCondition);
-                while (dbCursor1.hasNext()){
-                    DBObject obj = dbCursor1.next();
-
-                    String extend = "";
-                    if (obj.containsField("extend"))
-                        extend = obj.get("extend").toString();
-                    if (!extend.equals("")){
-                        JSONObject obj_extend = JSONObject.parseObject(extend);
-                        if (obj_extend.containsKey(param_name_old)){
-                            String _id = obj.get("_id").toString();
-
-                            DBObject updateCondition=new BasicDBObject();
-                            DBObject updatedValue=new BasicDBObject();
-                            updateCondition.put("_id", _id);
-
-                            String value = obj_extend.get(param_name_old).toString();
-                            obj_extend.remove(param_name_old);
-                            obj_extend.put(param_name_new,value);
-                            extend = obj_extend.toString();
-                            updatedValue.put("extend", extend);
-                            DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
-                            cursor.update(updateCondition, updateSetValue);
-                        }
-                    }
-                }
-            }
+        if(vipParams.size()==0||vipParams.get(0).getParam_desc().equals(param_desc_new)){
             vipParamMapper.update(vipParam);
             result=Common.DATABEAN_CODE_SUCCESS;
-        }else if(vipParams.size()>0){
+        }else{
             result="会员参数名称已存在";
         }
         return result;

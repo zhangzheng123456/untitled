@@ -58,7 +58,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
 
         if (list == null || code == null && name == null) {
-
             vipCardType.setCorp_code(corp_code);
             vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipCardType.setCreater(user_id);
@@ -69,7 +68,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
             if (num > 0) {
                 VipCardType vipCardType1 = getVipCardTypeByCode(vipCardType.getCorp_code(), vipCardType.getVip_card_type_code(), vipCardType.getIsactive());
                 status = vipCardType1.getId();
-                System.out.print(vipCardType1.getId());
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
@@ -78,8 +76,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         } else {
             status = "该名称已存在";
         }
-
-
         return status;
     }
 
@@ -99,8 +95,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
         int num = 0;
-
-        System.out.print(vipCardType2.getId()+"=======");
         if (list != null) {
             if (vipCardType1 != null && !id.equals(vipCardType1.getId())) {
                 status = "该编号已存在";

@@ -1057,19 +1057,8 @@ $("#screen_que_area").click(function(){
         checknow_data = [];
         checknow_namedata = [];
     });
-    $(".drop").click(function () {
-        if($(".address_container").css("display")=="none"){
-            $(".address_container").show();
-        }else {
-            $(".address_container").hide();
-        }
-    });
     $("#STORE_address").click(function () {
-        if($(".address_container").css("display")=="none"){
-            $(".address_container").show();
-        }else {
-            $(".address_container").hide();
-        }
+        $(".address_container").toggle();
     });
     getProvince();
 });

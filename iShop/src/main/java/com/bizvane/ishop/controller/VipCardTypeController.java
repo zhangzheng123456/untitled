@@ -50,13 +50,21 @@ public class VipCardTypeController {
             String message = jsonObj.get("message").toString();
             String result = this.vipCardTypeService.insert(message, user_id);
 
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(result);
-            } else {
+            if (result.equals("该编号已存在")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            } else if (result.equals("该名称已存在")) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }else if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {

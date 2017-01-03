@@ -949,20 +949,27 @@ var vip_group_info={
             $(this).parent().siblings("span").html(val);
             $(this).parent().hide();
             $(this).parent().siblings("span").attr("data-type",$(this).attr("data-type"));
-           if($(this).parents(".chart_head").siblings(".data_table").is(":hidden") ||  $(this).parents(".chart_module").attr("data-id")=="areas"){
+           //if($(this).parents(".chart_head").siblings(".data_table").is(":hidden") ||  $(this).parents(".chart_module").attr("data-id")=="areas"){
+           //if ($(this).parents(".chart_module").attr("data-id")!="areas"){
                var type= $(this).parent().siblings("span").attr("data-type")=="piece"?"trade_num":"trade_amt";
                var chartType=$(this).parents(".chart_module").attr("data-id");
                vip_group_info.init_chart(chartType,type);
-               console.log(chartType)
-               console.log(type)
-           }
+           //}
         });
-        $(".chart_head").dblclick(function(){
-            if($(this).parents(".chart_module").hasClass("chart_lg")) return ;
+        $(".chart_head").dblclick(function(e){
+            var e=e || window.event;
+            if(!($(e.target).is(".chart_head"))){
+                return ;
+            }
+            if($(this).parents(".chart_module").hasClass("chart_lg")) {
+                $(this).find(".chart_close_icon").trigger("click");
+                return ;
+            }
             whir.loading.add("mask",0.8);
             $(this).parents(".chart_module").addClass("chart_lg");
             $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_lg").height()-30);
             var chartShow=$(this).parents(".chart_module").attr("data-id");
+            $(this).parents(".chart_module").find(".data_table ul li").width(($(this).parents(".chart_module").width()-20)/ $(this).parents(".chart_module").find(".data_table ul:first-child li").length);
            switch (chartShow){
                case "type":
                    vip_group_info.myChart_type.resize();
@@ -1398,7 +1405,17 @@ var vip_group_info={
             option_pie.series[0].data=typeData;
             option_pie.series[0].name="消费类型";
             vip_group_info.myChart_type.setOption(option_pie);
-            vip_group_info.resize(vip_group_info.myChart_type)
+            vip_group_info.resize(vip_group_info.myChart_type);
+            var head="";
+            var value="";
+            for(var a=0;a<typeData.length;a++){
+                head+='<li>'+typeData[a].name+'</li>';
+                value+='<li>'+typeData[a].value+'</li>';
+            }
+            head="<ul><li></li>"+head+"</ul>";
+            value=showType=="trade_amt"?"<ul><li>金额</li>"+value+"</ul>":"<ul><li>件数</li>"+value+"</ul>";
+            $("#type").next().html(head+value);
+            $("#type").next().find("li").width((($("#type").next().width()-20)/$(head).find("li").length))
         }
         if(id == "series"){
            vip_group_info.myChart_series= echarts.init(document.getElementById(id));
@@ -1411,7 +1428,17 @@ var vip_group_info={
             option_pie.series[0].data=seriesData;
             option_pie.series[0].name="系列偏好";
             vip_group_info.myChart_series.setOption(option_pie);
-            vip_group_info.resize(vip_group_info.myChart_series)
+            vip_group_info.resize(vip_group_info.myChart_series);
+            var head="";
+            var value="";
+            for(var a=0;a<seriesData.length;a++){
+                head+='<li>'+seriesData[a].name+'</li>';
+                value+='<li>'+seriesData[a].value+'</li>';
+            }
+            head="<ul><li></li>"+head+"</ul>";
+            value=showType=="trade_amt"?"<ul><li>金额</li>"+value+"</ul>":"<ul><li>件数</li>"+value+"</ul>";
+            $("#series").next().html(head+value);
+            $("#series").next().find("li").width((($("#series").next().width()-20)/$(head).find("li").length))
         }
         if(id == "weeks"){
             vip_group_info.myChart_weeks= echarts.init(document.getElementById(id));
@@ -1426,7 +1453,17 @@ var vip_group_info={
             }
             option_radar_week.series[0].data[0].value=weekDataArray;
             vip_group_info.myChart_weeks.setOption(option_radar_week);
-            vip_group_info.resize(vip_group_info.myChart_weeks)
+            vip_group_info.resize(vip_group_info.myChart_weeks);
+            var head="";
+            var value="";
+            for(var a=0;a<weekData.length;a++){
+                head+='<li>'+weekData[a].name+'</li>';
+                value+='<li>'+weekData[a].value+'</li>';
+            }
+            head="<ul><li></li>"+head+"</ul>";
+            value=showType=="trade_amt"?"<ul><li>金额</li>"+value+"</ul>":"<ul><li>件数</li>"+value+"</ul>";
+            $("#weeks").next().html(head+value);
+            $("#weeks").next().find("li").width((($("#weeks").next().width()-20)/$(head).find("li").length))
         }
         if(id == "price"){
             vip_group_info.myChart_price= echarts.init(document.getElementById(id));
@@ -1440,7 +1477,17 @@ var vip_group_info={
             option_bar.yAxis[0].data=name;
             option_bar.series[0].data=value;
             vip_group_info.myChart_price.setOption(option_bar);
-            vip_group_info.resize(vip_group_info.myChart_price)
+            vip_group_info.resize(vip_group_info.myChart_price);
+            var head="";
+            var value="";
+            for(var a=0;a<priceData.length;a++){
+                head+='<li>'+priceData[a].name+'</li>';
+                value+='<li>'+priceData[a].value+'</li>';
+            }
+            head="<ul><li></li>"+head+"</ul>";
+            value=showType=="trade_amt"?"<ul><li>金额</li>"+value+"</ul>":"<ul><li>件数</li>"+value+"</ul>";
+            $("#price").next().html(head+value);
+            $("#price").next().find("li").width((($("#price").next().width()-20)/$(head).find("li").length))
         }
         if(id == "times"){
             vip_group_info.myChart_times= echarts.init(document.getElementById(id));
@@ -1454,7 +1501,17 @@ var vip_group_info={
             option_line.xAxis[0].data=name;
             option_line.series[0].data=value;
             vip_group_info.myChart_times.setOption(option_line);
-            vip_group_info.resize(vip_group_info.myChart_times)
+            vip_group_info.resize(vip_group_info.myChart_times);
+            var head="";
+            var value="";
+            for(var a=0;a<TimeData.length;a++){
+                head+='<li>'+TimeData[a].name+'</li>';
+                value+='<li>'+TimeData[a].value+'</li>';
+            }
+            head="<ul><li></li>"+head+"</ul>";
+            value=showType=="trade_amt"?"<ul><li>金额</li>"+value+"</ul>":"<ul><li>件数</li>"+value+"</ul>";
+            $("#times").next().html(head+value);
+            $("#times").next().find("li").width((($("#times").next().width()-20)/$(head).find("li").length))
         }
         if(id == "month"){
             vip_group_info.myChart_month= echarts.init(document.getElementById(id));
@@ -1469,7 +1526,17 @@ var vip_group_info={
             }
             option_radar_month.series[0].data[0].value=monthDataArray;
             vip_group_info.myChart_month.setOption(option_radar_month);
-            vip_group_info.resize(vip_group_info.myChart_month)
+            vip_group_info.resize(vip_group_info.myChart_month);
+            var head="";
+            var value="";
+            for(var a=0;a<monthData.length;a++){
+                head+='<li>'+monthData[a].name+'</li>';
+                value+='<li>'+monthData[a].value+'</li>';
+            }
+            head="<ul><li></li>"+head+"</ul>";
+            value=showType=="trade_amt"?"<ul><li>金额</li>"+value+"</ul>":"<ul><li>件数</li>"+value+"</ul>";
+            $("#month").next().html(head+value);
+            $("#month").next().find("li").width((($("#month").next().width()-20)/$(head).find("li").length))
         }
         if(id == "areas"){
             vip_group_info.myChart_areas= echarts.init(document.getElementById(id));
@@ -1546,6 +1613,7 @@ var vip_group_info={
                 $(this).parents(".chart_module").removeClass("chart_lg");
                 $("#chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li").height($(".chart_module").height()-30);
                 var chartShow=$(this).parents(".chart_module").attr("data-id");
+                $(this).parents(".chart_module").find(".data_table ul li").width(($(this).parents(".chart_module").width()-20)/ $(this).parents(".chart_module").find(".data_table ul:first-child li").length);
                 switch (chartShow){
                     case "type":
                         vip_group_info.myChart_type.resize();

@@ -13,9 +13,9 @@ import java.util.Map;
 public interface VipParamService {
     VipParam selectById(int id) throws Exception;
 
-    List<VipParam> checkParamName(String corp_code, String param_name) throws Exception;
-
     List<VipParam> selectByParamName(String corp_code, String param_name,String isactive) throws Exception;
+
+    List<VipParam> selectByParamDesc(String corp_code, String param_desc,String isactive) throws Exception;
 
     PageInfo<VipParam> selectAllParam(int page_number, int page_size,String corp_code, String search_value) throws Exception;
 
