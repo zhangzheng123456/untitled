@@ -4,7 +4,6 @@ var oc = new ObjectControl();
 }(this,function(){
 	var regimejs={};
 	regimejs.param={//定义参数类型
-		"price":true,
     	"area_codes":"",
     	"area_names":"",
     	"brand_codes":"",
@@ -86,14 +85,8 @@ var oc = new ObjectControl();
 		var self=this;
 		$("#edit_save").click(function(){
 			if(regimejs.firstStep()){
-				if(!self.param.price){
-					$("#vip_type").next('.hint').children().html("当前企业下该会员类型已存在！");
-					$("#vip_type").next('.hint').children().addClass("error_tips");
-					return;
-				}
 				var param={};
 				var corp_code=$("#OWN_CORP").val().trim();//公司编号
-				var vip_type=$("#vip_type").val().trim();//会员类型
 				var discount=$("#discount").val().trim();//会员折扣
 				var join_threshold=$("#join_threshold").val().trim();//招募门槛
 				var upgrade_time=$("#upgrade_time").attr("data-value");//升级门槛时间
@@ -107,11 +100,29 @@ var oc = new ObjectControl();
 				var is_present_point=$("#is_present_point")[0];//是否赠送积分
 				var is_present_coupon=$("#is_present_coupon")[0];//是否赠送券
 				var is_shop=$("#is_shop")[0];//是否选择店铺
-				var high_vip_type="";
+				var high_vip_type="";//上级会员类型名称
+				var high_vip_card_type_code="";//上级会员类型编号
+				var high_degree="";//上级会员类型等级
+				var vip_card_type_code="";//会员类型编号
+				var vip_type=""//会员类型名称
+				var degree=""//会员类型等级
+				if($("#vip_type").val().trim()=="无会员类型"){
+					vip_card_type_code=""//会员类型编号
+					vip_type=""//会员类型名称
+					degree="";//会员类型等级
+				}else{
+					vip_card_type_code=$("#vip_type").attr("data-value");//会员类型编号
+					vip_type=$("#vip_type").val().trim();//会员类型名称
+					degree=$("#vip_type").attr("data-degree");//会员类型等级
+				}
 				if($("#high_vip_type").val().trim()=="无上级会员类型"){
 					high_vip_type="";
+					high_vip_card_type_code="";
+					high_degree="";
 				}else{
 					high_vip_type=$("#high_vip_type").val().trim();
+					high_vip_card_type_code=$("#high_vip_type").attr("data-value");
+					high_degree=$("#high_vip_type").attr("data-degree");
 				}
 				if(input.checked==true){//是否可用
 					isactive="Y";
@@ -141,9 +152,22 @@ var oc = new ObjectControl();
 				}else if(is_shop.checked==false){
 					param["store_code"]="";//店铺编号
 				}
+				if(vip_type==""){
+					art.dialog({
+	                    time: 1,
+	                    lock: true,
+	                    cancel: false,
+	                    content:"请先定义会员类型"
+                	});
+					return;
+				}
 				param["corp_code"]=corp_code;//公司编号
 				param["vip_type"]=vip_type;//会员类型
+				param["vip_card_type_code"]=vip_card_type_code;//会员类型编号
+				param["degree"]=degree;//会员类型等级
 				param["high_vip_type"]=high_vip_type;//上级会员类型
+				param["high_vip_card_type_code"]=high_vip_card_type_code;//上级会员类型编号
+				param["high_degree"]=high_degree;//上级会员等级
 				param["discount"]=discount;//会员折扣
 				param["join_threshold"]=join_threshold;//招募门槛
 				param["upgrade_time"]=upgrade_time;//升级门槛时间
@@ -205,8 +229,22 @@ var oc = new ObjectControl();
 		//券点击li赋值
 		$(".item_1").on("click","ul li",function(){
 			var txt = $(this).text();
+			var degree=$(this).attr("data-degree");
+			var value=$(this).attr("data-value");
+			var corp_code=$("#OWN_CORP").val();
 			$(this).parents(".item_1").find(".input_select").val(txt);
+			$(this).parents(".item_1").find(".input_select").attr("data-value",value);
+			$(this).parents(".item_1").find(".input_select").attr("data-degree",degree);
 			$(".item_1 ul").hide();
+			if($(this).parents(".item_1").find(".input_select").attr("id")=="vip_type"){
+				if(txt=="无会员类型"){
+					return;
+				}
+				$("#high_vip_type").val("无上级会员类型");
+				$("#high_vip_type").attr("data-value","");
+				$("#high_vip_type").attr("data-degree","");
+				self.getHighVipCardTypes(corp_code,degree);
+			}
 		});
 		//券input框点击显示和隐藏
 		$("#quan_select").on("click",".item_2 .input_select",function(){
@@ -233,26 +271,6 @@ var oc = new ObjectControl();
 			setTimeout(function(){
 				ul.hide();
 			},200);
-		});
-		//获取vip类型
-		$("#vip_type").blur(function(){
-			var param={};
-			var vip_type=$("#vip_type").val();
-			param["corp_code"]=$("#OWN_CORP").val();//企业编号
-			param["vip_type"]=vip_type;//会员类型
-			var div=$(this).next('.hint').children();
-			if(vip_type!==""&&vip_type!==self.param.vip_type){
-				oc.postRequire("post","/vipRules/vipTypeExist","",param, function(data){
-					if(data.code=="0"){
-						div.html("");
-						self.param.price=true;
-					}else if(data.code=="-1"){
-						div.addClass("error_tips");
-						div.html(data.message);
-						self.param.price=false;
-					}
-				})
-			}
 		});
 		//点击input框显示出店铺列表
 		$("#shop_list").click(function(){
@@ -623,8 +641,7 @@ var oc = new ObjectControl();
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
 				var corp_code=message.corp_code;
-				$("#vip_type").val(message.vip_type);//会员类型
-				self.param.vip_type=message.vip_type;
+				console.log(123123);
 				$("#discount").val(message.discount);//会员折扣
 				$("#join_threshold").val(message.join_threshold);//招募门槛
 				$("#upgrade_amount").val(message.upgrade_amount);//升级门槛金额
@@ -687,22 +704,27 @@ var oc = new ObjectControl();
 				}else if(present_coupon==""){
 					is_present_coupon=false;
 				}
+				$("#vip_type").val(message.vip_type);//会员类型
+				$("#vip_type").attr("data-value",message.vip_card_type_code);
+				$("#vip_type").attr("data-degree",message.degree);
 				if(message.high_vip_type==""){
 					$("#high_vip_type").val("无上级会员类型");
 				}else{
 					$("#high_vip_type").val(message.high_vip_type);//上级会员类型
+					$("#high_vip_type").attr("data-value",message.high_vip_card_type_code);
+					$("#high_vip_type").attr("data-degree",message.high_degree);
 				}
-				
-				self.getcorplist(corp_code);
+				self.getcorplist(corp_code,message.degree);
 			}else if(data.code=="-1"){
 				alert(data.message);
 			}
 			whir.loading.remove();//移除加载框
 		})
 	};
-	regimejs.getcorplist=function(corp_code){//获取企业列表
+	regimejs.getcorplist=function(corp_code,degree){//获取企业列表
 		var self=this;
 		whir.loading.add("",0.5);
+		console.log(degree);
 		oc.postRequire("post","/user/getCorpByUser","", "", function(data){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
@@ -716,7 +738,7 @@ var oc = new ObjectControl();
 				}
 				$('.corp_select select').searchableSelect();
 				var code=$("#OWN_CORP").val();
-				self.getVipCardTypes(code);
+				self.getVipCardTypes(code,degree);
 				$('.corp_select .searchable-select-input').keydown(function(event){
 					var event=window.event||arguments[0];
 					if(event.keyCode == 13){
@@ -767,20 +789,33 @@ var oc = new ObjectControl();
 			whir.loading.remove();//移除加载框
 		});
 	};
-	regimejs.getVipCardTypes=function(corp_code){
+	regimejs.getVipCardTypes=function(corp_code,degree){
 		var self=this;
 		var param={};
+		var degree=degree;
 		param["corp_code"]=corp_code;
 		oc.postRequire("post","/vipCardType/getVipCardTypes","", param, function(data) {
 			if(data.code=="0"){
 				var list=JSON.parse(data.message).list;
 				var list=JSON.parse(list);
-				var html="<li data-value=''>无会员类型</li>";
-				for(var i=0;i<list.length;i++){
-					html+="<li data-value='"+list[i].vip_card_type_code+"' data-degree='"+list[i].degree+"'>"+list[i].vip_card_type_name+"</li>"
+				var html="";
+				if(list.length==0){
+			    	html="<li data-value=''>无会员类型</li>";
+			    	$("#vip_type").val("无会员类型");
+			    	degree="";
+				}
+				if(list.length>0){
+					for(var i=0;i<list.length;i++){
+						html+="<li data-value='"+list[i].vip_card_type_code+"' data-degree='"+list[i].degree+"'>"+list[i].vip_card_type_name+"</li>"
+					}
+					if(degree==undefined){
+						degree=list[0].degree;
+						$("#vip_type").val(list[0].vip_card_type_name);
+						$("#vip_type").attr("data-value",list[0].vip_card_type_code);
+						$("#vip_type").attr("data-degree",list[0].degree);
+					}
 				}
 				$("#vip_type").siblings("ul").html(html);
-				var degree=list[0].degree;
 				self.getHighVipCardTypes(corp_code,degree);
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -804,7 +839,11 @@ var oc = new ObjectControl();
 			for(var i=0;i<list.length;i++){
 				html+="<li data-value='"+list[i].vip_card_type_code+"' data-degree='"+list[i].degree+"'>"+list[i].vip_card_type_name+"</li>"
 			}
-			$("#high_vip_type").val('无上级会员类型');
+			var id=sessionStorage.getItem("id");
+			if(id==null){
+				$("#high_vip_type").val('无上级会员类型');
+			}else if(id!==null){
+			}
 			$("#high_vip_type").siblings("ul").html(html);
 			whir.loading.remove();//移除加载框
 		})
