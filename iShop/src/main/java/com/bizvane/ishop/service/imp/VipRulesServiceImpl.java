@@ -108,9 +108,9 @@ public class VipRulesServiceImpl implements VipRulesService {
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
         int num = 0;
-        if (vipRules1 != null) {
-            status = "该企业已存在该会员类型";
-        } else {
+//        if (vipRules1 != null) {
+//            status = "该企业已存在该会员类型";
+//        } else {
             String upgrade_amount = vipRules.getUpgrade_amount();
             if (upgrade_amount.equals("")) {
                 vipRules.setUpgrade_time("");
@@ -130,7 +130,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
-        }
+       // }
         return status;
     }
 
@@ -160,7 +160,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
 
-        if (vipRules1 == null || vipRules1.getId() == id) {
+    //    if (vipRules1 == null || vipRules1.getId() == id) {
             Date now = new Date();
             if (upgrade_amount.equals("")){
                 vipRules.setUpgrade_time("");
@@ -178,6 +178,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
+            vipRules.setUpgrade_time(upgrade_time);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setIsactive(isactive);
             vipRules.setVip_card_type_code(vip_card_type_code);
@@ -190,11 +191,6 @@ public class VipRulesServiceImpl implements VipRulesService {
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
-        } else {
-            status = "该企业已存在该会员类型";
-        }
-
-
         return status;
     }
 
