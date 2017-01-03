@@ -328,7 +328,6 @@ function jumpBianse() {
         var input = $(this).find("input")[0];
         var thinput = $("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if (input.type == "checkbox" && input.name == "test" && input.checked == false) {
             input.checked = true;
             $(this).addClass("tr");
@@ -410,20 +409,30 @@ function jumpBianse() {
                     if(send_type == "sms"){
                         $(".table #table_r thead").append("<tr class='th'>" +
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
+                            "<th>会员编号</th>" +
                             "<th>会员名称</th>" +
                             "<th>会员卡号</th>" +
-                            "<th>会员手机号</th>" +
+                            "<th>发送状态</th>" +
                             "</tr>");
                         for(var i=0;i<list.length;i++) {
                             var a = i + 1;
+                            var is_send="";
+                            if(list[i].is_send=="Y"){
+                                is_send="已发送";
+                            }
+                            if(list[i].is_send=="N"){
+                                is_send="未发送";
+                            }
                             $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
                                 + a
+                                + "</td><td>"
+                                + list[i].vip_id
                                 + "</td><td>"
                                 + list[i].vip_name
                                 + "</td><td>"
                                 + list[i].cardno
                                 + "</td><td>"
-                                + list[i].vip_phone
+                                + is_send
                                 + "</td></tr>");
                         }
                     }else if(send_type == "wxmass"){
@@ -431,10 +440,26 @@ function jumpBianse() {
                             "<th style='text-align:center;width: 50px;'>序号</th>" +
                             "<th>会员编号</th>" +
                             "<th>会员名称</th>" +
+                            "<th>会员卡号</th>" +
                             "<th>发送状态</th>" +
+                            "<th>已/未读</th>"  +
                             "</tr>");
                         for(var j=0;j<list.length;j++) {
                             var a = j + 1;
+                            var is_send="";
+                            var is_read="";
+                            if(list[j].is_send=="Y"){
+                                is_send="已发送";
+                            }
+                            if(list[j].is_send=="N"){
+                                is_send="未发送";
+                            }
+                            if(list[j].is_read=="Y"){
+                                is_read="已读";
+                            }
+                            if(list[j].is_read=="N"){
+                                is_read="未读";
+                            }
                             $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
                                 + a
                                 + "</td><td>"
@@ -442,7 +467,11 @@ function jumpBianse() {
                                 + "</td><td>"
                                 + list[j].vip_name
                                 + "</td><td>"
-                                + list[j].is_send
+                                 + list[j].cardno
+                                + "</td><td>"
+                                + is_send
+                                + "</td><td>"
+                                + is_read
                                 + "</td></tr>");
                         }
                     }
