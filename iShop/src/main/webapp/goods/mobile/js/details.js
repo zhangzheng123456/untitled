@@ -75,7 +75,7 @@ function getPage(){
             var d_match_collectCount = message.d_match_collectCount;
             var r_match_goods = message.r_match_goods;
             $('.main_list_title .num').text(r_match_goods.length);
-            var tempHTML = '<img src="${img}" alt="" id="${id}" title="${title}"/>';
+            var tempHTML = '<div><img src="${img}" alt="" id="${id}" title="${title}"/></div>';
             var html='';
             for(i=0;i<r_match_goods.length;i++){
                 var r_match_goodsImage = r_match_goods[i].r_match_goodsImage;
@@ -417,14 +417,15 @@ function toReturnShareInfo(){
     param["d_match_image_first"]=$('.carousel-inner div').eq(0).find('img').attr('src');
     param["d_match_desc"]=$('.main_content .theDetails').text();;
     var param=JSON.stringify(param);
+    var osType = getWebOSType();
     if(osType=="iOS"){
         try{
             window.webkit.messageHandlers.NSreturnShareInfo.postMessage(param);
         } catch(err){
-            returnShareInfo(param);
+            //returnShareInfo(param);
         }
     }else if(osType == "Android"){
-        returnShareInfo(param);
+        iShop.returnShareInfo(param);
     }
 }
 window.onload = function () {
@@ -433,12 +434,14 @@ window.onload = function () {
     //拉取评论
     getConmments();
     setInterval(function () {
-        var heightVal = document.body.clientWidth;
-        $('.main_img').css('height',heightVal);
-        $('.main_img img').css('width',heightVal);
-        $('.main_img img').css('max-height',heightVal);
-        var imgHeight = $('.main_list_main img').height();
-        $('.main_list_main img').css('width',imgHeight);
+        var bodyWidth = document.body.clientWidth;
+        $('.main_img').css('height',bodyWidth);
+        $('.main_img').css('line-height',bodyWidth);
+        $('.main_img img').css('max-height',bodyWidth);
+        var btnWidth = $('.main_btn img').width();
+        $('.main_btn img').css('height',btnWidth);
+        //var imgWidth = $('.main_list_main img').width();
+        //$('.main_list_main img').css('height',imgWidth);
     },1);
     $('.main_select div').eq(0).click();
 }

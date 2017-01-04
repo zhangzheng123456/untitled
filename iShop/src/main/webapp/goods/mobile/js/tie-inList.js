@@ -1,6 +1,9 @@
 /**
  * Created by huxue on 2016/12/28.
  */
+cache = {
+    action:'0'
+};
 var oc = new ObjectControl();
 var corp_code = $.cookie('corp_code');
 var pageNumber = '1';
@@ -28,6 +31,7 @@ $('.title div').eq(0).click(function () {
     $('.title div').eq(0).css('background-color','white');
     $('.title div').eq(1).css('color','#888888');
     $('.title div').eq(1).css('background-color','#ededed');
+    cache.action = '0';
 });
 //    选项卡-我的
 $('.title div').eq(1).click(function () {
@@ -37,6 +41,7 @@ $('.title div').eq(1).click(function () {
     $('.title div').eq(1).css('background-color','white');
     $('.title div').eq(0).css('color','#888888');
     $('.title div').eq(0).css('background-color','#ededed');
+    cache.action = '1';
 });
 //推荐列表
 function getRec(){
@@ -285,8 +290,14 @@ function doAppWebRefresh(param){
     }
 }
 window.onload = function () {
-    //默认推荐
-    $('.title div').eq(0).click();
+    //默认
+    var val = cache.action;
+    console.log(val)
+    if(val == '0'){
+        $('.title div').eq(0).click();
+    }else if(val=='1'){
+        $('.title div').eq(0).click();
+    }
     //获取推荐
     getRec();
     //获取我的

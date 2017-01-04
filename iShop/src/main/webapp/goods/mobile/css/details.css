@@ -20,6 +20,9 @@ body {
   margin-bottom: 0.24155rem;
   position: relative; }
 
+.main_img img {
+  margin: 0 auto; }
+
 .carousel-example-generic {
   margin: 0 auto;
   width: 100%; }
@@ -78,10 +81,14 @@ body {
   overflow-y: hidden;
   white-space: nowrap; }
 
-.main_list_main img {
+.main_list_main div {
   display: inline-block;
   height: 1.30435rem;
   margin-right: 2%; }
+
+.main_list_main div img {
+  max-height: 1.30435rem;
+  margin: 0 auto; }
 
 .main_select {
   width: 100%;
