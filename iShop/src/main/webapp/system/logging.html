@@ -242,7 +242,17 @@
 		});
 		$(".icon-ishop_6-07").parent().click(function () {
 			window.location.reload();
-		})
+		});
+		var timer=setInterval(function(){
+			$(window.parent.document).find("#navbar li dd[data-code='F0023']").parent().show();
+			$(window.parent.document).find("#navbar li dd[data-code='F0023']").find("span").addClass("icon-ishop_8-01");
+			$(window.parent.document).find("#navbar li dd[data-code='F0023']").find("a").css({color:"#6cc1c8"});
+			$(window.parent.document).find("#navbar li dd[data-code='F0023']").parent().siblings().addClass("h1");
+			$(window.parent.document).find("#navbar li dd[data-code='F0023']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+			if($(window.parent.document).find("#navbar li dd[data-code='F0023']").find("span").hasClass("icon-ishop_8-01")){
+				clearInterval(timer);
+			}
+		},0);
 	</script>
 </body>
 </html>

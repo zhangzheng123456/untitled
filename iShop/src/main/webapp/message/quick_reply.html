@@ -166,5 +166,17 @@
 <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
 <script type="text/javascript" src="../js/message/quick_reply.js?20161215"></script>
 <script src="../js/silide.js?20161116"></script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0037']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0037']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0037']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0037']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0037']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0037']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
 </body>
 </html>

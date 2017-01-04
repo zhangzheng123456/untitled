@@ -386,4 +386,35 @@
          AND  dvr.isactive= #{isactive}
     </select>
 
+    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.VipRules">
+        SELECT
+        dvr.id,
+        dvr.corp_code,
+        dvr.vip_type,
+        dvr.high_vip_type,
+        dvr.discount,
+        dvr.join_threshold,
+        dvr.upgrade_time,
+        dvr.upgrade_amount,
+        dvr.points_value,
+        dvr.store_code,
+        dvr.present_point,
+        dvr.present_coupon,
+        dvr.modified_date,
+        dvr.modifier,
+        dvr.created_date,
+        dvr.creater,
+        dvr.isactive,
+        dvr.vip_card_type_code,
+        dvr.degree,
+        dvr.high_vip_card_type_code,
+        dvr.high_degree
+        FROM def_vip_rules dvr,def_corp
+        WHERE dvr.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvr.CORP_CODE = #{corp_code}
+        </if>
+        AND  dvr.isactive= #{isactive}
+    </select>
+
 </mapper>
