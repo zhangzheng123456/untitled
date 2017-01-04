@@ -360,7 +360,17 @@
             $('#sidebar ul>li:eq(3)').find('dl').show();
             $('#sidebar ul>li:eq(3)').find('dl>dd:eq(1) a').css({color:"#6cc1c8"});
             $('#sidebar ul>li:eq(3)').find('dl>dd:eq(1) span').addClass('icon-ishop_8-01');
-        })
+        });
+        var timer=setInterval(function(){
+            $(window.parent.document).find("#navbar li dd[data-code='F0014']").parent().show();
+            $(window.parent.document).find("#navbar li dd[data-code='F0014']").find("span").addClass("icon-ishop_8-01");
+            $(window.parent.document).find("#navbar li dd[data-code='F0014']").find("a").css({color:"#6cc1c8"});
+            $(window.parent.document).find("#navbar li dd[data-code='F0014']").parent().siblings().addClass("h1");
+            $(window.parent.document).find("#navbar li dd[data-code='F0014']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+            if($(window.parent.document).find("#navbar li dd[data-code='F0014']").find("span").hasClass("icon-ishop_8-01")){
+                clearInterval(timer);
+            }
+        },0);
     </script>
 </body>
 </html>

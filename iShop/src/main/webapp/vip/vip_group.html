@@ -179,5 +179,17 @@
 <script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
 <script type="text/javascript" src="../js/vip/vip_group.js?20161215"></script>
 <script src="../js/silide.js?20161116"></script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0030']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0030']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0030']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0030']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0030']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0030']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
 </body>
 </html>
