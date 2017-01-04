@@ -455,7 +455,7 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @return
      * @throws Exception
      */
-    public static String sendTemplate(JSONObject extras) throws Exception {
+    public String sendTemplate(JSONObject extras) throws Exception {
 
         RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
         Request request = new Request.Builder().url(Common.SENDTEMPLATE_URL).post(body).build();
@@ -471,7 +471,7 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @return
      * @throws Exception
      */
-    public static String sendWxMass(JSONObject extras) throws Exception {
+    public String sendWxMass(JSONObject extras) throws Exception {
 
         RequestBody body = RequestBody.create(Common.JSON, extras.toJSONString());
         Request request = new Request.Builder().url(Common.SENDWXMASS_URL).post(body).build();
@@ -481,4 +481,11 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
 
+    public void test1(){
+        System.out.println("it's test1 " + Common.DATETIME_FORMAT.format(new Date()));
+    }
+
+    public void test2(){
+        System.out.println("it's test2 " + Common.DATETIME_FORMAT.format(new Date()));
+    }
 }
