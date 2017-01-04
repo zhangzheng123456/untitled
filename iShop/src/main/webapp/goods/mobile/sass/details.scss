@@ -209,6 +209,51 @@ body{
   border-radius: 5px;
   font-size: rem(15);
 }
+//É¾³ýµ¯´°
+.outWindow_warp{
+  background-color: black;
+  position: absolute;
+  top:0;
+  bottom: 0px;
+  width: 100%;
+  display: block;
+  opacity: 0.7;
+}
+.outWindow_main{
+  position: absolute;
+  top:50%;
+  left: 50%;
+  margin-left: -35%;
+  margin-top: rem(-110);
+  background-color: #ededed;
+  width:70%;
+  height: rem(120);
+  font-size: rem(16);
+  color: #000;
+  border-radius: rem(5);
+}
+.outWindow_main .title{
+  height: rem(80);
+  line-height: rem(80);
+  text-align: center;
+  border-bottom: 1px solid #d9d9d9;
+}
+.outWindow_main .left{
+  float: left;
+  width: 49.5%;
+  height: rem(39);
+  line-height: rem(39);
+  text-align: center;
+  border-right: 1px solid #d9d9d9 ;
+}
+.outWindow_main .right{
+  float: left;
+  width: 49.5%;
+  height: rem(39);
+  line-height: rem(39);
+  text-align: center;
+  color: #dd6c5e;
+}
 /*qq±íÇé*/
 .comment{width:680px; margin:20px auto; position:relative}
 .comment h3{height:28px; line-height:28px}

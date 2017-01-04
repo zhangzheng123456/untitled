@@ -208,6 +208,50 @@ body {
   border-radius: 5px;
   font-size: 0.36232rem; }
 
+.outWindow_warp {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  bottom: 0px;
+  width: 100%;
+  display: block;
+  opacity: 0.7; }
+
+.outWindow_main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -35%;
+  margin-top: -2.657rem;
+  background-color: #ededed;
+  width: 70%;
+  height: 2.89855rem;
+  font-size: 0.38647rem;
+  color: #000;
+  border-radius: 0.12077rem; }
+
+.outWindow_main .title {
+  height: 1.93237rem;
+  line-height: 1.93237rem;
+  text-align: center;
+  border-bottom: 1px solid #d9d9d9; }
+
+.outWindow_main .left {
+  float: left;
+  width: 49.5%;
+  height: 0.94203rem;
+  line-height: 0.94203rem;
+  text-align: center;
+  border-right: 1px solid #d9d9d9; }
+
+.outWindow_main .right {
+  float: left;
+  width: 49.5%;
+  height: 0.94203rem;
+  line-height: 0.94203rem;
+  text-align: center;
+  color: #dd6c5e; }
+
 /*qq表情*/
 .comment {
   width: 680px;
