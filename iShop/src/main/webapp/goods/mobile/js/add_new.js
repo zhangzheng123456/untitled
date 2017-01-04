@@ -18,12 +18,6 @@ var addProduct={
         //判断是否进入编辑页面
         this.theRequest.d_match_code?this.getValue():'';
         $("#file").on('change','',function(e){
-            var oss=new OSS.Wrapper({
-                region: 'oss-cn-hangzhou',
-                accessKeyId: 'O2zXL39br8rSn1zC',
-                accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
-                bucket: 'products-image'
-            });
             var files= e.target.files;
             for(var key in files){
                 if(!files[key].type)return;
@@ -32,7 +26,7 @@ var addProduct={
                 if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
                     var storeAs='ShowImage/'+this.theRequest.corp_code+'/'+new Date().getTime()+this.theRequest.user_id+'.jpg';
                     var me=this;
-                    oss.multipartUpload(storeAs, files[key]).then(function (result) {
+                    this.oss.multipartUpload(storeAs, files[key]).then(function (result) {
                         console.log(result);
                         var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
                         console.log(storeAs);
