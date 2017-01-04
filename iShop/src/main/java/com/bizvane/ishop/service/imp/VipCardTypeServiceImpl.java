@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
+
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipCardTypeMapper;
 import com.bizvane.ishop.entity.VipCardType;

@@ -382,6 +382,7 @@
             AND dvr.CORP_CODE = #{corp_code}
         </if>
         AND  dvr.vip_type= #{vip_type}
+        AND  dvr.high_vip_type= #{high_vip_type}
          AND  dvr.isactive= #{isactive}
     </select>
 

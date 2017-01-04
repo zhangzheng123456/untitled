@@ -106,11 +106,11 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
-        VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
+        VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getHigh_vip_type(),vipRules.getIsactive());
         int num = 0;
-//        if (vipRules1 != null) {
-//            status = "该企业已存在该会员类型";
-//        } else {
+        if (vipRules1 != null) {
+            status = "该企业会员类型对应的高级会员类型已存在";
+        } else {
             String upgrade_amount = vipRules.getUpgrade_amount();
             if (upgrade_amount.equals("")) {
                 vipRules.setUpgrade_time("");
@@ -123,14 +123,14 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
             num = vipRulesMapper.insertVipRules(vipRules);
             if (num > 0) {
-                VipRules vipRules2 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getIsactive());
+                VipRules vipRules2 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(),vipRules.getHigh_vip_type(), vipRules.getIsactive());
                 status = String.valueOf(vipRules2.getId());
                 System.out.print(String.valueOf(vipRules2.getId()));
                 return status;
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
-       // }
+        }
         return status;
     }
 
@@ -157,40 +157,44 @@ public class VipRulesServiceImpl implements VipRulesService {
         String isactive = jsonObject.get("isactive").toString().trim();
         String store_code = jsonObject.get("store_code").toString().trim();
 
-        VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, Common.IS_ACTIVE_Y);
+        VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type,high_vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
 
-    //    if (vipRules1 == null || vipRules1.getId() == id) {
-            Date now = new Date();
-            if (upgrade_amount.equals("")){
-                vipRules.setUpgrade_time("");
-            }
-            vipRules.setCorp_code(corp_code);
-            vipRules.setVip_type(vip_type);
-            vipRules.setHigh_vip_type(high_vip_type);
-            vipRules.setDiscount(discount);
-            vipRules.setJoin_threshold(join_threshold);
-            vipRules.setUpgrade_amount(upgrade_amount);
-            vipRules.setPoints_value(points_value);
-            vipRules.setStore_code(store_code);
-            vipRules.setPresent_coupon(present_coupon);
-            vipRules.setPresent_point(present_point);
-            vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            vipRules.setCreater(user_id);
-            vipRules.setModifier(user_id);
-            vipRules.setUpgrade_time(upgrade_time);
-            vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
-            vipRules.setIsactive(isactive);
-            vipRules.setVip_card_type_code(vip_card_type_code);
-            vipRules.setDegree(degree);
-            vipRules.setHigh_vip_card_type_code(high_vip_card_type_code);
-            vipRules.setHigh_degree(high_degree);
-            int num = vipRulesMapper.updateVipRules(vipRules);
-            if (num > 0) {
-                return status;
-            } else {
-                status = Common.DATABEAN_CODE_ERROR;
-            }
+    if (vipRules1 == null || vipRules1.getId() == id) {
+        Date now = new Date();
+        if (upgrade_amount.equals("")) {
+            vipRules.setUpgrade_time("");
+        }
+        vipRules.setCorp_code(corp_code);
+        vipRules.setVip_type(vip_type);
+        vipRules.setHigh_vip_type(high_vip_type);
+        vipRules.setDiscount(discount);
+        vipRules.setJoin_threshold(join_threshold);
+        vipRules.setUpgrade_amount(upgrade_amount);
+        vipRules.setPoints_value(points_value);
+        vipRules.setStore_code(store_code);
+        vipRules.setPresent_coupon(present_coupon);
+        vipRules.setPresent_point(present_point);
+        vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
+        vipRules.setCreater(user_id);
+        vipRules.setModifier(user_id);
+        vipRules.setUpgrade_time(upgrade_time);
+        vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
+        vipRules.setIsactive(isactive);
+        vipRules.setVip_card_type_code(vip_card_type_code);
+        vipRules.setDegree(degree);
+        vipRules.setHigh_vip_card_type_code(high_vip_card_type_code);
+        vipRules.setHigh_degree(high_degree);
+        int num = vipRulesMapper.updateVipRules(vipRules);
+        if (num > 0) {
+            return status;
+        } else {
+            status = Common.DATABEAN_CODE_ERROR;
+        }
+    } else {
+        status = "该企业会员类型对应的高级会员类型已存在";
+
+    }
         return status;
     }
 
@@ -215,8 +219,8 @@ public class VipRulesServiceImpl implements VipRulesService {
     }
 
     @Override
-    public VipRules getVipRulesByType(String corp_code, String vip_type, String isactive) throws Exception {
-        return vipRulesMapper.selectByVipType(corp_code, vip_type, isactive);
+    public VipRules getVipRulesByType(String corp_code, String vip_type, String high_vip_type,String isactive) throws Exception {
+        return vipRulesMapper.selectByVipType(corp_code, vip_type, high_vip_type,isactive);
     }
 
     public String getCouponInfo(String corp_code) throws Exception {

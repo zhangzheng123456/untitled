@@ -70,47 +70,93 @@ public class VipFsendServiceImpl implements VipFsendService {
         String sms_code=vipFsend.getSms_code();
         String corp_code = vipFsend.getCorp_code();
         String send_scope = vipFsend.getSend_scope();
+        String send_type = vipFsend.getSend_type();
 
-        //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
-        if(send_scope.equals("vip")){
-            String sms_vips = vipFsend.getSms_vips();
-            JSONObject vips_obj = JSONObject.parseObject(sms_vips);
-            String vip_id = vips_obj.get("vips").toString();
-            //查询MongoDB数据库获取列表
-            String vipid[] = vip_id.split(",");
-            List<Map<String, Object>> list = new ArrayList();
-            for (int i = 0; i < vipid.length; i++) {
-                String vip = vipid[i];
-                Map query_key = new HashMap();
-                query_key.put("sms_code", sms_code);
-                query_key.put("vip_id", vip);
-                query_key.put("corp_code", corp_code);
+                if(send_type.equals("sms")){
+//如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
+                    if(send_scope.equals("vip")){
+                        String sms_vips = vipFsend.getSms_vips();
+                        JSONObject vips_obj = JSONObject.parseObject(sms_vips);
+                        String vip_id = vips_obj.get("vips").toString();
+                        //查询MongoDB数据库获取列表
+                        String vipid[] = vip_id.split(",");
+                        List<Map<String, Object>> list = new ArrayList();
+                        for (int i = 0; i < vipid.length; i++) {
+                            String vip = vipid[i];
+                            Map query_key = new HashMap();
+                            query_key.put("sms_code", sms_code);
+                            query_key.put("vip_id", vip);
+                            query_key.put("corp_code", corp_code);
 
-                List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
-                if (message_list.size() == 0) {
-                    JSONObject info=new JSONObject();
-                    info.put("vip_info",null);
-                    message = JSON.toJSONString(info);
-                } else {
-                    list.addAll(message_list);
-                    JSONObject vips_info = new JSONObject();
-                    vips_info.put("vip_info", list);
-                    message = JSON.toJSONString(vips_info);
+                            List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
+                            if (message_list.size() == 0) {
+                                JSONObject info=new JSONObject();
+                                info.put("vip_info",null);
+                                message = JSON.toJSONString(info);
+                            } else {
+                                list.addAll(message_list);
+                                JSONObject vips_info = new JSONObject();
+                                vips_info.put("vip_info", list);
+                                message = JSON.toJSONString(vips_info);
+                            }
+                        }
+                    }else if(send_scope.equals("vip_group")){
+                        JSONObject obj=new JSONObject();
+                        JSONObject obj1=new JSONObject();
+                        obj1.put("vip_name","彭旭丽");
+                        obj1.put("vip_id","316424");
+                        obj1.put("is_send","N");
+                        obj1.put("cardno","13016691660");
+                        JSONArray arr=new JSONArray();
+                        arr.add(obj1);
+                        obj.put("vip_info",arr);
+
+                        message=JSON.toJSONString(obj);
+                    }
+                }else if(send_type.equals("wxmass")){
+                    //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
+                    if(send_scope.equals("vip")){
+                        String sms_vips = vipFsend.getSms_vips();
+                        JSONObject vips_obj = JSONObject.parseObject(sms_vips);
+                        String vip_id = vips_obj.get("vips").toString();
+                        //查询MongoDB数据库获取列表
+                        String vipid[] = vip_id.split(",");
+                        List<Map<String, Object>> list = new ArrayList();
+                        for (int i = 0; i < vipid.length; i++) {
+                            String vip = vipid[i];
+                            Map query_key = new HashMap();
+                            query_key.put("sms_code", sms_code);
+                            query_key.put("vip_id", vip);
+                            query_key.put("corp_code", corp_code);
+
+                            List<Map<String, Object>> message_list = mongodbClient.query("vip_message_content", query_key);
+                            if (message_list.size() == 0) {
+                                JSONObject info=new JSONObject();
+                                info.put("vip_info",null);
+                                message = JSON.toJSONString(info);
+                            } else {
+                                list.addAll(message_list);
+                                JSONObject vips_info = new JSONObject();
+                                vips_info.put("vip_info", list);
+                                message = JSON.toJSONString(vips_info);
+                            }
+                        }
+                    }else if(send_scope.equals("vip_group")){
+                        JSONObject obj=new JSONObject();
+                        JSONObject obj1=new JSONObject();
+                        obj1.put("vip_name","彭旭丽");
+                        obj1.put("vip_id","316424");
+                        obj1.put("is_send","N");
+                        obj1.put("is_read","N");
+                        obj1.put("cardno","13016691660");
+                        JSONArray arr=new JSONArray();
+                        arr.add(obj1);
+                        obj.put("vip_info",arr);
+
+                        message=JSON.toJSONString(obj);
+                    }
                 }
-            }
-        }else if(send_scope.equals("vip_group")){
-            JSONObject obj=new JSONObject();
-            JSONObject obj1=new JSONObject();
-            obj1.put("vip_name","彭旭丽");
-            obj1.put("vip_id","316424");
-            obj1.put("is_send","未发送");
-            obj1.put("cardno","13016691660");
-            JSONArray arr=new JSONArray();
-            arr.add(obj1);
-            obj.put("vip_info",arr);
 
-            message=JSON.toJSONString(obj);
-        }
         return message;
     }
 

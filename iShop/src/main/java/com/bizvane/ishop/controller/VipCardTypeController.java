@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -384,12 +385,14 @@ public class VipCardTypeController {
             String degree = jsonObject.get("degree").toString();
             JSONObject result = new JSONObject();
             List<VipCardType> list = vipCardTypeService.getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
+
+            List<VipCardType> list1 = new ArrayList<VipCardType>();
             for (int i = 0; i < list.size(); i++) {
-                if (Integer.valueOf(list.get(i).getDegree()) <= Integer.valueOf(degree)) {
-                    list.remove(i);
+                if (Integer.valueOf(list.get(i).getDegree()) > Integer.valueOf(degree)) {
+                    list1.add(list.get(i));
                 }
             }
-            result.put("list", JSON.toJSONString(list));
+            result.put("list", JSON.toJSONString(list1));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
