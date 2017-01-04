@@ -465,10 +465,10 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             logger.info("json-----555555555555555555---------corp_code-" + corp_code);
 
-            Map datalist = iceInterfaceService.vipBasicMethod(page_num, page_size,corp_code, request);
+            Map datalist = iceInterfaceService.vipBasicMethod2(page_num, page_size,corp_code, request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
             datalist.put(data_search_value.key, data_search_value);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch3", datalist);
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
