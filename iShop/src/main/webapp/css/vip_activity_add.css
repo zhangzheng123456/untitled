@@ -6,7 +6,7 @@
     float: left;
     width: 25%;
     height: 70px;
-    background-color: #ededed;
+    background-color: #e8e8e8;
     cursor: pointer;
 }
 .active{
@@ -22,6 +22,10 @@
     -webkit-transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%);
 }
+.tabs .tab span{
+    font-size: 14px;
+    color: #4a5f7c;
+}
 .tabs .tab span:first-child{
     display: inline-block;
     width: 40px;
@@ -30,12 +34,29 @@
     border-radius: 20px;
     background-color: #e2e7ec;
     text-align: center;
-    margin-right: 20px;
+    margin-right: 10px;
     font-size: 20px;
+    color: #434960;
 }
 .tabs-content>div{
     width: 100%;
     height:400px;
     background-color: #FFFFFF;
     display: none;
+}
+.tabs_title{
+    width: 100%;
+    border-bottom: 1px solid #d4d8e1;
+    padding-bottom: 8px;
+    font-size: 12px;
+}
+.tabs_title span{
+    vertical-align: middle;
+}
+.title_icon{
+    display: inline-block;
+    width: 5px;
+    height: 12px;
+    background: #5f8bc8;
+    margin-right: 5px;
 }
