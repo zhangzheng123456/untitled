@@ -164,17 +164,18 @@ address, cite, dfn, em, var {
     margin-right: 0.12077rem;
     margin-bottom: 0.12077rem;
     border: 0.02415rem solid #dfdfdf;
-    text-align: center; }
+    overflow: hidden;
+    text-align: center;
+    line-height: 1.78744rem; }
     .container_picture .picture .picture_btn {
       width: 0.48309rem;
       height: 0.48309rem;
       border-radius: 50%;
       position: absolute;
       top: 0.02415rem;
-      right: 0.02415rem; }
-    .container_picture .picture img {
-      max-height: 100%;
-      max-width: 100%; }
+      right: 0.02415rem;
+      background: url("../image/btn_img_del@2x_67.png") no-repeat center center;
+      background-size: cover; }
   .container_picture .picture_add {
     position: relative;
     float: left;
@@ -190,8 +191,11 @@ address, cite, dfn, em, var {
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-top: -0.24155rem;
-      margin-left: -0.24155rem; }
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%); }
     .container_picture .picture_add .file {
       position: absolute;
       top: 0;
@@ -278,7 +282,7 @@ address, cite, dfn, em, var {
     color: #888;
     line-height: 0.82126rem;
     height: 0.82126rem;
-    border: 0.02415rem solid #dedede; }
+    border: 1px solid #dedede; }
     [data-dpr="1"] .search_box input {
       font-size: 14px; }
     [data-dpr="2"] .search_box input {
@@ -311,12 +315,13 @@ address, cite, dfn, em, var {
       margin-right: 0.12077rem; }
 
 .list_box {
-  margin-top: 1.78744rem;
+  margin-top: 1.30435rem;
   margin-bottom: 1.54589rem; }
 
 .list {
-  padding: 0.24155rem;
-  overflow: hidden; }
+  padding: 0.24155rem 0.24155rem 0.24155rem 0.24155rem;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd; }
   .list .list_picture {
     width: 2.05314rem;
     height: 2.05314rem;
@@ -357,7 +362,7 @@ address, cite, dfn, em, var {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 1.3285rem;
+  height: 1.30435rem;
   background: #fff;
   box-shadow: 0rem 0.72464rem 1.44928rem #000; }
   .complete_box .btn_box {
@@ -373,11 +378,11 @@ address, cite, dfn, em, var {
     .complete_box .btn_box .complete_btn {
       float: right;
       width: 1.93237rem;
-      height: 0.84541rem;
+      height: 0.82126rem;
       border-radius: 0.12077rem;
       background: #8fbae2;
       color: #fff;
-      line-height: 0.84541rem;
+      line-height: 0.82126rem;
       text-align: center; }
       [data-dpr="1"] .complete_box .btn_box .complete_btn {
         font-size: 15px; }

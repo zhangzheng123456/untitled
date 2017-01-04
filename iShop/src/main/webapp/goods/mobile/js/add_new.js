@@ -18,6 +18,12 @@ var addProduct={
         //判断是否进入编辑页面
         this.theRequest.d_match_code?this.getValue():'';
         $("#file").on('change','',function(e){
+            var oss = new OSS.Wrapper({
+                region: 'oss-cn-hangzhou',
+                accessKeyId: 'O2zXL39br8rSn1zC',
+                accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+                bucket: 'products-image'
+            });
             var files= e.target.files;
             for(var key in files){
                 if(!files[key].type)return;
@@ -26,7 +32,7 @@ var addProduct={
                 if(imgclass =="jpg" ||imgclass =="jpeg" || imgclass =="png" || imgclass=="gif" || imgclass=="JPG"||imgclass=='PNG'||imgclass=='png' ||imgclass=='bmp' ||imgclass=='JPEG' ||imgclass=='GIF' ||imgclass=='BMP'){
                     var storeAs='ShowImage/'+this.theRequest.corp_code+'/'+new Date().getTime()+this.theRequest.user_id+'.jpg';
                     var me=this;
-                    this.oss.multipartUpload(storeAs, files[key]).then(function (result) {
+                    oss.multipartUpload(storeAs, files[key]).then(function (result) {
                         console.log(result);
                         var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
                         console.log(storeAs);
@@ -48,9 +54,10 @@ var addProduct={
         var me=this;
         $('#picture').click(function () {
             console.log(me.r_match_goods);
-            //联通APP
-            var type={type:'新增商品列表'}
-            me.doAppWebRefresh(JSON.stringify(type));
+            // //联通APP
+            // var toApp='choose';
+            // var type={type:'新增商品列表'};
+            // me.doAppWebRefresh(JSON.stringify(type),toApp);
             $('.bg').hide();
             $('.product_list').show();
             $(window).bind('scroll',me.scroll.bind(me));
@@ -121,17 +128,25 @@ var addProduct={
         $('#picture_box').on('click','.picture_btn',function () {
             me.deleteIt($(this).parent()[0]);
         });
+        //点击主动传值
+        $('#photo .picture_add_new').click(function () {
+            //联通APP
+            var toApp='localUpload';
+            var type={upload:'localUpload'};
+            me.doAppWebRefresh(JSON.stringify(type),toApp);
+        });
+
     },
     completeToApp:function (){
+        var toApp='addComplete';
         var img=[];
         var goods=[];
         $('#photo_box .picture>img').each(function () {
             img.push(this.src);
         });
-        // var save_goods=[];
         //标题不为空
         if(!$('.header_title_r').val()){
-            this.test('秀搭标题不能为空');
+            this.test('搭配名称不能为空');
             return
         }
         //照片不为空
@@ -146,7 +161,7 @@ var addProduct={
         }
         //描述不为空
         if(!$('#describe').val()){
-            this.test('秀搭简介不能为空');
+            this.test('搭配简介不能为空');
             return
         }
         //保存时对当前的商品图片进行校对
@@ -177,26 +192,29 @@ var addProduct={
             this.param.d_match_code=this.theRequest.d_match_code;
             this.oc.postRequire("post","/api/shopMatch/updGoodsByWx",'',this.param,function(data){
                 console.log(data);
-                if(data.code==0){
-                    //联通APP
-                    this.doAppWebRefresh('success');
-                }else if(data.code==-1){
-                    this.doAppWebRefresh(' defeat');
-                }
+                // if(data.code==0){
+                //     //联通APP
+                //     this.doAppWebRefresh('success',toApp);
+                // }else if(data.code==-1){
+                //     this.doAppWebRefresh(' defeat',toApp);
+                // }
             }.bind(this))
         }else{
             //新增
             this.oc.postRequire("post","/api/shopMatch/addGoodsByWx",'',this.param,function(data){
                 console.log(data);
-                if(data.code==0){
-                    //联通APP
-                    this.doAppWebRefresh('success');
-                }else if(data.code==-1){
-                    this.doAppWebRefresh(' defeat');
-                }
+                // if(data.code==0){
+                //     //联通APP
+                //     this.doAppWebRefresh('success',toApp);
+                // }else if(data.code==-1){
+                //     this.doAppWebRefresh(' defeat',toApp);
+                // }
             }.bind(this))
         }
 
+    },
+    updateImage:function (data) {
+        this.showImg(data);
     },
     test:function (html) {
         $('.err_txt').html(html);
@@ -207,9 +225,10 @@ var addProduct={
     },
     choose:function () {
         $(window).unbind('scroll');
-        //联通APP
-        var remove={'removeView':'完成'}
-        this.doAppWebRefresh(JSON.stringify(remove));
+        // //联通APP
+        // var toApp='chooseComplete';
+        // var remove={'removeView':'完成'}
+        // this.doAppWebRefresh(JSON.stringify(remove),toApp);
         this.r_match_goods=[];
         $('#picture_box .picture').remove();
         var me=this;
@@ -248,7 +267,48 @@ var addProduct={
         }
     },
     showImg:function (storeAs) {
-        var tempHTML = '<li class="picture"><img src="${storeAs}" alt="showImage "> <div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div> </li>';
+        var wdh='';
+        var hgt='';
+        var top='';
+        var left='';
+        var image = new Image();
+        image.src = storeAs;
+        //获取容器的最大尺寸
+        var maxSize=parseFloat($('#photo').css('width'));
+        var imgWidth=image.width;
+        var imgHeight=image.height;
+        var hRatio=imgHeight/maxSize;
+        var wRatio=imgWidth/maxSize;
+        console.log(imgWidth,imgHeight,hRatio,wRatio);
+        if (image.width < maxSize&& image.height < maxSize) {//放大
+            // if(hRatio>=wRatio){
+            //     wdh=maxSize;
+            //     hgt=imgHeight/wRatio;
+            // }else if(hRatio<wRatio){
+            //     hgt=maxSize;
+            //     wdh=imgWidth/hRatio;
+            // }
+        }else if(image.width < maxSize&& image.height > maxSize){//
+            // wdh=maxSize;
+            // hgt=imgHeight/wRatio;
+        }else if(image.width > maxSize&& image.height < maxSize){//
+            // hgt=maxSize;
+            // wdh=imgWidth/hRatio;
+        }else if(imgWidth>maxSize&& imgHeight>maxSize){
+            if(hRatio>=wRatio){
+                wdh=maxSize;
+                hgt=imgHeight/wRatio;
+                //向上移动
+                top=-(hgt-maxSize)/2
+            }else if(hRatio<wRatio){
+                hgt=maxSize;
+                wdh=imgWidth/hRatio;
+                //向左移动
+                left=-(wdh-maxSize)/2;
+            }
+        }
+        console.log(wdh,hgt,left,top)
+        var tempHTML = '<li class="picture"><img style="margin-top: '+top+'px;margin-left: '+left+'px" src="${storeAs}" width="'+wdh+'" alt="showImage " height="'+hgt+'"> <div class="picture_btn"></div> </li>';
         var html='';
         var nowHTML = tempHTML;
         nowHTML = nowHTML.replace('${storeAs}',storeAs);
@@ -313,6 +373,9 @@ var addProduct={
     },
     getValue:function () {
         this.status='edit';
+        //清空页面
+        $('#photo_box .picture').remove();
+        $('#picture_box .picture').remove();
         //编辑页面
         var corp_code=this.theRequest.corp_code;
         var d_match_code=this.theRequest.d_match_code;
@@ -338,12 +401,13 @@ var addProduct={
 
      },
     returnToApp:function () {
+        var toApp='returnAdd'
         $('.bg').show();
         //显示商品列表
         $('.product_list').hide();
         //联通APP
         var remove={'removeView':'完成'}
-        this.doAppWebRefresh(JSON.stringify(remove));
+        this.doAppWebRefresh(JSON.stringify(remove),toApp);
     },
     //获取手机系统
     getWebOSType:function (){
@@ -370,20 +434,38 @@ var addProduct={
     return userInfo;
 },
   //调用APP方法传参 param 格式 type：** ;url:**
-   doAppWebRefresh:function (param){
+   doAppWebRefresh:function (param,toApp){
     // var param=JSON.stringify(param);
-       alert(param);
     var osType = this.getWebOSType();
+       console.log(toApp)
     if(osType=="iOS"){
-        window.webkit.messageHandlers.NSCompleteAddXiuda.postMessage(param);
+        switch (toApp){
+            case 'choose':window.webkit.messageHandlers.chooseProduct.postMessage(param);break;//添加商品列表图片
+            case 'chooseComplete':window.webkit.messageHandlers.chooseComplete.postMessage(param);break;//商品列表完成按钮
+            case 'addComplete':window.webkit.messageHandlers.addComplete.postMessage(param);break;//新增商品完成按钮
+            case 'returnAdd':window.webkit.messageHandlers.returnAdd.postMessage(param);break;//新增商品列表返回
+            case 'localUpload':window.webkit.messageHandlers.localUpload.postMessage(param);break;//本地上传图片
+        }
+        // window.webkit.messageHandlers.NSCompleteAddXiuda.postMessage(param);
     }else if(osType == "Android"){
-        iShop.returnAddResult(param);
+        switch (toApp){
+            case 'choose': iShop.chooseProduct(param);break;//添加商品列表图片
+            case 'chooseComplete': iShop.chooseComplete(param);break;//商品列表完成按钮
+            case 'addComplete':iShop.addComplete(param);break;//新增商品完成按钮
+            case 'returnAdd':iShop.returnAdd(param);break;//新增商品列表返回
+            case 'localUpload':iShop.localUpload(param);break;//本地上传图片
+        }
+        // iShop.returnAddResult(param);
     }
 },
 }
 jQuery(function(){
     //完成时的操作
     addProduct.init();
+
     // addProduct.completeToApp();
     // addProduct.returnToApp()
+    // addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10141/ABC123-1483513648.jpg');
+    // addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10141/ABC123-1483513761.jpg');
+    addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10160/THSHRE1605001-1483532056.jpg');
 });
