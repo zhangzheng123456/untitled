@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>创建活动</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">活动列表</span><i class="icon-ishop_8-03"></i><label>新增活动</label></div>
+    <div class="main col-lg-12">
+        <div class="tabs" id="tabs">
+            <div class="active">
+                <div class="tab">
+                    <span>1</span><span>设定活动</span>
+                </div>
+            </div>
+            <div>
+                <div class="tab">
+                 <span>2</span><span>活动筹备</span>
+               </div>
+            </div>
+            <div >
+                <div class="tab">
+                    <span>3</span><span>筛选会员</span>
+                </div>
+            </div>
+            <div >
+                <div class="tab">
+                    <span>4</span><span>完成</span>
+                </div>
+            </div>
+        </div>
+        <div class="tabs-content" id="tabs-content">
+            <div style="display: block">这是1页面内容</div>
+            <div>这是2页面内容</div>
+            <div>这是3页面内容</div>
+            <div>这是4页面内容</div>
+        </div>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!--<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>-->
+<!--<script src="../js/insidePostRequire.js"></script>-->
+<!--<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>-->
+<!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
+<!--<script src="../js/artDialog/jquery.artDialog.js"></script>-->
+<!--<script src="../js/loading.js"></script>-->
+<!--<script src="../js/artDialog/plugins/iframeTools.js"></script>-->
+<!--<script src="../js/vip_screen.js?20161214"></script>-->
+<!--&lt;!&ndash; 带搜索的下拉框 &ndash;&gt;-->
+<!--<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>-->
+<!--<script type="text/javascript" src="../js/moni_select.js"></script>-->
+<!--&lt;!&ndash;富文本编辑&ndash;&gt;-->
+<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.config.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>-->
+<script>
+    $("#tabs>div").bind("click",function(){
+        var index=$(this).index();
+       $(this).addClass("active");
+       $(this).siblings().removeClass("active");
+        $("#tabs-content").children().hide();
+        $("#tabs-content").children().eq(index).show()
+    })
+</script>
+</body>
+</html>
