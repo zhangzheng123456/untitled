@@ -32,7 +32,7 @@ function getPage(){
             console.log('秀搭名称:'+ d_match_title)
             //主图-多张图取首张
             var d_match_image = message.d_match_image;
-            var imgArr = d_match_image.split();
+            var imgArr = d_match_image.split(',');
             var tempHTML = '<div class="item"> <img src="${img}" alt=""> </div>';
             var tempHTML2 = ' <li data-target="#carousel-example-generic" data-slide-to="${num}"></li>'
             var html = '';
@@ -41,14 +41,14 @@ function getPage(){
                 var nowHTML = tempHTML;
                 var nowHTML2 = tempHTML2;
                 nowHTML = nowHTML.replace('${img}',imgArr[i]);
-                nowHTML2 = nowHTML2.replace('${img}',imgArr[i]);
+                nowHTML2 = nowHTML2.replace('${num}',i);
                 html+=nowHTML;
                 html2+=nowHTML2
-                $('.carousel-inner').html(html);
-                $('.carousel-indicators').html(html2);
-                $('.carousel-inner div').eq(0).addClass('active');
-                $('.carousel-indicators li').eq(0).addClass('active');
             }
+            $('.carousel-inner').html(html);
+            $('.carousel-indicators').html(html2);
+            $('.carousel-inner div').eq(0).addClass('active');
+            $('.carousel-indicators li').eq(0).addClass('active');
             if(imgArr.length =='1'){
                 $('.carousel-control').css('display','none')
                 $('.carousel-indicators').css('display','none')
@@ -440,8 +440,8 @@ window.onload = function () {
         $('.main_img img').css('max-height',bodyWidth);
         var btnWidth = $('.main_btn img').width();
         $('.main_btn img').css('height',btnWidth);
-        //var imgWidth = $('.main_list_main img').width();
-        //$('.main_list_main img').css('height',imgWidth);
+        var imgWidth = $('.main_list_main img').width();
+        $('.main_list_main img').css('height',imgWidth);
     },1);
     $('.main_select div').eq(0).click();
 }

@@ -1,9 +1,6 @@
 /**
  * Created by huxue on 2016/12/28.
  */
-cache = {
-    action:'0'
-};
 var oc = new ObjectControl();
 var corp_code = $.cookie('corp_code');
 var pageNumber = '1';
@@ -31,7 +28,13 @@ $('.title div').eq(0).click(function () {
     $('.title div').eq(0).css('background-color','white');
     $('.title div').eq(1).css('color','#888888');
     $('.title div').eq(1).css('background-color','#ededed');
-    cache.action = '0';
+    $.cookie('action','0');
+    //setInterval(function () {
+    var nowWidth = $('.main').eq(0).find('.the_img').width();
+    $('.main').eq(0).find('.the_img').css('height',nowWidth);
+    $('.main').eq(0).find('.the_img img').css('max-height',nowWidth);
+
+    //},1)
 });
 //    选项卡-我的
 $('.title div').eq(1).click(function () {
@@ -41,7 +44,13 @@ $('.title div').eq(1).click(function () {
     $('.title div').eq(1).css('background-color','white');
     $('.title div').eq(0).css('color','#888888');
     $('.title div').eq(0).css('background-color','#ededed');
-    cache.action = '1';
+    $.cookie('action','1');
+    //setInterval(function () {
+    var nowWidth = $('.main').eq(1).find('.the_img').width();
+    $('.main').eq(1).find('.the_img').css('height',nowWidth);
+    $('.main').eq(1).find('.the_img img').css('max-height',nowWidth);;
+
+    //},1)
 });
 //推荐列表
 function getRec(){
@@ -75,6 +84,11 @@ function getMy(){
             var message = JSON.parse(data.message);
             var list = message.list;
             pageVal(list,type);
+            var val = $('.main').eq(1).find('.goods_box').length;
+            if(val == 0){
+                $('.main').eq(1).css('display','none');
+                $('.main').eq(2).css('display','block');
+            }
         }else if(data.code =='-1'){
             console.log(data);
         }
@@ -142,6 +156,7 @@ function  pageVal(list,type){
             $('.main').eq(1).html(html);
         }
     }
+
     toNext();
     click();
 }
@@ -291,12 +306,12 @@ function doAppWebRefresh(param){
 }
 window.onload = function () {
     //默认
-    var val = cache.action;
+    var val =  $.cookie('action');
     console.log(val)
-    if(val == '0'){
+    if(val == '0'||val==''|| val ==undefined){
         $('.title div').eq(0).click();
     }else if(val=='1'){
-        $('.title div').eq(0).click();
+        $('.title div').eq(1).click();
     }
     //获取推荐
     getRec();
