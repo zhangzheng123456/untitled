@@ -320,7 +320,6 @@ function doAppWebDelete(param){
     var param=JSON.stringify(param);
     var osType = this.getWebOSType();
     if(osType=="iOS"){
-        console.log('删除ios')
         window.webkit.messageHandlers.NSJumpToWebDelete.postMessage(param);
     }else if(osType == "Android"){
         //iShop.returnAddResult(param);
@@ -331,7 +330,6 @@ function doAppWebEditor(param){
     var param=JSON.stringify(param);
     var osType = this.getWebOSType();
     if(osType=="iOS"){
-        console.log('删除ios')
         window.webkit.messageHandlers.NSJumpToWebEditor.postMessage(param);
     }else if(osType == "Android"){
         //iShop.returnAddResult(param);
@@ -340,24 +338,27 @@ function doAppWebEditor(param){
 }
 //删除
 $('.delete').click(function () {
-    var val = confirm('是否删除');
-    if(val==true){
-        deleteAction();
-    }else{
-
-    }
+    $('.outWindow_warp').css('display','block');
+    $('.outWindow_main').css('display','block');
+});
+//取消删除
+$('.outWindow_main .left').click(function () {
+    $('.outWindow_warp').css('display','none');
+    $('.outWindow_main').css('display','none');
+    return;
+});
+//确认删除
+$('.outWindow_main .right').click(function () {
+    deleteAction();
 });
 function deleteAction(){
     oc.postRequire("get", "/api/shopMatch/delete?corp_code=" + corp_code +"&d_match_code=" + d_match_code+"", "0", "", function (data) {
         if (data.code == "0") {
-            console.log('删除成功');
             var host=window.location.host;
             var param={};
             param["result"]="success";
-            console.log(param);
             doAppWebDelete(param);
         }else if(data.code =='-1'){
-            console.log(data);
             param["result"]= "failed";
             doAppWebDelete(param);
         }
@@ -407,6 +408,24 @@ function replace_em(str) {
 function emojito(content){
     content = content.replace(/(\[.+?\])/g, '<img src="img/face/expression_$1@2x.png" style="width:73px"/>');
     return content
+}
+//分享功能
+//第一张图的url 和 搭配描述
+//调用APP方法传参 param 格式 type：** ;url:**
+function toReturnShareInfo(){
+    var param={};
+    param["d_match_image_first"]=$('.carousel-inner div').eq(0).find('img').attr('src');
+    param["d_match_desc"]=$('.main_content .theDetails').text();;
+    var param=JSON.stringify(param);
+    if(osType=="iOS"){
+        try{
+            window.webkit.messageHandlers.NSreturnShareInfo.postMessage(param);
+        } catch(err){
+            returnShareInfo(param);
+        }
+    }else if(osType == "Android"){
+        returnShareInfo(param);
+    }
 }
 window.onload = function () {
     //拉取页面
