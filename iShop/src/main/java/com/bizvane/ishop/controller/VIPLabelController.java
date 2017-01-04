@@ -68,43 +68,6 @@ public class VIPLabelController {
 
     String id;
 
-    /**
-     * 会员标签管理
-     * 列表
-     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String VIPLabelManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            PageInfo<VipLabel> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = vipLabelService.selectBySearch(page_number, page_size, "", "");
-//            } else {
-//                list = vipLabelService.selectBySearch(page_number, page_size, corp_code, "");
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//            ex.printStackTrace();
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-
-
     /***
      * 导出数据
      */

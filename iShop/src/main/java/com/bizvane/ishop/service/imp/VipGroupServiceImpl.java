@@ -203,6 +203,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             String key = screen_obj.getString("key");
             String type = screen_obj.getString("type");
             String value = screen_obj.getString("value");
+
             if (type.equals("text") && value.equals("")){
                 //筛选值为空
                 continue;
@@ -220,6 +221,9 @@ public class VipGroupServiceImpl implements VipGroupService {
                 post_obj.put("key",key);
                 post_obj.put("type",type);
                 post_obj.put("value",value);
+                if (screen_obj.containsKey("date")){
+                    post_obj.put("date",screen_obj.getString("date"));
+                }
                 post_array.add(post_obj);
                 //根据key值，找出其对应name
                 for (int j = 0; j < tableManagers.size(); j++) {
