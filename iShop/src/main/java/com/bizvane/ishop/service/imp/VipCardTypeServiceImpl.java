@@ -146,6 +146,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
 
     @Override
     public int delete(int id) throws Exception {
+
         return vipCardTypeMapper.delVipCardTypeById(id);
     }
 

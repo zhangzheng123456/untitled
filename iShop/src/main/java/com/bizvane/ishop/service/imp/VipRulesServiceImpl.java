@@ -98,6 +98,11 @@ public class VipRulesServiceImpl implements VipRulesService {
     }
 
     @Override
+    public List<VipRules> getViprulesList(String corp_code,String isactive) throws Exception {
+        return vipRulesMapper.selectByCorp(corp_code,isactive);
+    }
+
+    @Override
     public String insert(String message, String user_id) throws Exception {
         String status = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
