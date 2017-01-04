@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
@@ -19,8 +20,9 @@ body {
   margin-bottom: 0.24155rem;
   position: relative; }
 
-.main_img img {
-  margin: 0 auto; }
+.carousel-example-generic {
+  margin: 0 auto;
+  width: 100%; }
 
 .main_btn {
   position: absolute;
@@ -102,6 +104,15 @@ body {
   color: #929eae;
   margin-bottom: 1.30435rem; }
 
+.theDetails {
+  padding-top: 0.07246rem;
+  padding-bottom: 0.07246rem;
+  width: 92%;
+  margin-left: 4%;
+  font-size: 0.36232rem;
+  text-align: center;
+  word-break: break-all; }
+
 .area .box {
   padding-top: 0.07246rem;
   padding-bottom: 0.07246rem;
@@ -113,7 +124,8 @@ body {
 
 .box .top img {
   width: 11%;
-  float: left; }
+  float: left;
+  border-radius: 7.24638rem; }
 
 .box .top .title {
   width: 85%;
@@ -169,18 +181,92 @@ body {
 .bottom_input input {
   position: absolute;
   bottom: 0.12077rem;
-  left: 2%;
+  left: 3%;
   border: none;
   border-radius: 5px;
-  width: 80%;
+  width: 71%;
   padding-left: 3%;
   height: 1.0628rem;
   line-height: 1.0628rem; }
 
 .bottom_input img {
   position: absolute;
-  right: 3%;
+  left: 3%;
   bottom: 0.24155rem;
   height: 0.82126rem; }
+
+.bottom_input span {
+  position: absolute;
+  right: 3%;
+  bottom: 0.12077rem;
+  height: 1.0628rem;
+  line-height: 1.0628rem;
+  text-align: center;
+  background-color: #6a81b5;
+  color: white;
+  width: 18%;
+  border-radius: 5px;
+  font-size: 0.36232rem; }
+
+/*qq表情*/
+.comment {
+  width: 680px;
+  margin: 20px auto;
+  position: relative; }
+
+.comment h3 {
+  height: 28px;
+  line-height: 28px; }
+
+.com_form {
+  width: 100%;
+  position: relative; }
+
+/*.input{width:99%; height:60px; border:1px solid #ccc}*/
+.com_form p {
+  height: 28px;
+  line-height: 28px;
+  position: relative; }
+
+span.emotion {
+  width: 42px;
+  height: 20px;
+  background: url(icon.gif) no-repeat 2px 2px;
+  padding-left: 20px;
+  cursor: pointer; }
+
+span.emotion:hover {
+  background-position: 2px -28px; }
+
+.qqFace table td {
+  padding: 0px; }
+
+.qqFace table td img {
+  cursor: pointer;
+  border: 1px #fff solid; }
+
+.qqFace table td img:hover {
+  border: 1px #0066cc solid; }
+
+#show {
+  width: 100%;
+  margin: 20px auto; }
+
+#facebox img {
+  margin: 3px 16px;
+  width: 73px; }
+
+#facebox {
+  width: 100%;
+  height: 330px;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin: 0 auto;
+  z-index: 1000;
+  position: fixed;
+  bottom: 1.30435rem;
+  background-color: white;
+  border: 1px #dfe6f6 solid;
+  -webkit-overflow-scrolling: touch; }
 
 /*# sourceMappingURL=details.css.map */

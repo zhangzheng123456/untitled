@@ -32,13 +32,36 @@ function getPage(){
             console.log('秀搭名称:'+ d_match_title)
             //主图-多张图取首张
             var d_match_image = message.d_match_image;
-            var d_match_image_num = d_match_image.indexOf(",");
-            if(d_match_image_num>=0){
-                d_match_image = d_match_image.substr(0,d_match_image_num);
+            var imgArr = d_match_image.split();
+            var tempHTML = '<div class="item"> <img src="${img}" alt=""> </div>';
+            var tempHTML2 = ' <li data-target="#carousel-example-generic" data-slide-to="${num}"></li>'
+            var html = '';
+            var html2 = '';
+            for(i=0;i<imgArr.length;i++){
+                var nowHTML = tempHTML;
+                var nowHTML2 = tempHTML2;
+                nowHTML = nowHTML.replace('${img}',imgArr[i]);
+                nowHTML2 = nowHTML2.replace('${img}',imgArr[i]);
+                html+=nowHTML;
+                html2+=nowHTML2
+                $('.carousel-inner').html(html);
+                $('.carousel-indicators').html(html2);
+                $('.carousel-inner div').eq(0).addClass('active');
+                $('.carousel-indicators li').eq(0).addClass('active');
             }
-            console.log(d_match_image)
-            //大图更改
-            $('.main_img #mainImg').attr('src',d_match_image);
+            if(imgArr.length =='1'){
+                $('.carousel-control').css('display','none')
+                $('.carousel-indicators').css('display','none')
+            }else{
+                $('.carousel-control').css('display','block')
+                $('.carousel-indicators').css('display','block')
+            }
+            //var imgNum = d_match_image.indexOf(",");
+            //if(imgNum>=0){
+            //    d_match_image = d_match_image.substr(0,d_match_image_num);
+            //}
+            //首张图更改
+            //$('.carousel-inner div').eq(i).find('img').('src',d_match_image);
             //秀搭简介
             var d_match_desc = message.d_match_desc;
             console.log('秀搭简介:'+ d_match_desc)
@@ -207,8 +230,6 @@ function setConmments(){
         param["comment_text"]=msg;
         oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
             if((data.code =='0')){
-                //conmmentsVal(img,name,time,msg);
-                //拉取评论
                 $('.main_content').eq(1).find('.box').remove();
                 getConmments();
             }else if(data.code =='-1'){
@@ -223,6 +244,9 @@ function conmmentsVal(img,name,time,msg){
     var tempHTML = '<li class="box"> <div class="top"> <img src="${img}" alt=""/> <div class="title"> <span>${name}</span> <span>${time}</span> </div> </div> <div class="msg">${msg}</div> </li>'
     var html ='';
     var nowHTML = tempHTML;
+    if(img==''){
+        img = 'image/head_none.png';
+    }
     nowHTML = nowHTML.replace('${img}',img)
     nowHTML = nowHTML.replace('${name}',name)
     nowHTML = nowHTML.replace('${time}',time)
@@ -231,10 +255,11 @@ function conmmentsVal(img,name,time,msg){
     $('.area').append(html);
     $("body").scrollTop($("body")[0].scrollHeight);
 }
-//表情
-$('.bottom_input img').click(function(){
+$('#send').click(function(){
     setConmments();
-    $('.bottom_input input').val('');
+    $('.bottom').toggle();
+    $('.bottom_input').toggle();
+    //$('.bottom_input input').val('');
 });
 //获取当前时间
 function getNowFormatDate() {
@@ -261,7 +286,7 @@ $('.editor').unbind("click").bind('click',function () {
     //var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
     param["url"]="http://"+host+"/goods/mobile/add_new.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
     console.log(param);
-    doAppWebRefresh(param);
+    doAppWebEditor(param);
     //str=encodeURIComponent(str);
     //window.location = "add_new.html?"+str;
 });
@@ -291,14 +316,26 @@ function getAppUserInfo(){
     return userInfo;
 }
 //调用APP方法传参 param 格式 type：** ;url:**
-function doAppWebRefresh(param){
+function doAppWebDelete(param){
     var param=JSON.stringify(param);
     var osType = this.getWebOSType();
     if(osType=="iOS"){
-        window.webkit.messageHandlers.NSJumpToWebViewForWeb.postMessage(param);
+        console.log('删除ios')
+        window.webkit.messageHandlers.NSJumpToWebDelete.postMessage(param);
     }else if(osType == "Android"){
         //iShop.returnAddResult(param);
-        iShop.jumpToWebViewForWeb(param);
+        iShop.jumpToWebViewForWebDelete(param);
+    }
+}
+function doAppWebEditor(param){
+    var param=JSON.stringify(param);
+    var osType = this.getWebOSType();
+    if(osType=="iOS"){
+        console.log('删除ios')
+        window.webkit.messageHandlers.NSJumpToWebEditor.postMessage(param);
+    }else if(osType == "Android"){
+        //iShop.returnAddResult(param);
+        iShop.jumpToWebViewForWebEditor(param);
     }
 }
 //删除
@@ -317,11 +354,12 @@ function deleteAction(){
             var host=window.location.host;
             var param={};
             param["result"]="success";
-            doAppWebRefresh(param);
+            console.log(param);
+            doAppWebDelete(param);
         }else if(data.code =='-1'){
             console.log(data);
             param["result"]= "failed";
-            doAppWebRefresh(param);
+            doAppWebDelete(param);
         }
     });
 }
@@ -352,6 +390,23 @@ function setDocumentTitle(d_match_title) {
         }
         document.body.appendChild(i);
     }
+}
+//qq表情
+$(function () {
+    $('.bottom_input img').qqFace({
+        assign: 'input', //给输入框赋值
+        path: 'image/face/' //表情图片存放的路径
+    });
+});
+//替换成图片
+function replace_em(str) {
+    str = str.replace(/\[em_([0-9]*)\]/g, '<img src="img/face/$1.gif" border="0" class="qq_face"/>');
+    return str;
+}
+//emoji表情
+function emojito(content){
+    content = content.replace(/(\[.+?\])/g, '<img src="img/face/expression_$1@2x.png" style="width:73px"/>');
+    return content
 }
 window.onload = function () {
     //拉取页面
