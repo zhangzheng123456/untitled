@@ -359,6 +359,7 @@ function doAppWebRefresh(param){
 }
 
 window.onload = function () {
+    $('.main').eq(0).find('.none').css('display','none');
     //默认
     var val =  $.cookie('action');
     if(val == '0'||val==''|| val ==undefined){
