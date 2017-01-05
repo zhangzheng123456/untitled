@@ -362,6 +362,7 @@ window.onload = function () {
     $('.main').eq(0).find('.none').css('display','none');
     //默认
     var val =  $.cookie('action');
+    //$('.title div').eq(0).text(val);
     if(val == '0'||val==''|| val ==undefined){
         $('.title div').eq(0).click();
     }else if(val=='1'){

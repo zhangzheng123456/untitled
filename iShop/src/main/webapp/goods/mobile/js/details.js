@@ -437,7 +437,7 @@ function toReturnShareInfo(){
     var param={};
     param["d_match_image_first"]=$('.carousel-inner div').eq(0).find('img').attr('src');
     param["d_match_desc"]=$('.main_content .theDetails').text();
-    param["share_url"]="http://"+host+"/goods/mobile/details_share.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
+    param["share_url"]="http://"+host+"/goods/mobile/details_share.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id=share";
     console.log(param);
     var param=JSON.stringify(param);
     var osType = getWebOSType();
