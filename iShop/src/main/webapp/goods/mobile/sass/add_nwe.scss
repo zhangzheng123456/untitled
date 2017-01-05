@@ -46,12 +46,16 @@ address,cite,dfn,em,var{font-style:normal;}
     height: 100%;
   }
   .header_title_r{
+    -webkit-tap-highlight-color:rgba(255,255,255,0);
     float: right;
     outline: none;
     color:#888;
+    background: none;
     margin-left: rem(10);
-    line-height: rem(44);
-    height: 100%;
+    line-height: rem(15);
+    padding-top: rem(14);
+    padding-bottom: rem(14);
+    height: rem(44);
     padding-right: rem(10);
     text-align: right;
   }
@@ -96,6 +100,7 @@ address,cite,dfn,em,var{font-style:normal;}
 }
 .container_picture{
   background: #fff;
+  -webkit-tap-highlight-color:rgba(255,255,255,0);
   padding:rem(5) rem(5) rem(5) rem(12);
   overflow: hidden;
   @mixin container_picture_li {
@@ -149,7 +154,7 @@ address,cite,dfn,em,var{font-style:normal;}
 }
 .line{
   margin-left: rem(20);
-  border-bottom: rem(1) solid #ededed;
+  border-bottom:1px solid #ededed;
 }
 .introduction{
   background: #fff;
@@ -161,6 +166,7 @@ address,cite,dfn,em,var{font-style:normal;}
   padding-top: rem(5);
 }
 #describe{
+  -webkit-tap-highlight-color:rgba(255,255,255,0);
   resize: none;
   width: 100%;
   outline: none;
@@ -191,13 +197,18 @@ address,cite,dfn,em,var{font-style:normal;}
   right: 0;
   input{
     width: 100%;
+    text-indent:rem(5);
+    -webkit-appearance: none;
     border-radius: rem(5);
     outline: none;
-    padding-left: rem(5);
+    //padding-left: rem(5);
     color:#888;
-    line-height: rem(34);
+    line-height: rem(14);
     @include font(14);
-    height:rem(34);
+    height:rem(14);
+    box-sizing: content-box;
+    padding-top: rem(10);
+    padding-bottom: rem(10);
     border:1px solid #dedede;
   }
   .search{
@@ -227,10 +238,10 @@ address,cite,dfn,em,var{font-style:normal;}
   margin-bottom: rem(64);
 }
 .list{
-  padding: rem(10) rem(10) rem(10) rem(10);
+  padding: rem(10) rem(0) rem(0) rem(10);
   //margin-left: rem(10);
   overflow: hidden;
-  border-bottom:1px solid #ddd;
+  //border-bottom:1px solid #ddd;
   .list_picture{
     width: rem(85);
     height: rem(85);
@@ -245,6 +256,7 @@ address,cite,dfn,em,var{font-style:normal;}
   }
   .list_describe{
     margin-left: rem(95);
+    margin-right: rem(10);
     p{
       @include font(15);
       color:#888;
@@ -263,6 +275,10 @@ address,cite,dfn,em,var{font-style:normal;}
       color:#dd6c5e;
     }
   }
+  .list_line{
+    margin-top: rem(10);
+    border-bottom: 1px solid #ddd;
+  }
 }
 .changeBcColor{
   background-color: #bae4e8;
@@ -278,6 +294,8 @@ address,cite,dfn,em,var{font-style:normal;}
   //border-top: rem(1) solid #ededed;
   .btn_box{
     padding:rem(10);
+    overflow: hidden;
+    line-height: rem(34);
     .count{
       @include font(14);
       color:#888;
@@ -330,5 +348,13 @@ address,cite,dfn,em,var{font-style:normal;}
   .err_txt{
     margin-top: rem(5);
     @include font(13);
+  }
+}
+#picture_box{
+  .picture{
+    img{
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 }
