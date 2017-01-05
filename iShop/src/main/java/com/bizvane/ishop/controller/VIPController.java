@@ -1001,7 +1001,7 @@ public class VIPController {
             if (type.equals("pay")) {
                 if (corp_code.equals("C10016")) {
                     String date = jsonObject.get("date").toString();//单据日期
-                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
+                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退换转充值
                     String store_code = jsonObject.get("store_code").toString();//充值店仓
                     String user_code = jsonObject.get("user_code").toString();//经办人
                     String price = jsonObject.get("price").toString();//吊牌金额
@@ -1178,8 +1178,7 @@ public class VIPController {
 
 
     /**
-     * MongoDB
-     * 会员相册删除
+     * 收藏夹
      */
     @RequestMapping(value = "/avorites", method = RequestMethod.POST)
     @ResponseBody
