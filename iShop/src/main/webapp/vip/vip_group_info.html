@@ -339,36 +339,36 @@
                     <li>
                         <div>忠诚度分组 <i class='icon-ishop_8-02'></i></div>
                         <ul>
-                            <li>高忠诚度</li>
-                            <li>一般忠诚度</li>
-                            <li>低忠诚度</li>
-                            <li>流失顾客</li>
+                            <li id="L01" data-code="C10000">高忠诚度</li>
+                            <li id="L02" data-code="C10000">一般忠诚度</li>
+                            <li id="L03" data-code="C10000">低忠诚度</li>
+                            <li id="L04" data-code="C10000">流失顾客</li>
                         </ul>
                     </li>
                     <li>
                         <div>顾客活跃度分组 <i class='icon-ishop_8-02'></i></div>
                         <ul>
-                            <li> 活跃顾客</li>
-                            <li>一般活跃</li>
-                            <li>濒临休眠</li>
-                            <li>休眠顾客</li>
+                            <li id="A01" data-code="C10000"> 活跃顾客</li>
+                            <li id="A02" data-code="C10000">一般活跃</li>
+                            <li id="A03" data-code="C10000">濒临休眠</li>
+                            <li id="A04" data-code="C10000">休眠顾客</li>
                         </ul>
                     </li>
                     <li>
                         <div>消费类型分组 <i class='icon-ishop_8-02'></i></div>
                         <ul>
-                            <li>一日客</li>
-                            <li>新开未消费</li>
-                            <li>高粘性顾客</li>
+                            <li id="CT01" data-code="C10000">一日客</li>
+                            <li id="CT02" data-code="C10000">新开未消费</li>
+                            <li id="CT03" data-code="C10000">高粘性顾客</li>
                         </ul>
                     </li>
                     <li>
                         <div>周期型分组 <i class='icon-ishop_8-02'></i></div>
                         <ul>
-                            <li>重要发展顾客</li>
-                            <li>重要维持顾客</li>
-                            <li>重要联系顾客</li>
-                            <li>重要流失顾客</li>
+                            <li id="C01" data-code="C10000">重要发展顾客</li>
+                            <li id="C02" data-code="C10000">重要维持顾客</li>
+                            <li id="C03" data-code="C10000">重要联系顾客</li>
+                            <li id="C04" data-code="C10000">重要流失顾客</li>
                         </ul>
                     </li>
                 </ul>
@@ -854,6 +854,7 @@
         });
     });
     $('#chart_analyze').dad({
+        placeholder:"拖放到这里",
         draggable: '.drag_area',
         callback: function (data) {
             var index = $(data).index();

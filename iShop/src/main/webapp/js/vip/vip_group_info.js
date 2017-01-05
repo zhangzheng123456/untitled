@@ -298,6 +298,10 @@ var vip_group_info={
         getListParam["pageSize"]=vip_group_info.pageSize;
         getListParam["type"]="list";
         getListParam["corp_code"]="C10000";
+       if($("#"+vip_group_info.nowId).attr("data-group-code")==undefined){
+           delete getListParam.id;
+           getListParam["fixed_code"]=vip_group_info.nowId;
+       }
         oc.postRequire("post","/vipGroup/groupVips","",getListParam,function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -1036,6 +1040,11 @@ var vip_group_info={
             param.type="vipGroup";
             param.corp_code=$("#"+vip_group_info.nowId).attr("data-code");
             param.vip_group_code=$("#"+vip_group_info.nowId).attr("data-group-code");
+            if(param.vip_group_code==undefined){
+                param.vip_group_code="";
+                param.fixed_code=$("#"+vip_group_info.nowId).attr("id");
+            }
+        console.log(param.vip_group_code)
             oc.postRequire("post","/vipAnalysis/vipChart","0",param,function (data) {
                vip_group_info.allChartsData=JSON.parse(data.message);
                vip_group_info.getCharts()

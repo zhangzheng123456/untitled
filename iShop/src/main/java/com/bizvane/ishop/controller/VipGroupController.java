@@ -631,25 +631,35 @@ public class VipGroupController {
                         Data data_fixed_code = new Data("fixed_code", "", ValueType.PARAM);
                         Data data_vip_group_code = new Data("group_code", vip_group_code, ValueType.PARAM);
                         Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                        Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                        Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
                         Map datalist = new HashMap<String, Data>();
                         datalist.put(data_fixed_code.key, data_fixed_code);
                         datalist.put(data_vip_group_code.key, data_vip_group_code);
                         datalist.put(data_corp_code.key, data_corp_code);
+                        datalist.put(data_page_num.key, data_page_num);
+                        datalist.put(data_page_size.key, data_page_size);
+
                         dataBox = iceInterfaceService.iceInterfaceV3("VipGroupSearchForWeb", datalist);
                     }
 
                 }else if (jsonObject.containsKey("fixed_code")){
                     String fixed_code = jsonObject.get("fixed_code").toString();
 
+                    fixed_code = "#"+fixed_code+"#";
                     Data data_fixed_code = new Data("fixed_code", fixed_code, ValueType.PARAM);
                     Data data_vip_group_code = new Data("group_code", "", ValueType.PARAM);
                     Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                    Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                    Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
                     Map datalist = new HashMap<String, Data>();
                     datalist.put(data_fixed_code.key, data_fixed_code);
                     datalist.put(data_vip_group_code.key, data_vip_group_code);
                     datalist.put(data_corp_code.key, data_corp_code);
+                    datalist.put(data_page_num.key, data_page_num);
+                    datalist.put(data_page_size.key, data_page_size);
                     dataBox = iceInterfaceService.iceInterfaceV3("VipGroupSearchForWeb", datalist);
                 }
             }
