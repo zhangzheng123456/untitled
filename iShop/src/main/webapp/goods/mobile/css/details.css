@@ -73,9 +73,7 @@ body {
 
 .main_list_main {
   max-width: 98%;
-  height: 1.30435rem;
-  padding-top: 0.19324rem;
-  padding-bottom: 0.19324rem;
+  height: 1.69082rem;
   padding-left: 2%;
   overflow-x: auto;
   overflow-y: hidden;
@@ -84,6 +82,7 @@ body {
 .main_list_main div {
   display: inline-block;
   height: 1.30435rem;
+  margin-top: 0.19324rem;
   margin-right: 2%; }
 
 .main_list_main div img {
@@ -117,8 +116,9 @@ body {
   width: 92%;
   margin-left: 4%;
   font-size: 0.36232rem;
-  text-align: center;
-  word-break: break-all; }
+  text-align: left;
+  word-break: break-all;
+  text-indent: 0.72464rem; }
 
 .area .box {
   padding-top: 0.07246rem;

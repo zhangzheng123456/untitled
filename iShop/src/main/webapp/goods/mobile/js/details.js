@@ -88,6 +88,15 @@ function getPage(){
                 html+=nowHTML;
                 $('.main_list_main').html(html);
             }
+            var bodyWidth = document.body.clientWidth;
+            $('.main_img').css('height',bodyWidth);
+            $('.main_img').css('line-height',bodyWidth);
+            $('.main_img img').css('max-height',bodyWidth);
+            //$('.main_img img').css('margin-top',bodyWidth/2*-1);
+            var btnWidth = $('.main_btn img').width();
+            $('.main_btn img').css('height',btnWidth);
+            var imgWidth = $('.main_list_main div').width();
+            $('.main_list_main div').css('height',imgWidth);
             if(like_status == 'Y'){
                 $('.bottom div').eq(0).find('img').attr('src','image/icon_点赞_已点赞@2x.png');
             }else if(like_status =='N'){
@@ -257,9 +266,10 @@ function conmmentsVal(img,name,time,msg){
 }
 $('#send').click(function(){
     setConmments();
-    $('.bottom').toggle();
-    $('.bottom_input').toggle();
+    //$('.bottom').toggle();
+    //$('.bottom_input').toggle();
     //$('.bottom_input input').val('');
+    location.reload();
 });
 //获取当前时间
 function getNowFormatDate() {
@@ -322,7 +332,6 @@ function doAppWebDelete(param){
     if(osType=="iOS"){
         window.webkit.messageHandlers.NSJumpToWebDelete.postMessage(param);
     }else if(osType == "Android"){
-        //iShop.returnAddResult(param);
         iShop.jumpToWebViewForWebDelete(param);
     }
 }
@@ -332,7 +341,6 @@ function doAppWebEditor(param){
     if(osType=="iOS"){
         window.webkit.messageHandlers.NSJumpToWebEditor.postMessage(param);
     }else if(osType == "Android"){
-        //iShop.returnAddResult(param);
         iShop.jumpToWebViewForWebEditor(param);
     }
 }
@@ -436,15 +444,5 @@ window.onload = function () {
     getPage();
     //拉取评论
     getConmments();
-    setInterval(function () {
-        var bodyWidth = document.body.clientWidth;
-        $('.main_img').css('height',bodyWidth);
-        $('.main_img').css('line-height',bodyWidth);
-        $('.main_img img').css('max-height',bodyWidth);
-        var btnWidth = $('.main_btn img').width();
-        $('.main_btn img').css('height',btnWidth);
-        var imgWidth = $('.main_list_main img').width();
-        $('.main_list_main img').css('height',imgWidth);
-    },1);
     $('.main_select div').eq(0).click();
 }
