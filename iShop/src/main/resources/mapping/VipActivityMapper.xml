@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipActivityMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipActivity" id="Activity">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_theme" property="activity_theme" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips" property="target_vips" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_store_code" property="operators" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_desc" property="activity_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sms_code" property="sms_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectAllActivity" resultMap="Activity">
+        SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE def_vip_activity.corp_code = def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND def_vip_activity.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND def_vip_activity.creater = #{user_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            def_vip_activity.activity_theme LIKE concat('%', #{search_value},'%')
+            OR def_vip_activity.run_mode LIKE concat('%', #{search_value},'%')
+            OR def_vip_activity.activity_state LIKE concat('%', #{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY def_vip_activity.id DESC
+    </select>
+
+    <insert id="insertActivity" parameterType="com.bizvane.ishop.entity.VipActivity">
+        INSERT INTO def_vip_activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="activity_code!=null">
+                activity_code,
+            </if>
+            <if test="activity_theme!=null">
+                activity_theme,
+            </if>
+            <if test="activity_state!=null">
+                activity_state,
+            </if>
+            <if test="run_mode!=null">
+                run_mode,
+            </if>
+            <if test="start_time!=null">
+                start_time,
+            </if>
+            <if test="end_time!=null">
+                end_time,
+            </if>
+            <if test="target_vips!=null">
+                target_vips,
+            </if>
+            <if test="activity_store_code!=null">
+                activity_store_code,
+            </if>
+            <if test="activity_desc!=null">
+                activity_desc,
+            </if>
+            <if test="task_code!=null">
+                task_code,
+            </if>
+            <if test="sms_code!=null">
+                sms_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="activity_code!=null">
+                #{activity_code},
+            </if>
+            <if test="activity_theme!=null">
+                #{activity_theme},
+            </if>
+            <if test="activity_state!=null">
+                #{activity_state},
+            </if>
+            <if test="run_mode!=null">
+                #{run_mode},
+            </if>
+            <if test="start_time!=null">
+                #{start_time},
+            </if>
+            <if test="end_time!=null">
+                #{end_time},
+            </if>
+            <if test="target_vips!=null">
+                #{target_vips},
+            </if>
+            <if test="activity_store_code!=null">
+                #{activity_store_code},
+            </if>
+            <if test="activity_desc!=null">
+                #{activity_desc},
+            </if>
+            <if test="task_code!=null">
+                #{task_code},
+            </if>
+            <if test="sms_code!=null">
+                #{sms_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateActivity" parameterType="com.bizvane.ishop.entity.VipActivity">
+        UPDATE def_vip_activity
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="activity_code!=null">
+                activity_code=#{activity_code},
+            </if>
+            <if test="activity_theme!=null">
+                activity_theme=#{activity_theme},
+            </if>
+            <if test="activity_state!=null">
+                activity_state=#{activity_state},
+            </if>
+            <if test="run_mode!=null">
+                run_mode=#{run_mode},
+            </if>
+            <if test="start_time!=null">
+                start_time=#{start_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="target_vips!=null">
+                target_vips=#{target_vips},
+            </if>
+            <if test="activity_store_code!=null">
+                activity_store_code=#{activity_store_code},
+            </if>
+            <if test="activity_desc!=null">
+                activity_desc=#{activity_desc},
+            </if>
+            <if test="task_code!=null">
+                task_code=#{task_code},
+            </if>
+            <if test="sms_code!=null">
+                sms_code=#{sms_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="delActivityById">
+        DELETE FROM def_vip_activity
+        WHERE id=#{id};
+    </delete>
+
+    <select id="selectActivityScreen" resultMap="Activity">
+        SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE  def_vip_activity.corp_code=def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_vip_activity.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND def_vip_activity.creater = #{user_code}
+        </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  def_vip_activity.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  def_vip_activity.created_date &lt;= #{created_date_end}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    def_corp.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    def_vip_activity.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY def_vip_activity.id
+        ORDER BY def_vip_activity.id DESC
+    </select>
+
+    <select id="selActivityById" resultMap="Activity">
+         SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE def_vip_activity.corp_code=def_corp.corp_code
+        AND def_vip_activity.id =#{id}
+    </select>
+
+    <select id="selActivityByCode" resultMap="Activity">
+        SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE def_vip_activity.corp_code=def_corp.corp_code
+        AND def_vip_activity.activity_code = #{activity_code}
+    </select>
+</mapper>

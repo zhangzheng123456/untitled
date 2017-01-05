@@ -76,12 +76,16 @@ address, cite, dfn, em, var {
     float: left;
     height: 100%; }
   .header_title .header_title_r {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     float: right;
     outline: none;
     color: #888;
+    background: none;
     margin-left: 0.24155rem;
-    line-height: 1.0628rem;
-    height: 100%;
+    line-height: 0.36232rem;
+    padding-top: 0.33816rem;
+    padding-bottom: 0.33816rem;
+    height: 1.0628rem;
     padding-right: 0.24155rem;
     text-align: right; }
 
@@ -153,6 +157,7 @@ address, cite, dfn, em, var {
 
 .container_picture {
   background: #fff;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   padding: 0.12077rem 0.12077rem 0.12077rem 0.28986rem;
   overflow: hidden; }
   .container_picture .picture {
@@ -207,7 +212,7 @@ address, cite, dfn, em, var {
 
 .line {
   margin-left: 0.48309rem;
-  border-bottom: 0.02415rem solid #ededed; }
+  border-bottom: 1px solid #ededed; }
 
 .introduction {
   background: #fff;
@@ -229,6 +234,7 @@ address, cite, dfn, em, var {
   padding-top: 0.12077rem; }
 
 #describe {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   resize: none;
   width: 100%;
   outline: none;
@@ -276,12 +282,16 @@ address, cite, dfn, em, var {
   right: 0; }
   .search_box input {
     width: 100%;
+    text-indent: 0.12077rem;
+    -webkit-appearance: none;
     border-radius: 0.12077rem;
     outline: none;
-    padding-left: 0.12077rem;
     color: #888;
-    line-height: 0.82126rem;
-    height: 0.82126rem;
+    line-height: 0.33816rem;
+    height: 0.33816rem;
+    box-sizing: content-box;
+    padding-top: 0.24155rem;
+    padding-bottom: 0.24155rem;
     border: 1px solid #dedede; }
     [data-dpr="1"] .search_box input {
       font-size: 14px; }
@@ -319,9 +329,8 @@ address, cite, dfn, em, var {
   margin-bottom: 1.54589rem; }
 
 .list {
-  padding: 0.24155rem 0.24155rem 0.24155rem 0.24155rem;
-  overflow: hidden;
-  border-bottom: 1px solid #ddd; }
+  padding: 0.24155rem 0rem 0rem 0.24155rem;
+  overflow: hidden; }
   .list .list_picture {
     width: 2.05314rem;
     height: 2.05314rem;
@@ -332,7 +341,8 @@ address, cite, dfn, em, var {
       max-width: 100%;
       max-height: 100%; }
   .list .list_describe {
-    margin-left: 2.29469rem; }
+    margin-left: 2.29469rem;
+    margin-right: 0.24155rem; }
     .list .list_describe p {
       color: #888; }
       [data-dpr="1"] .list .list_describe p {
@@ -353,6 +363,9 @@ address, cite, dfn, em, var {
       margin-bottom: 0.24155rem; }
     .list .list_describe .list_price {
       color: #dd6c5e; }
+  .list .list_line {
+    margin-top: 0.24155rem;
+    border-bottom: 1px solid #ddd; }
 
 .changeBcColor {
   background-color: #bae4e8; }
@@ -366,7 +379,9 @@ address, cite, dfn, em, var {
   background: #fff;
   box-shadow: 0rem 0.72464rem 1.44928rem #000; }
   .complete_box .btn_box {
-    padding: 0.24155rem; }
+    padding: 0.24155rem;
+    overflow: hidden;
+    line-height: 0.82126rem; }
     .complete_box .btn_box .count {
       color: #888; }
       [data-dpr="1"] .complete_box .btn_box .count {
@@ -429,5 +444,9 @@ address, cite, dfn, em, var {
       font-size: 26px; }
     [data-dpr="3"] .tips .err_txt {
       font-size: 39px; }
+
+#picture_box .picture img {
+  max-width: 100%;
+  max-height: 100%; }
 
 /*# sourceMappingURL=add_nwe.css.map */

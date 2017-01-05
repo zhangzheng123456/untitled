@@ -35,9 +35,9 @@
         }
     };
     $(function(){
-        $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-121+"px");
+        $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-120+"px");
         $(window).resize(function(){
-            $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-121+"px");
+            $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-120+"px");
         });
         vip_activity_add.init();
     })

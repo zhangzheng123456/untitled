@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>审核管理</title>
+    <link rel="stylesheet" href="../table/css/inner.css?201612">
+    <link rel="stylesheet" href="../css/font_style.css?20161202">
+    <link rel="stylesheet" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20161116">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js?20161116"></script>
+    <script src="../js/laydate/laydate.js"></script>
+</head>
+<style>
+    .audit_btn ul li{
+        width: 200px;
+        height: 30px;
+        line-height: 30px;
+        background-color: #c4c8d4;
+        text-align: center;
+        color: #FFFFFF;
+        border-radius: 5px;
+    }
+    .audit_btn ul li:last-child{
+       background-color: #41c7db;
+        margin-left: 10px;
+    }
+</style>
+<body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>会员管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>审核管理</span>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <li id="filtrate" class="bg">
+                    <span class="icon-ishop_6-05"></span>
+                    筛选
+                </li>
+            </div>
+            <div class="action_r audit_btn">
+                <ul>
+                  <li>拒绝</li>
+                  <li>通过审核</li>
+                </ul>
+            </div>
+        </div>
+        <div class="sxk" id="sxk">
+            <div class="sbtn">
+                <div class="empty" id="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <span class="screen_tip">支持多个条件精确查找,以逗号分隔.</span>
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                <li>
+                    <label>公司名称</label>
+                    <input type="text" id="p1">
+                </li>
+                <li>
+                    <label>联系人</label>
+                    <input type="text" id="p2">
+                </li>
+                <li>
+                    <label>修改人</label>
+                    <input type="text" id="p3">
+                </li>
+                <li>
+                    <label>联系电话</label>
+                    <input type="text" id="p4">
+                </li>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;">
+                        <div class="checkbox"><input
+                                onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }"
+                                type="checkbox" value="" name="test" title="全选/取消" class="check"
+                                id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div>
+                    </th>
+                    <th style="text-align: left;" id="tableOrder">序号</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num">
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+                        </li>
+                        <li class="icon-ishop_4-02">
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <!--<span class="zy">共 0 页</span>-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script src="/js/loading.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js?20161206"></script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script src="/js/silide.js?20161206"></script>
+<script src="../js/vip/recharge_audit.js"> </script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0047']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0047']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0047']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0047']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0047']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0047']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
+</body>
+</html>

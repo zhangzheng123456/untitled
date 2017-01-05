@@ -53,11 +53,11 @@ var addProduct={
         //获取商品列表
         var me=this;
         $('#picture').click(function () {
-            console.log(me.r_match_goods);
-            // //联通APP
-            // var toApp='choose';
-            // var type={type:'新增商品列表'};
-            // me.doAppWebRefresh(JSON.stringify(type),toApp);
+            // console.log(me.r_match_goods);
+            //联通APP
+            var toApp='choose';
+            var type={type:'新增商品列表'};
+            me.doAppWebRefresh(JSON.stringify(type),toApp);
             $('.bg').hide();
             $('.product_list').show();
             $(window).bind('scroll',me.scroll.bind(me));
@@ -112,9 +112,9 @@ var addProduct={
                     $('.count').html('已选择'+ $('.list_box').find('.changeBcColor').length+'个');
                     return;
                 }
-                $('.tips').show(500);
+                $('.tips').show();
                 setTimeout(function () {
-                    $('.tips').hide(500);
+                    $('.tips').hide();
                 },1000);
                 return;
             }
@@ -130,9 +130,10 @@ var addProduct={
         });
         //点击主动传值
         $('#photo .picture_add_new').click(function () {
+            var pic=$('#photo_box').find('.picture').length;
             //联通APP
             var toApp='localUpload';
-            var type={upload:'localUpload'};
+            var type={upload:pic};
             me.doAppWebRefresh(JSON.stringify(type),toApp);
         });
 
@@ -192,23 +193,23 @@ var addProduct={
             this.param.d_match_code=this.theRequest.d_match_code;
             this.oc.postRequire("post","/api/shopMatch/updGoodsByWx",'',this.param,function(data){
                 console.log(data);
-                // if(data.code==0){
-                //     //联通APP
-                //     this.doAppWebRefresh('success',toApp);
-                // }else if(data.code==-1){
-                //     this.doAppWebRefresh(' defeat',toApp);
-                // }
+                if(data.code==0){
+                    //联通APP
+                    this.doAppWebRefresh('success',toApp);
+                }else if(data.code==-1){
+                    this.doAppWebRefresh(' defeat',toApp);
+                }
             }.bind(this))
         }else{
             //新增
             this.oc.postRequire("post","/api/shopMatch/addGoodsByWx",'',this.param,function(data){
                 console.log(data);
-                // if(data.code==0){
-                //     //联通APP
-                //     this.doAppWebRefresh('success',toApp);
-                // }else if(data.code==-1){
-                //     this.doAppWebRefresh(' defeat',toApp);
-                // }
+                if(data.code==0){
+                    //联通APP
+                    this.doAppWebRefresh('success',toApp);
+                }else if(data.code==-1){
+                    this.doAppWebRefresh(' defeat',toApp);
+                }
             }.bind(this))
         }
 
@@ -225,10 +226,10 @@ var addProduct={
     },
     choose:function () {
         $(window).unbind('scroll');
-        // //联通APP
-        // var toApp='chooseComplete';
-        // var remove={'removeView':'完成'}
-        // this.doAppWebRefresh(JSON.stringify(remove),toApp);
+        //联通APP
+        var toApp='chooseComplete';
+        var remove={'removeView':'完成'}
+        this.doAppWebRefresh(JSON.stringify(remove),toApp);
         this.r_match_goods=[];
         $('#picture_box .picture').remove();
         var me=this;
@@ -271,49 +272,51 @@ var addProduct={
         var hgt='';
         var top='';
         var left='';
+        var imgWidth='';
+        var imgHeight='';
         var image = new Image();
         image.src = storeAs;
-        //获取容器的最大尺寸
-        var maxSize=parseFloat($('#photo').css('width'));
-        var imgWidth=image.width;
-        var imgHeight=image.height;
-        var hRatio=imgHeight/maxSize;
-        var wRatio=imgWidth/maxSize;
-        console.log(imgWidth,imgHeight,hRatio,wRatio);
-        if (image.width < maxSize&& image.height < maxSize) {//放大
-            // if(hRatio>=wRatio){
-            //     wdh=maxSize;
-            //     hgt=imgHeight/wRatio;
-            // }else if(hRatio<wRatio){
-            //     hgt=maxSize;
-            //     wdh=imgWidth/hRatio;
-            // }
-        }else if(image.width < maxSize&& image.height > maxSize){//
-            // wdh=maxSize;
-            // hgt=imgHeight/wRatio;
-        }else if(image.width > maxSize&& image.height < maxSize){//
-            // hgt=maxSize;
-            // wdh=imgWidth/hRatio;
-        }else if(imgWidth>maxSize&& imgHeight>maxSize){
-            if(hRatio>=wRatio){
-                wdh=maxSize;
-                hgt=imgHeight/wRatio;
-                //向上移动
-                top=-(hgt-maxSize)/2
-            }else if(hRatio<wRatio){
-                hgt=maxSize;
-                wdh=imgWidth/hRatio;
-                //向左移动
-                left=-(wdh-maxSize)/2;
+      if(arguments.length==1){
+        image.onload = function(){
+            console.log(image.width,image.height);
+            //获取容器的最大尺寸
+            var maxSize=parseFloat($('#photo').css('width'));
+            imgWidth=image.width;
+            imgHeight=image.height;
+            var hRatio=imgHeight/maxSize;
+            var wRatio=imgWidth/maxSize;
+            console.log(imgWidth,imgHeight,hRatio,wRatio);
+            if (image.width < maxSize&& image.height < maxSize) {//放大
+            }else if(image.width < maxSize&& image.height > maxSize){//
+            }else if(image.width > maxSize&& image.height < maxSize){//
+            }else if(imgWidth>maxSize&& imgHeight>maxSize){
+                if(hRatio>=wRatio){
+                    wdh=maxSize;
+                    hgt=imgHeight/wRatio;
+                    //向上移动
+                    top=-(hgt-maxSize)/2
+                }else if(hRatio<wRatio){
+                    hgt=maxSize;
+                    wdh=imgWidth/hRatio;
+                    //向左移动
+                    left=-(wdh-maxSize)/2;
+                }
             }
+            var tempHTML = '<li class="picture"><img style="margin-top: '+top+'px;margin-left: '+left+'px" src="${storeAs}" width="'+wdh+'" alt="showImage " height="'+hgt+'"> <div class="picture_btn"></div> </li>';
+            var html='';
+            var nowHTML = tempHTML;
+            nowHTML = nowHTML.replace('${storeAs}',storeAs);
+            html+=nowHTML;
+           $('#photo').before(html);
         }
-        console.log(wdh,hgt,left,top)
-        var tempHTML = '<li class="picture"><img style="margin-top: '+top+'px;margin-left: '+left+'px" src="${storeAs}" width="'+wdh+'" alt="showImage " height="'+hgt+'"> <div class="picture_btn"></div> </li>';
+      }else if (arguments.length==2){
+        var tempHTML = '<li class="picture"><img  src="${storeAs}"  alt="showImage "> <div class="picture_btn"></div> </li>';
         var html='';
         var nowHTML = tempHTML;
         nowHTML = nowHTML.replace('${storeAs}',storeAs);
         html+=nowHTML;
-        arguments.length==1? $('#photo').before(html): $('#picture').before(html);
+        $('#picture').before(html);
+        }
     },
     deleteIt:function (dom){
         $(dom).remove();
@@ -348,7 +351,7 @@ var addProduct={
                         '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
                         '</p> <p>货号：<span class="list_number">' + list[i].productId +
                         '</span></p> <p>价格：<span class="list_price">￥' + list[i].price +
-                        '</span></p> </div> </li>';
+                        '</span></p> </div> <p class="list_line"></p></li>';
                 }
                 me.next=true;
             }
@@ -462,10 +465,9 @@ var addProduct={
 jQuery(function(){
     //完成时的操作
     addProduct.init();
-
     // addProduct.completeToApp();
     // addProduct.returnToApp()
     // addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10141/ABC123-1483513648.jpg');
     // addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10141/ABC123-1483513761.jpg');
-    addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10160/THSHRE1605001-1483532056.jpg');
+    // addProduct.updateImage('https://products-image.oss-cn-hangzhou.aliyuncs.com/ShowImage/C10160/THSHRE1605001-1483532056.jpg');
 });

@@ -324,7 +324,7 @@ public class VipAnalysisController {
         return dataBean.getJsonStr();
     }
 
-    //生日会员
+    //会员图表获取，排序
     @RequestMapping(value = "/vipChart", method = RequestMethod.POST)
     @ResponseBody
     public String vipChart(HttpServletRequest request) {
@@ -537,4 +537,5 @@ public class VipAnalysisController {
         }
         return dataBean.getJsonStr();
     }
+
 }

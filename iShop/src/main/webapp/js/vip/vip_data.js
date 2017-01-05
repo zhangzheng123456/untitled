@@ -682,6 +682,7 @@ $(".chart_close_icon").click(function () {
     chartShow(order);
 });
 $("#chart_analyze").dad({
+    placeholder:"拖放到这里",
     draggable: '.drag_area',
     callback: function (data) {
         var index = $(data).index();
