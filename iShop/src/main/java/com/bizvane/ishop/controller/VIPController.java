@@ -1177,4 +1177,52 @@ public class VIPController {
     }
 
 
+    /**
+     * MongoDB
+     * 会员相册删除
+     */
+    @RequestMapping(value = "/avorites", method = RequestMethod.POST)
+    @ResponseBody
+    public String avoritesMethod(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String open_id = jsonObject.get("open_id").toString();
+            String vip_card_no = jsonObject.get("vip_card_no").toString();
+
+            Data data_row_num = new Data("row_num","100" , ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code",corp_code , ValueType.PARAM);
+            Data data_open_id = new Data("open_id", open_id, ValueType.PARAM);
+            Data data_vip_card_no = new Data("vip_card_no", vip_card_no, ValueType.PARAM);
+            Data data_type= new Data("type", "1", ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_row_num.key, data_row_num);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_open_id.key, data_open_id);
+            datalist.put(data_vip_card_no.key, data_vip_card_no);
+            datalist.put(data_type.key, data_type);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("Favorites", datalist);
+            String result = dataBox.data.get("message").value;
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+
+    }
+
 }
