@@ -63,13 +63,8 @@ function getRec(){
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
+            $('.div').eq(0).find('.out').remove();
             pageVal(list,type);
-            //var val = $('.main').eq(1).find('.goods_box').length;
-            ////空展示
-            //if(val == 0){
-            //    $('.main').eq(0).css('display','none');
-            //    $('.main').eq(1).css('display','block');
-            //}
         }else if(data.code =='-1'){
             console.log(data);
         }
@@ -86,13 +81,8 @@ function getMy(pageNumber){
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
+            $('.div').eq(1).find('.out').remove();
             pageVal(list,type);
-            //var val = $('.main').eq(1).find('.goods_box').length;
-            ////空展示
-            //if(val == 0){
-            //    $('.main').eq(0).css('display','none');
-            //    $('.main').eq(1).css('display','block');
-            //}
         }else if(data.code =='-1'){
             console.log(data);
         }
@@ -100,8 +90,7 @@ function getMy(pageNumber){
 }
 //页面加载获取数据
 function  pageVal(list,type){
-    var screenHeight = $(window).height()
-    //var posTop = $('.title').css('top');
+    var screenHeight = $(window).height();
     var titleHeight = $('.title').height();
     var valHeight = screenHeight - titleHeight - 25;
     //如果拉取到的数据>=pageSize，更新缓存
@@ -113,11 +102,13 @@ function  pageVal(list,type){
                 console.log('rec')
                 $('.main').eq(0).css('height',valHeight);
                 $('.main').eq(0).find('.none').css('display','block');
+                return;
             }
             if(type == 'my'){
                 console.log('my');
                 $('.main').eq(1).css('height',valHeight);
                 $('.main').eq(1).find('.none').css('display','block');
+                return;
             }
         }else{
             $('.none').css('display','none');
@@ -184,6 +175,12 @@ function  pageVal(list,type){
         }else if(type =='my'){
             $('.main').eq(1).html(html);
         }
+    }
+    var tempHTML4 =' <br/><div class="out">-- 已经是底部了 --</div>';
+    if(type == 'rec'){
+        $('.main').eq(0).append(tempHTML4);
+    }else if(type== 'my'){
+        $('.main').eq(1).append(tempHTML4);
     }
     toNext();
     click();

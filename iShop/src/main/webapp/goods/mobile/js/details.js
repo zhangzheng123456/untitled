@@ -242,6 +242,8 @@ function setConmments(){
             if((data.code =='0')){
                 $('.main_content').eq(1).find('.box').remove();
                 getConmments();
+                $('.success div').animate({opacity:"1"},1000);
+                $('.success div').animate({opacity:"0"},1000);
             }else if(data.code =='-1'){
             }
         })
@@ -266,6 +268,7 @@ function conmmentsVal(img,name,time,msg){
     var top = $(".main_img").height()+$(".main_list").height()+10;
     console.log('评论显示top'+top)
     $('body').scrollTop(top);
+
 }
 $('#send').click(function(){
     setConmments();

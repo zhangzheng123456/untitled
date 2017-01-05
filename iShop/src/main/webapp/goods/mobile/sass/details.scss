@@ -241,6 +241,7 @@ body{
   color: #000;
   border-radius: rem(5);
   display: none;
+  z-index: 999999999999;
 }
 .outWindow_main .title{
   height: rem(80);
@@ -279,19 +280,21 @@ body{
   background-color: #3b3b3b;
   color: white;
   border-radius: rem(6);
-  text-align: center;
+  opacity:0;
+  z-index: 99999;
 }
 .success div img{
   position: absolute;
   top: rem(20);
+  left: 45%;
+  margin-bottom: rem(20);
 }
 .success div .msg{
-  position: absolute;
-  bottom: rem(20);
   font-size: rem(15);
   text-align: center;
-  height: rem(50);
-  line-height: rem(50);
+  height: rem(20);
+  line-height: rem(20);
+  margin-top: 10px;
 }
 /*qq±Ì«È*/
 .comment{width:680px; margin:20px auto; position:relative}

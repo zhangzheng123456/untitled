@@ -238,7 +238,8 @@ body {
   font-size: 0.38647rem;
   color: #000;
   border-radius: 0.12077rem;
-  display: none; }
+  display: none;
+  z-index: 999999999999; }
 
 .outWindow_main .title {
   height: 1.93237rem;
@@ -276,19 +277,21 @@ body {
   background-color: #3b3b3b;
   color: white;
   border-radius: 0.14493rem;
-  text-align: center; }
+  opacity: 0;
+  z-index: 99999; }
 
 .success div img {
   position: absolute;
-  top: 0.48309rem; }
+  top: 0.48309rem;
+  left: 45%;
+  margin-bottom: 0.48309rem; }
 
 .success div .msg {
-  position: absolute;
-  bottom: 0.48309rem;
   font-size: 0.36232rem;
   text-align: center;
-  height: 1.20773rem;
-  line-height: 1.20773rem; }
+  height: 0.48309rem;
+  line-height: 0.48309rem;
+  margin-top: 10px; }
 
 /*qq表情*/
 .comment {
