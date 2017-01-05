@@ -35,7 +35,7 @@
 }
 .tabs-content>div{
     width: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
     background-color: #FFFFFF;
     display: none;
 }
