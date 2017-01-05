@@ -249,7 +249,7 @@ function xiaofeiContent(consumnData,consumnlistData){
 }
 function fuzhi(data){
     var sex=data.sex;
-    if(sex=="male"){
+    if(sex=="M"){
         $("#vip_name").next().addClass("icon-ishop_9-03");
         $("#USER_SEX").val("男");
     }else{
