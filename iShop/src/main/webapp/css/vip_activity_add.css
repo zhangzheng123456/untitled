@@ -227,7 +227,7 @@
 }
 .p_task ul li{
     float: left;
-    width: 70px;
+    min-width: 70px;
     height: 30px;
     line-height: 30px;
     text-align: center;
@@ -459,6 +459,4 @@
 .edit_message .edit_frame_left .label_frame{
     width: 72px;
     font-size: 12px;
-}
-.edit_message .edit_frame_left textarea{
 }
