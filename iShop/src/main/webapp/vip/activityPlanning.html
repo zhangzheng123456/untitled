@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <!-- 分配任务 -->
-                    <div class="p_task">
+                    <div class="p_task" id="task">
                         <div class="tabs_left">
                             <ul>
                                 <li class="active">任务1</li>
@@ -151,9 +151,48 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 编辑弹框 -->
-                    <div>
-                        
+                    <!--微信推送弹框 -->
+                    <div class="edit_frame">
+                        <div class="tabs_title_p">
+                            <div class="tabs_left">
+                                <span class="title_icon"></span><span>微信推送服务</span>
+                            </div>
+                        </div>
+                        <div class="edit_frame_left">
+                            <label for="" class="label_frame">推送标题</label><input type="text" placeholder="请输入推送标题">
+                        </div>
+                        <div class="edit_frame_left">
+                            <label for="" class="label_frame">页面链接</label><input type="text" placeholder="请输入页面链接">
+                        </div>
+                        <div class="edit_frame_left">
+                            <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">摘要</label><textarea placeholder="请输入推送摘要"></textarea>
+                        </div>
+                        <div class="edit_frame_left file_parent">
+                            <label for="" class="label_frame" style="margin-top: 5px;">封面图片</label>
+                            <div class="edit_file">
+                                <input type="file">
+                                <span class="icon-ishop_6-01"></span>
+                            </div>
+                        </div>
+                        <div class="edit_footer">
+                            <div class="edit_footer_close">取消</div>
+                            <div class="edit_footer_save">保存修改</div>
+                        </div>
+                    </div>
+                    <!-- 短信群发弹框 -->
+                    <div class="edit_frame edit_message">
+                        <div class="tabs_title_p">
+                            <div class="tabs_left">
+                                <span class="title_icon"></span><span>微信推送服务</span>
+                            </div>
+                        </div>
+                        <div class="edit_frame_left">
+                            <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea placeholder="请输入推送摘要"></textarea>
+                        </div>
+                        <div class="edit_footer">
+                            <div class="edit_footer_close">取消</div>
+                            <div class="edit_footer_save">保存修改</div>
+                        </div>
                     </div>
                 </div>
             </div>
