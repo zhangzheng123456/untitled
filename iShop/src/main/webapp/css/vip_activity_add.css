@@ -49,6 +49,10 @@
 }
 .tabs-content>div{
     width: 100%;
+<<<<<<< HEAD
+    /*overflow: hidden;*/
+=======
+>>>>>>> 06e15848bca8b867e1fd3864d989ba3dcf80ef59
     background-color: #FFFFFF;
     /*display: none;*/
 }
@@ -368,6 +372,20 @@
     border-radius: 5px;
     display: none;
 }
+<<<<<<< HEAD
+.tabs_title{
+    width: 100%;
+    border-bottom: 1px solid #d4d8e1;
+    padding-bottom: 8px;
+}
+.title_icon{
+    display: inline-block;
+    width: 5px;
+    height: 10px;
+    background: #5f8bc8;
+    margin-right: 5px;
+}
+=======
 .edit_frame_left{
     margin-left: 20px;
     margin-top: 10px;
@@ -460,3 +478,4 @@
     width: 72px;
     font-size: 12px;
 }
+>>>>>>> 06e15848bca8b867e1fd3864d989ba3dcf80ef59
