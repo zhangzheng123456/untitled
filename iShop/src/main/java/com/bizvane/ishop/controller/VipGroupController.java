@@ -642,6 +642,7 @@ public class VipGroupController {
                 }else if (jsonObject.containsKey("fixed_code")){
                     String fixed_code = jsonObject.get("fixed_code").toString();
 
+                    fixed_code = "#"+fixed_code+"#";
                     Data data_fixed_code = new Data("fixed_code", fixed_code, ValueType.PARAM);
                     Data data_vip_group_code = new Data("group_code", "", ValueType.PARAM);
                     Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
