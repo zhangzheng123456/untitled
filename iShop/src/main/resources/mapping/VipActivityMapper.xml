@@ -24,7 +24,7 @@
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
-        SELECT def_vip_activity.*
+        SELECT def_vip_activity.*,
         def_corp.corp_name
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code = def_corp.corp_code
@@ -214,7 +214,7 @@
     </delete>
 
     <select id="selectActivityScreen" resultMap="Activity">
-        SELECT def_vip_activity.*
+        SELECT def_vip_activity.*,
         def_corp.corp_name
         FROM def_vip_activity,def_corp
         WHERE  def_vip_activity.corp_code=def_corp.corp_code
@@ -249,7 +249,7 @@
     </select>
 
     <select id="selActivityById" resultMap="Activity">
-         SELECT def_vip_activity.*
+         SELECT def_vip_activity.*,
         def_corp.corp_name
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code=def_corp.corp_code
@@ -257,7 +257,7 @@
     </select>
 
     <select id="selActivityByCode" resultMap="Activity">
-        SELECT def_vip_activity.*
+        SELECT def_vip_activity.*,
         def_corp.corp_name
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code=def_corp.corp_code
