@@ -247,7 +247,7 @@ public class VipGroupServiceImpl implements VipGroupService {
                     user_code = value;
             }
         }
-        if (store_code.equals("")){
+        if (store_code.equals("") && !role_code.equals(Common.ROLE_SYS) && !role_code.equals(Common.ROLE_GM)){
             if ((!area_code.equals("") || !brand_code.equals(""))){
                 //若选择了区域和品牌，记住品牌区域下的store_code
                 List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
@@ -296,7 +296,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             post_array.add(post_obj);
         }
 
-//        logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
+        logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
         DataBox dataBox;
         if (post_array.size()>0) {
             dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
