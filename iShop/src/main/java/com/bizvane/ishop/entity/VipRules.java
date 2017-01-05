@@ -45,6 +45,10 @@ public class VipRules {
     private String vip_card_type_code;
     //会员等级
     private String degree;
+    //高级会员类型编号
+    private String high_vip_card_type_code;
+    //高级会员等级
+    private String high_degree;
 
     private Corp corp;
     private String corp_name;
@@ -225,5 +229,21 @@ public class VipRules {
 
     public void setDegree(String degree) {
         this.degree = degree;
+    }
+
+    public String getHigh_vip_card_type_code() {
+        return high_vip_card_type_code;
+    }
+
+    public void setHigh_vip_card_type_code(String high_vip_card_type_code) {
+        this.high_vip_card_type_code = high_vip_card_type_code;
+    }
+
+    public String getHigh_degree() {
+        return high_degree;
+    }
+
+    public void setHigh_degree(String high_degree) {
+        this.high_degree = high_degree;
     }
 }

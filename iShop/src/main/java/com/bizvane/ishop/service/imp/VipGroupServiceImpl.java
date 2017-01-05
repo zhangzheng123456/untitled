@@ -96,7 +96,6 @@ public class VipGroupServiceImpl implements VipGroupService {
     @Override
     public String insert(VipGroup vipGroup, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        String vip_group_code = vipGroup.getVip_group_code().trim();
         String vip_group_name = vipGroup.getVip_group_name().trim();
         String corp_code = vipGroup.getCorp_code();
 
@@ -104,33 +103,6 @@ public class VipGroupServiceImpl implements VipGroupService {
         if (vipGroup2 != null) {
             result = "该会员分组名称已存在";
         } else {
-            String group_type = vipGroup.getGroup_type();
-            String group_condition = vipGroup.getGroup_condition();
-            if (!group_type.equals("define")){
-                JSONObject obj = new JSONObject();
-                JSONObject con_obj = JSONObject.parseObject(group_condition);
-                String consume_amount = con_obj.getString("consume_amount");
-                JSONObject amt_obj = JSONObject.parseObject(consume_amount);
-                String start_amt = amt_obj.getString("start");
-                String end_amt = amt_obj.getString("end");
-                if (!start_amt.equals("") || !end_amt.equals(""))
-                    obj.put("consume_amount",consume_amount);
-
-                String consume_piece = con_obj.getString("consume_piece");
-                JSONObject piece_obj = JSONObject.parseObject(consume_piece);
-                String start_piece = piece_obj.getString("start");
-                String end_piece = piece_obj.getString("end");
-                if (!start_piece.equals("") || !end_piece.equals(""))
-                    obj.put("consume_piece",consume_piece);
-
-                String consume_discount = con_obj.getString("consume_discount");
-                JSONObject discount_obj = JSONObject.parseObject(consume_discount);
-                String start_discount = discount_obj.getString("start");
-                String end_discount = discount_obj.getString("end");
-                if (!start_discount.equals("") || !end_discount.equals(""))
-                    obj.put("consume_discount",consume_discount);
-                vipGroup.setGroup_condition(obj.toString());
-            }
             Date now = new Date();
             vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setCreater(user_code);
@@ -219,18 +191,34 @@ public class VipGroupServiceImpl implements VipGroupService {
         }
     }
 
+    /**
+     * Solr筛选
+     * 区分角色
+     * @param screen
+     * @param corp_code
+     * @param page_num
+     * @param page_size
+     * @param request
+     * @return
+     * @throws Exception
+     */
     public DataBox vipScreenBySolr(JSONArray screen,String corp_code,String page_num,String page_size,HttpServletRequest request) throws Exception{
-        List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
+//        List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
         String brand_code = "";
         String area_code = "";
         String store_code = "";
-        String store_code_key = "";
+        String user_code = "";
+        String store_code_key = "14";
+        String user_code_key = "15";
         JSONArray post_array = new JSONArray();
         for (int i = 0; i < screen.size(); i++) {
             JSONObject screen_obj = screen.getJSONObject(i);
             String key = screen_obj.getString("key");
             String type = screen_obj.getString("type");
             String value = screen_obj.getString("value");
+
             if (type.equals("text") && value.equals("")){
                 //筛选值为空
                 continue;
@@ -248,32 +236,67 @@ public class VipGroupServiceImpl implements VipGroupService {
                 post_obj.put("key",key);
                 post_obj.put("type",type);
                 post_obj.put("value",value);
+                if (screen_obj.containsKey("date")){
+                    post_obj.put("date",screen_obj.getString("date"));
+                }
                 post_array.add(post_obj);
                 //根据key值，找出其对应name
-                for (int j = 0; j < tableManagers.size(); j++) {
-                    if (key.equals(tableManagers.get(j).getFilter_weight())){
-                        String key_name = tableManagers.get(j).getColumn_name();
-                        if (key_name.equals("store_code")){
-                            store_code = value;
-                            store_code_key = key;
-                        }
-                        break;}
-                }
+                if (key.equals(store_code_key))
+                    store_code = value;
+                if (key.equals(user_code_key))
+                    user_code = value;
             }
         }
-        //若选择了区域和品牌，记住品牌区域下的store_code
-        if (store_code.equals("") && (!area_code.equals("") || !brand_code.equals(""))){
-            List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
-            for (int i = 0; i < storeList.size(); i++) {
-                store_code = store_code + storeList.get(i).getStore_code() + ",";
+        if (store_code.equals("")){
+            if ((!area_code.equals("") || !brand_code.equals(""))){
+                //若选择了区域和品牌，记住品牌区域下的store_code
+                List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
+                for (int i = 0; i < storeList.size(); i++) {
+                    store_code = store_code + storeList.get(i).getStore_code() + ",";
+                }
+                JSONObject post_obj = new JSONObject();
+                post_obj.put("key",store_code_key);
+                post_obj.put("type","text");
+                post_obj.put("value",store_code);
+                post_array.add(post_obj);
+            }else {
+                //没选择区域和品牌，传自身拥有的店铺
+                if (role_code.equals(Common.ROLE_BM)){
+                    brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + stores.get(i).getStore_code() + ",";
+                    }
+                }else if (role_code.equals(Common.ROLE_AM)){
+                    String area_code1 = request.getSession().getAttribute("area_code").toString();
+                    String area_store_code = request.getSession().getAttribute("store_code").toString();
+                    area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code1,"","",area_store_code);
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + stores.get(i).getStore_code() + ",";
+                    }
+                }else if (role_code.equals(Common.ROLE_SM)){
+                    store_code = request.getSession().getAttribute("store_code").toString();
+                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                }
+                JSONObject post_obj = new JSONObject();
+                post_obj.put("key",store_code_key);
+                post_obj.put("type","text");
+                post_obj.put("value",store_code);
+                post_array.add(post_obj);
             }
+        }
+        if (role_code.equals(Common.ROLE_STAFF) && user_code.equals("")){
+            user_code = request.getSession().getAttribute("user_code").toString();
             JSONObject post_obj = new JSONObject();
-            post_obj.put("key",store_code_key);
+            post_obj.put("key",user_code_key);
             post_obj.put("type","text");
-            post_obj.put("value",store_code);
+            post_obj.put("value",user_code);
             post_array.add(post_obj);
         }
-        logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
+
+//        logger.info("-------VipScreen:" + JSON.toJSONString(post_array));
         DataBox dataBox;
         if (post_array.size()>0) {
             dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));

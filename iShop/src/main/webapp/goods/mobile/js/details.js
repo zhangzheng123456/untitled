@@ -140,7 +140,16 @@ $('.bottom div img').click(function () {
     param["comment_text"]=comment_text;
     oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
         if (data.code == "0") {
-
+            var message = data.message;
+            if(operate_type=='like'||operate_type=='dislike'){
+                $('.bottom div').eq(0).find('.num').text(message);
+            }else if(operate_type=='collect'||operate_type=='discollect'){
+                $('.bottom div').eq(1).find('.num').text(message);
+            }else if(operate_type=='comment'){
+                $('.bottom div').eq(2).find('.num').text(message);
+            }else{
+                console.log('error');
+            }
         }else if(data.code =='-1'){
             //alert(data);
         }
@@ -195,6 +204,14 @@ function doAppWebRefresh(param){
 }
 //删除
 $('.delete').click(function () {
+    var val = confirm('是否删除');
+    if(val==true){
+        deleteAction();
+    }else{
+
+    }
+});
+function deleteAction(){
     oc.postRequire("get", "/api/shopMatch/delete?corp_code=" + corp_code +"&d_match_code=" + d_match_code+"", "0", "", function (data) {
         if (data.code == "0") {
             console.log('删除成功');
@@ -203,7 +220,7 @@ $('.delete').click(function () {
             console.log(data);
         }
     });
-});
+}
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串

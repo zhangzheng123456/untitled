@@ -48,8 +48,12 @@
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <span><label style="color:#c26655">会员类型*</label><input type="text" id="vip_type" verify="Empty" maxlength="50"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员类型名称不能为空！"></div></div></span>
+                    <div class="drop_down item_1">
+                        <span><label style="color:#c26655">会员类型*</label><input class="input_select" data-value=""  type="text" id="vip_type" verify="Empty" maxlength="50" placeholder="" readonly=""/>
+                            <ul style="display: none;">
+                                
+                            </ul>
+                        </span>
                     </div>
                     <div class="drop_down item_1">
                         <span><label>上级会员类型</label><input class="input_select" value="无上级会员类型" id="high_vip_type" type="text" placeholder="" readonly="">
@@ -70,17 +74,9 @@
                     <div class="drop_down item_2 upgrade_amount">
                         <span class="t_parent"><label>升级门槛</label><input class="input_select w" data-value="" value="" id="upgrade_time" type="text" placeholder="选择时间段" readonly=""><span class="r">消费满</span><input style="background-image: none;" verify="Number" type="text" class="w" id="upgrade_amount" placeholder="填写金额"><span class="holder_text">元</span>
                             <ul style="display: none;">
-                                <li data-value="1">最近一个月</li>
-                                <li data-value="2">最近二个月</li>
                                 <li data-value="3">最近三个月</li>
-                                <li data-value="4">最近四个月</li>
-                                <li data-value="5">最近五个月</li>
                                 <li data-value="6">最近六个月</li>
-                                <li data-value="7">最近七个月</li>
-                                <li data-value="8">最近八个月</li>
                                 <li data-value="9">最近九个月</li>
-                                <li data-value="10">最近十个月</li>
-                                <li data-value="11">最近十一个月</li>
                                 <li data-value="12">最近一年</li>
                                 <li data-value="0">累计</li>
                             </ul>

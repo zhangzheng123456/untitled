@@ -263,8 +263,24 @@ $(function () {
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
                     _params["group_condition"]=group_condition;
-
-                    vipjs.ajaxSubmit(_command, _params, opt);
+                    var allInput=$("#group_list input");
+                    var isNoValue=true;
+                    for(var i=0;i<allInput.length;i++){
+                        if(!$(allInput[i]).parent().is(":hidden") && $(allInput[i]).val().trim()!=""){
+                            isNoValue=false;
+                            break;
+                        }
+                    }
+                    if(isNoValue){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"至少输入一项条件"
+                        });
+                    }else{
+                        vipjs.ajaxSubmit(_command, _params, opt);
+                    }
                 }
                 //vipjs.ajaxSubmit(_command, _params, opt);
             } else {
@@ -1836,7 +1852,7 @@ $("#group_type").next("ul").find("li").click(function(){
                 "<li data-type='all'>累计消费</li>"
                 );
             $("#type").next("ul").html(LI);
-            $("#type").val("3月");
+            $("#type").val("近3月");
             $("#type").attr("data-type","3");
             $("#type").show();
             $("#group_list").show();
@@ -1897,62 +1913,13 @@ $("#select_vip").click(function(){
 });
 $("#select_vip_que").click(function(){ //筛选确定
         var screen = [];
-        if ($("#simple_filter").css("display") == "block") {
-            $("#simple_contion .contion_input").each(function () {
-                var input = $(this).find("input");
-                var key = $(input[0]).attr("data-kye");
-                var classname = $(input[0]).attr("class");
-                if (classname.indexOf("short") == 0 && key != "3" && key != "4" && key!='17') {
-                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
-                        var param = {};
-                        var val = {};
-                        var name=$(input[0]).prev().text();
-                        val['start'] = $(input[0]).val();
-                        val['end'] = $(input[1]).val();
-                        param['type'] = "json";
-                        param['key'] = key;
-                        param['value'] = val;
-                        param["name"]=name;
-                        screen.push(param);
-                    }
-                }else if(key=='17'){
-
-                }else if (key == "3" || key == "4") {
-                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
-                        var param = {};
-                        var val = {};
-                        var date =$("#simple_filter").find("input[data-kye='"+key+"']").parent().siblings().find("#consume_date_basic_"+key).attr("data-date");
-                        var name=$(input[0]).prev().text();
-                        val['start'] = $(input[0]).val();
-                        val['end'] = $(input[1]).val();
-                        param['type'] = "json";
-                        param['key'] = key;
-                        param['value'] = val;
-                        param['date'] = date;
-                        param["name"]=name;
-                        screen.push(param);
-                    }
-                }else {
-                    if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
-                        var param = {};
-                        var val = $(input[0]).val();
-                        var name=$(input[0]).prev().text();
-                        param['key'] = key;
-                        param['value'] = val;
-                        param['type'] = "text";
-                        param["name"]=name;
-                        screen.push(param);
-                    }
-                }
-            });
-        } else {
-            $("#contion>div").each(function () {
-                $(this).find(".contion_input").each(function (i, e) {
-                    var input = $(e).find("input");
+        function settingValue(){
+            if ($("#simple_filter").css("display") == "block") {
+                $("#simple_contion .contion_input").each(function () {
+                    var input = $(this).find("input");
                     var key = $(input[0]).attr("data-kye");
                     var classname = $(input[0]).attr("class");
-                    var id = $(input[0]).attr("id");
-                    if (key !== "3" && key !== "4" && classname.indexOf("short") == 0) {
+                    if (classname.indexOf("short") == 0 && key != "3" && key != "4" && key!='17') {
                         if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                             var param = {};
                             var val = {};
@@ -1962,30 +1929,16 @@ $("#select_vip_que").click(function(){ //筛选确定
                             param['type'] = "json";
                             param['key'] = key;
                             param['value'] = val;
-                            param['name']=name;
-                            screen.push(param);
-                        }
-                    } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15" || key == "16") {
-                        if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
-                            var param = {};
-                            var val = $(input[0]).attr("data-code");
-                            var name=$(input[0]).prev().text();
-                            var all_list_name=$(input[0]).attr("data-code_name");
-                            param['key'] = key;
-                            param['value'] = val;
-                            param['type'] = "text";
                             param["name"]=name;
-                            param["all_list_name"]=all_list_name;
-                            console.log(all_list_name);
                             screen.push(param);
                         }
-                    } else if (key == "17") {
+                    }else if(key=='17'){
 
-                    } else if (key == "3" || key == "4") {
+                    }else if (key == "3" || key == "4") {
                         if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
                             var param = {};
                             var val = {};
-                            var date = $("#consume_date").attr("data-date");
+                            var date =$("#simple_filter").find("input[data-kye='"+key+"']").parent().siblings().find("#consume_date_basic_"+key).attr("data-date");
                             var name=$(input[0]).prev().text();
                             val['start'] = $(input[0]).val();
                             val['end'] = $(input[1]).val();
@@ -1996,20 +1949,6 @@ $("#select_vip_que").click(function(){ //筛选确定
                             param["name"]=name;
                             screen.push(param);
                         }
-                    } else if(key == "6" && $(input[0]).val() !== "全部"){
-                        var param = {};
-                        var val = $(input[0]).val();
-                        var name=$(input[0]).prev().text();
-                        if(val=="已冻结"){
-                            val="Y"
-                        }else if(val=="未冻结"){
-                            val="N"
-                        }
-                        param['key'] = key;
-                        param['value'] = val;
-                        param['type'] = "text";
-                        param["name"]=name;
-                        screen.push(param);
                     }else {
                         if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                             var param = {};
@@ -2023,32 +1962,112 @@ $("#select_vip_que").click(function(){ //筛选确定
                         }
                     }
                 });
-                $(this).find("textarea").each(function () {
-                    if($(this).val()!=""){
-                        var key = $(this).attr("data-kye");
-                        var param = {};
-                        var val = $(this).val();
-                        var name=$(this).prev().text();
-                        param['key'] = key;
-                        param['value'] = val;
-                        param['type'] = "text";
-                        param["name"]=name;
-                        screen.push(param);
-                    }
+                return true
+            } else {
+                if( $("input[data-kye='11']").val() !== "" && $("#vip_card_type").val()=="全部"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        zIndex:10002,
+                        content: "请选择会员卡类型"
+                    });
+                    return false;
+                }
+                $("#contion>div").each(function () {
+                    $(this).find(".contion_input").each(function (i, e) {
+                        var input = $(e).find("input");
+                        var key = $(input[0]).attr("data-kye");
+                        var classname = $(input[0]).attr("class");
+                        var id = $(input[0]).attr("id");
+                        if (key !== "3" && key !== "4" && classname.indexOf("short") == 0) {
+                            if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                                var param = {};
+                                var val = {};
+                                var name=$(input[0]).prev().text();
+                                val['start'] = $(input[0]).val();
+                                val['end'] = $(input[1]).val();
+                                param['type'] = "json";
+                                param['key'] = key;
+                                param['value'] = val;
+                                param['name']=name;
+                                screen.push(param);
+                            }
+                        } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15" || key == "16") {
+                            if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                                var param = {};
+                                var val = $(input[0]).attr("data-code");
+                                var name=$(input[0]).prev().text();
+                                var all_list_name=$(input[0]).attr("data-code_name");
+                                param['key'] = key;
+                                param['value'] = val;
+                                param['type'] = "text";
+                                param["name"]=name;
+                                param["all_list_name"]=all_list_name;
+                                screen.push(param);
+                            }
+                        } else if (key == "17") {
+
+                        } else if (key == "3" || key == "4") {
+                            if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                                var param = {};
+                                var val = {};
+                                var date = $("#consume_date").attr("data-date");
+                                var name=$(input[0]).prev().text();
+                                val['start'] = $(input[0]).val();
+                                val['end'] = $(input[1]).val();
+                                param['type'] = "json";
+                                param['key'] = key;
+                                param['value'] = val;
+                                param['date'] = date;
+                                param["name"]=name;
+                                screen.push(param);
+                            }
+                        } else if(key == "6" && $(input[0]).val() !== "全部"){
+                            var param = {};
+                            var val = $(input[0]).val();
+                            var name=$(input[0]).prev().text();
+                            if(val=="已冻结"){
+                                val="Y"
+                            }else if(val=="未冻结"){
+                                val="N"
+                            }
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            param["name"]=name;
+                            screen.push(param);
+                        }else {
+                            if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                                var param = {};
+                                var val = $(input[0]).val();
+                                var name=$(input[0]).prev().text();
+                                param['key'] = key;
+                                param['value'] = val;
+                                param['type'] = "text";
+                                param["name"]=name;
+                                screen.push(param);
+                            }
+                        }
+                    });
+                    $(this).find("textarea").each(function () {
+                        if($(this).val()!=""){
+                            var key = $(this).attr("data-kye");
+                            var param = {};
+                            var val = $(this).val();
+                            var name=$(this).prev().text();
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            param["name"]=name;
+                            screen.push(param);
+                        }
+                    });
                 });
-            });
+                return true;
+            }
         }
-        //_param['screen'] = screen;
-        //if (screen.length == 0) {
-        //    GET(inx, pageSize);
-        //} else if (screen[0].key == "17" && (screen[1].value == "")) {
-        //
-        //} else {
-        //    filtrate = "sucess";
-        //    filtrates(inx, pageSize);
-        //}
-        //$("#search").val("");
-    console.log(JSON.stringify(screen));
+       var setting=settingValue();
         if(screen.length>0){
             if(all_select_vip_list.length==0){
                 all_select_vip_list=screen;
@@ -2069,7 +2088,9 @@ $("#select_vip_que").click(function(){ //筛选确定
             }
             showSelect()
         }
-        $("#screen_wrapper").hide();
+        if(setting){
+            $("#screen_wrapper").hide();
+        }
         $("#p").hide();
 });
 function showSelect(){
@@ -2129,7 +2150,7 @@ $("#custom_vip_list").on("click","i",function(){
     $(this).parent().remove();
 });
 function showOtherGroup(list,type){
-    var list=list
+    var list=list;
     switch (type){
         case "class":
             $("#group_type").val("品类喜好分组");
@@ -2146,6 +2167,7 @@ function showOtherGroup(list,type){
             $("#group_list").children().show();
             $("#group_list").children().eq(1).css("margin-bottom","20px");
             $("#custom_vip_list").hide();
+            console.log(list)
             break;
         case "brand":
             $("#group_type").val("品牌喜好分组");
@@ -2216,6 +2238,43 @@ function showOtherGroup(list,type){
           }
     }
 }
+    $("#group_list").find("input").blur(function(){
+        var reg=/^\d+(\.\d+)?$/
+        if(!reg.test($(this).val().trim()) && $(this).val()!=""){
+            art.dialog({
+                zIndex: 10010,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "只能输入数字"
+            });
+            $(this).val("")
+        }
+        if($(this).index()=="1" && Number($(this).val())-Number($(this).siblings("input").val())>0 && $(this).siblings("input").val()!=""){
+            art.dialog({
+                zIndex: 10010,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能大于后面的值"
+            });
+            $(this).val("")
+        }
+        if($(this).index()=="3" && Number($(this).val())-Number($(this).siblings("input").val())<0 && $(this).val()!=""){
+            art.dialog({
+                zIndex: 10010,
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "不能小于前面的的值"
+            });
+            $(this).val("")
+        }
+        //Number($(this).val())-Number($(this).val())
+    });
 $("#group_type").click(function(){
     $("#group_all_list").is(":hidden")==true?$("#group_all_list").show():$("#group_all_list").hide();
 });
+//$("#expend_attribute").scroll(function(){
+//    $("#laydate_box").css("visibility","hidden")
+//})

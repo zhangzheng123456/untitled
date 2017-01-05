@@ -10,7 +10,9 @@ import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -596,6 +598,8 @@ public class VipGroupController {
     @ResponseBody
     public String groupVips(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -604,24 +608,52 @@ public class VipGroupController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
-            String id = jsonObject.get("id").toString();
             String type = jsonObject.get("type").toString();
-            VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
-            String corp_code = vipGroup.getCorp_code();
+
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                corp_code = jsonObject.getString("corp_code");
+            }
 
             DataBox dataBox = new DataBox();
             if (type.equals("list")){
+                if (jsonObject.containsKey("id")) {
+                    id = jsonObject.get("id").toString();
+                    VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
 
-                String group_type = vipGroup.getGroup_type();
-                if (group_type.equals("define")){
-                    String group_condition = vipGroup.getGroup_condition();
-                    JSONArray screen = JSONArray.parseArray(group_condition);
-                    dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
-                }else {
-                    Map datalist = iceInterfaceService.vipBasicMethod(page_num,page_size,corp_code,request);
-                    dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+                    String group_type = vipGroup.getGroup_type();
+                    if (group_type.equals("define")){
+                        String group_condition = vipGroup.getGroup_condition();
+                        JSONArray screen = JSONArray.parseArray(group_condition);
+                        dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
+                    }else {
+                        String vip_group_code = vipGroup.getVip_group_code();
+                        Data data_fixed_code = new Data("fixed_code", "", ValueType.PARAM);
+                        Data data_vip_group_code = new Data("group_code", vip_group_code, ValueType.PARAM);
+                        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+
+                        Map datalist = new HashMap<String, Data>();
+                        datalist.put(data_fixed_code.key, data_fixed_code);
+                        datalist.put(data_vip_group_code.key, data_vip_group_code);
+                        datalist.put(data_corp_code.key, data_corp_code);
+                        dataBox = iceInterfaceService.iceInterfaceV3("VipGroupSearchForWeb", datalist);
+                    }
+
+                }else if (jsonObject.containsKey("fixed_code")){
+                    String fixed_code = jsonObject.get("fixed_code").toString();
+
+                    Data data_fixed_code = new Data("fixed_code", fixed_code, ValueType.PARAM);
+                    Data data_vip_group_code = new Data("group_code", "", ValueType.PARAM);
+                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+
+                    Map datalist = new HashMap<String, Data>();
+                    datalist.put(data_fixed_code.key, data_fixed_code);
+                    datalist.put(data_vip_group_code.key, data_vip_group_code);
+                    datalist.put(data_corp_code.key, data_corp_code);
+                    dataBox = iceInterfaceService.iceInterfaceV3("VipGroupSearchForWeb", datalist);
                 }
             }
+
             if (dataBox.status.toString().equals("SUCCESS")){
                 String result = dataBox.data.get("message").value;
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

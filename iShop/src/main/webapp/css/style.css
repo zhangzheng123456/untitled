@@ -8278,7 +8278,7 @@ li.select_index>a>label>i{
 }
 .conpany_msg .upgrade_amount ul{
     width:175px;
-    height:150px;
+    max-height:150px;
     overflow-y: auto;
     margin-left: 113px;
 }

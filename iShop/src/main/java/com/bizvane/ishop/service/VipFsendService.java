@@ -25,6 +25,8 @@ public interface VipFsendService {
 
     PageInfo<VipFsend> getAllVipFsendScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 
+    void test1();
 
+    void test2();
 
 }

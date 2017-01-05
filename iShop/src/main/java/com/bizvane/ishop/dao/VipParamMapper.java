@@ -18,6 +18,8 @@ public interface VipParamMapper {
 
     List<VipParam> checkParamName(@Param("corp_code") String corp_code,@Param("param_name") String param_name,@Param("isactive") String isactive) throws SQLException;
 
+    List<VipParam> checkParamDesc(@Param("corp_code") String corp_code,@Param("param_desc") String param_desc,@Param("isactive") String isactive) throws SQLException;
+
     int insert(VipParam record) throws SQLException;
 
     int update(VipParam record) throws SQLException;

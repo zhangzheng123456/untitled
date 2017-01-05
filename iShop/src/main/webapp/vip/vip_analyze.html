@@ -72,6 +72,12 @@
             left: 20%;
             top: 100px;
         }
+        @media (max-width: 1100px) {
+            #chart_analyze .col_sm_5{
+                float: left;
+                width: 49.5%;!important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -520,7 +526,7 @@
     </div>
     <!-- 分析数据图表描述-->
     <div id="chart_analyze"  data-id="">
-        <div class="chart_module" data-id="type">
+        <div class="chart_module col_sm_5" data-id="type">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -536,9 +542,14 @@
                 </span>
                 <li id="type" style="padding-left: 10px;">
                 </li>
+                <div class="data_table" style="display: none">
+                    <ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>
+                    <ul><li>件数</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
+                    <ul><li>金额</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
+                </div>
             </ul>
         </div>
-        <div class="chart_module" data-id="weeks">
+        <div class="chart_module col_sm_5" data-id="weeks">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -556,7 +567,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="price">
+        <div class="chart_module col_sm_5" data-id="price">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -574,7 +585,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="times">
+        <div class="chart_module col_sm_5" data-id="times">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -592,7 +603,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="month">
+        <div class="chart_module col_sm_5" data-id="month">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -610,7 +621,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="series">
+        <div class="chart_module col_sm_5" data-id="series">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -628,7 +639,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="areas">
+        <div class="chart_module col_sm_5" data-id="areas">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -646,7 +657,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module add_chart" id="add_chart" style="display: block">
+        <div class="chart_module add_chart col_sm_5" id="add_chart" style="display: block">
             <span>+</span>
             <span>添加图表</span>
         </div>
@@ -752,5 +763,15 @@
             }, 500);
         })
     });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0036']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
 </script>
 </html>

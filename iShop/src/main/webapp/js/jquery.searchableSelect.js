@@ -32,8 +32,6 @@
     });
 
     $(document).on('click', null, function(event){
-      console.log(_this.searchableElement);
-      console.log($(event.target));
       if(_this.searchableElement.has($(event.target)).length === 0)
         _this.hide();
     });

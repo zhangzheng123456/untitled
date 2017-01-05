@@ -62,16 +62,25 @@
         ORDER BY dvp.corp_code ASC ,dvp.show_order ASC
     </select>
 
+    <select id="checkParamDesc" resultType="com.bizvane.ishop.entity.VipParam">
+        SELECT *
+        FROM def_vip_param
+        WHERE corp_code = #{corp_code}
+        AND  param_desc=#{param_desc}
+        <if test="isactive != null and isactive !=''">
+          AND isactive = #{isactive}
+        </if>
+    </select>
+
     <select id="checkParamName" resultType="com.bizvane.ishop.entity.VipParam">
         SELECT *
         FROM def_vip_param
         WHERE corp_code = #{corp_code}
         AND  param_name=#{param_name}
         <if test="isactive != null and isactive !=''">
-          AND isactive = #{isactive}
+            AND isactive = #{isactive}
         </if>
     </select>
-
 
     <delete id="deleteById">
         delete from

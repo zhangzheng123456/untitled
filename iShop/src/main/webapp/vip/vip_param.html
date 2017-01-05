@@ -15,7 +15,7 @@
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员参数</span>
+            <span>拓展参数定义</span>
         </div>
         <div class="action">
             <div class="action_l">
@@ -174,6 +174,16 @@
             $('html,body').animate({'scrollTop':btm},500);
         })
     });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0034']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0034']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
 </script>
 </body>
 </html>

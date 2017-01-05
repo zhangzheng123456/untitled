@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
+
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipCardTypeMapper;
 import com.bizvane.ishop.entity.VipCardType;
@@ -58,7 +59,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
 
         if (list == null || code == null && name == null) {
-
             vipCardType.setCorp_code(corp_code);
             vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipCardType.setCreater(user_id);
@@ -68,8 +68,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
             num = vipCardTypeMapper.insertVipCardType(vipCardType);
             if (num > 0) {
                 VipCardType vipCardType1 = getVipCardTypeByCode(vipCardType.getCorp_code(), vipCardType.getVip_card_type_code(), vipCardType.getIsactive());
-                status = String.valueOf(vipCardType1.getId());
-                System.out.print(String.valueOf(vipCardType1.getId()));
+                status = vipCardType1.getId();
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
@@ -78,8 +77,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         } else {
             status = "该名称已存在";
         }
-
-
         return status;
     }
 
@@ -93,18 +90,18 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         String vip_card_type_name = jsonObject.get("vip_card_type_name").toString().trim();
         String degree = jsonObject.get("degree").toString().trim();
         String id = jsonObject.get("id").toString().trim();
+        int ids=Integer.valueOf(id);
         VipCardType vipCardType = getVipCardTypeById(Integer.parseInt(id));
         VipCardType vipCardType1 = getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
-
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
         int num = 0;
         if (list != null) {
-            if (vipCardType1 != null && id != vipCardType1.getId()) {
+            if (vipCardType1 != null && !id.equals(vipCardType1.getId())) {
                 status = "该编号已存在";
-            } else if (vipCardType2 != null && id != vipCardType2.getId()) {
-                status = "该名称已存在";
-            }else{
+            } else if (vipCardType2 != null&&!id.equals(vipCardType2.getId()) ) {
+                    status = "该名称已存在";
+            } else {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
@@ -120,13 +117,8 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                     status = Common.DATABEAN_CODE_ERROR;
                 }
             }
-
         } else {
-            if (vipCardType1 != null ) {
-                status = "该编号已存在";
-            } else if (vipCardType2 != null ) {
-                status = "该名称已存在";
-            }else{
+            if (vipCardType1 == null && vipCardType2 == null) {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
@@ -141,9 +133,11 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 } else {
                     status = Common.DATABEAN_CODE_ERROR;
                 }
+            } else if (vipCardType1 != null) {
+                status = "该编号已存在";
+            } else {
+                status = "该名称已存在";
             }
-
-
         }
 
         return status;
@@ -152,6 +146,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
 
     @Override
     public int delete(int id) throws Exception {
+
         return vipCardTypeMapper.delVipCardTypeById(id);
     }
 

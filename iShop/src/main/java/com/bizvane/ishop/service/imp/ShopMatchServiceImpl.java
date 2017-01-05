@@ -96,9 +96,16 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         }else{
             user_name  = userList.get(0).getUser_name();
         }
-        System.out.println("==============user_name点赞人======================"+user_name);
+        String avatar="";
+        if(userList.size()==0 || userList.size()>1){
+            avatar="";
+        }else{
+            avatar  = userList.get(0).getAvatar();
+        }
+        System.out.println(avatar+"==============user_name点赞人======================"+user_name);
         saveData.put("operate_userCode", operate_userCode);
         saveData.put("operate_userName", user_name);
+        saveData.put("operate_userAvatar", avatar);
         saveData.put("operate_type", operate_type);
         saveData.put("status", status);
         saveData.put("comment_text", comment_text);

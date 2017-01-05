@@ -60,7 +60,11 @@ public class VipRulesController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
-            } else {
+            }  else if (result.equals("该企业会员类型对应的高级会员类型已存在")) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(result);
+        } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
@@ -232,32 +236,7 @@ public class VipRulesController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/getVipTypes", method = RequestMethod.POST)
-    @ResponseBody
-    public String getVipRulesType(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json-select-------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSON.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            JSONObject result = new JSONObject();
-            List<VipRules> list = vipRulesService.getVipRulesType(corp_code, Common.IS_ACTIVE_Y);
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+
 
     /**
      * 根据id查看
@@ -289,42 +268,6 @@ public class VipRulesController {
         }
 
 
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 验证会员类型得唯一性
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/vipTypeExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipTypeExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String viptype = jsonObject.get("vip_type").toString().trim();
-            String corp_code = jsonObject.get("corp_code").toString();
-            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code, viptype, Common.IS_ACTIVE_Y);
-            if (vipRules != null) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("当前企业下该会员类型已存在");
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("当前企业下该会员类型不存在");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
         return dataBean.getJsonStr();
     }
 
