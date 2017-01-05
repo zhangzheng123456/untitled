@@ -247,9 +247,15 @@ function  click(){
         }
         //    评论
         if(src =='image/icon_评论@2x.png'){
-            operate_type = 'comment';
-            comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
-            status = '';
+            //operate_type = 'comment';
+            //comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
+            //status = '';
+            console.log(123);
+            var d_match_code = $(this).parents('.goods_box').attr('id');
+            var corp_code = GetRequest().corp_code;
+            var user_code = GetRequest().user_id;
+            var action = 'comments';
+            window. location.href = "details.html?d_match_code=" + d_match_code +"&user_id="+user_code+"&corp_code="+corp_code+"&the_action="+action;
             return;
         }
         //    收藏
@@ -354,6 +360,7 @@ function doAppWebRefresh(param){
         iShop.jumpToWebViewForWeb(param);
     }
 }
+
 window.onload = function () {
     //默认
     var val =  $.cookie('action');
@@ -368,4 +375,6 @@ window.onload = function () {
     getMy();
     //控制宽高
     setTime();
+    //评论跳转
+
 }

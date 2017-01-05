@@ -54,7 +54,7 @@ function getPage(){
                 $('.carousel-indicators').css('display','none')
             }else{
                 $('.carousel-control').css('display','block')
-                $('.carousel-indicators').css('display','block')
+                $('.carousel-indicators').css('display','none')
             }
             //var imgNum = d_match_image.indexOf(",");
             //if(imgNum>=0){
@@ -110,6 +110,7 @@ function getPage(){
             $('.bottom div').eq(0).find('.num').text(d_match_likeCount);
             $('.bottom div').eq(2).find('.num').text(d_match_commentCount);
             $('.bottom div').eq(1).find('.num').text(d_match_collectCount);
+            $("body").scrollTop(0);
         }else if(data.code =='-1'){
             console.log(data);
         }
@@ -227,9 +228,9 @@ $('.main_content').unbind('click').bind('click',function () {
 //提交评论
 function setConmments(){
     var msg = $('.bottom_input input').val();
-    var time = getNowFormatDate();
-    var name = GetRequest().user_id;
-    var img = 'image/img_kong.png'
+    //var time = getNowFormatDate();
+    //var name = GetRequest().user_id;
+    //var img = 'image/img_kong.png'
     if(msg.trim()!=''){
         var param={};
         param["corp_code"]=GetRequest().corp_code;
@@ -262,14 +263,15 @@ function conmmentsVal(img,name,time,msg){
     nowHTML = nowHTML.replace('${msg}',msg)
     html+=nowHTML;
     $('.area').append(html);
-    $("body").scrollTop($("body")[0].scrollHeight);
+    var top = $(".main_img").height()+$(".main_list").height()+10;
+    console.log('评论显示top'+top)
+    $('body').scrollTop(top);
 }
 $('#send').click(function(){
     setConmments();
     //$('.bottom').toggle();
     //$('.bottom_input').toggle();
-    //$('.bottom_input input').val('');
-    location.reload();
+    $('.bottom_input input').val('');
 });
 //获取当前时间
 function getNowFormatDate() {
@@ -290,7 +292,7 @@ function getNowFormatDate() {
     return currentdate;
 }
 //点击编辑
-$('.editor').unbind("click").bind('click',function () {
+$('.editor').bind('click',function () {
     var host=window.location.host;
     var param={};
     //var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
@@ -362,11 +364,12 @@ $('.outWindow_main .right').click(function () {
 function deleteAction(){
     oc.postRequire("get", "/api/shopMatch/delete?corp_code=" + corp_code +"&d_match_code=" + d_match_code+"", "0", "", function (data) {
         if (data.code == "0") {
-            var host=window.location.host;
+            //var host=window.location.host;
             var param={};
             param["result"]="success";
             doAppWebDelete(param);
         }else if(data.code =='-1'){
+            var param={};
             param["result"]= "failed";
             doAppWebDelete(param);
         }
@@ -439,10 +442,24 @@ function toReturnShareInfo(){
         iShop.returnShareInfo(param);
     }
 }
+function checkPage(){
+    var val = GetRequest().the_action;
+    var top = $(".main_img").height()+$(".main_list").height()+10;
+    console.log(top);
+    if(val == 'comments'){
+        $('.main_select div').eq(1).click();
+        $('.bottom div').eq(2).find('img').click();
+        $('body').scrollTop(top);
+    }else{
+        $('.main_select div').eq(0).click();
+    }
+}
 window.onload = function () {
     //拉取页面
     getPage();
     //拉取评论
     getConmments();
-    $('.main_select div').eq(0).click();
+    //检查是否是评论跳转
+    checkPage();
+
 }
