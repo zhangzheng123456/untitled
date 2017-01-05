@@ -221,6 +221,7 @@ var getNewVip={
         })
     },
     testBlur:function () {
+        if($('#content').find('.billNo').val()=='')return;
         var param={};
         param.corp_code='C10000';
         param.type='billNo';

@@ -173,14 +173,14 @@ address, cite, dfn, em, var {
     text-align: center;
     line-height: 1.78744rem; }
     .container_picture .picture .picture_btn {
-      width: 0.48309rem;
-      height: 0.48309rem;
+      width: 0.72464rem;
+      height: 0.72464rem;
       border-radius: 50%;
       position: absolute;
       top: 0.02415rem;
       right: 0.02415rem;
-      background: url("../image/btn_img_del@2x_67.png") no-repeat center center;
-      background-size: cover; }
+      background: url("../image/btn_img_del@2x_67.png") no-repeat top right;
+      background-size: 0.48309rem 0.48309rem; }
   .container_picture .picture_add {
     position: relative;
     float: left;
@@ -260,6 +260,22 @@ address, cite, dfn, em, var {
   color: #bbb; }
 
 #describe:-ms-input-placeholder {
+  font-size: 0.36232rem;
+  color: #bbb; }
+
+.header_title_r::-webkit-input-placeholder {
+  font-size: 0.36232rem;
+  color: #bbb; }
+
+.header_title_r:-moz-placeholder {
+  font-size: 0.36232rem;
+  color: #bbb; }
+
+.header_title_r::-moz-placeholder {
+  font-size: 0.36232rem;
+  color: #bbb; }
+
+.header_title_r:-ms-input-placeholder {
   font-size: 0.36232rem;
   color: #bbb; }
 
@@ -448,5 +464,20 @@ address, cite, dfn, em, var {
 #picture_box .picture img {
   max-width: 100%;
   max-height: 100%; }
+
+.search_null {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  width: 6.03865rem;
+  height: 6.03865rem;
+  background: url("../image/img_kong.png") no-repeat center;
+  background-size: cover; }
 
 /*# sourceMappingURL=add_nwe.css.map */
