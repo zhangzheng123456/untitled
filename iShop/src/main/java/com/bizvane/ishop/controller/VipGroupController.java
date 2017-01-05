@@ -631,8 +631,8 @@ public class VipGroupController {
                         Data data_fixed_code = new Data("fixed_code", "", ValueType.PARAM);
                         Data data_vip_group_code = new Data("group_code", vip_group_code, ValueType.PARAM);
                         Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                        Data data_page_num = new Data("page_num", corp_code, ValueType.PARAM);
-                        Data data_page_size = new Data("page_size", corp_code, ValueType.PARAM);
+                        Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                        Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
                         Map datalist = new HashMap<String, Data>();
                         datalist.put(data_fixed_code.key, data_fixed_code);
@@ -651,8 +651,8 @@ public class VipGroupController {
                     Data data_fixed_code = new Data("fixed_code", fixed_code, ValueType.PARAM);
                     Data data_vip_group_code = new Data("group_code", "", ValueType.PARAM);
                     Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                    Data data_page_num = new Data("page_num", corp_code, ValueType.PARAM);
-                    Data data_page_size = new Data("page_size", corp_code, ValueType.PARAM);
+                    Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                    Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
                     Map datalist = new HashMap<String, Data>();
                     datalist.put(data_fixed_code.key, data_fixed_code);
