@@ -1,12 +1,14 @@
 /**
  * Created by huxue on 2016/12/28.
  */
+cache = {
+    'Page':'1',
+    'chooseVal':''
+}
 var oc = new ObjectControl();
 var corp_code = $.cookie('corp_code');
-var pageNumber = '1';
 var pageSize = '20';
 var user_code = $.cookie('user_code');
-
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -29,6 +31,8 @@ $('.title div').eq(0).click(function () {
     $('.title div').eq(1).css('color','#888888');
     $('.title div').eq(1).css('background-color','#ededed');
     $.cookie('action','0');
+    cache.chooseVal ='rec';
+    cache.Page ='1';
     //setInterval(function () {
     var nowWidth = $('.main').eq(0).find('.the_img').width();
     $('.main').eq(0).find('.the_img').css('height',nowWidth);
@@ -45,6 +49,8 @@ $('.title div').eq(1).click(function () {
     $('.title div').eq(0).css('color','#888888');
     $('.title div').eq(0).css('background-color','#ededed');
     $.cookie('action','1');
+    cache.chooseVal ='my';
+    cache.Page ='1';
     //setInterval(function () {
     var nowWidth = $('.main').eq(1).find('.the_img').width();
     $('.main').eq(1).find('.the_img').css('height',nowWidth);
@@ -58,9 +64,7 @@ function getRec(){
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    //$.cookie('user_code',user_code);
-    //$.cookie('corp_code',corp_code);
-    //alert(user_code);
+    var pageNumber = cache.Page;
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -72,19 +76,19 @@ function getRec(){
     });
 }
 //我的列表
-function getMy(){
+function getMy(pageNumber){
     var type = 'my';
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    //$.cookie('user_code',user_code);
-    //$.cookie('corp_code',corp_code);
+    var pageNumber = cache.Page;
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
             pageVal(list,type);
             var val = $('.main').eq(1).find('.goods_box').length;
+            //空展示
             if(val == 0){
                 $('.main').eq(1).css('display','none');
                 $('.main').eq(2).css('display','block');
@@ -96,6 +100,13 @@ function getMy(){
 }
 //页面加载获取数据
 function  pageVal(list,type){
+    //如果拉取到的数据》=pageSize，更新缓存
+    if(list.length>=pageSize){
+            cache.recPage+=1;
+    }else{
+        console.log('推荐数据长度'+list.length)
+    }
+    //替换模板
     var tempHTML = '<ul class="goods_box" id="${d_match_code}" title="${d_match_title}" > <li class="the_img" id="${id}"><img src="${d_match_image}" alt=""/></li> <li class="the_list"> ';
     var tempHTML2 =' <img src="${r_match_goodsImage}" alt="" id="${r_match_goodsCode}"/>';
     var tempHTML3 =' <span class="num">${num}</span> </li> <li class="add"> <div><img src="${imgLick}" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="${imgSave}" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
@@ -156,10 +167,31 @@ function  pageVal(list,type){
             $('.main').eq(1).html(html);
         }
     }
-
     toNext();
     click();
 }
+//监听滚动条，实现翻页
+$(window).scroll( function() {
+    var oneHeight =  $('.goods_box').height()+20;
+    var pageNum = cache.recPage;
+    var allHeight = oneHeight *10;           //必须翻页高度
+    var nowHeight = $(window).scrollTop();   //滚动条高度
+    var chooseVal = cache.chooseVal;         //选项卡
+   if(nowHeight>allHeight*pageNum-200){
+       console.log('请求数据')
+       if(chooseVal=='rec'){
+           getRec();
+           console.log('推荐翻页');
+       }
+       if(chooseVal=='my'){
+           getMy();
+           console.log('我的翻页');
+       }
+   }else{
+       console.log('未达到翻页高度')
+   }
+
+})
 //控制宽高
 function setTime(){
     var val =  $('.the_img').width();
@@ -307,12 +339,12 @@ function doAppWebRefresh(param){
 window.onload = function () {
     //默认
     var val =  $.cookie('action');
-    console.log(val)
     if(val == '0'||val==''|| val ==undefined){
         $('.title div').eq(0).click();
     }else if(val=='1'){
         $('.title div').eq(1).click();
     }
+
     //获取推荐
     getRec();
     //获取我的

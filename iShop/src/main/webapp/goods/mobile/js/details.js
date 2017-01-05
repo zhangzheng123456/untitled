@@ -7,7 +7,7 @@ var corp_code =  GetRequest().corp_code;
 var user_code =  GetRequest().user_id;
 //    选项卡
 $('.main_select div').click(function () {
-    $('.main_select div').css('background-color','#ededed');
+    $('.main_select div').css('background-color','#ededed')
     $(this).css('background-color','white');
 })
 $('.main_select div').eq(0).click(function () {
@@ -413,9 +413,12 @@ function emojito(content){
 //第一张图的url 和 搭配描述
 //调用APP方法传参 param 格式 type：** ;url:**
 function toReturnShareInfo(){
+    var host=window.location.host;
     var param={};
     param["d_match_image_first"]=$('.carousel-inner div').eq(0).find('img').attr('src');
-    param["d_match_desc"]=$('.main_content .theDetails').text();;
+    param["d_match_desc"]=$('.main_content .theDetails').text();
+    param["share_url"]="http://"+host+"/goods/mobile/details_share.html?d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
+    console.log(param);
     var param=JSON.stringify(param);
     var osType = getWebOSType();
     if(osType=="iOS"){
