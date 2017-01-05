@@ -276,7 +276,7 @@ public class VipGroupServiceImpl implements VipGroupService {
                     for (int i = 0; i < stores.size(); i++) {
                         store_code = store_code + stores.get(i).getStore_code() + ",";
                     }
-                }else if (role_code.equals(Common.ROLE_SM)){
+                }else{
                     store_code = request.getSession().getAttribute("store_code").toString();
                     store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                 }
