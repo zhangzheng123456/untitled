@@ -15,7 +15,7 @@
             this.bind();
         },
         bind:function(){
-
+            this.auditRefuse();
         },
         getFunCode:function(){
             var key_val=sessionStorage.getItem("key_val");//取页面的function_code
@@ -254,6 +254,23 @@
                 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
                 $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
             });
+            //点击tr input是选择状态  tr增加class属性
+            $(".table tbody tr").click(function(){
+                var input=$(this).find("input")[0];
+                var thinput=$("thead input")[0];
+                $(this).toggleClass("tr");
+                //console.log(input);
+                if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+                    input.checked = true;
+                    $(this).addClass("tr");
+                }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+                    if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+                        thinput.checked=false;
+                    }
+                    input.checked = false;
+                    $(this).removeClass("tr");
+                }
+            });
             audit.checkDetail();
         },
         checkDetail:function(){
@@ -263,10 +280,62 @@
                 sessionStorage.setItem("id",id);
                 $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_audit_info.html");
             })
-        }
-    };
+        },
+        auditRefuse:function(){
+            $("#auditRefuse").bind("click",function(){
+                var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+                if(tr.length==0){
+                    frame();
+                    $('.frame').html("请先选择");
+                    return;
+                }
 
+            })
+        },
+    };
     $(function(){
         audit.init();
     })
 })();
+//删除弹框
+function frame(){
+    var def= $.Deferred();
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+    $('.frame').remove();
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    $(".frame").animate({opacity:"1"},1000);
+    $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+        $(".frame").hide();
+        def.resolve();
+    },2000);
+    return def;
+}
+function checkAll(name){
+    var el=$("tbody input");
+    el.parents("tr").addClass("tr");
+    var len = el.length;
+
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = true;
+        }
+    }
+};
+
+//取消全选
+function clearAll(name){
+    var el=$("tbody input");
+    el.parents("tr").removeClass("tr");
+    var len = el.length;
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = false;
+        }
+    }
+};
