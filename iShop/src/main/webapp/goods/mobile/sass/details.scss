@@ -109,6 +109,7 @@ body{
   background-color: white;
   color: #929eae;
   margin-bottom: rem(54);
+  min-height: rem(100);
 }
 .theDetails{
   padding-top: rem(3);
@@ -122,6 +123,17 @@ body{
   min-height: rem(100);
 }
 //∆¿¬€
+.area{
+  width: 100%;
+  position: relative;
+}
+.none{
+  width: 20%;
+  display: none;
+  position: absolute;
+  left: 50%;
+  margin-left: -10%;
+}
 .area .box{
   padding-top: rem(3);
   padding-bottom: rem(3);
@@ -296,6 +308,7 @@ body{
   line-height: rem(20);
   margin-top: 10px;
 }
+
 /*qq±Ì«È*/
 .comment{width:680px; margin:20px auto; position:relative}
 .comment h3{height:28px; line-height:28px}

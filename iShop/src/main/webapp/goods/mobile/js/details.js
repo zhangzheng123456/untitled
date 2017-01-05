@@ -127,13 +127,19 @@ function getConmments(){
             console.log(data)
             var message = JSON.parse(data.message);
             var list = message.list;
-            for(i=0;i<list.length;i++){
-                var img = ''
-                var name = list[i].operate_userName;
-                var time = list[i].created_date;
-                var msg = list[i].comment_text
-                conmmentsVal(img,name,time,msg)
+            if(list == 0){
+                $('.none').css('display','block')
+            }else if(list>0){
+                $('.none').css('display','none');
+                for(i=0;i<list.length;i++){
+                    var img = ''
+                    var name = list[i].operate_userName;
+                    var time = list[i].created_date;
+                    var msg = list[i].comment_text
+                    conmmentsVal(img,name,time,msg)
+                }
             }
+
         } else if(data.code =='-1'){
             //alert(data);
         }

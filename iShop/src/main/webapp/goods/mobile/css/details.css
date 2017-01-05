@@ -109,7 +109,8 @@ body {
   width: 100%;
   background-color: white;
   color: #929eae;
-  margin-bottom: 1.30435rem; }
+  margin-bottom: 1.30435rem;
+  min-height: 2.41546rem; }
 
 .theDetails {
   padding-top: 0.07246rem;
@@ -121,6 +122,17 @@ body {
   word-break: break-all;
   text-indent: 0.72464rem;
   min-height: 2.41546rem; }
+
+.area {
+  width: 100%;
+  position: relative; }
+
+.none {
+  width: 20%;
+  display: none;
+  position: absolute;
+  left: 50%;
+  margin-left: -10%; }
 
 .area .box {
   padding-top: 0.07246rem;
