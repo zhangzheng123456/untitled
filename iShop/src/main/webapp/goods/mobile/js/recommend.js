@@ -107,12 +107,19 @@ jQuery(function(){
 	        if(list[i].goods_image.indexOf("http")==-1){
 	            goods_image="image/goods_default_image.png";
 	        }
+	        var price="";
+	        if(list[i].goods_price==""){
+	        	price="暂无";
+	        }
+	        if(list[i].goods_price!==""){
+	        	price=list[i].goods_price;
+	        }
 			jQuery('.allShops').append('<div class="shop" data-id="'+list[i].id+'"><a href="javascript:void(0);"><div class="img"><img src="' 
 			+ goods_image
 			+ '"></div><div class="shop-t"><h1>' 
 			+ list[i].goods_name + '</h1><p>货号:' 
 			+ list[i].goods_code + '</p><p class="pice">价格:<span>￥' 
-			+ list[i].goods_price + '</span></p></div></a></div>');
+			+ price + '</span></p></div></a></div>');
 		}
 		sessionStorage.removeItem("return_jump");
 	}
