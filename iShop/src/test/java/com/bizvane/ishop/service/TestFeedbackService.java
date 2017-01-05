@@ -63,60 +63,78 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            Data data_user_id = new Data("table_name", "BizvaneV2.CorpStoreSales", ValueType.PARAM);
-            Data data_corp_id = new Data("row_key", "{\"CORP_ID\":\"C10183\",\"T_BL_Y\":\"2016\",\"T_BL_M\":\"11\"}", ValueType.PARAM);
-            Data data_number = new Data("query_type", "array", ValueType.PARAM);
-            Data data_vip_id = new Data("colum", "{\"STORE_ID\":\"902105201\"}", ValueType.PARAM);
+            Data data_row_num = new Data("row_num","100" , ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code","" , ValueType.PARAM);
+            Data data_open_id = new Data("open_id", "", ValueType.PARAM);
+            Data data_vip_card_no = new Data("vip_card_no", "", ValueType.PARAM);
+            Data data_type= new Data("type", "1", ValueType.PARAM);
 
             Map datalist = new HashMap<String, Data>();
-            datalist.put(data_user_id.key, data_user_id);
-            datalist.put(data_corp_id.key, data_corp_id);
-            datalist.put(data_number.key, data_number);
-            datalist.put(data_vip_id.key, data_vip_id);
-            DataBox dataBox = iceInterfaceService.iceInterface("HbaseResult", datalist);
+            datalist.put(data_row_num.key, data_row_num);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_open_id.key, data_open_id);
+            datalist.put(data_vip_card_no.key, data_vip_card_no);
+            datalist.put(data_type.key, data_type);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("Favorites", datalist);
             String result = dataBox.data.get("message").value;
-            JSONObject jsonObject = JSON.parseObject(result);
-            String toString = jsonObject.get("result").toString();
-            JSONArray jsonArray = JSON.parseArray(toString);
-            //  JSONArray jsonArray = JSON.parseArray(result);
-            System.out.println(jsonArray.size());
+            System.out.println(result.toString());
 
-            LinkedHashMap<String,String> cols =new LinkedHashMap<String,String>();
-            cols.put("STORE_ID","店铺编号");
-            cols.put("AMT_TRADE","成交金额");
-            cols.put("AMT_SUG","原价金额");
-            cols.put("NUM_TRADE","销售笔数");
-            cols.put("NUM_SALES","销售件数");
 
-            JSONArray array=new JSONArray();
-
-            for (int i=0;i<jsonArray.size();i++){
-                JSONObject object=new JSONObject();
-
-                JSONObject jsonObject1 = JSON.parseObject(jsonArray.get(i).toString());
-                String num_trade = jsonObject1.get("NUM_TRADE").toString();
-                 num_trade = NumberUtil.keepPrecision(num_trade,0);
-
-                String amt_trade = jsonObject1.get("AMT_TRADE").toString();
-                 amt_trade = NumberUtil.keepPrecision(amt_trade);
-
-                String amt_sug = jsonObject1.get("AMT_SUG").toString();
-                 amt_sug = NumberUtil.keepPrecision(amt_sug);
-
-                String num_sales = jsonObject1.get("NUM_SALES").toString();
-                num_sales = NumberUtil.keepPrecision(num_sales, 0);
-
-                String store_id = jsonObject1.get("STORE_ID").toString();
-                object.put("NUM_TRADE",num_trade);
-                object.put("AMT_TRADE",amt_trade);
-                object.put("AMT_SUG",amt_sug);
-                object.put("NUM_SALES",num_sales);
-                object.put("STORE_ID",store_id);
-
-                array.add(object);
-            }
-
-            OutExeclHelper.OutExecl_vip2(array,cols);
+//            Data data_user_id = new Data("table_name", "BizvaneV2.CorpStoreSales", ValueType.PARAM);
+//            Data data_corp_id = new Data("row_key", "{\"CORP_ID\":\"C10183\",\"T_BL_Y\":\"2016\",\"T_BL_M\":\"11\"}", ValueType.PARAM);
+//            Data data_number = new Data("query_type", "array", ValueType.PARAM);
+//            Data data_vip_id = new Data("colum", "{\"STORE_ID\":\"902105201\"}", ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_id.key, data_corp_id);
+//            datalist.put(data_number.key, data_number);
+//            datalist.put(data_vip_id.key, data_vip_id);
+//            DataBox dataBox = iceInterfaceService.iceInterface("HbaseResult", datalist);
+//            String result = dataBox.data.get("message").value;
+//            JSONObject jsonObject = JSON.parseObject(result);
+//            String toString = jsonObject.get("result").toString();
+//            JSONArray jsonArray = JSON.parseArray(toString);
+//            //  JSONArray jsonArray = JSON.parseArray(result);
+//            System.out.println(jsonArray.size());
+//
+//            LinkedHashMap<String,String> cols =new LinkedHashMap<String,String>();
+//            cols.put("STORE_ID","店铺编号");
+//            cols.put("AMT_TRADE","成交金额");
+//            cols.put("AMT_SUG","原价金额");
+//            cols.put("NUM_TRADE","销售笔数");
+//            cols.put("NUM_SALES","销售件数");
+//
+//            JSONArray array=new JSONArray();
+//
+//            for (int i=0;i<jsonArray.size();i++){
+//                JSONObject object=new JSONObject();
+//
+//                JSONObject jsonObject1 = JSON.parseObject(jsonArray.get(i).toString());
+//                String num_trade = jsonObject1.get("NUM_TRADE").toString();
+//                 num_trade = NumberUtil.keepPrecision(num_trade,0);
+//
+//                String amt_trade = jsonObject1.get("AMT_TRADE").toString();
+//                 amt_trade = NumberUtil.keepPrecision(amt_trade);
+//
+//                String amt_sug = jsonObject1.get("AMT_SUG").toString();
+//                 amt_sug = NumberUtil.keepPrecision(amt_sug);
+//
+//                String num_sales = jsonObject1.get("NUM_SALES").toString();
+//                num_sales = NumberUtil.keepPrecision(num_sales, 0);
+//
+//                String store_id = jsonObject1.get("STORE_ID").toString();
+//                object.put("NUM_TRADE",num_trade);
+//                object.put("AMT_TRADE",amt_trade);
+//                object.put("AMT_SUG",amt_sug);
+//                object.put("NUM_SALES",num_sales);
+//                object.put("STORE_ID",store_id);
+//
+//                array.add(object);
+//            }
+//
+//            OutExeclHelper.OutExecl_vip2(array,cols);
 
 //            String user_id = "ABC123";
 //            String corp_code = "C10141";
