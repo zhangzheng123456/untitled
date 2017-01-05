@@ -588,8 +588,8 @@
     cursor: pointer;
 }
 .add_chart span:first-child{
-    margin-top: 95px;
-    font-size: 80px;
+    margin-top: 85px;
+    font-size: 100px;
 }
 .chart_add_wrap{
     display: none;
