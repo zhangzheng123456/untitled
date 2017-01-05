@@ -32,7 +32,7 @@ var swip_image = [];
 			}
 		}else{
 			this.displayHint(hint);
-			return false;
+			return true;
 		}
 	}
 	fabjs.hiddenHint = function(hint){

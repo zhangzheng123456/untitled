@@ -8,10 +8,6 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../css/font_style.css">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
 </head>
@@ -30,30 +26,31 @@
                  <span>2</span><span>活动筹备</span>
                </div>
             </div>
-            <div >
+            <div data-src="activity_select.html">
                 <div class="tab">
                     <span>3</span><span>筛选会员</span>
                 </div>
             </div>
-            <div >
+            <div data-src="activity_finish.html">
                 <div class="tab">
                     <span>4</span><span>完成</span>
                 </div>
             </div>
         </div>
         <div class="tabs-content" id="tabs-content">
-            <div style="display: block">这是1页面内容</div>
-            <div>这是2页面内容</div>
-            <div>这是3页面内容</div>
-            <div>这是4页面内容</div>
+            <!--<div style="display: block">这是1页面内容</div>-->
+            <!--<div>这是2页面内容</div>-->
+            <!--<div>这是3页面内容</div>-->
+            <!--<div>这是4页面内容</div>-->
         </div>
     </div>
 </div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script src="../js/insidePostRequire.js"></script>
+<script src="../js/vip/vip_activity_add.js"></script>
 <!--<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>-->
-<!--<script src="../js/insidePostRequire.js"></script>-->
 <!--<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>-->
 <!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
 <!--<script src="../js/artDialog/jquery.artDialog.js"></script>-->
@@ -68,14 +65,5 @@
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"></script>-->
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>-->
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>-->
-<script>
-    $("#tabs>div").bind("click",function(){
-        var index=$(this).index();
-       $(this).addClass("active");
-       $(this).siblings().removeClass("active");
-        $("#tabs-content").children().hide();
-        $("#tabs-content").children().eq(index).show()
-    })
-</script>
 </body>
 </html>
