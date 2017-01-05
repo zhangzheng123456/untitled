@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.VipCardType;
+import com.bizvane.ishop.entity.VipRules;
 import com.bizvane.ishop.service.VipCardTypeService;
+import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -29,6 +31,8 @@ import java.util.Map;
 public class VipCardTypeController {
     @Autowired
     VipCardTypeService vipCardTypeService;
+    @Autowired
+    VipRulesService vipRulesService;
     String id;
     private static final Logger logger = Logger.getLogger(VipCardTypeController.class);
 
@@ -59,11 +63,11 @@ public class VipCardTypeController {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
-            }else if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+            } else if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
-            }else {
+            } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage(result);
@@ -129,18 +133,35 @@ public class VipCardTypeController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_fsend_id = jsonObject.get("id").toString();
-
-            String[] ids = vip_fsend_id.split(",");
-
+            String vip_card_typr_id = jsonObject.get("id").toString();
+            String msg = null;
+            String[] ids = vip_card_typr_id.split(",");
+            List<VipRules> list = null;
             for (int i = 0; i < ids.length; i++) {
-                vipCardTypeService.delete(Integer.parseInt(ids[i]));
+                VipCardType vipCardType = vipCardTypeService.getVipCardTypeById(Integer.parseInt(ids[i]));
+                if (vipCardType != null) {
+                    list = vipRulesService.getViprulesList(vipCardType.getCorp_code(), Common.IS_ACTIVE_Y);
+
+                    for (int j = 0; j < list.size(); j++) {
+                        if (list.get(j).getVip_type().equals(vipCardType.getVip_card_type_name()) || list.get(j).getHigh_vip_type().equals(vipCardType.getVip_card_type_name())) {
+                            msg = "会员类型: “" + vipCardType.getVip_card_type_name() + "”已被使用，请先处理后再删除";
+                            break;
+                        }
+                    }
+                }
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-
-            dataBean.setId(id);
-            dataBean.setMessage("delete success");
-
+            if (msg == null) {
+                for (int i = 0; i < ids.length; i++) {
+                    vipCardTypeService.delete(Integer.valueOf(ids[i]));
+                }
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

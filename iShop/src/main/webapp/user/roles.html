@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>权限管理之角色定义</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+	<link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" href="../css/font_style.css?201715">
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js"></script>
 </head>
@@ -204,13 +204,13 @@
         </div>
     </div>
 </body>
-<script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
-<script src="/js/user/roles.js?20161215"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js?201715"></script>
+<script src="/js/user/roles.js?201715"></script>
 <script type="text/javascript">
     $(function(){
         $(window).scroll(function(){
             if($(window).scrollTop()>100){
-                $("#side_bar .gotop").fadeIn(); 
+                $("#side_bar .gotop").fadeIn();
             }
             else{
                 $("#side-bar .gotop").hide();
@@ -224,5 +224,15 @@
             $('html,body').animate({'scrollTop':btm},500);
         })
     });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0017']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0017']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0017']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0017']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0017']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0017']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
 </script>
 </html>

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>系统管理之企业参数</title>
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161216">
+    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
+    <link rel="stylesheet" href="../css/font_style.css?201715">
 </head>
 <body>
 <div class="content">
@@ -153,12 +153,12 @@
 </div>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<script type="text/javascript" src="../js/moni_select.js?20161116"></script>
-<script src="../js/insidePostRequire.js?20161116"></script>
-<script src="../js/artDialog/jquery.artDialog.js?20161116"></script>
-<script src="../js/loading.js?20161116"></script>
-<script src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
-<script src="../js/system/corp_param.js?20161116"></script>
+<script type="text/javascript" src="../js/moni_select.js?201715"></script>
+<script src="../js/insidePostRequire.js?201715"></script>
+<script src="../js/artDialog/jquery.artDialog.js?201715"></script>
+<script src="../js/loading.js?201715"></script>
+<script src="../js/artDialog/plugins/iframeTools.js?201715"></script>
+<script src="../js/system/corp_param.js?201715"></script>
 <script type="text/javascript">
     $(function(){
         $(window).scroll(function(){
@@ -177,6 +177,16 @@
             $('html,body').animate({'scrollTop':btm},500);
         })
     });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0029']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0029']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0029']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0029']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0029']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0029']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
 </script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>用户操作日志</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20161130">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?20170105">
+    <link rel="stylesheet" href="../css/font_style.css?20170105">
     <style>
         #sxk .isActive_select_down li {
             width: 44px;
@@ -176,10 +176,22 @@
 <script src="../table/js/jquery.min.js"></script>
 <script src="/js/loading.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-<script src="../js/insidePostRequire.js?20161116"></script>
+<script src="../js/insidePostRequire.js?20170105"></script>
 <!--js控制文件-->
-<script src="../js/system/system_userLog.js?20161215"></script>
+<script src="../js/system/system_userLog.js?20170105"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="../js/silide.js?20161116"></script>
+<script src="../js/silide.js?20170105"></script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0042']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0042']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0042']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0042']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0042']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0042']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
 </body>
 </html>

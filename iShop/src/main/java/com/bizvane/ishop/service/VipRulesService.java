@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.VipCardType;
 import com.bizvane.ishop.entity.VipRules;
 import com.github.pagehelper.PageInfo;
 
@@ -13,6 +14,8 @@ public interface VipRulesService {
     VipRules getVipRulesById(int id) throws Exception;
 
     PageInfo<VipRules> getAllVipRulesByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
+
+    List<VipRules> getViprulesList(String corp_code,String isactive)throws Exception;
 
     String insert(String message, String user_id) throws Exception;
 

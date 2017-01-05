@@ -571,7 +571,7 @@ div.wx_app_new p{
 .p{
 	position: absolute;
 	top: 0px;
-	left:-82px;
+	/*left:-82px;*/
 	color: #434960!important;
 }
 .more{

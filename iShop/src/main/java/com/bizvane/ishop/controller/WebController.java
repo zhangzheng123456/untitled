@@ -1010,11 +1010,11 @@ public class WebController {
             String row_num = request.getParameter("row_num");
             String productName = request.getParameter("productName");
 
-            JSONObject goodsByWx = shopMatchService.getGoodsByWx(corp_code, pageSize, pageIndex, categoryId, row_num, productName);
+            String goodsByWx = shopMatchService.getGoodsByWx(corp_code, pageSize, pageIndex, categoryId, row_num, productName);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(goodsByWx.toJSONString());
+            dataBean.setMessage(goodsByWx.toString());
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
