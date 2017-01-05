@@ -13,11 +13,46 @@
         body{
             margin-top: 80px;
         }
+        .editor_line{
+            border: none;
+        }
+        .hr {
+            float: left;
+            width: 48%;
+            margin: 20px 0px 5px 0px;
+            height: 2px;
+            background-color: #e0e0e0;
+        }
+        .operedit_btn li {
+            width: 27.5%;
+            height: 30px;
+            display: inline-block;
+            list-style: none;
+            float: left;
+            margin-left: 20px;
+            color: #ffffff;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 14px;
+            letter-spacing: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i><span id="backCheck">审核管理</span><i class="icon-ishop_8-03"></i>审核详情</div>
+        <div class="col-lg-12">
+            <hr class="hr">
+            <div class="operedit_btn">
+                <ul style="overflow: hidden">
+                    <li class="performance" id="auditSuccess" style="background-color: #41c7db;display: none"><i class="icon-ishop_6-20"></i>通过审核</li>
+                    <li style="background-color: #c4c8d4;display: none" id="auditError"><i class="icon-ishop_6-04"></i>拒绝</li>
+                    <li style="background: #4a5f7c" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
+                </ul>
+            </div>
+        </div>
         <div class="editor_1 col-lg-7 editor_line animated fadeInRight">
             <form class="conpany_msg">
                 <div id="billNO"><span><label>单据编号</label><input type="text" readonly></span></div>
@@ -34,14 +69,15 @@
                 <div id="check_type"><span><label>待审核类型</label><input type="text" readonly></span></div>
             </form>
         </div>
-        <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
-            <div class="areaedit_oper_btn">
-                <ul>
-                    <li class="edit_save" id="edit_save" style="letter-spacing:3px"><i class="icon-ishop_6-04"></i>通过审过</li>
-                    <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>拒绝</li>
-                </ul>
-            </div>
-        </div>
+        <!--<div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">-->
+            <!--<div class="areaedit_oper_btn">-->
+                <!--<ul>-->
+                    <!--<li class="edit_save" id="edit_yes" style="letter-spacing:3px"><i class="icon-ishop_6-04"></i>通过审过</li>-->
+                    <!--<li class="edit_close" id="edit_no"><i class="icon-ishop_6-12"></i>拒绝</li>-->
+                    <!--<li class="edit_save" id="edit_close" style="letter-spacing:3px"><i class="icon-ishop_6-04"></i>关闭</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>

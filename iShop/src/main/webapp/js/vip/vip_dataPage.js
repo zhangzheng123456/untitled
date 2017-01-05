@@ -142,6 +142,7 @@ function topUpShop(){
             }
         });
     })
+    topUpPeople();  //充值弹窗经办人列表
 }
 function topUpShopShow(listList){
     for(i=0;i<listList.length;i++){
@@ -155,7 +156,7 @@ function topUpShopShow(listList){
         nowHTML1 = nowHTML1.replace("${name}", i);
         html += nowHTML1;
         console.log(html);
-        $("#topUpShopSelcet").append(html);
+        $("#topUpShopSelcet_ul").append(html);
     }
 }
 $('#topUpShop').click(function(){
@@ -166,9 +167,13 @@ $('#topUpShop').click(function(){
 //下拉选择
 function topUpShopSelcetClick(dom){
     var val =$(dom).text();
+    var id =$(dom).attr("id");
     $(dom).addClass("liactive").siblings("li").removeClass("liactive");
     $("#topUpShop").val(val);
+    $("#topUpShop").attr("data-storecode",id);
     $('#topUpShopSelcet').css('display','none');
+    $("#topUpPeople").val("");
+    topUpPeople();  //充值弹窗经办人列表
 }
 //退款店仓
 $('#refunShop').click(function () {
@@ -185,7 +190,8 @@ $("#refunShopSelcet li").click(function () {
 //经办人
 function topUpPeople(){
     var param={};
-    param["store_code"]=sessionStorage.getItem("store_id");
+    // param["store_code"]=sessionStorage.getItem("store_id");
+    param["store_code"]=$("#topUpShop").attr("data-storecode");
     param["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/shop/staff","",param,function(data){
         var msg = JSON.parse(data.message);
@@ -210,6 +216,7 @@ function topUpPeopleShow(msg){
         nowHTML1 = nowHTML1.replace("${id}", user_id);
         nowHTML1 = nowHTML1.replace("${msg}", user_name);
         html += nowHTML1;
+        $("#topUpPeopleSelect").empty();
         $("#topUpPeopleSelect").append(html);
     }
 }
@@ -527,7 +534,7 @@ function showDetail(){
         time: 1,
         lock: true,
         cancel: false,
-        content: "还没有详细=￣ω￣="
+        content: "还没有详细"
     });
 }
 //加载更多
@@ -536,14 +543,12 @@ $('#toAddMore').click(function () {
         time: 1,
         lock: true,
         cancel: false,
-        content: "加载更多...=￣ω￣="
+        content: "加载更多..."
     });
 })
 //遮罩层
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop();    //充值弹窗充值店仓列表
-    topUpPeople();  //充值弹窗经办人列表
     getRecord()  //充值记录数据加载
-
 }

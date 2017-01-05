@@ -249,7 +249,7 @@ padding:25px 15px 0 15px;
     right: 5px;
     top: 5px;
     background-color:#E8E8E8;
-    color:#c1c1c1;
+    color:#6cc1c8;
     border-radius: 5px;
     text-align: center;
     vertical-align: middle;
@@ -389,7 +389,7 @@ padding:25px 15px 0 15px;
 }
 /*导航头部*/
 .nav_bar li{
-    width:16.66%;
+    width:14.28%;
     height:30px;
     line-height: 30px;
     float: left;
@@ -1091,4 +1091,7 @@ padding:25px 15px 0 15px;
 }
 #vip_birthday_edit{
     cursor: pointer;
+}
+.collection{
+    display: none;
 }

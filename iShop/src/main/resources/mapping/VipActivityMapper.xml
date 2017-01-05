@@ -263,4 +263,16 @@
         WHERE def_vip_activity.corp_code=def_corp.corp_code
         AND def_vip_activity.activity_code = #{activity_code}
     </select>
+
+    <select id="selActivityByTheme" resultMap="Activity">
+        SELECT def_vip_activity.*,
+        def_corp.corp_name
+        FROM def_vip_activity,def_corp
+        WHERE def_vip_activity.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+        AND def_vip_activity.CORP_CODE = #{corp_code}
+        </if>
+        AND def_vip_activity.activity_code = #{activity_theme}
+        AND  def_vip_activity.isactive= #{isactive}
+    </select>
 </mapper>

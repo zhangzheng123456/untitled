@@ -13,7 +13,7 @@ public class VipActivity {
     private String activity_theme;
     //活动执行状态
     private String activity_state;
-    //活动执行方式
+    //活动类别
     private String run_mode;
     //活动开始时间
     private String start_time;

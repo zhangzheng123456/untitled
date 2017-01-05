@@ -234,6 +234,7 @@ var addProduct={
         },1000);
     },
     choose:function () {
+        $('.search_null').hide();
         $(window).unbind('scroll');
         //联通APP
         var toApp='chooseComplete';
@@ -360,6 +361,7 @@ var addProduct={
                     me.next = false;
                 }
             } else {
+                $('.search_null').hide();
                 for (var i = 0; i < list.length; i++) {
                     me.html += '<li class="list"> <div class="list_picture"><img src="' + list[i].imageUrl +
                         '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
@@ -418,6 +420,7 @@ var addProduct={
 
      },
     returnToApp:function () {
+        $('.search_null').hide();
         var toApp='returnAdd'
         $('.bg').show();
         //显示商品列表
