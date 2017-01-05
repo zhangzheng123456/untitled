@@ -36,9 +36,9 @@
     overflow: hidden;
     position: absolute !important;
     box-sizing: border-box;
-    border:4px dashed #639BF6;
+    border:4px dashed #4a5f7c;
     margin:5px;
     text-align: center;
-    color: #639BF6;
+    color: #4a5f7c;
     font-weight: bold;
 }

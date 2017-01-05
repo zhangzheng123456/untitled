@@ -1998,6 +1998,7 @@ $().ready(function () {
     date = year + "-" + month + "-" + strDate
     $(".date_title .date input").val(date);
     $('#chart_analyze').dad({
+        placeholder:"拖放到这里",
         draggable: '.drag_area',
         callback: function (data) {
             var index = $(data).index();
