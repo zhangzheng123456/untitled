@@ -127,9 +127,9 @@ function getConmments(){
             console.log(data)
             var message = JSON.parse(data.message);
             var list = message.list;
-            if(list == 0){
+            if(list.length == 0){
                 $('.none').css('display','block')
-            }else if(list>0){
+            }else if(list.length>0){
                 $('.none').css('display','none');
                 for(i=0;i<list.length;i++){
                     var img = ''
