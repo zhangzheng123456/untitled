@@ -560,11 +560,10 @@ public class VIPController {
             logger.info("json--------------corp_code-" + corp_code);
             DataBox dataBox = null;
             if (!searchValue.equals("")) {
-
-                Map datalist = iceInterfaceService.vipBasicMethod("1","10000",corp_code,request);
+                Map datalist = iceInterfaceService.vipBasicMethod2("1","10000",corp_code,request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch3", datalist);
 
 //                Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
 //                datalist.put(data_search_value.key, data_search_value);
@@ -583,12 +582,8 @@ public class VIPController {
 //                datalist.put(data_output_type.key, data_output_type);
 //                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(!screen_message.equals("")){
-                JSONObject jsonObject2 = JSONObject.parseObject(screen_message);
-                String user_code = jsonObject2.get("user_code").toString();
-                String store_code = jsonObject2.get("store_code").toString();
-                String brand_code = jsonObject2.get("brand_code").toString();
-                String area_code = jsonObject2.get("area_code").toString();
-                dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+                JSONArray screen = JSON.parseArray(screen_message);
+                dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,"1","10000",request);
 
               //  dataBox = iceInterfaceService.vipScreen2ExeclMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code, output_message);
             }

@@ -33,7 +33,7 @@ public class ShopMatchServiceImpl implements ShopMatchService {
     MongoDBClient mongodbClient;
     @Autowired
     private UserService userService;
-    public JSONObject getGoodsByWx(String corp_code, String pageSize, String pageIndex, String categoryId, String row_num, String productName) throws Exception {
+    public String getGoodsByWx(String corp_code, String pageSize, String pageIndex, String categoryId, String row_num, String productName) throws Exception {
         JSONObject jsonObject = new JSONObject();
 
         Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -54,8 +54,8 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         DataBox dataBox = iceInterfaceService.iceInterface("ProductList",datalist);
 
         String result = dataBox.data.get("message").value;
-        jsonObject = JSON.parseObject(result);
-        return jsonObject;
+
+        return result;
     }
 
 
