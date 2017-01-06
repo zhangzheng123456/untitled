@@ -260,7 +260,7 @@ function setConmments(){
                 //$('.success div').animate({opacity:"0"},1000);
                 setTimeout(function () {
                     $('.success div').css('display','none');
-                },3000);
+                },1200);
 
             }else if(data.code =='-1'){
             }
