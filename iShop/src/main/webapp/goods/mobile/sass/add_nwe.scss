@@ -51,12 +51,12 @@ address,cite,dfn,em,var{font-style:normal;}
     outline: none;
     color:#888;
     background: none;
-    margin-left: rem(10);
-    line-height: rem(15);
-    padding-top: rem(14);
-    padding-bottom: rem(14);
+    //margin-left: rem(10);
+    line-height: rem(18);
+    padding-top: rem(13);
+    padding-bottom: rem(13);
     height: rem(44);
-    padding-right: rem(10);
+    //padding-right: rem(10);
     text-align: right;
   }
 }
@@ -174,14 +174,14 @@ address,cite,dfn,em,var{font-style:normal;}
   @include font(13);
   color:#888;
 }
-#describe::-webkit-input-placeholder{font-size: rem(15);color:#bbb}
-#describe:-moz-placeholder{font-size: rem(15);color:#bbb}
-#describe::-moz-placeholder{font-size: rem(15);color:#bbb}
-#describe:-ms-input-placeholder{font-size: rem(15);color:#bbb}
-.header_title_r::-webkit-input-placeholder{font-size: rem(15);color:#bbb}
-.header_title_r:-moz-placeholder{font-size: rem(15);color:#bbb}
-.header_title_r::-moz-placeholder{font-size: rem(15);color:#bbb}
-.header_title_r:-ms-input-placeholder{font-size: rem(15);color:#bbb}
+#describe::-webkit-input-placeholder{ @include font(15);color:#bbb}
+#describe:-moz-placeholder{@include font(15);color:#bbb}
+#describe::-moz-placeholder{@include font(15);color:#bbb}
+#describe:-ms-input-placeholder{@include font(15);color:#bbb}
+.header_title_r::-webkit-input-placeholder{@include font(15);color:#bbb}
+.header_title_r:-moz-placeholder{@include font(15);color:#bbb}
+.header_title_r::-moz-placeholder{@include font(15);color:#bbb}
+.header_title_r:-ms-input-placeholder{@include font(15);color:#bbb}
 .product_list{
   display:none;
   position: absolute;

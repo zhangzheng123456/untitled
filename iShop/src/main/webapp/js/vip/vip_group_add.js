@@ -289,7 +289,7 @@ $(function () {
         });
         $("#edit_save").click(function () {
             var name = $("#vip_id").attr("data-mark");//区域名称是否唯一的标志
-            var num = $("#vip_num").attr("data-mark");//区域编号是否唯一的标志
+            //var num = $("#vip_num").attr("data-mark");//区域编号是否唯一的标志
             if (vipjs.firstStep()) {
                 if (name == "N") {
                     var div = $("#vip_id").next('.hint').children();
@@ -297,12 +297,12 @@ $(function () {
                     div.addClass("error_tips");
                     return;
                 }
-                if (num == "N") {
-                    var div = $("#vip_num").next('.hint').children();
-                    div.html("该编号已经存在！");
-                    div.addClass("error_tips");
-                    return;
-                }
+                //if (num == "N") {
+                //    var div = $("#vip_num").next('.hint').children();
+                //    div.html("该编号已经存在！");
+                //    div.addClass("error_tips");
+                //    return;
+                //}
                 var ID = sessionStorage.getItem("id");
                 var vip_id = $("#vip_id").val();
                 var vip_num = $("#vip_num").val();
@@ -340,6 +340,7 @@ $(function () {
                 function isDefine(){
                     var group_condition_array=all_select_vip_list;
                     _params["group_condition"]=group_condition_array;
+                    console.log(all_select_vip_list)
                     if(all_select_vip_list.length==0){
                         art.dialog({
                             time: 1,
@@ -463,6 +464,7 @@ function getcorplist(a) {
                 $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
             }
             $('.corp_select select').searchableSelect();
+            expend_data1();
             $('.searchable-select-item').click(function () {
                 user_num = 1;
                 $("#vip_id").val("");
@@ -471,6 +473,9 @@ function getcorplist(a) {
                 $("#vip_remark").val("");
                 $("#vip_id").attr("data-mark", "");
                 $("#vip_num").attr("data-mark", "");
+                expend_data1();
+                $("#custom_vip_list").html("");
+                all_select_vip_list=[];
                 // $("#PARAM_NAME").val("");
                 // $("#PARAM_NAME").attr("data-code", "");
                 // $("#allUser_list").empty();
@@ -2272,6 +2277,62 @@ function showOtherGroup(list,type){
         }
         //Number($(this).val())-Number($(this).val())
     });
+//获取拓展资料
+function expend_data1() {
+    console.log($("#OWN_CORP").val())
+        var param={"corp_code":$("#OWN_CORP").val()};
+    oc.postRequire("post","/vipparam/corpVipParams","0",param,function (data) {
+        if(data.code == 0){
+            $("#expend_attribute").empty();
+            var msg = JSON.parse(data.message);
+            var list = JSON.parse(msg.list);
+            var html="";
+            var simple_html="";
+            if(list.length>0){
+                for(var i=0;i<list.length;i++){
+                    var param_type = list[i].param_type;
+                    if(param_type=="date"){
+                        simple_html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                            + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'s" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'s\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                            + '<input readonly="true" id="end'+i+'s" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'s\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
+                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                            + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                            + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
+                    }
+                    if(param_type=="select"){
+                        var param_values = "";
+                        param_values = list[i].param_values.split(",");
+                        if(param_values.length>0){
+                            var li="";
+                            for(var j=0;j<param_values.length;j++){
+                                li+='<li>'+param_values[j]+'</li>'
+                            }
+                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                                + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select">'
+                                + li
+                                + '</ul></div>'
+                        }else {
+                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                                + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select"></ul></div>'
+                        }
+                    }
+                    if(param_type=="text"){
+                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                            + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="input"><ul class="sex_select"></ul></div>'
+                    }
+                    if(param_type=="longtext"){
+                        html+='<div class="textarea"><label>'+list[i].param_desc+'</label>'
+                            + '<textarea data-kye="'+list[i].param_name+'" rows="0" cols="0"></textarea><ul class="sex_select"></ul></div>'
+                    }
+                }
+            }
+            $("#expend_attribute").append(html);
+            $("#memorial_day").html(" ").append(simple_html);
+        }else if(data.code == -1){
+            console.log(data.message);
+        }
+    });
+}
 $("#group_type").click(function(){
     $("#group_all_list").is(":hidden")==true?$("#group_all_list").show():$("#group_all_list").hide();
 });

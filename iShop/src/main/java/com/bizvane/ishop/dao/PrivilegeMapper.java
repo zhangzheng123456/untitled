@@ -33,6 +33,8 @@ public interface PrivilegeMapper {
 
     int deleteColPrivileges(Map<String,Object> map)throws SQLException;
 
+    int deleteUserColPrivileges(@Param("function_code") String function_code, @Param("master_code") String master_code)throws SQLException;
+
     List<Privilege> selectColPrivilegeByUser(@Param("function_code") String function_code, @Param("master_code") String master_code)  throws SQLException;
 
 

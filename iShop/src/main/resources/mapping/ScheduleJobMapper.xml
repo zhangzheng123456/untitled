@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.ScheduleJobMapper">
+
+    <resultMap id="ScheduleJob" type="com.bizvane.ishop.entity.ScheduleJob">
+        <id column="schedule_job_id" property="schedule_job_id"/>
+        <result column="job_name" property="job_name"/>
+        <result column="alias_name" property="alias_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="job_group" property="job_group" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="job_trigger" property="job_trigger"/>
+        <result column="status" property="status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="cron_expression" property="cron_expression" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="func" property="func" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="description" property="description" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="gmt_create" property="gmt_create" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="gmt_modify" property="gmt_modify" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectScheduleJobById" resultMap="ScheduleJob">
+        SELECT *
+        FROM schedule_job
+        WHERE schedule_job_id=#{schedule_job_id}
+    </select>
+
+    <select id="selectAllScheduleJob" resultMap="ScheduleJob">
+        SELECT *
+        FROM schedule_job
+    </select>
+
+    <insert id="insertScheduleJob" parameterType="com.bizvane.ishop.entity.ScheduleJob">
+        INSERT INTO schedule_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="job_name != null">
+                job_name,
+            </if>
+            <if test="alias_name != null">
+                alias_name,
+            </if>
+            <if test="job_group != null">
+                job_group,
+            </if>
+            <if test="job_trigger != null">
+                job_trigger,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="cron_expression != null">
+                cron_expression,
+            </if>
+            <if test="func != null">
+                func,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="gmt_create != null">
+                gmt_create,
+            </if>
+            <if test="gmt_modify != null">
+                gmt_modify,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="job_name != null">
+                #{job_name},
+            </if>
+            <if test="alias_name != null">
+                #{alias_name},
+            </if>
+            <if test="job_group != null">
+                #{job_group},
+            </if>
+            <if test="job_trigger != null">
+                #{job_trigger},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="cron_expression != null">
+                #{cron_expression},
+            </if>
+            <if test="func != null">
+                #{func},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="gmt_create != null">
+                #{gmt_create},
+            </if>
+            <if test="gmt_modify != null">
+                #{gmt_modify},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateScheduleJob" parameterType="com.bizvane.ishop.entity.ScheduleJob">
+        UPDATE schedule_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="job_name != null">
+                job_name = #{job_name},
+            </if>
+            <if test="alias_name != null">
+                alias_name = #{alias_name},
+            </if>
+            <if test="job_group != null">
+                job_group = #{job_group},
+            </if>
+            <if test="job_trigger != null">
+                job_trigger = #{job_trigger},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="cron_expression != null">
+                cron_expression = #{cron_expression},
+            </if>
+            <if test="func != null">
+                func = #{func},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="gmt_create != null">
+                gmt_create = #{gmt_create},
+            </if>
+            <if test="gmt_modify != null">
+                gmt_modify = #{gmt_modify},
+            </if>
+        </trim>
+        WHERE schedule_job_id = #{schedule_job_id};
+    </update>
+
+    <delete id="deleteScheduleJob">
+        DELETE FROM
+        schedule_job
+        WHERE schedule_job_id = #{schedule_job_id}
+    </delete>
+
+</mapper>

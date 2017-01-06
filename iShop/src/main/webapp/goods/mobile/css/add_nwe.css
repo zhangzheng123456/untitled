@@ -81,12 +81,10 @@ address, cite, dfn, em, var {
     outline: none;
     color: #888;
     background: none;
-    margin-left: 0.24155rem;
-    line-height: 0.36232rem;
-    padding-top: 0.33816rem;
-    padding-bottom: 0.33816rem;
+    line-height: 0.43478rem;
+    padding-top: 0.31401rem;
+    padding-bottom: 0.31401rem;
     height: 1.0628rem;
-    padding-right: 0.24155rem;
     text-align: right; }
 
 .action {
@@ -248,36 +246,76 @@ address, cite, dfn, em, var {
     font-size: 39px; }
 
 #describe::-webkit-input-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] #describe::-webkit-input-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] #describe::-webkit-input-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] #describe::-webkit-input-placeholder {
+    font-size: 45px; }
 
 #describe:-moz-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] #describe:-moz-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] #describe:-moz-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] #describe:-moz-placeholder {
+    font-size: 45px; }
 
 #describe::-moz-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] #describe::-moz-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] #describe::-moz-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] #describe::-moz-placeholder {
+    font-size: 45px; }
 
 #describe:-ms-input-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] #describe:-ms-input-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] #describe:-ms-input-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] #describe:-ms-input-placeholder {
+    font-size: 45px; }
 
 .header_title_r::-webkit-input-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] .header_title_r::-webkit-input-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] .header_title_r::-webkit-input-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] .header_title_r::-webkit-input-placeholder {
+    font-size: 45px; }
 
 .header_title_r:-moz-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] .header_title_r:-moz-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] .header_title_r:-moz-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] .header_title_r:-moz-placeholder {
+    font-size: 45px; }
 
 .header_title_r::-moz-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] .header_title_r::-moz-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] .header_title_r::-moz-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] .header_title_r::-moz-placeholder {
+    font-size: 45px; }
 
 .header_title_r:-ms-input-placeholder {
-  font-size: 0.36232rem;
   color: #bbb; }
+  [data-dpr="1"] .header_title_r:-ms-input-placeholder {
+    font-size: 15px; }
+  [data-dpr="2"] .header_title_r:-ms-input-placeholder {
+    font-size: 30px; }
+  [data-dpr="3"] .header_title_r:-ms-input-placeholder {
+    font-size: 45px; }
 
 .product_list {
   display: none;

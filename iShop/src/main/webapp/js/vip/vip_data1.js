@@ -497,7 +497,7 @@ function superaddition(data){//页面加载循环
             + "</td><td><span title='"+data[i].description+"'>"
             + data[i].description
             + "</span></td>"
-        $(".table tbody").append("<tr><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $("#collect_table tbody").append("<tr><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"

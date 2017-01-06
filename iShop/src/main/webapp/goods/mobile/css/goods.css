@@ -225,10 +225,12 @@ input[type="search"]::-webkit-search-cancel-button {
       -o-transform: translate3d(-50%, -50%, 0); }
 
 input-placeholder {
-  text-align: center; }
+  text-align: center;
+  line-height: normal; }
 
 input::-webkit-input-placeholder {
-  text-align: center; }
+  text-align: center;
+  line-height: normal; }
 
 .header_line {
   width: 100%;
@@ -421,5 +423,3 @@ input::-webkit-input-placeholder {
   z-index: 3;
   background-color: #000000;
   opacity: 0.5; }
-
-/*# sourceMappingURL=goods.css.map */
