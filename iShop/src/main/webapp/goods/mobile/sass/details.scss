@@ -292,7 +292,8 @@ body{
   background-color: #3b3b3b;
   color: white;
   border-radius: rem(6);
-  opacity:0;
+  //opacity:0;
+  display: none;
   z-index: 99999;
 }
 .success div img{

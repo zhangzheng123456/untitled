@@ -248,8 +248,13 @@ function setConmments(){
             if((data.code =='0')){
                 $('.main_content').eq(1).find('.box').remove();
                 getConmments();
-                $('.success div').animate({opacity:"1"},1000);
-                $('.success div').animate({opacity:"0"},1000);
+                $('.success div').css('display','block');
+                //$('.success div').animate({opacity:"1"},1000);
+                //$('.success div').animate({opacity:"0"},1000);
+                setTimeout(function () {
+                    $('.success div').css('display','none');
+                },1200);
+
             }else if(data.code =='-1'){
             }
         })
@@ -301,7 +306,7 @@ function getNowFormatDate() {
     return currentdate;
 }
 //点击编辑
-$('.editor').bind('click',function () {
+$('.editor').click(function () {
     var host=window.location.host;
     var param={};
     //var str="d_match_code=" + d_match_code +"&corp_code=" + corp_code+"&user_id="+user_code;
@@ -413,12 +418,12 @@ function setDocumentTitle(d_match_title) {
     }
 }
 //qq表情
-$(function () {
-    $('.bottom_input img').qqFace({
-        assign: 'input', //给输入框赋值
-        path: 'image/face/' //表情图片存放的路径
-    });
-});
+//$(function () {
+//    $('.bottom_input img').qqFace({
+//        assign: 'input', //给输入框赋值
+//        path: 'image/face/' //表情图片存放的路径
+//    });
+//});
 //替换成图片
 function replace_em(str) {
     str = str.replace(/\[em_([0-9]*)\]/g, '<img src="img/face/$1.gif" border="0" class="qq_face"/>');
