@@ -1090,7 +1090,8 @@ var vip_group_info={
                                         $(this).show();
                                         var ID = $(this).attr("data-id");
                                         vip_group_info.init_chart(ID);
-                                        $("#add_chart").before($(this));
+                                        //$("#chart_analyze").append($(this));
+                                        //$("#add_chart").before($(this));
                                     }
                                 });
                             }
@@ -1684,6 +1685,8 @@ $(function(){
     $(".icon-ishop_6-07").parent().click(function () {
         window.location.reload();
     });
+    $("#chart_parent").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-100+"px");
+    $("#chart_parent>div").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-100+"px");
     setInterval(function(){
         $("#left").height($("#left").next().height()-10)
     },0);
