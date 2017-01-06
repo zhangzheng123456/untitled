@@ -5,18 +5,35 @@
     <resultMap type="com.bizvane.ishop.entity.VipActivity" id="Activity">
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_code" property="activity_vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="activity_code" property="activity_vip_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_theme" property="activity_theme"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_state" property="activity_state"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_theme" property="activity_theme" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_vips" property="target_vips" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_store_code" property="operators" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_desc" property="activity_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="activity_store_code" property="operators"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_desc" property="activity_content"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+        <result column="activity_store_code" property="activity_store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_desc" property="activity_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
         <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sms_code" property="sms_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -217,7 +234,7 @@
         SELECT def_vip_activity.*,
         def_corp.corp_name
         FROM def_vip_activity,def_corp
-        WHERE  def_vip_activity.corp_code=def_corp.corp_code
+        WHERE def_vip_activity.corp_code=def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_vip_activity.corp_code = #{corp_code}
         </if>
@@ -225,10 +242,10 @@
             AND def_vip_activity.creater = #{user_code}
         </if>
         <if test="created_date_start!=null and created_date_start!=''">
-            AND  def_vip_activity.created_date &gt;= #{created_date_start}
+            AND def_vip_activity.created_date &gt;= #{created_date_start}
         </if>
         <if test="created_date_end!=null and created_date_end!=''">
-            AND  def_vip_activity.created_date &lt;= #{created_date_end}
+            AND def_vip_activity.created_date &lt;= #{created_date_end}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
@@ -264,6 +281,11 @@
         AND def_vip_activity.activity_code = #{activity_code}
     </select>
 
+    <update id="updActiveCodeByType" parameterType="com.bizvane.ishop.entity.VipActivity">
+        UPDATE  def_vip_activity SET #{line_code}=#{line_value} WHERE corp_code=#{corp_code} AND activity_code =#{activity_code}
+    </update>
+
+
     <select id="selActivityByTheme" resultMap="Activity">
         SELECT def_vip_activity.*,
         def_corp.corp_name
@@ -272,7 +294,8 @@
         <if test="corp_code!=null and corp_code!=''">
         AND def_vip_activity.CORP_CODE = #{corp_code}
         </if>
-        AND def_vip_activity.activity_code = #{activity_theme}
+        AND def_vip_activity.activity_theme = #{activity_theme}
         AND  def_vip_activity.isactive= #{isactive}
     </select>
+
 </mapper>

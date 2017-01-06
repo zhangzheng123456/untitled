@@ -204,6 +204,9 @@
             <if test="activity_vip_code!=null">
                 activity_vip_code,
             </if>
+            <if test="task_link!=null">
+                task_link,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="task_code!=null">
@@ -244,6 +247,9 @@
             </if>
             <if test="activity_vip_code!=null">
                 #{activity_vip_code},
+            </if>
+            <if test="task_link!=null">
+                #{task_link},
             </if>
         </trim>
     </insert>
@@ -379,6 +385,9 @@
             <if test="isactive!=null and isactive!=''">
                 isactive= #{isactive},
             </if>
+            <if test="task_link!=null">
+                task_link = #{task_link},
+            </if>
         </trim>
         WHERE id=#{id}
     </update>
@@ -480,4 +489,29 @@
        AND def_task.task_code = #{task_code}
     </select>
 
+    <select id="getTaskByActivityCode" resultType="com.bizvane.ishop.entity.Task">
+         SELECT
+        def_task.id,
+        def_task.task_code,
+        def_task.task_title,
+        def_task.task_type_code,
+        def_task_type.task_type_name,
+        def_task.task_description,
+        def_task.corp_code,
+        def_corp.corp_name,
+        def_task.target_start_time,
+        def_task.target_end_time,
+        def_task.modifier,
+        def_task.activity_vip_code,
+        def_task.ISACTIVE
+        FROM def_task,def_corp,def_task_type
+        WHERE def_task.corp_code = def_corp.corp_code
+        AND def_task.task_type_code =def_task_type.task_type_code
+        AND def_corp.corp_code = def_task_type.corp_code
+        AND def_task.corp_code = #{corp_code}
+       AND def_task.activity_vip_code = #{activity_vip_code}
+    </select>
+    <delete id="delTaskByActivityCode">
+         DELETE FROM def_task WHERE  corp_code =#{corp_code} AND activity_vip_code =#{activity_vip_code}
+    </delete>
 </mapper>

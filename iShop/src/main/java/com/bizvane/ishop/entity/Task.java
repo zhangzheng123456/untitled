@@ -45,6 +45,15 @@ public class Task {
 
     //关联活动
     private String activity_vip_code;
+    private String task_link;
+
+    public String getTask_link() {
+        return task_link;
+    }
+
+    public void setTask_link(String task_link) {
+        this.task_link = task_link;
+    }
 
     public String getTask_type_code_old() {
         return task_type_code_old;
@@ -118,7 +127,6 @@ public class Task {
     public void setTask_type_code(String task_type_code) {
         this.task_type_code = task_type_code;
     }
-
 
 
     public String getTask_description() {

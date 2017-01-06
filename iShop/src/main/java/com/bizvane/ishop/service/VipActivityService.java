@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.VipActivity;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -44,20 +45,19 @@ public interface VipActivityService {
     /**
      * @param message
      * @param user_id
-     * @param request
      * @return
      * @throws Exception
      */
-    String insert(String message, String user_id, HttpServletRequest request) throws Exception;
+    String insert(String message, String user_id) throws Exception;
 
     /**
      * @param message
      * @param user_id
-     * @param request
+
      * @return
      * @throws Exception
      */
-    String update(String message, String user_id, HttpServletRequest request) throws Exception;
+    String update(String message, String user_id) throws Exception;
 
     /**
      * @param activityVip
@@ -96,6 +96,10 @@ public interface VipActivityService {
 
     ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception;
 
+
+    int updActiveCodeByType(String line_code, String line_value,String corp_code, String activity_code)throws Exception;
+
     VipActivity getVipActivityByTheme(String corp_code,String activity_theme,String isactive)throws Exception;
+
 
 }

@@ -42,4 +42,8 @@ public interface TaskMapper {
         List<Task> selectTaskByTaskType(@Param("corp_code")String corp_code,@Param("task_type_code")String task_type_code);
 
         Task getTaskForId(@Param("corp_code")String corp_code,@Param("task_code")String task_code);
+
+        List<Task> getTaskByActivityCode(@Param("corp_code")String corp_code,@Param("activity_vip_code")String activity_vip_code);
+
+        int delTaskByActivityCode(@Param("corp_code")String corp_code,@Param("activity_vip_code")String activity_vip_code);
 }

@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -487,5 +488,14 @@ public class VipFsendServiceImpl implements VipFsendService {
 
     public void test2(){
         System.out.println("it's test2 " + Common.DATETIME_FORMAT.format(new Date()));
+    }
+
+    public int insertSend(VipFsend vipFsend) throws Exception {
+        return  vipFsendMapper.insertFsend(vipFsend);
+    }
+
+    @Override
+    public int delSendByActivityCode(String corp_code, String activity_vip_code) throws Exception {
+        return vipFsendMapper.delSendByActivityCode(corp_code,activity_vip_code);
     }
 }

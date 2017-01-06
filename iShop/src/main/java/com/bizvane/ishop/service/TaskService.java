@@ -37,4 +37,10 @@ public interface TaskService {
     List<TaskType> selectAllTaskType(String corp_code) throws Exception;
 
     List<Task> selectTaskByTaskType(String corp_code, String task_type_code) throws Exception;
+
+    List<Task> getTaskByActivityCode(String corp_code,String activity_vip_code)throws Exception;
+
+    int delTaskByActivityCode(String corp_code,String activity_vip_code)throws Exception;
+
+     int insertTask(Task task) throws Exception;
 }
