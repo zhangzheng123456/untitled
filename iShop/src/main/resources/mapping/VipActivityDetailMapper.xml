@@ -52,6 +52,11 @@
         dvad.apply_success_tips,
         dvad.apply_logo,
         dvad.apply_qrcode,
+        dvad.modified_date,
+        dvad.modifier,
+        dvad.created_date,
+        dvad.creater,
+        dvad.isactive,
         dc.corp_name
         FROM def_vip_activity_detail dvad,def_corp dc
         WHERE dvad.corp_code = dc.corp_code
@@ -341,6 +346,11 @@
         dvad.apply_success_tips,
         dvad.apply_logo,
         dvad.apply_qrcode,
+         dvad.modified_date,
+        dvad.modifier,
+        dvad.created_date,
+        dvad.creater,
+        dvad.isactive,
         dc.corp_name
         FROM def_vip_activity_detail dvad,def_corp dc
         WHERE dvad.corp_code=dc.corp_code

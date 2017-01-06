@@ -7,8 +7,10 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.VipActivity;
 import com.bizvane.ishop.entity.VipActivityDetail;
+import com.bizvane.ishop.entity.VipFsend;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
+import com.bizvane.ishop.service.VipFsendService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -32,7 +34,9 @@ public class VipActivityController {
     @Autowired
     private VipActivityService vipActivityService;
     @Autowired
-    private TaskService taskService;
+     TaskService taskService;
+    @Autowired
+     VipFsendService vipFsendService;
 
 
     private static final Logger logger = Logger.getLogger(VipActivityController.class);
@@ -135,116 +139,130 @@ public class VipActivityController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 活动搜索
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/search", method = RequestMethod.POST)
-//    @ResponseBody
-//    @Transactional
-//    public String search(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        String role_code = request.getSession(false).getAttribute("role_code").toString();
-//        String corp_code = request.getSession().getAttribute("corp_code").toString();
-//        String user_code = request.getSession(false).getAttribute("user_code").toString();
-//        try {
-//            String jsString = request.getParameter("param");
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = JSONObject.parseObject(message);
-//
-//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String search_value = jsonObject.get("searchValue").toString();
-//            PageInfo<VipActivity> list;
-//            if (role_code.contains(Common.ROLE_SYS)) {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, "", "", search_value);
-//            } else if (role_code.equals(Common.ROLE_GM)) {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, "", search_value);
-//            } else {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, user_code, search_value);
-//            }
-//            JSONObject result = new JSONObject();
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage("search error");
-//        }
-//        return dataBean.getJsonStr();
-//    }
-//
-//
-//    /**
-//     * 删除活动
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-//    @ResponseBody
-//    @Transactional
-//    public String delete(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String jsString = request.getParameter("param");
-//            logger.info("json--delete-------------" + jsString);
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = JSONObject.parseObject(message);
-//            String area_id = jsonObject.get("id").toString();
-//            String[] ids = area_id.split(",");
-//            String msg = "";
-//            for (int i = 0; i < ids.length; i++) {
-//                logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-//                VipActivity activityVip = vipActivityService.getActivityById(Integer.valueOf(ids[i]));
-//                if (activityVip != null) {
-//                    String activity_state = activityVip.getActivity_state();
-//                    if (activity_state.equals("执行中")) {
-//                        msg = "执行中活动，不可删除";
-//                        break;
-//                    }else {
-//                        String task_code = activityVip.getTask_code();
-//                        if (task_code != null && !task_code.equals("")){
-//                            Task task = taskService.getTaskForId(activityVip.getCorp_code(),task_code);
-//                            if (task != null){
-//                                msg = "请先删除活动对应的任务，再删除活动";
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            if (msg.equals("")){
-//                for (int i = 0; i < ids.length; i++) {
-//                    vipActivityService.delete(Integer.parseInt(ids[i]));
-//                }
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setId(id);
-//                dataBean.setMessage("success");
-//            }else {
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setId(id);
-//                dataBean.setMessage(msg);
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            return dataBean.getJsonStr();
-//        }
-//        logger.info("delete-----" + dataBean.getJsonStr());
-//        return dataBean.getJsonStr();
-//    }
+    /**
+     * 活动搜索
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String search(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        String role_code = request.getSession(false).getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String user_code = request.getSession(false).getAttribute("user_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("searchValue").toString();
+            PageInfo<VipActivity> list;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                list = vipActivityService.selectAllActivity(page_number, page_size, "", "", search_value);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, "", search_value);
+            } else {
+                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, user_code, search_value);
+            }
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("search error");
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 删除活动
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String delete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json--delete-------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String area_id = jsonObject.get("id").toString();
+            String[] ids = area_id.split(",");
+            String msg = "";
+            for (int i = 0; i < ids.length; i++) {
+                logger.info("-------------delete--" + Integer.valueOf(ids[i]));
+                VipActivity activityVip = vipActivityService.getActivityById(Integer.valueOf(ids[i]));
+                if (activityVip != null) {
+                    String activity_state = activityVip.getActivity_state();
+                    if (activity_state.equals("执行中")) {
+                        msg = "执行中活动，不可删除";
+                        break;
+                    } else if (activity_state.equals("未执行")) {
+                        msg = "活动还未执行，不可删除";
+                        break;
+                    } else {
+                        String task_code = activityVip.getTask_code();
+                        String sms_code = activityVip.getSms_code();
+                        if (task_code != null && !task_code.equals("")) {
+                            Task task = taskService.getTaskForId(activityVip.getCorp_code(), task_code);
+                            if (task != null) {
+                                msg = "请先删除活动对应的任务，再删除活动";
+                                break;
+                            }
+                        }
+                            if (sms_code != null && !sms_code.equals("")) {
+
+//                                VipFsend vipFsend = vipFsendService.getVipFsendById();
+//                                if (vipFsend != null) {
+//                                    msg = "请先删除活动对应的任务，再删除活动";
+//                                    break;
+//                                }
+                            }
+                        }
+                    }
+                }
+                if (msg.equals("")) {
+                    for (int i = 0; i < ids.length; i++) {
+                        vipActivityService.delete(Integer.parseInt(ids[i]));
+                    }
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
+                } else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage(msg);
+                }
+            } catch(Exception ex){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(ex.getMessage());
+                return dataBean.getJsonStr();
+            }
+            logger.info("delete-----" + dataBean.getJsonStr());
+        return dataBean.getJsonStr();
+        }
+
+
 
 //
 //    /**
