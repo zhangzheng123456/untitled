@@ -575,7 +575,7 @@
     cursor: pointer;
     color: #FFFFFF;
 }
-#chart_analyze .add_chart{
+ .add_chart{
     text-align: center;
     background: #e8e8e8;
     border: 2px dashed #a9abb5;
