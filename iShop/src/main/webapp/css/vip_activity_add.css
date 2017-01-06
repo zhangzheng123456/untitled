@@ -51,7 +51,7 @@
     width: 100%;
     /*overflow: hidden;*/
     background-color: #FFFFFF;
-    display: none;
+    /*display: none;*/
 }
 /*筛选会员和完成*/
 .tabs_title{
@@ -313,9 +313,11 @@
     text-align: center;
     border-radius: 5px;
     cursor: pointer;
+    float: left;
 }
 .p_task_content .input_parent .add_del .group_del{
     margin-left: 6px;
+    display: none;
 }
 .p_task_content ul{
     margin-left: -38px;
@@ -360,7 +362,7 @@
     height:350px !important;
     background-color: #fff;
     padding: 20px;
-    position: absolute;
+    position:fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
@@ -370,6 +372,7 @@
     -o-transform: translate(-50%,-50%);
     border-radius: 5px;
     display: none;
+    z-index: 10001;
 }
 .tabs_title{
     width: 100%;
@@ -423,6 +426,7 @@
     font-size: 20px;
     vertical-align: middle;
     cursor: pointer;
+    line-height: 54px;
 }
 .edit_frame .edit_frame_left .edit_file input{
     position: absolute;
