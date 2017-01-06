@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.VipActivity;
+import com.bizvane.ishop.entity.VipActivityDetail;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.utils.WebUtils;
@@ -91,10 +92,10 @@ public class VipActivityController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String  activity_code = jsonObject.getString("activity_code");
-            String result="";
+            String activity_code = jsonObject.getString("activity_code");
+            String result = "";
             //根据活动编号判断新增活动或者编辑活动
-            if(activity_code==null||activity_code.equals("")){
+            if (activity_code == null || activity_code.equals("")) {
                 result = this.vipActivityService.insert(message, user_id);
                 if (result.equals("新增失败")) {
                     dataBean.setId(id);
@@ -104,19 +105,19 @@ public class VipActivityController {
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setMessage(result);
-                } else{
+                } else {
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setMessage(result);
                 }
-            }else{
-                 result = this.vipActivityService.update(message, user_id);
+            } else {
+                result = this.vipActivityService.update(message, user_id);
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setMessage("编辑成功");
 
-                } else{
+                } else {
                     dataBean.setId(id);
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -358,7 +359,8 @@ public class VipActivityController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String  activity_code = jsonObject.getString("activity_code");
+            String activity_code = jsonObject.getString("activity_code");
+            String corp_code = jsonObject.getString("corp_code");
             VipActivity activityVip = this.vipActivityService.selActivityByCode(activity_code);
             JSONObject result = new JSONObject();
             result.put("activityVip", JSON.toJSONString(activityVip));
@@ -369,6 +371,43 @@ public class VipActivityController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 验证会员类型名称的唯一性
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/activityThemeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String themeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String activity_theme = jsonObject.get("activity_theme").toString().trim();
+            String corp_code = jsonObject.get("corp_code").toString();
+            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme, Common.IS_ACTIVE_Y);
+            if (vipActivity != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("当前企业下该会员活动标题已存在");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("当前企业下该会员活动标题不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }

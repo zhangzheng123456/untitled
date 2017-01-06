@@ -118,6 +118,7 @@ address,cite,dfn,em,var{font-style:normal;}
     overflow: hidden;
     text-align: center;
     line-height: rem(74);
+    position: relative;
     .picture_btn{
       width: rem(30);
       height: rem(30);
@@ -131,6 +132,14 @@ address,cite,dfn,em,var{font-style:normal;}
     img{
       //max-height: 100%;
       //max-width: 100%;
+      position:absolute;
+      top:50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      -webkit-transform:  translate(-50%,-50%);
+      -moz-transform:  translate(-50%,-50%);
+      -ms-transform:  translate(-50%,-50%);
+      -o-transform: translate(-50%,-50%);
     }
   }
   .picture_add{

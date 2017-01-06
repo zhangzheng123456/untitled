@@ -49,12 +49,9 @@
 }
 .tabs-content>div{
     width: 100%;
-<<<<<<< HEAD
     /*overflow: hidden;*/
-=======
->>>>>>> 06e15848bca8b867e1fd3864d989ba3dcf80ef59
     background-color: #FFFFFF;
-    /*display: none;*/
+    display: none;
 }
 /*筛选会员和完成*/
 .tabs_title{
@@ -214,7 +211,7 @@
     width:12px;
     height:12px;
     top:2px;
-    left: 0;
+    left: 2px;
     border-radius: 24px;
     background-color:#fff;
     border: 1px solid #ccc;
@@ -284,7 +281,7 @@
     margin-top: 10px;
     margin-left: 52px;
 }
-.p_task_content .input_parent div{
+.p_task_content .input_parent .float{
     float: left;
     height: 30px;
     line-height: 30px;
@@ -360,19 +357,20 @@
 /*********活动筹备弹框样式****************/
 .edit_frame{
     width: 362px;
-    height:350px;
+    height:350px !important;
     background-color: #fff;
     padding: 20px;
-    position: fixed;
-    top: 60px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
     border-radius: 5px;
     display: none;
 }
-<<<<<<< HEAD
 .tabs_title{
     width: 100%;
     border-bottom: 1px solid #d4d8e1;
@@ -385,7 +383,6 @@
     background: #5f8bc8;
     margin-right: 5px;
 }
-=======
 .edit_frame_left{
     margin-left: 20px;
     margin-top: 10px;
@@ -437,7 +434,7 @@
     opacity: 0;
 }
 .edit_frame .file_parent{
-    height: 60px;
+    height: 60px !important;
 }
 .edit_frame .edit_frame_left .label_frame{
     width: 50px;
@@ -478,4 +475,6 @@
     width: 72px;
     font-size: 12px;
 }
->>>>>>> 06e15848bca8b867e1fd3864d989ba3dcf80ef59
+.group_parent{
+    display: none;
+}
