@@ -1,0 +1,567 @@
+<style>
+    .setUp_activity{
+        width: 100%;
+        padding: 20px;
+        font-size: 13px;
+        color: #4a5f7c;
+    }
+    .setUp_activity_details{
+        width:100%;
+        padding: 10px 0 10px 30px;
+    }
+    .setUp_activity_details:after{
+        content: ",";
+        height: 0;
+        visibility: hidden;
+        display: block;
+        clear: both;
+    }
+    .setUp_activity_details>div{
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        float: left;
+    }
+    .setUp_activity_details ul li{
+        position: relative;
+        float: left;
+        margin-bottom: 10px;
+    }
+    .setUp_activity_details ul li i{
+        position: absolute;
+        top:10px;
+        right: 10px;
+        color: #6dc1c8;
+    }
+    .activity_select{
+        display: none;
+        position: absolute;
+        z-index: 50;
+        right: 0;
+        top: 30px;
+        width: 240px;
+        background: #f5f5f5;
+        overflow: hidden;
+        border: 1px solid #d7d7d7;
+    }
+    .setUp_activity .activity_select li{
+        cursor: pointer;
+        width: 100%;
+        height: 30px;
+        margin: 0;
+        line-height: 30px;
+        padding-left: 5px;
+    }
+    .setUp_activity .activity_select li:hover{
+        color: #FFFFFF;
+        background: #4a5f7c;
+    }
+    .activity_details_left{
+        float: left;
+        width: 674px;
+    }
+    .activity_details_right{
+        float: left;
+    }
+    .setUp_activity .text_input{
+        width: 240px;
+        height: 30px;
+        outline: none;
+        border: 1px solid #d7d7d7;
+        border-radius: 5px;
+        margin-left: 10px;
+        padding-left: 5px;
+    }
+    .setUp_activity_details .shop_amount_wrap{
+        width: 240px;
+        height: 110px;
+        background: #e8e8ed;
+        text-align: center;
+        padding: 10px 0;
+    }
+    .shop_amount{
+        font-size: 22px;
+        color: #5f8bc8;
+    }
+    .choose_shop{
+        display: inline-block;
+        width: 120px;
+        height: 25px;
+        line-height: 25px;
+        background: #5f8bc8;
+        color: #FFFFFF;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .text_introduction{
+        width: 577px;
+        height: 70px;
+        margin-left: 10px;
+        padding: 5px;
+        border: 1px solid #d7d7d7;
+        border-radius: 5px;
+        outline: none;
+    }
+    .operate_ul>li>ul>li{
+        margin-left: 30px;
+    }
+    .setUp_activity_details .operate_ul>li>ul>li{
+        margin-bottom: 0;
+    }
+    .operate_ul>li>ul>li:last-child{
+        margin-left: 0;
+    }
+    .operate_ul span{
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        line-height: 20px;
+        border: 1px solid #d7d7d7;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 22px;
+        color: #6dc1c8;
+        cursor: pointer;
+        margin-left: 35px;
+    }
+    .operate_ul span:last-child{
+        margin-left: 10px;
+    }
+    .operate_ul>li:first-child span:last-child{
+        display: none;
+    }
+    .coupon_title{
+        width: 100%;
+        height: 40px;
+        border-bottom: 1px dashed #d4d8e1;
+        margin-bottom: 10px;
+    }
+    .coupon_title li{
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .switch{
+        position: absolute;
+        top: 10px;
+        right: 0px;
+    }
+    .coupon_active{
+        background: #e4e4ea;
+    }
+    .offline_left_wrap{
+        width: 340px;
+        overflow: hidden;
+        float: left;
+    }
+    .offline_left_wrap label{
+        width: 80px;
+        text-align: right;
+    }
+    .offline_left_wrap textarea{
+        width: 240px;
+        height: 80px;
+        padding: 5px;
+        margin-left: 10px;
+        outline: none;
+        border: 1px solid #d7d7d7;
+        border-radius: 5px;
+    }
+    .offline_left_wrap .file_input{
+        position: absolute;
+        left:90px;
+        top:0;
+        width: 60px;
+        height: 60px;
+        filter: alpha(opacity:0);
+        opacity: 0;
+    }
+    .offline_left_wrap .upload_logo{
+        width: 100%;
+        position: relative;
+        display: inline-flex;
+    }
+    .upload_logo span{
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        margin-left: 10px;
+        line-height: 60px;
+        font-size: 24px;
+        cursor: pointer;
+        text-align: center;
+        border: 1px dashed #c3c3c3;
+        border-radius: 5px;
+        color: #c3c3c3;
+    }
+    .upload_logo img{
+        width: 60px;
+        height: 60px;
+        margin-left: 10px;
+    }
+    .offline_right_wrap{
+        width:160px;
+        height: 160px;
+        float: left;
+        margin-left: 40px;
+        background: #e8e8ed;
+        border-radius: 8px;
+        text-align: center;
+    }
+    .offline_right_wrap span{
+        display: inline-block;
+        width: 110px;
+        height: 26px;
+        line-height: 26px;
+        margin-top:67px;
+        cursor: pointer;
+        background: #FFFFFF;
+        border-radius: 5px;
+        border: 1px solid #d7d7d7;
+    }
+    .coupon_btn{
+        width: 100%;
+        height: 31px;
+    }
+    .coupon_btn span{
+        display: block;
+        float: right;
+        width: 120px;
+        height: 26px;
+        line-height: 26px;
+        text-align: center;
+        border-radius: 5px;
+        color: #fff;
+        background: #5f8bc8;
+        cursor: pointer;
+    }
+    .coupon_details_wrap{
+        padding: 10px 0 0px 25px ;
+        position: relative;
+        width: 100%;
+        border: 1px solid #d6d9e0;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    .coupon_details_wrap:after{
+        content: ",";
+        height: 0;
+        visibility: hidden;
+        display: block;
+        clear: both;
+    }
+    .coupon_details_wrap .coupon_details_close{
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        font-size: 18px;
+        color: #c3c3ca;
+    }
+    .coupon_details_wrap>ul{
+        float: left;
+    }
+    .coupon_details_wrap .operate_ul{
+        width: 50%;
+    }
+    .choose_coupon{
+        width: 435px;
+    }
+    .choose_coupon .operate_ul>li>ul>li{
+        margin-left: 0;
+    }
+</style>
+<div class="setUp_activity" style="display: block">
+    <div>
+        <div class="tabs_title"><span class="title_icon"></span><span>活动基本信息</span></div>
+        <div class="setUp_activity_details">
+            <div>
+                <ul>
+                    <li style="margin-right: 35px;"><label>所属企业</label><input class="text_input" type="text"></li>
+                    <li style="margin-right:10px"><label>活动时间</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly"></li>
+                    <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动标题" readonly="readonly"></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="activity_details_left">
+                    <li style="margin-right: 35px;"><label>活动标题</label><input placeholder="请输入活动标题" class="text_input" type="text"></li>
+                    <li>
+                        <label>活动类别</label><input class="text_input select_input" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                        <ul class="activity_select" id="activityType_select">
+                            <li>招募活动</li>
+                            <li>促销活动</li>
+                            <li>H5活动</li>
+                            <li>优惠券活动</li>
+                            <li>线下邀约活动</li>
+                            <li>节日活动</li>
+                        </ul>
+                    </li>
+                    <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" placeholder="请输入活动简介" name="活动简述"></textarea></li>
+                </ul>
+                <ul class="activity_details_right">
+                    <li class="shop_amount_wrap"><p>参与门店数</p><p class="shop_amount" id="shop_amount">20</p><span class="choose_shop" id="choose_shop">选择参与门店</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="tabs_title"><span class="title_icon"></span><span>活动设置</span></div>
+        <div class="setUp_activity_details" id="setUp_activityType" style="padding-left: 0">
+            <div id="recruit_activity" style="display: none">
+                <ul class="operate_ul">
+                    <li>
+                        <ul>
+                            <li><label>招募级别</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                <ul class="activity_select">
+                                    <li>普通会员</li>
+                                    <li>银卡会员</li>
+                                    <li>金卡会员</li>
+                                    <li>铂金卡会员</li>
+                                    <li>钻石卡会员</li>
+                                </ul>
+                            </li>
+                            <li><label>招募金额</label><input placeholder="请输入招募最低消费额" class="text_input" type="text"></li>
+                            <li><span class="add_recruit">+</span><span class="remove_recruit">-</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="sales_activity" style="display: none">
+                <ul>
+                    <li><label>设置促销编号</label><input placeholder="请输入促销编号" class="text_input" type="text"></li>
+                </ul>
+            </div>
+            <div id="h5_activity" style="display: none">
+                <ul>
+                    <li><label>H5活动页面</label><input placeholder="请输入页面链接" class="text_input" type="text"></li>
+                </ul>
+            </div>
+            <div id="coupon_activity" style="display: none">
+                <ul class="coupon_title" id="coupon_title">
+                    <li class="coupon_active">批量发卷</li>
+                    <li>开卡送券</li>
+                    <li>纪念日发券</li>
+                </ul>
+                <div class="choose_coupon">
+                    <ul class="operate_ul">
+                        <li>
+                            <ul>
+                                <li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                    <ul class="activity_select">
+                                        <li>普通会员</li>
+                                        <li>银卡会员</li>
+                                        <li>金卡会员</li>
+                                        <li>铂金卡会员</li>
+                                        <li>钻石卡会员</li>
+                                    </ul>
+                                </li>
+                                <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div style="display: none">
+                    <div class="coupon_btn" id="coupon_btn"><span>添加</span></div>
+                    <div class="coupon_details_wrap">
+                        <ul>
+                            <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                <ul class="activity_select">
+                                    <li>普通会员</li>
+                                    <li>银卡会员</li>
+                                    <li>金卡会员</li>
+                                    <li>铂金卡会员</li>
+                                    <li>钻石卡会员</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="operate_ul">
+                            <li>
+                                <ul>
+                                    <li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                        <ul class="activity_select">
+                                            <li>普通会员</li>
+                                            <li>银卡会员</li>
+                                            <li>金卡会员</li>
+                                            <li>铂金卡会员</li>
+                                            <li>钻石卡会员</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <i class="icon-ishop_6-12 coupon_details_close"></i>
+                    </div>
+                </div>
+                <div class="choose_coupon" style="display: none">
+                    <ul class="operate_ul">
+                        <li>
+                            <ul>
+                                <li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                    <ul class="activity_select">
+                                        <li>普通会员</li>
+                                        <li>银卡会员</li>
+                                        <li>金卡会员</li>
+                                        <li>铂金卡会员</li>
+                                        <li>钻石卡会员</li>
+                                    </ul>
+                                </li>
+                                <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="switch">
+                    <span class="switch_text">优惠券已开启</span>
+                    <div class="bg">
+                        <span class="Off"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="offline_activity" style="display: none">
+                <div class="offline_left_wrap">
+                    <ul>
+                        <li><label>报名标题</label><input placeholder="请输入标题" class="text_input" type="text"></li>
+                        <li><label>报名截止时间</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly"></li>
+                        <li style="display: inline-flex"><label>报名简介</label><textarea placeholder="请输入报名简介"  type="text"></textarea></li>
+                        <li><label>报名成功提示</label><input placeholder="请输入报名成功提示" class="text_input" type="text"></li>
+                        <li class="upload_logo"><label>logo图片</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
+                    </ul>
+                </div>
+                <div class="offline_right_wrap">
+                    <span>生成活动二维码</span>
+                </div>
+            </div>
+            <div class="holiday_activity" style="display: none">
+                <ul>
+                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly"></li>
+                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 拉取区域 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选区域</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                              data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <div id="p" class="p"></div>
+</div>
+<script type="text/javascript" src="../js/vip/set_up_activity.js"></script>
