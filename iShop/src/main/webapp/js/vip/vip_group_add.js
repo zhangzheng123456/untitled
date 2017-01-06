@@ -288,7 +288,6 @@ $(function () {
             }
         });
         $("#edit_save").click(function () {
-            console.log(1)
             var name = $("#vip_id").attr("data-mark");//区域名称是否唯一的标志
             //var num = $("#vip_num").attr("data-mark");//区域编号是否唯一的标志
             if (vipjs.firstStep()) {
@@ -2328,7 +2327,7 @@ function expend_data1() {
                 }
             }
             $("#expend_attribute").append(html);
-            $("#memorial_day").append(simple_html);
+            $("#memorial_day").html(" ").append(simple_html);
         }else if(data.code == -1){
             console.log(data.message);
         }
