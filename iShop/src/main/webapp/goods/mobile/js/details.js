@@ -87,7 +87,7 @@ function getPage(){
 $('.bottom div img').click(function () {
     var src = $(this).attr("src");
     var corp_code = corp_code;
-    var operate_userCode = user_code ; //操作人user_code
+    var operate_userCode = user_code ; //操作人user_code1
     var user_code=GetRequest().user_id;
     var operate_type = '';//type
     var comment_text = '';//评论内容
