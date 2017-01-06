@@ -1,0 +1,12 @@
+[ishop][INFO] [2017-01-05 15:07:38] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-05 15:07:38] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-800493254","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-05 15:07:44] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-05 15:08:38] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-05 15:08:38] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-800493254","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-05 15:08:44] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-05 15:12:45] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-05 15:12:45] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-800493254","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-05 15:12:51] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-05 15:13:53] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-05 15:13:53] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-800493254","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-05 15:14:00] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed

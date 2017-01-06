@@ -750,6 +750,7 @@ function POST(a,b){
             var list=messages.all_vip_list;
             cout=messages.pages;
             var pageNum = messages.pageNum;
+            pageNum=parseInt(pageNum);
             var actions=messages.actions;
             $(".table tbody").empty();
             if(list.length<=0){
@@ -965,8 +966,9 @@ $(".action_r ul").on("click","#leading_out",function(){
 $("#file_submit").click(function(){
     var li=$("#file_list_r input[type='checkbox']").parents("li");
     var value = $("#search").val().trim();
-    var param={};
+    var _param={};
     var tablemanager=[];
+    var screen = [];
     if(li.length=="0"){
         frame();
         $('.frame').html('请把要导出的列移到右边');
@@ -979,20 +981,153 @@ $("#file_submit").click(function(){
         tablemanager.push(param1);
     }
     tablemanager.reverse();
-    param["tablemanager"]=tablemanager;
-    param["searchValue"]=value;
+    _param["tablemanager"]=tablemanager;
+    _param["searchValue"]=value;
     if(filtrate==""){
-        param["screen_message"]="";
+        _param["screen_message"]="";
     }else if(filtrate!==""){
-        var list={};
-        list["brand_code"]=message.cache.brand_codes;
-        list["store_code"]=message.cache.store_codes;
-        list["area_code"]=message.cache.area_codes;
-        list["user_code"]=message.cache.user_codes;
-        param["screen_message"]=list;
+        if ($("#simple_filter").css("display") == "block") {
+            $("#simple_contion .contion_input").each(function () {
+                var input = $(this).find("input");
+                var key = $(input[0]).attr("data-kye");
+                var classname = $(input[0]).attr("class");
+                var expend_key = $(input[0]).attr("data-expend");
+                if(key == "17"){
+                    return ;
+                }else if (key == "4") {
+                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                        var param = {};
+                        var val = {};
+                        var date = $("#consume_date_basic_4").attr("data-date");
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val();
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['date'] = date;
+                        screen.push(param);
+                    }
+                }else if (key == "3") {
+                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                        var param = {};
+                        var val = {};
+                        var date = $("#consume_date_basic_3").attr("data-date");
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val();
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['date'] = date;
+                        screen.push(param);
+                    }
+                }else if ((key !== "3" && key !== "4" && classname.indexOf("short") == 0)||expend_key=="date") {
+                    if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                        var param = {};
+                        var val = {};
+                        val['start'] = $(input[0]).val();
+                        val['end'] = $(input[1]).val();
+                        param['type'] = "json";
+                        param['key'] = key;
+                        param['value'] = val;
+                        screen.push(param);
+                    }
+                }else if(key == "6" && $(input[0]).val() !== "全部"){
+                    var param = {};
+                    var val = $(input[0]).val();
+                    val == "已冻结"? val="Y":val="N";
+                    param['key'] = key;
+                    param['value'] = val;
+                    param['type'] = "text";
+                    screen.push(param);
+                }else {
+                    if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                        var param = {};
+                        var val = $(input[0]).val();
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        screen.push(param);
+                    }
+                }
+            });
+        } else {
+            $("#contion>div").each(function () {
+                $(this).find(".contion_input").each(function (i, e) {
+                    var input = $(e).find("input");
+                    var key = $(input[0]).attr("data-kye");
+                    var expend_key = $(input[0]).attr("data-expend");
+                    var classname = $(input[0]).attr("class");
+                    if ((key !== "3" && key !== "4" && classname.indexOf("short") == 0)||expend_key=="date") {
+                        if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                            var param = {};
+                            var val = {};
+                            val['start'] = $(input[0]).val();
+                            val['end'] = $(input[1]).val();
+                            param['type'] = "json";
+                            param['key'] = key;
+                            param['value'] = val;
+                            screen.push(param);
+                        }
+                    } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15"|| key == "16") {
+                        if ($(input[0]).attr("data-code") !== "") {
+                            var param = {};
+                            var val = $(input[0]).attr("data-code");
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            screen.push(param);
+                        }
+                    } else if (key == "17") {
+                        return;
+                    } else if (key == "3" || key == "4") {
+                        if ($(input[0]).val() !== "" || $(input[1]).val() !== "") {
+                            var param = {};
+                            var val = {};
+                            var date = $("#consume_date").attr("data-date");
+                            val['start'] = $(input[0]).val();
+                            val['end'] = $(input[1]).val();
+                            param['type'] = "json";
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['date'] = date;
+                            screen.push(param);
+                        }
+                    }else if(key == "6" && $(input[0]).val() !== "全部" ){
+                        var param = {};
+                        var val = $(input[0]).val();
+                        val == "已冻结"?val="Y":val="N";
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        screen.push(param);
+                    }else {
+                        if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
+                            var param = {};
+                            var val = $(input[0]).val();
+                            param['key'] = key;
+                            param['value'] = val;
+                            param['type'] = "text";
+                            screen.push(param);
+                        }
+                    }
+                });
+                $(this).find("textarea").each(function () {
+                    var key = $(this).attr("data-kye");
+                    var param = {};
+                    var val = $(this).val();
+                    if(val !== ""){
+                        param['key'] = key;
+                        param['value'] = val;
+                        param['type'] = "text";
+                        screen.push(param);
+                    }
+                });
+            });
+        }
+        _param["screen_message"]=screen;
     }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/vip/exportExecl","0",param,function(data){
+    oc.postRequire("post","/vip/exportExecl","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;
@@ -1087,7 +1222,7 @@ function UpladFile() {
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
-    var inx=parseInt(inx);
+        inx=parseInt(inx);
     if (inx > cout) {
         inx = cout
     };
@@ -1747,7 +1882,7 @@ $("#staff_shop").click(function(){
     $("#screen_shop").show();
     $("#screen_staff").hide();
     getstorelist(shop_num);
-})
+});
 //员工里面的品牌点击
 $("#staff_brand").click(function(){
     if(message.cache.brand_codes!==""){
@@ -1774,7 +1909,7 @@ $("#staff_brand").click(function(){
     $("#screen_brand").show();
     $("#screen_staff").hide();
     getbrandlist();
-})
+});
 //点击区域确定按钮
 $("#screen_que_area").click(function(){
     var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
@@ -1913,7 +2048,7 @@ $("#choose_staff .screen_que").click(function () {
             }
         })
     }
-})
+});
 //筛选调接口
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框

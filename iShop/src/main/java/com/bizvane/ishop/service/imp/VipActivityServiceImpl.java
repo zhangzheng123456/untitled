@@ -184,7 +184,7 @@ public class VipActivityServiceImpl implements VipActivityService {
     public VipActivity selActivityByCode(String activity_vip_code) throws Exception {
         return vipActivityMapper.selActivityByCode(activity_vip_code);
     }
-    
+
 
 
     /**
@@ -421,5 +421,10 @@ public class VipActivityServiceImpl implements VipActivityService {
         DBCursor dbCursor = cursor.find(dbObject);
         ArrayList list = MongoUtils.dbCursorToList(dbCursor);
         return list;
+    }
+
+    @Override
+    public VipActivity getVipActivityByTheme(String corp_code, String activity_theme, String isactive) throws Exception {
+        return vipActivityMapper.selActivityByTheme(corp_code,activity_theme,isactive);
     }
 }

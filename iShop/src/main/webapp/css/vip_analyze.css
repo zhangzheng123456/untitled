@@ -583,13 +583,13 @@
 }
 .add_chart span{
     display: block;
-    height: 25px;
     font-size: 14px;
     color: #a9abb5;
     cursor: pointer;
 }
 .add_chart span:first-child{
-    margin-top: 140px;
+    margin-top: 85px;
+    font-size: 100px;
 }
 .chart_add_wrap{
     display: none;

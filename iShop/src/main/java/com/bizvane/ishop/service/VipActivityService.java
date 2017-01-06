@@ -96,4 +96,6 @@ public interface VipActivityService {
 
     ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception;
 
-   }
+    VipActivity getVipActivityByTheme(String corp_code,String activity_theme,String isactive)throws Exception;
+
+}

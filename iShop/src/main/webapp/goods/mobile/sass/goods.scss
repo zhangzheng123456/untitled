@@ -222,9 +222,11 @@ input[type="search"]::-webkit-search-cancel-button{
 }
 input-placeholder{
 	text-align: center;
+	line-height: normal;
 }
 input::-webkit-input-placeholder{
 	text-align: center;
+	line-height: normal;
 } 
 .header_line{
 	width: 100%;

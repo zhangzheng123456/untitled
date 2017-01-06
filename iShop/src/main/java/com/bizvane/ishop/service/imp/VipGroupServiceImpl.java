@@ -247,7 +247,7 @@ public class VipGroupServiceImpl implements VipGroupService {
                     user_code = value;
             }
         }
-        if (store_code.equals("") && !role_code.equals(Common.ROLE_SYS) && !role_code.equals(Common.ROLE_GM)){
+        if (store_code.equals("")){
             if ((!area_code.equals("") || !brand_code.equals(""))){
                 //若选择了区域和品牌，记住品牌区域下的store_code
                 List<Store> storeList = storeService.selStoreByAreaBrandCode(corp_code, area_code, brand_code, "", "");
@@ -261,30 +261,32 @@ public class VipGroupServiceImpl implements VipGroupService {
                 post_array.add(post_obj);
             }else {
                 //没选择区域和品牌，传自身拥有的店铺
-                if (role_code.equals(Common.ROLE_BM)){
-                    brand_code = request.getSession().getAttribute("brand_code").toString();
-                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + stores.get(i).getStore_code() + ",";
+                if (!role_code.equals(Common.ROLE_SYS) && !role_code.equals(Common.ROLE_GM)){
+                    if (role_code.equals(Common.ROLE_BM)){
+                        brand_code = request.getSession().getAttribute("brand_code").toString();
+                        brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
+                        for (int i = 0; i < stores.size(); i++) {
+                            store_code = store_code + stores.get(i).getStore_code() + ",";
+                        }
+                    }else if (role_code.equals(Common.ROLE_AM)){
+                        String area_code1 = request.getSession().getAttribute("area_code").toString();
+                        String area_store_code = request.getSession().getAttribute("store_code").toString();
+                        area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
+                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code1,"","",area_store_code);
+                        for (int i = 0; i < stores.size(); i++) {
+                            store_code = store_code + stores.get(i).getStore_code() + ",";
+                        }
+                    }else{
+                        store_code = request.getSession().getAttribute("store_code").toString();
+                        store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                     }
-                }else if (role_code.equals(Common.ROLE_AM)){
-                    String area_code1 = request.getSession().getAttribute("area_code").toString();
-                    String area_store_code = request.getSession().getAttribute("store_code").toString();
-                    area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
-                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code1,"","",area_store_code);
-                    for (int i = 0; i < stores.size(); i++) {
-                        store_code = store_code + stores.get(i).getStore_code() + ",";
-                    }
-                }else{
-                    store_code = request.getSession().getAttribute("store_code").toString();
-                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                    JSONObject post_obj = new JSONObject();
+                    post_obj.put("key",store_code_key);
+                    post_obj.put("type","text");
+                    post_obj.put("value",store_code);
+                    post_array.add(post_obj);
                 }
-                JSONObject post_obj = new JSONObject();
-                post_obj.put("key",store_code_key);
-                post_obj.put("type","text");
-                post_obj.put("value",store_code);
-                post_array.add(post_obj);
             }
         }
         if (role_code.equals(Common.ROLE_STAFF) && user_code.equals("")){

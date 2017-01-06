@@ -300,6 +300,13 @@
         </foreach>
     </delete>
 
+    <delete id="deleteUserColPrivileges">
+        DELETE FROM
+        def_table_privilege
+        WHERE function_code = #{function_code}
+         AND master_code = #{master_code}
+    </delete>
+
     <select id="selectColPrivilegeByUser" resultMap="privilege">
         SELECT p.id,
         p.function_code,

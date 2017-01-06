@@ -324,12 +324,13 @@
                     <ul style="display:inline-flex;position: relative;margin-bottom:0px">
                         <li><label style="color:#c26555;">充值店仓*</label></li>
                         <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
-                        <input class="PARAM_NAME" id="topUpShop"
+                        <input data-storecode="" class="PARAM_NAME" id="topUpShop"
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px"
                                readonly/>
-                        <ul class="execution" id="topUpShopSelcet"
-                            style="max-height: 60px;overflow-y:auto;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
-
+                        <ul class="execution" id="topUpShopSelcet" style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                            <ul id="topUpShopSelcet_ul"
+                                style="max-height: 200px;overflow-y:auto;width: 412px;">
+                            </ul>
                         </ul>
                     </ul>
                 </div>
@@ -341,7 +342,7 @@
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
                                readonly/>
                         <ul class="execution" id="topUpPeopleSelect"
-                            style="max-height: 60px;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                            style="max-height: 200px;width: 412px;overflow-y:scroll;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
                         </ul>
                     </ul>
                 </div>
@@ -907,12 +908,12 @@
                     <li class="active1">基本信息</li>
                     <li>拓展信息</li>
                     <li data-name="consume">消费记录</li>
-                    <!--<li data-name="jifen">积分</li>-->
                     <li data-name="Ablum">相册</li>
                     <li data-name="label">标签</li>
+                    <li>收藏夹</li>
                     <li>备注</li>
                     <div id="remark"
-                         style="width: 16.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
+                         style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
             </div>
             <div class="all_list">
@@ -1162,84 +1163,6 @@
                     <!--<div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>-->
                     <!--</div>-->
                 </div>
-                <!--<div class="points">-->
-                <!--<div>-->
-                <!--<div class="point_head">-->
-                <!--总积分<s>￥</s><span class="consume_total" id="points_total"></span>-->
-                <!--<ul>-->
-                <!--<li>会员卡类型:<span id="vip_card"></span></li>-->
-                <!--<li>会员卡号:<span id="vip_card_num"></span></li>-->
-                <!--<li>顾客: <span id="vip_name1"></span></li>-->
-                <!--</ul>-->
-                <!--</div>-->
-                <!--<hr/>-->
-                <!--<div class="point_head_down">-->
-                <!--<ul class="record_date">-->
-                <!--<li><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>-->
-                <!--<li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>-->
-                <!--</ul>-->
-                <!--</div>-->
-                <!--<table class="point_table" id="points_all">-->
-                <!--<thead>-->
-                <!--<tr>-->
-                <!--<th width="35%">序号</th>-->
-                <!--<th width="40%">积分</th>-->
-                <!--<th>日期</th>-->
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody>-->
-
-                <!--</tbody>-->
-                <!--</table>-->
-                <!--&lt;!&ndash;<div class="foot" >&ndash;&gt;-->
-                <!--&lt;!&ndash;<ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li class="foot-jum">&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>跳转至</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;<input class="input-txt" value="36" id="input-txt">&ndash;&gt;-->
-                <!--&lt;!&ndash;<em>页</em>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li class="foot-num" >&ndash;&gt;-->
-                <!--&lt;!&ndash;<ul id="foot-num">&ndash;&gt;-->
-                <!--&lt;!&ndash;<li class="icon-ishop_4-01" style="color: #afafaf">&ndash;&gt;-->
-
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span class="p-bg">1</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>2</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>3</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>4</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>5</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li class="icon-ishop_4-02">&ndash;&gt;-->
-
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<li class="foot-sum">&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<div class="page_p">&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<ul class="liebiao" style="display:none;" id="liebiao">&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<li id="10">10行/页</li>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<li id="30">30行/页</li>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<li id="50">50行/页</li>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<li id="100">100行/页</li>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;</ul>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<span class="icon-ishop_8-02 icon"></span>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;<span class="zy">共 75 页</span>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;</li>&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-                <!--</div>-->
                 <div class="album">
                     <ul id="Ablum-all">
                         <li>
@@ -1331,6 +1254,40 @@
                     <!--</tbody>-->
                     <!--</table>-->
                     <!--</div>-->
+                </div>
+                <div class="collection">
+                    <div class="table" id="collect_table">
+                        <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                            <thead>
+                            <tr class="th">
+                                <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                                <th style="text-align: left;" id="tableOrder">序号</th>
+                                <th>商品图片</th>
+                                <th>商品编号</th>
+                                <th>商品名称</th>
+                                <th>收藏时间</th>
+                                <th>原价</th>
+                                <th>现价</th>
+                                <th>商品说明</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!--<tr>-->
+                            <!--<td width="50px" style="text-align: left;">-->
+                            <!--<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>-->
+                            <!--</td>-->
+                            <!--<td style="text-align: left;">10</td>-->
+                            <!--<td>商帆</td>-->
+                            <!--<td>南京市雨花台区软件大道180号</td>-->
+                            <!--<td>李某某</td>-->
+                            <!--<td>13274862577</td>-->
+                            <!--<td>张某某</td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td width="50px">可用</td>-->
+                            <!--</tr>                                                                                             					-->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="remark">
                     <span>

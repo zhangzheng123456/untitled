@@ -22,29 +22,6 @@ var simple_birth_end = {
         simple_birth_start.max = datas; //结束日选好后，重置开始日的最大日期
     }
 };
-var mark_start = {
-    elem: '#simple_mark_start',
-    format: 'YYYY-MM-DD',
-    istime: false,
-    max: '2099-06-16 23:59:59', //最大日期
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        mark_end.min = datas; //开始日选好后，重置结束日的最小日期
-        mark_end.start = datas; //将结束日的初始值设定为开始日
-    }
-};
-var mark_end = {
-    elem: '#simple_mark_end',
-    format: 'YYYY-MM-DD',
-    istime: false,
-    max: '2099-06-16 23:59:59',
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        mark_start.max = datas; //结束日选好后，重置开始日的最大日期
-    }
-};
 var start = {
     elem: '#birth_start',
     format: 'YYYY-MM-DD',
@@ -93,8 +70,6 @@ var activity_end = {
 };
 laydate(simple_birth_start);
 laydate(simple_birth_end);
-laydate(mark_start);
-laydate(mark_end);
 laydate(start);
 laydate(end);
 laydate(activity_start);
