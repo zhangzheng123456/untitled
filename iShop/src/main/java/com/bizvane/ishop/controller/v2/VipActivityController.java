@@ -90,57 +90,45 @@ public class VipActivityController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String  activity_code = jsonObject.getString("activity_code");
+            String result="";
+            //根据活动编号判断新增活动或者编辑活动
+            if(activity_code==null||activity_code.equals("")){
+                result = this.vipActivityService.insert(message, user_id);
+                if (result.equals("新增失败")) {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage(result);
+                } else if (result.equals("该企业已存在该活动标题")) {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage(result);
+                } else{
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage(result);
+                }
+            }else{
+                 result = this.vipActivityService.update(message, user_id);
+                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("编辑成功");
 
-            String result = this.vipActivityService.insert(message, user_id);
-            if (result.equals("新增失败")) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(result);
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage(result);
+                } else{
+                    dataBean.setId(id);
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage(result);
+                }
             }
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 会员活动
-     * 编辑
-     */
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    @ResponseBody
-    @Transactional
-    public String edit(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_code").toString();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-
-            String result = vipActivityService.update(message, user_id);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("edit success");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();

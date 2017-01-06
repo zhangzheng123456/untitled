@@ -97,13 +97,13 @@ public class VipActivityServiceImpl implements VipActivityService {
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
-        String activity_code = "A"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
+        String activity_code = "A" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
         String activity_state = "未执行";
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
-        VipActivity vipActivity1=this.getVipActivityByTheme(corp_code,vipActivity.getActivity_theme(),Common.IS_ACTIVE_Y);
+        VipActivity vipActivity1 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
         String isactive = jsonObject.get("isactive").toString().trim();
 
-        if(vipActivity1==null){
+        if (vipActivity1 == null) {
             System.out.print("=======");
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
@@ -114,20 +114,16 @@ public class VipActivityServiceImpl implements VipActivityService {
             vipActivity.setTask_code("");
             vipActivity.setSms_code("");
             vipActivity.setIsactive(isactive);
-            int info=0;
-            info= vipActivityMapper.insertActivity(vipActivity);
+            int info = 0;
+            info = vipActivityMapper.insertActivity(vipActivity);
             VipActivity VipActivity1 = selActivityByCode(activity_code);
-            if (info>0) {
-                result= String.valueOf(VipActivity1.getActivity_code());
+            if (info > 0) {
+                result = String.valueOf(VipActivity1.getActivity_code());
             } else {
-                result="新增失败";
-
+                result = "新增失败";
             }
-        }else{
-            System.out.print("--------------------------");
-            System.out.print(vipActivity.getActivity_theme());
-
-            result="该企业已存在该活动标题" ;
+        } else {
+            result = "该企业已存在该活动标题";
         }
         return result;
 
@@ -135,7 +131,7 @@ public class VipActivityServiceImpl implements VipActivityService {
 
     @Override
     public String update(String message, String user_id) throws Exception {
-       String result = "";
+        String result = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         String activity_code = jsonObject.get("activity_code").toString().trim();
         VipActivity vipActivity1 = this.selActivityByCode(activity_code);
@@ -143,23 +139,23 @@ public class VipActivityServiceImpl implements VipActivityService {
         String isactive = jsonObject.get("isactive").toString().trim();
         Date now = new Date();
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
-        VipActivity vipActivity2=this.getVipActivityByTheme(corp_code,vipActivity.getActivity_theme(),Common.IS_ACTIVE_Y);
-        if(vipActivity2==null){
+        VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
+        if (vipActivity2 == null) {
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
             vipActivity.setIsactive(isactive);
             vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
-            int info=0;
-            info= vipActivityMapper.updateActivity(vipActivity);
-            if (info>0) {
-                result=Common.DATABEAN_CODE_SUCCESS;
+            int info = 0;
+            info = vipActivityMapper.updateActivity(vipActivity);
+            if (info > 0) {
+                result = Common.DATABEAN_CODE_SUCCESS;
 
             } else {
-                result="编辑失败";
+                result = "编辑失败";
 
             }
-        }else{
-            result="该企业已存在该活动标题";
+        } else {
+            result = "该企业已存在该活动标题";
         }
         return result;
 
@@ -183,12 +179,12 @@ public class VipActivityServiceImpl implements VipActivityService {
             String brand_code = vips_obj.get("brand_code").toString();
             String store_code = vips_obj.get("store_code").toString();
             String user_code = vips_obj.get("user_code").toString();
-            DataBox dataBox = iceInterfaceService.vipScreenMethod("1","3",corp_code,area_code,brand_code,store_code,user_code);
+            DataBox dataBox = iceInterfaceService.vipScreenMethod("1", "3", corp_code, area_code, brand_code, store_code, user_code);
             String result = dataBox.data.get("message").value;
             JSONObject result_obj = JSONObject.parseObject(result);
             String count = result_obj.get("count").toString();
             VipActivity.setTarget_vips_count(count);
-        }else if (type.equals("2")){
+        } else if (type.equals("2")) {
             String vips = vips_obj.get("vips").toString();
             String[] vips_array = vips.split(",");
             VipActivity.setTarget_vips_count(String.valueOf(vips_array.length));
@@ -208,10 +204,8 @@ public class VipActivityServiceImpl implements VipActivityService {
     }
 
 
-
     /**
      * 获取活动任务执行情况
-     *
      */
     @Override
     public JSONObject executeDetail(VipActivity VipActivity) throws Exception {
@@ -241,21 +235,21 @@ public class VipActivityServiceImpl implements VipActivityService {
             String area_name = "";
             while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
-                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))){
+                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))) {
                     complete_rate = "100";
-                } else if (obj.containsField("complete_rate")){
+                } else if (obj.containsField("complete_rate")) {
                     complete_rate = obj.get("complete_rate").toString();
                 }
-                if (obj.containsField("complete_vip_count")){
+                if (obj.containsField("complete_vip_count")) {
                     String user_complete_vip_count = obj.get("complete_vip_count").toString();
                     complete_vip_count = complete_vip_count + Double.parseDouble(user_complete_vip_count);
                 }
             }
-            task_obj.put("user_code",user_code);
-            task_obj.put("user_name",user_name);
-            task_obj.put("store_name",store_name);
-            task_obj.put("area_name",area_name);
-            task_obj.put("complete_rate",complete_rate);
+            task_obj.put("user_code", user_code);
+            task_obj.put("user_name", user_name);
+            task_obj.put("store_name", store_name);
+            task_obj.put("area_name", area_name);
+            task_obj.put("complete_rate", complete_rate);
             task_array.add(task_obj);
         }
         result.put("userList", task_array);
@@ -433,7 +427,7 @@ public class VipActivityServiceImpl implements VipActivityService {
 //        return status;
 //    }
 
-    public ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception{
+    public ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception {
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
         BasicDBObject dbObject = new BasicDBObject();
@@ -449,8 +443,9 @@ public class VipActivityServiceImpl implements VipActivityService {
     public int updActiveCodeByType(String line_code, String line_value, String corp_code, String activity_code) throws Exception {
         return vipActivityMapper.updActiveCodeByType(line_code, line_value, corp_code, activity_code);
     }
+
     public VipActivity getVipActivityByTheme(String corp_code, String activity_theme, String isactive) throws Exception {
-        return vipActivityMapper.selActivityByTheme(corp_code,activity_theme,isactive);
+        return vipActivityMapper.selActivityByTheme(corp_code, activity_theme, isactive);
 
     }
 }
