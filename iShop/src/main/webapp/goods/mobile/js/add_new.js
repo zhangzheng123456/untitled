@@ -18,7 +18,7 @@ var addProduct={
         this.getUrl();
         //判断是否进入编辑页面
         console.log(this.theRequest);
-        this.theRequest.d_match_code?this.getValue(): $.cookie('action','0');
+        this.theRequest.d_match_code?this.getValue(): $.cookie('action','1');
         $("#file").on('change','',function(e){
             var oss = new OSS.Wrapper({
                 region: 'oss-cn-hangzhou',
@@ -58,8 +58,10 @@ var addProduct={
                 $('.list_box').find('.changeBcColor').each(function () {
                     $(this).removeClass('changeBcColor');
                 })
-                if($('.search_box input').val()!=''&&$('.list_box').find('.list').length<=0) {
-                    $('.search_null').show()
+                if($('.search_box input').val()!=''){
+                    $('.search_box input').val('');
+                    $('.search_box .search').css('display','block');
+                    me.getList();
                 }
             //联通APP
             var toApp='choose';
