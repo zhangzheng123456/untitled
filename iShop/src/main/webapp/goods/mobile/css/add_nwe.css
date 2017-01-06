@@ -169,7 +169,8 @@ address, cite, dfn, em, var {
     border: 0.02415rem solid #dfdfdf;
     overflow: hidden;
     text-align: center;
-    line-height: 1.78744rem; }
+    line-height: 1.78744rem;
+    position: relative; }
     .container_picture .picture .picture_btn {
       width: 0.72464rem;
       height: 0.72464rem;
@@ -179,6 +180,15 @@ address, cite, dfn, em, var {
       right: 0.02415rem;
       background: url("../image/btn_img_del@2x_67.png") no-repeat top right;
       background-size: 0.48309rem 0.48309rem; }
+    .container_picture .picture img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%); }
   .container_picture .picture_add {
     position: relative;
     float: left;

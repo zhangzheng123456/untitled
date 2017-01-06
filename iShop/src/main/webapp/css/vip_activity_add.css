@@ -49,8 +49,9 @@
 }
 .tabs-content>div{
     width: 100%;
+    /*overflow: hidden;*/
     background-color: #FFFFFF;
-    /*display: none;*/
+    display: none;
 }
 /*筛选会员和完成*/
 .tabs_title{

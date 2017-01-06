@@ -1090,7 +1090,7 @@ var vip_group_info={
                                         $(this).show();
                                         var ID = $(this).attr("data-id");
                                         vip_group_info.init_chart(ID);
-                                        //$("#chart_analyze").append($(this));
+                                        $("#chart_analyze").append($(this));
                                         //$("#add_chart").before($(this));
                                     }
                                 });

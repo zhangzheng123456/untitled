@@ -498,4 +498,9 @@ public class VipFsendServiceImpl implements VipFsendService {
     public int delSendByActivityCode(String corp_code, String activity_vip_code) throws Exception {
         return vipFsendMapper.delSendByActivityCode(corp_code,activity_vip_code);
     }
+
+    @Override
+    public List<VipFsend> getSendByActivityCode(String corp_code, String activity_vip_code) throws Exception{
+        return vipFsendMapper.getSendByActivityCode(corp_code,activity_vip_code);
+    }
 }

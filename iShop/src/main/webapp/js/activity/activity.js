@@ -310,7 +310,8 @@ qjia();
 function operate() {
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/activity/activity_add.html");
+        //$(window.parent.document).find('#iframepage').attr("src","/activity/activity_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
     });
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){

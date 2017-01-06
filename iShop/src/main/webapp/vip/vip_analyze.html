@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../css/vip_analyze.css?201715">
     <link rel="stylesheet" href="../css/jquery.dad.css?201715">
     <style>
+        .dad-container::after{
+            display: none;
+        }
         #select_analyze ul li.choose_li, #select_analyze_brand ul li.choose_li, #select_analyze_shop ul li.choose_li {
             background: #6cc1c8;
             color: #fff;
@@ -656,10 +659,14 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module add_chart col_sm_5" id="add_chart" style="display: block">
-            <span>+</span>
-            <span>添加图表</span>
-        </div>
+        <!--<div class="chart_module add_chart col_sm_5" id="add_chart" style="display: block">-->
+            <!--<span>+</span>-->
+            <!--<span>添加图表</span>-->
+        <!--</div>-->
+    </div>
+    <div id="add_chart" class="add_chart col_sm_5" style="width: 32.833%;height: 300px;float: left;background-color: #DDDDDD">
+        <span>+</span>
+        <span>添加图表</span>
     </div>
     <!--添加图表弹窗-->
     <div class="chart_add_wrap" id="chart_add_wrap">
