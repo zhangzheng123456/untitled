@@ -466,8 +466,9 @@ function toReturnShareInfo(){
         iShop.returnShareInfo(param);
     }
 }
+
 function checkPage(){
-    var val = GetRequest().the_action;
+    var val = GetRequest().type;
     var top = $(".main_img").height()+$(".main_list").height()+10;
     if(val == 'comments'){
         $('.main_select div').eq(1).click();
@@ -477,9 +478,9 @@ function checkPage(){
         $('.main_select div').eq(0).click();
     }
 }
-window.onload = function () {
-    //权限管理
-    var action = GetRequest().action;
+//权限管理
+function checkUser(){
+    var action = GetRequest().the_action;
     if(action == '0'){
         $('.editor').css('display','none');
         $('.delete').css('display','none');
@@ -487,11 +488,16 @@ window.onload = function () {
         $('.editor').css('display','block');
         $('.delete').css('display','block');
     }
+}
+window.onload = function () {
+    //权限管理
+    checkUser();
+    //检查是否是评论跳转
+    checkPage();
     //拉取页面
     getPage();
     //拉取评论
     getConmments();
-    //检查是否是评论跳转
-    checkPage();
+
 
 }
