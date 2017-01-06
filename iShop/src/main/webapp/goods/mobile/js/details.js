@@ -253,6 +253,9 @@ function setConmments(){
         param["comment_text"]=msg;
         oc.postRequire("post","/api/shopMatch/addRelByType","0",param,function(data){
             if((data.code =='0')){
+                var msg = data.message;
+                console.log('11'+msg);
+                $('.bottom div').eq(2).find('.num').text(msg);
                 $('.main_content').eq(1).find('.box').remove();
                 getConmments();
                 $('.success div').css('display','block');
@@ -466,7 +469,6 @@ function toReturnShareInfo(){
 function checkPage(){
     var val = GetRequest().the_action;
     var top = $(".main_img").height()+$(".main_list").height()+10;
-    console.log(top);
     if(val == 'comments'){
         $('.main_select div').eq(1).click();
         $('.bottom div').eq(2).find('img').click();
@@ -476,13 +478,14 @@ function checkPage(){
     }
 }
 window.onload = function () {
-    var val = $.cookie('action');
-    if(val == '1'){
-        $('.editor').css('display','block');
-        $('.delete').css('display','block');
-    }else if(val =='0'){
+    //权限管理
+    var action = GetRequest().action;
+    if(action == '0'){
         $('.editor').css('display','none');
         $('.delete').css('display','none');
+    }else if(action =='1'){
+        $('.editor').css('display','block');
+        $('.delete').css('display','block');
     }
     //拉取页面
     getPage();

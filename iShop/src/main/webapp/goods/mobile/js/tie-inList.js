@@ -253,8 +253,9 @@ function  click(){
             var param={};
             var corp_code = GetRequest().corp_code;
             var user_code = GetRequest().user_id;
-            var action = 'comments';
-            param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+"&the_action="+action;
+            var type = 'comments';
+            var action =$.cookie('action');
+            param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+"&the_action="+action+'&type='+type;
             console.log(param);
             doAppWebRefresh(param);
             return;
@@ -316,7 +317,8 @@ function toNext(){
         //param["type"]="FAB";
         var corp_code = GetRequest().corp_code;
         var user_code = GetRequest().user_id;
-        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code;
+        var action =$.cookie('action');
+        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+'&action='+action;
         console.log(param);
         doAppWebRefresh(param);
         //window.location = 'details.html?d_match_code'+d_match_code;
@@ -364,11 +366,18 @@ function doAppWebRefresh(param){
 window.onload = function () {
     //$('.main').eq(0).find('.none').css('display','none');
     //默认
-    var val =  $.cookie('action');
-    //$('.title div').eq(0).text((val);
+    var val  =  $.cookie('action');
+    //var val2 = GetRequest().action;
+    //alert(val2);
+    //$('.title div').eq(0).text(val2);
+    //if(val2 == '1'){
+    //    val ='1';
+    //}else{
+    //    return;
+    //}
     if(val == '0'||val==''|| val ==undefined){
         $('.title div').eq(0).click();
-    }else if(val=='1'){
+    }else if(val=='1'||val2=='1'){
         $('.title div').eq(1).click();
     }
     //获取推荐
