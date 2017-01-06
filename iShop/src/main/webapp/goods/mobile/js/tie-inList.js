@@ -98,6 +98,7 @@ function  pageVal(list,type){
             cache.recPage+=1;
     }else{
         if(list.length == 0){
+            console.log('length'+list.length);
             if(type == 'rec'){
                 console.log('rec')
                 $('.main').eq(0).css('height',valHeight);
@@ -111,7 +112,7 @@ function  pageVal(list,type){
                 return;
             }
         }else{
-            $('.none').css('display','none');
+            //$('.none').css('display','none');
         }
         //替换模板
     }
@@ -361,7 +362,7 @@ function doAppWebRefresh(param){
 }
 
 window.onload = function () {
-    $('.main').eq(0).find('.none').css('display','none');
+    //$('.main').eq(0).find('.none').css('display','none');
     //默认
     var val =  $.cookie('action');
     //$('.title div').eq(0).text((val);
