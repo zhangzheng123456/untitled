@@ -8,7 +8,8 @@
            this.bind();
         },
         bind:function(){
-            this.tabsSelect()
+            this.tabsSelect();
+            this.getFirst();
         },
         tabsSelect:function(){
             $("#tabs>div").bind("click",function(){
@@ -30,8 +31,20 @@
                     $(this).addClass("active");
                     $(this).siblings().removeClass("active");
                 }
-
-            })
+            });
+        },
+        getFirst:function(){
+            $.ajax({
+                type: "GET",
+                url: "set_vip_activity.html?t="+ $.now(),
+                dataType: "html",
+                success: function (data) {
+                    $("#tabs-content").html(data)
+                },
+                error: function (msg) {
+                    alert(msg);
+                }
+            });
         }
     };
     $(function(){
