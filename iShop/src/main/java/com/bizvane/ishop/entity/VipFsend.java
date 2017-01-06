@@ -32,6 +32,15 @@ public class VipFsend {
     private String corp_name;
     private Corp corp;
     private String target_vips_count;
+    private String activity_vip_code;
+
+    public String getActivity_vip_code() {
+        return activity_vip_code;
+    }
+
+    public void setActivity_vip_code(String activity_vip_code) {
+        this.activity_vip_code = activity_vip_code;
+    }
 
     public int getId() {
         return id;
