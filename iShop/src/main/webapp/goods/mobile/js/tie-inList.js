@@ -247,12 +247,15 @@ function  click(){
             //operate_type = 'comment';
             //comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
             //status = '';
-            console.log(123);
             var d_match_code = $(this).parents('.goods_box').attr('id');
+            var host=window.location.host;
+            var param={};
             var corp_code = GetRequest().corp_code;
             var user_code = GetRequest().user_id;
             var action = 'comments';
-            window. location.href = "details.html?d_match_code=" + d_match_code +"&user_id="+user_code+"&corp_code="+corp_code+"&the_action="+action;
+            param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+"&the_action="+action;
+            console.log(param);
+            doAppWebRefresh(param);
             return;
         }
         //    收藏
@@ -303,7 +306,7 @@ function  click(){
         })
     });
 }
-//跳转
+//正常跳转
 function toNext(){
     $('.the_img img').unbind("click").bind('click',function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
@@ -321,7 +324,6 @@ function toNext(){
     //    window.location = 'details.html';
     //})
 }
-
 //获取手机系统
 function getWebOSType() {
     var browser = navigator.userAgent;
@@ -362,7 +364,7 @@ window.onload = function () {
     $('.main').eq(0).find('.none').css('display','none');
     //默认
     var val =  $.cookie('action');
-    //$('.title div').eq(0).text(val);
+    //$('.title div').eq(0).text((val);
     if(val == '0'||val==''|| val ==undefined){
         $('.title div').eq(0).click();
     }else if(val=='1'){

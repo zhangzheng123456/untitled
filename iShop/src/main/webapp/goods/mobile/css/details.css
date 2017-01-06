@@ -132,7 +132,8 @@ body {
   display: none;
   position: absolute;
   left: 50%;
-  margin-left: -10%; }
+  margin-left: -10%;
+  padding-top: 0.48309rem; }
 
 .area .box {
   padding-top: 0.07246rem;
