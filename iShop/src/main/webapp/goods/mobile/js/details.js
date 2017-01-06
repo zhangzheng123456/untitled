@@ -469,6 +469,14 @@ function checkPage(){
     }
 }
 window.onload = function () {
+    var val = $.cookie('action');
+    if(val == '1'){
+        $('.editor').css('display','block');
+        $('.delete').css('display','block');
+    }else if(val =='0'){
+        $('.editor').css('display','none');
+        $('.delete').css('display','none');
+    }
     //拉取页面
     getPage();
     //拉取评论
