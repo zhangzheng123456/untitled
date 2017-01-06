@@ -146,7 +146,10 @@ function getConmments(){
                     conmmentsVal(img,name,time,msg)
                 }
             }
-
+            if(list.length<20) {
+                var tempHTML4 = ' <br/><div class="out">-- 已经是底部了 --</div>';
+                $('.area').append(tempHTML4);
+            }
         } else if(data.code =='-1'){
             //alert(data);
         }

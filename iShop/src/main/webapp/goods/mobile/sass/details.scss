@@ -301,6 +301,8 @@ body{
   position: absolute;
   top: rem(20);
   left: 45%;
+  width: rem(22);
+  height: rem(22);
   margin-bottom: rem(20);
 }
 .success div .msg{
@@ -309,6 +311,17 @@ body{
   height: rem(20);
   line-height: rem(20);
   margin-top: 10px;
+}
+//底部文字提示
+.out{
+  clear: both;
+  text-align: center;
+  background-color: white;
+  color: #8e8c8c;
+  font-size: rem(13);
+  display: block;
+  width: 100%;
+  margin-bottom: rem(5);
 }
 
 /*qq表情*/

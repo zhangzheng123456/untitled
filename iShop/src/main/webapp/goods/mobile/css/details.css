@@ -297,6 +297,8 @@ body {
   position: absolute;
   top: 0.48309rem;
   left: 45%;
+  width: 0.5314rem;
+  height: 0.5314rem;
   margin-bottom: 0.48309rem; }
 
 .success div .msg {
@@ -305,6 +307,16 @@ body {
   height: 0.48309rem;
   line-height: 0.48309rem;
   margin-top: 10px; }
+
+.out {
+  clear: both;
+  text-align: center;
+  background-color: white;
+  color: #8e8c8c;
+  font-size: 0.31401rem;
+  display: block;
+  width: 100%;
+  margin-bottom: 0.12077rem; }
 
 /*qq表情*/
 .comment {
