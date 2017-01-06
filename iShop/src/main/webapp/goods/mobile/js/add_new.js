@@ -12,11 +12,13 @@ var addProduct={
      save_match_goods:[],
      theRequest:{},
      status:'',
+     count:0,
      oc:new ObjectControl(),
     init:function () {
         this.getUrl();
         //判断是否进入编辑页面
-        this.theRequest.d_match_code?this.getValue():'';
+        console.log(this.theRequest);
+        this.theRequest.d_match_code?this.getValue(): $.cookie('action','0');
         $("#file").on('change','',function(e){
             var oss = new OSS.Wrapper({
                 region: 'oss-cn-hangzhou',
@@ -53,13 +55,20 @@ var addProduct={
         //获取商品列表
         var me=this;
         $('#picture').click(function () {
-            // console.log(me.r_match_goods);
+                $('.list_box').find('.changeBcColor').each(function () {
+                    $(this).removeClass('changeBcColor');
+                })
+                if($('.search_box input').val()!=''&&$('.list_box').find('.list').length<=0) {
+                    $('.search_null').show()
+                }
             //联通APP
             var toApp='choose';
             var type={type:'新增商品列表'};
             me.doAppWebRefresh(JSON.stringify(type),toApp);
+            me.count= $('#picture_box ').find('.picture').length;
             $('.bg').hide();
             $('.product_list').show();
+            $('.count').html('已选择'+me.count+'个');
             $(window).bind('scroll',me.scroll.bind(me));
             //输入框显示控制
             $('.search_box input').focus(function(){
@@ -98,28 +107,32 @@ var addProduct={
             for(var i=0;i<me.save_match_goods.length;i++){
                 arr_number.push(me.save_match_goods[i].r_match_goodsCode)
             }
+            for(var i=0;i<me.r_match_goods.length;i++){
+                arr_number.push(me.r_match_goods[i].r_match_goodsCode)
+            }
             if(arr_number.indexOf($(this).find('.list_number').html())!=-1){
-                $('.tips').show(500);
-                $('.err_txt').html('该商品已备选中');
+                $('.tips').show();
+                $('.err_txt').html('该商品已被选中');
                 setTimeout(function () {
-                    $('.tips').hide(500);
+                    $('.tips').hide();
                 },1000);
                 return;
             }
-            if($('.list_box').find('.changeBcColor').length>=10){
+            if((parseInt(me.count)+parseInt($('.list_box').find('.changeBcColor').length))>=10){
                 if(this.className.indexOf('changeBcColor')!=-1){
                     $(this).toggleClass("changeBcColor");
-                    $('.count').html('已选择'+ $('.list_box').find('.changeBcColor').length+'个');
+                    $('.count').html('已选择'+(parseInt(me.count)+parseInt($('.list_box').find('.changeBcColor').length))+'个');
                     return;
                 }
                 $('.tips').show();
+                $('.err_txt').html('最多添加10件搭配');
                 setTimeout(function () {
                     $('.tips').hide();
                 },1000);
                 return;
             }
             $(this).toggleClass("changeBcColor");
-            $('.count').html('已选择'+ $('.list_box').find('.changeBcColor').length+'个');
+            $('.count').html('已选择'+(parseInt(me.count)+parseInt($('.list_box').find('.changeBcColor').length))+'个');
         });
         //删除
         $('#photo_box').on('click','.picture_btn',function () {
@@ -129,7 +142,7 @@ var addProduct={
             me.deleteIt($(this).parent()[0]);
         });
         //点击主动传值
-        $('#photo .picture_add_new').click(function () {
+        $('#photo').click(function () {
             var pic=$('#photo_box').find('.picture').length;
             //联通APP
             var toApp='localUpload';
@@ -162,7 +175,7 @@ var addProduct={
         }
         //描述不为空
         if(!$('#describe').val()){
-            this.test('搭配简介不能为空');
+            this.test('搭配说明不能为空');
             return
         }
         //保存时对当前的商品图片进行校对
@@ -225,12 +238,13 @@ var addProduct={
         },1000);
     },
     choose:function () {
+        $('.search_null').hide();
         $(window).unbind('scroll');
         //联通APP
         var toApp='chooseComplete';
         var remove={'removeView':'完成'}
         this.doAppWebRefresh(JSON.stringify(remove),toApp);
-        this.r_match_goods=[];
+        // this.r_match_goods=[];
         $('#picture_box .picture').remove();
         var me=this;
         //save_match_goods中的r_match_goodsCode
@@ -320,6 +334,9 @@ var addProduct={
     },
     deleteIt:function (dom){
         $(dom).remove();
+        console.log(this.r_match_goods)
+        console.log(this.save_match_goods)
+        console.log($(dom).find('img')[0].src);
         for(var i=this.r_match_goods.length-1;i>=0;i--){
             $(dom).find('img')[0].src==this.r_match_goods[i].r_match_goodsImage&&(this.r_match_goods.splice(i,1));
         }
@@ -342,10 +359,12 @@ var addProduct={
         if(data.code==0){
             var list=JSON.parse(data.message).productList;
             if (list.length <= 0) {
+                $('.search_null').show();
                 if (list.length == "0") {
                     me.next = false;
                 }
             } else {
+                $('.search_null').hide();
                 for (var i = 0; i < list.length; i++) {
                     me.html += '<li class="list"> <div class="list_picture"><img src="' + list[i].imageUrl +
                         '" alt=""/></div> <div class="list_describe"> <p class="list_name">' + list[i].productName +
@@ -404,6 +423,7 @@ var addProduct={
 
      },
     returnToApp:function () {
+        $('.search_null').hide();
         var toApp='returnAdd'
         $('.bg').show();
         //显示商品列表

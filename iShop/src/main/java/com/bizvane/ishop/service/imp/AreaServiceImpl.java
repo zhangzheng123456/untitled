@@ -287,15 +287,17 @@ public class AreaServiceImpl implements AreaService {
             params1.put("search_value", "");
             params1.put("isactive", "Y");
             List<Store> stores = storeMapper.selectByUserId(params1);
-            for (int i = 0; i < stores.size(); i++) {
-                String area_code = stores.get(i).getArea_code();
-                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
-                if (!area_code.endsWith(","))
-                    area_code = area_code + ",";
-                area_code1 = area_code1 + area_code;
-            }
-            if(!area_code1.equals("")&& !area_code1.equals(",")) {
-                areaArray = area_code1.split(",");
+            if (stores.size() > 0){
+                for (int i = 0; i < stores.size(); i++) {
+                    String area_code = stores.get(i).getArea_code();
+                    area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                    if (!area_code.endsWith(","))
+                        area_code = area_code + ",";
+                    area_code1 = area_code1 + area_code;
+                }
+                if(!area_code1.equals("")&& !area_code1.equals(",")) {
+                    areaArray = area_code1.split(",");
+                }
             }
         }
 

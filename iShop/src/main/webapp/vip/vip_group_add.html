@@ -8,11 +8,11 @@
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
-    <link href="../css/style.css?20161116" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css?20161116">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20161116">
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
+    <link href="../css/style.css?201715" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?201715">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?201715">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?201715">
+    <link rel="stylesheet" href="../table/css/inner.css?201715">
     <style>
         body{
             margin-top:81px;
@@ -357,7 +357,10 @@
         </div>
         <div class="contion" id="simple_contion">
             <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end" class="short_input_date laydate-icon"></div>
-            <div class="contion_input" style="display: none"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>
+            <div id="memorial_day" style="display: none">
+
+            </div>
+            <!--<div class="contion_input" style="display: none"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>-->
             <div class="consume_attribute" style="display: none">
                 <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_3" readonly><ul class="sex_select" id="consume_select_basic_3">
                     <li data-date="3">最近3个月</li>
@@ -649,18 +652,18 @@
 <!-- Custom and plugin javascript -->
 <script src="../js/hplus.js?v=2.2.0"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="../js/loading.js?20161116"></script>
+<script src="../js/loading.js?201715"></script>
 <!-- Dialog -->
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?20161116"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?20161116"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
 <!-- ajax -->
-<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
 <!-- 带搜索的下拉框 -->
-<script type="text/javascript" src="../js/jquery.searchableSelect.js?20161116"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>
 <!-- error tips -->
 <script src="../js/laydate/laydate.js"></script>
 <script src="../js/vip_screen.js?20161214"></script>
-<script type="text/javascript" src="../js/vip/vip_group_add.js?20161116"></script>
+<script type="text/javascript" src="../js/vip/vip_group_add.js?201715"></script>
 <script>
     $(function(){
         $(window).scroll(function() {

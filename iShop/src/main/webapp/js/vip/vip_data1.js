@@ -6,6 +6,7 @@ var text_second="";
 var text_third="";
 var time_start="";
 var time_end="";
+var inx=1;//默认是第一页
 function getVipInfo(){
     var param_info={};
     param_info["vip_id"]=sessionStorage.getItem("id");
@@ -249,7 +250,7 @@ function xiaofeiContent(consumnData,consumnlistData){
 }
 function fuzhi(data){
     var sex=data.sex;
-    if(sex=="male"){
+    if(sex=="M"){
         $("#vip_name").next().addClass("icon-ishop_9-03");
         $("#USER_SEX").val("男");
     }else{
@@ -257,6 +258,8 @@ function fuzhi(data){
         $("#USER_SEX").val("女");
     }
     $("#vip_name").html(data.vip_name);
+    $("#topUpVipName").val(data.vip_name);
+    $("#topUpCard").val(data.cardno);
     $("#vip_name").attr("data-id",data.vip_id);
     $('#vip_name_edit').attr('data_vip_id',data.vip_id);
     $("#vip_name_edit").val(data.vip_name);
@@ -294,11 +297,9 @@ function fuzhi(data){
         $("#IMG").attr("src",'../img/head.png');
     }
 }
-
 function imgError(image){//图片404默认图片
     $(image).attr("src", "../img/goods_default_image.png");
 }
-
 $("#more_message").click(function(){
     gotovipallmessage();
 });
@@ -360,13 +361,13 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         $(this).parent().hide()
     })
 }
-    $("#cancel").click(function(){//关闭删除相册时的提示框,取消删除相册
+$("#cancel").click(function(){//关闭删除相册时的提示框,取消删除相册
         $("#tk").hide();
         $("#delete").attr("data-time","");
         whir.loading.remove("mask");
         return false;
     });
-    $("#delete").click(function(){//确认删除相册
+$("#delete").click(function(){//确认删除相册
         $("#tk").hide();
         var time=$(this).attr("data-time");
         var url=$("#Ablum-all").find("div[data-time='"+time+"']").prev().attr("src");
@@ -463,6 +464,152 @@ function gradeChange(grade) {//会员升降级
        }
     });
 }
+//收藏夹列表
+function superaddition(data){//页面加载循环
+    if(data.length == 0){
+        var len = $("#collect_table thead tr th").length;
+        var i;
+        for(i=0;i<10;i++){
+            $("#collect_table tbody").append("<tr></tr>");
+            for(var j=0;j<len;j++){
+                $($("#collect_table tbody tr")[i]).append("<td></td>");
+            }
+        }
+        $("#collect_table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
+    }
+    for (var i = 0; i < data.length; i++) {
+        var TD="";
+        var a=i+1;
+        var product_image=data[i].product_image;
+        if(product_image==""){
+            product_image="../img/goods_default_image.png";
+        }
+        TD="<td><img src='"+product_image+"'></td><td>"
+            + data[i].product_id
+            +"</td><td><span title='"+data[i].product_name+"'>"
+            + data[i].product_name
+            + "</span></td><td>"
+            + data[i].create_time
+            + "</td><td>"
+            + data[i].original_price
+            + "</td><td>"
+            + data[i].price
+            + "</td><td><span title='"+data[i].description+"'>"
+            + data[i].description
+            + "</span></td>"
+        $("#collect_table tbody").append("<tr><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+            + i
+            + 1
+            + "'/><label for='checkboxTwoInput"
+            + i
+            + 1
+            + "'></label></div>"
+            + "</td><td style='text-align:left;'>"
+            + a
+            + "</td>"
+            + TD
+            + "</tr>");
+    }
+    $(".th th:first-child input").removeAttr("checked");
+}
+function jumpBianse(){
+    $(document).ready(function(){//隔行变色
+        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    })
+    //点击tr input是选择状态  tr增加class属性
+    $(".table tbody tr").click(function(){
+        var input=$(this).find("input")[0];
+        var thinput=$("thead input")[0];
+        $(this).toggleClass("tr");
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+            $(this).addClass("tr");
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+                thinput.checked=false;
+            }
+            input.checked = false;
+            $(this).removeClass("tr");
+        }
+    });
+}
+function GET(){
+    var param={};
+    param["corp_code"]=sessionStorage.getItem("corp_code");;
+    param['open_id']='';
+    param["vip_card_no"]=$("#vip_card_no").html();
+    oc.postRequire("post","/vip/avorites","",param,function(data){
+        if(data.code=="0"){
+            $(".table tbody").empty();
+            var messages=JSON.parse(data.message);
+            var list=messages.message.list;
+            //var list=list.list;
+            superaddition(list);
+            jumpBianse();
+        }else if(data.code=="-1"){
+            console.log(data.message);
+        }
+    });
+}
+//全选
+function checkAll(name){
+    var el=$("tbody input");
+    el.parents("tr").addClass("tr");
+    var len = el.length;
+
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = true;
+        }
+    }
+}
+//取消全选
+function clearAll(name){
+    var el=$("tbody input");
+    el.parents("tr").removeClass("tr");
+    var len = el.length;
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = false;
+        }
+    }
+}
+$("#page_row").click(function(){
+    if("block" == $("#liebiao").css("display")){
+        hideLi();
+    }else{
+        showLi();
+    }
+});
+$("#liebiao li").each(function(i,v){
+    $(this).click(function(){
+        pageSize=$(this).attr('id');
+        if(value==""&&filtrate==""){
+            inx=1;
+            GET(inx,pageSize);
+        }else if(value!==""){
+            inx=1;
+            param["pageSize"]=pageSize;
+            param["pageNumber"]=inx;
+            POST(inx,pageSize);
+        }else if(filtrate!==""){
+            inx=1;
+            _param["pageNumber"]=inx;
+            _param["pageSize"]=pageSize;
+            filtrates(inx,pageSize);
+        }
+        $("#page_row").val($(this).html());
+        hideLi();
+    });
+});
+$("#page_row").blur(function(){
+    setTimeout(hideLi,200);
+});
 $("#VIP_avatar").change(function(e){
     var corp_code=sessionStorage.getItem("corp_code");
     var id=sessionStorage.getItem("id");

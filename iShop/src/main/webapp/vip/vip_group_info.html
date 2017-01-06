@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>分组会员</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" href="../css/font_style.css?201715">
     <link rel="stylesheet" href="../css/vip_analyze.css">
-    <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
+    <link rel="stylesheet" href="../css/jquery.dad.css?201715">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20161116"></script>
+    <script src="/js/loading.js?201715"></script>
     <style>
+        .dad-container::after{
+            display: none;
+        }
+        .add_chart {
+            text-align: center;
+            background: #e8e8e8;
+            border: 2px dashed #a9abb5;
+            border-radius: 5px;
+        }
         .chart_lg{
             position: fixed!important;
             width: 70% !important;
@@ -419,8 +428,9 @@
             </ul>
         </div>
             </div>
-            <div style="background-color: #FFFFFF;padding:10px 10px 10px 0;">
-                <div id="chart_analyze" style="min-height: 600px; margin:0 -0.5% 0 0;background-color: #e8e8e8">
+            <div style="padding: 10px 10px 0 10px;background-color: #fff" id="chart_parent">
+                <div style="background-color: #DDDDDD;overflow: hidden;height: 100%">
+                <div id="chart_analyze" style="margin:0 -0.5% 0 0;background-color: #e8e8e8;">
                 <div class="chart_module" data-id="type">
                     <ul>
                         <span class="chart_head">
@@ -571,12 +581,16 @@
                             </li>
                     </ul>
                 </div>
-                <div class="chart_module add_chart dads-children" id="add_chart" style="display: block" data-dad-id="8" data-dad-position="8">
+                <!--<div class="chart_module add_chart dads-children" id="add_chart" style="display: block" data-dad-id="8" data-dad-position="8">-->
+                    <!--<span>+</span>-->
+                    <!--<span>添加图表</span>-->
+                <!--</div>-->
+            </div>
+                <div id="add_chart" class="add_chart" style="width: 49.5%;height: 300px;float: left;background-color: #DDDDDD">
                     <span>+</span>
                     <span>添加图表</span>
                 </div>
-            </div>
-            </div>
+            </div></div>
         </div>
     </div>
 </div>
@@ -829,11 +843,11 @@
     </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="/js/loading.js?20161116"></script>
+<script src="/js/loading.js?201715"></script>
 <script src="../js/echarts.js"></script>
 <script src="../js/dist/chart/china.js"></script>
-<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
-<script src="../js/silide.js?20161116"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
+<script src="../js/silide.js?201715"></script>
 <script src="../js/laydate/laydate.js"></script>
 <script src="../js/vip_screen.js"></script>
 <script src="../js/jquery.dad.min.js"></script>

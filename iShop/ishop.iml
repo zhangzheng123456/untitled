@@ -28,9 +28,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:4.2.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:4.2.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.websocket:javax.websocket-api:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.dexcoder:dexcoder-dal-spring:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.dexcoder:dexcoder-commons:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.dexcoder:dexcoder-dal:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.2.4.RELEASE" level="project" />
@@ -232,5 +234,10 @@
     <orderEntry type="library" name="Maven: com.aliyun.openservices:aliyun-openservices:1.0.10" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: com.baidu:ueditor:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.dexcoder:dexcoder-dal-spring:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.dexcoder:dexcoder-commons:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.dexcoder:dexcoder-dal:2.3.1" level="project" />
   </component>
 </module>

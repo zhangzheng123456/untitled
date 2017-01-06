@@ -1358,6 +1358,7 @@ $(function(){
     qjia();
     chartData();
     chartShow();
+    GET();
 });
 
 
