@@ -121,6 +121,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="activity_vip_code!=null">
+                #{activity_vip_code},
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="sms_code!=null">
@@ -158,6 +161,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="activity_vip_code!=null">
+                #{activity_vip_code},
             </if>
         </trim>
     </insert>
@@ -224,5 +230,30 @@
         FROM def_vip_fsendsms
         WHERE def_vip_fsendsms.CORP_CODE = #{corp_code}
         AND  def_vip_fsendsms.sms_code= #{sms_code}
+    </select>
+
+    <delete id="delSendByActivityCode">
+        DELETE FROM def_vip_fsendsms WHERE  corp_code =#{corp_code} AND activity_vip_code =#{activity_vip_code}
+    </delete>
+
+    <select id="getSendByActivityCode" resultType="com.bizvane.ishop.entity.VipFsend">
+        SELECT
+        def_vip_fsendsms.id,
+        def_vip_fsendsms.sms_code,
+        def_vip_fsendsms.send_type,
+        def_vip_fsendsms.send_scope,
+        def_vip_fsendsms.sms_vips,
+        def_vip_fsendsms.vip_group_code,
+        def_vip_fsendsms.content,
+        def_vip_fsendsms.corp_code,
+        def_vip_fsendsms.modified_date,
+        def_vip_fsendsms.modifier,
+        def_vip_fsendsms.created_date,
+        def_vip_fsendsms.creater,
+        def_vip_fsendsms.activity_vip_code,
+        def_vip_fsendsms.isactive
+        FROM def_vip_fsendsms
+        WHERE def_vip_fsendsms.CORP_CODE = #{corp_code}
+        AND   def_vip_fsendsms.activity_vip_code= #{activity_vip_code}
     </select>
 </mapper>

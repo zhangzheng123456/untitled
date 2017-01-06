@@ -837,8 +837,10 @@ public class StoreController {
                     }
                     brand_code1 = brand_code1 + brand_code;
                 }
-                codes = brand_code1.split(",");
-                brand = brandService.getActiveBrand(corp_code, search_value, codes);
+                if (!brand_code1.equals("")){
+                    codes = brand_code1.split(",");
+                    brand = brandService.getActiveBrand(corp_code, search_value, codes);
+                }
             }
 
             JSONArray array = new JSONArray();

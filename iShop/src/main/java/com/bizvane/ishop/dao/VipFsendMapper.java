@@ -1,5 +1,6 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.VipFsend;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,5 +27,8 @@ public interface VipFsendMapper {
 
     VipFsend selectForId(@Param("corp_code") String corp_code,@Param("sms_code") String sms_code)throws SQLException;
 
+    List<VipFsend> getSendByActivityCode(@Param("corp_code")String corp_code, @Param("activity_vip_code")String activity_vip_code);
+
+    int delSendByActivityCode(@Param("corp_code")String corp_code,@Param("activity_vip_code")String activity_vip_code);
 
 }

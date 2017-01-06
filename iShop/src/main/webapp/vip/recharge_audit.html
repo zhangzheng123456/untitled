@@ -25,6 +25,76 @@
        background-color: #41c7db;
         margin-left: 10px;
     }
+    .tabs_title{
+        width: 100%;
+        border-bottom: 1px solid #d4d8e1;
+        padding-bottom: 8px;
+        font-size: 12px;
+    }
+    .tabs_title span{
+        vertical-align: middle;
+    }
+    .title_icon{
+        display: inline-block;
+        width: 5px;
+        height: 12px;
+        background: #5f8bc8;
+        margin-right: 5px;
+    }
+    .refuse_model{
+        box-sizing: border-box;
+        z-index:10001;
+        display: none;
+        padding: 20px;
+        border-radius: 5px;
+        width: 360px;
+        height: 200px;
+        background-color: #FFFFFF;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        -moz-transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%);
+    }
+    .refuse_name{
+        display: inline-block;
+        width: 30%;
+        vertical-align: middle;
+        float: left;height: 80px;
+        line-height:40px;
+        text-align: left;
+        padding-left: 20px;
+        box-sizing: border-box;
+        color:#4a5f7c;
+    }
+   .refuse_msg{
+        border-radius: 5px;
+       box-sizing: border-box;
+       float: left;
+       vertical-align: middle;
+       width: 70%;
+       overflow-y:auto;
+       padding:5px;
+       height: 80px;
+       border: 1px solid #d7d7d7;
+       outline: none;
+    }
+    .refuse_btn{
+        color: #FFFFFF;
+        overflow:hidden;
+        margin-top:20px;
+        line-height: 30px;
+        text-align: center;
+    }
+    .refuse_btn #auditRefuseCancel{
+        width: 80px;height: 30px;background-color: #cdcdcd;float: left;border-radius: 3px;cursor: pointer;
+    }
+    .refuse_btn #auditRefuseOk{
+       width: 80px;cursor:pointer;height: 30px;background-color: #6cc0c9;float: right;border-radius: 3px;
+    }
 </style>
 <body>
 <div class="content">
@@ -133,7 +203,13 @@
         </div>
     </div>
 </div>
-<div class="refuse_model" style="width: 200px;height: 100px;background-color: #FFFFFF;position: absolute;left: 50%;top: 50%;transform: translate(50%,50%)"></div>
+<div class="refuse_model" id="refuse_model" >
+    <div class="tabs_title"><span class="title_icon"></span><span>拒绝</span></div>
+    <div style="margin-top:10px;overflow: hidden">
+        <span class="refuse_name">拒绝原因</span><div contenteditable="true" class="refuse_msg"></div>
+    </div>
+    <div class="refuse_btn" ><div class="refuse_btn_cancel" id="auditRefuseCancel">取消</div><div id="auditRefuseOk">保存</div></div>
+</div>
 <div class="p" id="p"></div>
 <div id="side_bar">
     <div class="gotop">

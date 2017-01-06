@@ -289,7 +289,14 @@
                     $('.frame').html("请先选择");
                     return;
                 }
-
+                whir.loading.add("mask",0.5);
+                $("#refuse_model").show();
+            });
+            $("#auditRefuseCancel,#auditRefuseOk").bind("click",function(){
+                $("#refuse_model").hide();
+                whir.loading.remove("mask");
+                clearAll("test");
+                //$("#checkboxTwoInput0").
             })
         },
     };
@@ -325,10 +332,9 @@ function checkAll(name){
         }
     }
 };
-
 //取消全选
 function clearAll(name){
-    var el=$("tbody input");
+    var el=$(".table input");
     el.parents("tr").removeClass("tr");
     var len = el.length;
     for(var i=0; i<len; i++)

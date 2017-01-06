@@ -418,6 +418,7 @@ function POST(a,b){
             var message=JSON.parse(data.message);
             var list=message.list;
             cout=message.pages;
+            var pageNum = message.page_number;
             $(".table tbody").empty();
             $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
             $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");

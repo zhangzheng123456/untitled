@@ -17,6 +17,7 @@ var addProduct={
     init:function () {
         this.getUrl();
         //判断是否进入编辑页面
+        console.log(this.theRequest);
         this.theRequest.d_match_code?this.getValue(): $.cookie('action','1');
         $("#file").on('change','',function(e){
             var oss = new OSS.Wrapper({
@@ -57,6 +58,11 @@ var addProduct={
                 $('.list_box').find('.changeBcColor').each(function () {
                     $(this).removeClass('changeBcColor');
                 })
+                if($('.search_box input').val()!=''){
+                    $('.search_box input').val('');
+                    $('.search_box .search').css('display','block');
+                    me.getList();
+                }
             //联通APP
             var toApp='choose';
             var type={type:'新增商品列表'};
@@ -117,7 +123,7 @@ var addProduct={
             if((parseInt(me.count)+parseInt($('.list_box').find('.changeBcColor').length))>=10){
                 if(this.className.indexOf('changeBcColor')!=-1){
                     $(this).toggleClass("changeBcColor");
-                    $('.count').html('已选择10个');
+                    $('.count').html('已选择'+(parseInt(me.count)+parseInt($('.list_box').find('.changeBcColor').length))+'个');
                     return;
                 }
                 $('.tips').show();
@@ -353,7 +359,6 @@ var addProduct={
         var me=this;
         this.oc.postRequire("get","/api/shopMatch/getGoodsByWx?corp_code="+corp_code+"&pageSize="+pageSize+"&pageIndex="+pageIndex+"&categoryId="+categoryId+"&row_num="+row_num+"&productName="+productName,'','',function(data){
         if(data.code==0){
-            console.log(JSON.parse(data.message));
             var list=JSON.parse(data.message).productList;
             if (list.length <= 0) {
                 $('.search_null').show();

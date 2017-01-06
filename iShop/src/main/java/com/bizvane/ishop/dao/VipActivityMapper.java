@@ -24,4 +24,11 @@ public interface VipActivityMapper {
     List<VipActivity> selectActivityScreen(Map<String, Object> params)throws SQLException;
 
     VipActivity selActivityByCode(@Param("activity_code") String activity_code)throws SQLException;
+
+
+    int updActiveCodeByType(@Param("line_code") String line_code,@Param("line_value") String line_value,@Param("corp_code") String corp_code,@Param("activity_code") String activity_code)throws Exception;
+
+    VipActivity selActivityByTheme( @Param("corp_code")String corp_code,@Param("activity_theme")String activity_theme,@Param("isactive") String isactive)throws SQLException;
+
+
 }
