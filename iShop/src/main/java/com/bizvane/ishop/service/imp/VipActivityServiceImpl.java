@@ -92,56 +92,78 @@ public class VipActivityServiceImpl implements VipActivityService {
     }
 
     @Override
-    public String insert(String message, String user_id,HttpServletRequest request) throws Exception {
+    public String insert(String message, String user_id) throws Exception {
         String result = null;
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = "A"+corp_code+Common.DATETIME_FORMAT_DAY_NUM.format(now);
         String activity_state = "未执行";
+        VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
+        VipActivity vipActivity1=this.getVipActivityByTheme(corp_code,vipActivity.getActivity_theme(),Common.IS_ACTIVE_Y);
+        String isactive = jsonObject.get("isactive").toString().trim();
 
-        VipActivity VipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
-        VipActivity.setActivity_code(activity_code);
-        VipActivity.setModifier(user_id);
-        VipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
-        VipActivity.setCreater(user_id);
-        VipActivity.setCreated_date(Common.DATETIME_FORMAT.format(now));
-        VipActivity.setActivity_state(activity_state);
-        VipActivity.setTask_code("");
-        int info=0;
-         info= vipActivityMapper.insertActivity(VipActivity);
-        VipActivity VipActivity1 = selActivityByCode(activity_code);
-        if (info>0) {
-            return String.valueOf(VipActivity1.getId());
-        } else {
-            result="新增失败";
-            return result;
+        if(vipActivity1==null){
+            System.out.print("=======");
+            vipActivity.setActivity_code(activity_code);
+            vipActivity.setModifier(user_id);
+            vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
+            vipActivity.setCreater(user_id);
+            vipActivity.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            vipActivity.setActivity_state(activity_state);
+            vipActivity.setTask_code("");
+            vipActivity.setSms_code("");
+            vipActivity.setIsactive(isactive);
+            int info=0;
+            info= vipActivityMapper.insertActivity(vipActivity);
+            VipActivity VipActivity1 = selActivityByCode(activity_code);
+            if (info>0) {
+                result= String.valueOf(VipActivity1.getActivity_code());
+            } else {
+                result="新增失败";
+
+            }
+        }else{
+            System.out.print("--------------------------");
+            System.out.print(vipActivity.getActivity_theme());
+
+            result="该企业已存在该活动标题" ;
         }
+        return result;
+
     }
 
     @Override
-    public String update(String message, String user_id,HttpServletRequest request) throws Exception {
+    public String update(String message, String user_id) throws Exception {
        String result = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-        int activity_id = Integer.parseInt(jsonObject.get("id").toString().trim());
-        VipActivity VipActivity1 = vipActivityMapper.selActivityById(activity_id);
-        String activity_vip_code = VipActivity1.getActivity_code();
+        String activity_code = jsonObject.get("activity_code").toString().trim();
+        VipActivity vipActivity1 = this.selActivityByCode(activity_code);
         String corp_code = jsonObject.get("corp_code").toString().trim();
-
-        VipActivity VipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
+        String isactive = jsonObject.get("isactive").toString().trim();
         Date now = new Date();
-        VipActivity.setId(activity_id);
-        VipActivity.setModifier(user_id);
-        VipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
-        int info=0;
-        info= vipActivityMapper.updateActivity(VipActivity);
-        if (info>0) {
-            result=Common.DATABEAN_CODE_SUCCESS;
-            return result;
-        } else {
-            result="编辑失败";
-            return result;
+        VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
+        VipActivity vipActivity2=this.getVipActivityByTheme(corp_code,vipActivity.getActivity_theme(),Common.IS_ACTIVE_Y);
+        if(vipActivity2==null){
+            vipActivity.setActivity_code(activity_code);
+            vipActivity.setModifier(user_id);
+            vipActivity.setIsactive(isactive);
+            vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
+            int info=0;
+            info= vipActivityMapper.updateActivity(vipActivity);
+            if (info>0) {
+                result=Common.DATABEAN_CODE_SUCCESS;
+
+            } else {
+                result="编辑失败";
+
+            }
+        }else{
+            result="该企业已存在该活动标题";
         }
+        return result;
+
+
     }
 
     @Override

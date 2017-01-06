@@ -44,20 +44,19 @@ public interface VipActivityService {
     /**
      * @param message
      * @param user_id
-     * @param request
      * @return
      * @throws Exception
      */
-    String insert(String message, String user_id, HttpServletRequest request) throws Exception;
+    String insert(String message, String user_id) throws Exception;
 
     /**
      * @param message
      * @param user_id
-     * @param request
+
      * @return
      * @throws Exception
      */
-    String update(String message, String user_id, HttpServletRequest request) throws Exception;
+    String update(String message, String user_id) throws Exception;
 
     /**
      * @param activityVip

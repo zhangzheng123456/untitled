@@ -109,9 +109,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
                 vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
-                vipCardType.setCreater(user_id);
                 vipCardType.setModifier(user_id);
-                vipCardType.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipCardType.setDegree(degree);
                 vipCardType.setIsactive(isactive);
                 num = vipCardTypeMapper.updateVipCardType(vipCardType);
@@ -127,9 +125,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
                 vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
-                vipCardType.setCreater(user_id);
                 vipCardType.setModifier(user_id);
-                vipCardType.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipCardType.setDegree(degree);
                 vipCardType.setIsactive(isactive);
                 num = vipCardTypeMapper.updateVipCardType(vipCardType);
