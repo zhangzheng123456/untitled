@@ -25,6 +25,7 @@
     margin-right:0.5%;
     position: relative;
     height:100%;
+    margin-bottom: 0.5%;
 }
 #table_analyze{
     background: #fff;
@@ -32,10 +33,10 @@
     /*min-width: 704px;*/
     height: 445px;
     position: relative;
+    margin-bottom: 0.5%;
 }
 #chart_analyze{
     margin-right: -0.5%;
-    margin-top:41%;
     clear: both;
 }
 /*select_analyze锟斤拷询*/
@@ -167,6 +168,7 @@
     background: #FFFFFF;
     height: 300px;
     box-sizing: border-box;
+    position: relative;
 }
 #chart_analyze .chart_module>ul,#chart_analyze .chart_module>ul>li{
     width: 100%
@@ -573,7 +575,7 @@
     cursor: pointer;
     color: #FFFFFF;
 }
-#chart_analyze .add_chart{
+ .add_chart{
     text-align: center;
     background: #e8e8e8;
     border: 2px dashed #a9abb5;
@@ -581,13 +583,13 @@
 }
 .add_chart span{
     display: block;
-    height: 25px;
     font-size: 14px;
     color: #a9abb5;
     cursor: pointer;
 }
 .add_chart span:first-child{
-    margin-top: 140px;
+    margin-top: 85px;
+    font-size: 100px;
 }
 .chart_add_wrap{
     display: none;
@@ -692,14 +694,15 @@
 }
 .data_table ul{
     padding: 0;
-    width: 100%;
+    /*width: 100%;*/
     overflow: hidden;
 }
 .data_table ul li:last-child{
     border-right: 1px solid #d4d4d4;
 }
 .data_table ul:first-child li{
-    margin-top:50px;
+    /*margin-top:50px;*/
+    box-sizing: border-box;
     border-top: 1px solid #d4d4d4;
 }
 .data_table ul li{

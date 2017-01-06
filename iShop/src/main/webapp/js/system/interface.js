@@ -22,7 +22,6 @@ var interFace={
         this.keyDownSearch();
         this.btnSearch();
         this.bombBox();
-        this.select();
         this.refresh();
         this.toPage();
     },
@@ -562,35 +561,6 @@ var interFace={
             })
         });
     },
-    select:function(){
-        //全选
-        function checkAll(name){
-            var el=$("tbody input");
-            el.parents("tr").addClass("tr");
-            var len = el.length;
-
-            for(var i=0; i<len; i++)
-            {
-                if((el[i].type=="checkbox") && (el[i].name==name))
-                {
-                    el[i].checked = true;
-                }
-            }
-        };
-    //取消全选
-        function clearAll(name){
-            var el=$("tbody input");
-            el.parents("tr").removeClass("tr");
-            var len = el.length;
-            for(var i=0; i<len; i++)
-            {
-                if((el[i].type=="checkbox") && (el[i].name==name))
-                {
-                    el[i].checked = false;
-                }
-            }
-        };
-    },
     refresh:function(){
         //刷新列表
         $(".icon-ishop_6-07").parent().click(function () {
@@ -637,3 +607,29 @@ $(function(){
         });
     }
 );
+function checkAll(name){
+    var el=$("tbody input");
+    el.parents("tr").addClass("tr");
+    var len = el.length;
+
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = true;
+        }
+    }
+};
+//取消全选
+function clearAll(name){
+    var el=$("tbody input");
+    el.parents("tr").removeClass("tr");
+    var len = el.length;
+    for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
+        {
+            el[i].checked = false;
+        }
+    }
+};

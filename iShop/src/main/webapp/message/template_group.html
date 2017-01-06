@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>消息模板分组</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?20170105">
+    <link rel="stylesheet" href="../css/font_style.css?20170105">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20161116"></script>
+    <script src="/js/loading.js?20170105"></script>
 </head>
 <body>
 <!-- <div id="navbar">
@@ -163,9 +163,21 @@
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!--<script src="../table/js/inner.js"></script>-->
-<script src="/js/loading.js?20161116"></script>
-<script type="text/javascript" src="../js/insidePostRequire.js?20161215"></script>
-<script type="text/javascript" src="../js/message/template_group.js?20161116"></script>
-<script src="../js/silide.js?20161116"></script>
+<script src="/js/loading.js?20170105"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<script type="text/javascript" src="../js/message/template_group.js?20170105"></script>
+<script src="../js/silide.js?20170105"></script>
+<script>
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0035']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0035']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0035']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0035']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0035']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0035']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
+</script>
 </body>
 </html>

@@ -950,6 +950,7 @@ $("#add_sendee").bind("click",function(){
 	var corp_code=$("#OWN_CORP").val();
 	if(corp_code!==message.cache.corp_code){
 		message.cache.corp_code=corp_code;
+		$('#search').val("");
 		$('.contion .input').val("");
 		$('.screen_content_r ul').empty();
 		$('.s_pitch span').html("0");
@@ -1319,6 +1320,21 @@ function jumpBianse(){
         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     });
 }
+$("#table").on("click","tbody tr",function(){
+	var input = $(this).find("input")[0];
+    var thinput = $("thead input")[0];
+    $(this).toggleClass("tr");
+    if (input.type == "checkbox" && input.name == "test" && input.checked == false) {
+        input.checked = true;
+        $(this).addClass("tr");
+    } else if (input.type == "checkbox" && input.name == "test" && input.checked == true) {
+        if (thinput.type == "checkbox" && input.name == "test" && input.checked == true) {
+            thinput.checked = false;
+        }
+        input.checked = false;
+        $(this).removeClass("tr");
+    }
+})
 //点击保存
 $("#save").click(function(){
 	var vip_id="";

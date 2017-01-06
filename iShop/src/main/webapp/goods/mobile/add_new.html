@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>新增秀搭</title>
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="css/add_nwe.css">
     <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/add_nwe.css?20170106">
     <style>
         .bg{
             position: absolute;
@@ -23,7 +23,7 @@
      <div class="container">
          <div class="header_bg"></div>
          <div class="header_title">
-             <span class="header_title_l">秀搭标题</span>
+             <span class="header_title_l">搭配名称</span>
              <input class="header_title_r"placeholder="请输入标题">
          </div>
          <div class="line"></div>
@@ -43,14 +43,14 @@
              <!--<input class="file" type="file"multiple="multiple">-->
              <!--</div>-->
          </div>
-         <ul class="container_picture">
+         <ul class="container_picture"id="photo_box">
              <!--商品模板-->
              <!--<li class="picture">-->
              <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
              <!--</li>-->
              <li class="picture_add"id="photo">
                  <div class="picture_add_new"><img src="image/icon_img_add@3x.png" width="100%"height="100%"alt="add"></div>
-                 <input class="file"id="file" type="file"multiple="multiple">
+                 <!--<input class="file"id="file" type="file"multiple="multiple">-->
              </li>
          </ul>
          <div class="line"></div>
@@ -76,22 +76,26 @@
              <!--<div class="picture_btn"><img src="image/btn_img_del@2x_67.png"width="100%"height="100%" alt="delete"></div>-->
              <!--</li>-->
              <li class="picture_add"id="picture">
-                 <div class="picture_add_new"><img src="image/icon_img_add@3x.png" width="100%"height="100%"alt="add"></div>
+                 <div class="picture_add_new">
+                     <img src="image/icon_img_add@3x.png" width="100%"height="100%"alt="add">
+                 </div>
              </li>
          </ul>
          <div class="line"></div>
          <div class="introduction">
-             <span>搭配简介</span>
+             <span>搭配说明</span>
          </div>
          <div class="describe_box">
-             <textarea name="" id="describe" placeholder="请填写搭配简介"></textarea>
+             <textarea name="" id="describe" placeholder="请填写搭配说明"></textarea>
          </div>
      </div>
-     <!--<div id="submit">提交</div>-->
+     <!--<div id="">测试文本域</div>-->
  </div>
  <div class="product_list">
      <div class="search_box">
-         <input type="text">
+         <div>
+             <input type="text">
+         </div>
          <div class="search">
              <div class="icon">
                  <img src="image/icon_search.png"width="100%"height="100%" alt="search">
@@ -117,13 +121,19 @@
          </div>
      </div>
  </div>
+ <div class="tips">
+     <div class="tip_box">
+         <div class="icon_err"><img src="image/icon_error.png" width="100%"height="100%" alt="icon_error.png"></div>
+         <div class="err_txt">只能选择10件搭配</div>
+     </div>
+ </div>
+ <div class="search_null"></div>
 <script src="js/jquery-1.11.1.js"></script>
- <script src="dist/lrz.all.bundle.js"></script>
+ <script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
  <script src="js/gqrequest.js?20161202"></script>
-  <script src="js/add_new.js"></script>
+  <script src="js/add_new.js?20170105"></script>
  <script>
-
  </script>
 </body>
 </html>

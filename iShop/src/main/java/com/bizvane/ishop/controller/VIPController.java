@@ -325,7 +325,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
-            logger.info(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
@@ -465,10 +465,10 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             logger.info("json-----555555555555555555---------corp_code-" + corp_code);
 
-            Map datalist = iceInterfaceService.vipBasicMethod(page_num, page_size,corp_code, request);
+            Map datalist = iceInterfaceService.vipBasicMethod2(page_num, page_size,corp_code, request);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
             datalist.put(data_search_value.key, data_search_value);
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch3", datalist);
 //            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -560,11 +560,10 @@ public class VIPController {
             logger.info("json--------------corp_code-" + corp_code);
             DataBox dataBox = null;
             if (!searchValue.equals("")) {
-
-                Map datalist = iceInterfaceService.vipBasicMethod("1","10000",corp_code,request);
+                Map datalist = iceInterfaceService.vipBasicMethod2("1","10000",corp_code,request);
                 Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
                 datalist.put(data_search_value.key, data_search_value);
-                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch2", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch3", datalist);
 
 //                Data data_search_value = new Data("phone_or_id", searchValue, ValueType.PARAM);
 //                datalist.put(data_search_value.key, data_search_value);
@@ -583,12 +582,8 @@ public class VIPController {
 //                datalist.put(data_output_type.key, data_output_type);
 //                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(!screen_message.equals("")){
-                JSONObject jsonObject2 = JSONObject.parseObject(screen_message);
-                String user_code = jsonObject2.get("user_code").toString();
-                String store_code = jsonObject2.get("store_code").toString();
-                String brand_code = jsonObject2.get("brand_code").toString();
-                String area_code = jsonObject2.get("area_code").toString();
-                dataBox = iceInterfaceService.vipScreenMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code);
+                JSONArray screen = JSON.parseArray(screen_message);
+                dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,"1","10000",request);
 
               //  dataBox = iceInterfaceService.vipScreen2ExeclMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code, output_message);
             }
@@ -1001,7 +996,7 @@ public class VIPController {
             if (type.equals("pay")) {
                 if (corp_code.equals("C10016")) {
                     String date = jsonObject.get("date").toString();//单据日期
-                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退款转充值
+                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退换转充值
                     String store_code = jsonObject.get("store_code").toString();//充值店仓
                     String user_code = jsonObject.get("user_code").toString();//经办人
                     String price = jsonObject.get("price").toString();//吊牌金额
@@ -1145,11 +1140,12 @@ public class VIPController {
             String corp_code = jsonObject.get("corp_code").toString();
             String type = jsonObject.get("type").toString();
             String vip_card_type = jsonObject.get("vip_card_type").toString();
+            String high_vip_type = jsonObject.get("high_vip_type").toString();
 
-            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code,vip_card_type,Common.IS_ACTIVE_Y);
+            VipRules vipRules = vipRulesService.getVipRulesByType(corp_code,vip_card_type,high_vip_type,Common.IS_ACTIVE_Y);
             if (vipRules != null){
                 if (type.equals("upgrade")){
-                    String high_vip_type = vipRules.getHigh_vip_type();
+                     high_vip_type = vipRules.getHigh_vip_type();
                     DataBox dataBox = iceInterfaceService.changeVipType(corp_code,vip_id, high_vip_type);
                     if (dataBox.status.toString().equals("SUCCESS")){
                         dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1175,5 +1171,52 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 收藏夹
+     */
+    @RequestMapping(value = "/avorites", method = RequestMethod.POST)
+    @ResponseBody
+    public String avoritesMethod(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String open_id = jsonObject.get("open_id").toString();
+            String vip_card_no = jsonObject.get("vip_card_no").toString();
+
+            Data data_row_num = new Data("row_num","100" , ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code",corp_code , ValueType.PARAM);
+            Data data_open_id = new Data("open_id", open_id, ValueType.PARAM);
+            Data data_vip_card_no = new Data("vip_card_no", vip_card_no, ValueType.PARAM);
+            Data data_type= new Data("type", "1", ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_row_num.key, data_row_num);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_open_id.key, data_open_id);
+            datalist.put(data_vip_card_no.key, data_vip_card_no);
+            datalist.put(data_type.key, data_type);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV3("Favorites", datalist);
+            String result = dataBox.data.get("message").value;
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+
+    }
 
 }

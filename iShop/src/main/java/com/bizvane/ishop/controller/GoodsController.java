@@ -55,47 +55,6 @@ public class GoodsController {
     private BaseService baseService;
     String id;
 
-    /**
-     * 商品培训
-     * 列表
-     */
-//    @RequestMapping(value = "/fab/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String goodsTrainManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            PageInfo<Goods> list = null;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = this.goodsService.selectBySearch(page_number, page_size, "", "",null);
-//            } else {
-//                if (role_code.equals(Common.ROLE_GM)) {
-//                    list = goodsService.selectBySearch(page_number, page_size, corp_code, "",null);
-//                }else if (role_code.equals(Common.ROLE_BM)){
-//                    String brand_code = request.getSession().getAttribute("brand_code").toString();
-//                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-//                    String[] brands = brand_code.split(",");
-//                    list = goodsService.selectBySearch(page_number, page_size, corp_code, "",brands);
-//                }else {
-//                    list = goodsService.selectBySearch(page_number, page_size, corp_code, "",null);
-//                }
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /***
      * 导出数据
@@ -492,10 +451,10 @@ public class GoodsController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && brand_code.equals("")){
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("")   && brand_code.equals("")){
                         continue;
                     }
-                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")|| date.equals("")){
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("")  || brand_code.equals("")|| date.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
@@ -640,7 +599,6 @@ public class GoodsController {
             goods.setShare_description(share_description);
 
             Date now = new Date();
-            goods.setGoods_price(jsonObject.getString("goods_price"));
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));

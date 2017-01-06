@@ -3,14 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>签到管理</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+	<link rel="stylesheet" href="../table/css/inner.css?20170105">
+    <link rel="stylesheet" href="../css/font_style.css?20170105">
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5rNLx8AaA4AGbs4Ms3PF5nqzNpRxKZXa">
         //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"
         //v1.4版本及以前版本的引用方式：src="http://api.map.baidu.com/api?v=1.4&key=您的密钥&callback=initialize"
     </script>
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20161116"></script>
+    <script src="/js/loading.js?20170105"></script>
 </head>
 <body>
     <!-- <div id="navbar">
@@ -193,10 +193,10 @@
         </div>
     </div>
 </body>
-<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js?20161116"></script>
-<script src="../js/staff/checkin.js?20161215"></script>
-<script src="../js/silide.js?20161116"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js?20170105"></script>
+<script src="../js/staff/checkin.js?20170105"></script>
+<script src="../js/silide.js?20170105"></script>
 <script type="text/javascript">
         $(function(){
             $(window).scroll(function(){
@@ -213,10 +213,21 @@
             $("#side_bar .gobottom").click(function(){
                 var btm=$('html,body').height();
                 $('html,body').animate({'scrollTop':btm},500);
-            })
+            });
             $(".icon-ishop_6-07").parent().click(function () {
                 window.location.reload();
-            })
+            });
+
         });
+        var timer=setInterval(function(){
+            $(window.parent.document).find("#navbar li dd[data-code='F0006']").parent().show();
+            $(window.parent.document).find("#navbar li dd[data-code='F0006']").find("span").addClass("icon-ishop_8-01");
+            $(window.parent.document).find("#navbar li dd[data-code='F0006']").find("a").css({color:"#6cc1c8"});
+            $(window.parent.document).find("#navbar li dd[data-code='F0006']").parent().siblings().addClass("h1");
+            $(window.parent.document).find("#navbar li dd[data-code='F0006']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+            if($(window.parent.document).find("#navbar li dd[data-code='F0006']").find("span").hasClass("icon-ishop_8-01")){
+                clearInterval(timer);
+            }
+        },0);
 </script>
 </html>

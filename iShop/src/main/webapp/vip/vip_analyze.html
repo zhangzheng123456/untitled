@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>会员分析</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
-    <link rel="stylesheet" href="../css/vip_analyze.css?20161116">
-    <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" href="../css/font_style.css?201715">
+    <link rel="stylesheet" href="../css/vip_analyze.css?201715">
+    <link rel="stylesheet" href="../css/jquery.dad.css?201715">
     <style>
+        .dad-container::after{
+            display: none;
+        }
         #select_analyze ul li.choose_li, #select_analyze_brand ul li.choose_li, #select_analyze_shop ul li.choose_li {
             background: #6cc1c8;
             color: #fff;
@@ -16,7 +19,6 @@
             width: 100%;
             /*margin-left: 6.7%;*/
         }
-
         .no_data {
             height: 46px;
         }
@@ -71,6 +73,12 @@
             z-index: 10010;
             left: 20%;
             top: 100px;
+        }
+        @media (max-width: 1100px) {
+            #chart_analyze .col_sm_5{
+                float: left;
+                width: 49.5%;!important;
+            }
         }
     </style>
 </head>
@@ -520,7 +528,7 @@
     </div>
     <!-- 分析数据图表描述-->
     <div id="chart_analyze"  data-id="">
-        <div class="chart_module" data-id="type">
+        <div class="chart_module col_sm_5" data-id="type">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -543,7 +551,7 @@
                 </div>
             </ul>
         </div>
-        <div class="chart_module" data-id="weeks">
+        <div class="chart_module col_sm_5" data-id="weeks">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -561,7 +569,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="price">
+        <div class="chart_module col_sm_5" data-id="price">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -579,7 +587,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="times">
+        <div class="chart_module col_sm_5" data-id="times">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -597,7 +605,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="month">
+        <div class="chart_module col_sm_5" data-id="month">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -615,7 +623,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="series">
+        <div class="chart_module col_sm_5" data-id="series">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -633,7 +641,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" data-id="areas">
+        <div class="chart_module col_sm_5" data-id="areas">
             <ul>
                 <span class="chart_head">
                     <span class="drag_area">
@@ -651,10 +659,14 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module add_chart" id="add_chart" style="display: block">
-            <span>+</span>
-            <span>添加图表</span>
-        </div>
+        <!--<div class="chart_module add_chart col_sm_5" id="add_chart" style="display: block">-->
+            <!--<span>+</span>-->
+            <!--<span>添加图表</span>-->
+        <!--</div>-->
+    </div>
+    <div id="add_chart" class="add_chart col_sm_5" style="width: 32.833%;height: 300px;float: left;background-color: #DDDDDD">
+        <span>+</span>
+        <span>添加图表</span>
     </div>
     <!--添加图表弹窗-->
     <div class="chart_add_wrap" id="chart_add_wrap">
@@ -720,13 +732,13 @@
 <script src="../js/jquery.dad.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <!--<script src="../js/dist/echarts.js"></script>-->
-<script src="../js/silide.js?20161217"></script>
-<script src="../js/echarts.js?20161116"></script>
-<script src="../js/dist/chart/china.js?20161227"></script>
+<script src="../js/silide.js?201715"></script>
+<script src="../js/echarts.js?201715"></script>
+<script src="../js/dist/chart/china.js?201715"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/loading.js"></script>
-<script type="text/javascript" src="../js/laydate/laydate.js?20161116"></script>
-<script src="../js/vip/vip_analyze.js?20161227"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js?201715"></script>
+<script src="../js/vip/vip_analyze.js?201715"></script>
 <script>
     $(".scroll_bar").niceScroll({
         cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
@@ -757,5 +769,15 @@
             }, 500);
         })
     });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0036']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0036']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
 </script>
 </html>

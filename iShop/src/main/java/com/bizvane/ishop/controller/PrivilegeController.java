@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Created by Administrator on 2016/6/1.
@@ -183,9 +184,15 @@ public class PrivilegeController {
 
             if (type.equals("show")){
                 List<Privilege> privileges = functionService.selectColPrivilegeByUser(function_code,corp_code+"U"+user_code);
+                List<Privilege> privileges1 = new ArrayList<Privilege>();
+                for (int i = 0; i < privileges.size(); i++) {
+                    if (privileges.get(i).getColumn_name().startsWith("[") && privileges.get(i).getColumn_name().endsWith("]")){
+                        privileges1.add(privileges.get(i));
+                    }
+                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage(JSON.toJSONString(privileges));
+                dataBean.setMessage(JSON.toJSONString(privileges1));
             }else {
                 String id = jsonObject.get("id").toString();
                 String order = jsonObject.get("order").toString();
@@ -198,6 +205,7 @@ public class PrivilegeController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipActivityDetailMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.VipActivityDetail" id="VipActivityDetail">
+        <id column="id" property="id"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_code" property="activity_vip_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_type" property="activity_type"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="recruit" property="recruit" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="h5_url" property="h5_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sales_no" property="sales_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="festival_start" property="festival_start"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="festival_end" property="festival_end" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_coupon_type" property="send_coupon_type"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="coupon_type" property="coupon_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_title" property="apply_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_endtime" property="apply_endtime"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_desc" property="apply_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_success_tips" property="apply_success_tips"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_logo" property="apply_logo" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="apply_qrcode" property="apply_qrcode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectAllActivityDetail" resultMap="VipActivityDetail">
+        SELECT dvad.id,
+        dvad.corp_code,
+        dvad.activity_code,
+        dvad.activity_type,
+        dvad.recruit,
+        dvad.h5_url,
+        dvad.sales_no,
+        dvad.festival_start,
+        dvad.festival_end,
+        dvad.send_coupon_type,
+        dvad.coupon_type,
+        dvad.apply_title,
+        dvad.apply_endtime,
+        dvad.apply_desc,
+        dvad.apply_success_tips,
+        dvad.apply_logo,
+        dvad.apply_qrcode,
+        dvad.modified_date,
+        dvad.modifier,
+        dvad.created_date,
+        dvad.creater,
+        dvad.isactive,
+        dc.corp_name
+        FROM def_vip_activity_detail dvad,def_corp dc
+        WHERE dvad.corp_code = dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvad.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND dvad.creater = #{user_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            dvad.activity_theme LIKE concat('%', #{search_value},'%')
+            OR dvad.activity_type LIKE concat('%', #{search_value},'%')
+            OR dc.corp_name LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY dvad.id DESC
+    </select>
+
+    <insert id="insertActivityDetail" parameterType="com.bizvane.ishop.entity.VipActivityDetail">
+        INSERT INTO def_vip_activity_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="activity_code!=null">
+                activity_code,
+            </if>
+            <if test="activity_type!=null">
+                activity_type,
+            </if>
+            <if test="recruit!=null">
+                recruit,
+            </if>
+            <if test="h5_url!=null">
+                h5_url,
+            </if>
+            <if test="sales_no!=null">
+                sales_no,
+            </if>
+            <if test="festival_start!=null">
+                festival_start,
+            </if>
+            <if test="festival_end!=null">
+                festival_end,
+            </if>
+            <if test="send_coupon_type!=null">
+                send_coupon_type,
+            </if>
+            <if test="coupon_type!=null">
+                coupon_type,
+            </if>
+            <if test="apply_title!=null">
+                apply_title,
+            </if>
+            <if test="apply_endtime!=null">
+                apply_endtime,
+            </if>
+            <if test="apply_desc!=null">
+                apply_desc,
+            </if>
+            <if test="apply_success_tips!=null">
+                apply_success_tips,
+            </if>
+            <if test="apply_logo!=null">
+                apply_logo,
+            </if>
+            <if test="apply_qrcode!=null">
+                apply_qrcode,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="activity_code!=null">
+                #{activity_code},
+            </if>
+            <if test="activity_type!=null">
+                #{activity_type},
+            </if>
+            <if test="recruit!=null">
+                #{recruit},
+            </if>
+            <if test="h5_url!=null">
+                #{h5_url},
+            </if>
+            <if test="sales_no!=null">
+                #{sales_no},
+            </if>
+            <if test="festival_start!=null">
+                #{festival_start},
+            </if>
+            <if test="festival_end!=null">
+                #{festival_end},
+            </if>
+
+            <if test="send_coupon_type!=null">
+                #{send_coupon_type},
+            </if>
+
+            <if test="coupon_type!=null">
+                #{coupon_type},
+            </if>
+            <if test="apply_title!=null">
+                #{apply_title},
+            </if>
+            <if test="apply_endtime!=null">
+                #{apply_endtime},
+            </if>
+            <if test="apply_desc!=null">
+                #{apply_desc},
+            </if>
+            <if test="apply_success_tips!=null">
+                #{apply_success_tips},
+            </if>
+            <if test="apply_logo!=null">
+                #{apply_logo},
+            </if>
+            <if test="apply_qrcode!=null">
+                #{apply_qrcode},
+            </if>
+
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateActivityDetail" parameterType="com.bizvane.ishop.entity.VipActivityDetail">
+        UPDATE def_vip_activity_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="activity_code!=null">
+                activity_code=#{activity_code},
+            </if>
+            <if test="activity_type!=null">
+                activity_type=#{activity_type},
+            </if>
+            <if test="recruit!=null">
+                recruit=#{recruit},
+            </if>
+            <if test="h5_url!=null">
+                h5_url=#{h5_url},
+            </if>
+            <if test="sales_no!=null">
+                sales_no=#{sales_no},
+            </if>
+            <if test="festival_start!=null">
+                festival_start=#{festival_start},
+            </if>
+            <if test="festival_end!=null">
+                festival_end=#{festival_end},
+            </if>
+            <if test="send_coupon_type!=null">
+                send_coupon_type=#{send_coupon_type},
+            </if>
+            <if test="coupon_type!=null">
+                coupon_type=#{coupon_type},
+            </if>
+            <if test="apply_title!=null">
+                apply_title=#{apply_title},
+            </if>
+            <if test="apply_endtime!=null">
+                apply_endtime=#{apply_endtime},
+            </if>
+            <if test="apply_desc!=null">
+                apply_desc=#{apply_desc},
+            </if>
+            <if test="apply_success_tips!=null">
+                apply_success_tips=#{apply_success_tips},
+            </if>
+            <if test="apply_logo!=null">
+                apply_logo=#{apply_logo},
+            </if>
+            <if test="apply_qrcode!=null">
+                apply_qrcode=#{apply_qrcode},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="delActivityDetailById">
+        DELETE FROM def_vip_activity_detail
+        WHERE id=#{id};
+    </delete>
+
+    <select id="selectActivityDetailScreen" resultMap="VipActivityDetail">
+        SELECT dvad.id,
+        dvad.corp_code,
+        dvad.activity_code,
+        dvad.activity_type,
+        dvad.recruit,
+        dvad.h5_url,
+        dvad.sales_no,
+        dvad.festival_start,
+        dvad.festival_end,
+        dvad.send_coupon_type,
+        dvad.coupon_type,
+        dvad.apply_title,
+        dvad.apply_endtime,
+        dvad.apply_desc,
+        dvad.apply_success_tips,
+        dvad.apply_logo,
+        dvad.apply_qrcode,
+        dc.corp_name
+        FROM def_vip_activity_detail dvad,def_corp dc
+        WHERE dvad.corp_code=dc.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND dvad.corp_code = #{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            AND dvad.creater = #{user_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} REGEXP ${entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    dvad.${entryKey} REGEXP ${entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        GROUP BY dvad.id
+        ORDER BY dvad.id DESC
+    </select>
+
+    <select id="selActivityDetailById" resultMap="VipActivityDetail">
+         SELECT dvad.id,
+        dvad.corp_code,
+        dvad.activity_code,
+        dvad.activity_type,
+        dvad.recruit,
+        dvad.h5_url,
+        dvad.sales_no,
+        dvad.festival_start,
+        dvad.festival_end,
+        dvad.send_coupon_type,
+        dvad.coupon_type,
+        dvad.apply_title,
+        dvad.apply_endtime,
+        dvad.apply_desc,
+        dvad.apply_success_tips,
+        dvad.apply_logo,
+        dvad.apply_qrcode,
+         dvad.modified_date,
+        dvad.modifier,
+        dvad.created_date,
+        dvad.creater,
+        dvad.isactive,
+        dc.corp_name
+        FROM def_vip_activity_detail dvad,def_corp dc
+        WHERE dvad.corp_code=dc.corp_code
+        AND dvad.id =#{id}
+    </select>
+
+</mapper>

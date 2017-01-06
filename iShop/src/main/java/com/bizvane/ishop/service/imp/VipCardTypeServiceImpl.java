@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
+
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipCardTypeMapper;
 import com.bizvane.ishop.entity.VipCardType;
@@ -51,6 +52,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
+        String isactive = jsonObject.get("isactive").toString().trim();
 
         VipCardType vipCardType = WebUtils.JSON2Bean(jsonObject, VipCardType.class);
         VipCardType code = getVipCardTypeByCode(vipCardType.getCorp_code(), vipCardType.getVip_card_type_code(), vipCardType.getIsactive());
@@ -58,18 +60,17 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
 
         if (list == null || code == null && name == null) {
-
             vipCardType.setCorp_code(corp_code);
             vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipCardType.setCreater(user_id);
             vipCardType.setModifier(user_id);
             vipCardType.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            vipCardType.setIsactive(isactive);
             int num = 0;
             num = vipCardTypeMapper.insertVipCardType(vipCardType);
             if (num > 0) {
                 VipCardType vipCardType1 = getVipCardTypeByCode(vipCardType.getCorp_code(), vipCardType.getVip_card_type_code(), vipCardType.getIsactive());
                 status = vipCardType1.getId();
-                System.out.print(vipCardType1.getId());
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
             }
@@ -78,8 +79,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         } else {
             status = "该名称已存在";
         }
-
-
         return status;
     }
 
@@ -92,6 +91,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         String vip_card_type_code = jsonObject.get("vip_card_type_code").toString().trim();
         String vip_card_type_name = jsonObject.get("vip_card_type_name").toString().trim();
         String degree = jsonObject.get("degree").toString().trim();
+        String isactive = jsonObject.get("isactive").toString().trim();
         String id = jsonObject.get("id").toString().trim();
         int ids=Integer.valueOf(id);
         VipCardType vipCardType = getVipCardTypeById(Integer.parseInt(id));
@@ -99,8 +99,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
         int num = 0;
-
-        System.out.print(vipCardType2.getId()+"=======");
         if (list != null) {
             if (vipCardType1 != null && !id.equals(vipCardType1.getId())) {
                 status = "该编号已存在";
@@ -111,10 +109,9 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
                 vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
-                vipCardType.setCreater(user_id);
                 vipCardType.setModifier(user_id);
-                vipCardType.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipCardType.setDegree(degree);
+                vipCardType.setIsactive(isactive);
                 num = vipCardTypeMapper.updateVipCardType(vipCardType);
                 if (num > 0) {
                     status = Common.DATABEAN_CODE_SUCCESS;
@@ -128,10 +125,9 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
                 vipCardType.setModified_date(Common.DATETIME_FORMAT.format(now));
-                vipCardType.setCreater(user_id);
                 vipCardType.setModifier(user_id);
-                vipCardType.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipCardType.setDegree(degree);
+                vipCardType.setIsactive(isactive);
                 num = vipCardTypeMapper.updateVipCardType(vipCardType);
                 if (num > 0) {
                     status = Common.DATABEAN_CODE_SUCCESS;
@@ -151,6 +147,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
 
     @Override
     public int delete(int id) throws Exception {
+
         return vipCardTypeMapper.delVipCardTypeById(id);
     }
 

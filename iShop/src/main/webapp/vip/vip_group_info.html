@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>分组会员</title>
-    <link rel="stylesheet" href="../table/css/inner.css?20161116">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+    <link rel="stylesheet" href="../table/css/inner.css?201715">
+    <link rel="stylesheet" href="../css/font_style.css?201715">
     <link rel="stylesheet" href="../css/vip_analyze.css">
-    <link rel="stylesheet" href="../css/jquery.dad.css?20161116">
+    <link rel="stylesheet" href="../css/jquery.dad.css?201715">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20161116"></script>
+    <script src="/js/loading.js?201715"></script>
     <style>
+        .dad-container::after{
+            display: none;
+        }
         .chart_lg{
             position: fixed!important;
             width: 70% !important;
-            height: 80% !important;
+            height: 70% !important;
             max-width: 1024px;
             max-height: 768px;
             z-index: 10001;
-            left: 20%;
-            top:100px;
+            left: 55%;
+            top: 55%;
+            transform: translate(-50%,-50%);
         }
         /*批量标签*/
         .batch_label_wrapper{
@@ -170,7 +174,7 @@
         }
         .group_left li i{
             position: absolute;
-            right: 25px;
+            right: 10px;
             top: 14px;
             display: none;
         }
@@ -335,6 +339,41 @@
 
                         </ul>
                     </li>
+                    <li>
+                        <div>忠诚度分组 <i class='icon-ishop_8-02'></i></div>
+                        <ul>
+                            <li id="L01" data-code="C10000">高忠诚度</li>
+                            <li id="L02" data-code="C10000">一般忠诚度</li>
+                            <li id="L03" data-code="C10000">低忠诚度</li>
+                            <li id="L04" data-code="C10000">流失顾客</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div>顾客活跃度分组 <i class='icon-ishop_8-02'></i></div>
+                        <ul>
+                            <li id="A01" data-code="C10000"> 活跃顾客</li>
+                            <li id="A02" data-code="C10000">一般活跃</li>
+                            <li id="A03" data-code="C10000">濒临休眠</li>
+                            <li id="A04" data-code="C10000">休眠顾客</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div>消费类型分组 <i class='icon-ishop_8-02'></i></div>
+                        <ul>
+                            <li id="CT01" data-code="C10000">一日客</li>
+                            <li id="CT02" data-code="C10000">新开未消费</li>
+                            <li id="CT03" data-code="C10000">高粘性顾客</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div>周期型分组 <i class='icon-ishop_8-02'></i></div>
+                        <ul>
+                            <li id="C01" data-code="C10000">重要发展顾客</li>
+                            <li id="C02" data-code="C10000">重要维持顾客</li>
+                            <li id="C03" data-code="C10000">重要联系顾客</li>
+                            <li id="C04" data-code="C10000">重要流失顾客</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -383,28 +422,29 @@
             </ul>
         </div>
             </div>
-            <div style="background-color: #FFFFFF;padding:10px 10px 10px 0;">
-                <div id="chart_analyze" style="min-height: 600px; margin:0 -0.5% 0 0;background-color: #e8e8e8">
+            <div style="padding: 10px 10px 0 10px;background-color: #fff" id="chart_parent">
+                <div style="background-color: #DDDDDD;overflow: hidden;height: 100%">
+                <div id="chart_analyze" style="margin:0 -0.5% 0 0;background-color: #e8e8e8;">
                 <div class="chart_module" data-id="type">
                     <ul>
-                    <span class="chart_head">
-                    <span class="drag_area"><i class="icon-ishop_6-27"></i>
-                    <span>消费类型</span></span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
-                    <ul>
-                        <li data-type="piece">按件数分析</li>
-                        <li data-type="money">按金额分析</li>
-                    </ul>
-                    </span>
-                    <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
-                </span>
+                        <span class="chart_head">
+                            <span class="drag_area"><i class="icon-ishop_6-27"></i>
+                            <span>消费类型</span></span>
+                            <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i>
+                            <ul>
+                                <li data-type="piece">按件数分析</li>
+                                <li data-type="money">按金额分析</li>
+                            </ul>
+                            </span>
+                            <i class="icon-ishop_6-12 chart_close_icon"></i>
+                            <i class="icon-ishop_9-05 chart_list_icon"></i>
+                         </span>
                         <li id="type" style="padding-left: 10px;">
                         </li>
                         <div class="data_table">
-                           <ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>
-                           <ul><li>件数</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
-                           <ul><li>金额</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>
+                           <!--<ul><li></li><li>衬衫</li><li>背心</li><li>连衣裙</li><li>T恤</li><li>外套</li><li>短裙</li><li>裤子</li><li>长裙</li></ul>-->
+                           <!--<ul><li>件数</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>-->
+                           <!--<ul><li>金额</li><li>122</li><li>310</li><li>1548</li><li>234</li><li>135</li><li>1548</li><li>1548</li><li>1548</li></ul>-->
                         </div>
                     </ul>
                 </div>
@@ -425,8 +465,8 @@
                         <li id="weeks" >
                         </li>
                         <div class="data_table">
-                            <ul><li></li><li>周一</li><li>周二</li><li>周三</li><li>周四</li><li>周五</li><li>周六</li><li>周日</li><li>无数据</li></ul>
-                            <ul><li>金额</li><li>97</li><li>42</li><li>88</li><li>94</li><li>90</li><li>86</li><li>90</li><li></li></ul>
+                            <!--<ul><li></li><li>周一</li><li>周二</li><li>周三</li><li>周四</li><li>周五</li><li>周六</li><li>周日</li><li>无数据</li></ul>-->
+                            <!--<ul><li>金额</li><li>97</li><li>42</li><li>88</li><li>94</li><li>90</li><li>86</li><li>90</li><li></li></ul>-->
                         </div>
                     </ul>
                 </div>
@@ -535,12 +575,16 @@
                             </li>
                     </ul>
                 </div>
-                <div class="chart_module add_chart dads-children" id="add_chart" style="display: block" data-dad-id="8" data-dad-position="8">
+                <!--<div class="chart_module add_chart dads-children" id="add_chart" style="display: block" data-dad-id="8" data-dad-position="8">-->
+                    <!--<span>+</span>-->
+                    <!--<span>添加图表</span>-->
+                <!--</div>-->
+            </div>
+                <div id="add_chart" class="add_chart" style="width: 49.5%;height: 300px;float: left;background-color: #DDDDDD">
                     <span>+</span>
                     <span>添加图表</span>
                 </div>
-            </div>
-            </div>
+            </div></div>
         </div>
     </div>
 </div>
@@ -793,11 +837,11 @@
     </div>
 </div>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<script src="/js/loading.js?20161116"></script>
+<script src="/js/loading.js?201715"></script>
 <script src="../js/echarts.js"></script>
 <script src="../js/dist/chart/china.js"></script>
-<script type="text/javascript" src="../js/insidePostRequire.js?20161116"></script>
-<script src="../js/silide.js?20161116"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
+<script src="../js/silide.js?201715"></script>
 <script src="../js/laydate/laydate.js"></script>
 <script src="../js/vip_screen.js"></script>
 <script src="../js/jquery.dad.min.js"></script>
@@ -818,6 +862,7 @@
         });
     });
     $('#chart_analyze').dad({
+        placeholder:"拖放到这里",
         draggable: '.drag_area',
         callback: function (data) {
             var index = $(data).index();
@@ -831,5 +876,15 @@
             vip_group_info.getCharts(order);
         }
     });
+    var timer=setInterval(function(){
+        $(window.parent.document).find("#navbar li dd[data-code='F0040']").parent().show();
+        $(window.parent.document).find("#navbar li dd[data-code='F0040']").find("span").addClass("icon-ishop_8-01");
+        $(window.parent.document).find("#navbar li dd[data-code='F0040']").find("a").css({color:"#6cc1c8"});
+        $(window.parent.document).find("#navbar li dd[data-code='F0040']").parent().siblings().addClass("h1");
+        $(window.parent.document).find("#navbar li dd[data-code='F0040']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+        if($(window.parent.document).find("#navbar li dd[data-code='F0040']").find("span").hasClass("icon-ishop_8-01")){
+            clearInterval(timer);
+        }
+    },0);
 </script>
 </html>

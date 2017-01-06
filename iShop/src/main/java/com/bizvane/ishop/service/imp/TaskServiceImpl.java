@@ -14,6 +14,7 @@ import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.curator.retry.RetryUntilElapsed;
 import org.apache.log4j.Logger;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.json.JSONArray;
@@ -88,6 +89,11 @@ public class TaskServiceImpl implements TaskService{
         return count+"";
     }
 
+    @Override
+    @Transactional
+    public int insertTask(Task task) throws Exception{
+      return taskMapper.addTask(task);
+    }
     @Override
     @Transactional
     public String addTask(Task task,String phone,String users,String user_code,String activity_vip_code) throws Exception{
@@ -265,5 +271,15 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public List<Task> selectTaskByTaskType(String corp_code,String task_type_code) throws Exception {
         return taskMapper.selectTaskByTaskType(corp_code,task_type_code);
+    }
+
+    @Override
+    public List<Task> getTaskByActivityCode(String corp_code, String activity_vip_code) throws Exception {
+        return taskMapper.getTaskByActivityCode(corp_code,activity_vip_code);
+    }
+
+    @Override
+    public int delTaskByActivityCode(String corp_code, String activity_vip_code) throws Exception {
+        return taskMapper.delTaskByActivityCode(corp_code,activity_vip_code);
     }
 }

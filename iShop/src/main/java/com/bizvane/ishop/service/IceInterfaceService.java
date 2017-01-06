@@ -21,6 +21,8 @@ public interface IceInterfaceService {
 
     Map vipBasicMethod(String page_num, String page_size, String corp_code, HttpServletRequest request) throws Exception;
 
+    Map vipBasicMethod2(String page_num, String page_size, String corp_code, HttpServletRequest request) throws Exception;
+
     Map vipAnalysisBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception;
 
     DataBox vipScreenMethod(String page_num,String page_size,String corp_code,String area_code,String brand_code,String store_code,String user_code) throws Exception;

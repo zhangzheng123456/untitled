@@ -1115,33 +1115,6 @@ input::-webkit-input-placeholder{
 	border-radius: 5px;
 	cursor:pointer;
 }
-/***********开关样式********/
-.switch div{
-	display: inline-block;
-	width:35px;
-	height: 15px;
-	background-color:#CCC;
-	border-radius: 12px;
-	vertical-align: middle;
-	cursor: pointer;
-	position: relative;
-}
-.switch .bg{
-	background-color:#3eb454;
-}
-.switch div .Off{
-	left: 20px;
-}
-.switch div span{
-	position: absolute;
-	width: 15px !important;
-	height: 15px !important;
-	top:-1px;
-	left: 0;
-	border-radius: 24px;
-	background-color:#fff;
-	border: 1px solid #ccc;
-}
 /*******************筛选区域样式******************/
 .screen_area{
 	width: 740px;

@@ -121,7 +121,8 @@ function chartShow(order) {
                                 $(this).show();
                                 var ID = $(this).attr("data-id");
                                 init_chart(ID);
-                                $("#add_chart").before($(this));
+                                $("#chart_analyze").append($(this));
+                                //$("#add_chart").before($(this));
                             }
                         });
                     }
@@ -682,6 +683,7 @@ $(".chart_close_icon").click(function () {
     chartShow(order);
 });
 $("#chart_analyze").dad({
+    placeholder:"拖放到这里",
     draggable: '.drag_area',
     callback: function (data) {
         var index = $(data).index();
@@ -1357,6 +1359,7 @@ $(function(){
     qjia();
     chartData();
     chartShow();
+    GET();
 });
 
 

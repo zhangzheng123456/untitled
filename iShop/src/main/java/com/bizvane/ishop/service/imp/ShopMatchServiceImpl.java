@@ -33,7 +33,7 @@ public class ShopMatchServiceImpl implements ShopMatchService {
     MongoDBClient mongodbClient;
     @Autowired
     private UserService userService;
-    public JSONObject getGoodsByWx(String corp_code, String pageSize, String pageIndex, String categoryId, String row_num, String productName) throws Exception {
+    public String getGoodsByWx(String corp_code, String pageSize, String pageIndex, String categoryId, String row_num, String productName) throws Exception {
         JSONObject jsonObject = new JSONObject();
 
         Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -54,8 +54,8 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         DataBox dataBox = iceInterfaceService.iceInterface("ProductList",datalist);
 
         String result = dataBox.data.get("message").value;
-        jsonObject = JSON.parseObject(result);
-        return jsonObject;
+
+        return result;
     }
 
 
@@ -96,9 +96,16 @@ public class ShopMatchServiceImpl implements ShopMatchService {
         }else{
             user_name  = userList.get(0).getUser_name();
         }
-        System.out.println("==============user_name点赞人======================"+user_name);
+        String avatar="";
+        if(userList.size()==0 || userList.size()>1){
+            avatar="";
+        }else{
+            avatar  = userList.get(0).getAvatar();
+        }
+        System.out.println(avatar+"==============user_name点赞人======================"+user_name);
         saveData.put("operate_userCode", operate_userCode);
         saveData.put("operate_userName", user_name);
+        saveData.put("operate_userAvatar", avatar);
         saveData.put("operate_type", operate_type);
         saveData.put("status", status);
         saveData.put("comment_text", comment_text);

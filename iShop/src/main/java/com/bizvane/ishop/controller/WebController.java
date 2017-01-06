@@ -967,10 +967,8 @@ public class WebController {
             deleteRecord.put("corp_code",corp_code);
             deleteRecord.put("d_match_code",d_match_code);
             DBCursor dbObjects = cursor.find(deleteRecord);
-            DBObject dbObject=null;
-            while (dbObjects.hasNext()) {
-                dbObject  = dbObjects.next();
-            }
+            DBObject dbObject = new BasicDBObject();
+
 //            String corp_code = dbObject.get("corp_code").toString();
 //            String d_match_code = dbObject.get("d_match_code").toString();
             DBObject object = MongoHelperServiceImpl.selectByCode(corp_code, d_match_code, user_code, "like");
@@ -983,9 +981,12 @@ public class WebController {
             if(object2!=null){
                 collect_status = object2.get("status").toString();
             }
-            dbObject.removeField("_id");
-            dbObject.put("like_status", like_status);
-            dbObject.put("collect_status", collect_status);
+            while (dbObjects.hasNext()) {
+                dbObject  = dbObjects.next();
+                dbObject.removeField("_id");
+                dbObject.put("like_status", like_status);
+                dbObject.put("collect_status", collect_status);
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(dbObject.toString());
@@ -1010,11 +1011,11 @@ public class WebController {
             String row_num = request.getParameter("row_num");
             String productName = request.getParameter("productName");
 
-            JSONObject goodsByWx = shopMatchService.getGoodsByWx(corp_code, pageSize, pageIndex, categoryId, row_num, productName);
+            String goodsByWx = shopMatchService.getGoodsByWx(corp_code, pageSize, pageIndex, categoryId, row_num, productName);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(goodsByWx.toJSONString());
+            dataBean.setMessage(goodsByWx.toString());
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

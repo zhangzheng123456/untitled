@@ -188,7 +188,7 @@ public class VipParamController {
             VipParam vipParam = WebUtils.JSON2Bean(jsonObject, VipParam.class);
             String corp_code = jsonObject.getString("corp_code");
 //            String param_name = jsonObject.getString("param_name");
-            String param_name = "E"+System.currentTimeMillis()+"_CUST";
+            String param_name = "CUST_"+System.currentTimeMillis();
             vipParam.setParam_name(param_name);
             //------------操作日期-------------
             Date date = new Date();
@@ -288,8 +288,8 @@ public class VipParamController {
             //------------操作日期-------------
             Date date = new Date();
             String param_name = vipParam.getParam_name();
-            if (!param_name.endsWith("_CUST"))
-                param_name = param_name + "_CUST";
+            if (!param_name.startsWith("CUST_"))
+                param_name = "CUST_"+param_name;
             vipParam.setParam_name(param_name.toUpperCase());
             vipParam.setModified_date(Common.DATETIME_FORMAT.format(date));
             vipParam.setModifier(user_id);
@@ -347,7 +347,38 @@ public class VipParamController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String param_name = jsonObject.get("param_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            List<VipParam> vipParams = vipParamService.checkParamName(corp_code, param_name);
+            List<VipParam> vipParams = vipParamService.selectByParamName(corp_code, param_name,Common.IS_ACTIVE_Y);
+            if(vipParams.size()>0){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("会员参数名称已被使用");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("会员参数名称可以使用");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/checkDescOnly", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkDescOnly(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String param_desc = jsonObject.get("param_desc").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<VipParam> vipParams = vipParamService.selectByParamDesc(corp_code, param_desc,Common.IS_ACTIVE_Y);
             if(vipParams.size()>0){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);

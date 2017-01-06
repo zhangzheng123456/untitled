@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>系统管理之接口管理</title>
-	<link rel="stylesheet" href="../table/css/inner.css?20161216">
-    <link rel="stylesheet" href="../css/font_style.css?20161116">
+	<link rel="stylesheet" href="../table/css/inner.css?20170105">
+    <link rel="stylesheet" href="../css/font_style.css?20170105">
     <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js?20161116"></script>
+    <script src="/js/loading.js?20170105"></script>
 </head>
 <body>
    <!--  <div id="navbar">
@@ -186,8 +186,8 @@
         </div>
     </div>
 </body>
-    <script type="text/javascript" src="/js/insidePostRequire.js?20161116"></script>
-    <script src="/js/system/interface.js?20161215"></script>
+    <script type="text/javascript" src="/js/insidePostRequire.js?20170105"></script>
+    <script src="/js/system/interface.js?20170105"></script>
     <script type="text/javascript">
         $(function(){
             $(window).scroll(function(){
@@ -206,5 +206,15 @@
                 $('html,body').animate({'scrollTop':btm},500);
             })
         });
+        var timer=setInterval(function(){
+            $(window.parent.document).find("#navbar li dd[data-code='F0021']").parent().show();
+            $(window.parent.document).find("#navbar li dd[data-code='F0021']").find("span").addClass("icon-ishop_8-01");
+            $(window.parent.document).find("#navbar li dd[data-code='F0021']").find("a").css({color:"#6cc1c8"});
+            $(window.parent.document).find("#navbar li dd[data-code='F0021']").parent().siblings().addClass("h1");
+            $(window.parent.document).find("#navbar li dd[data-code='F0021']").parent().siblings().find("span").addClass("icon-ishop_8-02");
+            if($(window.parent.document).find("#navbar li dd[data-code='F0021']").find("span").hasClass("icon-ishop_8-01")){
+                clearInterval(timer);
+            }
+        },0);
     </script>
 </html>
