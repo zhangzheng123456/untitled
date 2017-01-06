@@ -111,15 +111,14 @@ public class QuartzTest {
         sched.shutdown(true);
         System.out.println("------- Scheduler完成 -----------------");
     }
-
+    @Test
     public void insertSchedule() throws Exception{
         ScheduleJob scheduleJob = new ScheduleJob();
         scheduleJob.setJob_name("job1");
         scheduleJob.setJob_group("group1");
         scheduleJob.setFunc("test1");
         scheduleJob.setCron_expression("0/20 * * * * ?");
-        scheduleJob.setGmt_create(new Date());
-        scheduleJob.setGmt_modify(new Date());
+
         scheduleJobService.insert(scheduleJob);
     }
     @Test

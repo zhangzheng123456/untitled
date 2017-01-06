@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.VipFsend;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,6 +33,8 @@ public interface VipFsendService {
      int insertSend(VipFsend vipFsend) throws Exception ;
 
     int delSendByActivityCode(String corp_code,String activity_vip_code)throws Exception;
+
+    List<VipFsend> getSendByActivityCode(String corp_code,String activity_vip_code)throws Exception;
 
 
 }

@@ -39,10 +39,10 @@ public class ScheduleJob extends Pageable {
     private String description;
 
     /** 创建时间 */
-    private Date gmt_create;
+    private String gmt_create;
 
     /** 修改时间 */
-    private Date gmt_modify;
+    private String gmt_modify;
 
     /** 任务执行方法 */
     private String func;
@@ -111,19 +111,19 @@ public class ScheduleJob extends Pageable {
         this.description = description;
     }
 
-    public Date getGmt_create() {
+    public String getGmt_create() {
         return gmt_create;
     }
 
-    public void setGmt_create(Date gmt_create) {
+    public void setGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }
 
-    public Date getGmt_modify() {
+    public String getGmt_modify() {
         return gmt_modify;
     }
 
-    public void setGmt_modify(Date gmt_modify) {
+    public void setGmt_modify(String gmt_modify) {
         this.gmt_modify = gmt_modify;
     }
 

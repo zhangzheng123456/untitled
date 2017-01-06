@@ -17,6 +17,9 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
+        .dad-container::after{
+            display: none;
+        }
         html, body {
             background: #e8e8e8;
             font-family: '微软雅黑';
@@ -828,10 +831,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="chart_module add_chart" id="add_chart" style="display: block">
-                <span>+</span>
-                <span>添加图表</span>
-            </div>
+            <!--<div class="chart_module add_chart" id="add_chart" style="display: block">-->
+                <!--<span>+</span>-->
+                <!--<span>添加图表</span>-->
+            <!--</div>-->
+        </div>
+            <div class="add_chart" id="add_chart" style="width: 32.833%;height: 300px;float: left;background-color: #DDDDDD">
+            <span>+</span>
+            <span>添加图表</span>
         </div>
         <!--添加图表弹窗-->
         <div class="chart_add_wrap" id="chart_add_wrap">
