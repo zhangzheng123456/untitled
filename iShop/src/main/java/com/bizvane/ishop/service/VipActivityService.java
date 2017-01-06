@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.entity.VipActivity;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -96,4 +97,6 @@ public interface VipActivityService {
 
     ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception;
 
-   }
+    int updActiveCodeByType(String line_code, String line_value,String corp_code, String activity_code)throws Exception;
+
+}

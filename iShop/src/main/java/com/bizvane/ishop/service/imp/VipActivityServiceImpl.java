@@ -422,4 +422,9 @@ public class VipActivityServiceImpl implements VipActivityService {
         ArrayList list = MongoUtils.dbCursorToList(dbCursor);
         return list;
     }
+
+    @Override
+    public int updActiveCodeByType(String line_code, String line_value, String corp_code, String activity_code) throws Exception {
+        return vipActivityMapper.updActiveCodeByType(line_code,line_value,corp_code,activity_code);
+    }
 }
