@@ -314,7 +314,7 @@ body {
   background-color: white;
   color: #8e8c8c;
   font-size: 0.31401rem;
-  display: none;
+  display: block;
   width: 100%;
   margin-bottom: 0.12077rem; }
 
