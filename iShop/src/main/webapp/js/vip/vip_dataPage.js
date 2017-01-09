@@ -12,6 +12,7 @@ $('#toTopUp').click(function(){
     $('#topUpPeopleSelect li').eq(0).click();
     $('#topUpMoneyReality').parent().find('.hint').css('display','none');
     $('#topUpMoney').parent().find('.hint').css('display','none');
+    $('#laydate_box').css('position','fixed');
 });
 //退款弹窗
 $('#toRefund').click(function(){
@@ -21,6 +22,7 @@ $('#toRefund').click(function(){
     refunBalanceShow();//默认余额退款
     $('#refunType li').eq(1).click();
     $('#refunShopSelcet li').eq(0).click();
+    $('#laydate_box').css('position','fixed');
 });
 //充值记录弹窗
 $('#toRecord').click(function(){
@@ -551,4 +553,5 @@ window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop();    //充值弹窗充值店仓列表
     getRecord()  //充值记录数据加载
+
 }
