@@ -96,6 +96,7 @@
     height:30px;
 }
 .all_select_vip_content .num{
+    display: inherit;
     font-size: 30px;
     color: #41c7db;
     margin: 8px 0;
