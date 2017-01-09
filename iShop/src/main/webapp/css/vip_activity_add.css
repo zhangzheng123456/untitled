@@ -483,3 +483,7 @@
 .group_parent{
     display: none;
 }
+#expend_attribute {
+    max-height: 250px;
+    overflow-y: scroll;
+}
