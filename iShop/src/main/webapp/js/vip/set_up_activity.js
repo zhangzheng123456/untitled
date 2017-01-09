@@ -1,5 +1,6 @@
 var oc = new ObjectControl();
 var activity={
+    isEmpty:false,
     shop_num:1,
     shop_next:false,
     area_num:1,
@@ -732,11 +733,22 @@ var activity={
         });
     },
     checkEmpty:function () {
-      $(".setUp_activity_details .text_input").each(function () {
-          if($(this).css("display")==""){
-              
-          }
-      });  
+        $("#setUp_activityType>div").each(function () {
+            if($(this).css("display")!=="none"){
+                var vue=$(this).find(".text_input");
+                $(vue).each(function (i) {
+                    if($(vue[i]).val()==""){
+                        activity.isEmpty=true;
+                    }
+                });
+            }
+        });
+        $("#activity_basic .text_input").each(function () {
+            var vue=$(this).val();
+            if(vue==""){
+                activity.isEmpty=true;
+            }
+        });
     },
     add:function (data) {
         var a="";
@@ -749,9 +761,10 @@ var activity={
         param["end_time"]=$("#activity_end").val();
         param["activity_desc"]=$("#activity_describe").val();
         param["activity_store_code"]=activity.cache.store_codes;
+        activity.checkEmpty();
         oc.postRequire("post","/vipActivity/add","0",param,function (data) {
             if(data.code==0){
-                
+
             }else if(data.code==-1){
 
             }

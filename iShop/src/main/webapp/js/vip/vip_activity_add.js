@@ -4,6 +4,7 @@
 (function (){
     var oc= new ObjectControl();
     var vip_activity_add={
+        next_page:false,
         init:function(){
            this.bind();
         },
@@ -20,6 +21,7 @@
                     var index=$("#tabs .active").index();
                     if(index==0){
                        var a=activity.add();
+                        console.log(activity.isEmpty);
                         if(a==true){
                             alert("weikong");
                             return ;
