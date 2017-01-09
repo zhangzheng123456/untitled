@@ -43,9 +43,14 @@ public class VipFsendController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public String addActivity(HttpServletRequest request) {
+    public String addFsend(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String brand_code = request.getSession().getAttribute("brand_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -53,7 +58,11 @@ public class VipFsendController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             int tem_id=1;
-            String result = this.vipFsendService.insert(message, user_id,tem_id);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+
+            VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
+
+            String result = this.vipFsendService.insert(vipFsend,tem_id,role_code,brand_code,area_code,store_code, user_code);
 
             if (result.equals("0")) {
                 dataBean.setId(id);
