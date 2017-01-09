@@ -19,24 +19,38 @@ var activity={
         this.activityType();
         this.addLine();
         this.getcorplist();
-        //this.addLogo();
         this.chooseShop();
-        //this.uploadOSS();
+        this.uploadOSS();
         this.getNowFormatDate();
+        this.testTheme();
+        this.createCode();
     },
     selectClick:function () {//input下拉模拟
         $(".setUp_activity_details").on("click",".select_input",function () {
             $(this).nextAll("ul").toggle();
         });
+        $(".setUp_activity_details").on("click","i",function () {
+            $(this).nextAll("ul").toggle();
+        });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
+            var id = $(this).attr("data-id");
             $(this).parent().prevAll("input").val(vue);
+            $(this).parent().prevAll("input").attr("data-id",id);
         });
         $(".setUp_activity_details").on("blur",".select_input",function () {
             var ul = $(this).nextAll("ul");
             setTimeout(function () {
                 ul.hide();
             },200);
+        });
+        $(".screen_content").on("click", "li", function () {
+            var input = $(this).find("input")[0];
+            if (input.type == "checkbox" && input.checked == false) {
+                input.checked = true;
+            } else if (input.type == "checkbox" && input.checked == true) {
+                input.checked = false;
+            }
         });
     },
     activityType:function () {//活动切换
@@ -111,10 +125,10 @@ var activity={
             bucket: 'products-image'
         });
         document.getElementById('upload_logo').addEventListener('change', function (e) {
-            whir.loading.add("上传中,请稍后...",0.5);
+            // whir.loading.add("上传中,请稍后...",0.5);
             var file = e.target.files[0];
             var time=_this.getNowFormatDate();
-            var corp_code=sessionStorage.getItem("corp_code");
+            var corp_code=$("#OWN_CORP").val();
             var storeAs='Album/Vip/iShow/'+corp_code+'_'+'_'+time+'.jpg';
             client.multipartUpload(storeAs, file).then(function (result) {
                 var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
@@ -145,8 +159,13 @@ var activity={
     },
     addLogo:function (url) {//添加logo节点
         var img="<img src='"+url+"' alt='暂无图片'>";
-        $("#upload_logo").parent().before(img);
-        whir.loading.remove();
+        var len = $("#upload_logo").parent().prevAll("img").length;
+        if(len == 0){
+            $("#upload_logo").parent().before(img);
+        }else {
+            $("#upload_logo").parent().prev("img").replaceWith(img);
+        }
+        // whir.loading.remove();
     },
     chooseShop:function () {//选择店铺操作
         $("#choose_shop").click(function () {//店铺弹窗
@@ -169,10 +188,7 @@ var activity={
             var shop_num=1;
             activity.isscroll=false;
             var arr=whir.loading.getPageSize();
-            var left=(arr[0]-$("#screen_shop").width())/2;
-            var tp=(arr[3]-$("#screen_shop").height())/2+50;
             $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
-            $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
             $("#screen_shop").show();
             $("#p").show();
             $("#screen_shop .screen_content_l").unbind("scroll");
@@ -218,10 +234,7 @@ var activity={
                 $("#screen_brand .screen_content_r ul").empty();
             }
             var arr=whir.loading.getPageSize();
-            var left=(arr[0]-$("#screen_shop").width())/2;
-            var tp=(arr[3]-$("#screen_shop").height())/2+50;
             $("#screen_brand .screen_content_l ul").empty();
-            $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
             $("#screen_brand").show();
             $("#screen_shop").hide();
             activity.getbrandlist();
@@ -261,11 +274,8 @@ var activity={
             activity.isscroll=false;
             activity.area_num=1;
             var arr=whir.loading.getPageSize();
-            var left=(arr[0]-$("#screen_shop").width())/2;
-            var tp=(arr[3]-$("#screen_shop").height())/2+50;
             $("#screen_area .screen_content_l").unbind("scroll");
             $("#screen_area .screen_content_l ul").empty();
-            $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
             $("#screen_area").show();
             $("#screen_shop").hide();
             activity.getarealist(activity.area_num);
@@ -330,10 +340,14 @@ var activity={
             };
             activity.cache.area_codes=area_codes;
             activity.cache.area_names=area_names;
+            activity.shop_num=1;
+            activity.isscroll=false;
             $("#screen_area").hide();
             $("#screen_shop").show();
             $("#area_num").val("已选"+li.length+"个");
             $("#area_num").attr("data-areacode",area_codes);
+            $("#screen_shop .screen_content_l ul").empty();
+            activity.getstorelist(activity.shop_num);
         });
         //点击品牌确定按钮
         $("#screen_que_brand").click(function(){
@@ -353,10 +367,14 @@ var activity={
             };
             activity.cache.brand_codes=brand_codes;
             activity.cache.brand_names=brand_names;
+            activity.shop_num=1;
+            activity.isscroll=false;
             $("#screen_brand").hide();
             $("#screen_shop").show();
             $("#brand_num").val("已选"+li.length+"个");
             $("#brand_num").attr("data-code",brand_codes);
+            $("#screen_shop .screen_content_l ul").empty();
+            activity.getstorelist(activity.shop_num);
         });
         //点击店铺确定按钮
         $("#screen_que_shop").click(function(){
@@ -680,6 +698,65 @@ var activity={
                 });
             }
         })
+    },
+    testTheme:function () {
+        $("#activity_theme").blur(function () {
+            var theme=$("#activity_theme").val();
+            if(theme==""){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "活动主题不能为空"
+                });
+            }else {
+                var param={};
+                param["corp_code"]=$("#OWN_CORP").val();
+                param["activity_theme"]=theme;
+                oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
+                        if(data.code=="-1"){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: data.message
+                            });
+                        }
+                });
+            }
+        });
+    },
+    createCode:function () {//生成二维码
+        $("#create_code").click(function () {
+            $(".offline_right_wrap").empty().append("<img style='width:100%' src='http://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQGz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNlAzQ29HMTY5NFUxMDAwMGcwN0IAAgTNAnNYAwQAAAAA'>");
+        });
+    },
+    checkEmpty:function () {
+      $(".setUp_activity_details .text_input").each(function () {
+          if($(this).css("display")==""){
+              
+          }
+      });  
+    },
+    add:function (data) {
+        var a="";
+        var param={};
+        param["corp_code"]=$("#OWN_CORP").val();
+        param["activity_code"]="";
+        param["activity_theme"]=$("#activity_theme").val();
+        param["run_mode"]=$("#activity_type").attr("data-id");
+        param["start_time"]=$("#activity_start").val();
+        param["end_time"]=$("#activity_end").val();
+        param["activity_desc"]=$("#activity_describe").val();
+        param["activity_store_code"]=activity.cache.store_codes;
+        oc.postRequire("post","/vipActivity/add","0",param,function (data) {
+            if(data.code==0){
+                
+            }else if(data.code==-1){
+
+            }
+        });
+        return a;
     }
 };
 $(function () {

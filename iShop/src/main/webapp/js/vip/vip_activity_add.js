@@ -17,12 +17,20 @@
                 if(src==undefined || $(this).hasClass("active")){
                     return ;
                 }else{
+                    var index=$("#tabs .active").index();
+                    if(index==0){
+                       var a=activity.add();
+                        if(a==true){
+                            alert("weikong");
+                            return ;
+                        }
+                    }
                     $.ajax({
                         type: "GET",
                         url: src+"?t="+ $.now(),
                         dataType: "html",
                         success: function (data) {
-                            $("#tabs-content").html(data)
+                            $("#tabs-content").html(data);
                         },
                         error: function (msg) {
                             alert(msg);
@@ -39,7 +47,7 @@
                 url: "set_vip_activity.html?t="+ $.now(),
                 dataType: "html",
                 success: function (data) {
-                    $("#tabs-content").html(data)
+                    $("#tabs-content").html(data);
                 },
                 error: function (msg) {
                     alert(msg);
