@@ -189,16 +189,18 @@
         .execution .liactive {
             background: #6cc1cb;
             color: #fff;
+            border: 1px solid #ccc;
         }
 
         /*error*/
         .hint {
-            display: none;;
+            display: none;
         }
 
         /*日期弹窗*/
         #laydate_box {
             z-index: 1000;
+            position: fixed;
         }
 
         /*记录页面*/
@@ -280,6 +282,9 @@
         .chart_head i {
             float: right;
         }
+        button{
+            outline:none;
+        }
     </style>
 </head>
 <body>
@@ -314,7 +319,7 @@
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
                                readonly/>
                         <ul class="execution" id="execution"
-                            style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                            style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
                             <li>退换转充值</li>
                             <li>直接充值</li>
                             <!--<li>系统短信通知顾客</li>-->
@@ -328,7 +333,7 @@
                         <li><label style="color:#c26555;">充值店仓*</label></li>
                         <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                         <input data-storecode="" class="PARAM_NAME" id="topUpShop"
-                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px"
+                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px;border: 1px solid #ddd"
                                readonly/>
                         <ul class="execution" id="topUpShopSelcet" style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
                             <ul id="topUpShopSelcet_ul"
@@ -345,13 +350,13 @@
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
                                readonly/>
                         <ul class="execution" id="topUpPeopleSelect"
-                            style="max-height: 200px;width: 412px;overflow-y:scroll;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                            style="max-height: 200px;width: 412px;overflow-y:scroll;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
                         </ul>
                     </ul>
                 </div>
                 <div>
                     <span>
-                        <label>VIP卡号</label>
+                        <label>会员卡号</label>
                         <input type="text" id="topUpCard" autocomplete="off" maxlength="200" disabled/>
                          <div style="padding-bottom: 0px" class="hint">
                              <div hintinfo="VIP卡号不能为空！" class="error_tips" style="">VIP卡号不能为空！</div>
@@ -360,7 +365,7 @@
                 </div>
                 <div>
                     <span>
-                        <label>VIP姓名</label>
+                        <label>会员姓名</label>
                         <input type="text" id="topUpVipName" autocomplete="off" maxlength="200" disabled/>
                     </span>
                 </div>
@@ -454,7 +459,7 @@
                         <li><label style="color:#c26555;">退款类型*</label></li>
                         <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                         <input class="PARAM_NAME" id="refunTypeInput"
-                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
+                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;border: 1px solid #ddd"
                                readonly/>
                         <div style="padding-bottom: 0px" class="hint">
                             <div hintinfo="退款类型不能为空！" class="error_tips" style="">退款类型不能为空！</div>
@@ -471,7 +476,7 @@
                         <li><label style="color:#c26555;">退款店仓*</label></li>
                         <!--<li class="add_border" ><span class="corp_select"><select id="topUpType" style="display:inline-flex;width: 410px" ></select></span></li>-->
                         <input class="PARAM_NAME" id="refunShop"
-                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px"
+                               style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px;border: 1px solid #ddd"
                                readonly/>
                         <div style="padding-bottom: 0px" class="hint">
                             <div hintinfo="退款店仓不能为空！" class="error_tips" style="">退款店仓不能为空！</div>
