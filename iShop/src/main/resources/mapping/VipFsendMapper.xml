@@ -242,6 +242,7 @@
         def_vip_fsendsms.sms_code,
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
+        def_vip_fsendsms.send_time,
         def_vip_fsendsms.sms_vips,
         def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
