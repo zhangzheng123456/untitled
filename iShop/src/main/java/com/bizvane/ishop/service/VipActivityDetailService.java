@@ -17,7 +17,7 @@ public interface VipActivityDetailService {
     PageInfo<VipActivityDetail> selectllScreen(int page_num, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception;
 
 
-    int delete(int id) throws Exception;
+    int delete(String activity_code) throws Exception;
 
 
     String insert(String message, String user_id) throws Exception;
@@ -28,7 +28,7 @@ public interface VipActivityDetailService {
 
     VipActivityDetail selectActivityById(int id) throws Exception;
 
-
+    VipActivityDetail selActivityDetailByCode(String activity_code) throws Exception;
 
 
 

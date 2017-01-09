@@ -12,12 +12,13 @@ var activity={
         "brand_codes":"",
         "brand_names":"",
         "store_codes":"",
-        "store_names":"",
+        "store_names":""
     },
     init:function () {
         this.selectClick();
         this.activityType();
         this.addLine();
+        this.getcorplist();
         //this.addLogo();
         this.chooseShop();
         //this.uploadOSS();
@@ -446,6 +447,38 @@ var activity={
         }
         var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
         $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+    },
+    getcorplist:function (a) {
+        oc.postRequire("post", "/user/getCorpByUser", "", "", function (data) {
+            if (data.code == "0") {
+                var msg = JSON.parse(data.message);
+                var corp_html = '';
+                for (var i=0;i<msg.corps.length;i++) {
+                    corp_html += '<option value="' + msg.corps[i].corp_code + '">' + msg.corps[i].corp_name + '</option>';
+                }
+                $("#OWN_CORP").append(corp_html);
+                if (a !== "") {
+                    $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
+                }
+                $('.corp_select select').searchableSelect();
+                $('.corp_select .searchable-select-input').keydown(function (event) {
+                    var event = window.event || arguments[0];
+                    if (event.keyCode == 13) {
+
+                    }
+                });
+                $('.searchable-select-item').click(function () {
+
+                })
+            } else if (data.code == "-1") {
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        });
     },
     getstorelist:function (a) {//店铺接口
         var searchValue=$("#store_search").val();

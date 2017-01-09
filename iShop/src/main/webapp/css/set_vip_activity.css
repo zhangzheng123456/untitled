@@ -32,6 +32,12 @@
     right: 10px;
     color: #6dc1c8;
 }
+.searchable-select{
+    min-width: 100%;!important
+}
+.searchable-select-holder{
+    background: none;!important
+}
 .activity_select{
     display: none;
     position: absolute;
@@ -54,6 +60,15 @@
 .setUp_activity .activity_select li:hover{
     color: #FFFFFF;
     background: #4a5f7c;
+}
+.corp_select{
+    width: 240px;
+    height: 30px;
+    outline: none;
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding-left: 5px;
 }
 .activity_details_left{
     float: left;

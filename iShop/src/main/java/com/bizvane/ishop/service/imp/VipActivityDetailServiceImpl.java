@@ -61,9 +61,10 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService{
     }
 
     @Override
-    public int delete(int id) throws Exception {
-        return 0;
+    public int delete(String activity_code) throws Exception {
+        return vipActivityDetailMapper.delActivityDetailById(activity_code);
     }
+
 
     @Override
     public String insert(String message, String user_id) throws Exception {
@@ -122,6 +123,11 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService{
 
     @Override
     public VipActivityDetail selectActivityById(int id) throws Exception {
-        return null;
+        return vipActivityDetailMapper.selActivityDetailById(id);
+    }
+
+    @Override
+    public VipActivityDetail selActivityDetailByCode(String activity_code) throws Exception {
+        return vipActivityDetailMapper.selActivityDetailByCode(activity_code);
     }
 }

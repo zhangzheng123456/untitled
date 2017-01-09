@@ -280,7 +280,7 @@
 
     <delete id="delActivityDetailById">
         DELETE FROM def_vip_activity_detail
-        WHERE id=#{id};
+        WHERE def_vip_activity_detail.activity_code=#{activity_code};
     </delete>
 
     <select id="selectActivityDetailScreen" resultMap="VipActivityDetail">
@@ -355,6 +355,34 @@
         FROM def_vip_activity_detail dvad,def_corp dc
         WHERE dvad.corp_code=dc.corp_code
         AND dvad.id =#{id}
+    </select>
+    <select id="selActivityDetailByCode" resultMap="VipActivityDetail">
+        SELECT dvad.id,
+        dvad.corp_code,
+        dvad.activity_code,
+        dvad.activity_type,
+        dvad.recruit,
+        dvad.h5_url,
+        dvad.sales_no,
+        dvad.festival_start,
+        dvad.festival_end,
+        dvad.send_coupon_type,
+        dvad.coupon_type,
+        dvad.apply_title,
+        dvad.apply_endtime,
+        dvad.apply_desc,
+        dvad.apply_success_tips,
+        dvad.apply_logo,
+        dvad.apply_qrcode,
+        dvad.modified_date,
+        dvad.modifier,
+        dvad.created_date,
+        dvad.creater,
+        dvad.isactive,
+        dc.corp_name
+        FROM def_vip_activity_detail dvad,def_corp dc
+        WHERE dvad.corp_code=dc.corp_code
+        AND dvad.activity_code =#{activity_code}
     </select>
 
 </mapper>
