@@ -203,6 +203,9 @@ public class WebUtils {
                 if (screen_value.endsWith("|") || screen_value.endsWith(",") || screen_value.endsWith("，")) {
                     screen_value = screen_value.substring(0, screen_value.length() - 1);
                 }
+                if(null==screen_value){
+                    screen_value="";
+                }
                 if (!screen_value.equals("")) {
                     screen_value = screen_value.replaceAll("'", "");
                     //   System.out.println("---------再次截取后---------------:"+screen_value);
@@ -210,7 +213,7 @@ public class WebUtils {
                 }
                 //   System.out.println("---------截取后---------------:"+screen_value);
             } else {
-               //  System.out.println("-----------created_date_login---------------:"+screen_value);
+                //  System.out.println("-----------created_date_login---------------:"+screen_value);
                 //  System.out.println("------------------不特殊地段------------------------");
             }
             map.put(screen_key, screen_value);
@@ -261,7 +264,7 @@ public class WebUtils {
 
         List result = new ArrayList();
         for (int i = 0; i < json.length(); i++) {
-           if (json.get(i) instanceof JSONArray) {
+            if (json.get(i) instanceof JSONArray) {
                 result.add(Json2List((JSONArray) json.get(i)));
             } else {
                 result.add(json.get(i));
