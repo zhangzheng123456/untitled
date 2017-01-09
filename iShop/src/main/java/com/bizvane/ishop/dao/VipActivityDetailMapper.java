@@ -19,9 +19,12 @@ public interface VipActivityDetailMapper {
 
     int updateActivityDetail(VipActivityDetail activityDetail) throws SQLException;
 
-    int delActivityDetailById(int id) throws SQLException;
+    int delActivityDetailById(@Param("activity_code")String  activity_code) throws SQLException;
 
     List<VipActivityDetail> selectActivityDetailScreen(Map<String, Object> params)throws SQLException;
+
+    VipActivityDetail selActivityDetailByCode(@Param("activity_code") String activity_code)throws SQLException;
+
 
 }
 

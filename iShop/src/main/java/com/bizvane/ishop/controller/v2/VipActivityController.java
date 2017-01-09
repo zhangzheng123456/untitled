@@ -34,50 +34,15 @@ public class VipActivityController {
     @Autowired
     private VipActivityService vipActivityService;
     @Autowired
-     TaskService taskService;
+    TaskService taskService;
     @Autowired
-     VipFsendService vipFsendService;
+    VipFsendService vipFsendService;
 
 
     private static final Logger logger = Logger.getLogger(VipActivityController.class);
 
     String id;
 
-//    /**
-//     * 活动
-//     * 列表
-//     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String activityVipList(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//            String user_code = request.getSession(false).getAttribute("user_code").toString();
-//
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            JSONObject result = new JSONObject();
-//            PageInfo<VipActivity> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = this.vipActivityService.selectAllActivity(page_number, page_size, "", "", "");
-//            } else if (role_code.equals(Common.ROLE_GM)) {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, "", "");
-//            } else {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, user_code, "");
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 会员活动
@@ -115,21 +80,22 @@ public class VipActivityController {
                     dataBean.setMessage(result);
                 }
             } else {
-                result = this.vipActivityService.update(message, user_id);
-                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                    dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setMessage("编辑成功");
-
-                } else {
-                    dataBean.setId(id);
-                    dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setMessage(result);
+                //根据活动编号查询活动的状态，只有未执行的活动才可以编辑活动
+                VipActivity vipActivity=vipActivityService.selActivityByCode(activity_code);
+                if(vipActivity.getActivity_state().equals("未执行")){
+                    result = this.vipActivityService.update(message, user_id);
+                    if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                        dataBean.setId(id);
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setMessage("编辑成功");
+                    } else {
+                        dataBean.setId(id);
+                        dataBean.setId(id);
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setMessage(result);
+                    }
                 }
-            }
-
-
+                }
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setId(id);
@@ -217,149 +183,141 @@ public class VipActivityController {
                         msg = "执行中活动，不可删除";
                         break;
                     } else if (activity_state.equals("未执行")) {
-                        msg = "活动还未执行，不可删除";
-                        break;
-                    } else {
                         String task_code = activityVip.getTask_code();
                         String sms_code = activityVip.getSms_code();
                         if (task_code != null && !task_code.equals("")) {
                             Task task = taskService.getTaskForId(activityVip.getCorp_code(), task_code);
                             if (task != null) {
-                                msg = "请先删除活动对应的任务，再删除活动";
+                                //提示之后确定删除即删除对应任务
+                                taskService.delTaskByActivityCode(activityVip.getCorp_code(), activityVip.getActivity_code());
                                 break;
                             }
                         }
-                            if (sms_code != null && !sms_code.equals("")) {
+                        if (sms_code != null && !sms_code.equals("")) {
 
-//                                VipFsend vipFsend = vipFsendService.getVipFsendById();
-//                                if (vipFsend != null) {
-//                                    msg = "请先删除活动对应的任务，再删除活动";
-//                                    break;
-//                                }
-                            }
+                            vipFsendService.delSendByActivityCode(activityVip.getCorp_code(), activityVip.getActivity_code());
                         }
                     }
                 }
-                if (msg.equals("")) {
-                    for (int i = 0; i < ids.length; i++) {
-                        vipActivityService.delete(Integer.parseInt(ids[i]));
-                    }
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage(msg);
+            }
+            if (msg.equals("")) {
+                for (int i = 0; i < ids.length; i++) {
+                    vipActivityService.delete(Integer.parseInt(ids[i]));
                 }
-            } catch(Exception ex){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage(ex.getMessage());
-                return dataBean.getJsonStr();
+                dataBean.setMessage(msg);
             }
-            logger.info("delete-----" + dataBean.getJsonStr());
-        return dataBean.getJsonStr();
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
         }
+        logger.info("delete-----" + dataBean.getJsonStr());
+        return dataBean.getJsonStr();
+    }
 
 
+    /**
+     * 活动筛选
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+        String user_code = request.getSession(false).getAttribute("user_code").toString();
 
-//
-//    /**
-//     * 活动筛选
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/screen", method = RequestMethod.POST)
-//    @ResponseBody
-//    @Transactional
-//    public String screen(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String role_code = request.getSession().getAttribute("role_code").toString();
-//        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//        String user_code = request.getSession(false).getAttribute("user_code").toString();
-//
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            logger.info("json---------------" + jsString);
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//
-//            Map<String, String> map = WebUtils.Json2Map(jsonObject);
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            PageInfo<VipActivity> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = vipActivityService.selectActivityAllScreen(page_number, page_size, "", "", map);
-//            } else if (role_code.equals(Common.ROLE_GM)){
-//                list = vipActivityService.selectActivityAllScreen(page_number, page_size, corp_code, "", map);
-//            } else {
-//                list = vipActivityService.selectActivityAllScreen(page_number, page_size, corp_code, user_code, map);
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage() + ex.toString());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-//
-//    /**
-//     * 活动，点击执行
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-//    @ResponseBody
-//    @Transactional
-//    public String executeActivity(HttpServletRequest request) throws Exception {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        String user_code = request.getSession().getAttribute("user_code").toString();
-//        String jsString = request.getParameter("param");
-//        JSONObject jsonObj = JSONObject.parseObject(jsString);
-//        id = jsonObj.get("id").toString();
-//        String message = jsonObj.get("message").toString();
-//        JSONObject jsonObject = JSONObject.parseObject(message);
-//        try {
-//            int activity_id = Integer.parseInt(jsonObject.get("id").toString());
-//
-//            VipActivity activityVip = vipActivityService.getActivityById(activity_id);
-//            String activity_state = activityVip.getActivity_state();
-//            if (!activity_state.equals("未执行")) {
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage("该任务非未执行状态");
-//            } else {
-////                String result = vipActivityService.executeActivity(activityVip, user_code);
-////                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-////                    dataBean.setId(id);
-////                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-////                    dataBean.setMessage("execute success");
-////                } else {
-////                    dataBean.setId(id);
-////                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-////                    dataBean.setMessage(result);
-////                }
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage("execute error");
-//        }
-//        return dataBean.getJsonStr();
-//    }
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VipActivity> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = vipActivityService.selectActivityAllScreen(page_number, page_size, "", "", map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = vipActivityService.selectActivityAllScreen(page_number, page_size, corp_code, "", map);
+            } else {
+                list = vipActivityService.selectActivityAllScreen(page_number, page_size, corp_code, user_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 活动，点击执行
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @Transactional
+    public String executeActivity(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String jsString = request.getParameter("param");
+        JSONObject jsonObj = JSONObject.parseObject(jsString);
+        id = jsonObj.get("id").toString();
+        String message = jsonObj.get("message").toString();
+        JSONObject jsonObject = JSONObject.parseObject(message);
+        try {
+            int activity_id = Integer.parseInt(jsonObject.get("id").toString());
+
+            VipActivity activityVip = vipActivityService.getActivityById(activity_id);
+            String activity_state = activityVip.getActivity_state();
+            if (!activity_state.equals("未执行")) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("该任务非未执行状态");
+            } else {
+                String result = vipActivityService.executeActivity(activityVip, user_code);
+                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("execute success");
+                } else {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage(result);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("execute error");
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 获取活动详细信息

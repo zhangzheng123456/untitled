@@ -2082,7 +2082,17 @@ public class UserController {
             JSONObject result = new JSONObject();
             PageInfo<User> list = null;
             List<Store> storeList=null;
-            if(!map.get("brand_name").equals("")) {
+            List<Brand> list1=new ArrayList<Brand>();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                PageInfo<Brand> allBrandByPage = brandService.getAllBrandByPage(1, 20, "", "");
+                 list1 = allBrandByPage.getList();
+            }else{
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                PageInfo<Brand> allBrandByPage =  brandService.getAllBrandByPage(1,20,corp_code,"");
+                list1 = allBrandByPage.getList();
+            }
+            if(!map.get("brand_name").equals("") && list1.size()>1) {
+               System.out.println( "11111111111111111111111111111111111111111111111");
                 Map<String, String> map1 = new HashMap<String, String>();
                 map1.put("brand_name", map.get("brand_name"));
                 if (role_code.equals(Common.ROLE_SYS)) {
@@ -2141,6 +2151,7 @@ public class UserController {
                     }
                 }
             }else{
+               System.out.println( "22222222222222222222222222222222222222222222");
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = userService.getAllUserScreen(page_number, page_size, "", map);

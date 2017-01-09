@@ -179,23 +179,23 @@ public class GoodsServiceImpl implements GoodsService {
     public PageInfo<Goods> selectBySearchForApp(int page_number, int page_size, String corp_code, String goods_quarter,
                                                 String goods_wave, String brand_code, String time_start, String time_end, String search_value) throws Exception {
         List<Goods> list;
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("goods_quarter", goods_quarter);
-        map.put("goods_wave", goods_wave);
-        map.put("brand_code", brand_code);
-        if (!goods_quarter.equals("")) {
-            String[] goods_quarters = goods_quarter.split(",");
-            map.put("goods_quarter", goods_quarters);
-        }
-        if (!goods_wave.equals("")) {
-            String[] goods_waves = goods_wave.split(",");
-            map.put("goods_wave", goods_waves);
-        }
-        if (!brand_code.equals("")) {
-            String[] brand_codes = brand_code.split(",");
-            map.put("brand_code", brand_codes);
-        }
+        String[] goods_quarters = null;
+        String[] goods_waves = null;
+        String[] brand_codes = null;
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (!goods_quarter.trim().equals("")) {
+            goods_quarters = goods_quarter.split(",");
+        }
+        if (!goods_wave.trim().equals("")) {
+            goods_waves = goods_wave.split(",");
+        }
+        if (!brand_code.trim().equals("")) {
+            brand_codes = brand_code.split(",");
+        }
+        map.put("goods_quarter", goods_quarters);
+        map.put("goods_wave", goods_waves);
+        map.put("brand_code", brand_codes);
         map.put("corp_code", corp_code);
         map.put("time_start", time_start);
         map.put("time_end", time_end);
@@ -294,12 +294,16 @@ public class GoodsServiceImpl implements GoodsService {
 
     public List<Goods> selectCorpPublicImgs(String corp_code, String brand_code, String search_value) throws Exception {
         List<Goods> goodsList = new ArrayList<Goods>();
+
+        String[] brand_codes = null;
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("brand_code", brand_code);
-        if (!brand_code.equals("")) {
-            String[] brand_codes = brand_code.split(",");
-            map.put("brand_code", brand_codes);
+        if (!brand_code.trim().equals("")) {
+            brand_codes = brand_code.split(",");
         }
+        map.put("goods_quarter", null);
+        map.put("goods_wave", null);
+        map.put("brand_code", brand_codes);
+
         map.put("corp_code", corp_code);
         map.put("search_value", search_value);
         map.put("isactive", Common.IS_ACTIVE_Y);
