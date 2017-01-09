@@ -282,7 +282,7 @@
     </select>
 
     <update id="updActiveCodeByType" parameterType="com.bizvane.ishop.entity.VipActivity">
-        UPDATE  def_vip_activity SET #{line_code}=#{line_value} WHERE corp_code=#{corp_code} AND activity_code =#{activity_code}
+        UPDATE  def_vip_activity SET ${line_code}=#{line_value} WHERE corp_code=#{corp_code} AND activity_code =#{activity_code}
     </update>
 
 
