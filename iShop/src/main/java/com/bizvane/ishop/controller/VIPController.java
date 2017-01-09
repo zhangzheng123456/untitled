@@ -493,6 +493,10 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
+        String brand_code = request.getSession().getAttribute("brand_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -507,7 +511,7 @@ public class VIPController {
             String page_size = jsonObject.get("pageSize").toString();
             JSONArray screen = jsonObject.getJSONArray("screen");
 
-            DataBox dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
+            DataBox dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,role_code,brand_code,area_code,store_code,user_code);
             if (dataBox.status.toString().equals("SUCCESS")){
                 String result = dataBox.data.get("message").value;
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -578,8 +582,6 @@ public class VIPController {
 //                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(screen_message.equals("") && searchValue.equals("")){
                 Map datalist = iceInterfaceService.vipBasicMethod("1","10000",corp_code,role_code,brand_code,area_code,store_code,user_code);
-
-//                Map datalist = iceInterfaceService.vipBasicMethod("1","10000",corp_code,request);
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
 
 //                Data data_output_message = new Data("message", output_message, ValueType.PARAM);
@@ -589,13 +591,12 @@ public class VIPController {
 //                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipExportExecl", datalist);
             }else if(!screen_message.equals("")){
                 JSONArray screen = JSON.parseArray(screen_message);
-                dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,"1","10000",request);
+                dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,"1","10000",role_code,brand_code,area_code,store_code,user_code);
 
               //  dataBox = iceInterfaceService.vipScreen2ExeclMethod(page_num, page_size, corp_code, area_code, brand_code, store_code, user_code, output_message);
             }
-            //  logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
-            org.json.JSONObject object = new org.json.JSONObject(result);
+            JSONObject object = JSONObject.parseObject(result);
             org.json.JSONArray jsonArray = new org.json.JSONArray(object.get("all_vip_list").toString());
             List list = WebUtils.Json2List2(jsonArray);
             if (list.size() >= 10000) {

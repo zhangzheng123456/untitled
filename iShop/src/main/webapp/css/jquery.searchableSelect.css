@@ -58,7 +58,7 @@
 }
 
 .searchable-select-dropdown {
-  width:420px;
+  width:100%;
   position: absolute;
   background-color: #f5f5f5;
   border: 1px solid #ddd;

@@ -99,8 +99,6 @@ public class VipActivityServiceImpl implements VipActivityService {
         String activity_state = "未执行";
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity1 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
-        String isactive = jsonObject.get("isactive").toString().trim();
-
         if (vipActivity1 == null) {
             System.out.print("=======");
             vipActivity.setActivity_code(activity_code);
@@ -111,7 +109,6 @@ public class VipActivityServiceImpl implements VipActivityService {
             vipActivity.setActivity_state(activity_state);
             vipActivity.setTask_code("");
             vipActivity.setSms_code("");
-            vipActivity.setIsactive(isactive);
             int info = 0;
             info = vipActivityMapper.insertActivity(vipActivity);
             VipActivity VipActivity1 = selActivityByCode(activity_code);
