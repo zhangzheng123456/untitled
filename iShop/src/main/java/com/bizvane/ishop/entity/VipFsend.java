@@ -33,6 +33,15 @@ public class VipFsend {
     private Corp corp;
     private String target_vips_count;
     private String activity_vip_code;
+    private String send_time;
+
+    public String getSend_time() {
+        return send_time;
+    }
+
+    public void setSend_time(String send_time) {
+        this.send_time = send_time;
+    }
 
     public String getActivity_vip_code() {
         return activity_vip_code;
