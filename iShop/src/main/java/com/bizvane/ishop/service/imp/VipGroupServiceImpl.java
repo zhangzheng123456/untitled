@@ -198,12 +198,11 @@ public class VipGroupServiceImpl implements VipGroupService {
      * @param corp_code
      * @param page_num
      * @param page_size
-     * @param request
      * @return
      * @throws Exception
      */
-    public DataBox vipScreenBySolr(JSONArray screen,String corp_code,String page_num,String page_size,HttpServletRequest request) throws Exception{
-        String role_code = request.getSession().getAttribute("role_code").toString();
+    public DataBox vipScreenBySolr(JSONArray screen,String corp_code,String page_num,String page_size,String role_code,
+                                   String user_brand_code,String user_area_code,String user_store_code,String user_code1) throws Exception{
 
 //        List<TableManager> tableManagers = tableManagerService.selVipScreenValue();
         String brand_code = "";
@@ -263,23 +262,19 @@ public class VipGroupServiceImpl implements VipGroupService {
                 //没选择区域和品牌，传自身拥有的店铺
                 if (!role_code.equals(Common.ROLE_SYS) && !role_code.equals(Common.ROLE_GM)){
                     if (role_code.equals(Common.ROLE_BM)){
-                        brand_code = request.getSession().getAttribute("brand_code").toString();
-                        brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
-                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"","");
+                        user_brand_code = user_brand_code.replace(Common.SPECIAL_HEAD,"");
+                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",user_brand_code,"","");
                         for (int i = 0; i < stores.size(); i++) {
                             store_code = store_code + stores.get(i).getStore_code() + ",";
                         }
                     }else if (role_code.equals(Common.ROLE_AM)){
-                        String area_code1 = request.getSession().getAttribute("area_code").toString();
-                        String area_store_code = request.getSession().getAttribute("store_code").toString();
-                        area_code1 = area_code1.replace(Common.SPECIAL_HEAD,"");
-                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,area_code1,"","",area_store_code);
+                        user_area_code = user_area_code.replace(Common.SPECIAL_HEAD,"");
+                        List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,user_area_code,"","",user_store_code);
                         for (int i = 0; i < stores.size(); i++) {
                             store_code = store_code + stores.get(i).getStore_code() + ",";
                         }
                     }else{
-                        store_code = request.getSession().getAttribute("store_code").toString();
-                        store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                        store_code = user_store_code.replace(Common.SPECIAL_HEAD,"");
                     }
                     JSONObject post_obj = new JSONObject();
                     post_obj.put("key",store_code_key);
@@ -290,11 +285,10 @@ public class VipGroupServiceImpl implements VipGroupService {
             }
         }
         if (role_code.equals(Common.ROLE_STAFF) && user_code.equals("")){
-            user_code = request.getSession().getAttribute("user_code").toString();
             JSONObject post_obj = new JSONObject();
             post_obj.put("key",user_code_key);
             post_obj.put("type","text");
-            post_obj.put("value",user_code);
+            post_obj.put("value",user_code1);
             post_array.add(post_obj);
         }
 
@@ -303,7 +297,7 @@ public class VipGroupServiceImpl implements VipGroupService {
         if (post_array.size()>0) {
             dataBox = iceInterfaceService.vipScreenMethod2(page_num, page_size, corp_code,JSON.toJSONString(post_array));
         }else {
-            Map datalist = iceInterfaceService.vipBasicMethod(page_num, page_size, corp_code,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(page_num,page_size,corp_code,role_code,brand_code,area_code,store_code,user_code);
             dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
         }
         return dataBox;

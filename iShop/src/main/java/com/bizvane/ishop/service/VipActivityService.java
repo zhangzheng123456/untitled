@@ -102,4 +102,5 @@ public interface VipActivityService {
     VipActivity getVipActivityByTheme(String corp_code,String activity_theme,String isactive)throws Exception;
 
 
+    String executeActivity(VipActivity vipActivity,String user_code) throws Exception;
 }

@@ -22,6 +22,8 @@ public interface TaskService {
 
     String addTask(Task task, String phone, String users, String user_code,String activity_vip_code) throws Exception;
 
+    String taskAllocation(Task task,String phone,String users,String user_code,String activity_code) throws Exception;
+
     String updTask(Task task, String[] user_codes, String user_code) throws Exception;
 
     Task selectTaskById(String id) throws Exception;

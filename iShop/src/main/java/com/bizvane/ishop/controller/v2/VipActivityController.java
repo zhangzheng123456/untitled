@@ -43,41 +43,6 @@ public class VipActivityController {
 
     String id;
 
-//    /**
-//     * 活动
-//     * 列表
-//     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String activityVipList(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//            String user_code = request.getSession(false).getAttribute("user_code").toString();
-//
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            JSONObject result = new JSONObject();
-//            PageInfo<VipActivity> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = this.vipActivityService.selectAllActivity(page_number, page_size, "", "", "");
-//            } else if (role_code.equals(Common.ROLE_GM)) {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, "", "");
-//            } else {
-//                list = vipActivityService.selectAllActivity(page_number, page_size, corp_code, user_code, "");
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 会员活动
@@ -304,54 +269,54 @@ public class VipActivityController {
         }
         return dataBean.getJsonStr();
     }
-//
-//    /**
-//     * 活动，点击执行
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-//    @ResponseBody
-//    @Transactional
-//    public String executeActivity(HttpServletRequest request) throws Exception {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        String user_code = request.getSession().getAttribute("user_code").toString();
-//        String jsString = request.getParameter("param");
-//        JSONObject jsonObj = JSONObject.parseObject(jsString);
-//        id = jsonObj.get("id").toString();
-//        String message = jsonObj.get("message").toString();
-//        JSONObject jsonObject = JSONObject.parseObject(message);
-//        try {
-//            int activity_id = Integer.parseInt(jsonObject.get("id").toString());
-//
-//            VipActivity activityVip = vipActivityService.getActivityById(activity_id);
-//            String activity_state = activityVip.getActivity_state();
-//            if (!activity_state.equals("未执行")) {
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage("该任务非未执行状态");
-//            } else {
-////                String result = vipActivityService.executeActivity(activityVip, user_code);
-////                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-////                    dataBean.setId(id);
-////                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-////                    dataBean.setMessage("execute success");
-////                } else {
-////                    dataBean.setId(id);
-////                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-////                    dataBean.setMessage(result);
-////                }
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage("execute error");
-//        }
-//        return dataBean.getJsonStr();
-//    }
+
+    /**
+     * 活动，点击执行
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @Transactional
+    public String executeActivity(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String jsString = request.getParameter("param");
+        JSONObject jsonObj = JSONObject.parseObject(jsString);
+        id = jsonObj.get("id").toString();
+        String message = jsonObj.get("message").toString();
+        JSONObject jsonObject = JSONObject.parseObject(message);
+        try {
+            int activity_id = Integer.parseInt(jsonObject.get("id").toString());
+
+            VipActivity activityVip = vipActivityService.getActivityById(activity_id);
+            String activity_state = activityVip.getActivity_state();
+            if (!activity_state.equals("未执行")) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("该任务非未执行状态");
+            } else {
+                String result = vipActivityService.executeActivity(activityVip, user_code);
+                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("execute success");
+                } else {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage(result);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("execute error");
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 获取活动详细信息
