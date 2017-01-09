@@ -116,6 +116,11 @@
 .vip_list{
     border-top: 1px dashed #d5d8e1;
 }
+.vip_list p{
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+}
 .vip_list ul li{
     overflow: hidden;
 }
