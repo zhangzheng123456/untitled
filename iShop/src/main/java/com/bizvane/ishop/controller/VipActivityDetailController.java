@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by nanji on 2017/1/6.
  */
 @Controller
-@RequestMapping("/activityDetail")
+@RequestMapping("/vipActivity/detail")
 public class VipActivityDetailController {
     @Autowired
     private VipActivityDetailService vipActivityDetailService;

@@ -51,6 +51,8 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Autowired
     private WxTemplateService wxTemplateService;
     @Autowired
+    private VipGroupService vipGroupService;
+    @Autowired
     MongoDBClient mongodbClient;
 
     private static HttpClient httpClient = new HttpClient();
@@ -168,6 +170,12 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     @Override
+    public VipFsend getVipFsendInfoByCode(String corp_code,String sms_code) throws Exception {
+        VipFsend vipFsend=vipFsendMapper.selectByCode(corp_code,sms_code);
+        return vipFsend;
+    }
+
+    @Override
     public PageInfo<VipFsend> getAllVipFsendByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         List<VipFsend> vipFsends;
         PageHelper.startPage(page_number, page_size);
@@ -191,13 +199,37 @@ public class VipFsendServiceImpl implements VipFsendService {
         Date now = new Date();
         //群发消息的发送类型
         String send_type = jsonObject.get("send_type").toString().trim();
-        String send_scope = jsonObject.get("send_scope").toString().trim();
+//        String send_scope = jsonObject.get("send_scope").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
         VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
         String content = vipFsend.getContent();
         String sms_vips = vipFsend.getSms_vips().trim();
 
+        vipFsend.setSms_code(sms_code);
+        vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
+        vipFsend.setCreater(user_id);
+        vipFsend.setSend_type(send_type);
+        vipFsend.setModifier(user_id);
+        vipFsend.setSms_vips(sms_vips);
+        vipFsend.setContent(content);
+        vipFsend.setIsactive(Common.IS_ACTIVE_Y);
+        vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
+        vipFsendMapper.insertFsend(vipFsend);
+
+        sendSms(vipFsend, user_id, tem_id);
+        return status;
+    }
+
+    public String sendSms(VipFsend vipFsend, String user_id,int tem_id) throws Exception {
+        String status = Common.DATABEAN_CODE_SUCCESS;
+        Date now = new Date();
+        String corp_code = vipFsend.getCorp_code();
+        String sms_code = vipFsend.getSms_code();
+        String content = vipFsend.getContent();
+        String sms_vips = vipFsend.getSms_vips().trim();
+        String send_scope = vipFsend.getSend_scope();
+        String send_type = vipFsend.getSend_type();
         if(send_scope.equals("vip")){
             String open_id = "";
             String phone = "";
@@ -332,34 +364,74 @@ public class VipFsendServiceImpl implements VipFsendService {
                         String message_id = corp_code + send_vip_ids[i] + System.currentTimeMillis();
                         JSONObject info = JSONObject.parseObject(result);
                         //群发消息发送成功之后存入mongoDB
-                         if ("0".equals(info.getString("errcode"))) {
-                             insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"Y");
-                         } else {
-                             insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"N");
-                             status = info.get("errmsg").toString();
-                             return status;
-                         }
+                        if ("0".equals(info.getString("errcode"))) {
+                            insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"Y");
+                        } else {
+                            insertMongoDB(corp_code,user_id,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"N");
+                            status = info.get("errmsg").toString();
+                            return status;
+                        }
                     }
                 }
             }
         }else {
 
         }
-        vipFsend.setSms_code(sms_code);
-        vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
-        vipFsend.setCreater(user_id);
-        vipFsend.setSend_type(send_type);
-        vipFsend.setModifier(user_id);
-        vipFsend.setSms_vips(sms_vips);
-        vipFsend.setContent(content);
-        vipFsend.setIsactive(Common.IS_ACTIVE_Y);
-        vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
-        vipFsendMapper.insertFsend(vipFsend);
+
 
         return status;
     }
 
+    public String getSendVips(VipFsend vipFsend) throws Exception {
+        String status = Common.DATABEAN_CODE_SUCCESS;
+        Date now = new Date();
+        String corp_code = vipFsend.getCorp_code();
+        String sms_code = vipFsend.getSms_code();
+        String content = vipFsend.getContent();
+        String sms_vips = vipFsend.getSms_vips().trim();
+        String send_scope = vipFsend.getSend_scope();
+        String send_type = vipFsend.getSend_type();
+        if(send_scope.equals("vip")){
+            String open_id = "";
+            String phone = "";
+            String vip_id = "";
+            String vip_name = "";
+            String cardno = "";
+            JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
+            vip_id = sms_vips_obj.get("vips").toString();
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_ids", vip_id, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_vip_id.key, data_vip_id);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipInfo", datalist);
+            logger.info("------vipFsend群发消息-vip列表" + dataBox.status.toString());
+            if (dataBox.status.toString().equals("SUCCESS")){
+                String message1 = dataBox.data.get("message").value;
+                JSONObject msg_obj = JSONObject.parseObject(message1);
+                JSONArray vip_infos = msg_obj.getJSONArray("vip_info");
+                for (int i = 0; i < vip_infos.size(); i++) {
+                    JSONObject vip_obj = vip_infos.getJSONObject(i);
+                    phone = phone + vip_obj.getString("vip_phone") + ",";
+                    cardno = cardno + vip_obj.getString("cardno") + ",";
+                    vip_name = vip_name + vip_obj.getString("vip_name") + ",";
+                    if (!vip_obj.containsKey("open_id") || vip_obj.getString("open_id").equals("")) {
+                        open_id = open_id + "null" + ",";
+                    }else {
+                        open_id = open_id + vip_obj.getString("open_id") + ",";
+                    }
+                }
+            }
+        }else if (send_scope.equals("vip_condition")){
+            JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
+            JSONArray screen = sms_vips_obj.getJSONArray("conditions");
+//            vipGroupService.vipScreenBySolr(screen,corp_code,1,100,request);
 
+        }
+
+
+        return status;
+    }
 
     @Override
     public int delete(int id) throws Exception {

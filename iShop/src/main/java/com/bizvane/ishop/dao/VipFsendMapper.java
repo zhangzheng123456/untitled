@@ -25,7 +25,7 @@ public interface VipFsendMapper {
 
     List<VipFsend> selectAllFsendScreen(Map<String, Object> params) throws SQLException;
 
-    VipFsend selectForId(@Param("corp_code") String corp_code,@Param("sms_code") String sms_code)throws SQLException;
+    VipFsend selectByCode(@Param("corp_code") String corp_code,@Param("sms_code") String sms_code)throws SQLException;
 
     List<VipFsend> getSendByActivityCode(@Param("corp_code")String corp_code, @Param("activity_vip_code")String activity_vip_code);
 

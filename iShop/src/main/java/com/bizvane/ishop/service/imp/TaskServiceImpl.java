@@ -94,50 +94,58 @@ public class TaskServiceImpl implements TaskService{
     public int insertTask(Task task) throws Exception{
       return taskMapper.addTask(task);
     }
+
+
     @Override
     @Transactional
-    public String addTask(Task task,String phone,String users,String user_code,String activity_vip_code) throws Exception{
+    public String addTask(Task task,String phone,String users,String user_code,String activity_code) throws Exception{
+        int count=0;
+        count+=taskMapper.addTask(task);
+
+        taskAllocation(task,phone,users,user_code,activity_code);
+        return count+"";
+    }
+
+    @Override
+    @Transactional
+    public String taskAllocation(Task task,String phone,String users,String user_code,String activity_code) throws Exception{
         int count=0;
         String[] user_codes = users.split(",");
-            count+=taskMapper.addTask(task);
-           for(int i=0;i<user_codes.length;i++){
-               TaskAllocation allocation=new TaskAllocation();
-               allocation.setCorp_code(task.getCorp_code());
-               allocation.setTask_code(task.getTask_code());
-               allocation.setUser_code(user_codes[i]);
-               allocation.setTask_status("1");
-               allocation.setReal_start_time("");
-               allocation.setReal_end_time("");
-               Date now = new Date();
-               allocation.setCreated_date(Common.DATETIME_FORMAT.format(now));
-               allocation.setCreater(user_code);
-               allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
-               allocation.setModifier(user_code);
-               count += taskMapper.addTaskAllocation(allocation);
-           }
-            if(count>0){
-                Data data_phone = new Data("phone", phone, ValueType.PARAM);
-                Data data_corp_code = new Data("corp_code", task.getCorp_code(), ValueType.PARAM);
-                Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
-                Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);
-                Data data_user = new Data("user", users, ValueType.PARAM);
-                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
-                Data data_activity_vip_code = new Data("activity_vip_code", activity_vip_code, ValueType.PARAM);
+        for(int i=0;i<user_codes.length;i++){
+            TaskAllocation allocation=new TaskAllocation();
+            allocation.setCorp_code(task.getCorp_code());
+            allocation.setTask_code(task.getTask_code());
+            allocation.setUser_code(user_codes[i]);
+            allocation.setTask_status("1");
+            allocation.setReal_start_time("");
+            allocation.setReal_end_time("");
+            Date now = new Date();
+            allocation.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            allocation.setCreater(user_code);
+            allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+            allocation.setModifier(user_code);
+            count += taskMapper.addTaskAllocation(allocation);
+        }
+        if(count>0){
+            Data data_phone = new Data("phone", phone, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", task.getCorp_code(), ValueType.PARAM);
+            Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
+            Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);
+            Data data_user = new Data("user", users, ValueType.PARAM);
+            Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+            Data data_activity_vip_code = new Data("activity_vip_code", activity_code, ValueType.PARAM);
 
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_phone.key, data_phone);
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_task_code.key, data_task_code);
-                datalist.put(data_task_title.key, data_task_title);
-                datalist.put(data_user.key, data_user);
-                datalist.put(data_user_id.key, data_user_id);
-                datalist.put(data_activity_vip_code.key, data_activity_vip_code);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_phone.key, data_phone);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_task_code.key, data_task_code);
+            datalist.put(data_task_title.key, data_task_title);
+            datalist.put(data_user.key, data_user);
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_activity_vip_code.key, data_activity_vip_code);
 
-                DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
-//                if (!dataBox.status.toString().equals("SUCCESS")){
-//                   int a = 1/0;
-//                }
-            }
+            DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
+        }
         return count+"";
     }
 
