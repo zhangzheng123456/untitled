@@ -447,7 +447,6 @@ var activity={
         var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
         $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
     },
-    
     getstorelist:function (a) {//店铺接口
         var searchValue=$("#store_search").val();
         var pageSize=20;
