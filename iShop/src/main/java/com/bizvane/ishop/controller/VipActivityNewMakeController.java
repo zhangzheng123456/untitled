@@ -28,7 +28,7 @@ import java.util.List;
  * Created by PC on 2017/1/5.
  */
 @Controller
-@RequestMapping("/activityMake")
+@RequestMapping("/vipActivity/arrange")
 public class VipActivityNewMakeController {
     @Autowired
     private TaskService taskService;
