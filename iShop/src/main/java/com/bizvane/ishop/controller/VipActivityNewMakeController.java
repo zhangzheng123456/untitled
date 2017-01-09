@@ -9,6 +9,7 @@ import com.bizvane.ishop.entity.VipFsend;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipFsendService;
+import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.WebUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,8 @@ public class VipActivityNewMakeController {
     private VipFsendService vipFsendService;
     @Autowired
     private VipActivityService vipActivityService;
-
+    @Autowired
+    VipGroupService vipGroupService;
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/addOrUpdateTask", method = RequestMethod.POST)
@@ -206,16 +208,29 @@ public class VipActivityNewMakeController {
     @RequestMapping(value = "/addOrUpdateVip", method = RequestMethod.POST)
     public String addOrUpdateVip(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String brand_code = request.getSession().getAttribute("brand_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            String param = request.getParameter("param");
+
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(param);
 
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            JSONArray screen = jsonObject.getJSONArray("screen");
 
-            String corp_code = jsonObject.get("corp_code").toString();
+            JSONArray post_array = vipGroupService.vipScreen2Array(screen, corp_code, role_code, brand_code, area_code, store_code, user_code);
+
             String activity_vip_code = jsonObject.get("activity_vip_code").toString();
-            String screen_value = jsonObject.get("screen").toString();
+            String screen_value = post_array.toJSONString();
             int target_vips = vipActivityService.updActiveCodeByType("target_vips", screen_value, corp_code, activity_vip_code);
             System.out.println("=========target_vips========="+target_vips);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
