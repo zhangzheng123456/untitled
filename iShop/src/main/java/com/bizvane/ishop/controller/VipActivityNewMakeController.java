@@ -10,7 +10,6 @@ import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipFsendService;
 import com.bizvane.ishop.utils.WebUtils;
-import org.aspectj.weaver.AnnotationTargetKind;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -195,6 +194,33 @@ public class VipActivityNewMakeController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");
             dataBean.setMessage(result.toJSONString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage("失败");
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/addOrUpdateVip", method = RequestMethod.POST)
+    public String addOrUpdateVip(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+
+            String corp_code = jsonObject.get("corp_code").toString();
+            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+            String screen_value = jsonObject.get("screen").toString();
+            int target_vips = vipActivityService.updActiveCodeByType("target_vips", screen_value, corp_code, activity_vip_code);
+            System.out.println("=========target_vips========="+target_vips);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("0");
+            dataBean.setMessage("成功");
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
