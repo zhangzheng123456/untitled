@@ -814,11 +814,11 @@ function filtrates(a,b){
             $("#num").html(message.count);
             $("#vip_list ul").empty();
             if(list.length<=0){
-                $(".table p").remove();
-                $(".table").append("<p>没有找到信息,请重新搜索</p>");
+                $("#vip_list ul p").remove();
+                $("#vip_list ul").append("<p>没有符合筛选条件的会员。</p>");
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
-                $(".table p").remove();
+                $("#vip_list ul p").remove();
                 superaddition(list,a);
 //                    jumpBianse();
             }
@@ -836,17 +836,10 @@ function filtrates(a,b){
 }
 function superaddition(data,num){//页面加载循环
     $(".table p").remove();
-//            if(data.length == 0){
-//                var len = $(".table thead tr th").length;
-//                var i;
-//                for(i=0;i<10;i++){
-//                    $(".table tbody").append("<tr></tr>");
-//                    for(var j=0;j<len;j++){
-//                        $($(".table tbody tr")[i]).append("<td></td>");
-//                    }
-//                }
-//                $(".table tbody tr:nth-child(5)").append("<span style='position:absolute;left:54%;font-size: 15px;color:#999'>暂无内容</span>");
-//            }
+            if(data.length == 0){
+                $("#vip_list ul p").remove();
+                $("#vip_list ul").append("<p>暂无会员</p>");
+            }
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -870,16 +863,6 @@ function superaddition(data,num){//页面加载循环
         }else{
             wx="<td><span class='icon-ishop_6-22'style='color:#cdcdcd'></span></td>";
         }
-//                for (var c=0;c<titleArray.length;c++){
-//                    (function(j){
-//                        var code=titleArray[j].column_name;
-//                        if(code=='vip_name'){
-//                            TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>"+wx;
-//                        }else{
-//                            TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
-//                        }
-//                    })(c)
-//                }
         $("#vip_list ul").append(
             "<li>"
             +"<span>"+data[i].vip_name+"</span>"
