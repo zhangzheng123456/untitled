@@ -51,7 +51,7 @@
     width: 100%;
     /*overflow: hidden;*/
     background-color: #FFFFFF;
-    display: none;
+    /*display: none;*/
 }
 /*筛选会员和完成*/
 .tabs_title{
@@ -93,6 +93,7 @@
 }
 .all_select_vip_content .title{
     font-size: 12px;
+    height:30px;
 }
 .all_select_vip_content .num{
     font-size: 30px;

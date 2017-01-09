@@ -18,9 +18,9 @@ var activity={
         this.selectClick();
         this.activityType();
         this.addLine();
-        this.addLogo();
+        //this.addLogo();
         this.chooseShop();
-        this.uploadOSS();
+        //this.uploadOSS();
         this.getNowFormatDate();
     },
     selectClick:function () {//input下拉模拟
@@ -649,66 +649,6 @@ var activity={
         })
     }
 };
-//调用日历
-var activity_start={
-    elem: '#activity_start',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59', //最大日期
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        activity_end.min = datas; //开始日选好后，重置结束日的最小日期
-        activity_end.start = datas; //将结束日的初始值设定为开始日
-    }
-};
-var activity_end={
-    elem: '#activity_end',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59',
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        activity_start.max = datas; //结束日选好后，重置开始日的最大日期
-    }
-};
-var offline_end={
-    elem: '#offline_end',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    min: laydate.now(),
-    istoday: true,
-    fixed: false,
-};
-var holiday_start={
-    elem: '#holiday_start',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59', //最大日期
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        holiday_end.min = datas; //开始日选好后，重置结束日的最小日期
-        holiday_end.start = datas; //将结束日的初始值设定为开始日
-    }
-};
-var holiday_end={
-    elem: '#holiday_end',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59',
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        holiday_start.max = datas; //结束日选好后，重置开始日的最大日期
-    }
-};
-laydate(activity_start);
-laydate(activity_end);
-laydate(offline_end);
-laydate(holiday_start);
-laydate(holiday_end);
 $(function () {
     activity.init();
 });
