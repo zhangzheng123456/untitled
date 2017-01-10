@@ -189,6 +189,27 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
             festival_start=jsonObject.get("festival_start").toString().trim();
             festival_end=jsonObject.get("festival_end").toString().trim();
         }
+
+        vipActivityDetail.setCorp_code(corp_code);
+        vipActivityDetail.setActivity_code(activity_code);
+        vipActivityDetail.setActivity_type(activity_type);
+        vipActivityDetail.setRecruit(recruit);
+        vipActivityDetail.setH5_url(h5_url);
+        vipActivityDetail.setSales_no(sales_no);
+        vipActivityDetail.setFestival_start(festival_start);
+        vipActivityDetail.setFestival_end(festival_end);
+        vipActivityDetail.setSend_coupon_type(send_coupon_type);
+        vipActivityDetail.setCoupon_type(coupon_type);
+        vipActivityDetail.setApply_qrcode(apply_qrcode);
+        vipActivityDetail.setApply_desc(apply_desc);
+        vipActivityDetail.setApply_title(apply_title);
+        vipActivityDetail.setApply_logo(apply_logo);
+        vipActivityDetail.setApply_success_tips(apply_success_tips);
+        vipActivityDetail.setApply_endtime(apply_endtime);
+        vipActivityDetail.setCreater(user_id);
+        vipActivityDetail.setCreated_date(Common.DATETIME_FORMAT.format(now));
+        vipActivityDetail.setModifier(user_id);
+        vipActivityDetail.setModified_date(Common.DATETIME_FORMAT.format(now));
         int info = 0;
         info = vipActivityDetailMapper.updateActivityDetail(vipActivityDetail);
 
