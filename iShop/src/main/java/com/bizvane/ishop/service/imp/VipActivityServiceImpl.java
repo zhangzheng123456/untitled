@@ -96,7 +96,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = "A" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
-        String activity_state = "未执行";
+        String activity_state = "0";
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity1 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
         if (vipActivity1 == null) {
@@ -202,10 +202,10 @@ public class VipActivityServiceImpl implements VipActivityService {
      * 获取活动任务执行情况
      */
     @Override
-    public JSONObject executeDetail(VipActivity VipActivity) throws Exception {
+    public JSONObject executeDetail(String corp_code,String activity_code,String task_code) throws Exception {
         JSONObject result = new JSONObject();
-        String task_code = VipActivity.getTask_code();
-        String corp_code = VipActivity.getCorp_code();
+
+        VipActivity vipActivity = selActivityByCode(activity_code);
         String target_vips_count = VipActivity.getTarget_vips_count();
 
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -257,12 +257,12 @@ public class VipActivityServiceImpl implements VipActivityService {
     /**
      * 查看员工执行详情
      * @param corp_code
-     * @param activity_vip_code
+     * @param activity_code
      * @param user_code
      * @return
      * @throws Exception
      */
-    public ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception {
+    public ArrayList userExecuteDetail(String corp_code, String activity_code, String user_code) throws Exception {
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
         BasicDBObject dbObject = new BasicDBObject();
@@ -291,12 +291,12 @@ public class VipActivityServiceImpl implements VipActivityService {
         String sms_code = vipActivity.getSms_code();
         Date now = new Date();
 
-        if (!task_code.trim().equals("")){
-            status = executeTask(vipActivity,user_code);
-        }
-        if (!sms_code.trim().equals("")){
+//        if (!task_code.trim().equals("")){
+//            status = executeTask(vipActivity,user_code);
+//        }
+//        if (!sms_code.trim().equals("")){
 //            status = executeFsend(vipActivity,user_code);
-        }
+//        }
         //更新活动状态activity_state
         vipActivity.setActivity_state("1");
         vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
