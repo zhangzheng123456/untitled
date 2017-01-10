@@ -368,16 +368,16 @@ public class VipActivityController {
             String activity_theme = jsonObject.get("activity_theme").toString().trim();
             String activity_code = jsonObject.get("activity_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme, Common.IS_ACTIVE_Y);
+            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme);
          VipActivity vipActivity1=vipActivityService.selActivityByCode(activity_code);
-            if (vipActivity != null||vipActivity.getId()!=vipActivity1.getId()) {
+            if (vipActivity == null||(vipActivity1!=null&&vipActivity1.getId()==vipActivity.getId())){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("当前企业下该会员活动标题已存在");
+                dataBean.setMessage("当前企业下该会员活动标题不存在");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("当前企业下该会员活动标题不存在");
+                dataBean.setMessage("当前企业下该会员活动标题已存在");
             }
         } catch (Exception ex) {
             dataBean.setId(id);

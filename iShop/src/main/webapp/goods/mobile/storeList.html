@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>门店列表</title>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <!--匹配css-->
+    <link rel="stylesheet" href="css/storeList.css"/>
+    <meta content="telephone=no,email=no" name="format-detection">
+</head>
+<body>
+<div class="title">仅显示距离你最近的30家商店 <div class="more_store">查看更多门店&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></div></div>
+<div class="main">
+    <!--盒子模板-->
+    <!--<div class="box">-->
+        <!--<div class="left"><img src="${img}" alt=""/></div>-->
+        <!--<div class="right">-->
+            <!--<div class="right_name">${shop}<img src="image/store_00.png" alt=""/><span>$num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div>-->
+            <!--<div class="right_add">地址：${add}</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+<script src="js/flexible.js?20161209"></script>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/insidePostRequire.js"></script>
+<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--匹配js-->
+<script>
+    function pageVal(){
+        var tempHTML = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name">${shop}<img src="image/store_00.png" alt=""/><span>${num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var img = '';
+        var shop = '商帆演示一店';
+        var num = '5';
+        var add= '江苏省南京市雨花台区软件大道118号';
+        var html = '';
+        for(i=0;i<30;i++){
+            if(img ==''){
+                img = 'image/goods_default_image.png';
+            }
+            var nowHTML = tempHTML;
+            nowHTML = nowHTML.replace('${img}',img);
+            nowHTML = nowHTML.replace('${shop}',shop);
+            nowHTML = nowHTML.replace('${num}',num);
+            nowHTML = nowHTML.replace('${add}',add);
+            html+=nowHTML;
+            $('.main').html(html);
+        }
+        toNext();
+    }
+    //跳转
+    function toNext(){
+        $('.more_store').click(function () {
+            window.location.href = 'storeList-all.html';
+        });
+        $('.box').click(function () {
+            window.location.href = 'store_shoppers.html';
+        });
+        $('.right_name img').click(function(){
+            event.stopPropagation(); //阻止冒泡
+            alert('暂无功能');
+        })
+    }
+   window.onload= function () {
+       pageVal();
+   }
+</script>
+</body>
+</html>

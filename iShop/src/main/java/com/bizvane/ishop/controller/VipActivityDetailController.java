@@ -102,7 +102,6 @@ public class VipActivityDetailController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.getString("activity_code");
-            String corp_code = jsonObject.getString("corp_code");
             VipActivityDetail vipActivityDetail = vipActivityDetailService.selActivityDetailByCode(activity_code);
             JSONObject result = new JSONObject();
             result.put("activityVip", JSON.toJSONString(vipActivityDetail));
