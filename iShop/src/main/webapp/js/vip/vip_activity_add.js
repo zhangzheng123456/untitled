@@ -33,19 +33,21 @@
                         }
                         activity.add();
                     }
-                    $.ajax({
-                        type: "GET",
-                        url: src+"?t="+ $.now(),
-                        dataType: "html",
-                        success: function (data) {
-                            $("#tabs-content").html(data);
-                        },
-                        error: function (msg) {
-                            alert(msg);
-                        }
-                    });
-                    $(this).addClass("active");
-                    $(this).siblings().removeClass("active");
+                    if(activity.next){
+                        $.ajax({
+                            type: "GET",
+                            url: src+"?t="+ $.now(),
+                            dataType: "html",
+                            success: function (data) {
+                                $("#tabs-content").html(data);
+                            },
+                            error: function (msg) {
+                                alert(msg);
+                            }
+                        });
+                        $(this).addClass("active");
+                        $(this).siblings().removeClass("active");
+                    }
                 }
             });
         },
