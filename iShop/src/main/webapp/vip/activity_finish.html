@@ -6,8 +6,24 @@
             <span>线下邀约活动</span>
         </div>
         <div class="last_finish">
-            <div class="last_finish_btn">完成</div>
+            <div class="last_finish_btn" id="execute">完成</div>
             <div class="last_finish_tip">点击"完成"后活动将按照您的设定开始实行</div>
         </div>
     </div>
 </div>
+<script>
+    var oc= oc || new ObjectControl();
+    $("#execute").bind("click",function(){
+        var param={
+            activity_code:"ACls0000000001"
+        };
+        oc.postRequire("post","/vipActivity/execute","0",param,function(data){
+            if(data.code!="0") return;
+           if(data.message=="execute success"){
+               alert("操作成功")
+           }else{
+               alert("操作失败")
+           }
+        })
+    })
+</script>
