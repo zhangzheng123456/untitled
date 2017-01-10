@@ -368,7 +368,7 @@ public class VipActivityController {
             String activity_theme = jsonObject.get("activity_theme").toString().trim();
             String activity_code = jsonObject.get("activity_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme, Common.IS_ACTIVE_Y);
+            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme);
          VipActivity vipActivity1=vipActivityService.selActivityByCode(activity_code);
             if (vipActivity == null||(vipActivity1!=null&&vipActivity1.getId()==vipActivity.getId())){
                 dataBean.setId(id);
