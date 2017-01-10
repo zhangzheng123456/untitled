@@ -45,6 +45,8 @@ public class VipActivityServiceImpl implements VipActivityService {
     @Autowired
     private ScheduleJobService scheduleJobService;
     @Autowired
+    private StoreService storeService;
+    @Autowired
     MongoDBClient mongodbClient;
 
     @Override
@@ -135,7 +137,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         Date now = new Date();
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
-        if (vipActivity2 == null) {
+        if (vipActivity2 == null||vipActivity2.getId()==vipActivity1.getId()) {
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
             vipActivity.setIsactive(isactive);
@@ -159,6 +161,7 @@ public class VipActivityServiceImpl implements VipActivityService {
 
     @Override
     public int updateVipActivity(VipActivity VipActivity) throws Exception {
+
         return vipActivityMapper.updateActivity(VipActivity);
     }
 
@@ -204,19 +207,20 @@ public class VipActivityServiceImpl implements VipActivityService {
     @Override
     public JSONObject executeDetail(String corp_code,String activity_code,String task_code) throws Exception {
         JSONObject result = new JSONObject();
-
         VipActivity vipActivity = selActivityByCode(activity_code);
-        String target_vips_count = VipActivity.getTarget_vips_count();
+        String target_vips_count = vipActivity.getTarget_vips_count();
+        String activity_store_code = vipActivity.getActivity_store_code();
+        Double complete_vip_count = 0d;
+        String[] activity_stores = activity_store_code.split(",");
+        JSONArray task_array = new JSONArray();
+        List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
 
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
 
-        List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
         BasicDBObject dbObject = new BasicDBObject();
         dbObject.put("corp_code", corp_code);
         dbObject.put("task_code", task_code);
-        JSONArray task_array = new JSONArray();
-        Double complete_vip_count = 0d;
         for (int i = 0; i < taskAllocations.size(); i++) {
             JSONObject task_obj = new JSONObject();
             String user_code = taskAllocations.get(i).getUser_code();
@@ -226,24 +230,35 @@ public class VipActivityServiceImpl implements VipActivityService {
             DBCursor dbCursor = cursor.find(dbObject);
             String complete_rate = "0";
             String store_name = "";
-            String area_name = "";
             while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
-                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))) {
+                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))){
                     complete_rate = "100";
-                } else if (obj.containsField("complete_rate")) {
+                } else if (obj.containsField("complete_rate")){
                     complete_rate = obj.get("complete_rate").toString();
                 }
-                if (obj.containsField("complete_vip_count")) {
+                if (obj.containsField("complete_vip_count")){
                     String user_complete_vip_count = obj.get("complete_vip_count").toString();
                     complete_vip_count = complete_vip_count + Double.parseDouble(user_complete_vip_count);
                 }
             }
-            task_obj.put("user_code", user_code);
-            task_obj.put("user_name", user_name);
-            task_obj.put("store_name", store_name);
-            task_obj.put("area_name", area_name);
-            task_obj.put("complete_rate", complete_rate);
+            //任务执行人的店铺编号
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+            String[] codes = store_code.split(",");
+            for (int j = 0; j <codes.length ; j++) {
+                if (Arrays.asList(activity_stores).contains(codes[j])) {
+                    Store store = storeService.getStoreByCode(corp_code,codes[j],Common.IS_ACTIVE_Y);
+                    if (store != null) {
+                        store_name = store.getStore_name();
+                    }
+                    task_obj.put("store_name",store_name);
+                    task_obj.put("store_code",codes[j]);
+                    break;
+                }
+            }
+            task_obj.put("user_code",user_code);
+            task_obj.put("user_name",user_name);
+            task_obj.put("complete_rate",complete_rate);
             task_array.add(task_obj);
         }
         result.put("userList", task_array);
@@ -266,7 +281,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
         BasicDBObject dbObject = new BasicDBObject();
-        dbObject.put("activity_vip_code", activity_vip_code);
+        dbObject.put("activity_vip_code", activity_code);
         dbObject.put("corp_code", corp_code);
         dbObject.put("user_code", user_code);
         DBCursor dbCursor = cursor.find(dbObject);
@@ -280,7 +295,8 @@ public class VipActivityServiceImpl implements VipActivityService {
     }
 
     public VipActivity getVipActivityByTheme(String corp_code, String activity_theme, String isactive) throws Exception {
-        return vipActivityMapper.selActivityByTheme(corp_code, activity_theme, isactive);
+
+            return  vipActivityMapper.selActivityByTheme(corp_code,activity_theme,isactive);
 
     }
 

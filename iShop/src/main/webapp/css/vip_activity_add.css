@@ -1,3 +1,7 @@
+body{
+    overflow: auto;
+    min-width: 1230px;
+}
 .main{
     color: #4a5f7c;
 }
@@ -43,7 +47,7 @@
     color: #434960;
 }
 .tabs-content{
-    padding: 20px;
+    padding:12px 20px 0 20px;
     background-color: #FFFFFF;
     min-height:400px;
 }
@@ -208,9 +212,13 @@
     margin-right: 10px;
 }
 .switch .bg{
+    webkit-transition:all 1s;
+    -moz-transition:all 1s;
     background-color:#41c7db;
 }
 .switch div .Off{
+    webkit-transition:all 1s;
+    -moz-transition:all 1s;
     left: 22px;
 }
 .switch div span{

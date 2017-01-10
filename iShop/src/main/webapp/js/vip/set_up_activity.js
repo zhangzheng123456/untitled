@@ -13,7 +13,7 @@ var activity={
         "brand_codes":"",
         "brand_names":"",
         "store_codes":"",
-        "store_names":""
+        "store_names":"",
     },
     init:function () {
         this.selectClick();
@@ -36,6 +36,10 @@ var activity={
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
             var id = $(this).attr("data-id");
+            var couponCode = $(this).attr("data-code");
+            if(couponCode!==""||couponCode!==undefined){
+                $(this).parent().prevAll("input").attr("data-code",couponCode);
+            }
             $(this).parent().prevAll("input").val(vue);
             $(this).parent().prevAll("input").attr("data-id",id);
         });
@@ -160,6 +164,7 @@ var activity={
     },
     addLogo:function (url) {//添加logo节点
         var img="<img src='"+url+"' alt='暂无图片'>";
+        $("#upload_logo").val(url);
         var len = $("#upload_logo").parent().prevAll("img").length;
         if(len == 0){
             $("#upload_logo").parent().before(img);
@@ -483,12 +488,13 @@ var activity={
                 $('.corp_select .searchable-select-input').keydown(function (event) {
                     var event = window.event || arguments[0];
                     if (event.keyCode == 13) {
-
+                        activity.getCoupon();
                     }
                 });
                 $('.searchable-select-item').click(function () {
-
-                })
+                    activity.getCoupon();
+                });
+                activity.getCoupon();
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -714,6 +720,7 @@ var activity={
                 var param={};
                 param["corp_code"]=$("#OWN_CORP").val();
                 param["activity_theme"]=theme;
+                param["activity_code"]="";
                 oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
                         if(data.code=="-1"){
                             art.dialog({
@@ -730,6 +737,51 @@ var activity={
     createCode:function () {//生成二维码
         $("#create_code").click(function () {
             $(".offline_right_wrap").empty().append("<img style='width:100%' src='http://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQGz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNlAzQ29HMTY5NFUxMDAwMGcwN0IAAgTNAnNYAwQAAAAA'>");
+        });
+    },
+    getCoupon:function () {
+        var corp_code=$("#OWN_CORP").val();
+        var param={"corp_code":corp_code};
+        oc.postRequire("post","/vipRules/getCoupon","0",param,function (data) {
+            if(data.code==0){
+                var li="";
+                var msg=JSON.parse(data.message);
+                if(msg.length==0){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有优惠券"
+                    });
+                }else if(msg.length>0){
+                    for(var i=0;i<msg.length;i++){
+                        li+="<li data-code='"+msg[i].couponcode+"'>"+msg[i].name+"</li>"
+                    }
+                    $(".coupon_activity").empty();
+                    $(".coupon_activity").append(li);
+                }
+            }
+        });
+        oc.postRequire("post","/vipCardType/getVipCardTypes","0",param,function (data) {
+            if(data.code==0){
+                var li="";
+                var message=JSON.parse(data.message);
+                var msg=JSON.parse(message.list);
+                if(msg.length==0){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有卡类型"
+                    });
+                }else if(msg.length>0){
+                    for(var i=0;i<msg.length;i++){
+                        li+="<li data-code='"+msg[i].vip_card_type_code+"'>"+msg[i].vip_card_type_name+"</li>"
+                    }
+                    $(".vipCardType").empty();
+                    $(".vipCardType").append(li);
+                }
+            }
         });
     },
     checkEmpty:function () {
@@ -752,20 +804,98 @@ var activity={
     },
     add:function (data) {
         var param={};
+        var runMode=$("#activity_type").attr("data-id");
         param["corp_code"]=$("#OWN_CORP").val();
         param["activity_code"]="";
         param["activity_theme"]=$("#activity_theme").val();
-        param["run_mode"]=$("#activity_type").attr("data-id");
+        param["run_mode"]=runMode;
         param["start_time"]=$("#activity_start").val();
         param["end_time"]=$("#activity_end").val();
         param["activity_desc"]=$("#activity_describe").val();
         param["activity_store_code"]=activity.cache.store_codes;
-        activity.checkEmpty();
         oc.postRequire("post","/vipActivity/add","0",param,function (data) {
             if(data.code==0){
-                
-            }else if(data.code==-1){
+                var msg=data.message;
+                sessionStorage.setItem("activity_code",msg);
+                var _param={};
+                _param["corp_code"]=$("#OWN_CORP").val();
+                _param["activity_code"]="";
+                _param["run_mode"]=runMode;
+                _param["activity_type"]=runMode;
+                if(runMode=="recruit"){
+                    var recruit=[];
+                    var line=$("#recruit_activity>ul>li");
+                    for (var i=0;i<line.length;i++){
+                        var input=$(line[i]).find("input");
+                        var obj={};
+                        obj["vip_card_type_code"]=$(input[0]).attr("data-code");
+                        obj["join_threshold"]=$(input[1]).val();
+                        recruit.push(obj);
+                    }
+                    _param["recruit"]=recruit;
+                }
+                if(runMode=="h5"){
+                    _param["h5_url"]=$("#h5_activity").find("input").val();
+                }
+                if(runMode=="sales"){
+                    _param["sales_no"]=$("#sales_activity").find("input").val();
+                }
+                if(runMode=="festival"){
+                    _param["festival_start"]=$("#holiday_start").val();
+                    _param["festival_end"]=$("#holiday_end").val();
+                }
+                if(runMode=="coupon"){
+                    var send_coupon_type=$("#coupon_title .coupon_active").attr("data-id");
+                    _param["send_coupon_type"]=send_coupon_type;
+                    if(send_coupon_type!=="card"){
+                        $("#coupon_activity .choose_coupon").each(function () {
+                            if($(this).css("display")=="block"){
+                                var input=$(this).find("input");
+                                var coupon_type="";
+                                for(var i=0;i<input.length;i++){
+                                    if(i<input.length-1){
+                                        coupon_type+=$(input[i])+","
+                                    }else {
+                                        coupon_type+=$(input[i])
+                                    }
+                                }
+                                _param["coupon_type"]=coupon_type;
+                            }
+                        })
+                    }else if(send_coupon_type=="card"){
+                        var coupon_type=[];
+                        $(".coupon_details_wrap").each(function () {
+                            var obj={};
+                            var vip_card_type_code=$(this).find("input")[0].attr("data-code");
+                            var input=$(this).children("operate_ul").find("input");
+                            var coupon_code=""
+                            for(var i=0;i<input.length;i++){
+                                if(i<input.length-1){
+                                    coupon_code+=$(input[i]).attr("data-code")+",";
+                                }else {
+                                    coupon_code+=$(input[i]).attr("data-code");
+                                }
+                            }
+                            obj['vip_card_type_code']=vip_card_type_code;
+                            obj['coupon_code']=coupon_code;
+                            coupon_type.push(obj);
+                        });
+                        _param["coupon_type"]=coupon_type;
+                    }
+                }
+                if(runMode=="invite"){
+                    _param['apply_title']=$("#invite_title").val();
+                    _param['apply_endtime']=$("#offline_end").val();
+                    _param['apply_desc']=$("#invite_summary").val();
+                    _param['apply_success_tips']=$("#invite_message").val();
+                    _param['apply_logo']=$("#upload_logo").val();
+                    _param['apply_qrcode']="";
+                }
+                oc.postRequire("post","/vipActivity/detail/add","0",_param,function (data) {
 
+                })
+            }else if(data.code==-1){
+                console.log(data.message);
             }
         });
     }
