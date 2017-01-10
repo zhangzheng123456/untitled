@@ -368,16 +368,16 @@ public class VipActivityController {
             String activity_theme = jsonObject.get("activity_theme").toString().trim();
             String activity_code = jsonObject.get("activity_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme, Common.IS_ACTIVE_Y);
+            VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme);
          VipActivity vipActivity1=vipActivityService.selActivityByCode(activity_code);
-            if (vipActivity != null||vipActivity.getId()!=vipActivity1.getId()) {
+            if (vipActivity == null||(vipActivity1!=null&&vipActivity1.getId()==vipActivity.getId())){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("当前企业下该会员活动标题已存在");
+                dataBean.setMessage("当前企业下该会员活动标题不存在");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("当前企业下该会员活动标题不存在");
+                dataBean.setMessage("当前企业下该会员活动标题已存在");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -421,41 +421,64 @@ public class VipActivityController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 终止活动
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/changeState", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String changeState(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = JSONObject.parseObject(message);
-//            int activity_id = Integer.parseInt(jsonObject.getString("id"));
-//            VipActivity activityVip = this.vipActivityService.selectActivityById(activity_id);
-//            if (activityVip != null) {
-//                String activity_state = activityVip.getActivity_state();
-//                if (activity_state.equals("执行中")) {
-//                    activityVip.setActivity_state("已结束");
-//                    vipActivityService.updateVipActivity(activityVip);
-//                }
-//            }
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage("success");
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    /**
+     * 活动执行中
+     * 提前终止
+     * 修改活动时间
+     * 添加活动店铺
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/changeState", method = RequestMethod.POST)
+    @ResponseBody
+    public String changeState(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String activity_code = jsonObject.getString("activity_code");
+
+
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
+            if (vipActivity != null) {
+                if (jsonObject.containsKey("status") && !jsonObject.getString("status").equals("")){
+                    String activity_state = vipActivity.getActivity_state();
+                    if (activity_state.equals(Common.ACTIVITY_STATUS_1)) {
+                        vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
+                        vipActivityService.updateVipActivity(vipActivity);
+                    }
+                }
+                if (jsonObject.containsKey("start_time")){
+                    String start_time = jsonObject.getString("start_time");
+                    String end_time = jsonObject.getString("end_time");
+                    vipActivity.setStart_time(start_time);
+                    vipActivity.setEnd_time(end_time);
+                    vipActivityService.updateVipActivity(vipActivity);
+                }
+                if (jsonObject.containsKey("store_code") && !jsonObject.getString("store_code").equals("")){
+                    String store_code = jsonObject.getString("store_code");
+                    String store_code1 = vipActivity.getActivity_store_code();
+                    if (!store_code1.endsWith(","))
+                        store_code1 = store_code1 + ",";
+                    store_code1 = store_code1 + store_code;
+                    vipActivity.setActivity_store_code(store_code1);
+                    vipActivityService.updateVipActivity(vipActivity);
+                }
+            }
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 //    /**
 //     * 获取导购执行详情

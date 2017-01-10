@@ -1,6 +1,7 @@
 /**
  * Created by 赵伟 on 2017/1/9.
  */
+var oc=new ObjectControl();
 var inx=1;//默认是第一页
 var count=1;
 var pageNumber=1;//删除默认第一页
@@ -17,6 +18,7 @@ var bd=[];//品牌
 var ar=[];//区域
 var sp=[];//店铺
 var sf=[];//员工
+var nowScreen=[];
 var  message={
     cache:{//缓存变量
         "group_codes":""
@@ -767,8 +769,15 @@ $("#screen_vip_que_activity").bind("click",function(){  //筛选确定
         });
     }
     _param['screen'] = screen;
+    nowScreen=screen;
     if (screen.length == 0) {
-        GET(inx, pageSize);
+        $("#vip_list ul").html(" ");
+        $("#num").html("0");
+        setPage($("#foot-num")[0],1,1,pageSize);
+        _param["screen"]=[];
+        var Array=[];
+        whir.loading.add("",0.5);
+        superaddition(Array);
     }else {
         filtrate = "sucess";
         filtrates(inx, pageSize);
@@ -963,13 +972,9 @@ function setPage(container, count, pageindex,pageSize){
     }()
 }
 function dian(a,b){//点击分页的时候调什么接口
-    if (filtrate=="") {
-        GET(a,b);
-    }else{
         _param["pageNumber"] = a;
         _param["pageSize"] = b;
         filtrates(a,b);
-    }
 }
 $("#page_row").click(function(){
     if("block" == $("#liebiao").css("display")){
@@ -1022,4 +1027,41 @@ $("#input-txt").keydown(function() {
             }
         };
     }
+});
+function getData(){
+    var param={
+        activity_code:"ACls0000000001"
+    };
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/vipActivity/select","0",param,function(data){
+        if(data.code!="0") return;
+        whir.loading.remove();//移除加载框
+        var msg=JSON.parse(data.message);
+        var activityVip=JSON.parse(msg.activityVip);
+        var num=activityVip.target_vips_count=="" ? "0" : activityVip.target_vips_count;
+        $("#num").html(num);
+        _param["corp_code"] = "C10000";
+        _param["pageNumber"] = inx;
+        _param["pageSize"] = pageSize;
+        _param["screen"]=activityVip.target_vips =="" ?[]:JSON.parse(activityVip.target_vips);
+        if(JSON.parse(activityVip.target_vips).length>0){
+            filtrates(1,10);
+        }else if(JSON.parse(activityVip.target_vips).length==0){
+            whir.loading.add("",0.5);//加载等待框
+            superaddition(JSON.parse(activityVip.target_vips))
+        }
+
+    })
+}
+getData();
+$("#NEXT").bind("click",function(){
+    var param={
+        target_vips_count:$("#num").html(),
+        activity_vip_code:"ACls0000000001",
+        screen:_param["screen"]
+    };
+    oc.postRequire("post","/vipActivity/arrange/addOrUpdateVip","0",param,function(data){
+        if(data.code!="0") return;
+        console.log(data)
+    })
 });

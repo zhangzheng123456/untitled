@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>所有门店列表</title>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <!--匹配css-->
+    <link rel="stylesheet" href="css/storeList-all.css"/>
+    <meta content="telephone=no,email=no" name="format-detection">
+</head>
+<body>
+<div class="title">
+    <input type="text" maxlength="50" placeholder="搜索门店"/>
+</div>
+<div class="main">
+    <!--盒子模板-->
+    <!--<div class="area_box">-->
+        <!--省份区域-->
+        <!--<div class="area"><span>江苏省</span></div>-->
+        <!--盒子区域-->
+        <!--<div class="box">-->
+            <!--<div class="left"><img src="${img}" alt=""/></div>-->
+            <!--<div class="right">-->
+                <!--<div class="right_name">${shop}<img src="image/store_00.png" alt=""/><span>$num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div>-->
+                <!--<div class="right_add">地址：${add}</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+<script src="js/flexible.js?20161209"></script>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/insidePostRequire.js"></script>
+<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--匹配js-->
+<script>
+    //搜索功能
+    $('.title input').focus(function () {
+        $(this).css('background-image','none');
+        $(this).attr('placeholder','');
+    });
+    $('.title input').blur(function () {
+        var val = $(this).val();
+        if(val==''){
+            $(this).css('background-image','');
+            $(this).attr('placeholder','搜索门店');
+        }else{
+            return;
+        }
+    })
+    //页面加载
+    function pageVal(){
+        var areaList= ['江苏省','浙江省','湖南省','上海市','山东省','北京市','云南省'];
+        var img = '';
+        var shop = '商帆演示一店';
+        var num = '5';
+        var add= '江苏省南京市雨花台区软件大道118号';
+        var tempHTML1 = ' <div class="area_box"><div class="area"><span>${area}</span></div>';
+        var tempHTML2 = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name">${shop}<img src="image/store_00.png" alt=""/><span>${num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML3 = '</div>';
+        var html = '';
+        for(k=0;k<areaList.length;k++){
+            var nowHTML1 = tempHTML1;
+            var area = areaList[k];
+            console.log(area)
+            nowHTML1= nowHTML1.replace('${area}',area);
+            html+=nowHTML1;
+            for(i=0;i<3;i++){
+                if(img ==''){
+                    img = 'image/goods_default_image.png';
+                }
+                var nowHTML2 = tempHTML2;
+                nowHTML2 = nowHTML2.replace('${img}',img);
+                nowHTML2 = nowHTML2.replace('${shop}',shop);
+                nowHTML2 = nowHTML2.replace('${num}',num);
+                nowHTML2 = nowHTML2.replace('${add}',add);
+                html+=nowHTML2;
+            }
+            var nowHTML3 = tempHTML3;
+            html+=nowHTML3;
+            $('.main').html(html);
+        }
+        toNext();
+        changePage();
+    }
+    //跳转
+    function toNext(){
+        $('.box').click(function () {
+            window.location.href = 'store_shoppers.html';
+        });
+        $('.right img').click(function () {
+            event.stopPropagation();
+            alert('暂无功能');
+        });
+    }
+    //修改页面
+    function changePage(){
+        //去边框
+        $('.area_box').find(' .box:last').css('border-bottom','none');
+    }
+    window.onload= function () {
+        pageVal();
+    }
+</script>
+</body>
+</html>

@@ -1,9 +1,9 @@
-<!-- <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+<link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
 <link href="../css/style.css?v=2.2.0" rel="stylesheet">
 <link rel="stylesheet" href="../css/font_style.css">
 <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
 <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
-<link rel="stylesheet" href="../css/set_vip_activity.css"> -->
+<link rel="stylesheet" href="../css/set_vip_activity.css">
 <div>
     <div class="tabs_title_p">
         <div class="tabs_left">
@@ -74,7 +74,7 @@
             <span>群发管理</span>
         </div>
         <div class="tabs_right">
-            <div class="switch" id="">
+            <div class="switch" id="group_switch">
                 <span class="switch_text">群发已开启</span>
                 <div class="bg">
                     <span class="Off"></span>
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                     <div class="edit_frame_left">
-                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea placeholder="请输入短信内容"></textarea>
+                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
                     </div>
                     <div class="edit_footer">
                         <div class="edit_footer_close">取消</div>
@@ -184,14 +184,30 @@
                         <span class="icon-ishop_6-02"></span>
                     </div>
                 </div>
+                <!--短信弹框 -->
+                <div class="edit_frame edit_message">
+                    <div class="tabs_title_p">
+                        <div class="tabs_left">
+                            <span class="title_icon"></span>
+                            <span>短信内容设定</span>
+                        </div>
+                    </div>
+                    <div class="edit_frame_left">
+                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
+                    </div>
+                    <div class="edit_footer">
+                        <div class="edit_footer_close">取消</div>
+                        <div class="edit_footer_save">保存修改</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!-- <script src="../js/loading.js"></script>
-<script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
+<script src="../js/loading.js"></script>
 <script src="../js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js"></script>
-<script src="../js/artDialog/plugins/iframeTools.js"></script> -->
+<script src="../js/artDialog/plugins/iframeTools.js"></script>
 <script src="../js/activity/activityPlanning.js"></script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>导购列表</title>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <!--匹配css-->
+    <link rel="stylesheet" href="css/store_shoppers.css"/>
+    <meta content="telephone=no,email=no" name="format-detection">
+</head>
+<body>
+<div class="title">
+    <p>导购们在此恭候多时了</p>
+    <p>请选择一位，TA将随时为您提供服务</p>
+</div>
+<div class="main">
+    <!--<div class="shopper">-->
+        <!--<div class="img"><img src="" alt=""/></div>-->
+        <!--<div class="name">${name}</div>-->
+    <!--</div>-->
+</div>
+<script src="js/flexible.js?20161209"></script>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/insidePostRequire.js"></script>
+<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--匹配js-->
+<script>
+    function pageVal(){
+        var img = '';
+        var name = '王某某'
+        var tempHTML = '<div class="shopper"> <div class="img"><img src="${img}" alt=""/></div> <div class="name">${name}</div> </div>';
+        var html ='';
+        for(i=0;i<9;i++){
+            if(img ==''){
+                img = 'image/goods_default_image.png';
+            }
+            var nowHTML = tempHTML;
+            nowHTML = nowHTML.replace('${img}',img);
+            nowHTML = nowHTML.replace('${name}',name);
+            html+=nowHTML;
+            $('.main').html(html);
+        }
+        var width = $('.main .img').width();
+        $('.main .img').css('height',width);
+        $('.main .img img').css('max-height',width);
+        shopperClick();
+    }
+    function shopperClick(){
+        $('.shopper').click(function () {
+            alert('暂时无法联系客服');
+        });
+    }
+    window.onload = function () {
+        pageVal();
+    }
+</script>
+</body>
+</html>
