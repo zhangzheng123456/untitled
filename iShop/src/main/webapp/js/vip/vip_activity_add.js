@@ -20,7 +20,8 @@
                 }else{
                     var index=$("#tabs .active").index();
                     if(index==0){
-                        activity.add();
+                        activity.checkEmpty();
+                        console.log(activity.isEmpty);
                         if(activity.isEmpty==true){
                             art.dialog({
                                 time: 1,
@@ -30,7 +31,7 @@
                             });
                             return ;
                         }
-                        console.log(activity.isEmpty);
+                        activity.add();
                     }
                     $.ajax({
                         type: "GET",
