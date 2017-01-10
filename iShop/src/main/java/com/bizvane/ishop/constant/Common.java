@@ -63,14 +63,6 @@ public class Common {
     //导出数量限制10000条
     public static int EXPORTEXECLCOUNT = 10000;
 
-    //数据显示类型——文本框
-    public static final String DATE_SHOW_TYPE_TEXT = "text";
-    //数据显示类型——下拉 框
-    public static final String DATE_SHOW_TYPE_SELECT = "select";
-    //数据显示类型——日历
-    public static final String DATE_SHOW_TYPE_DATE = "date";
-    //数据显示类型——长文本
-    public static final String DATE_SHOW_TYPE_LONGTEXT = "longtext";
 
     public static final String ACTION_ADD = "新增";
 
@@ -91,4 +83,11 @@ public class Common {
 
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    //未执行
+    public static final String ACTIVITY_STATUS_0 = "0";
+    //执行中
+    public static final String ACTIVITY_STATUS_1 = "1";
+    //已结束
+    public static final String ACTIVITY_STATUS_2 = "2";
 }
