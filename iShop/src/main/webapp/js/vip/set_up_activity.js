@@ -14,8 +14,11 @@ var activity={
         "brand_names":"",
         "store_codes":"",
         "store_names":"",
+        "card_type":"",
+        "coupon":""
     },
     init:function () {
+        this.activityEdit();
         this.selectClick();
         this.activityType();
         this.addLine();
@@ -106,15 +109,15 @@ var activity={
             $(this).parent().parents("li").remove();
         });
         $("#coupon_btn").click(function () {//新增开卡送券
-            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
-                + '<ul class="activity_select">' 
-                + '<li>普通会员</li><li>银卡会员</li><li>金卡会员</li><li>铂金卡会员</li><li>钻石卡会员</li></ul></li>'
-                + '</ul><ul class="operate_ul">'
-                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
-                + '<ul class="activity_select">' 
-                + '<li>普通会员</li><li>银卡会员</li><li>金卡会员</li><li>铂金卡会员</li>' 
+            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                + '<ul class="activity_select vipCardType">'
+                + activity.cache.card_type
+                + '</ul></li></ul><ul class="operate_ul">'
+                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" data-code= type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                + '<ul class="activity_select coupon_activity">'
+                + activity.cache.coupon
                 + '</ul></li><li><span class="add_btn">+</span><span class="remove_btn">-</span></li></ul>'
-                + '</li></ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>';
+                + '</ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>';
             $("#coupon_btn").parent().append(html);
         });
         $("#coupon_activity").on("click",".coupon_details_close",function () {
@@ -488,12 +491,18 @@ var activity={
                 $('.corp_select .searchable-select-input').keydown(function (event) {
                     var event = window.event || arguments[0];
                     if (event.keyCode == 13) {
+                        var corp=$("#OWN_CORP").val();
+                        $("#tabs>div:first-child").attr("data-corp",corp);
                         activity.getCoupon();
                     }
                 });
                 $('.searchable-select-item').click(function () {
+                    var corp=$("#OWN_CORP").val();
+                    $("#tabs>div:first-child").attr("data-corp",corp);
                     activity.getCoupon();
                 });
+                var corp=$("#OWN_CORP").val();
+                $("#tabs>div:first-child").attr("data-corp",corp);
                 activity.getCoupon();
             } else if (data.code == "-1") {
                 art.dialog({
@@ -510,7 +519,7 @@ var activity={
         var pageSize=20;
         var pageNumber=a;
         var _param={};
-        _param['corp_code']="C10000";
+        _param['corp_code']=$("#OWN_CORP").val();
         _param['area_code']=activity.cache.area_codes;
         _param['brand_code']=activity.cache.brand_codes;
         _param['searchValue']=searchValue;
@@ -583,7 +592,7 @@ var activity={
         var pageSize=20;
         var pageNumber=a;
         var _param = {};
-        _param['corp_code']="C10000";
+        _param['corp_code']=$("#OWN_CORP").val();
         _param["searchValue"]=searchValue;
         _param["pageSize"]=pageSize;
         _param["pageNumber"]=pageNumber;
@@ -652,7 +661,7 @@ var activity={
     getbrandlist:function () {
         var searchValue=$("#brand_search").val();
         var _param={};
-        _param['corp_code']="C10000";
+        _param['corp_code']=$("#OWN_CORP").val();
         _param["searchValue"]=searchValue;
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/shop/brand", "",_param, function(data){
@@ -746,20 +755,22 @@ var activity={
             if(data.code==0){
                 var li="";
                 var msg=JSON.parse(data.message);
-                if(msg.length==0){
+                if(msg.length==0&&$("#coupon_activity").css("display")=="block"){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
                         content: "该企业下没有优惠券"
                     });
+                    activity.cache.coupon="";
                 }else if(msg.length>0){
                     for(var i=0;i<msg.length;i++){
                         li+="<li data-code='"+msg[i].couponcode+"'>"+msg[i].name+"</li>"
                     }
-                    $(".coupon_activity").empty();
-                    $(".coupon_activity").append(li);
+                    activity.cache.coupon=li;
                 }
+                $(".coupon_activity").empty();
+                $(".coupon_activity").append(li);
             }
         });
         oc.postRequire("post","/vipCardType/getVipCardTypes","0",param,function (data) {
@@ -767,30 +778,44 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0){
+                if(msg.length==0&&$("#coupon_activity").css("display")=="block"){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
                         content: "该企业下没有卡类型"
                     });
+                    activity.cache.card_type="";
                 }else if(msg.length>0){
                     for(var i=0;i<msg.length;i++){
                         li+="<li data-code='"+msg[i].vip_card_type_code+"'>"+msg[i].vip_card_type_name+"</li>"
                     }
-                    $(".vipCardType").empty();
-                    $(".vipCardType").append(li);
+                    activity.cache.card_type=li;
                 }
+                $(".vipCardType").empty();
+                $(".vipCardType").append(li);
             }
         });
     },
     checkEmpty:function () {
         $("#setUp_activityType>div").each(function () {
-            if($(this).css("display")!=="none"){
+            var id=$(this).attr("id");
+            if($(this).css("display")!=="none"&&id!=="coupon_activity"){
                 var vue=$(this).find(".text_input");
                 $(vue).each(function (i) {
                     if($(vue[i]).val()==""){
                         activity.isEmpty=true;
+                    }
+                });
+            }else if($(this).css("display")!=="none"&&id=="coupon_activity"){
+                $(this).children("div:not('.switch')").each(function (i,e) {
+                    if($(e).css("display")=="block"){
+                        var vue=$(e).find(".text_input");
+                        $(vue).each(function (i) {
+                            if($(vue[i]).val()==""){
+                                activity.isEmpty=true;
+                            }
+                        });
                     }
                 });
             }
@@ -802,11 +827,17 @@ var activity={
             }
         });
     },
-    add:function (data) {
+    add:function () {
+        var corp_code=$("#tabs>div:first-child").attr("data-corp");
+        var activity_code=$("#tabs>div:first-child").attr("data-code");
         var param={};
         var runMode=$("#activity_type").attr("data-id");
-        param["corp_code"]=$("#OWN_CORP").val();
-        param["activity_code"]="";
+        if(activity_code!==""&&activity_code!==undefined){
+            param["activity_code"]=activity_code;
+        }else {
+            param["activity_code"]="";
+        }
+        param["corp_code"]=corp_code;
         param["activity_theme"]=$("#activity_theme").val();
         param["run_mode"]=runMode;
         param["start_time"]=$("#activity_start").val();
@@ -816,9 +847,9 @@ var activity={
         oc.postRequire("post","/vipActivity/add","0",param,function (data) {
             if(data.code==0){
                 var msg=data.message;
-                sessionStorage.setItem("activity_code",msg);
+                $("#tabs>div:first-child").attr("data-code",msg);
                 var _param={};
-                _param["corp_code"]=$("#OWN_CORP").val();
+                _param["corp_code"]=$("#tabs>div:first-child").attr("data-corp");
                 _param["activity_code"]="";
                 _param["run_mode"]=runMode;
                 _param["activity_type"]=runMode;
@@ -841,8 +872,8 @@ var activity={
                     _param["sales_no"]=$("#sales_activity").find("input").val();
                 }
                 if(runMode=="festival"){
-                    _param["festival_start"]=$("#holiday_start").val();
-                    _param["festival_end"]=$("#holiday_end").val();
+                    _param["festival_start"]=$($("#festival_activity").find("input")[0]).val();
+                    _param["festival_end"]=$($("#festival_activity").find("input")[1]).val();
                 }
                 if(runMode=="coupon"){
                     var send_coupon_type=$("#coupon_title .coupon_active").attr("data-id");
@@ -866,7 +897,7 @@ var activity={
                         var coupon_type=[];
                         $(".coupon_details_wrap").each(function () {
                             var obj={};
-                            var vip_card_type_code=$(this).find("input")[0].attr("data-code");
+                            var vip_card_type_code=$($(this).find("input")[0]).attr("data-code");
                             var input=$(this).children("operate_ul").find("input");
                             var coupon_code=""
                             for(var i=0;i<input.length;i++){
@@ -898,6 +929,19 @@ var activity={
                 console.log(data.message);
             }
         });
+    },
+    activityEdit:function () {
+        var corp_code=$("#tabs>div:first-child").attr("data-corp");
+        var activity_code=$("#tabs>div:first-child").attr("data-code");
+        if(activity_code!==""&&activity_code!==undefined){
+            var param={
+                "corp_code":corp_code,
+                "activity_code":activity_code
+            };
+            oc.postRequire("post","/vipActivity/detail/select","0",param,function (data) {
+                console.log(data.message);
+            });
+        }
     }
 };
 $(function () {
