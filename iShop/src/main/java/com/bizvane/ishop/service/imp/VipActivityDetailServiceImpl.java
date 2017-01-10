@@ -75,9 +75,13 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = jsonObject.get("activity_code").toString().trim();
-
+        String activity_type = jsonObject.get("activity_type").toString().trim();
         VipActivityDetail vipActivityDetail = WebUtils.JSON2Bean(jsonObject, VipActivityDetail.class);
-        vipActivityDetail.setCorp_code(corp_code);
+        String recruit="";
+        String h5_url="";
+        String sales_no="";
+
+       vipActivityDetail.setCorp_code(corp_code);
         vipActivityDetail.setActivity_code(activity_code);
         vipActivityDetail.setCreater(user_id);
         vipActivityDetail.setCreated_date(Common.DATETIME_FORMAT.format(now));
