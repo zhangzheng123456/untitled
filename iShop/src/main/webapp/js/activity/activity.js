@@ -366,7 +366,7 @@ function GET(a,b){
     //    +"&funcCode="+funcCode+"","","",function(data){
     $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
     $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
-    oc.postRequire("post","/activity/search","0",param,function(data){
+    oc.postRequire("post","/vipActivity/search","0",param,function(data){
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -404,26 +404,34 @@ function jumpBianse(){
             input.checked = false;
             $(this).removeClass("tr");
         }
-    })
+    });
     //双击跳转
     $(".table tbody tr").dblclick(function(){
-        var state = $(this).attr("data-state");
+        var state = "";
         var id=$(this).attr("id");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
         return_jump["filtrate"]=filtrate;//筛选的值
         return_jump["param"]=JSON.stringify(param);//搜索定义的值
-        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["_param"]=JSON.stringify(_param);//筛选定义的值
         return_jump["list"]=list;//筛选的请求的list;
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        if(state == "未执行"){
-            $(window.parent.document).find('#iframepage').attr("src","/activity/activity_edit.html");
-        }else if(state == "执行中"||state == "已中止"){
-            $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
-        }
+        var _params = {};
+        _params["id"] = id;
+        var _command = "/activity/select";
+        oc.postRequire("post", _command, "", _params, function (data) {
+            var message=JSON.parse(data.message);
+            var activityVip=JSON.parse(message.activityVip);
+            state=activityVip.activity_state;
+            if(state == "未执行"){
+                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
+            }else if(state == "执行中"||state == "已中止"){
+                $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
+            }
+        });
     });
 }
 //鼠标按下时触发的收索
@@ -454,7 +462,7 @@ function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
     $("#end").attr("onclick","laydate({elem:'#end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})");
     $("#start").attr("onclick","laydate({elem:'#start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})");
-    oc.postRequire("post","/activity/search","0",param,function(data){
+    oc.postRequire("post","/vipActivity/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

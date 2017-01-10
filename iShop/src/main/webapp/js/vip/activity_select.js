@@ -25,8 +25,9 @@ var  message={
 //   打开筛选界面
 $("#select_vip").bind("click",function(){
     var arr = whir.loading.getPageSize();
-    var left = (arr[0] - $("#screen_wrapper").width()) / 2-85;
-    var tp = (arr[3] - $("#screen_wrapper").height()) / 2-85;
+
+    var left = (arr[0] - $("#screen_wrapper").width()) / 2;
+    var tp = (arr[3] - $("#screen_wrapper").height()) / 2;
     $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
     $("#p").show();
     $("#screen_wrapper").css({"left": +left + "px", "top": +tp + "px"});
