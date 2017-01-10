@@ -1,9 +1,9 @@
-<link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+<!-- <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
 <link href="../css/style.css?v=2.2.0" rel="stylesheet">
 <link rel="stylesheet" href="../css/font_style.css">
 <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
 <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
-<link rel="stylesheet" href="../css/set_vip_activity.css">
+<link rel="stylesheet" href="../css/set_vip_activity.css"> -->
 <div>
     <div class="tabs_title_p">
         <div class="tabs_left">
@@ -11,7 +11,7 @@
             <span>活动基本信息</span>
         </div>
         <div class="tabs_right">
-            <div class="switch">
+            <div class="switch" id="task_switch">
                 <span class="switch_text">任务已开启</span>
                 <div class="bg">
                     <span class="Off"></span>
@@ -74,7 +74,7 @@
             <span>群发管理</span>
         </div>
         <div class="tabs_right">
-            <div class="switch" style="position:none;">
+            <div class="switch" id="">
                 <span class="switch_text">群发已开启</span>
                 <div class="bg">
                     <span class="Off"></span>
@@ -136,7 +136,7 @@
                 </div>
             </div>
         </div>
-        <div class="group_parent">
+        <div class="group_parent" id="smslist">
             <div class="input_parent">
                 <div class="float">
                     <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
@@ -169,7 +169,7 @@
                 </div>
             </div>
         </div>
-        <div class="group_parent">
+        <div class="group_parent" id="emlist">
             <div class="input_parent">
                 <div class="float">
                     <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
@@ -188,10 +188,10 @@
         </div>
     </div>
 </div>
-<script src="../js/loading.js"></script>
+<!-- <script src="../js/loading.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js?201715"></script>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js"></script>
-<script src="../js/artDialog/plugins/iframeTools.js"></script>
+<script src="../js/artDialog/plugins/iframeTools.js"></script> -->
 <script src="../js/activity/activityPlanning.js"></script>

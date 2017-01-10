@@ -372,11 +372,11 @@ public class VipActivityController {
          VipActivity vipActivity1=vipActivityService.selActivityByCode(activity_code);
             if (vipActivity == null||(vipActivity1!=null&&vipActivity1.getId()==vipActivity.getId())){
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("当前企业下该会员活动标题不存在");
             } else {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("当前企业下该会员活动标题已存在");
             }
         } catch (Exception ex) {

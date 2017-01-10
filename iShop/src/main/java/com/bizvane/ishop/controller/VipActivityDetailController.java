@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpWechat;
+import com.bizvane.ishop.entity.VipActivity;
 import com.bizvane.ishop.entity.VipActivityDetail;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.VipActivityServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,9 @@ public class VipActivityDetailController {
     private VipActivityDetailService vipActivityDetailService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private VipActivityService vipActivityService;
+
     private static final Logger logger = Logger.getLogger(VipActivityDetailController.class);
 
     String id;
@@ -48,10 +53,11 @@ public class VipActivityDetailController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String activity_type = jsonObject.getString("activity_type");
+            String activity_code = jsonObject.get("activity_code").toString().trim();
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
             String result = "";
             //根据活动类型判断新增或者编辑
-            if (activity_type == null || activity_type.equals("")) {
+            if (vipActivity == null) {
                 result = this.vipActivityDetailService.insert(message, user_id);
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setId(id);

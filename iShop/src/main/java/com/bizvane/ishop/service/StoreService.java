@@ -30,7 +30,7 @@ public interface StoreService {
 
     PageInfo<Store> selStoreByStoreCodes(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception;
 
-    List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception;
+    List<Store> selectByStoreCodes(String store_code, String corp_code, String isactive) throws Exception;
 
     int deleteStoreUser(String user_id, String store_code) throws Exception;
 

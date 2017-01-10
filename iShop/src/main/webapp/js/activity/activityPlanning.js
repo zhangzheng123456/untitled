@@ -13,6 +13,7 @@ var activityPlanning={
 	init:function(){
 		this.allEvent();
 		this.getTaskList();
+		this.getPlanningList();
 	},
 	allEvent:function(){
 		//任务切换
@@ -90,22 +91,32 @@ var activityPlanning={
 		$(".switch div").click(function(){
 			$(this).toggleClass("bg");
 			$(this).find("span").toggleClass("Off");
-			console.log($(this).parents());
-			if($(this).attr("class")==""){
-				$(this).parent().find(".switch_text").html("任务已关闭");
-			}else if($(this).attr("class")=="bg"){
-				$(this).parent().find(".switch_text").html("任务已开启");
+			var id=$(this).parent().attr("id");
+			if(id=="task_switch"){
+				if($(this).attr("class")==""){
+					$(this).parent().find(".switch_text").html("任务已关闭");
+				}else if($(this).attr("class")=="bg"){
+					$(this).parent().find(".switch_text").html("任务已开启");
+				}
 			}
-			var param={};
-			var tasklist=self.param.tasklist;
-			param["tasklist"]=tasklist;
-			//测试
-			param["activity_vip_code"]="ACls0000000001";
+			if(id=="group_switch"){
+				if($(this).attr("class")==""){
+					$(this).parent().find(".switch_text").html("群发已关闭");
+				}else if($(this).attr("class")=="bg"){
+					$(this).parent().find(".switch_text").html("群发已开启");
+				}
+			}
+			// var param={};
+			// var tasklist=self.param.tasklist;
+			// param["tasklist"]=tasklist;
+			// // 测试
+			// param["activity_vip_code"]="ACls0000000001";
 			// console.log(param);
 			// oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
 			// 	console.log(data);
 			// });
-			self.getGroupValue();
+			//测试
+			// self.getGroupValue();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -219,25 +230,52 @@ var activityPlanning={
 		var index=$("#group .tabs_left ul li.active").index();
 		console.log(index);
 		var param={};
-		var sendlist=[];
-		param["send_type"]=type;
-	    var list=$("#p_task_content .group_parent").eq(index).find('.input_parent');
-		if(type=="wx"){
-			for(var i=0;i<list.length;i++){
-				var send_time=$(list[i]).find(".text_input").val();
-				var title=$(list[i]).find(".edit_frame .edit_title").val();
-				var url=$(list[i]).find(".edit_frame .edit_link").val();
-				var desc=$(list[i]).find(".edit_frame .edit_content").val();
-				var gparam={"send_time":send_time,"title":title,url:url,desc:desc};
-				sendlist.push(gparam);
-			}
+		var wxlist=[];
+		var smslist=[];
+		var emlist=[];
+	    var wxlistnode=$("#wxlist .input_parent");//微信
+	    var smslistnode=$("#smslist .input_parent");//短信
+	    var emlistnode=$("#emlist .input_parent");//邮件群发
+	    //微信推送
+		for(var i=0;i<wxlistnode.length;i++){
+			var send_time=$(wxlistnode[i]).find(".text_input").val();//发送时间
+			var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
+			var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
+			var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			var image="";//封面链接
+			var wxparam={"send_time":send_time,"content":{"title":title,url:url,desc:desc,image:image}};
+			wxlist.push(wxparam);
 		}
-		param["sendlist"]=sendlist;
+		//短信群发
+		for(var h=0;h<smslistnode.length;h++){
+			var send_time=$(smslistnode[h]).find(".text_input").val();//发送时间
+			var content=$(smslistnode[h]).find(".edit_frame .edit_content").val();//短信内容
+			var smsparam={"send_time":send_time,"content":content};
+			smslist.push(smsparam);
+		}
+		//邮件群发
+		for(var k=0;k<emlistnode.length;k++){
+			var send_time=$(emlistnode[k]).find(".text_input").val();//发送时间
+			var content="";//短信内容
+			var emparam={"send_time":send_time,"content":content};
+			emlist.push(emparam);
+		}
+		param["wxlist"]=wxlist;
+		param["smslist"]=smslist;
+		param["emlist"]=emlist;
 		param["activity_vip_code"]="ACls0000000001";
+		console.log(param);
 		oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
 			console.log(data);
 		});
 	},
+	getPlanningList:function(){//获取列表信息
+		var param={};
+		param["activity_vip_code"]="ACls0000000001";
+		oc.postRequire("post","/vipActivity/arrange/list","0",param, function (data) {
+			console.log(data);
+		});
+	}
 }
 $(function(){
 	activityPlanning.init();

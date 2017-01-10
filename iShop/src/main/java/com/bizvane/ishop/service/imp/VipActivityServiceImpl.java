@@ -235,6 +235,7 @@ public class VipActivityServiceImpl implements VipActivityService {
             task_array.add(task_obj);
         }
         result.put("userList", task_array);
+        result.put("user_count", String.valueOf(task_array.size()));
         result.put("target_vips_count", target_vips_count);
         result.put("complete_vips_count", complete_vip_count);
 

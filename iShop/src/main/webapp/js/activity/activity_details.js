@@ -5,6 +5,7 @@ var role=1;
 var show_filtrate='';
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
+var oc = new ObjectControl();
 function stop(){
     var _params={
         "id":"",
@@ -716,6 +717,24 @@ $('#vip_status .head_span_r').click(function () {
     $('#vip_status').hide();
     whir.loading.remove();//移除加载框
 });
+function getActive() {
+    var param={};
+    param.activity_code=sessionStorage.getItem('activity_code')
+    oc.postRequire("post","/vipActivity/select","0",param,function(data){
+        if(data.code==0){
+            var active_data=JSON.parse(JSON.parse(data.message).activityVip);
+             $('.title_l').html(active_data.activity_theme);
+            $('.time_l').html(active_data.start_time);
+            $('.time_r').html(active_data.end_time);
+            $('.name_l').html(active_data.run_mode);//转换
+            $('.name_r').html(active_data.corp_name);
+            $('.header_sm .p_2').html('0');//处理
+        }else if(data.code==-1){
+
+        }
+    });
+}
+getActive();
 window.onload = function(){
     //获取活动执行情况
     // getExecuteDetail();
