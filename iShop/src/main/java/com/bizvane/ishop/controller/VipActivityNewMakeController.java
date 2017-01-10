@@ -129,13 +129,22 @@ public class VipActivityNewMakeController {
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
 
             String wxlist = jsonObject.get("wxlist").toString();
-            JSONArray jsonArray_wx = JSON.parseArray(wxlist);
+            JSONArray jsonArray_wx=new JSONArray();
+            if(!wxlist.equals("")) {
+                jsonArray_wx  = JSON.parseArray(wxlist);
+            }
 
             String smslist = jsonObject.get("smslist").toString();
-            JSONArray jsonArray_sms = JSON.parseArray(smslist);
+            JSONArray jsonArray_sms=new JSONArray();
+            if(!smslist.equals("")) {
+                jsonArray_sms  = JSON.parseArray(smslist);
+            }
 
             String emlist = jsonObject.get("emlist").toString();
-            JSONArray jsonArray_em = JSON.parseArray(emlist);
+            JSONArray jsonArray_em=new JSONArray();
+            if(!emlist.equals("")) {
+                jsonArray_em  = JSON.parseArray(emlist);
+            }
             int count = 0;
             String send_code_actvie = "";
             String corp_code = vipActivity.getCorp_code();
