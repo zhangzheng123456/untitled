@@ -108,6 +108,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="target_vips_count!=null">
+                target_vips_count,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -161,6 +164,9 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="target_vips_count!=null">
+                #{target_vips_count},
+            </if>
         </trim>
     </insert>
 
@@ -211,6 +217,9 @@
             </if>
             <if test="isactive!=null">
                 isactive=#{isactive},
+            </if>
+            <if test="target_vips_count!=null">
+                target_vips_count= #{target_vips_count},
             </if>
         </trim>
         WHERE id=#{id};
