@@ -442,7 +442,6 @@ public class VipActivityController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.getString("activity_code");
 
-            String store_code = jsonObject.getString("store_code");
 
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
             if (vipActivity != null) {
@@ -461,6 +460,7 @@ public class VipActivityController {
                     vipActivityService.updateVipActivity(vipActivity);
                 }
                 if (jsonObject.containsKey("store_code") && !jsonObject.getString("store_code").equals("")){
+                    String store_code = jsonObject.getString("store_code");
                     String store_code1 = vipActivity.getActivity_store_code();
                     if (!store_code1.endsWith(","))
                         store_code1 = store_code1 + ",";
