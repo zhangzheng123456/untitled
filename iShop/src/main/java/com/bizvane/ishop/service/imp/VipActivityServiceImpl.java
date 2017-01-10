@@ -348,9 +348,7 @@ public class VipActivityServiceImpl implements VipActivityService {
             String sms_code1 = sms_codes[i];
             VipFsend vipFsend = vipFsendService.getVipFsendInfoByCode(corp_code, sms_code1);
 
-//            String send_time = vipFsend.getSend
-            String send_time = "2017-01-12 12:22:34";
-
+            String send_time = vipFsend.getSend_time();
             String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
             String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             long aa = Integer.parseInt(st);
@@ -362,10 +360,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         for (int i = 0; i < sms_codes.length; i++) {
             String sms_code1 = sms_codes[i];
             VipFsend vipFsend = vipFsendService.getVipFsendInfoByCode(corp_code, sms_code1);
-
-//            String send_time = vipFsend.getSend
-            String send_time = "2017-01-12 12:22:34";
-
+            String send_time = vipFsend.getSend_time();
             String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
             String job_name = sms_code1;
             String job_group = activity_code;
@@ -376,12 +371,17 @@ public class VipActivityServiceImpl implements VipActivityService {
             String hour = st.substring(8,10);
             String min = st.substring(10,12);
             String ss = st.substring(12,14);
-
             corn_expression = corn_expression.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
+
+            JSONObject func = new JSONObject();
+            func.put("method","sendSMS");
+            func.put("corp_code",corp_code);
+            func.put("user_code",user_code);
+            func.put("code",sms_code1);
             ScheduleJob scheduleJob = new ScheduleJob();
             scheduleJob.setJob_name(job_name);
             scheduleJob.setJob_group(job_group);
-            scheduleJob.setFunc("test2");
+            scheduleJob.setFunc(func.toString());
             scheduleJob.setCron_expression(corn_expression);
             scheduleJobService.insert(scheduleJob);
         }
