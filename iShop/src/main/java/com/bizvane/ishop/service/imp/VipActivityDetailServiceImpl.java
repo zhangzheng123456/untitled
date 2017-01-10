@@ -9,7 +9,6 @@ import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.VipActivityDetailService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.IshowHttpClient;
-import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +70,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
     @Override
     public String insert(String message, String user_id) throws Exception {
         String result = null;
-        org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = jsonObject.get("activity_code").toString().trim();
@@ -99,8 +98,10 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         }else if(activity_type.equals("sales")){
             sales_no=jsonObject.get("sales_no").toString().trim();
         }else if(activity_type.equals("coupon")){
-            send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
-            coupon_type=jsonObject.get("coupon_type").toString().trim();
+            if (jsonObject.containsKey("send_coupon_type")){
+                send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
+                coupon_type=jsonObject.get("coupon_type").toString().trim();
+            }
         }else if(activity_type.equals("invite")){
             apply_title=jsonObject.get("apply_title").toString().trim();
             apply_endtime=jsonObject.get("apply_endtime").toString().trim();
@@ -147,7 +148,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
     @Override
     public String update(String message, String user_id) throws Exception {
         String result = null;
-        org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = jsonObject.get("activity_code").toString().trim();
@@ -176,8 +177,10 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         }else if(activity_type.equals("sales")){
             sales_no=jsonObject.get("sales_no").toString().trim();
         }else if(activity_type.equals("coupon")){
-            send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
-            coupon_type=jsonObject.get("coupon_type").toString().trim();
+            if (jsonObject.containsKey("send_coupon_type")){
+                send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
+                coupon_type=jsonObject.get("coupon_type").toString().trim();
+            }
         }else if(activity_type.equals("invite")){
             apply_title=jsonObject.get("apply_title").toString().trim();
             apply_endtime=jsonObject.get("apply_endtime").toString().trim();
