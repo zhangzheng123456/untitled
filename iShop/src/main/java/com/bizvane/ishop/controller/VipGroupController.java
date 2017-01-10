@@ -198,6 +198,8 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject group_obj = new org.json.JSONObject(message);
+            int group_id = group_obj.getInt("id");
+            String vip_group_code = vipGroupService.getVipGroupById(group_id).getVip_group_code();
             VipGroup vipGroup = WebUtils.JSON2Bean(group_obj,VipGroup.class);
             String result = vipGroupService.update(vipGroup, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
@@ -223,7 +225,7 @@ public class VipGroupController {
                 String function = "会员管理_会员分组";
                 String action = Common.ACTION_UPD;
                 String t_corp_code = action_json.get("corp_code").toString();
-                String t_code = action_json.get("vip_group_code").toString();
+                String t_code = vip_group_code;
                 String t_name = action_json.get("vip_group_name").toString();
                 String remark = "";
                 baseService.insertUserOperation(operation_corp_code, operation_user_code, function, action, t_corp_code, t_code, t_name,remark);
@@ -619,7 +621,6 @@ public class VipGroupController {
                 //系统管理员
                 corp_code = jsonObject.getString("corp_code");
             }
-
             DataBox dataBox = new DataBox();
             if (type.equals("list")){
                 if (jsonObject.containsKey("id")) {
