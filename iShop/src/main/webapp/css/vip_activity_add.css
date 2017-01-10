@@ -47,7 +47,7 @@ body{
     color: #434960;
 }
 .tabs-content{
-    padding: 20px;
+    padding:20px 20px 0 20px;
     background-color: #FFFFFF;
     min-height:400px;
 }
