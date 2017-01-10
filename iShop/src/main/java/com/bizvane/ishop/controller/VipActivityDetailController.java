@@ -61,7 +61,8 @@ public class VipActivityDetailController {
                 result = this.vipActivityDetailService.insert(message, user_id);
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("新增成功");
                 } else {
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
