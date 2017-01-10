@@ -20,12 +20,17 @@
                 }else{
                     var index=$("#tabs .active").index();
                     if(index==0){
-                       var a=activity.add();
-                        console.log(activity.isEmpty);
-                        if(a==true){
-                            alert("weikong");
+                        activity.add();
+                        if(activity.isEmpty==true){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: "不能为空"
+                            });
                             return ;
                         }
+                        console.log(activity.isEmpty);
                     }
                     $.ajax({
                         type: "GET",
