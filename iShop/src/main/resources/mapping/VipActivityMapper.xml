@@ -297,7 +297,6 @@
             AND def_vip_activity.CORP_CODE = #{corp_code}
         </if>
         AND def_vip_activity.activity_theme = #{activity_theme}
-        AND def_vip_activity.isactive= #{isactive}
     </select>
 
 </mapper>
