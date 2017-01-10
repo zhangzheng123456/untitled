@@ -75,6 +75,9 @@ class SignServiceImpl implements SignService {
         for (Sign sign:signs) {
             sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
+            if(null==sign.getLocation()||"".equals(sign.getLocation())){
+                sign.setLocation("");
+            }
             if(sign.getStatus()==null||sign.getStatus().equals("")){
                 sign.setStatus("");
             }else if(sign.getStatus().equals(Common.STATUS_SIGN_IN)){
@@ -94,6 +97,9 @@ class SignServiceImpl implements SignService {
         for (Sign sign:signs) {
             sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
+            if(null==sign.getLocation()||"".equals(sign.getLocation())){
+                sign.setLocation("");
+            }
             if(sign.getStatus()==null||sign.getStatus().equals("")){
                 sign.setStatus("");
             }else  if(sign.getStatus().equals("0")){
@@ -151,6 +157,9 @@ class SignServiceImpl implements SignService {
         for (Sign sign:signs) {
             sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
+            if(null==sign.getLocation()||"".equals(sign.getLocation())){
+                sign.setLocation("");
+            }
             if(sign.getStatus()==null||sign.getStatus().equals("")){
                 sign.setStatus("");
             }else   if(sign.getStatus().equals("0")){
@@ -179,6 +188,9 @@ class SignServiceImpl implements SignService {
         for (Sign sign:list) {
             sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
+            if(null==sign.getLocation()||"".equals(sign.getLocation())){
+                sign.setLocation("");
+            }
             if(sign.getStatus()==null||sign.getStatus().equals("")){
                 sign.setStatus("");
             }else   if(sign.getStatus().equals("0")){

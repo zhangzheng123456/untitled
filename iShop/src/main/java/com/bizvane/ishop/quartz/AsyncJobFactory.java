@@ -1,5 +1,6 @@
 package com.bizvane.ishop.quartz;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.ScheduleJob;
@@ -40,8 +41,13 @@ public class AsyncJobFactory extends QuartzJobBean {
         VipFsendServiceImpl vipFsendService = new VipFsendServiceImpl();
         JobDataMap data = context.getJobDetail().getJobDataMap();
         String func = data.get("func").toString();
-        if (func.equals("test1")){
-            vipFsendService.test1();
+        JSONObject func_obj = JSONObject.parseObject(func);
+        String method = func_obj.getString("method");
+        String corp_code = func_obj.getString("corp_code");
+        String user_code = func_obj.getString("user_code");
+        String code = func_obj.getString("code");
+        if (method.equals("sendSMS")){
+            vipFsendService.fsendSchedule(corp_code,code,user_code);
         }else if (func.equals("test2")){
             vipFsendService.test2();
         }else {

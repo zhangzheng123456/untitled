@@ -58,10 +58,15 @@ public class VipAnalysisController {
             String page_size = jsonObject.get("pageSize").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String brand_code = request.getSession().getAttribute("brand_code").toString();
+            String area_code = request.getSession().getAttribute("area_code").toString();
+            String store_code = request.getSession().getAttribute("store_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
-            Map datalist = iceInterfaceService.vipBasicMethod(page_num,page_size,corp_code,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(page_num,page_size,corp_code,role_code,brand_code,area_code,store_code,user_code);
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             logger.info("------AnalysisAllVip-vip列表" + dataBox.status.toString());
             String result = dataBox.data.get("message").value;

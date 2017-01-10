@@ -17,16 +17,17 @@ public interface VipFsendService {
 
     VipFsend getVipFsendInfoById(int id) throws Exception;
 
+    VipFsend getVipFsendInfoByCode(String corp_code,String sms_code) throws Exception;
+
     PageInfo<VipFsend> getAllVipFsendByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    String insert(String message, String user_id,int tem_id) throws Exception;
-
+    String insert(VipFsend vipFsend,String role_code,String user_brand_code, String user_area_code,String user_store_code,String user_code) throws Exception;
 
     int delete(int id) throws Exception;
 
     PageInfo<VipFsend> getAllVipFsendScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 
-    void test1();
+    void fsendSchedule(String corp_code,String sms_code,String user_code);
 
     void test2();
 

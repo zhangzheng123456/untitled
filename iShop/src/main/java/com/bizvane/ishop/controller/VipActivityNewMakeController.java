@@ -5,12 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
+import com.bizvane.ishop.entity.VipActivity;
 import com.bizvane.ishop.entity.VipFsend;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipFsendService;
+import com.bizvane.ishop.service.VipGroupService;
 import com.bizvane.ishop.utils.WebUtils;
-import org.aspectj.weaver.AnnotationTargetKind;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ import java.util.List;
  * Created by PC on 2017/1/5.
  */
 @Controller
-@RequestMapping("/activityMake")
+@RequestMapping("/vipActivity/arrange")
 public class VipActivityNewMakeController {
     @Autowired
     private TaskService taskService;
@@ -36,6 +37,8 @@ public class VipActivityNewMakeController {
     private VipFsendService vipFsendService;
     @Autowired
     private VipActivityService vipActivityService;
+    @Autowired
+    VipGroupService vipGroupService;
 
     @ResponseBody
     @Transactional
@@ -52,13 +55,17 @@ public class VipActivityNewMakeController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
 
+            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+
+
             String tasklist = jsonObject.get("tasklist").toString();
             JSONArray jsonArray_task = JSON.parseArray(tasklist);
 
             int count = 0;
             String task_code_actvie = "";
-            String corp_code = "";
-            String activity_vip_code = "";
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
+            String corp_code = vipActivity.getCorp_code();
+
             for (int i = 0; i < jsonArray_task.size(); i++) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
@@ -67,10 +74,11 @@ public class VipActivityNewMakeController {
 
                 JSONObject task_obj = new JSONObject(jsonArray_task.get(i).toString());
                 Task task = WebUtils.JSON2Bean(task_obj, Task.class);
-                corp_code = task.getCorp_code();
-                activity_vip_code = task.getActivity_vip_code();
+                task.setActivity_vip_code(activity_vip_code);
+
                 taskService.delTaskByActivityCode(corp_code, activity_vip_code);
                 task.setTask_code(task_code);
+                task.setCorp_code(corp_code);
 
                 Date now = new Date();
                 task.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -117,17 +125,16 @@ public class VipActivityNewMakeController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
 
+            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
+
             String sendlist = jsonObject.get("sendlist").toString();
             JSONArray jsonArray_send = JSON.parseArray(sendlist);
-
             int count = 0;
             String send_code_actvie = "";
-            String corp_code = "";
-            String activity_vip_code = "";
+            String corp_code = vipActivity.getCorp_code();
             for (int i = 0; i < jsonArray_send.size(); i++) {
                 JSONObject send_obj = new JSONObject(jsonArray_send.get(i).toString());
-                corp_code = send_obj.get("corp_code").toString();
-                activity_vip_code = send_obj.get("activity_vip_code").toString();
                 String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
@@ -142,8 +149,10 @@ public class VipActivityNewMakeController {
                 }
                 VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
                 vipFsend.setSms_code(sms_code);
+                vipFsend.setCorp_code(corp_code);
                 vipFsend.setContent(content);
                 vipFsend.setSend_scope("vip_condition");
+                vipFsend.setActivity_vip_code(activity_vip_code);
 
                 Date now = new Date();
                 vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -182,19 +191,67 @@ public class VipActivityNewMakeController {
 
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
+
+
             String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
+
+            String corp_code = vipActivity.getCorp_code();
+
             List<VipFsend> sendByActivityCodes = vipFsendService.getSendByActivityCode(corp_code, activity_vip_code);
 
             List<Task> taskByActivityCodes = taskService.getTaskByActivityCode(corp_code, activity_vip_code);
 
-            com.alibaba.fastjson.JSONObject result=new com.alibaba.fastjson.JSONObject();
-            result.put("tasklist",taskByActivityCodes);
-            result.put("sendlist",sendByActivityCodes);
+            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+            result.put("tasklist", taskByActivityCodes);
+            result.put("sendlist", sendByActivityCodes);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");
             dataBean.setMessage(result.toJSONString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage("失败");
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/addOrUpdateVip", method = RequestMethod.POST)
+    public String addOrUpdateVip(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String brand_code = request.getSession().getAttribute("brand_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        try {
+            String param = request.getParameter("param");
+
+            com.alibaba.fastjson.JSONObject jsonObj = com.alibaba.fastjson.JSONObject.parseObject(param);
+
+            String message = jsonObj.get("message").toString();
+            com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+
+            JSONArray screen = jsonObject.getJSONArray("screen");
+
+            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+            String target_vips_count = jsonObject.get("target_vips_count").toString();
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
+            String corp_code = vipActivity.getCorp_code();
+
+            JSONArray post_array = vipGroupService.vipScreen2Array(screen, corp_code, role_code, brand_code, area_code, store_code, user_code);
+
+
+            String screen_value = post_array.toJSONString();
+            int target_vips = vipActivityService.updActiveCodeByType("target_vips", screen_value, corp_code, activity_vip_code);
+            target_vips += vipActivityService.updActiveCodeByType("target_vips_count", target_vips_count, corp_code, activity_vip_code);
+            System.out.println("=========target_vips=========" + target_vips);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("0");
+            dataBean.setMessage("成功");
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

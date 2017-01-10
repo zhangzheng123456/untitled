@@ -3,67 +3,405 @@
     <div class="all_select_vip">
         <div class="all_select_vip_content">
             <span class="title">参加此次活动的会员总数</span>
-            <span class="num">12663</span>
-            <span class="select_btn">点击筛选会员</span>
+            <span class="num" id="num">0</span>
+            <span class="select_btn" id="select_vip">点击筛选会员</span>
         </div>
     </div>
     <div class="vip_list" id="vip_list">
-        <ul>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-            <li>
-                <span>赵伟</span>
-                <span>17755310395</span>
-                <span>男</span>
-                <span>白金会员</span>
-            </li>
-
+        <ul style="text-align: center">
         </ul>
     </div>
+    <div class="foot">
+        <ul>
+            <li class="foot-jum" style="width: 25%">
+                <span>跳转至</span>
+                <input class="input-txt" value="" id="input-txt" style="border: 1px solid #ddd">
+                <em>页</em>
+            </li>
+            <li class="foot-num" style="width: 50%">
+                <ul id="foot-num" style="min-width: 290px;">
+                    <li class="icon-ishop_4-01" style="color: #afafaf">
+                    </li>
+                    <li class="icon-ishop_4-02">
+                    </li>
+                </ul>
+            </li>
+            <li class="foot-sum" style="width: 25%">
+                <div class="page_p">
+                    <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly" style="border: 1px solid #ddd;width: 100px;">
+                    <ul class="liebiao" style="display:none;" id="liebiao">
+                        <li id="10">10行/页</li>
+                        <li id="30">30行/页</li>
+                        <li id="50">50行/页</li>
+                        <li id="100">100行/页</li>
+                    </ul>
+                    <span class="icon-ishop_8-02 icon"></span>
+                </div>
+                <!--<span class="zy">共 0 页</span>-->
+            </li>
+        </ul>
+    </div>
+
+    <!-- 拉取区域 -->
+    <div id="screen_area" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选区域</h4>
+            <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="area_search">
+                <span class="icon-ishop_3-05" id="area_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_area">确定</div>
+    </div>
+    <!-- 拉取店铺 -->
+    <div id="screen_shop" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选店铺</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="area_num"
+                                              data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="store_search">
+                <span class="icon-ishop_3-05" id="store_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_shop">确定</div>
+    </div>
+    <!-- 拉取品牌 -->
+    <div id="screen_brand" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选品牌</h4>
+            <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="brand_search">
+                <span class="icon-ishop_3-05" id="brand_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_brand">确定</div>
+    </div>
+    <!-- 拉取导购  -->
+    <div id="screen_staff" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="xuanzhong">
+                <div class="xuanzhong_p">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="staff_brand_num"
+                                              data-brandcode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_brand"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选区域</label><input type="text" value="全部" class="area_num" readonly="true" id="staff_area_num"
+                                              data-areacode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_area"></span>
+                </div>
+                <div class="xuanzhong_p">
+                    <label>已选店铺</label><input type="text" value="全部" id="staff_shop_num" data-storecode="">
+                    <span class="icon_r icon-ishop_8-03" id="staff_shop"></span>
+                </div>
+            </div>
+            <div class="screen_close" id="screen_close_staff"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="staff_search">
+                <span class="icon-ishop_3-05" id="staff_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_staff">确定</div>
+    </div>
+    <!-- 拉取分组  -->
+    <div id="screen_group" class="screen_area">
+        <div class="screen_title">
+            <h4>筛选</h4>
+            <div class="screen_close" id="screen_close_group"><span class="icon-ishop_6-12"></span></div>
+            <div class="xian"></div>
+        </div>
+        <div class="input_s">
+            <div class="input_search">
+                <input type="text" placeholder="搜索" id="group_search">
+                <span class="icon-ishop_3-05" id="group_search_f"></span>
+            </div>
+            <div class="s_center"></div>
+            <div class="s_pitch">
+                已添加&nbsp;<span>0</span>&nbsp;个
+            </div>
+        </div>
+        <div class="screen_content">
+            <div class="screen_content_l">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="screen_content_z">
+                <div class="shift shift_right" title="右移">&gt;</div>
+                <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                <div class="shift shift_left" title="左移">&lt;</div>
+                <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+            </div>
+            <div class="screen_content_r">
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+        <div class="screen_que" id="screen_que_group">确定</div>
+    </div>
+    <!-- 会员筛选弹框 -->
+    <div class="screen_wrapper" id="screen_wrapper" style="position: fixed">
+        <div class="screen_head">筛选会员<i class="icon-ishop_6-12" id="screen_wrapper_close"></i></div>
+        <div id="simple_filter">
+            <div class="filter_condition" id="simple_filter_condition">
+                <ul>
+                    <li><a href="####" class="condition_active">按生日</a></li>
+                    <li><a href="####">按纪念日</a></li>
+                    <li><a href="####">按消费次数</a></li>
+                    <li><a href="####">按消费金额</a></li>
+                    <li><a href="####">按可用积分</a></li>
+                    <li><a href="####">冻结会员</a></li>
+                </ul>
+            </div>
+            <div class="contion" id="simple_contion">
+                <div class="contion_input"><label>生日</label><input data-kye="1" id="simple_birth_start1" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_birth_end1" class="short_input_date laydate-icon"></div>
+                <div id="memorial_day" style="display: none">
+                    <!--<div class="contion_input"><label>纪念日</label><input data-kye="2" id="simple_mark_start" class="short_input_date laydate-icon"><label class="jian">~</label><input id="simple_mark_end" class="short_input_date laydate-icon"></div>-->
+                </div>
+                <!--<div class="contion_input" style="display: none"><label>消费次数</label><input data-kye="3" class="short_input_date"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date"><span>次</span></div>-->
+                <!--<div class="contion_input" style="display: none"><label>消费金额</label><input data-kye="4" class="short_input_date"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date"><span>元</span></div>-->
+                <div class="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_3" readonly><ul class="sex_select" id="consume_select_basic_3">
+                        <li data-date="3">最近3个月</li>
+                        <li data-date="6">最近6个月</li>
+                        <li data-date="9">最近9个月</li>
+                        <li data-date="12">最近12个月</li>
+                        <li data-date="15">最近15个月</li>
+                        <li data-date="18">最近18个月</li>
+                        <li data-date="21">最近21个月</li>
+                        <li data-date="24">最近24个月</li>
+                    </ul></div>
+                    <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date" style="padding-right: 25px;"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date" style="padding-right: 25px;"><span>次</span></div>
+                </div>
+                <div class="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date_basic_4" readonly><ul class="sex_select" id="consume_select_basic_4">
+                        <li data-date="3">最近3个月</li>
+                        <li data-date="6">最近6个月</li>
+                        <li data-date="9">最近9个月</li>
+                        <li data-date="12">最近12个月</li>
+                        <li data-date="15">最近15个月</li>
+                        <li data-date="18">最近18个月</li>
+                        <li data-date="21">最近21个月</li>
+                        <li data-date="24">最近24个月</li>
+                    </ul></div>
+                    <div class="contion_input"><label>消费金额</label><input data-kye="4" class="short_input_date" style="padding-right: 25px;"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date" style="padding-right: 25px;"><span>元</span></div>
+                </div>
+                <div class="contion_input" style="display: none"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                <div class="contion_input" style="display: none"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="simple_state" type="text"><ul class="sex_select" id="simple_state_select">
+                    <li>已冻结</li>
+                    <li>未冻结</li>
+                    <li>全部</li>
+                </ul></div>
+            </div>
+            <!--<div class="ensure"><span>确定</span></div>-->
+            <a href="####" id="more_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">高级筛选</a>
+        </div>
+        <div style="display: none" id="senior_filter">
+            <div class="filter_condition" id="filter_condition">
+                <ul>
+                    <li><a href="####" class="condition_active">按基本属性</a></li>
+                    <li><a href="####">按会员属性</a></li>
+                    <li><a href="####">按消费属性</a></li>
+                    <li><a href="####">按所属关系</a></li>
+                    <li><a href="####">按会员分组</a></li>
+                    <li><a href="####">按拓展资料</a></li>
+                    <!--<li><a href="####">按券查询</a></li>-->
+                </ul>
+            </div>
+            <div class="contion" id="contion">
+                <div id="basic_message">
+                    <div class="contion_input"><label>姓名</label><input data-kye="7" class="input" type="text"></div>
+                    <div class="contion_input">
+                        <label>性别</label><input data-kye="8" class="select" type="text" value="全部" readonly="readonly" id="sex">
+                        <ul class="sex_select" id="sex_select">
+                            <li>男</li>
+                            <li>女</li>
+                            <li>全部</li>
+                        </ul>
+                    </div>
+                    <div class="contion_input"><label>年龄</label><input data-kye="9" class="short_input_date" id="age_l"><label class="jian">~</label><input
+                            class="short_input_date" id="age_r"></div>
+                    <div class="contion_input"><label>生日</label><input data-kye="1" id="birth_start1" class="short_input_date laydate-icon" readonly><label class="jian">~</label><input id="birth_end1" class="short_input_date laydate-icon" readonly></div>
+                    <div class="contion_input"><label>手机号</label><input data-kye="10" class="input" type="text"></div>
+                </div>
+                <div id="vip_attribute" style="display: none">
+                    <div class="contion_input"><label>卡号</label><input data-kye="11" class="input" type="text"></div>
+                    <div class="contion_input"><label>卡类型</label><input data-kye="12" class="select" type="text" id="vip_card_type" value="全部" readonly><ul class="sex_select" id="card_type_select"><li>全部</li></ul></div>
+                    <div class="contion_input"><label>开卡日期</label><input data-kye="13" id="activate_card_start1" class="short_input_date laydate-icon" type="text" readonly/><label class="jian">~</label><input id="activate_card_end1" class="short_input_date laydate-icon" type="text" readonly/></div>
+                    <div class="contion_input"><label>可用积分</label><input data-kye="5" class="short_input_date" type="text"><label class="jian">~</label><input class="short_input_date" type="text"></div>
+                    <div class="contion_input"><label>冻结会员</label><input data-kye="6" class="select" value="全部" id="state" type="text" readonly><ul class="sex_select" id="state_select">
+                        <li>已冻结</li>
+                        <li>未冻结</li>
+                        <li>全部</li>
+                    </ul></div>
+                </div>
+                <div id="consume_attribute" style="display: none">
+                    <div class="contion_input"><label>消费日期</label><input data-kye="17" class="select" value="最近3个月" data-date="3" id="consume_date" readonly><ul class="sex_select" id="consume_select">
+                        <li data-date="3">最近3个月</li>
+                        <li data-date="6">最近6个月</li>
+                        <li data-date="9">最近9个月</li>
+                        <li data-date="12">最近12个月</li>
+                        <li data-date="15">最近15个月</li>
+                        <li data-date="18">最近18个月</li>
+                        <li data-date="21">最近21个月</li>
+                        <li data-date="24">最近24个月</li>
+                    </ul></div>
+                    <div class="contion_input"><label>消费次数</label><input data-kye="3" class="short_input_date" style="padding-right: 25px;"><span class="first_unit">次</span><label class="jian">~</label><input class="short_input_date" style="padding-right: 25px;"><span>次</span></div>
+                    <div class="contion_input"><label>消费总额</label><input data-kye="4" class="short_input_date" style="padding-right: 25px;"><span class="first_unit">元</span><label class="jian">~</label><input class="short_input_date" style="padding-right: 25px;"><span>元</span></div>
+                </div>
+                <div id="relation" style="display: none">
+                    <div class="contion_input"><label>所属品牌</label><input data-kye="brand_code" id="screen_brand_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_brandl"></span></div>
+                    <div class="contion_input"><label>所属区域</label><input data-kye="area_code" id="screen_area_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_areal"></span></div>
+                    <div class="contion_input"><label>所属店铺</label><input data-kye="14" id="screen_shop_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_shopl"></span></div>
+                    <div class="contion_input"><label>所属导购</label><input data-kye="15" id="screen_stff_num" class="input" type="text"
+                                                                         readonly="true" data-code=""><span
+                            class="icon_r icon-ishop_8-03" id="screen_staffl"></span></div>
+                </div>
+                <div id="vip_group" style="display: none">
+                    <!--<div class="contion_input"><label>标签</label><input class="select" type="text" readonly="readonly"></div>-->
+                    <div class="contion_input">
+                        <label>分组</label><input data-kye="16" id="filter_group" class="input" type="text" data-code="" readonly="readonly"><span
+                            class="icon_r icon-ishop_8-03" id="screen_group_icon"></span>
+                        <!--<div class="filter_group">-->
+                        <!--<input type="text" id="search_filter_group">-->
+                        <!--<ul id="ul">-->
+
+                        <!--</ul>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div id="expend_attribute" style="display: none"></div>
+                <div id="ticket" style="display: none">
+                    <div class="contion_input"><label>券类型</label><input class="select" type="text" readonly="readonly"></div>
+                    <div class="contion_input"><label>券状态</label><input class="select" type="text" readonly="readonly"></div>
+                </div>
+            </div>
+            <a href="####" id="back_filter" style="position: absolute;right: 25px;bottom: 30px;text-decoration: underline">基本筛选</a>
+        </div>
+        <a id="empty_filter" href="####" style="position: absolute;left: 25px;bottom: 30px;text-decoration: underline;color: #888">清空筛选</a>
+        <div class="ensure"><span id="screen_vip_que_activity">确定</span></div>
+    </div>
 </div>
-<script>
-var allList=$("#vip_list li");
-for(var i=0;i<allList.length;i++){
-i%2=="0"?$(allList[i]).css("backgroundColor","#fff"):$(allList[i]).css("backgroundColor","#efefef");
-}
-</script>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<script src="../js/vip_screen.js"></script>
+<script src="../js/vip/activity_select.js"></script>

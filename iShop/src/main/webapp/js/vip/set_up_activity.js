@@ -1,5 +1,6 @@
 var oc = new ObjectControl();
 var activity={
+    isEmpty:false,
     shop_num:1,
     shop_next:false,
     area_num:1,
@@ -18,24 +19,43 @@ var activity={
         this.selectClick();
         this.activityType();
         this.addLine();
-        this.addLogo();
+        this.getcorplist();
         this.chooseShop();
         this.uploadOSS();
         this.getNowFormatDate();
+        this.testTheme();
+        this.createCode();
     },
     selectClick:function () {//input下拉模拟
         $(".setUp_activity_details").on("click",".select_input",function () {
             $(this).nextAll("ul").toggle();
         });
+        $(".setUp_activity_details").on("click","i",function () {
+            $(this).nextAll("ul").toggle();
+        });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
+            var id = $(this).attr("data-id");
+            var couponCode = $(this).attr("data-code");
+            if(couponCode!==""||couponCode!==undefined){
+                $(this).parent().prevAll("input").attr("data-code",couponCode);
+            }
             $(this).parent().prevAll("input").val(vue);
+            $(this).parent().prevAll("input").attr("data-id",id);
         });
         $(".setUp_activity_details").on("blur",".select_input",function () {
             var ul = $(this).nextAll("ul");
             setTimeout(function () {
                 ul.hide();
             },200);
+        });
+        $(".screen_content").on("click", "li", function () {
+            var input = $(this).find("input")[0];
+            if (input.type == "checkbox" && input.checked == false) {
+                input.checked = true;
+            } else if (input.type == "checkbox" && input.checked == true) {
+                input.checked = false;
+            }
         });
     },
     activityType:function () {//活动切换
@@ -110,10 +130,10 @@ var activity={
             bucket: 'products-image'
         });
         document.getElementById('upload_logo').addEventListener('change', function (e) {
-            whir.loading.add("上传中,请稍后...",0.5);
+            // whir.loading.add("上传中,请稍后...",0.5);
             var file = e.target.files[0];
             var time=_this.getNowFormatDate();
-            var corp_code=sessionStorage.getItem("corp_code");
+            var corp_code=$("#OWN_CORP").val();
             var storeAs='Album/Vip/iShow/'+corp_code+'_'+'_'+time+'.jpg';
             client.multipartUpload(storeAs, file).then(function (result) {
                 var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
@@ -144,8 +164,14 @@ var activity={
     },
     addLogo:function (url) {//添加logo节点
         var img="<img src='"+url+"' alt='暂无图片'>";
-        $("#upload_logo").parent().before(img);
-        whir.loading.remove();
+        $("#upload_logo").val(url);
+        var len = $("#upload_logo").parent().prevAll("img").length;
+        if(len == 0){
+            $("#upload_logo").parent().before(img);
+        }else {
+            $("#upload_logo").parent().prev("img").replaceWith(img);
+        }
+        // whir.loading.remove();
     },
     chooseShop:function () {//选择店铺操作
         $("#choose_shop").click(function () {//店铺弹窗
@@ -168,10 +194,7 @@ var activity={
             var shop_num=1;
             activity.isscroll=false;
             var arr=whir.loading.getPageSize();
-            var left=(arr[0]-$("#screen_shop").width())/2;
-            var tp=(arr[3]-$("#screen_shop").height())/2+50;
             $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
-            $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
             $("#screen_shop").show();
             $("#p").show();
             $("#screen_shop .screen_content_l").unbind("scroll");
@@ -217,10 +240,7 @@ var activity={
                 $("#screen_brand .screen_content_r ul").empty();
             }
             var arr=whir.loading.getPageSize();
-            var left=(arr[0]-$("#screen_shop").width())/2;
-            var tp=(arr[3]-$("#screen_shop").height())/2+50;
             $("#screen_brand .screen_content_l ul").empty();
-            $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
             $("#screen_brand").show();
             $("#screen_shop").hide();
             activity.getbrandlist();
@@ -260,11 +280,8 @@ var activity={
             activity.isscroll=false;
             activity.area_num=1;
             var arr=whir.loading.getPageSize();
-            var left=(arr[0]-$("#screen_shop").width())/2;
-            var tp=(arr[3]-$("#screen_shop").height())/2+50;
             $("#screen_area .screen_content_l").unbind("scroll");
             $("#screen_area .screen_content_l ul").empty();
-            $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
             $("#screen_area").show();
             $("#screen_shop").hide();
             activity.getarealist(activity.area_num);
@@ -329,10 +346,14 @@ var activity={
             };
             activity.cache.area_codes=area_codes;
             activity.cache.area_names=area_names;
+            activity.shop_num=1;
+            activity.isscroll=false;
             $("#screen_area").hide();
             $("#screen_shop").show();
             $("#area_num").val("已选"+li.length+"个");
             $("#area_num").attr("data-areacode",area_codes);
+            $("#screen_shop .screen_content_l ul").empty();
+            activity.getstorelist(activity.shop_num);
         });
         //点击品牌确定按钮
         $("#screen_que_brand").click(function(){
@@ -352,10 +373,14 @@ var activity={
             };
             activity.cache.brand_codes=brand_codes;
             activity.cache.brand_names=brand_names;
+            activity.shop_num=1;
+            activity.isscroll=false;
             $("#screen_brand").hide();
             $("#screen_shop").show();
             $("#brand_num").val("已选"+li.length+"个");
             $("#brand_num").attr("data-code",brand_codes);
+            $("#screen_shop .screen_content_l ul").empty();
+            activity.getstorelist(activity.shop_num);
         });
         //点击店铺确定按钮
         $("#screen_que_shop").click(function(){
@@ -447,7 +472,39 @@ var activity={
         var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
         $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
     },
-    
+    getcorplist:function (a) {
+        oc.postRequire("post", "/user/getCorpByUser", "", "", function (data) {
+            if (data.code == "0") {
+                var msg = JSON.parse(data.message);
+                var corp_html = '';
+                for (var i=0;i<msg.corps.length;i++) {
+                    corp_html += '<option value="' + msg.corps[i].corp_code + '">' + msg.corps[i].corp_name + '</option>';
+                }
+                $("#OWN_CORP").append(corp_html);
+                if (a !== "") {
+                    $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
+                }
+                $('.corp_select select').searchableSelect();
+                $('.corp_select .searchable-select-input').keydown(function (event) {
+                    var event = window.event || arguments[0];
+                    if (event.keyCode == 13) {
+                        activity.getCoupon();
+                    }
+                });
+                $('.searchable-select-item').click(function () {
+                    activity.getCoupon();
+                });
+                activity.getCoupon();
+            } else if (data.code == "-1") {
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        });
+    },
     getstorelist:function (a) {//店铺接口
         var searchValue=$("#store_search").val();
         var pageSize=20;
@@ -648,68 +705,201 @@ var activity={
                 });
             }
         })
+    },
+    testTheme:function () {
+        $("#activity_theme").blur(function () {
+            var theme=$("#activity_theme").val();
+            if(theme==""){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "活动主题不能为空"
+                });
+            }else {
+                var param={};
+                param["corp_code"]=$("#OWN_CORP").val();
+                param["activity_theme"]=theme;
+                param["activity_code"]="";
+                oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
+                        if(data.code=="-1"){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: data.message
+                            });
+                        }
+                });
+            }
+        });
+    },
+    createCode:function () {//生成二维码
+        $("#create_code").click(function () {
+            $(".offline_right_wrap").empty().append("<img style='width:100%' src='http://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQGz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNlAzQ29HMTY5NFUxMDAwMGcwN0IAAgTNAnNYAwQAAAAA'>");
+        });
+    },
+    getCoupon:function () {
+        var corp_code=$("#OWN_CORP").val();
+        var param={"corp_code":corp_code};
+        oc.postRequire("post","/vipRules/getCoupon","0",param,function (data) {
+            if(data.code==0){
+                var li="";
+                var msg=JSON.parse(data.message);
+                if(msg.length==0){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有优惠券"
+                    });
+                }else if(msg.length>0){
+                    for(var i=0;i<msg.length;i++){
+                        li+="<li data-code='"+msg[i].couponcode+"'>"+msg[i].name+"</li>"
+                    }
+                    $(".coupon_activity").empty();
+                    $(".coupon_activity").append(li);
+                }
+            }
+        });
+        oc.postRequire("post","/vipCardType/getVipCardTypes","0",param,function (data) {
+            if(data.code==0){
+                var li="";
+                var message=JSON.parse(data.message);
+                var msg=JSON.parse(message.list);
+                if(msg.length==0){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有卡类型"
+                    });
+                }else if(msg.length>0){
+                    for(var i=0;i<msg.length;i++){
+                        li+="<li data-code='"+msg[i].vip_card_type_code+"'>"+msg[i].vip_card_type_name+"</li>"
+                    }
+                    $(".vipCardType").empty();
+                    $(".vipCardType").append(li);
+                }
+            }
+        });
+    },
+    checkEmpty:function () {
+        $("#setUp_activityType>div").each(function () {
+            if($(this).css("display")!=="none"){
+                var vue=$(this).find(".text_input");
+                $(vue).each(function (i) {
+                    if($(vue[i]).val()==""){
+                        activity.isEmpty=true;
+                    }
+                });
+            }
+        });
+        $("#activity_basic .text_input").each(function () {
+            var vue=$(this).val();
+            if(vue==""){
+                activity.isEmpty=true;
+            }
+        });
+    },
+    add:function (data) {
+        var param={};
+        var runMode=$("#activity_type").attr("data-id");
+        param["corp_code"]=$("#OWN_CORP").val();
+        param["activity_code"]="";
+        param["activity_theme"]=$("#activity_theme").val();
+        param["run_mode"]=runMode;
+        param["start_time"]=$("#activity_start").val();
+        param["end_time"]=$("#activity_end").val();
+        param["activity_desc"]=$("#activity_describe").val();
+        param["activity_store_code"]=activity.cache.store_codes;
+        oc.postRequire("post","/vipActivity/add","0",param,function (data) {
+            if(data.code==0){
+                var msg=data.message;
+                sessionStorage.setItem("activity_code",msg);
+                var _param={};
+                _param["corp_code"]=$("#OWN_CORP").val();
+                _param["activity_code"]="";
+                _param["run_mode"]=runMode;
+                _param["activity_type"]=runMode;
+                if(runMode=="recruit"){
+                    var recruit=[];
+                    var line=$("#recruit_activity>ul>li");
+                    for (var i=0;i<line.length;i++){
+                        var input=$(line[i]).find("input");
+                        var obj={};
+                        obj["vip_card_type_code"]=$(input[0]).attr("data-code");
+                        obj["join_threshold"]=$(input[1]).val();
+                        recruit.push(obj);
+                    }
+                    _param["recruit"]=recruit;
+                }
+                if(runMode=="h5"){
+                    _param["h5_url"]=$("#h5_activity").find("input").val();
+                }
+                if(runMode=="sales"){
+                    _param["sales_no"]=$("#sales_activity").find("input").val();
+                }
+                if(runMode=="festival"){
+                    _param["festival_start"]=$("#holiday_start").val();
+                    _param["festival_end"]=$("#holiday_end").val();
+                }
+                if(runMode=="coupon"){
+                    var send_coupon_type=$("#coupon_title .coupon_active").attr("data-id");
+                    _param["send_coupon_type"]=send_coupon_type;
+                    if(send_coupon_type!=="card"){
+                        $("#coupon_activity .choose_coupon").each(function () {
+                            if($(this).css("display")=="block"){
+                                var input=$(this).find("input");
+                                var coupon_type="";
+                                for(var i=0;i<input.length;i++){
+                                    if(i<input.length-1){
+                                        coupon_type+=$(input[i])+","
+                                    }else {
+                                        coupon_type+=$(input[i])
+                                    }
+                                }
+                                _param["coupon_type"]=coupon_type;
+                            }
+                        })
+                    }else if(send_coupon_type=="card"){
+                        var coupon_type=[];
+                        $(".coupon_details_wrap").each(function () {
+                            var obj={};
+                            var vip_card_type_code=$(this).find("input")[0].attr("data-code");
+                            var input=$(this).children("operate_ul").find("input");
+                            var coupon_code=""
+                            for(var i=0;i<input.length;i++){
+                                if(i<input.length-1){
+                                    coupon_code+=$(input[i]).attr("data-code")+",";
+                                }else {
+                                    coupon_code+=$(input[i]).attr("data-code");
+                                }
+                            }
+                            obj['vip_card_type_code']=vip_card_type_code;
+                            obj['coupon_code']=coupon_code;
+                            coupon_type.push(obj);
+                        });
+                        _param["coupon_type"]=coupon_type;
+                    }
+                }
+                if(runMode=="invite"){
+                    _param['apply_title']=$("#invite_title").val();
+                    _param['apply_endtime']=$("#offline_end").val();
+                    _param['apply_desc']=$("#invite_summary").val();
+                    _param['apply_success_tips']=$("#invite_message").val();
+                    _param['apply_logo']=$("#upload_logo").val();
+                    _param['apply_qrcode']="";
+                }
+                oc.postRequire("post","/vipActivity/detail/add","0",_param,function (data) {
+
+                })
+            }else if(data.code==-1){
+                console.log(data.message);
+            }
+        });
     }
 };
-//调用日历
-var activity_start={
-    elem: '#activity_start',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59', //最大日期
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        activity_end.min = datas; //开始日选好后，重置结束日的最小日期
-        activity_end.start = datas; //将结束日的初始值设定为开始日
-    }
-};
-var activity_end={
-    elem: '#activity_end',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59',
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        activity_start.max = datas; //结束日选好后，重置开始日的最大日期
-    }
-};
-var offline_end={
-    elem: '#offline_end',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    min: laydate.now(),
-    istoday: true,
-    fixed: false,
-};
-var holiday_start={
-    elem: '#holiday_start',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59', //最大日期
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        holiday_end.min = datas; //开始日选好后，重置结束日的最小日期
-        holiday_end.start = datas; //将结束日的初始值设定为开始日
-    }
-};
-var holiday_end={
-    elem: '#holiday_end',
-    format: 'YYYY-MM-DD hh:mm:ss',
-    istime: false,
-    max: '2099-06-16 23:59:59',
-    istoday: true,
-    fixed: false,
-    choose: function (datas) {
-        holiday_start.max = datas; //结束日选好后，重置开始日的最大日期
-    }
-};
-laydate(activity_start);
-laydate(activity_end);
-laydate(offline_end);
-laydate(holiday_start);
-laydate(holiday_end);
 $(function () {
     activity.init();
 });

@@ -212,7 +212,8 @@
         GROUP By def_vip_fsendsms.id
         ORDER BY def_vip_fsendsms.id DESC
     </select>
-    <select id="selectForId" resultType="com.bizvane.ishop.entity.VipFsend">
+
+    <select id="selectByCode" resultType="com.bizvane.ishop.entity.VipFsend">
         SELECT
         def_vip_fsendsms.id,
         def_vip_fsendsms.sms_code,
@@ -228,7 +229,7 @@
         def_vip_fsendsms.creater,
         def_vip_fsendsms.isactive
         FROM def_vip_fsendsms
-        WHERE def_vip_fsendsms.CORP_CODE = #{corp_code}
+        WHERE def_vip_fsendsms.corp_code = #{corp_code}
         AND  def_vip_fsendsms.sms_code= #{sms_code}
     </select>
 
@@ -242,6 +243,7 @@
         def_vip_fsendsms.sms_code,
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
+        def_vip_fsendsms.send_time,
         def_vip_fsendsms.sms_vips,
         def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,

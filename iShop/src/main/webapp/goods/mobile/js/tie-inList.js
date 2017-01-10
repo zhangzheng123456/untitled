@@ -1,12 +1,14 @@
-/**
+                                                                                           /**
  * Created by huxue on 2016/12/28.
  */
+cache = {
+    'Page':'1',
+    'chooseVal':''
+}
 var oc = new ObjectControl();
 var corp_code = $.cookie('corp_code');
-var pageNumber = '1';
 var pageSize = '20';
 var user_code = $.cookie('user_code');
-
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -28,6 +30,12 @@ $('.title div').eq(0).click(function () {
     $('.title div').eq(0).css('background-color','white');
     $('.title div').eq(1).css('color','#888888');
     $('.title div').eq(1).css('background-color','#ededed');
+    $.cookie('action','0');
+    cache.chooseVal ='rec';
+    cache.Page ='1';
+    var nowWidth = $('.main').eq(0).find('.the_img').width();
+    $('.main').eq(0).find('.the_img').css('height',nowWidth);
+    $('.main').eq(0).find('.the_img img').css('max-height',nowWidth);
 });
 //    选项卡-我的
 $('.title div').eq(1).click(function () {
@@ -37,6 +45,12 @@ $('.title div').eq(1).click(function () {
     $('.title div').eq(1).css('background-color','white');
     $('.title div').eq(0).css('color','#888888');
     $('.title div').eq(0).css('background-color','#ededed');
+    $.cookie('action','1');
+    cache.chooseVal ='my';
+    cache.Page ='1';
+    var nowWidth = $('.main').eq(1).find('.the_img').width();
+    $('.main').eq(1).find('.the_img').css('height',nowWidth);
+    $('.main').eq(1).find('.the_img img').css('max-height',nowWidth);;
 });
 //推荐列表
 function getRec(){
@@ -44,13 +58,12 @@ function getRec(){
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    //$.cookie('user_code',user_code);
-    //$.cookie('corp_code',corp_code);
-    //alert(user_code);
+    var pageNumber = cache.Page;
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" + corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
+            $('.div').eq(0).find('.out').remove();
             pageVal(list,type);
         }else if(data.code =='-1'){
             console.log(data);
@@ -58,17 +71,17 @@ function getRec(){
     });
 }
 //我的列表
-function getMy(){
+function getMy(pageNumber){
     var type = 'my';
     var urlMsg = GetRequest();
     var user_code = urlMsg.user_id;
     var corp_code = urlMsg.corp_code;
-    //$.cookie('user_code',user_code);
-    //$.cookie('corp_code',corp_code);
+    var pageNumber = cache.Page;
     oc.postRequire("get", "/api/shopMatch/list?corp_code=" +corp_code +"&pageNumber=" + pageNumber + "&pageSize=" + pageSize+"&user_code="+user_code+"&type="+type+"", "0", "", function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var list = message.list;
+            $('.div').eq(1).find('.out').remove();
             pageVal(list,type);
         }else if(data.code =='-1'){
             console.log(data);
@@ -77,6 +90,33 @@ function getMy(){
 }
 //页面加载获取数据
 function  pageVal(list,type){
+    var screenHeight = $(window).height();
+    var titleHeight = $('.title').height();
+    var valHeight = screenHeight - titleHeight - 25;
+    //如果拉取到的数据>=pageSize，更新缓存
+    if(list.length >= pageSize){
+            cache.recPage+=1;
+    }else{
+        if(list.length == 0){
+            console.log('length'+list.length);
+            if(type == 'rec'){
+                console.log('rec')
+                $('.main').eq(0).css('height',valHeight);
+                $('.main').eq(0).find('.none').css('display','block');
+                return;
+            }
+            if(type == 'my'){
+                console.log('my');
+                $('.main').eq(1).css('height',valHeight);
+                $('.main').eq(1).find('.none').css('display','block');
+                return;
+            }
+        }else{
+            //$('.none').css('display','none');
+        }
+        //替换模板
+    }
+
     var tempHTML = '<ul class="goods_box" id="${d_match_code}" title="${d_match_title}" > <li class="the_img" id="${id}"><img src="${d_match_image}" alt=""/></li> <li class="the_list"> ';
     var tempHTML2 =' <img src="${r_match_goodsImage}" alt="" id="${r_match_goodsCode}"/>';
     var tempHTML3 =' <span class="num">${num}</span> </li> <li class="add"> <div><img src="${imgLick}" alt="点赞"/><span class="add_num">${num}</span></div> <div><img src="image/icon_评论@2x.png" alt="评论"/><span class="add_num">${num}</span></div> <div><img src="${imgSave}" alt="收藏"/><span class="add_num">${num}</span></div> </li> </ul>';
@@ -137,9 +177,37 @@ function  pageVal(list,type){
             $('.main').eq(1).html(html);
         }
     }
+    var tempHTML4 =' <br/><div class="out">-- 已经是底部了 --</div>';
+    if(type == 'rec'){
+        $('.main').eq(0).append(tempHTML4);
+    }else if(type== 'my'){
+        $('.main').eq(1).append(tempHTML4);
+    }
     toNext();
     click();
 }
+//监听滚动条，实现翻页
+$(window).scroll( function() {
+    var oneHeight =  $('.goods_box').height()+20;
+    var pageNum = cache.recPage;
+    var allHeight = oneHeight *10;           //必须翻页高度
+    var nowHeight = $(window).scrollTop();   //滚动条高度
+    var chooseVal = cache.chooseVal;         //选项卡
+   if(nowHeight>allHeight*pageNum-200){
+       console.log('请求数据')
+       if(chooseVal=='rec'){
+           getRec();
+           console.log('推荐翻页');
+       }
+       if(chooseVal=='my'){
+           getMy();
+           console.log('我的翻页');
+       }
+   }else{
+       console.log('未达到翻页高度')
+   }
+
+})
 //控制宽高
 function setTime(){
     var val =  $('.the_img').width();
@@ -177,9 +245,19 @@ function  click(){
         }
         //    评论
         if(src =='image/icon_评论@2x.png'){
-            operate_type = 'comment';
-            comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
-            status = '';
+            //operate_type = 'comment';
+            //comment_text='';  //暂无内容暂无内容暂无内容暂无内容暂无内容
+            //status = '';
+            var d_match_code = $(this).parents('.goods_box').attr('id');
+            var host=window.location.host;
+            var param={};
+            var corp_code = GetRequest().corp_code;
+            var user_code = GetRequest().user_id;
+            var type = 'comments';
+            var action =$.cookie('action');
+            param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+"&the_action="+action+'&type='+type;
+            console.log(param);
+            doAppWebRefresh(param);
             return;
         }
         //    收藏
@@ -230,7 +308,7 @@ function  click(){
         })
     });
 }
-//跳转
+//正常跳转
 function toNext(){
     $('.the_img img').unbind("click").bind('click',function () {
         var d_match_code  = $(this).parents('.goods_box').attr('id');
@@ -239,7 +317,8 @@ function toNext(){
         //param["type"]="FAB";
         var corp_code = GetRequest().corp_code;
         var user_code = GetRequest().user_id;
-        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code;
+        var action =$.cookie('action');
+        param["url"]="http://"+host+"/goods/mobile/details.html?d_match_code=" + d_match_code +'&user_id='+user_code+'&corp_code='+corp_code+'&the_action='+action;
         console.log(param);
         doAppWebRefresh(param);
         //window.location = 'details.html?d_match_code'+d_match_code;
@@ -248,7 +327,6 @@ function toNext(){
     //    window.location = 'details.html';
     //})
 }
-
 //获取手机系统
 function getWebOSType() {
     var browser = navigator.userAgent;
@@ -284,13 +362,28 @@ function doAppWebRefresh(param){
         iShop.jumpToWebViewForWeb(param);
     }
 }
+
 window.onload = function () {
-    //默认推荐
-    $('.title div').eq(0).click();
+    //$('.main').eq(0).find('.none').css('display','none');
+    //默认
+    var val  =  $.cookie('action');
+    var val2 = GetRequest().action;
+    //alert(val2);
+    //$('.title div').eq(0).text(val2);
+    if(val2 == '1'){
+        val ='1';
+    }
+    if(val == '0'||val==''|| val ==undefined){
+        $('.title div').eq(0).click();
+    }else if(val=='1'){
+        $('.title div').eq(1).click();
+    }
     //获取推荐
     getRec();
     //获取我的
     getMy();
     //控制宽高
     setTime();
+    //评论跳转
+
 }

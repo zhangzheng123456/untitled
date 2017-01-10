@@ -43,7 +43,13 @@ body {
   padding-left: 3.3%;
   overflow-y: auto;
   overflow-x: hidden;
-  -webkit-overflow-scrolling: touch; }
+  -webkit-overflow-scrolling: touch;
+  position: relative; }
+
+.main .none {
+  width: 50%;
+  display: none;
+  margin: 4.83092rem auto; }
 
 .goods_box {
   float: left;
@@ -53,12 +59,23 @@ body {
 
 .the_img {
   width: 100%;
+  text-align: center;
+  line-height: 4.63768rem;
   height: 4.63768rem;
-  border: 1px solid #cfcfcf; }
+  border: 1px solid #cfcfcf;
+  position: relative; }
 
 .the_img img {
-  width: 100%;
-  height: 4.63768rem; }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  max-width: 100%;
+  max-height: 100%; }
 
 .the_list {
   width: 97%;
@@ -110,5 +127,15 @@ body {
   width: 25%;
   margin-right: 5%;
   margin-top: 0.12077rem; }
+
+.out {
+  clear: both;
+  text-align: center;
+  background-color: white;
+  color: #8e8c8c;
+  font-size: 0.31401rem;
+  display: block;
+  width: 100%;
+  margin-bottom: 0.12077rem; }
 
 /*# sourceMappingURL=tie-inList.css.map */

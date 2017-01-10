@@ -4,11 +4,13 @@
 (function (){
     var oc= new ObjectControl();
     var vip_activity_add={
+        next_page:false,
         init:function(){
            this.bind();
         },
         bind:function(){
-            this.tabsSelect()
+            this.tabsSelect();
+            this.getFirst();
         },
         tabsSelect:function(){
             $("#tabs>div").bind("click",function(){
@@ -16,12 +18,27 @@
                 if(src==undefined || $(this).hasClass("active")){
                     return ;
                 }else{
+                    var index=$("#tabs .active").index();
+                    if(index==0){
+                        activity.checkEmpty();
+                        console.log(activity.isEmpty);
+                        if(activity.isEmpty==true){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: "不能为空"
+                            });
+                            return ;
+                        }
+                        activity.add();
+                    }
                     $.ajax({
                         type: "GET",
                         url: src+"?t="+ $.now(),
                         dataType: "html",
                         success: function (data) {
-                            $("#tabs-content").html(data)
+                            $("#tabs-content").html(data);
                         },
                         error: function (msg) {
                             alert(msg);
@@ -30,14 +47,26 @@
                     $(this).addClass("active");
                     $(this).siblings().removeClass("active");
                 }
-
-            })
+            });
+        },
+        getFirst:function(){
+            $.ajax({
+                type: "GET",
+                url: "set_vip_activity.html?t="+ $.now(),
+                dataType: "html",
+                success: function (data) {
+                    $("#tabs-content").html(data);
+                },
+                error: function (msg) {
+                    alert(msg);
+                }
+            });
         }
     };
     $(function(){
-        $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-120+"px");
+        $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-220+"px");
         $(window).resize(function(){
-            $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-120+"px");
+            $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-220+"px");
         });
         vip_activity_add.init();
     })

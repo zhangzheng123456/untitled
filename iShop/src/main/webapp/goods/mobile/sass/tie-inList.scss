@@ -47,6 +47,13 @@ body{
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+//暂无内容
+.main .none{
+  width: 50%;
+  display: none;
+  margin:rem(200) auto;
 }
 //盒子
 .goods_box{
@@ -57,12 +64,25 @@ body{
 }
 .the_img{
   width: 100%;
+  text-align: center;
+  line-height: rem(192);
   height: rem(192);
   border: 1px solid #cfcfcf;
+  position: relative;
 }
 .the_img img{
-  width: 100%;
-  height:rem(192);
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  -webkit-transform:  translate(-50%,-50%);
+  -moz-transform:  translate(-50%,-50%);
+  -ms-transform:  translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  max-width: 100%;
+  max-height: 100%;
+  //height:rem(192);
+  //margin: 0 auto;
 }
 //组合内的搭配
 .the_list{
@@ -116,4 +136,15 @@ body{
   width: 25%;
   margin-right: 5%;
   margin-top: rem(5);
+}
+//底部文字提示
+.out{
+  clear: both;
+  text-align: center;
+  background-color: white;
+  color: #8e8c8c;
+  font-size: rem(13);
+  display: block;
+  width: 100%;
+  margin-bottom: rem(5);
 }

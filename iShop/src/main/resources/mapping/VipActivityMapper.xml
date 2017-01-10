@@ -6,30 +6,21 @@
         <id column="id" property="id"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
 
-        <result column="activity_code" property="activity_vip_code"
+        <result column="activity_code" property="activity_code"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_theme" property="activity_theme"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_state" property="activity_state"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
 
-        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_theme" property="activity_theme" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_vips" property="target_vips" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
-        <result column="activity_store_code" property="operators"
+        <result column="activity_store_code" property="activity_store_code"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_desc" property="activity_content"
+        <result column="activity_desc" property="activity_desc"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
-        <result column="activity_store_code" property="activity_store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_desc" property="activity_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
         <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sms_code" property="sms_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date"
@@ -38,6 +29,7 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_count" property="target_vips_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
@@ -117,6 +109,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="target_vips_count!=null">
+                target_vips_count,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -170,6 +165,9 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="target_vips_count!=null">
+                #{target_vips_count},
+            </if>
         </trim>
     </insert>
 
@@ -220,6 +218,9 @@
             </if>
             <if test="isactive!=null">
                 isactive=#{isactive},
+            </if>
+            <if test="target_vips_count!=null">
+                target_vips_count= #{target_vips_count},
             </if>
         </trim>
         WHERE id=#{id};
@@ -273,6 +274,7 @@
         AND def_vip_activity.id =#{id}
     </select>
 
+
     <select id="selActivityByCode" resultMap="Activity">
         SELECT def_vip_activity.*,
         def_corp.corp_name
@@ -282,7 +284,7 @@
     </select>
 
     <update id="updActiveCodeByType" parameterType="com.bizvane.ishop.entity.VipActivity">
-        UPDATE  def_vip_activity SET #{line_code}=#{line_value} WHERE corp_code=#{corp_code} AND activity_code =#{activity_code}
+        UPDATE  def_vip_activity SET ${line_code}=#{line_value} WHERE corp_code=#{corp_code} AND activity_code =#{activity_code}
     </update>
 
 
@@ -292,10 +294,10 @@
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
-        AND def_vip_activity.CORP_CODE = #{corp_code}
+            AND def_vip_activity.CORP_CODE = #{corp_code}
         </if>
         AND def_vip_activity.activity_theme = #{activity_theme}
-        AND  def_vip_activity.isactive= #{isactive}
+        AND def_vip_activity.isactive= #{isactive}
     </select>
 
 </mapper>

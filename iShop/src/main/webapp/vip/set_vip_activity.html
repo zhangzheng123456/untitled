@@ -1,32 +1,32 @@
 <div class="setUp_activity" style="display: block">
     <div>
         <div class="tabs_title"><span class="title_icon"></span><span>活动基本信息</span></div>
-        <div class="setUp_activity_details">
+        <div class="setUp_activity_details" id="activity_basic">
             <div>
                 <ul>
-                    <li style="margin-right: 35px;"><label>所属企业</label><input class="text_input" type="text"></li>
-                    <li style="margin-right:10px"><label>活动时间</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly"></li>
-                    <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动标题" readonly="readonly"></li>
+                    <li style="margin-right: 35px;"><label>所属企业</label><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select><i id="corp_icon" class="icon-ishop_8-02"></i></span></li>
+                    <li style="margin-right:10px"><label>活动时间</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})"></li>
+                    <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动标题" readonly="readonly" onclick="laydate({elem:'#activity_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})"></li>
                 </ul>
             </div>
             <div>
                 <ul class="activity_details_left">
-                    <li style="margin-right: 35px;"><label>活动标题</label><input placeholder="请输入活动标题" class="text_input" type="text"></li>
+                    <li style="margin-right: 35px;"><label>活动标题</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text"></li>
                     <li>
-                        <label>活动类别</label><input class="text_input select_input" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                        <label>活动类别</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
                         <ul class="activity_select" id="activityType_select">
-                            <li>招募活动</li>
-                            <li>促销活动</li>
-                            <li>H5活动</li>
-                            <li>优惠券活动</li>
-                            <li>线下邀约活动</li>
-                            <li>节日活动</li>
+                            <li data-id="recruit">招募活动</li>
+                            <li data-id="sales">促销活动</li>
+                            <li data-id="h5">H5活动</li>
+                            <li data-id="coupon">优惠券活动</li>
+                            <li data-id="invite">线下邀约活动</li>
+                            <li data-id="festival">节日活动</li>
                         </ul>
                     </li>
-                    <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" placeholder="请输入活动简介" name="活动简述"></textarea></li>
+                    <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" id="activity_describe" placeholder="请输入活动简介" name="活动简述"></textarea></li>
                 </ul>
                 <ul class="activity_details_right">
-                    <li class="shop_amount_wrap"><p>参与门店数</p><p class="shop_amount" id="shop_amount">20</p><span class="choose_shop" id="choose_shop">选择参与门店</span></li>
+                    <li class="shop_amount_wrap"><p>参与门店数</p><p class="shop_amount" id="shop_amount">0</p><span class="choose_shop" id="choose_shop">选择参与门店</span></li>
                 </ul>
             </div>
         </div>
@@ -38,14 +38,8 @@
                 <ul class="operate_ul">
                     <li>
                         <ul>
-                            <li><label>招募级别</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                <ul class="activity_select">
-                                    <li>普通会员</li>
-                                    <li>银卡会员</li>
-                                    <li>金卡会员</li>
-                                    <li>铂金卡会员</li>
-                                    <li>钻石卡会员</li>
-                                </ul>
+                            <li><label>招募级别</label><input class="text_input select_input" data-code="" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                <ul class="activity_select vipCardType"></ul>
                             </li>
                             <li><label>招募金额</label><input placeholder="请输入招募最低消费额" class="text_input" type="text"></li>
                             <li><span class="add_recruit">+</span><span class="remove_recruit">-</span></li>
@@ -65,22 +59,16 @@
             </div>
             <div id="coupon_activity" style="display: none">
                 <ul class="coupon_title" id="coupon_title">
-                    <li class="coupon_active">批量发卷</li>
-                    <li>开卡送券</li>
-                    <li>纪念日发券</li>
+                    <li class="coupon_active" data-id="batch">批量发卷</li>
+                    <li data-id="card">开卡送券</li>
+                    <li data-id="anniversary">纪念日发券</li>
                 </ul>
                 <div class="choose_coupon">
                     <ul class="operate_ul">
                         <li>
                             <ul>
-                                <li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                    <ul class="activity_select">
-                                        <li>普通会员</li>
-                                        <li>银卡会员</li>
-                                        <li>金卡会员</li>
-                                        <li>铂金卡会员</li>
-                                        <li>钻石卡会员</li>
-                                    </ul>
+                                <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                    <ul class="activity_select coupon_activity"></ul>
                                 </li>
                                 <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
                             </ul>
@@ -91,27 +79,15 @@
                     <div class="coupon_btn" id="coupon_btn"><span>添加</span></div>
                     <div class="coupon_details_wrap">
                         <ul>
-                            <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                <ul class="activity_select">
-                                    <li>普通会员</li>
-                                    <li>银卡会员</li>
-                                    <li>金卡会员</li>
-                                    <li>铂金卡会员</li>
-                                    <li>钻石卡会员</li>
-                                </ul>
+                            <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code="" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                <ul class="activity_select vipCardType"></ul>
                             </li>
                         </ul>
                         <ul class="operate_ul">
                             <li>
                                 <ul>
-                                    <li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                        <ul class="activity_select">
-                                            <li>普通会员</li>
-                                            <li>银卡会员</li>
-                                            <li>金卡会员</li>
-                                            <li>铂金卡会员</li>
-                                            <li>钻石卡会员</li>
-                                        </ul>
+                                    <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                        <ul class="activity_select coupon_activity"></ul>
                                     </li>
                                     <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
                                 </ul>
@@ -124,21 +100,15 @@
                     <ul class="operate_ul">
                         <li>
                             <ul>
-                                <li><label>选择优惠券</label><input class="text_input select_input" value="普通会员" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                    <ul class="activity_select">
-                                        <li>普通会员</li>
-                                        <li>银卡会员</li>
-                                        <li>金卡会员</li>
-                                        <li>铂金卡会员</li>
-                                        <li>钻石卡会员</li>
-                                    </ul>
+                                <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                    <ul class="activity_select coupon_activity"></ul>
                                 </li>
                                 <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                <div class="switch">
+                <div class="switch sheswitch">
                     <span class="switch_text">优惠券已开启</span>
                     <div class="bg">
                         <span class="Off"></span>
@@ -148,21 +118,21 @@
             <div class="offline_activity" style="display: none">
                 <div class="offline_left_wrap">
                     <ul>
-                        <li><label>报名标题</label><input placeholder="请输入标题" class="text_input" type="text"></li>
-                        <li><label>报名截止时间</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly"></li>
-                        <li style="display: inline-flex"><label>报名简介</label><textarea placeholder="请输入报名简介"  type="text"></textarea></li>
-                        <li><label>报名成功提示</label><input placeholder="请输入报名成功提示" class="text_input" type="text"></li>
+                        <li><label>报名标题</label><input placeholder="请输入标题" id="invite_title" class="text_input" type="text"></li>
+                        <li><label>报名截止时间</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#offline_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></li>
+                        <li style="display: inline-flex"><label>报名简介</label><textarea id="invite_summary" placeholder="请输入报名简介"  type="text"></textarea></li>
+                        <li><label>报名成功提示</label><input placeholder="请输入报名成功提示" id="invite_message" class="text_input" type="text"></li>
                         <li class="upload_logo"><label>logo图片</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
                     </ul>
                 </div>
                 <div class="offline_right_wrap">
-                    <span>生成活动二维码</span>
+                    <span id="create_code">生成活动二维码</span>
                 </div>
             </div>
             <div class="holiday_activity" style="display: none">
                 <ul>
-                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly"></li>
-                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly"></li>
+                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
+                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
                 </ul>
             </div>
         </div>
@@ -209,7 +179,7 @@
             <h4>筛选店铺</h4>
             <div class="xuanzhong">
                 <div class="xuanzhong_p">
-                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="">
+                    <label>已选品牌</label><input type="text" value="全部" class="brand_num" id="brand_num" data-brandcode="" readonly="readonly">
                     <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
                 </div>
                 <div class="xuanzhong_p">
@@ -290,4 +260,18 @@
     </div>
     <div id="p" class="p"></div>
 </div>
+<script>
+    function checkStart(data){
+        $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
+    }
+    function checkEnd(data){
+        $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
+    }
+    function holidayStart(data) {
+        $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
+    }
+    function holidayEnd(data) {
+        $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
+    }
+</script>
 <script type="text/javascript" src="../js/vip/set_up_activity.js"></script>

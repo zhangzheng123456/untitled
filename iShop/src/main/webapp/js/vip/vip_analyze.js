@@ -533,7 +533,7 @@ function chartShow(order) {
                                 $(this).show();
                                 var ID = $(this).attr("data-id");
                                 init_chart(ID);
-                                $("#add_chart").before($(this));
+                                $("#chart_analyze").append($(this));
                             }
                         });
                     }

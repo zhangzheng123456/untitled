@@ -2082,25 +2082,39 @@ public class UserController {
             JSONObject result = new JSONObject();
             PageInfo<User> list = null;
             List<Store> storeList=null;
-            if(!map.get("brand_name").equals("")) {
+            List<Brand> list1=new ArrayList<Brand>();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                PageInfo<Brand> allBrandByPage = brandService.getAllBrandByPage(1, 20, "", "");
+                 list1 = allBrandByPage.getList();
+            }else{
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                PageInfo<Brand> allBrandByPage =  brandService.getAllBrandByPage(1,20,corp_code,"");
+                list1 = allBrandByPage.getList();
+            }
+            if(!map.get("brand_name").equals("") && list1.size()>1) {
+               System.out.println( "11111111111111111111111111111111111111111111111");
                 Map<String, String> map1 = new HashMap<String, String>();
                 map1.put("brand_name", map.get("brand_name"));
-                map1.put("corp_name", map.get("corp_name"));
                 if (role_code.equals(Common.ROLE_SYS)) {
+                    map1.put("corp_name", map.get("corp_name"));
                     storeList = storeService.getStoreByBrandCode("", "", "", "", map1, "", "");
                 } else if (role_code.equals(Common.ROLE_GM)) {
+                    map1.put("corp_name","");
                     String corp_code = request.getSession().getAttribute("corp_code").toString();
                     storeList = storeService.getStoreByBrandCode(corp_code, "", "", "", map1, "", "");
                 } else if (role_code.equals(Common.ROLE_BM)) {
+                    map1.put("corp_name","");
                     String corp_code = request.getSession().getAttribute("corp_code").toString();
                     String brand_code = request.getSession().getAttribute("brand_code").toString();
                     storeList = storeService.getStoreByBrandCode(corp_code, "", brand_code, "", map1, "", "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
+                    map1.put("corp_name","");
                     String corp_code = request.getSession().getAttribute("corp_code").toString();
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     storeList = storeService.getStoreByBrandCode(corp_code, area_codes, "", "", map1, store_code, "");
                 } else {
+                    map1.put("corp_name","");
                     String corp_code = request.getSession().getAttribute("corp_code").toString();
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     storeList = storeService.getStoreByBrandCode(corp_code, "", "", store_code, map1, "", "");
@@ -2137,6 +2151,7 @@ public class UserController {
                     }
                 }
             }else{
+               System.out.println( "22222222222222222222222222222222222222222222");
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = userService.getAllUserScreen(page_number, page_size, "", map);
@@ -2174,6 +2189,7 @@ public class UserController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());

@@ -600,6 +600,11 @@ public class VipGroupController {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
+        String user_brand_code = request.getSession().getAttribute("brand_code").toString();
+        String user_area_code = request.getSession().getAttribute("area_code").toString();
+        String user_store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -625,7 +630,7 @@ public class VipGroupController {
                     if (group_type.equals("define")){
                         String group_condition = vipGroup.getGroup_condition();
                         JSONArray screen = JSONArray.parseArray(group_condition);
-                        dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,request);
+                        dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,role_code,user_brand_code,user_area_code,user_store_code,user_code);
                     }else {
                         String vip_group_code = vipGroup.getVip_group_code();
                         Data data_fixed_code = new Data("fixed_code", "", ValueType.PARAM);
