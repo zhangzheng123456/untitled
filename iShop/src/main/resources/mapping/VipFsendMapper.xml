@@ -14,6 +14,7 @@
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_time" property="send_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" />
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
@@ -124,6 +125,9 @@
             <if test="activity_vip_code!=null">
                 activity_vip_code,
             </if>
+            <if test="send_time!=null">
+                send_time,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="sms_code!=null">
@@ -164,6 +168,9 @@
             </if>
             <if test="activity_vip_code!=null">
                 #{activity_vip_code},
+            </if>
+            <if test="send_time!=null">
+                #{send_time},
             </if>
         </trim>
     </insert>
