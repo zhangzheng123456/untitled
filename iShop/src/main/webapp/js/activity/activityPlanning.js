@@ -5,6 +5,7 @@ Array.prototype.remove = function(val) {
         this.splice(index, 1);
     }
 };
+var oc= new ObjectControl();
 var activityPlanning={
 	param:{
 		tasklist:[],
@@ -19,6 +20,7 @@ var activityPlanning={
 		$("#task").on("click",".tabs_left ul li",function(){
 			$(this).addClass("active");
 			$(this).siblings("li").removeClass("active");
+			self.evaluationTask();
 		});
 		//下拉框样式
 		$(".text_input").click(function(){
@@ -88,10 +90,18 @@ var activityPlanning={
 		$(".switch div").click(function(){
 			$(this).toggleClass("bg");
 			$(this).find("span").toggleClass("Off");
-			// var param={};
-			// var tasklist=self.param.tasklist;
-			// param["tasklist"]=tasklist;
-			// //测试
+			console.log($(this).parents());
+			if($(this).attr("class")==""){
+				$(this).parent().find(".switch_text").html("任务已关闭");
+			}else if($(this).attr("class")=="bg"){
+				$(this).parent().find(".switch_text").html("任务已开启");
+			}
+			var param={};
+			var tasklist=self.param.tasklist;
+			param["tasklist"]=tasklist;
+			//测试
+			param["activity_vip_code"]="ACls0000000001";
+			// console.log(param);
 			// oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
 			// 	console.log(data);
 			// });
@@ -144,7 +154,7 @@ var activityPlanning={
 		var task_title=$("#task_title").val();//任务标题
 		var target_start_time=$("#target_start_time").val();//开始时间
 		var target_end_time=$("#target_end_time").val();//截止时间
-		var task_type_code=$("#task_type_code").val();//任务类型编号
+		var task_type_code=$("#task_type_code").attr("data-code");//任务类型编号
 		var task_description=$("#task_description").val();//任务简述
 		var task_link=$("#task_link").val();//任务链接
 		if(task_title==""){
@@ -202,7 +212,6 @@ var activityPlanning={
 		param["task_type_code"]=task_type_code;//任务编号
 		param["task_description"]=task_description;//任务简述
 		param["task_link"]=task_link//链接
-		param["activity_vip_code"]="ACls0000000001";
 		self.param.tasklist.push(param);
 	},
 	getGroupValue:function(){
@@ -211,26 +220,24 @@ var activityPlanning={
 		console.log(index);
 		var param={};
 		var sendlist=[];
-		param["type"]=type;
+		param["send_type"]=type;
 	    var list=$("#p_task_content .group_parent").eq(index).find('.input_parent');
-	    console.log(list);
 		if(type=="wx"){
 			for(var i=0;i<list.length;i++){
 				var send_time=$(list[i]).find(".text_input").val();
 				var title=$(list[i]).find(".edit_frame .edit_title").val();
 				var url=$(list[i]).find(".edit_frame .edit_link").val();
 				var desc=$(list[i]).find(".edit_frame .edit_content").val();
-				var activity_vip_code="ACls0000000001";
-				var gparam={"send_time":send_time,"title":title,url:url,desc:desc,activity_vip_code:activity_vip_code};
+				var gparam={"send_time":send_time,"title":title,url:url,desc:desc};
 				sendlist.push(gparam);
 			}
 		}
 		param["sendlist"]=sendlist;
+		param["activity_vip_code"]="ACls0000000001";
 		oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
 			console.log(data);
 		});
 	},
-
 }
 $(function(){
 	activityPlanning.init();
