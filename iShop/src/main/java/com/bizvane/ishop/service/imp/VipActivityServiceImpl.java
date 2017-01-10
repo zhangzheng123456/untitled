@@ -96,7 +96,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = "A" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
-        String activity_state = "未执行";
+        String activity_state = "0";
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity1 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
         if (vipActivity1 == null) {
