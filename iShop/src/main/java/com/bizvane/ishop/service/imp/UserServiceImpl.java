@@ -1367,7 +1367,7 @@ public class UserServiceImpl implements UserService {
         List<Store> stores = new ArrayList<Store>();
         if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)) {
             String store_code = user.getStore_code();
-            stores = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
+            stores = storeService.selectByStoreCodes(store_code, corp_code, Common.IS_ACTIVE_Y);
             for (int i = 0; i < stores.size(); i++) {
                 String brand_code = stores.get(i).getBrand_code();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");

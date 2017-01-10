@@ -60,4 +60,6 @@ public class CommonValue {
     public final static String ADD_VIP_CHECK_BILL = "ADD_VIP_CHECK_BILL";
     //新增会员是否输入卡号
     public final static String ADD_VIP_INPUT_CARDNO = "ADD_VIP_INPUT_CARDNO";
+    //员工是否校验手机号
+    public final static String IS_CHECK_PHONE = "IS_CHECK_PHONE";
 }

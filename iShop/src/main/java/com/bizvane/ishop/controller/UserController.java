@@ -1503,7 +1503,7 @@ public class UserController {
             } else {
                 //登录用户为店长或导购
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
+                list = storeService.selectByStoreCodes(store_code, corp_code, Common.IS_ACTIVE_Y);
             }
             stores.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
