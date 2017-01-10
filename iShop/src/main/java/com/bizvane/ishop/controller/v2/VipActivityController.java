@@ -277,7 +277,7 @@ public class VipActivityController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/executeActivity", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/execute", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     @Transactional
     public String executeActivity(HttpServletRequest request) throws Exception {
@@ -294,7 +294,7 @@ public class VipActivityController {
 
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
             String activity_state = vipActivity.getActivity_state();
-            if (!activity_state.equals("未执行")) {
+            if (!activity_state.equals(Common.ACTIVITY_STATUS_0)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("该任务非未执行状态");
@@ -390,49 +390,39 @@ public class VipActivityController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 活动(执行中)
-//     * 获取活动执行情况
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/executeDetail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-//    @ResponseBody
-//    @Transactional
-//    public String executeDetail(HttpServletRequest request) throws Exception {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = JSONObject.parseObject(message);
-//            int activity_id = Integer.parseInt(jsonObject.getString("id"));
-//            VipActivity activityVip = vipActivityService.selectActivityById(activity_id);
-//            String activity_state = activityVip.getActivity_state();
-//            String run_mode = activityVip.getRun_mode();
-//            String result = "";
-//            if (activity_state.equals("未执行")) {
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage("该活动未执行");
-//            } else {
-//                if (run_mode.contains("任务")) {
-//                    JSONObject result_obj = vipActivityService.executeDetail(activityVip);
-//                    result = result_obj.toString();
-//                }
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setMessage(result);
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    /**
+     * 活动(执行中)
+     * 获取活动任务
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/executeDetail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @Transactional
+    public String executeDetail(HttpServletRequest request) throws Exception {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.getString("corp_code");
+            String activity_code = jsonObject.getString("activity_code");
+            String task_code = jsonObject.getString("task_code");
+
+            JSONObject result_obj = vipActivityService.executeDetail(corp_code,activity_code,task_code);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result_obj.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 //    /**
 //     * 终止活动

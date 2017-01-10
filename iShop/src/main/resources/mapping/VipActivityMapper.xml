@@ -29,6 +29,7 @@
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="target_vips_count" property="target_vips_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
@@ -108,6 +109,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="target_vips_count!=null">
+                target_vips_count,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -161,6 +165,9 @@
             <if test="isactive!=null">
                 #{isactive},
             </if>
+            <if test="target_vips_count!=null">
+                #{target_vips_count},
+            </if>
         </trim>
     </insert>
 
@@ -211,6 +218,9 @@
             </if>
             <if test="isactive!=null">
                 isactive=#{isactive},
+            </if>
+            <if test="target_vips_count!=null">
+                target_vips_count= #{target_vips_count},
             </if>
         </trim>
         WHERE id=#{id};

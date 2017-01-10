@@ -39,6 +39,7 @@ public class VipActivityNewMakeController {
     private VipActivityService vipActivityService;
     @Autowired
     VipGroupService vipGroupService;
+
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/addOrUpdateTask", method = RequestMethod.POST)
@@ -201,9 +202,9 @@ public class VipActivityNewMakeController {
 
             List<Task> taskByActivityCodes = taskService.getTaskByActivityCode(corp_code, activity_vip_code);
 
-            com.alibaba.fastjson.JSONObject result=new com.alibaba.fastjson.JSONObject();
-            result.put("tasklist",taskByActivityCodes);
-            result.put("sendlist",sendByActivityCodes);
+            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+            result.put("tasklist", taskByActivityCodes);
+            result.put("sendlist", sendByActivityCodes);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");
@@ -237,6 +238,7 @@ public class VipActivityNewMakeController {
             JSONArray screen = jsonObject.getJSONArray("screen");
 
             String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+            String target_vips_count = jsonObject.get("target_vips_count").toString();
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
             String corp_code = vipActivity.getCorp_code();
 
@@ -245,7 +247,8 @@ public class VipActivityNewMakeController {
 
             String screen_value = post_array.toJSONString();
             int target_vips = vipActivityService.updActiveCodeByType("target_vips", screen_value, corp_code, activity_vip_code);
-            System.out.println("=========target_vips========="+target_vips);
+            target_vips += vipActivityService.updActiveCodeByType("target_vips_count", target_vips_count, corp_code, activity_vip_code);
+            System.out.println("=========target_vips=========" + target_vips);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");
             dataBean.setMessage("成功");

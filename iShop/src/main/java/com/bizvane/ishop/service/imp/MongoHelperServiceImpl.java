@@ -268,6 +268,10 @@ public class MongoHelperServiceImpl {
             object.put("id", id);
             object.removeField("_id");
             String status=object.get("status").toString();
+
+            if(null==object.get("location")){
+                object.put("location","");
+            }
             if(status==null||status.equals("")){
                 object.put("status","");
             }else if(status.equals("0")){
