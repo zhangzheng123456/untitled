@@ -100,7 +100,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         String activity_code = "A" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(now);
         String activity_state = "0";
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
-        VipActivity vipActivity1 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
+        VipActivity vipActivity1 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme());
         if (vipActivity1 == null) {
             System.out.print("=======");
             vipActivity.setActivity_code(activity_code);
@@ -133,14 +133,12 @@ public class VipActivityServiceImpl implements VipActivityService {
         String activity_code = jsonObject.get("activity_code").toString().trim();
         VipActivity vipActivity1 = this.selActivityByCode(activity_code);
         String corp_code = jsonObject.get("corp_code").toString().trim();
-        String isactive = jsonObject.get("isactive").toString().trim();
         Date now = new Date();
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
-        VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
+        VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme());
         if (vipActivity2 == null||vipActivity2.getId()==vipActivity1.getId()) {
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
-            vipActivity.setIsactive(isactive);
             vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
             int info = 0;
             info = vipActivityMapper.updateActivity(vipActivity);
@@ -163,31 +161,6 @@ public class VipActivityServiceImpl implements VipActivityService {
     public int updateVipActivity(VipActivity VipActivity) throws Exception {
 
         return vipActivityMapper.updateActivity(VipActivity);
-    }
-
-    @Override
-    public VipActivity selectActivityById(int id) throws Exception {
-        VipActivity VipActivity = vipActivityMapper.selActivityById(id);
-        String corp_code = VipActivity.getCorp_code();
-        String target_vips = VipActivity.getTarget_vips();
-        JSONObject vips_obj = JSONObject.parseObject(target_vips);
-        String type = vips_obj.get("type").toString();
-        if (type.equals("1")) {
-            String area_code = vips_obj.get("area_code").toString();
-            String brand_code = vips_obj.get("brand_code").toString();
-            String store_code = vips_obj.get("store_code").toString();
-            String user_code = vips_obj.get("user_code").toString();
-            DataBox dataBox = iceInterfaceService.vipScreenMethod("1", "3", corp_code, area_code, brand_code, store_code, user_code);
-            String result = dataBox.data.get("message").value;
-            JSONObject result_obj = JSONObject.parseObject(result);
-            String count = result_obj.get("count").toString();
-            VipActivity.setTarget_vips_count(count);
-        } else if (type.equals("2")) {
-            String vips = vips_obj.get("vips").toString();
-            String[] vips_array = vips.split(",");
-            VipActivity.setTarget_vips_count(String.valueOf(vips_array.length));
-        }
-        return VipActivity;
     }
 
     @Override
@@ -294,9 +267,9 @@ public class VipActivityServiceImpl implements VipActivityService {
         return vipActivityMapper.updActiveCodeByType(line_code, line_value, corp_code, activity_code);
     }
 
-    public VipActivity getVipActivityByTheme(String corp_code, String activity_theme, String isactive) throws Exception {
+    public VipActivity getVipActivityByTheme(String corp_code, String activity_theme) throws Exception {
 
-            return  vipActivityMapper.selActivityByTheme(corp_code,activity_theme,isactive);
+            return  vipActivityMapper.selActivityByTheme(corp_code,activity_theme);
 
     }
 

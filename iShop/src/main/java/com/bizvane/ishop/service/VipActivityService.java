@@ -71,13 +71,6 @@ public interface VipActivityService {
      * @return
      * @throws Exception
      */
-    VipActivity selectActivityById(int id) throws Exception;
-
-    /**
-     * @param id
-     * @return
-     * @throws Exception
-     */
     VipActivity getActivityById(int id) throws Exception;
 
     /**
@@ -102,7 +95,7 @@ public interface VipActivityService {
 
     int updActiveCodeByType(String line_code, String line_value,String corp_code, String activity_code)throws Exception;
 
-    VipActivity getVipActivityByTheme(String corp_code,String activity_theme,String isactive)throws Exception;
+    VipActivity getVipActivityByTheme(String corp_code,String activity_theme)throws Exception;
 
 
     String executeActivity(VipActivity vipActivity,String user_code) throws Exception;

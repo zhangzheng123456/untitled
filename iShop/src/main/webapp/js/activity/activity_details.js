@@ -719,7 +719,7 @@ $('#vip_status .head_span_r').click(function () {
 window.onload = function(){
     //获取活动执行情况
     // getExecuteDetail();
-    getSelect(sessionStorage.getItem('id'));
+    // getSelect(sessionStorage.getItem('id'));
     //加载统计模块
     // check();
     //加载活动状态

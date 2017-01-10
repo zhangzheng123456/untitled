@@ -1,0 +1,112 @@
+@import "mixin-fun";
+@charset "utf-8";
+body{
+  width: 100%;
+  background-color: #f4f4f4;
+  font-family: Î¢ÈíÑÅºÚ;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.title{
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  background-color: #f4f4f4;
+  height: rem(70);
+  line-height: rem(70);
+  position: relative;
+  top: 0px;
+}
+.title input{
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: rem(40);
+  border-radius: rem(30);
+  border: 1px solid #e1e1e1;
+  color: #888888;
+  font-size:rem(15);
+  background:#FFF url("../image/all_0.png")no-repeat rem(135) 56%;
+  background-size:rem(16);
+}
+input::-ms-input-placeholder{text-align: center;}
+input::-webkit-input-placeholder{text-align: center;}
+.main{
+  position: relative;
+  width: 100%;
+}
+.main .area_box{
+  width: 100%;
+  margin-bottom: rem(20);
+  background-color: #ffffff;
+}
+.area{
+  width: 100%;
+  color: #888888;
+  font-size: rem(15);
+  height: rem(30);
+  line-height: rem(30);
+  background-color: #fff;
+  border-bottom: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+  position: relative;
+}
+.area span{
+  margin-left: 3%;
+}
+.main .box{
+  clear: both;
+  margin-left: 3%;
+  margin-right: 3%;
+  width: 94%;
+  padding-top: rem(15);
+  height: rem(135);
+  line-height: rem(135);
+  border-bottom: 1px solid #eeeeee;
+  background-color: #fff;
+
+}
+.main .box .left{
+  float: left;
+  width: rem(120);
+  height: rem(120);
+  border-radius: rem(5);
+}
+.main .box .left img{
+  max-height: rem(120);
+  min-height: rem(120);
+  margin:0 auto;
+}
+.main .box .right{
+  float: right;
+  margin-left: rem(15);
+  height: rem(120);
+  width: 62%;
+}
+.main .box .right .right_name{
+  width: 100%;
+  height: rem(30);
+  line-height: rem(30);
+  font-size: rem(16);
+  color: #555555;
+  position: relative;
+}
+.main .box .right .right_name span{
+  float: right;
+  color: #888888;
+  font-size: rem(13);
+}
+.main .box .right .right_name img{
+  float: right;
+  height: rem(20);
+  margin-top: rem(3);
+}
+.main .box .right .right_add{
+  font-size: rem(15);
+  color: #888888;
+  clear: both;
+  width: 100%;
+  max-height:rem(90);
+  line-height: rem(20);
+
+}
