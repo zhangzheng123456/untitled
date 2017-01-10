@@ -274,6 +274,7 @@
         AND def_vip_activity.id =#{id}
     </select>
 
+
     <select id="selActivityByCode" resultMap="Activity">
         SELECT def_vip_activity.*,
         def_corp.corp_name

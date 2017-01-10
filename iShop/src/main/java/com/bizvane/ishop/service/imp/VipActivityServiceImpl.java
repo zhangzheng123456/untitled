@@ -137,7 +137,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         Date now = new Date();
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme(), Common.IS_ACTIVE_Y);
-        if (vipActivity2 == null) {
+        if (vipActivity2 == null||vipActivity2.getId()==vipActivity1.getId()) {
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
             vipActivity.setIsactive(isactive);
@@ -161,6 +161,7 @@ public class VipActivityServiceImpl implements VipActivityService {
 
     @Override
     public int updateVipActivity(VipActivity VipActivity) throws Exception {
+
         return vipActivityMapper.updateActivity(VipActivity);
     }
 
@@ -294,7 +295,8 @@ public class VipActivityServiceImpl implements VipActivityService {
     }
 
     public VipActivity getVipActivityByTheme(String corp_code, String activity_theme, String isactive) throws Exception {
-        return vipActivityMapper.selActivityByTheme(corp_code, activity_theme, isactive);
+
+            return  vipActivityMapper.selActivityByTheme(corp_code,activity_theme,isactive);
 
     }
 
