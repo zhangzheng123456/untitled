@@ -128,27 +128,87 @@ public class VipActivityNewMakeController {
             String activity_vip_code = jsonObject.get("activity_vip_code").toString();
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
 
-            String sendlist = jsonObject.get("sendlist").toString();
-            JSONArray jsonArray_send = JSON.parseArray(sendlist);
+            String wxlist = jsonObject.get("wxlist").toString();
+            JSONArray jsonArray_wx = JSON.parseArray(wxlist);
+
+            String smslist = jsonObject.get("smslist").toString();
+            JSONArray jsonArray_sms = JSON.parseArray(smslist);
+
+            String emlist = jsonObject.get("emlist").toString();
+            JSONArray jsonArray_em = JSON.parseArray(emlist);
             int count = 0;
             String send_code_actvie = "";
             String corp_code = vipActivity.getCorp_code();
-            for (int i = 0; i < jsonArray_send.size(); i++) {
-                JSONObject send_obj = new JSONObject(jsonArray_send.get(i).toString());
+            for (int i = 0; i < jsonArray_wx.size(); i++) {
+                JSONObject send_obj = new JSONObject(jsonArray_wx.get(i).toString());
                 String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
 
                 vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
                 String content = "";
-                String send_type = send_obj.get("send_type").toString();
-                if (send_type.equals("wx") || send_type.equals("sms")) {
-                    content = send_obj.get("content").toString();
-                } else if (send_type.equals("email")) {
+                String send_type = "wx";
+                content = send_obj.get("content").toString();
 
-                }
                 VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
                 vipFsend.setSms_code(sms_code);
+                vipFsend.setSend_type(send_type);
+                vipFsend.setCorp_code(corp_code);
+                vipFsend.setContent(content);
+                vipFsend.setSend_scope("vip_condition");
+                vipFsend.setActivity_vip_code(activity_vip_code);
+
+                Date now = new Date();
+                vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                vipFsend.setCreater(user_code);
+                vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
+                vipFsend.setModifier(user_code);
+                vipFsend.setIsactive("Y");
+
+                count += vipFsendService.insertSend(vipFsend);
+            }
+            for (int i = 0; i < jsonArray_sms.size(); i++) {
+                JSONObject send_obj = new JSONObject(jsonArray_sms.get(i).toString());
+                String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+                Thread.sleep(1);
+                send_code_actvie = send_code_actvie + sms_code + ",";
+
+                vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
+                String content = "";
+                String send_type = "sms";
+                content = send_obj.get("content").toString();
+
+                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
+                vipFsend.setSms_code(sms_code);
+                vipFsend.setSend_type(send_type);
+                vipFsend.setCorp_code(corp_code);
+                vipFsend.setContent(content);
+                vipFsend.setSend_scope("vip_condition");
+                vipFsend.setActivity_vip_code(activity_vip_code);
+
+                Date now = new Date();
+                vipFsend.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                vipFsend.setCreater(user_code);
+                vipFsend.setModified_date(Common.DATETIME_FORMAT.format(now));
+                vipFsend.setModifier(user_code);
+                vipFsend.setIsactive("Y");
+
+                count += vipFsendService.insertSend(vipFsend);
+            }
+            for (int i = 0; i < jsonArray_em.size(); i++) {
+                JSONObject send_obj = new JSONObject(jsonArray_em.get(i).toString());
+                String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+                Thread.sleep(1);
+                send_code_actvie = send_code_actvie + sms_code + ",";
+
+                vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
+                String content = "";
+                String send_type = "email";
+                content = send_obj.get("content").toString();
+
+                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
+                vipFsend.setSms_code(sms_code);
+                vipFsend.setSend_type(send_type);
                 vipFsend.setCorp_code(corp_code);
                 vipFsend.setContent(content);
                 vipFsend.setSend_scope("vip_condition");
