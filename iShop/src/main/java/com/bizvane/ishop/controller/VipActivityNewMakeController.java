@@ -65,7 +65,7 @@ public class VipActivityNewMakeController {
             String task_code_actvie = "";
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
             String corp_code = vipActivity.getCorp_code();
-
+            taskService.delTaskByActivityCode(corp_code, activity_vip_code);
             for (int i = 0; i < jsonArray_task.size(); i++) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
@@ -76,7 +76,7 @@ public class VipActivityNewMakeController {
                 Task task = WebUtils.JSON2Bean(task_obj, Task.class);
                 task.setActivity_vip_code(activity_vip_code);
 
-                taskService.delTaskByActivityCode(corp_code, activity_vip_code);
+
                 task.setTask_code(task_code);
                 task.setCorp_code(corp_code);
 
@@ -148,13 +148,15 @@ public class VipActivityNewMakeController {
             int count = 0;
             String send_code_actvie = "";
             String corp_code = vipActivity.getCorp_code();
+
+            vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
             for (int i = 0; i < jsonArray_wx.size(); i++) {
                 JSONObject send_obj = new JSONObject(jsonArray_wx.get(i).toString());
                 String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
 
-                vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
+
                 String content = "";
                 String send_type = "wx";
                 content = send_obj.get("content").toString();
@@ -182,7 +184,6 @@ public class VipActivityNewMakeController {
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
 
-                vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
                 String content = "";
                 String send_type = "sms";
                 content = send_obj.get("content").toString();
@@ -210,7 +211,7 @@ public class VipActivityNewMakeController {
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
 
-                vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
+
                 String content = "";
                 String send_type = "email";
                 content = send_obj.get("content").toString();
@@ -250,7 +251,7 @@ public class VipActivityNewMakeController {
         }
         return dataBean.getJsonStr();
     }
-
+    @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public String list(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -266,18 +267,33 @@ public class VipActivityNewMakeController {
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
 
             String corp_code = vipActivity.getCorp_code();
+            JSONArray jsonArray_wx=new JSONArray();
+            JSONArray jsonArray_sms=new JSONArray();
+            JSONArray jsonArray_em=new JSONArray();
 
             List<VipFsend> sendByActivityCodes = vipFsendService.getSendByActivityCode(corp_code, activity_vip_code);
+            for (int i=0;i<sendByActivityCodes.size();i++){
+                VipFsend vipFsend = sendByActivityCodes.get(i);
+                if(vipFsend.getSend_type().equals("wx")){
+                    jsonArray_wx.add(vipFsend);
+                }else if(vipFsend.getSend_type().equals("sms")){
+                    jsonArray_sms.add(vipFsend);
+                }else if(vipFsend.getSend_type().equals("email")){
+                    jsonArray_em.add(vipFsend);
+                }
+            }
 
             List<Task> taskByActivityCodes = taskService.getTaskByActivityCode(corp_code, activity_vip_code);
 
             com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
             result.put("tasklist", taskByActivityCodes);
-            result.put("sendlist", sendByActivityCodes);
+            result.put("wxlist", jsonArray_wx);
+            result.put("smslist", jsonArray_sms);
+            result.put("emlist", jsonArray_em);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");
-            dataBean.setMessage(result.toJSONString());
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -286,7 +302,7 @@ public class VipActivityNewMakeController {
         }
         return dataBean.getJsonStr();
     }
-
+    @ResponseBody
     @RequestMapping(value = "/addOrUpdateVip", method = RequestMethod.POST)
     public String addOrUpdateVip(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
