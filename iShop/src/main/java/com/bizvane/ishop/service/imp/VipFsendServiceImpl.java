@@ -7,12 +7,9 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 
 
-import com.bizvane.ishop.entity.VipGroup;
-import com.bizvane.ishop.entity.WxTemplate;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.sun.common.service.http.HttpClient;
 import com.bizvane.ishop.dao.VipFsendMapper;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.VipFsend;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
@@ -53,6 +50,8 @@ public class VipFsendServiceImpl implements VipFsendService {
     private WxTemplateService wxTemplateService;
     @Autowired
     private VipGroupService vipGroupService;
+    @Autowired
+    private CorpService corpService;
     @Autowired
     MongoDBClient mongodbClient;
 
@@ -194,7 +193,7 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
     @Override
-    public String insert(VipFsend vipFsend,int tem_id,String role_code,String brand_code, String area_code,String store_code,String user_code) throws Exception {
+    public String insert(VipFsend vipFsend,String role_code,String brand_code, String area_code,String store_code,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         Date now = new Date();
         //群发消息的发送类型
@@ -208,11 +207,11 @@ public class VipFsendServiceImpl implements VipFsendService {
         vipFsend.setCreater(user_code);
         vipFsendMapper.insertFsend(vipFsend);
 
-        sendSms(vipFsend,tem_id,role_code,brand_code,area_code,store_code, user_code);
+        sendSms(vipFsend,role_code,brand_code,area_code,store_code, user_code);
         return status;
     }
 
-    public String sendSms(VipFsend vipFsend,int tem_id,String role_code,String brand_code, String area_code,String store_code,String user_code) throws Exception {
+    public String sendSms(VipFsend vipFsend,String role_code,String brand_code, String area_code,String store_code,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         Date now = new Date();
         String corp_code = vipFsend.getCorp_code();
@@ -269,74 +268,85 @@ public class VipFsendServiceImpl implements VipFsendService {
                 }
             }
         }else {
-            //根据id查询微信模板信息
-            WxTemplate wxTemplate= wxTemplateService.getTemplateById(tem_id);
-            String app_id=wxTemplate.getApp_id();
-            String app_user_name=wxTemplate.getApp_user_name();
-            String template_id=wxTemplate.getTemplate_id();
+            List<CorpWechat> corpWechats = corpService.getWAuthByCorp(corp_code);
+            if (corpWechats.size()>0){
+                String app_id = corpWechats.get(0).getApp_id();
+                String app_user_name = corpWechats.get(0).getApp_user_name();
 
-            for (int i = 0; i < array.size(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                String vip_id = obj.getString("vip_id");
-                String vip_name = obj.getString("vip_name");
-                String open_id = obj.getString("open_id");
-                String phone = obj.getString("phone");
-                String cardno = obj.getString("cardno");
-                String message_id = corp_code + vip_id + System.currentTimeMillis();
-                if (open_id.equals("") || open_id.equals("null")){
-                    insertMongoDB(corp_code,user_code,template_id,"",vip_id,vip_name,cardno,phone,sms_code,app_id,content,message_id,"N");
-                }else {
-                    send_open_id = send_open_id + open_id + ",";
-                    send_vip_id = send_vip_id + vip_id + ",";
-                    send_vip_name = send_vip_name + vip_name + ",";
-                    send_cardno = send_cardno + cardno + ",";
-                    send_phone = send_phone + phone + ",";
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    String vip_id = obj.getString("vip_id");
+                    String vip_name = obj.getString("vip_name");
+                    String open_id = obj.getString("open_id");
+                    String phone = obj.getString("phone");
+                    String cardno = obj.getString("cardno");
+                    String message_id = corp_code + vip_id + System.currentTimeMillis();
+                    if (open_id.equals("") || open_id.equals("null")){
+                        insertMongoDB(corp_code,user_code,"","",vip_id,vip_name,cardno,phone,sms_code,app_id,content,message_id,"N");
+                    }else {
+                        send_open_id = send_open_id + open_id + ",";
+                        send_vip_id = send_vip_id + vip_id + ",";
+                        send_vip_name = send_vip_name + vip_name + ",";
+                        send_cardno = send_cardno + cardno + ",";
+                        send_phone = send_phone + phone + ",";
+                    }
                 }
-            }
-            if (!send_open_id.equals("")){
-                String[] send_open_ids = send_open_id.split(",");
-                String[] send_vip_ids = send_vip_id.split(",");
-                String[] send_vip_names = send_vip_name.split(",");
-                String[] send_phones = send_phone.split(",");
-                String[] send_cardnos = send_cardno.split(",");
+                if (!send_open_id.equals("")){
+                    String[] send_open_ids = send_open_id.split(",");
+                    String[] send_vip_ids = send_vip_id.split(",");
+                    String[] send_vip_names = send_vip_name.split(",");
+                    String[] send_phones = send_phone.split(",");
+                    String[] send_cardnos = send_cardno.split(",");
 
-                String  result="";
-                if(send_open_ids.length >= 2){
-                    //调用微信群发消息接口
-                    JSONObject template_content = new JSONObject();
-                    template_content.put("content", content);//微信群发内容
-                    template_content.put("app_user_name", app_user_name); //app_user_name
-                    template_content.put("openid", send_open_id);//所选择会员的openid
-                    result = sendWxMass(template_content);
-                }else if(send_open_ids.length == 1){
-                    //调用微信模板消息接口
-                    JSONObject con=new JSONObject();
-                    JSONObject template_content = new JSONObject();
-                    String message_id = corp_code + send_vip_ids[0] + System.currentTimeMillis();
-                    con.put("first", "您好，您的专属导购给您发了一条消息");
-                    con.put("keyword1", System.currentTimeMillis()); //关键词
-                    con.put("keyword2", Common.DATETIME_FORMAT.format(now)); //关键词
-                    con.put("remark", "请点击查看！"); //备注
-                    template_content.put("content",con);
-                    template_content.put("app_user_name",app_user_name);
-                    template_content.put("template_id",template_id);
-                    template_content.put("openid",send_open_ids[0]);
-                    template_content.put("message_id",message_id);
-                    result = sendTemplate(template_content);
-                }
-                for (int i = 0; i < send_open_ids.length; i++) {
-                    String message_id = corp_code + send_vip_ids[i] + System.currentTimeMillis();
-                    JSONObject info = JSONObject.parseObject(result);
-                    //群发消息发送成功之后存入mongoDB
-                    if ("0".equals(info.getString("errcode"))) {
-                        insertMongoDB(corp_code,user_code,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"Y");
-                    } else {
-                        insertMongoDB(corp_code,user_code,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"N");
-                        status = info.get("errmsg").toString();
-                        return status;
+                    String message_type = "text";
+                    if (send_type.equals("wx")){
+                        message_type = "text";
+                    }
+                    String  result="";
+                    if(send_open_ids.length >= 2){
+                        //调用微信群发消息接口
+                        JSONObject template_content = new JSONObject();
+                        template_content.put("content", content);//微信群发内容
+                        template_content.put("app_user_name", app_user_name); //app_user_name
+                        template_content.put("openid", send_open_id);//所选择会员的openid
+                        template_content.put("message_type", message_type);//发送 消息类型
+
+                        result = sendWxMass(template_content);
+                    }else if(send_open_ids.length == 1){
+                        //根据id查询微信模板信息
+                        List<WxTemplate> wxTemplates = wxTemplateService.selectAllWxTemplate(corp_code,"");
+                        app_user_name=wxTemplates.get(0).getApp_user_name();
+                        String template_id=wxTemplates.get(0).getTemplate_id();
+                        //调用微信模板消息接口
+                        JSONObject con=new JSONObject();
+                        JSONObject template_content = new JSONObject();
+                        String message_id = corp_code + send_vip_ids[0] + System.currentTimeMillis();
+                        con.put("first", "您好，您的专属导购给您发了一条消息");
+                        con.put("keyword1", System.currentTimeMillis()); //关键词
+                        con.put("keyword2", Common.DATETIME_FORMAT.format(now)); //关键词
+                        con.put("remark", "请点击查看！"); //备注
+                        template_content.put("content",con);
+                        template_content.put("app_user_name",app_user_name);
+                        template_content.put("template_id",template_id);
+                        template_content.put("openid",send_open_ids[0]);
+                        template_content.put("message_id",message_id);
+                        result = sendTemplate(template_content);
+                    }
+                    for (int i = 0; i < send_open_ids.length; i++) {
+                        String message_id = corp_code + send_vip_ids[i] + System.currentTimeMillis();
+                        JSONObject info = JSONObject.parseObject(result);
+                        //群发消息发送成功之后存入mongoDB
+                        if ("0".equals(info.getString("errcode"))) {
+                            insertMongoDB(corp_code,user_code,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"Y");
+                        } else {
+                            insertMongoDB(corp_code,user_code,"","",send_vip_ids[i],send_vip_names[i],send_cardnos[i],send_phones[i],sms_code,"",content,message_id,"N");
+                            status = info.get("errmsg").toString();
+                            return status;
+                        }
                     }
                 }
             }
+
         }
         return status;
     }
@@ -510,7 +520,15 @@ public class VipFsendServiceImpl implements VipFsendService {
     }
 
 
-    public void test1(){
+    public void fsendSchedule(String corp_code,String sms_code,String user_code) {
+        try {
+            VipFsend vipFsend = getVipFsendInfoByCode(corp_code,sms_code);
+            sendSms(vipFsend,Common.ROLE_GM,"","","",user_code);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            ex.getMessage();
+        }
+
         System.out.println("it's test1 " + Common.DATETIME_FORMAT.format(new Date()));
     }
 

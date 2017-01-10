@@ -11,6 +11,7 @@ var activityPlanning={
 	},
 	init:function(){
 		this.allEvent();
+		this.getTaskList();
 	},
 	allEvent:function(){
 		//任务切换
@@ -18,8 +19,6 @@ var activityPlanning={
 		$("#task").on("click",".tabs_left ul li",function(){
 			$(this).addClass("active");
 			$(this).siblings("li").removeClass("active");
-			console.log(123123);
-			self.evaluationTask();
 		});
 		//下拉框样式
 		$(".text_input").click(function(){
@@ -40,6 +39,7 @@ var activityPlanning={
 		//点击div
 		$(".input_dropdown").on("click","div",function(){
 			$(this).parent().siblings(".text_input").val($(this).text());
+			$(this).parent().siblings(".text_input").attr("data-code",$(this).attr("data-code"));
 		})
 		//群发管理切换
 		$("#group").on("click",".tabs_left ul li",function(){
@@ -73,7 +73,6 @@ var activityPlanning={
 		})
 		//新增一个div
 		$(".p_task_content").on("click",'.input_parent .group_add',function(){
-			console.log(123123);
 			$(this).parents(".add_del").hide();
 			var html=$(this).parents('.input_parent').clone();
 			$(html).find(".add_del").show();
@@ -89,6 +88,13 @@ var activityPlanning={
 		$(".switch div").click(function(){
 			$(this).toggleClass("bg");
 			$(this).find("span").toggleClass("Off");
+			var param={};
+			var tasklist=self.param.tasklist;
+			param["tasklist"]=tasklist;
+			//测试
+			oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
+				console.log(data);
+			});
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -109,6 +115,28 @@ var activityPlanning={
 		$("#task_description").val(nextCurrent.task_description);
 		$("#target_start_time").val(nextCurrent.target_start_time);
 		$("#target_end_time").val(nextCurrent.target_end_time);
+	},
+	getTaskList:function(){
+		var param={};
+		param["corp_code"]="C10000";
+		oc.postRequire("post","/task/selectAllTaskType", "0",param, function (data) {
+			var message = JSON.parse(data.message);
+            var list = JSON.parse(message.list);
+            var html="";
+            if (list.length>0) {
+                for (var i = 0; i < list.length; i++) {
+                    html += '<div data-code="' + list[i].task_type_code + '">' + list[i].task_type_name + '</div>';
+                }
+                $("#task_type_code").siblings('.input_dropdown').html(html);
+            } else if (list.length <= 0) {
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "请先定义任务类型"
+                });
+            };
+		})
 	},
 	addTask:function(){
 		var self=this;
@@ -173,8 +201,31 @@ var activityPlanning={
 		param["task_type_code"]=task_type_code;//任务编号
 		param["task_description"]=task_description;//任务简述
 		param["task_link"]=task_link//链接
+		param["activity_vip_code"]="ACls0000000001";
 		self.param.tasklist.push(param);
 	},
+	getGroupValue:function(){
+		var type=$("#group .tabs_left ul li.active").attr("data-type");
+		var index=$("#group .tabs_left ul li.active").index();
+		console.log(index);
+		var param={};
+		var sendlist=[];
+		param["type"]=type;
+	    var list=$("#p_task_content .group_parent").eq(index).find('.input_parent');
+	    console.log(list);
+		if(type=="wx"){
+			for(var i=0;i<list.length;i++){
+				var send_time=$(list[i]).find(".text_input").val();
+				var title=$(list[i]).find(".edit_frame .edit_title").val();
+				var url=$(list[i]).find(".edit_frame .edit_link").val();
+				var desc=$(list[i]).find(".edit_frame .edit_content").val();
+				var gparam={"send_time":send_time,"title":title,url:url,desc:desc};
+				sendlist.push(gparam);
+			}
+		}
+		param["sendlist"]=sendlist;
+	},
+
 }
 $(function(){
 	activityPlanning.init();

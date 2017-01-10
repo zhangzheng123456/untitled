@@ -38,4 +38,7 @@ public interface VipGroupService {
 
     DataBox vipScreenBySolr(JSONArray screen,String corp_code,String page_num,String page_size,String role_code,
                             String user_brand_code,String user_area_code,String user_store_code,String user_code1) throws Exception;
+
+     JSONArray vipScreen2Array(JSONArray screen,String corp_code,String role_code,
+                                     String user_brand_code,String user_area_code,String user_store_code,String user_code1)throws Exception;
 }

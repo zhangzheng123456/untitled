@@ -1,9 +1,9 @@
-<link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+<!-- <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
 <link href="../css/style.css?v=2.2.0" rel="stylesheet">
 <link rel="stylesheet" href="../css/font_style.css">
 <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
 <link rel="stylesheet" type="text/css" href="../css/vip_activity_add.css">
-<link rel="stylesheet" href="../css/set_vip_activity.css">
+<link rel="stylesheet" href="../css/set_vip_activity.css"> -->
 <div>
     <div class="tabs_title_p">
         <div class="tabs_left">
@@ -85,9 +85,9 @@
     <div class="p_task" id="group">
         <div class="tabs_left">
             <ul>
-                <li class="active">微信推送</li>
-                <li>短信群发</li>
-                <li>邮件群发</li>
+                <li class="active" data-type="wx">微信推送</li>
+                <li data-type="sms">短信群发</li>
+                <li data-type="email">邮件群发</li>
             </ul>
         </div>
     </div>
@@ -96,7 +96,7 @@
         <div class="group_parent" style="display: block;">
             <div class="input_parent">
                 <div class="float">
-                    <label for="">发送时间</label><input type="text" class="text_input" placeholder="">
+                    <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
                 </div>
                 <div class="float margin_left">微信推送配置</div>
                 <div class="float group_edit margin_left">编辑</div>
@@ -117,11 +117,11 @@
                         </div>
                     </div>
                     <div class="edit_frame_left">
-                        <label for="" class="label_frame">推送标题</label><input type="text" placeholder="请输入推送标题"></div>
+                        <label for="" class="label_frame">推送标题</label><input class="edit_title" type="text" placeholder="请输入推送标题"></div>
                     <div class="edit_frame_left">
-                        <label for="" class="label_frame">页面链接</label><input type="text" placeholder="请输入页面链接"></div>
+                        <label for="" class="label_frame">页面链接</label><input class="edit_link" type="text" placeholder="请输入页面链接"></div>
                     <div class="edit_frame_left">
-                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">摘要</label><textarea placeholder="请输入推送摘要"></textarea>
+                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">摘要</label><textarea class="edit_content" placeholder="请输入推送摘要"></textarea>
                     </div>
                     <div class="edit_frame_left file_parent">
                         <label for="" class="label_frame" style="margin-top: 5px;">封面图片</label>
@@ -139,7 +139,8 @@
         <div class="group_parent">
             <div class="input_parent">
                 <div class="float">
-                    <label for="">发送时间</label><input type="text" class="text_input" placeholder=""></div>
+                    <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
+                </div>
                 <div class="float margin_left">短信内容设定</div>
                 <div class="float group_edit margin_left">编辑</div>
                 <div class="float add_del">
@@ -171,7 +172,8 @@
         <div class="group_parent">
             <div class="input_parent">
                 <div class="float">
-                    <label for="">发送时间</label><input type="text" class="text_input" placeholder=""></div>
+                    <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
+                </div>
                 <div class="float margin_left">邮件内容设定</div>
                 <div class="float group_edit margin_left">编辑</div>
                 <div class="float add_del">
@@ -186,9 +188,9 @@
         </div>
     </div>
 </div>
-<script src="../js/loading.js"></script>
+<!-- <script src="../js/loading.js"></script>
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script src="../js/artDialog/jquery.artDialog.js"></script>
-<script src="../js/artDialog/plugins/iframeTools.js"></script>
+<script src="../js/artDialog/plugins/iframeTools.js"></script> -->
 <script src="../js/activity/activityPlanning.js"></script>

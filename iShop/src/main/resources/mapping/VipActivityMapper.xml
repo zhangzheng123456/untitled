@@ -13,23 +13,14 @@
         <result column="activity_state" property="activity_state"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
 
-        <result column="activity_code" property="activity_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_theme" property="activity_theme" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_state" property="activity_state" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_vips" property="target_vips" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
-        <result column="activity_store_code" property="operators"
+        <result column="activity_store_code" property="activity_store_code"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_desc" property="activity_content"
+        <result column="activity_desc" property="activity_desc"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
-        <result column="activity_store_code" property="activity_store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="activity_desc" property="activity_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
         <result column="task_code" property="task_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sms_code" property="sms_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date"
@@ -292,10 +283,10 @@
         FROM def_vip_activity,def_corp
         WHERE def_vip_activity.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
-        AND def_vip_activity.CORP_CODE = #{corp_code}
+            AND def_vip_activity.CORP_CODE = #{corp_code}
         </if>
         AND def_vip_activity.activity_theme = #{activity_theme}
-        AND  def_vip_activity.isactive= #{isactive}
+        AND def_vip_activity.isactive= #{isactive}
     </select>
 
 </mapper>
