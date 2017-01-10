@@ -1,6 +1,5 @@
 .setUp_activity{
     width: 100%;
-    padding: 20px;
     font-size: 13px;
     color: #4a5f7c;
 }
@@ -47,8 +46,11 @@
     top: 30px;
     width: 240px;
     background: #f5f5f5;
-    overflow: hidden;
     border: 1px solid #d7d7d7;
+}
+.coupon_activity{
+    max-height: 180px;
+    overflow-y: scroll;
 }
 .setUp_activity .activity_select li{
     cursor: pointer;

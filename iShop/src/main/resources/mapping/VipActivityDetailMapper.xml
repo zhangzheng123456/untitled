@@ -275,7 +275,7 @@
                 isactive=#{isactive},
             </if>
         </trim>
-        WHERE id=#{id};
+        WHERE activity_code=#{activity_code};
     </update>
 
     <delete id="delActivityDetailById">
