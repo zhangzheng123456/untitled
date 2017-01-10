@@ -54,10 +54,10 @@ public class VipActivityDetailController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.get("activity_code").toString().trim();
-            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
+            VipActivityDetail vipActivityd = vipActivityDetailService.selActivityDetailByCode(activity_code);
             String result = "";
             //根据活动类型判断新增或者编辑
-            if (vipActivity == null) {
+            if (vipActivityd == null) {
                 result = this.vipActivityDetailService.insert(message, user_id);
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setId(id);
