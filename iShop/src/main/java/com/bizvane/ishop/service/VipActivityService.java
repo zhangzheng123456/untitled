@@ -87,12 +87,15 @@ public interface VipActivityService {
      */
     VipActivity selActivityByCode(String activity_code) throws Exception;
 
+
     /**
-     * @param VipActivity
+     * @param corp_code
+     * @param activity_code
+     * @param task_code
      * @return
      * @throws Exception
      */
-    JSONObject executeDetail(VipActivity VipActivity) throws Exception;
+    JSONObject executeDetail(String corp_code,String activity_code,String task_code) throws Exception;
 
     ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception;
 
