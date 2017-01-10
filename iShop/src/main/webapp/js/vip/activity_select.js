@@ -972,6 +972,9 @@ function setPage(container, count, pageindex,pageSize){
     }()
 }
 function dian(a,b){//点击分页的时候调什么接口
+    if(_param["screen"].length=="0"){
+        return;
+    }
         _param["pageNumber"] = a;
         _param["pageSize"] = b;
         filtrates(a,b);
@@ -986,10 +989,8 @@ $("#page_row").click(function(){
 $("#liebiao li").each(function(i,v){
     $(this).click(function(){
         pageSize=$(this).attr('id');
-        if(filtrate==""){
-            inx=1;
-            GET(inx,pageSize);
-        }else if(filtrate!==""){
+        if(_param["screen"].length=="0"){
+        }else {
             inx=1;
             _param["pageNumber"]=inx;
             _param["pageSize"]=pageSize;
@@ -1013,19 +1014,19 @@ $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
     inx=parseInt(inx);
-    if (inx > cout) {
-        inx = cout
-    };
+    if (inx > count) {
+        inx = count
+    }
     if (inx > 0) {
         if (event.keyCode == 13) {
-            if (filtrate == "") {
-                GET(inx, pageSize);
-            } else if (filtrate !== "") {
+            if(_param["screen"].length=="0"){
+                return;
+            }else {
                 _param["pageSize"] = pageSize;
                 _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
-        };
+        }
     }
 });
 function getData(){
@@ -1048,6 +1049,7 @@ function getData(){
             filtrates(1,10);
         }else if(JSON.parse(activityVip.target_vips).length==0){
             whir.loading.add("",0.5);//加载等待框
+            setPage($("#foot-num")[0],1,1,pageSize);
             superaddition(JSON.parse(activityVip.target_vips))
         }
 
