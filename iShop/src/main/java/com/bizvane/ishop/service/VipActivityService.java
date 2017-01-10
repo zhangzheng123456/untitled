@@ -71,13 +71,6 @@ public interface VipActivityService {
      * @return
      * @throws Exception
      */
-    VipActivity selectActivityById(int id) throws Exception;
-
-    /**
-     * @param id
-     * @return
-     * @throws Exception
-     */
     VipActivity getActivityById(int id) throws Exception;
 
     /**

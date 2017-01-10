@@ -197,8 +197,10 @@ public class VipGroupServiceImpl implements VipGroupService {
         String area_code = "";
         String store_code = "";
         String user_code = "";
+        String group_code = "";
         String store_code_key = "14";
         String user_code_key = "15";
+        String group_key = "16";
         JSONArray post_array = new JSONArray();
         for (int i = 0; i < screen.size(); i++) {
             JSONObject screen_obj = screen.getJSONObject(i);
@@ -226,12 +228,23 @@ public class VipGroupServiceImpl implements VipGroupService {
                 if (screen_obj.containsKey("date")){
                     post_obj.put("date",screen_obj.getString("date"));
                 }
-                post_array.add(post_obj);
                 //根据key值，找出其对应name
                 if (key.equals(store_code_key))
                     store_code = value;
                 if (key.equals(user_code_key))
                     user_code = value;
+                if (key.equals(group_key)){
+                    group_code = value;
+                    String[] group_codes = group_code.split(",");
+                    for (int j = 0; j < group_codes.length; j++) {
+                        VipGroup vipGroup = getVipGroupByCode(corp_code,group_codes[j],Common.IS_ACTIVE_Y);
+                        if (vipGroup.getGroup_type().equals("define")){
+                            value = vipGroup.getGroup_condition();
+                            post_obj.put("value",value);
+                        }
+                    }
+                }
+                post_array.add(post_obj);
             }
         }
         if (store_code.equals("")){

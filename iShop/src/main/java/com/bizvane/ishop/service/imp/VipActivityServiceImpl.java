@@ -166,31 +166,6 @@ public class VipActivityServiceImpl implements VipActivityService {
     }
 
     @Override
-    public VipActivity selectActivityById(int id) throws Exception {
-        VipActivity VipActivity = vipActivityMapper.selActivityById(id);
-        String corp_code = VipActivity.getCorp_code();
-        String target_vips = VipActivity.getTarget_vips();
-        JSONObject vips_obj = JSONObject.parseObject(target_vips);
-        String type = vips_obj.get("type").toString();
-        if (type.equals("1")) {
-            String area_code = vips_obj.get("area_code").toString();
-            String brand_code = vips_obj.get("brand_code").toString();
-            String store_code = vips_obj.get("store_code").toString();
-            String user_code = vips_obj.get("user_code").toString();
-            DataBox dataBox = iceInterfaceService.vipScreenMethod("1", "3", corp_code, area_code, brand_code, store_code, user_code);
-            String result = dataBox.data.get("message").value;
-            JSONObject result_obj = JSONObject.parseObject(result);
-            String count = result_obj.get("count").toString();
-            VipActivity.setTarget_vips_count(count);
-        } else if (type.equals("2")) {
-            String vips = vips_obj.get("vips").toString();
-            String[] vips_array = vips.split(",");
-            VipActivity.setTarget_vips_count(String.valueOf(vips_array.length));
-        }
-        return VipActivity;
-    }
-
-    @Override
     public VipActivity getActivityById(int id) throws Exception {
         VipActivity VipActivity = vipActivityMapper.selActivityById(id);
         return VipActivity;
