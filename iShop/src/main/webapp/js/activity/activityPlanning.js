@@ -88,13 +88,14 @@ var activityPlanning={
 		$(".switch div").click(function(){
 			$(this).toggleClass("bg");
 			$(this).find("span").toggleClass("Off");
-			var param={};
-			var tasklist=self.param.tasklist;
-			param["tasklist"]=tasklist;
-			//测试
-			oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
-				console.log(data);
-			});
+			// var param={};
+			// var tasklist=self.param.tasklist;
+			// param["tasklist"]=tasklist;
+			// //测试
+			// oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
+			// 	console.log(data);
+			// });
+			self.getGroupValue();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -219,11 +220,15 @@ var activityPlanning={
 				var title=$(list[i]).find(".edit_frame .edit_title").val();
 				var url=$(list[i]).find(".edit_frame .edit_link").val();
 				var desc=$(list[i]).find(".edit_frame .edit_content").val();
-				var gparam={"send_time":send_time,"title":title,url:url,desc:desc};
+				var activity_vip_code="ACls0000000001";
+				var gparam={"send_time":send_time,"title":title,url:url,desc:desc,activity_vip_code:activity_vip_code};
 				sendlist.push(gparam);
 			}
 		}
 		param["sendlist"]=sendlist;
+		oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
+			console.log(data);
+		});
 	},
 
 }
