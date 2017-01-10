@@ -751,7 +751,6 @@ var activity={
         });
     },
     add:function (data) {
-        var a="";
         var param={};
         param["corp_code"]=$("#OWN_CORP").val();
         param["activity_code"]="";
@@ -764,12 +763,11 @@ var activity={
         activity.checkEmpty();
         oc.postRequire("post","/vipActivity/add","0",param,function (data) {
             if(data.code==0){
-
+                
             }else if(data.code==-1){
 
             }
         });
-        return a;
     }
 };
 $(function () {

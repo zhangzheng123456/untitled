@@ -290,16 +290,16 @@ public class VipActivityController {
         String message = jsonObj.get("message").toString();
         JSONObject jsonObject = JSONObject.parseObject(message);
         try {
-            int activity_id = Integer.parseInt(jsonObject.get("id").toString());
+            String activity_code = jsonObject.get("activity_code").toString();
 
-            VipActivity activityVip = vipActivityService.getActivityById(activity_id);
-            String activity_state = activityVip.getActivity_state();
+            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
+            String activity_state = vipActivity.getActivity_state();
             if (!activity_state.equals("未执行")) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("该任务非未执行状态");
             } else {
-                String result = vipActivityService.executeActivity(activityVip, user_code);
+                String result = vipActivityService.executeActivity(vipActivity, user_code);
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

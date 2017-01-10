@@ -62,7 +62,7 @@ public class VipFsendController {
 
             VipFsend vipFsend = WebUtils.JSON2Bean(jsonObject, VipFsend.class);
 
-            String result = this.vipFsendService.insert(vipFsend,tem_id,role_code,brand_code,area_code,store_code, user_code);
+            String result = this.vipFsendService.insert(vipFsend,role_code,brand_code,area_code,store_code, user_code);
 
             if (result.equals("0")) {
                 dataBean.setId(id);
