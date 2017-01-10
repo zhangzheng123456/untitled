@@ -11,7 +11,7 @@
             <span>活动基本信息</span>
         </div>
         <div class="tabs_right">
-            <div class="switch">
+            <div class="switch" id="task_switch">
                 <span class="switch_text">任务已开启</span>
                 <div class="bg">
                     <span class="Off"></span>
@@ -74,7 +74,7 @@
             <span>群发管理</span>
         </div>
         <div class="tabs_right">
-            <div class="switch" style="position:none;">
+            <div class="switch" id="group_switch">
                 <span class="switch_text">群发已开启</span>
                 <div class="bg">
                     <span class="Off"></span>
@@ -93,7 +93,7 @@
     </div>
     <!-- 群发管理内容 -->
     <div class="p_task_content" id="p_task_content">
-        <div class="group_parent" style="display: block;">
+        <div class="group_parent" style="display: block;" id="wxlist">
             <div class="input_parent">
                 <div class="float">
                     <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
@@ -136,7 +136,7 @@
                 </div>
             </div>
         </div>
-        <div class="group_parent">
+        <div class="group_parent" id="smslist">
             <div class="input_parent">
                 <div class="float">
                     <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                     <div class="edit_frame_left">
-                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea placeholder="请输入短信内容"></textarea>
+                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
                     </div>
                     <div class="edit_footer">
                         <div class="edit_footer_close">取消</div>
@@ -169,7 +169,7 @@
                 </div>
             </div>
         </div>
-        <div class="group_parent">
+        <div class="group_parent" id="emlist">
             <div class="input_parent">
                 <div class="float">
                     <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
@@ -182,6 +182,22 @@
                     </div>
                     <div class="group_del">
                         <span class="icon-ishop_6-02"></span>
+                    </div>
+                </div>
+                <!--短信弹框 -->
+                <div class="edit_frame edit_message">
+                    <div class="tabs_title_p">
+                        <div class="tabs_left">
+                            <span class="title_icon"></span>
+                            <span>短信内容设定</span>
+                        </div>
+                    </div>
+                    <div class="edit_frame_left">
+                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
+                    </div>
+                    <div class="edit_footer">
+                        <div class="edit_footer_close">取消</div>
+                        <div class="edit_footer_save">保存修改</div>
                     </div>
                 </div>
             </div>
