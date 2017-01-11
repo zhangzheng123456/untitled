@@ -27,4 +27,5 @@ public interface VipActivityDetailService {
 
     String creatActivityInviteQrcode(String corp_code,String auth_appid, String activity_code,String user_id) throws Exception;
 
+     String insert_new(String message, String user_id) throws Exception;
 }

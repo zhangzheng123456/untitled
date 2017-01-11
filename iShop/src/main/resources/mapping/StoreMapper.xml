@@ -273,7 +273,8 @@
         ORDER BY def_store.id DESC
     </select>
 
-    <select id="selectByUserId" resultMap="Store">
+    <!--列表，根据店铺编号拉店铺（店长，导购）-->
+    <select id="selectByStoreCodes" resultMap="Store">
         select
         def_store.id,
         store_id,

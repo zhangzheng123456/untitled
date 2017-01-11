@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
@@ -76,6 +77,11 @@ public class UserController {
     private BaseService baseService;
     @Autowired
     IceInterfaceService iceInterfaceService;
+    @Autowired
+    CorpParamService corpParamService;
+    @Autowired
+    ParamConfigureService paramConfigureService;
+
     String id;
 
     /***
@@ -1503,7 +1509,7 @@ public class UserController {
             } else {
                 //登录用户为店长或导购
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
+                list = storeService.selectByStoreCodes(store_code, corp_code, Common.IS_ACTIVE_Y);
             }
             stores.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1724,16 +1730,27 @@ public class UserController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
             String phone = jsonObject.get("phone").toString();
-            List<User> user = userService.userPhoneExist(phone);
-            if (user.size() > 0) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("手机号码已被使用");
-            } else {
+
+            ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.IS_CHECK_PHONE, Common.IS_ACTIVE_Y);
+            List<CorpParam> corpParams = corpParamService.selectByCorpParam(corp_code, String.valueOf(param.getId()), Common.IS_ACTIVE_Y);
+
+            if (corpParams.size() > 0 && corpParams.get(0).getParam_value().equals("N")){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("手机号码未被使用");
+            }else {
+                List<User> user = userService.userPhoneExist(phone);
+                if (user.size() > 0) {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage("手机号码已被使用");
+                } else {
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("手机号码未被使用");
+                }
             }
         } catch (Exception ex) {
             dataBean.setId(id);

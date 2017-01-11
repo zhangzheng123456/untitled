@@ -1,0 +1,107 @@
+body{
+    margin-right: 200px
+}
+.marTop{
+    padding-top: 50px;
+}
+.the_listTitle{
+    margin-top: 20px;
+    margin-left: 60px
+}
+.the_listTitle label{
+    font-size:14px;
+    float: left;
+    width: 105px;
+    height: 30px;
+    text-align: right;
+    margin-right: 18px;
+    line-height: 30px;
+    font-size: 14px;
+    text-indent: 10px;
+}
+.red{
+    color:#c26555;
+}
+.the_listTitle input{
+    margin-bottom:15px;
+    float: left;
+    width: 480px;
+    height: 30px;
+    border-radius: 4px;
+    border: none;
+    text-indent: 10px;
+    outline: none;
+    color: #888888;
+}
+.the_listTitle input{
+    margin-bottom:15px;
+    float: left;
+    width: 480px;
+    height: 30px;
+    border-radius: 4px;
+    border: none;
+    text-indent: 10px;
+    outline: none;
+    color: #888888;
+}
+.the_listTitle textarea{
+    margin-bottom:15px;
+    padding: 10px;
+    float: left;
+    width: 480px;
+    height:120px;
+    border-radius: 4px;
+    border: none;
+    /*text-indent: 10px;*/
+    outline: none;
+    color: #888888;
+}
+/*搭配效果图*/
+.list_content{
+    float: left;
+    margin-top: 5px;
+    width: 495px;
+}
+.item_box{
+    width: 150px;
+    /*height: 190px;*/
+    margin-bottom: 20px;
+    margin-right:20px;
+    float: left;
+}
+.item_area{
+    width: 100%;
+    height: 150px;
+    background-color: white;
+    border-radius: 4px;
+}
+.item_text{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+/*新增按钮*/
+#add_all,#add_one{
+    border: 2px dashed #c3c3c3;
+    width: 150px;
+    height: 150px;
+    line-height: 130px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 60px;
+    float: left;
+    margin-right: 15px;
+}
+.addAdd{
+    color: #c3c3c3;
+    font-size:80px;
+    position: absolute;
+    top:0px;
+}
+.addText{
+    position: absolute;
+    top:40px;
+    font-size:14px;
+    color: #c3c3c3;
+}

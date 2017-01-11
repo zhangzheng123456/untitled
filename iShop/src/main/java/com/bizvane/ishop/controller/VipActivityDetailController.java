@@ -5,8 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpWechat;
+import com.bizvane.ishop.entity.VipActivity;
 import com.bizvane.ishop.entity.VipActivityDetail;
+import com.bizvane.ishop.entity.VipCardType;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.service.imp.VipActivityServiceImpl;
+import org.apache.avro.data.Json;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +31,11 @@ public class VipActivityDetailController {
     private VipActivityDetailService vipActivityDetailService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private VipActivityService vipActivityService;
+    @Autowired
+    private VipCardTypeService vipCardTypeService;
+
     private static final Logger logger = Logger.getLogger(VipActivityDetailController.class);
 
     String id;
@@ -48,14 +57,16 @@ public class VipActivityDetailController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String activity_type = jsonObject.getString("activity_type");
+            String activity_code = jsonObject.get("activity_code").toString().trim();
+            VipActivityDetail vipActivityd = vipActivityDetailService.selActivityDetailByCode(activity_code);
             String result = "";
             //根据活动类型判断新增或者编辑
-            if (activity_type == null || activity_type.equals("")) {
+            if (vipActivityd == null) {
                 result = this.vipActivityDetailService.insert(message, user_id);
                 if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                     dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("新增成功");
                 } else {
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -103,8 +114,24 @@ public class VipActivityDetailController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.getString("activity_code");
             VipActivityDetail vipActivityDetail = vipActivityDetailService.selActivityDetailByCode(activity_code);
+           String  recruit= vipActivityDetail.getRecruit();
+            JSONObject recruitInfo= JSON.parseObject(recruit);
+            String vip_card_type_code="";
+            if(recruitInfo.containsKey("vip_card_type_code")) {
+                 vip_card_type_code = recruitInfo.getString("vip_card_type_code");
+            }
             JSONObject result = new JSONObject();
-            result.put("activityVip", JSON.toJSONString(vipActivityDetail));
+            JSONObject vip_cardInfo=JSON.parseObject( JSON.toJSONString(vipActivityDetail));
+            //根据会员卡编号查询会员卡类型
+            if(vip_card_type_code!=null||!vip_card_type_code.equals("")){
+                VipCardType vipCardType= vipCardTypeService.getVipCardTypeByCode(vipActivityDetail.getCorp_code(),vip_card_type_code,Common.IS_ACTIVE_Y);
+                String vip_card_type_name=vipCardType.getVip_card_type_name();
+                vip_cardInfo.put("vip_card_type_name",vip_card_type_name);
+            }
+            else{
+                System.out.print("======");
+            }
+            result.put("activityVip",vip_cardInfo );
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

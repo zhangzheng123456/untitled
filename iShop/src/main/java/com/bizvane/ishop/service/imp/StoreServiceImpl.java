@@ -198,7 +198,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("search_value", search_value);
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
-        shops = storeMapper.selectByUserId(params);
+        shops = storeMapper.selectByStoreCodes(params);
 
         for (int i=0;i<shops.size();i++) {
             Store store = getStoreById(shops.get(i).getId());
@@ -256,7 +256,7 @@ public class StoreServiceImpl implements StoreService {
      * 获取页面的所有数据
      */
     @Override
-    public List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception{
+    public List<Store> selectByStoreCodes(String store_code, String corp_code, String isactive) throws Exception{
         if (store_code.contains(Common.SPECIAL_HEAD))
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
         String[] ids = store_code.split(",");
@@ -265,7 +265,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("search_value", "");
         params.put("isactive", isactive);
-        return storeMapper.selectByUserId(params);
+        return storeMapper.selectByStoreCodes(params);
     }
 
     //店铺下所属用户
