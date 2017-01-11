@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增秀搭</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?20170105">
+    <link href="../css/style.css?20170105" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css?20170105">
+    <!--匹配css-->
+    <link rel="stylesheet" href="../css/xiuda_add.css"/>
+    <script src="../js/loading.js?20170105"></script>
+    <style type="text/css">
+        div{
+            width:100%;
+        }
+        #edui1_elementpath{
+            display: none;
+        }
+        .good_imgs .fileBoxUl .check_public{
+            width: 16px;
+            height: 16px;
+            background-color: #d5d5d5;
+            border-radius: 15px;
+            position: absolute;
+            left: -15px;
+            top: 8px;
+            background-size: 22px 22px;
+            margin-left: 28px;
+        }
+    </style>
+    <style>
+        body{
+            margin-top:81px;
+        }
+        #edui1_elementpath{
+            display: none;
+        }
+        .good_imgs .fileBoxUl .check_public{
+            width: 16px;
+            height: 16px;
+            background-color: #d5d5d5;
+            border-radius: 15px;
+            position: absolute;
+            left: -15px;
+            top: 8px;
+            background-size: 22px 22px;
+            margin-left: 28px;
+        }
+        #edit div{margin-bottom: 0px;}
+        #edit{ margin-left: 120px;width: 420px; margin-top: -20px;}
+        .add span{font-size: 20px;margin-left: 5px;}
+        .match_goods ul{width:420px;height:250px;margin-left:120px;margin-top: 5px;overflow-y: auto;overflow-x: hidden;}
+        .match_goods ul li{width:410px;height:50px;margin:auto;padding-top:5px;border-bottom: 1px solid rgba(255,255,255,0.4);}
+        .match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .match_goods .icon-ishop_6-12{float:right;margin:10px;font-size: 20px;color: #c26555;}
+        .goodsImg{width:40px;height:40px;margin:0 10px;border-radius:5px;border: 1px solid #dbdbdb; }
+        #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 5px;cursor:pointer;}
+        #search_match_goods{width:450px;min-height:460px;overflow:hidden;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;display:none}
+        #search{width:400px;height:30px;border-radius:9px;outline: none;padding-left: 10px;padding-right: 30px;border: 1px solid #d7d7d7;;margin: 20px 20px;color:#888;}
+        #search::-webkit-input-placeholder { /* WebKit browsers */
+            color: #888;
+        }
+        #search:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #888;
+        }
+        #search::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #888;
+        }
+        #search:-ms-input-placeholder { /* Internet Explorer 10+ */
+            color: #888;
+        }
+        #d_search{float: right;position: absolute;  top:49px;  right: 32px;  font-size: 32px;color: #DCDCDC;}
+        #goods_box{width:100%;height:1200px;position:absolute;top:45%;left: 20%;z-index: 100;display: none;}
+        #search_match_goods .li{margin-bottom: 0;height:100px;}
+        #search_match_goods ul{ width:425px;height:350px;overflow-y:auto;overflow-x: hidden;margin-left:20px; margin-bottom: 20px}
+        #search_match_goods ul li{width:400px;height:50px;background:#ededed;padding-top:5px;display: inline-block; }
+        #search_match_goods ul li:nth-child(even){background: #FFFFFF;}
+        #search_match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+        #search_match_goods ul li i{position:relative;right:5px;top:8px;color: #c26555;display: none;cursor: pointer;}
+        .goods_add{width: 40px;height:50px;float:right;font-size: 30px;  margin-top: -5px; text-align: center;  line-height: 50px;color:#c3c3c3; }
+        .goods_add:hover{color:#6dc1c8;cursor: pointer;}
+        .bttn-wrapper .fr-bttn:last-child{display: none;}
+        .bttn-wrapper .fr-bttn:nth-last-of-type(4){display: none}
+        /*添加*/
+        .conpany_msg li{width: 150px;height: 190px;margin-bottom: 10px;float: left;margin-right:15px;position: relative;}
+        .conpany_msg img{width:150px;height:150px;border-radius: 5px;background-color: #ffffff;margin:0 auto;}
+        .conpany_msg  span:nth-of-type(1){display:block; width: 150px;height: 30px;margin-top: 10px;font-size: 14px;color: #888888;text-align: center;margin-right: 20px}
+        /*文字*/
+        .conpany_msg span:nth-of-type(2){display: none;}
+        /*删除*/
+        .conpany_msg i{display:none;background-color: #e58080;color: white;border-radius: 300px;width: 17px;height: 17px;position: absolute;top: -7px;right: -7px;text-align: center;line-height: 17px;}
+        #d_search:hover{
+            cursor:hand;
+            cursor:pointer
+        }
+        .error_tips{
+            clear: both;
+        }
+        .hint{
+            padding-bottom: 15px;
+            padding-left:125px
+        }
+    </style>
+</head>
+<body>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="changePage()">秀搭管理</span><i class="icon-ishop_8-03"></i><label>新增秀搭</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight marTop">
+        <!--所属企业-->
+        <div class="the_listTitle">
+           <span>
+               <label class="red">所属企业*</label><input type="text" verify="Empty" maxlength="200"/>
+                <div class="hint"><div hintinfo="所属企业不能为空！"></div></div>
+            </span>
+        </div>
+        <!--秀搭标题-->
+        <div class="the_listTitle">
+           <span>
+               <label class="red">秀搭标题*</label><input type="text" verify="Empty" maxlength="200"/>
+                <div class="hint"><div hintinfo="秀搭标题不能为空！"></div></div>
+            </span>
+        </div>
+        <!--搭配效果图-->
+        <div class="the_listTitle">
+           <span>
+               <label>搭配效果图</label>
+                <form class="list_content" style="height:150px;margin-bottom: 15px">
+                    <!--商品模板-->
+                    <div class="item_box">
+                        <div class="item_area"></div>
+                    </div>
+                    <!--添加模板-->
+                    <div id="add_all">
+                        <div class="addAdd">+</div>
+                        <div class="addText">添加商品</div>
+                    </div>
+                </form>
+            </span>
+        </div>
+        <!--商品搭配-->
+        <div class="the_listTitle">
+           <span>
+               <label>商品搭配</label>
+                <form class="list_content">
+                    <!--商品模板-->
+                    <div class="item_box">
+                        <div class="item_area"></div>
+                        <div class="item_text">AJEL55598</div>
+                    </div>
+                    <!--添加模板-->
+                    <div id="add_one">
+                        <div class="addAdd">+</div>
+                        <div class="addText">添加商品</div>
+                    </div>
+                </form>
+            </span>
+        </div>
+        <!--搭配描述-->
+        <div class="the_listTitle">
+           <span>
+               <label>搭配描述</label><textarea name="" cols="30" rows="10" maxlength="1000"></textarea>
+            </span>
+        </div>
+    </div>
+    <!--<div id="search_match_goods" style="top:50px;left:250px;position: absolute;z-index: 1000;" onmousedown="mouseDown(this,event)"-->
+         <!--onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">-->
+        <!--<i class="icon-ishop_6-12" id="close_match_goods"></i>-->
+        <!--<div class="li">-->
+            <!--<input type="text" class="input" id="search" placeholder="商品编号/商品名称">-->
+            <!--<i class="icon-ishop_3-05" id="d_search"></i>-->
+        <!--</div>-->
+        <!--<ul id="stop"  onmousedown=" stopBubble(this.id)" onmousemove=" stopBubble(this.id)" onmouseup=" stopBubble(this.id)">-->
+
+        <!--</ul>-->
+        <!--<div id="more" class="more">加载更多<i class="icon-ishop_6-18"></i></div>-->
+    <!--</div>-->
+    <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
+        <div class="fabadd_oper_btn">
+            <ul>
+                <li class="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
+                <li class="edit_close" id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+            <span><label>创建时间</label><input type="text" id="created_time" readonly=""></span>
+            </div>
+            <div>
+            <span><label>创建人</label><input type="text" id="creator" readonly=""></span>
+            </div>
+            <div>
+            <span><label>修改时间</label><input type="text" id="modify_time" readonly=""></span>
+            </div>
+            <div>
+            <span><label>修改人</label><input type="text" id="modifier" readonly=""></span>
+            </div>
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="checked"  id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="goods_box"></div>
+<!-- ajax -->
+<script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+</body>
+</html>
