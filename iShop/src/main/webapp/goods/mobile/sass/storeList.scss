@@ -18,6 +18,10 @@ body{
   position: relative;
   top: 0px;
 }
+.title span{
+  float: right;
+  margin-right: 10%;
+}
 .title .more_store{
   background-color: #71cbd3;
   color: white;
@@ -89,5 +93,6 @@ body{
   width: 100%;
   max-height:rem(90);
   line-height: rem(20);
+  word-break: break-all;
 
 }

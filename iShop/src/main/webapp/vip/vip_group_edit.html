@@ -123,6 +123,9 @@
             </div>
             <div style="width: 418px;margin-left: 125px;">
                 <div id="group_list" style="display: none;border-top: 1px solid #d4d4d4;padding-top: 10px;width: 100%">
+                    <div style="display: none" id="class" class="select_more"><span>品类喜好</span><input type="text" style="width: 300px;margin-left: 10px;border-top-right-radius: 0;border-bottom-right-radius: 0"><span class="icon_r icon-ishop_8-03" style="border-top-right-radius: 5px;cursor:pointer;border-bottom-right-radius: 5px;text-align: center;width:30px;margin-top: -1px;display: inline-block;background-color: #6dc1c8;height: 30px;line-height: 30px;color: #ffffff;vertical-align: middle"></span></div>
+                    <div style="display: none" id="brand" class="select_more"><span>品牌喜好</span><input type="text" style="width: 300px;margin-left: 10px;border-top-right-radius: 0;border-bottom-right-radius: 0"><span class="icon_r icon-ishop_8-03" style="border-top-right-radius: 5px;cursor:pointer;border-bottom-right-radius: 5px;text-align: center;width:30px;margin-top: -1px;display: inline-block;background-color: #6dc1c8;height: 30px;line-height: 30px;color: #ffffff;vertical-align: middle"></span></div>
+                    <div style="display: none" id="season" class="select_more"><span>季节篇好</span><input type="text" style="width: 300px;margin-left: 10px;border-top-right-radius: 0;border-bottom-right-radius: 0"><span class="icon_r icon-ishop_8-03" style="border-top-right-radius: 5px;cursor:pointer;border-bottom-right-radius: 5px;text-align: center;width:30px;margin-top: -1px;display: inline-block;background-color: #6dc1c8;height: 30px;line-height: 30px;color: #ffffff;vertical-align: middle"></span></div>
                     <div id="consume_amount"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费金额</span><input type="text" style="width: 137px;"  ><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 137px;" > （元）</div>
                     <div id="consume_piece"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费件数</span><input type="text" style="width: 137px;"  ><span style="display: inline-block;width: 30px;text-align: center">~</span><input   type="text" style="width: 137px;" > （件）</div>
                     <div id="consume_discount" style="margin: 0"><span style="text-align: right;display: inline-block;margin-right: 10px;">消费折扣</span><input type="text" style="width: 137px;" ><span style="display: inline-block;width: 30px;text-align: center">~</span><input  type="text" style="width: 137px;" > （折）</div>
@@ -686,6 +689,117 @@
         </div>
     </div>
     <div class="screen_que" id="screen_que_staff">确定</div>
+</div>
+<!-- 拉取品类  -->
+<div id="screen_class" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选</h4>
+        <div class="screen_close" id="screen_close_class"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="class_search">
+            <span class="icon-ishop_3-05" id="class_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_class">确定</div>
+</div>
+<!-- 拉取品牌  -->
+<div id="screen_brand_add" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选</h4>
+        <div class="screen_close" id="screen_close_brand_add"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="brand_search_add">
+            <span class="icon-ishop_3-05" id="brand_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_brand_add">确定</div>
+</div>
+<!-- 拉取季节  -->
+<div id="screen_season" class="screen_area">
+    <div class="screen_title">
+        <h4>筛选</h4>
+        <div class="screen_close" id="screen_close_season"><span class="icon-ishop_6-12"></span></div>
+        <div class="xian"></div>
+    </div>
+    <div class="input_s">
+        <div class="input_search">
+            <input type="text" placeholder="搜索" id="season_search_add">
+            <span class="icon-ishop_3-05" id="season_search_f"></span>
+        </div>
+        <div class="s_center"></div>
+        <div class="s_pitch">
+            已添加&nbsp;<span>0</span>&nbsp;个
+        </div>
+    </div>
+    <div class="screen_content">
+        <div class="screen_content_l">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="screen_content_z">
+            <div class="shift shift_right" title="右移">&gt;</div>
+            <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+            <div class="shift shift_left" title="左移">&lt;</div>
+            <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+        </div>
+        <div class="screen_content_r">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="screen_que" id="screen_que_season_add">确定</div>
 </div>
 
 <!-- Mainly scripts -->

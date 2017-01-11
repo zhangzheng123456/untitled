@@ -394,16 +394,16 @@ public class VipActivityServiceImpl implements VipActivityService {
     /**
      * 查看员工执行详情
      * @param corp_code
-     * @param activity_code
+     * @param task_code
      * @param user_code
      * @return
      * @throws Exception
      */
-    public ArrayList userExecuteDetail(String corp_code, String activity_code, String user_code) throws Exception {
+    public ArrayList userExecuteDetail(String corp_code, String task_code, String user_code) throws Exception {
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
         BasicDBObject dbObject = new BasicDBObject();
-        dbObject.put("activity_vip_code", activity_code);
+        dbObject.put("task_code", task_code);
         dbObject.put("corp_code", corp_code);
         dbObject.put("user_code", user_code);
         DBCursor dbCursor = cursor.find(dbObject);

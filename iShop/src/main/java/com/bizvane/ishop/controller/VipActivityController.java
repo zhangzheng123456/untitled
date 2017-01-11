@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -442,7 +443,6 @@ public class VipActivityController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.getString("activity_code");
 
-
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
             if (vipActivity != null) {
                 if (jsonObject.containsKey("status") && !jsonObject.getString("status").equals("")){
@@ -461,11 +461,11 @@ public class VipActivityController {
                 }
                 if (jsonObject.containsKey("store_code") && !jsonObject.getString("store_code").equals("")){
                     String store_code = jsonObject.getString("store_code");
-                    String store_code1 = vipActivity.getActivity_store_code();
-                    if (!store_code1.endsWith(","))
-                        store_code1 = store_code1 + ",";
-                    store_code1 = store_code1 + store_code;
-                    vipActivity.setActivity_store_code(store_code1);
+//                    String store_code1 = vipActivity.getActivity_store_code();
+//                    if (!store_code1.endsWith(","))
+//                        store_code1 = store_code1 + ",";
+//                    store_code1 = store_code1 + store_code;
+                    vipActivity.setActivity_store_code(store_code);
                     vipActivityService.updateVipActivity(vipActivity);
                 }
             }
@@ -480,39 +480,37 @@ public class VipActivityController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 获取导购执行详情
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/userExecuteDetail", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String userExecuteDetail(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = JSONObject.parseObject(message);
-//            String corp_code = jsonObject.getString("corp_code");
-//            String user_code = jsonObject.getString("user_code");
-//            String activity_vip_code = jsonObject.getString("activity_vip_code");
-//
-//            ArrayList list = vipActivityService.userExecuteDetail(corp_code,activity_vip_code,user_code);
-//
-//            JSONObject obj = new JSONObject();
-//            obj.put("list",list);
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(obj.toString());
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    /**
+     * 获取导购执行详情
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/userExecuteDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public String userExecuteDetail(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.getString("corp_code");
+            String user_code = jsonObject.getString("user_code");
+            String task_code = jsonObject.getString("task_code");
+            ArrayList list = vipActivityService.userExecuteDetail(corp_code,task_code,user_code);
+            JSONObject obj = new JSONObject();
+            obj.put("list",list);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }
 

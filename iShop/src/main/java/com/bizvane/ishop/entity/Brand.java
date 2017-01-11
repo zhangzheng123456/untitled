@@ -1,6 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -28,6 +27,17 @@ public class Brand {
     private String creater;
     //是否可用
     private String isactive;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    //标记
+    private  String logo;
 
     private Corp corp;
     private String corp_name;
