@@ -20,9 +20,8 @@ var activity={
         "coupon":""
     },
     init:function () {
-        //activity_code=$("#tabs>div:first-child").attr("data-code");
-        activity.activity_code="AC1020720170111093656775";
-        if(activity.activity_code!==""&&activity.activity_code!==undefined){
+        activity.activity_code=sessionStorage.getItem("activity_code");
+        if(activity.activity_code!==null){
             this.activityEdit();
         }else {
             this.getcorplist();
@@ -117,7 +116,7 @@ var activity={
             $(this).parent().parents("li").prev('li').find("li:last-child").show();
             $(this).parent().parents("li").remove();
         });
-        $("#coupon_btn").click(function () {//新增开卡送券
+        $("#coupon_activity").on("click","#coupon_btn",function () {//新增开卡送券
             var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select vipCardType">'
                 + activity.cache.card_type
@@ -127,7 +126,7 @@ var activity={
                 + activity.cache.coupon
                 + '</ul></li><li><span class="add_btn">+</span><span class="remove_btn">-</span></li></ul>'
                 + '</ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>';
-            $("#coupon_btn").parent().append(html);
+            $("#coupon_btn").parent().parent().append(html);
         });
         $("#coupon_activity").on("click",".coupon_details_close",function () {
             $(this).parents(".coupon_details_wrap").remove();
@@ -502,11 +501,21 @@ var activity={
                     if (event.keyCode == 13) {
                         var corp=$("#OWN_CORP").val();
                         $("#tabs>div:first-child").attr("data-corp",corp);
+                        var input=$("#coupon_activity").find("input");
+                        for(var j=0;j<input.length;j++){
+                            $(input[j]).val("");
+                            $(input[j]).attr("data-code","");
+                        }
                         activity.getCoupon();
                     }
                 });
                 $('.searchable-select-item').click(function () {
                     var corp=$("#OWN_CORP").val();
+                    var input=$("#coupon_activity").find("input");
+                    for(var j=0;j<input.length;j++){
+                        $(input[j]).val("");
+                        $(input[j]).attr("data-code","");
+                    }
                     $("#tabs>div:first-child").attr("data-corp",corp);
                     activity.getCoupon();
                 });
@@ -807,6 +816,7 @@ var activity={
         });
     },
     checkEmpty:function () {
+        activity.isEmpty=false;
         $("#setUp_activityType>div").each(function () {
             var id=$(this).attr("id");
             if($(this).css("display")!=="none"&&id!=="coupon_activity"){
@@ -867,7 +877,7 @@ var activity={
                 var msg=data.message;
                 if(msg!=="编辑成功"){
                     activity.activity_code=msg;
-                    $("#tabs>div:first-child").attr("data-code",msg);
+                    sessionStorage.setItem("activity_code",msg);
                 }
                 var _param={};
                 _param["corp_code"]=$("#tabs>div:first-child").attr("data-corp");
@@ -906,9 +916,9 @@ var activity={
                             $("#coupon_activity .choose_coupon").each(function () {
                                 if($(this).css("display")=="block"){
                                     var input=$(this).find("input");
-                                    var coupon_code="";
-                                    var coupon_name="";
                                     for(var i=0;i<input.length;i++){
+                                        var coupon_code="";
+                                        var coupon_name="";
                                         var obj={};
                                         coupon_code+=$(input[i]).attr("data-code");
                                         coupon_name+=$(input[i]).val();
@@ -924,7 +934,7 @@ var activity={
                             $(".coupon_details_wrap").each(function () {
                                 var obj={};
                                 var vip_card_type_code=$($(this).find("input")[0]).attr("data-code");
-                                var input=$(this).children("operate_ul").find("input");
+                                var input=$(this).children(".operate_ul").find("input");
                                 var coupon_code="";
                                 var coupon_name="";
                                 for(var i=0;i<input.length;i++){
@@ -1012,8 +1022,8 @@ var activity={
                 }
                 if(type=="festival"){
                     $("#festival_activity").show();
-                    $("#holiday_start").val(list.start_time);
-                    $("#holiday_end").val(list.end_time);
+                    $("#holiday_start").val(list.festival_start);
+                    $("#holiday_end").val(list.festival_end);
                 }
                 if(type=="invite"){
                     var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
@@ -1021,7 +1031,6 @@ var activity={
                     if(twoCode!==""){
                         $(".offline_right_wrap").empty().append("<img style='width: 100%' src='"+twoCode+"'>");
                     }
-                    $("#upload_logo").val(list.apply_logo);
                     var len = $("#upload_logo").parent().prevAll("img").length;
                     if(len == 0){
                         $("#upload_logo").parent().before(img);
@@ -1060,26 +1069,26 @@ var activity={
                     $("#recruit_activity").show();
                 }
                 if(type=="coupon"){
-                    var send_coupon_typ=list.send_coupon_typ;
-                    var coupon_type=list.coupon_type;
-                    if(send_coupon_typ==undefined){
+                    var send_coupon_type=list.send_coupon_type;
+                    var coupon_type=JSON.parse(list.coupon_type);
+                    if(send_coupon_type==undefined||send_coupon_type==""){
                         $(".switch div").trigger("click");
                     }else {
-                        switch (send_coupon_typ){
+                        switch (send_coupon_type){
                             case "batch":
-                                $($(".choose_coupon")[0]).show();
+                                $(".coupon_title li:first-child").trigger("click");
                                 $($($(".choose_coupon")[0]).children("ul").children("li:first-child").find("input")[0]).val(coupon_type[0].coupon_name);
                                 $($($(".choose_coupon")[0]).children("ul").children("li:first-child").find("input")[0]).attr("data-code",coupon_type[0].coupon_code);
-                                $(".coupon_title li:first-child").trigger("click");
                                 var li="";
                                 var display="";
                                 if(coupon_type.length>1){
-                                    if(i<coupon_type.length-1){
-                                        display="style='display:none'";
-                                    }else {
-                                        display="style='display:block'";
-                                    }
+                                    $($(".choose_coupon")[0]).children("ul").children("li:first-child").children().children("li:last-child").hide();
                                     for(var i=1;i<coupon_type.length;i++){
+                                        if(i<coupon_type.length-1){
+                                            display="style='display:none'";
+                                        }else {
+                                            display="style='display:block'";
+                                        }
                                         li+="<li><ul><li><label>选择优惠券</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                             +"<ul class='activity_select coupon_activity'></ul>"
                                             +"</li><li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
@@ -1088,19 +1097,19 @@ var activity={
                                 }
                                 break;
                             case "anniversary":
-                                $($(".choose_coupon")[1]).show();
+                                $(".coupon_title li:last-child").trigger("click");
                                 $($($(".choose_coupon")[1]).children("ul").children("li:first-child").find("input")[0]).val(coupon_type[0].coupon_name);
                                 $($($(".choose_coupon")[1]).children("ul").children("li:first-child").find("input")[0]).attr("data-code",coupon_type[0].coupon_code);
-                                $(".coupon_title li:last-child").trigger("click");
                                 var li="";
                                 var display="";
                                 if(coupon_type.length>1){
-                                    if(i<coupon_type.length-1){
-                                        display="style='display:none'";
-                                    }else {
-                                        display="style='display:block'";
-                                    }
                                     for(var i=1;i<coupon_type.length;i++){
+                                        $($(".choose_coupon")[1]).children("ul").children("li:first-child").children().children("li:last-child").hide();
+                                        if(i<coupon_type.length-1){
+                                            display="style='display:none'";
+                                        }else {
+                                            display="style='display:block'";
+                                        }
                                         li+="<li><ul><li><label>选择优惠券</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                             +"<ul class='activity_select coupon_activity'></ul>"
                                             +"</li><li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
@@ -1109,7 +1118,7 @@ var activity={
                                 }
                                 break;
                             case "card":
-                                $("#coupon_activity>div:nth-child(2)").show();
+                                $(".coupon_title li:nth-child(2)").trigger("click");
                                 var ul="";
                                 var display="";
                                 for(var i=0;i<coupon_type.length;i++){
@@ -1132,7 +1141,7 @@ var activity={
                                         + li
                                         +'</ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>'
                                 }
-                                $("#coupon_activity>div:nth-child(2)").empty().append('<div class="coupon_btn"><span id="coupon_btn">添加</span></div>'+ul);
+                                $("#coupon_activity>div:nth-child(3)").empty().append('<div class="coupon_btn"><span id="coupon_btn">添加</span></div>'+ul);
                         }
                     }
                     $("#coupon_activity").show();
