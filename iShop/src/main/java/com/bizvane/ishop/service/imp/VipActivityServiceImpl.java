@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
@@ -331,6 +332,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         JSONArray activity_stores = JSONArray.parseArray(activity_store_code);
 //        String[] activity_stores = activity_store_code.split(",");
         JSONArray task_array = new JSONArray();
+        Task task = taskService.getTaskForId(corp_code,task_code);
         List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
 
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -347,7 +349,6 @@ public class VipActivityServiceImpl implements VipActivityService {
             dbObject.put("user_code", user_code);
             DBCursor dbCursor = cursor.find(dbObject);
             String complete_rate = "0";
-            String store_name = "";
             while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
                 if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))){
@@ -367,6 +368,8 @@ public class VipActivityServiceImpl implements VipActivityService {
                 JSONObject store_obj = activity_stores.getJSONObject(j);
                 String code = store_obj.getString("store_code");
                 String name = store_obj.getString("store_name");
+                task_obj.put("store_name",name);
+                task_obj.put("store_code",code);
                 for (int k = 0; k < codes.length; k++) {
                     if (code.equals(codes[k])) {
                         task_obj.put("store_name",name);
@@ -384,7 +387,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         result.put("user_count", String.valueOf(task_array.size()));
         result.put("target_vips_count", target_vips_count);
         result.put("complete_vips_count", complete_vip_count);
-
+        result.put("taskInfo", JSON.toJSONString(task));
         return result;
     }
 
@@ -426,4 +429,5 @@ public class VipActivityServiceImpl implements VipActivityService {
             ex.getMessage();
         }
     }
+
 }
