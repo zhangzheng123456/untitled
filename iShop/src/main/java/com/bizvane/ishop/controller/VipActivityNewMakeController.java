@@ -470,7 +470,7 @@ public class VipActivityNewMakeController {
                 send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
                 String content = "";
-                String send_type = "wx";
+                String send_type = Common.SEND_TYPE_WX;
                 content = send_obj.get("content").toString();
 
                 VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
@@ -498,7 +498,7 @@ public class VipActivityNewMakeController {
                 send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
                 String content = "";
-                String send_type = "sms";
+                String send_type = Common.SEND_TYPE_SMS;
                 content = send_obj.get("content").toString();
 
                 VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
@@ -526,7 +526,7 @@ public class VipActivityNewMakeController {
                 send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
                 String content = "";
-                String send_type = "email";
+                String send_type = Common.SEND_TYPE_EMAIL;
                 content = send_obj.get("content").toString();
 
                 VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
@@ -584,10 +584,10 @@ public class VipActivityNewMakeController {
      * 会员活动
      * 添加
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/addStrategyByTicket", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public String addStrategyBy(HttpServletRequest request) {
+    public String addStrategyByTicket(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
