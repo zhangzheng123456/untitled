@@ -492,6 +492,7 @@
     <select id="getTaskByActivityCode" resultType="com.bizvane.ishop.entity.Task">
          SELECT
         def_task.id,
+        def_task.task_link,
         def_task.task_code,
         def_task.task_title,
         def_task.task_type_code,
