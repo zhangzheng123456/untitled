@@ -21,7 +21,7 @@ var activity={
     },
     init:function () {
         //activity_code=$("#tabs>div:first-child").attr("data-code");
-        activity.activity_code="AC1020720170110133827721";
+        activity.activity_code="AC1020720170111093656775";
         if(activity.activity_code!==""&&activity.activity_code!==undefined){
             this.activityEdit();
         }else {
@@ -838,7 +838,7 @@ var activity={
     },
     add:function () {
         var corp_code=$("#tabs>div:first-child").attr("data-corp");
-        var activity_code=$("#tabs>div:first-child").attr("data-code");
+        var activity_code=activity.activity_code;
         var param={};
         var runMode=$("#activity_type").attr("data-id");
         if(activity_code!==""&&activity_code!==undefined){
@@ -959,7 +959,7 @@ var activity={
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.activityVip);
             var type="";
-            var activity_store_code=list.activity_store_code;
+            var activity_store_code=JSON.parse(list.activity_store_code);
             switch (list.run_mode){
                 case "recruit":type="招募活动";break;
                 case "h5":type="H5活动";break;
@@ -985,8 +985,51 @@ var activity={
                     activity.cache.store_names+=activity_store_code[i].store_name;
                 }
             }
-            console.log(data.message);
+            console.log(activity.activity_code);
         });
+        oc.postRequire("post","/vipActivity/detail/select","0",param,function (data) {
+            if(data.code==0){
+                var msg=JSON.parse(data.message);
+                var list=JSON.parse(msg.activityVip);
+                var type=list.activity_type;
+                if(type=="sales"){
+                    $("#sales_activity").show();
+                    $($("#sales_activity").find("input")[0]).val(list.sales_no);
+                }
+                if(type=="h5"){
+                    $("#h5_activity").show();
+                    $($("#h5_activity").find("input")[0]).val(list.h5_url);
+                }
+                if(type=="festival"){
+                    $("#festival_activity").show();
+                    $("#holiday_start").val(list.start_time);
+                    $("#holiday_end").val(list.end_time);
+                }
+                if(type=="invite"){
+                    var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
+                    var twoCode=list.apply_qrcode;
+                    if(twoCode!==""){
+                        $(".offline_right_wrap").empty().append("<img style='width: 100%' src='"+twoCode+"'>");
+                    }
+                    $("#upload_logo").val(list.apply_logo);
+                    var len = $("#upload_logo").parent().prevAll("img").length;
+                    if(len == 0){
+                        $("#upload_logo").parent().before(img);
+                    }else {
+                        $("#upload_logo").parent().prev("img").replaceWith(img);
+                    }
+                    $(".offline_activity").show();
+                    $("#invite_title").val(list.apply_title);
+                    $("#offline_end").val(list.apply_endtime);
+                    $("#invite_summary").val(list.apply_desc);
+                    $("#invite_message").val(list.apply_success_tips);
+                }
+                if(type=="recruit"){
+                    
+                }
+                console.log(data.message);
+            }
+        })
     }
 };
 $(function () {

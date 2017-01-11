@@ -33,7 +33,7 @@
                         }
                         activity.add();
                     }
-                    if(activity.next){
+                    if(activity.next==true){
                         $.ajax({
                             type: "GET",
                             url: src+"?t="+ $.now(),
