@@ -124,10 +124,14 @@ a, a:link,a:hover,a:visited,a:active{
     height: 30px;
     margin-top: 15px;
     background-color: white;
-    color: black;
+    color: #fff;
     line-height: 30px;
+    cursor: pointer;
 }
-/*ɸѡ����*/
+#empty{
+    display: none;
+}
+    /*ɸѡ����*/
 #screening {
     width: 100%;
     clear: both;
