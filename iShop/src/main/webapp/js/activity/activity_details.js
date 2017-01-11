@@ -6,6 +6,7 @@ var show_filtrate='';
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var oc = new ObjectControl();
+var store='';//门店数
 function stop(){
     var _params={
         "id":"",
@@ -351,49 +352,33 @@ function search(name,num,area,shop){
 }
 
 //获取活动执行情况
-function getExecuteDetail(vip_count){
-    var id=sessionStorage.getItem("id");//获取
-    var _params={
-        "id":"",
-        "message":{
-            "id":id
-        }
-    };
-    $.ajax({
-        url: '/activity/executeDetail',
-        type: 'POST',
-        dataType: "JSON",
-        data:{
-            param:JSON.stringify(_params)
-        },
-        success: function (data) {
+function getExecuteDetail(param){
+    oc.postRequire("post", '/vipActivity/executeDetail',"0",param,function(data){
+        if(data.code==0){
             if(data.message==''){
                 $('.btnSecond').hide();
                 $('.people_head').hide();
                 $('.people').hide();
-                check(vip_count,vip_count);
             }else {
                 var message = JSON.parse(data.message);
+                pieChart(message.complete_vips_count,message.target_vips_count);
+                doExecuteDetail(message);
                 var complete_vips_count = message.complete_vips_count;
                 var userList =message.userList;
                 staffData=userList;
                 listShow(userList);
-                check(vip_count,complete_vips_count);
             }
-        },
-        error: function (data) {
-            console.log('获取活动执行情况失败');
+        }else if(data.code==-1){
+            console.log(data.message)
         }
     });
 }
 //获取活动详情
-function getSelect(id){
+function getSelect(param){
     whir.loading.add("",0.5);//加载等待框
     var _params={
         "id":"",
-        "message":{
-            "id":id
-        }
+        "message":param
     };
 
     $.ajax({
@@ -472,14 +457,26 @@ function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
 
 //加载员工列表
 function listShow(userList){
-    console.log(userList);
+    // var userList=[{
+    //     user_name:'员工1',
+    //     user_code:10010,
+    //     area_name:'南京',
+    //     store_name:'店铺1',
+    //     complete_rate:90
+    //    },{
+    //     user_name:'员工1',
+    //     user_code:10010,
+    //     area_name:'南京',
+    //     store_name:'店铺1',
+    //     complete_rate:90
+    // }
+    // ]
     $("#peopleContent").empty();
     $('.people').animate({scrollTop:0}, 'fast');
     var tempHTML = '<li class="people_title"> <div class="people_title_order ellipsis" style="text-align: center">${order}</div> <div class="people_title_name ellipsis"title="${title_name}">${name}</div> <div class="people_title_num ellipsis"title="${title_num}">${num}</div> <div class="people_title_area ellipsis" title="${title}">${area}</div> <div class="people_title_shop ellipsis"title="${title_shop}">${shop}</div> <div class="people_title_plan"> <div class="undone"><div class="done" style="width: ${percent}%"></div></div><span class="percent_percent">${percent}%</span></div> </li>';
     var html = '';
     for(var i=0;i<userList.length;i++) {
         //随机进度
-
         var order = i + 1;
         var nowHTML1 = tempHTML;
         var percent = userList[i].complete_rate;
@@ -510,10 +507,10 @@ function listShow(userList){
     if (nowLength > 1) {
         $('#peopleError').hide();
     }
-    var el=$('.people')[0];
-    if(!(el.scrollHeight > el.clientHeight)){
-        $('.people').css('padding-right','9px');
-    };
+    // var el=$('.people')[0];
+    // if(!(el.scrollHeight > el.clientHeight)){
+    //     $('.people').css('padding-right','9px');
+    // };
 }
 //插件-饼图
 function table(TheTarget,TheCover) {
@@ -717,28 +714,152 @@ $('#vip_status .head_span_r').click(function () {
     $('#vip_status').hide();
     whir.loading.remove();//移除加载框
 });
+/******************************************************************************************/
 function getActive() {
     var param={};
+    var _param={};
     param.activity_code=sessionStorage.getItem('activity_code')
     oc.postRequire("post","/vipActivity/select","0",param,function(data){
         if(data.code==0){
             var active_data=JSON.parse(JSON.parse(data.message).activityVip);
-             $('.title_l').html(active_data.activity_theme);
-            $('.time_l').html(active_data.start_time);
-            $('.time_r').html(active_data.end_time);
-            $('.name_l').html(active_data.run_mode);//转换
-            $('.name_r').html(active_data.corp_name);
-            $('.header_sm .p_2').html('0');//处理
+            _param.corp_code=active_data.corp_code;
+            _param.activity_code=active_data.activity_code;
+            _param.task_code=active_data.task_code;
+            doActiveResponse(active_data);
+            getExecuteDetail(_param);
         }else if(data.code==-1){
 
         }
     });
 }
+function   doExecuteDetail(message) {
+    $('.shoppers').html(message.user_count);
+    $('.covers').html(message.complete_vips_count);
+    $('.target').html(message.target_vips_count);
+    var taskInfo=JSON.parse(message.taskInfo);
+    var start_time=new Date(taskInfo.target_start_time);
+    var end_time=new Date(taskInfo.target_end_time);
+    var time=(end_time.getTime()-start_time.getTime())/1000;
+    var d=parseInt(time/(24*60*60));
+    $('.task_detail_l .p1').html(taskInfo.task_title);
+    $('.task_detail_l .p2').html(taskInfo.task_type_name);
+    $('.task_detail_l .p3').html(store);
+    $('.task_detail_l .p4').html(taskInfo.target_start_time+' 开始');
+    $('.task_detail_l .p5').html(taskInfo.target_end_time+' 结束');
+    $('.task_detail_l .p6').html(d);
+    $('.task_detail_l .p7').html(taskInfo.task_description);
+}
+function pieChart(a,b) {
+    //a  完成 b  目标
+    var myChart = echarts.init(document.getElementById('chart_pie'));
+    var NoCover = ((b - a)/b*100).toFixed(2);
+    var TheCover = (a/b*100).toFixed(2);
+    // 指定图表的配置项和数据
+    var labelTop = {
+        normal : {
+            color:'#7bc7cd',
+            label : {
+                show : false,
+                position : 'center',
+                formatter : '{b}',
+                textStyle: {
+                    baseline : 'bottom'
+                }
+            },
+            labelLine : {
+                show : false
+            }
+        }
+    };
+    var labelFromatter = {
+        normal : {
+            label : {
+                formatter : function (params){
+                    var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
+                    data=data>100?100:data;
+                    return data+ '%'
+                },
+                textStyle: {
+                    color:'#7bc7cd',
+                    fontSize: 25
+                }
+            }
+        },
+    }
+    var labelBottom = {
+        normal : {
+            color: '#eaeaea',
+            label : {
+                show : true,
+                position : 'center'
+            },
+            labelLine : {
+                show : false
+            }
+        },
+        emphasis: {
+            color: '#eaeaea'
+        }
+    };
+    var radius = [55, 70];
+    var  option = {
+        series : [
+            {
+                type : 'pie',
+                center : ['50%', '50%'],
+                radius : radius,
+                x: '0%', // for funnel
+                itemStyle : labelFromatter,
+                data : [
+                    {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
+                    {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
+                ]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+}
+function doActiveResponse(active_data) {
+    console.log(active_data);
+    //run_mode
+    var run_mode='';
+    switch (active_data.run_mode){
+        case 'recruit':run_mode='招募';break;
+        case 'h5':run_mode='H5';break;
+        case 'sales':run_mode='促销';break;
+        case 'coupon':run_mode='优惠券';break;
+        case 'invite':run_mode='线下邀约';break;
+        case 'festival':run_mode='节日';break;
+    }
+    //activity_store_code
+    if(active_data.activity_store_code==''){
+         store=0;
+    }else{
+        store=active_data.activity_store_code.split(',').length;
+    }
+    //time
+    var over="2017-01-25 00:00:00";
+    var over_time=new Date(over);
+    var now_time=new Date();
+    var time=(over_time.getTime()-now_time.getTime())/1000;
+    var d=parseInt(time/(24*60*60));
+    var h=parseInt((time-d*(24*60*60))/(60*60));
+    var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
+    var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+    $('.title_l').html(active_data.activity_theme);
+    $('.time_l').html(active_data.start_time);//处理
+    $('.time_r').html(active_data.end_time);
+    $('.name_l').html(run_mode);//转换
+    $('.name_r').html(active_data.corp_name);
+    $('.header_sm .p_2').html(store);//处理
+    $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+}
 getActive();
 window.onload = function(){
     //获取活动执行情况
     // getExecuteDetail();
-    // getSelect(sessionStorage.getItem('id'));
+    // getSelect(param);
     //加载统计模块
     // check();
     //加载活动状态

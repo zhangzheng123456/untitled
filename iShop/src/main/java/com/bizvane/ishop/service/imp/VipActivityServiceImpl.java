@@ -145,7 +145,6 @@ public class VipActivityServiceImpl implements VipActivityService {
             info = vipActivityMapper.updateActivity(vipActivity);
             if (info > 0) {
                 result = Common.DATABEAN_CODE_SUCCESS;
-
             } else {
                 result = "编辑失败";
 

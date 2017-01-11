@@ -91,6 +91,14 @@ public class Common {
     //已结束
     public static final String ACTIVITY_STATUS_2 = "2";
 
+
+    public static final String SEND_TYPE_WX = "wx";
+
+    public static final String SEND_TYPE_SMS = "sms";
+
+    public static final String SEND_TYPE_EMAIL = "email";
+
     public static final String CORN_EXPRESSION = "s min h d m ?";
+
 
 }
