@@ -223,7 +223,7 @@
                 target_vips_count= #{target_vips_count},
             </if>
         </trim>
-        WHERE id=#{id};
+        WHERE activity_code=#{activity_code};
     </update>
 
     <delete id="delActivityById">
