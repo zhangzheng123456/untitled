@@ -16,7 +16,7 @@ key_val=JSON.parse(key_val);//取key_val的值
 var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
-//模仿select
+//模仿selectF
 $(function(){
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){
@@ -427,6 +427,7 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
+        sessionStorage.setItem("activity_code",activity_code);
         var _params = {};
         _params["activity_code"] = activity_code;
         var _command = "/vipActivity/select";

@@ -9,7 +9,6 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -33,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.System;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -138,7 +136,7 @@ public class BrandController {
                     brandList = brandService.getActiveBrand(corp_code, search_value, codes);
                 }
             } else if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)) {
-                List<Store> stores = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
+                List<Store> stores = storeService.selectByStoreCodes(store_code, corp_code, Common.IS_ACTIVE_Y);
                 String brand_code1 = "";
                 for (int i = 0; i < stores.size(); i++) {
                     String brand_code = stores.get(i).getBrand_code();
