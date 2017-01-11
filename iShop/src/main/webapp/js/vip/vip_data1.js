@@ -243,7 +243,7 @@ function xiaofeiContent(consumnData,consumnlistData){
         $("#consum tbody").html('<span>暂无数据</span>');
     }
     if(consumnHtmlall.length==0){
-        $("#consum_all").html("<p>暂无相关消费记录</p>");
+        $("#consum_all").html("<p style='height: auto'>暂无相关消费记录</p>");
     }else {
         $("#consum_all").html(consumnHtmlall);
     }
