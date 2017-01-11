@@ -122,7 +122,6 @@
                     <span style="color:#FFFFFF;display: block;font-size: 25px;">2904893</span>
                 </div>
                 <div id="achievement_chart" style="width: 250px;height: 230px;">
-
                 </div>
             </div>
             <div style="width: 80%;float: left">
@@ -207,15 +206,14 @@
                 itemHeight:10,
                 itemGap:5,
                 textStyle: {
-                    color: '#cdd0d3',
-                    fontSize:"10px"
+                    color: '#cdd0d3'
                 },
                 data:['图例一','图例二','图例三','图例四']
             },
             series : [
                 {   name:'活动销售总额',
                     type:'pie',
-                    center:['40%','50%'],
+                    center:['42%','50%'],
                     radius : ['70%', '80%'],
                     avoidLabelOverlap: false,
                     label: {
@@ -223,6 +221,12 @@
                             show: false,
                             position: 'center'
                         },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '20'
+                            }
+                        }
                     },
                     labelLine: {
                         normal: {
