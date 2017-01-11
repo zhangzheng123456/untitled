@@ -437,8 +437,10 @@ function jumpBianse(){
             state=activityVip.activity_state;
             if(state == "0"){ //未执行
                 $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
-            }else if(state == "1"||state == "2"){ //执行中 和 已结束
+            }else if(state == "1"){ //执行
                 $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
+            }else if(state=="2"){// 已结束
+                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_statistics.html");
             }
         });
     });
