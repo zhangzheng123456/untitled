@@ -67,10 +67,10 @@
             height: 29px;
             margin-top: 5px;
             line-height: 29px;
-            border: 1px solid #f5f5f5;
+            /*border: 1px solid #f5f5f5;*/
             border-radius: 5px;
-            background-color: #fcfcfc;
-            color: #888888;
+            /*background-color: #fcfcfc;*/
+            color: #5f8bc8;
             text-align: center;
         }
     </style>
@@ -78,7 +78,7 @@
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="pre_title">
-        <span>会员管理</span><i class="icon-ishop_8-03"></i><span >会员活动</span><i class="icon-ishop_8-03"></i><label>活动跟踪</label>
+        <span>会员管理</span><i class="icon-ishop_8-03"></i><span id="return_back">会员活动</span><i class="icon-ishop_8-03"></i><label>活动跟踪</label>
     </div>
       <!--header-->
       <div id="header">
@@ -130,10 +130,10 @@
       <!--进度分析-->
       <div id="progress">
             <div class="progress_nav">
-                <div class="progress_nav_btn progress_nav_btn_action">任务1</div>
-                <div class="progress_nav_btn">任务2</div>
-                <div class="progress_nav_btn">任务3</div>
-                <div class="progress_nav_btn">任务4</div>
+                <!--<div class="progress_nav_btn progress_nav_btn_action">任务1</div>-->
+                <!--<div class="progress_nav_btn">任务2</div>-->
+                <!--<div class="progress_nav_btn">任务3</div>-->
+                <!--<div class="progress_nav_btn">任务4</div>-->
             </div>
             <div class="task_box">
                 <div class="task_detail">
@@ -348,6 +348,129 @@
             <div class="add_footer">
                 <div class="add_footer_l">取消</div>
                 <div class="add_footer_r">保存</div>
+            </div>
+        </div>
+        <div class="choose_store">
+            <!-- 拉取区域 -->
+            <div id="screen_area" class="screen_area">
+                <div class="screen_title">
+                    <h4>筛选区域</h4>
+                    <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
+                    <div class="xian"></div>
+                </div>
+                <div class="input_s">
+                    <div class="input_search">
+                        <input type="text" placeholder="搜索" id="area_search">
+                        <span class="icon-ishop_3-05" id="area_search_f"></span>
+                    </div>
+                    <div class="s_center"></div>
+                    <div class="s_pitch">
+                        已添加&nbsp;<span>0</span>&nbsp;个
+                    </div>
+                </div>
+                <div class="screen_content">
+                    <div class="screen_content_l">
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="screen_content_z">
+                        <div class="shift shift_right" title="右移">&gt;</div>
+                        <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                        <div class="shift shift_left" title="左移">&lt;</div>
+                        <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                    </div>
+                    <div class="screen_content_r">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="screen_que" id="screen_que_area">确定</div>
+            </div>
+            <!-- 拉取店铺 -->
+            <div id="screen_shop" class="screen_area">
+                <div class="screen_title">
+                    <h4>筛选店铺</h4>
+                    <div class="xuanzhong">
+                        <div class="xuanzhong_p">
+                            <label>已选区域</label><input class="area_num" type="text" value="" readonly="true" id="area_num"
+                                                      data-areacode="">
+                            <span class="icon_r icon-ishop_8-03" id="shop_area"></span>
+                        </div>
+                        <div class="xuanzhong_p">
+                            <label>已选品牌</label><input class="brand_num" type="text" value="" id="brand_num" data-brandcode="">
+                            <span class="icon_r icon-ishop_8-03" id="shop_brand"></span>
+                        </div>
+                    </div>
+                    <div class="screen_close" id="screen_close_shop"><span class="icon-ishop_6-12"></span></div>
+                    <div class="xian"></div>
+                </div>
+                <div class="input_s">
+                    <div class="input_search">
+                        <input type="text" placeholder="搜索" id="store_search">
+                        <span class="icon-ishop_3-05" id="store_search_f"></span>
+                    </div>
+                    <div class="s_center"></div>
+                    <div class="s_pitch">
+                        已添加&nbsp;<span>0</span>&nbsp;个
+                    </div>
+                </div>
+                <div class="screen_content">
+                    <div class="screen_content_l">
+                        <ul>
+
+                        </ul>
+                    </div>
+                    <div class="screen_content_z">
+                        <div class="shift shift_right" title="右移">&gt;</div>
+                        <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                        <div class="shift shift_left" title="左移">&lt;</div>
+                        <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                    </div>
+                    <div class="screen_content_r">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="screen_que" id="screen_que_shop">确定</div>
+            </div>
+            <!-- 拉取品牌 -->
+            <div id="screen_brand" class="screen_area">
+                <div class="screen_title">
+                    <h4>筛选品牌</h4>
+                    <div class="screen_close" id="screen_close_brand"><span class="icon-ishop_6-12"></span></div>
+                    <div class="xian"></div>
+                </div>
+                <div class="input_s">
+                    <div class="input_search">
+                        <input type="text" placeholder="搜索" id="brand_search">
+                        <span class="icon-ishop_3-05" id="brand_search_f"></span>
+                    </div>
+                    <div class="s_center"></div>
+                    <div class="s_pitch">
+                        已添加&nbsp;<span>0</span>&nbsp;个
+                    </div>
+                </div>
+                <div class="screen_content">
+                    <div class="screen_content_l">
+                        <ul>
+
+                        </ul>
+                    </div>
+                    <div class="screen_content_z">
+                        <div class="shift shift_right" title="右移">&gt;</div>
+                        <div class="shift shift_right_all" title="右移全部">&gt;&gt;</div>
+                        <div class="shift shift_left" title="左移">&lt;</div>
+                        <div class="shift shift_left_all" title="左移全部">&lt;&lt;</div>
+                    </div>
+                    <div class="screen_content_r">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="screen_que" id="screen_que_brand">确定</div>
             </div>
         </div>
     </div>
@@ -761,6 +884,14 @@
     });
     $('.action_store').click(function () {
         $('.add_store_box').toggle();
+        $('.add_store').hide();
+        var arr=whir.loading.getPageSize();
+        var left=(arr[0]-$("#screen_staff").width())/2;
+        var tp=(arr[1]-$("#screen_staff").height())/2+80;
+        $("#screen_staff").show();
+        $("#screen_staff").css({"left":+left+"px","top":+tp+"px"});
+        $("#screen_staff .screen_content_l").unbind("scroll");
+        getstorelist(1);
     });
     $('.add_footer_l').click(function () {
         $('.add_store_box').toggle();
