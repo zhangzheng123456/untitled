@@ -327,7 +327,8 @@ public class VipActivityServiceImpl implements VipActivityService {
         String target_vips_count = vipActivity.getTarget_vips_count();
         String activity_store_code = vipActivity.getActivity_store_code();
         Double complete_vip_count = 0d;
-        String[] activity_stores = activity_store_code.split(",");
+        JSONArray activity_stores = JSONArray.parseArray(activity_store_code);
+//        String[] activity_stores = activity_store_code.split(",");
         JSONArray task_array = new JSONArray();
         List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
 
@@ -361,15 +362,16 @@ public class VipActivityServiceImpl implements VipActivityService {
             //任务执行人的店铺编号
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             String[] codes = store_code.split(",");
-            for (int j = 0; j <codes.length ; j++) {
-                if (Arrays.asList(activity_stores).contains(codes[j])) {
-                    Store store = storeService.getStoreByCode(corp_code,codes[j],Common.IS_ACTIVE_Y);
-                    if (store != null) {
-                        store_name = store.getStore_name();
+            for (int j = 0; j < activity_stores.size(); j++) {
+                JSONObject store_obj = activity_stores.getJSONObject(j);
+                String code = store_obj.getString("store_code");
+                String name = store_obj.getString("store_name");
+                for (int k = 0; k < codes.length; k++) {
+                    if (code.equals(codes[k])) {
+                        task_obj.put("store_name",name);
+                        task_obj.put("store_code",code);
+                        break;
                     }
-                    task_obj.put("store_name",store_name);
-                    task_obj.put("store_code",codes[j]);
-                    break;
                 }
             }
             task_obj.put("user_code",user_code);

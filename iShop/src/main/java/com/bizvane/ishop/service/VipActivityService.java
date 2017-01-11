@@ -99,4 +99,9 @@ public interface VipActivityService {
 
 
     String executeActivity(VipActivity vipActivity,String user_code) throws Exception;
-}
+
+     String executeTask(VipActivity vipActivity,String user_code) throws Exception;
+
+     String executeFsend(VipActivity vipActivity,String user_code) throws Exception;
+
+    }
