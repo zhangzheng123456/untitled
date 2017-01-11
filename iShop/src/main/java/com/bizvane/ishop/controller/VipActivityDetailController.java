@@ -118,31 +118,34 @@ public class VipActivityDetailController {
             JSONObject result = new JSONObject();
             String vip_card_type_code ="";
             JSONObject activity_detail=JSON.parseObject( JSON.toJSONString(vipActivityDetail));
-//活动类型：招募活动
+           //活动类型：招募活动
            String  recruit= vipActivityDetail.getRecruit();
-            String  send_coupon_type= vipActivityDetail.getSend_coupon_type();
-            if(send_coupon_type.equals("card")){
-                String coupon_type=vipActivityDetail.getCoupon_type();
-                if(coupon_type!=null&&!coupon_type.equals("")){
-                    JSONArray couponInfo= JSON.parseArray(coupon_type);
+            String actvity_type=vipActivityDetail.getActivity_type();
 
-                    for (int i = 0; i <couponInfo.size() ; i++) {
-                        JSONObject obj=couponInfo.getJSONObject(i);
-                        vip_card_type_code=obj.getString("vip_card_type_code").toString();
-                        //根据会员卡编号查询会员卡类型名称
-                        if(vip_card_type_code!=null&&!vip_card_type_code.equals("")){
-                            VipCardType vipCardType= vipCardTypeService.getVipCardTypeByCode(vipActivityDetail.getCorp_code(),vip_card_type_code,Common.IS_ACTIVE_Y);
-                            if(vipCardType!=null){
-                                System.out.print(couponInfo.toJSONString());
-                                String vip_card_type_name=vipCardType.getVip_card_type_name();
-                                obj.put("vip_card_type_name",vip_card_type_name);
+            String  send_coupon_type= vipActivityDetail.getSend_coupon_type();
+            if(actvity_type.equals("coupon")){
+                if(send_coupon_type.equals("card")){
+                    String coupon_type=vipActivityDetail.getCoupon_type();
+                    if(coupon_type!=null&&!coupon_type.equals("")){
+                        JSONArray couponInfo= JSON.parseArray(coupon_type);
+                        for (int i = 0; i <couponInfo.size() ; i++) {
+                            JSONObject obj=couponInfo.getJSONObject(i);
+                            vip_card_type_code=obj.getString("vip_card_type_code").toString();
+                            //根据会员卡编号查询会员卡类型名称
+                            if(vip_card_type_code!=null&&!vip_card_type_code.equals("")){
+                                VipCardType vipCardType= vipCardTypeService.getVipCardTypeByCode(vipActivityDetail.getCorp_code(),vip_card_type_code,Common.IS_ACTIVE_Y);
+                                if(vipCardType!=null){
+                                    System.out.print(couponInfo.toJSONString());
+                                    String vip_card_type_name=vipCardType.getVip_card_type_name();
+                                    obj.put("vip_card_type_name",vip_card_type_name);
+                                }
                             }
                         }
+                        activity_detail.put("coupon_type",JSON.toJSONString(couponInfo));
                     }
-                    activity_detail.put("coupon_type",couponInfo);
                 }
-            }
 
+            }
 
             if(recruit!=null&&!recruit.equals("")){
                 JSONArray recruitInfo= JSON.parseArray(recruit);
