@@ -51,6 +51,17 @@ public class Store {
 
     private String area_name;
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    //添加标记
+    private String logo;
+
     private Corp corp;
 
     private String qrcode;
