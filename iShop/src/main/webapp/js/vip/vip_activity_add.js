@@ -11,6 +11,7 @@
         bind:function(){
             this.tabsSelect();
             this.getFirst();
+            this.backActivityList();
         },
         tabsSelect:function(){
             $("#tabs>div").bind("click",function(){
@@ -62,6 +63,12 @@
                 error: function (msg) {
                     alert(msg);
                 }
+            });
+        },
+        backActivityList:function(){
+            //回到会员列表
+            $("#back_corp_param").click(function(){
+                $(window.parent.document).find('#iframepage').attr("src","/activity/activity.html");
             });
         }
     };
