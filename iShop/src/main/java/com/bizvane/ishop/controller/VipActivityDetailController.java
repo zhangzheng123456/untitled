@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -114,24 +115,53 @@ public class VipActivityDetailController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String activity_code = jsonObject.getString("activity_code");
             VipActivityDetail vipActivityDetail = vipActivityDetailService.selActivityDetailByCode(activity_code);
-           String  recruit= vipActivityDetail.getRecruit();
-            JSONObject recruitInfo= JSON.parseObject(recruit);
-            String vip_card_type_code="";
-            if(recruitInfo.containsKey("vip_card_type_code")) {
-                 vip_card_type_code = recruitInfo.getString("vip_card_type_code");
-            }
             JSONObject result = new JSONObject();
-            JSONObject vip_cardInfo=JSON.parseObject( JSON.toJSONString(vipActivityDetail));
-            //根据会员卡编号查询会员卡类型
-            if(vip_card_type_code!=null||!vip_card_type_code.equals("")){
-                VipCardType vipCardType= vipCardTypeService.getVipCardTypeByCode(vipActivityDetail.getCorp_code(),vip_card_type_code,Common.IS_ACTIVE_Y);
-                String vip_card_type_name=vipCardType.getVip_card_type_name();
-                vip_cardInfo.put("vip_card_type_name",vip_card_type_name);
+            String vip_card_type_code ="";
+            JSONObject activity_detail=JSON.parseObject( JSON.toJSONString(vipActivityDetail));
+//活动类型：招募活动
+           String  recruit= vipActivityDetail.getRecruit();
+            String  send_coupon_type= vipActivityDetail.getSend_coupon_type();
+            if(send_coupon_type.equals("card")){
+                String coupon_type=vipActivityDetail.getCoupon_type();
+                if(coupon_type!=null&&!coupon_type.equals("")){
+                    JSONArray couponInfo= JSON.parseArray(coupon_type);
+
+                    for (int i = 0; i <couponInfo.size() ; i++) {
+                        JSONObject obj=couponInfo.getJSONObject(i);
+                        vip_card_type_code=obj.getString("vip_card_type_code").toString();
+                        //根据会员卡编号查询会员卡类型名称
+                        if(vip_card_type_code!=null&&!vip_card_type_code.equals("")){
+                            VipCardType vipCardType= vipCardTypeService.getVipCardTypeByCode(vipActivityDetail.getCorp_code(),vip_card_type_code,Common.IS_ACTIVE_Y);
+                            if(vipCardType!=null){
+                                System.out.print(couponInfo.toJSONString());
+                                String vip_card_type_name=vipCardType.getVip_card_type_name();
+                                obj.put("vip_card_type_name",vip_card_type_name);
+                            }
+                        }
+                    }
+                    activity_detail.put("coupon_type",couponInfo);
+                }
             }
-            else{
-                System.out.print("======");
+
+
+            if(recruit!=null&&!recruit.equals("")){
+                JSONArray recruitInfo= JSON.parseArray(recruit);
+                for (int i = 0; i <recruitInfo.size() ; i++) {
+                    JSONObject obj=recruitInfo.getJSONObject(i);
+                    vip_card_type_code=obj.getString("vip_card_type_code").toString();
+                    //根据会员卡编号查询会员卡类型名称
+                    if(vip_card_type_code!=null&&!vip_card_type_code.equals("")){
+                        VipCardType vipCardType= vipCardTypeService.getVipCardTypeByCode(vipActivityDetail.getCorp_code(),vip_card_type_code,Common.IS_ACTIVE_Y);
+                        if(vipCardType!=null){
+                            System.out.print(activity_detail.toJSONString());
+                            String vip_card_type_name=vipCardType.getVip_card_type_name();
+                            obj.put("vip_card_type_name",vip_card_type_name);
+                        }
+                    }
+                }
+                activity_detail.put("recruit",recruitInfo);
             }
-            result.put("activityVip",vip_cardInfo );
+            result.put("activityVip",activity_detail );
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
