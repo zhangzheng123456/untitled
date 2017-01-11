@@ -73,7 +73,7 @@ var activityPlanning={
 			$("#task_description").val("");
 			$(prev).addClass('active');
 			self.evaluationTask();
-		})
+		});
 		//新增一个div
 		$(".p_task_content").on("click",'.input_parent .group_add',function(){
 			$(this).parents(".add_del").hide();
@@ -84,6 +84,11 @@ var activityPlanning={
 		})
 		//删除一个div
 		$(".p_task_content").on("click",".input_parent .group_del",function(){
+			var index=$(this).parents('.input_parent').prev().index();
+			if(index==0){
+				console.log(index);
+				$(this).parents('.input_parent').prev().find(".group_del").hide();
+			}
 			$(this).parents('.input_parent').prev().find(".add_del").show();
 			$(this).parents('.input_parent').remove();
 		})
@@ -98,6 +103,7 @@ var activityPlanning={
 				}else if($(this).attr("class")=="bg"){
 					$(this).parent().find(".switch_text").html("任务已开启");
 				}
+				$("#task_parent").toggle(200);
 			}
 			if(id=="group_switch"){
 				if($(this).attr("class")==""){
@@ -105,18 +111,19 @@ var activityPlanning={
 				}else if($(this).attr("class")=="bg"){
 					$(this).parent().find(".switch_text").html("群发已开启");
 				}
+				$("#group_parent").toggle(200);
 			}
 			// var param={};
 			// var tasklist=self.param.tasklist;
 			// param["tasklist"]=tasklist;
-			// // 测试
+			// 测试
 			// param["activity_vip_code"]="ACls0000000001";
 			// console.log(param);
 			// oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
 			// 	console.log(data);
 			// });
 			//测试
-			// self.getGroupValue();
+			self.getGroupValue();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -133,7 +140,7 @@ var activityPlanning={
 		var nextIndex=$("#task_titles li.active").index();
 		var nextCurrent=this.param.tasklist[nextIndex];
 		$("#task_title").val(nextCurrent.task_title);
-		$("#task_type_code").val(nextCurrent.task_type_code);
+		$("#task_type_code").val(nextCurrent.task_type_name);
 		$("#task_description").val(nextCurrent.task_description);
 		$("#target_start_time").val(nextCurrent.target_start_time);
 		$("#target_end_time").val(nextCurrent.target_end_time);
@@ -166,6 +173,7 @@ var activityPlanning={
 		var target_start_time=$("#target_start_time").val();//开始时间
 		var target_end_time=$("#target_end_time").val();//截止时间
 		var task_type_code=$("#task_type_code").attr("data-code");//任务类型编号
+		var task_type_name=$("#task_type_code").val();//任务类型名称
 		var task_description=$("#task_description").val();//任务简述
 		var task_link=$("#task_link").val();//任务链接
 		if(task_title==""){
@@ -221,6 +229,7 @@ var activityPlanning={
 		param["target_start_time"]=target_start_time;//开始时间
 		param["target_end_time"]=target_end_time;//结束时间
 		param["task_type_code"]=task_type_code;//任务编号
+		param["task_type_name"]=task_type_name;//任务名称
 		param["task_description"]=task_description;//任务简述
 		param["task_link"]=task_link//链接
 		self.param.tasklist.push(param);
@@ -270,10 +279,197 @@ var activityPlanning={
 		});
 	},
 	getPlanningList:function(){//获取列表信息
+		var self=this;
 		var param={};
 		param["activity_vip_code"]="ACls0000000001";
 		oc.postRequire("post","/vipActivity/arrange/list","0",param, function (data) {
-			console.log(data);
+			if(data.code=="0"){
+				var message=JSON.parse(data.message);;
+				var wxlist=message.wxlist;
+				var smslist=message.smslist;
+				var emlist=message.emlist;
+				var tasklist=message.tasklist;
+				console.log(wxlist);
+				var wxhtml="";
+				var smshtml="";
+				var emlhtml="";
+				if(wxlist.length>0){
+					for(var i=0;i<wxlist.length;i++){
+						var content=JSON.parse(wxlist[i].content);
+						var addnode="";
+						var delnode="";
+						if(i==0&&wxlist.length==1){
+							addnode="display:block;"
+							delnode="display:none;"
+						}
+						if(i>=0&&i<wxlist.length-1){
+							addnode="display:none;"
+							delnode="display:block;"
+						}
+						if(i==wxlist.length-1 && i!==0){
+							addnode="display:block;"
+							delnode="display:block;"
+						}
+						wxhtml+="<div class='input_parent'>\
+							    	<div class='float'>\
+										<label>发送时间</label><input id='start' value='"+wxlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+									</div>\
+									<div class='float margin_left'>微信推送配置</div>\
+									<div class='float group_edit margin_left'>编辑</div>\
+									<div class='float add_del' style='"+addnode+"'>\
+                    					<div class='group_add'>\
+                        					<span class='icon-ishop_6-01'></span>\
+                    					</div>\
+                    					<div class='group_del' style='"+delnode+"'>\
+                        					<span class='icon-ishop_6-02'></span>\
+                    					</div>\
+                					</div>\
+                					<div class='edit_frame'>\
+					                    <div class='tabs_title_p'>\
+					                        <div class='tabs_left'>\
+					                            <span class='title_icon'></span>\
+					                            <span>微信推送服务</span>\
+					                        </div>\
+					                    </div>\
+					                    <div class='edit_frame_left'>\
+					                        <label class='label_frame'>推送标题</label><input class='edit_title' value='"+content.title+"' type='text' placeholder='请输入推送标题'></div>\
+					                    <div class='edit_frame_left'>\
+					                        <label class='label_frame'>页面链接</label><input class='edit_link' value='"+content.url+"' type='text' placeholder='请输入页面链接'></div>\
+					                    <div class='edit_frame_left'>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>'"+content.desc+"'</textarea>\
+					                    </div>\
+					                    <div class='edit_frame_left file_parent'>\
+					                        <label class='label_frame' style='margin-top: 5px;'>封面图片</label>\
+					                        <div class='edit_file'>\
+					                            <input type='file'><span class='icon-ishop_6-01'></span>\
+					                        </div>\
+					                    </div>\
+					                    <div class='edit_footer'>\
+					                        <div class='edit_footer_close'>取消</div>\
+					                        <div class='edit_footer_save'>保存修改</div>\
+					                    </div>\
+                					</div>\
+								</div>"
+					};
+					$("#wxlist").html(wxhtml);
+				}
+				if(smslist.length>0){
+					for(var i=0;i<smslist.length;i++){
+						// var content=JSON.parse(smslist[i].content);
+						var addnode="";
+						var delnode="";
+						if(i==0&&smslist.length==1){
+							addnode="display:block;"
+							delnode="display:none;"
+						}
+						if(i>=0&&i<smslist.length-1){
+							addnode="display:none;"
+							delnode="display:block;"
+						}
+						if(i==smslist.length-1 && i!==0){
+							addnode="display:block;"
+							delnode="display:block;"
+						}
+						smshtml+="<div class='input_parent'>\
+							    	<div class='float'>\
+										<label>发送时间</label><input id='start' value='"+smslist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+									</div>\
+									<div class='float margin_left'>短信内容设定</div>\
+									<div class='float group_edit margin_left'>编辑</div>\
+									<div class='float add_del' style='"+addnode+"'>\
+                    					<div class='group_add'>\
+                        					<span class='icon-ishop_6-01'></span>\
+                    					</div>\
+                    					<div class='group_del' style='"+delnode+"'>\
+                        					<span class='icon-ishop_6-02'></span>\
+                    					</div>\
+                					</div>\
+                					<div class='edit_frame'>\
+					                    <div class='tabs_title_p'>\
+					                        <div class='tabs_left'>\
+					                            <span class='title_icon'></span>\
+					                            <span>短信内容设定</span>\
+					                        </div>\
+					                    </div>\
+					                    <div class='edit_frame_left'>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>'"+smslist[i].content+"'</textarea>\
+					                    </div>\
+					                    <div class='edit_footer'>\
+					                        <div class='edit_footer_close'>取消</div>\
+					                        <div class='edit_footer_save'>保存修改</div>\
+					                    </div>\
+                					</div>\
+								</div>"
+					};
+					$("#smslist").html(smshtml);
+				}
+				if(emlist.length>0){
+					for(var i=0;i<emlist.length;i++){
+						var addnode="";
+						var delnode="";
+						if(i==0&&emlist.length==1){
+							addnode="display:block;"
+							delnode="display:none;"
+						}
+						if(i>=0&&i<emlist.length-1){
+							addnode="display:none;"
+							delnode="display:block;"
+						}
+						if(i==emlist.length-1 && i!==0){
+							addnode="display:block;"
+							delnode="display:block;"
+						}
+						emlhtml+="<div class='input_parent'>\
+							    	<div class='float'>\
+										<label>发送时间</label><input id='start' value='"+emlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+									</div>\
+									<div class='float margin_left'>邮件内容设定</div>\
+									<div class='float group_edit margin_left'>编辑</div>\
+									<div class='float add_del' style='"+addnode+"'>\
+                    					<div class='group_add'>\
+                        					<span class='icon-ishop_6-01'></span>\
+                    					</div>\
+                    					<div class='group_del' style='"+delnode+"'>\
+                        					<span class='icon-ishop_6-02'></span>\
+                    					</div>\
+                					</div>\
+                					<div class='edit_frame'>\
+					                    <div class='tabs_title_p'>\
+					                        <div class='tabs_left'>\
+					                            <span class='title_icon'></span>\
+					                            <span>邮件内容设定</span>\
+					                        </div>\
+					                    </div>\
+					                    <div class='edit_frame_left'>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>'"+emlist[i].content+"'</textarea>\
+					                    </div>\
+					                    <div class='edit_footer'>\
+					                        <div class='edit_footer_close'>取消</div>\
+					                        <div class='edit_footer_save'>保存修改</div>\
+					                    </div>\
+                					</div>\
+								</div>"
+					};
+					$("#emlist").html(emlhtml);
+				}
+				if(tasklist.length>0){
+					for(var i=0;i<tasklist.length;i++){
+						var a=i+1;
+						var taskparam={};
+						taskparam["task_title"]=tasklist[i].task_title;//任务标题
+						taskparam["target_start_time"]=tasklist[i].target_start_time;//开始时间
+						taskparam["target_end_time"]=tasklist[i].target_end_time;//结束时间
+						taskparam["task_type_code"]=tasklist[i].task_type_code;//任务编号
+						taskparam["task_type_name"]=tasklist[i].task_type_name;//任务名称
+						taskparam["task_description"]=tasklist[i].task_description;//任务简述
+						taskparam["task_link"]=tasklist[i].task_link//链接
+						self.param.tasklist.push(taskparam);
+						$("#task_titles").append("<li>任务"+a+"</li>");
+					}
+					$("#task_titles li").eq(0).addClass("active");
+					self.evaluationTask();
+				}
+			}
 		});
 	}
 }

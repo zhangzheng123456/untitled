@@ -511,3 +511,6 @@
 #customer>div:nth-child(3n){
     margin-right: 0 !important;
 }
+#peopleContent li:nth-child(even){
+    background: #efefef;
+}

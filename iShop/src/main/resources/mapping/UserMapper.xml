@@ -87,6 +87,7 @@
         def_user.modifier,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -131,6 +132,7 @@
         def_user.modifier,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -318,6 +320,7 @@
         def_user.creater,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code
         FROM def_user,def_group,def_corp
@@ -648,6 +651,7 @@
         def_user.modifier,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -700,6 +704,7 @@
         def_user.modifier,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -758,6 +763,7 @@
         def_user.modifier,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -814,6 +820,7 @@
         def_user.modifier,
         def_user.isactive,
         def_user.isonline,
+        def_user.position,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name

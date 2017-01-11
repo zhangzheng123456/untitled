@@ -146,8 +146,8 @@ a, a:link,a:hover,a:visited,a:active{
     overflow-y: auto;
     overflow-x: hidden;
     /* padding: 0 20px 20px 0px; */
-    padding-left: 5px;
-    padding-right: 9px;
+    /*padding-left: 5px;*/
+    /*padding-right: 9px;*/
 }
 .people_head{
     clear: both;

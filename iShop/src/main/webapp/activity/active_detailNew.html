@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>活动详情</title>
+    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css?20170105">
+    <link href="../table/css/inner.css?20170105" rel="stylesheet">
+    <link rel="stylesheet" href="../css/active_detailNew.css">
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="pre_title">
+        <span>会员管理</span><i class="icon-ishop_8-03"></i><span >会员活动</span><i class="icon-ishop_8-03"></i><label>活动跟踪</label>
+    </div>
+    <!--header-->
+    <div id="header">
+        <div class="header_l">
+            <div class="name_title">
+              <span class="title_l">2017新年感恩特惠</span>
+              <span class="icon-ishop_6-29 title_action"></span>
+            </div>
+            <div class="time">
+                <span class="time_l">2017-01-01 00:00:00</span>
+                <span class="">至</span>
+                <span class="time_r">2017-01-01 00:00:00</span>
+            </div>
+            <div class="active_name">
+                <span class="name_l">线下邀约活动</span>
+                <span class="name_m"></span>
+                <span class="name_r">太平鸟</span>
+            </div>
+        </div>
+        <div class="header_sm">
+            <div class="header_sm_c">
+                <p>参与门店数</p>
+                <p class="p_2">200</p>
+            </div>
+        </div>
+        <div class="header_m">
+            <div class="header_m_c">
+                <p class="p_3">距离活动结束还剩</p>
+                <p class="p_2">20天12小时24分24秒</p>
+            </div>
+        </div>
+        <div class="header_r">
+            <div class="btn">策略补充</div>
+        </div>
+    </div>
+    <!--navigation-->
+    <div id="nav">
+       <div class="progress nav_btn nav_action">任务完成度分析</div>
+       <div class="customer nav_btn">意向客户分析</div>
+        <div class="influence nav_btn">导购影响力分析</div>
+        <div class="spread nav_btn">通知传播分析</div>
+    </div>
+    <!--进度分析-->
+    <div id="progress">
+        <div class="progress_nav">
+            <div class="progress_nav_btn progress_nav_btn_action">任务1</div>
+            <div class="progress_nav_btn">任务2</div>
+            <div class="progress_nav_btn">任务3</div>
+            <div class="progress_nav_btn">任务4</div>
+        </div>
+        <div class="task_box">
+            <div class="task_detail">
+                <div class="task_detail_l task_block">
+                    <div>
+                        <p class="task_title">任务标题</p>
+                        <p class="task_title_describe">短语通知本次报名活动</p>
+                    </div>
+                    <div>
+                        <p class="task_title">任务类型</p>
+                        <p class="task_title_describe">短语通知客户</p>
+                    </div>
+                    <div>
+                        <p class="task_title">任务状态</p>
+                        <p class="task_title_describe doing">正在执行</p>
+                    </div>
+                    <div>
+                        <p class="task_title">参与门店</p>
+                        <p class="task_title_describe"><span class="count">20</span>门店 <span class="task_list">参与门店列表 <span class="icon-ishop_8-03"></span></span></p>
+                    </div>
+                    <div>
+                        <p class="task_title">任务时间</p>
+                        <div class="task_title_describe">
+                           <p>2017-01-01 00:00:00开始</p>
+                           <p>2017-01-01 00:00:00结束</p>
+                           <p>还剩 <span class="count">20</span>天</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="task_title">任务结束</p>
+                        <p class="task_title_describe">短语通知本次报名活动，帮助客户填写报名表</p>
+                    </div>
+                </div>
+                <div class="task_blank"></div>
+                <div  class="task_detail_m task_block">
+                    <p class="chart_title">任务完成度</p>
+                    <div id="chart_pie"></div>
+                    <div class="chart_count">
+                        <div class="blank_2"></div>
+                        <div class="chart_count_l">
+                            <div>
+                                <p>参与导购数</p>
+                                <p class="shoppers">3074</p>
+                            </div>
+                        </div>
+                        <div class="blank_3"></div>
+                        <div class="chart_count_m">
+                            <div>
+                                <p>已覆盖会员数</p>
+                                <p class="covers">10100</p>
+                            </div>
+                        </div>
+                        <div class="blank_3"></div>
+                        <div class="chart_count_r">
+                            <div>
+                                <p>目标会员数</p>
+                                <p class="target">12663</p>
+                            </div>
+                        </div>
+                        <div class="blank_2"></div>
+                    </div>
+                </div>
+                <div class="task_blank"></div>
+                <div  class="task_detail_r task_block">
+                    <p class="chart_title">任务完成度</p>
+                    <div id="chart_bar"></div>
+                </div>
+            </div>
+            <div class="task_list"></div>
+        </div>
+        <!--列表展示-->
+        <div class="list_box">
+            <div class="list_nav">
+                <span style="margin-right: 5px">
+                 <input type="radio" name="ck" class="check" style="display: none;" id="ck_1">
+                 <b class="radio_b"></b>
+                 <label for="ck_1"id="showDone">仅显示已完成</label>
+             </span>
+            <span style="margin-right: 5px">
+                 <input type="radio" name="ck" class="check"style="display: none" id="ck_2">
+                 <b class="radio_b"></b>
+                 <label for="ck_2"id="showDoing">仅显示未完成</label>
+            </span>
+            <span style="margin-right: 5px">
+                 <input type="radio" name="ck"class="check" style="display: none" id="ck_3">
+                 <b class="radio_b"></b>
+                 <label for="ck_3" id="showAll">显示全部</label>
+            </span>
+                <span class="do" id="choose"style="background: #97b3db">筛选</span>
+                <span class="do" id="empty"style="background: #c4c8d4">清空筛选</span>
+            </div>
+            <div class="list_search_box">
+                <div>
+                    <lable></lable>
+                    <input type="text">
+                </div>
+            </div>
+            <table>
+                <thead>
+                <th></th>
+                </thead>
+                <tbody>
+                  <tr>
+                      <td> </td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--客户分析-->
+    <div id="customer"></div>
+    <!--影响分析-->
+    <div id="influence"></div>
+    <!--传播分析-->
+    <div id="spread"></div>
+    <!--更多详情页面-->
+    <div id="get_more">
+        <div>
+            <span class="head_span_l">活动详情</span>
+            <span class="head_span_r icon-ishop_6-12" ></span>
+        </div>
+        <ul id="content">
+            <li>
+                <span class="content_l">活动状态</span>
+                <div class="content_r"id="activityState_1">
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动主题</span>
+                <div class="content_r">
+                </div>
+            </li>
+            <li>
+                <span class="content_l">执行方式</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动时间</span>
+                <div class="content_r">
+                    <span id="beiginTime_1" style="margin-left: 0px"></span> ~ <span id="endTime_1"></span></span>
+                </div>
+            </li>
+            <li>
+                <span class="content_l">执行范围</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">目标会员</span>
+                <div class="content_r">
+                    测试
+                </div>
+            </li>
+            <li>
+                <span class="content_l">活动描述</span>
+                <div id="fab_describe">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--活动详情人员状态-->
+    <div id="vip_status">
+        <div>
+            <span class="head_span_r icon-ishop_6-12" ></span>
+            <table>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>会员名称</th>
+                    <th>会员编号</th>
+                    <th>活动状态</th>
+                </tr>
+                </thead>
+            </table>
+            <div id="table_content">
+                <table>
+                    <tbody id="vip_status_tbody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹框提示-->
+<div class="tk" id="tk">
+    <span class="icon-ishop_6-12" id="delete_tk"></span>
+    <p><i class="icon-ishop_6-14"></i>是否确认终止活动?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="delete" id="complete">确定</em>
+    </div>
+</div>
+<!--side-->
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/activity/echarts.js"></script>
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    function pieChart() {
+        var myChart = echarts.init(document.getElementById('chart_pie'));
+        var NoCover = ((12664 - 10100)/12664*100).toFixed(2);
+        var TheCover = (10100/12664*100).toFixed(2);
+        // 指定图表的配置项和数据
+        var labelTop = {
+            normal : {
+                color:'#7bc7cd',
+                label : {
+                    show : false,
+                    position : 'center',
+                    formatter : '{b}',
+                    textStyle: {
+                        baseline : 'bottom'
+                    }
+                },
+                labelLine : {
+                    show : false
+                }
+            }
+        };
+        var labelFromatter = {
+            normal : {
+                label : {
+                    formatter : function (params){
+                        var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
+                        data=data>100?100:data;
+                        return data+ '%'
+                    },
+                    textStyle: {
+                        color:'#7bc7cd',
+                        fontSize: 25
+                    }
+                }
+            },
+        }
+        var labelBottom = {
+            normal : {
+                color: '#eaeaea',
+                label : {
+                    show : true,
+                    position : 'center'
+                },
+                labelLine : {
+                    show : false
+                }
+            },
+            emphasis: {
+                color: '#eaeaea'
+            }
+        };
+        var radius = [55, 70];
+        var  option = {
+            series : [
+                {
+                    type : 'pie',
+                    center : ['50%', '50%'],
+                    radius : radius,
+                    x: '0%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
+                        {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
+                    ]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    pieChart();
+    function barChart() {
+        var myChart = echarts.init(document.getElementById('chart_bar'));
+        var data = [220, 182, 191, 234, 290, 330, 310, 123];
+        var option = {
+            height:'140px',
+            top:0,
+            xAxis: {
+                data:['1-13', '1-14', '1-15', '1-16', '1-17', '1-18', '1-19', '1-20'],
+                axisLabel: {
+                    inside:false,
+                    textStyle: {
+                        color: '#000'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                z: 10
+            },
+            yAxis: {
+                axisLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999'
+                    }
+                },
+                splitLine:{
+                    show:true,
+                    lineStyle:{
+                        type:'dashed'
+                    }
+                }
+            },
+            tooltip:{
+                show:true,
+                position:'top',
+                formatter:'{c}',
+                backgroundColor:'#9999cc',
+                padding:[2,8]
+            },
+            series: [
+                {
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: '#d8d8e1'
+                        },
+                        emphasis: {
+                            color:'#9999cc'
+                        }
+                    },
+                    barCategoryGap:'50%',
+                    data: data
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+    barChart();
+    $('#get_more').hide();
+    $('#vip_status').hide();
+    $('#tk').hide();
+    $('#nav').on('click','.nav_btn',function () {
+        $(this).addClass('nav_action').siblings('.nav_action').removeClass('nav_action');
+    });
+    $('.progress_nav').on('click','.progress_nav_btn',function () {
+        $(this).addClass('progress_nav_btn_action').siblings('.progress_nav_btn_action').removeClass('progress_nav_btn_action');
+    });
+</script>
+</body>
+</html>

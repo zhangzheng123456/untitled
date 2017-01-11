@@ -865,10 +865,13 @@ var activity={
         oc.postRequire("post","/vipActivity/add","0",param,function (data) {
             if(data.code==0){
                 var msg=data.message;
-                $("#tabs>div:first-child").attr("data-code",msg);
+                if(msg!=="编辑成功"){
+                    activity.activity_code=msg;
+                    $("#tabs>div:first-child").attr("data-code",msg);
+                }
                 var _param={};
                 _param["corp_code"]=$("#tabs>div:first-child").attr("data-corp");
-                _param["activity_code"]=msg;
+                _param["activity_code"]=activity.activity_code;
                 _param["activity_type"]=runMode;
                 if(runMode=="recruit"){
                     var recruit=[];
@@ -903,14 +906,18 @@ var activity={
                                 if($(this).css("display")=="block"){
                                     var input=$(this).find("input");
                                     var coupon_type="";
+                                    var coupon_name="";
                                     for(var i=0;i<input.length;i++){
                                         if(i<input.length-1){
-                                            coupon_type+=$(input[i])+","
+                                            coupon_type+=$(input[i]).attr("data-code")+",";
+                                            coupon_name+=$(input[i]).val()+",";
                                         }else {
-                                            coupon_type+=$(input[i])
+                                            coupon_type+=$(input[i]).attr("data-code");
+                                            coupon_name+=$(input[i]).val();
                                         }
                                     }
                                     _param["coupon_type"]=coupon_type;
+                                    _param["coupon_name"]=coupon_name;
                                 }
                             })
                         }else if(send_coupon_type=="card"){
@@ -1025,7 +1032,17 @@ var activity={
                     $("#invite_message").val(list.apply_success_tips);
                 }
                 if(type=="recruit"){
-                    
+                    var recruit=JSON.parse(list.recruit);
+                    var li="";
+                    $($("#recruit_activity>ul>li:first-child").find("input")[0]).val(recruit[0].vip_card_type_name);
+                    $($("#recruit_activity>ul>li:first-child").find("input")[0]).attr("data-code",recruit[0].vip_card_type_code);
+                    for(var i=1;i<recruit.length;i++){
+                        "<li data-code='"+msg[i].vip_card_type_code+"'>"+msg[i].vip_card_type_name+"</li>"
+                    }
+                    $("#recruit_activity").show();
+                }
+                if(type=="coupon"){
+                    $("#coupon_activity").show();
                 }
                 console.log(data.message);
             }
