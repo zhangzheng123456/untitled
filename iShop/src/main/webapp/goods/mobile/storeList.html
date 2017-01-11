@@ -41,7 +41,7 @@
         });
     }
     function pageVal(list){
-        var tempHTML = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name">${shop}<img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
         var html = '';
         for(i=0;i<list.length;i++){
             var img = '';//暂无
@@ -72,9 +72,27 @@
             window.location.href = 'store_shoppers.html';
         });
         $('.right_name img').click(function(){
-            event.stopPropagation(); //阻止冒泡
-            alert('暂无功能');
+            event.stopPropagation(); //阻止冒泡;
+            var val =  $(this).attr('id').split(',');
+            var x = val[1];
+            var y = val[0];
+            var name = $(this).prev('shop').text();
+            console.log(name);
+            window.location.href = 'baiduMap.html?x='+x+'&y='+y+'&name='+name;
         })
+    }
+    //获取？后缀
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
     }
    window.onload= function () {
        getPage();
