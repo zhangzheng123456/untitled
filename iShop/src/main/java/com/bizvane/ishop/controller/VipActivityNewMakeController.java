@@ -593,15 +593,15 @@ public class VipActivityNewMakeController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = "";
-            //根据活动类型判断新增或者编辑
             result = vipActivityDetailService.insert_new(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("成功");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(result);
+                dataBean.setMessage("失败");
             }
 
         } catch (Exception ex) {
