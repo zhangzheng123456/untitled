@@ -26,7 +26,7 @@ public interface StoreMapper {
 
     List<Store> selStoreByStoreCodes(Map<String, Object> params) throws SQLException;
 
-    List<Store> selectByUserId(Map<String, Object> params) throws SQLException;
+    List<Store> selectByStoreCodes(Map<String, Object> params) throws SQLException;
 
     int insertStore(Store store) throws SQLException;
 

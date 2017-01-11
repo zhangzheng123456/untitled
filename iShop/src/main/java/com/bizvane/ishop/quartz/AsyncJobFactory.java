@@ -5,6 +5,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.ScheduleJob;
 import com.bizvane.ishop.service.VipFsendService;
+import com.bizvane.ishop.service.imp.VipActivityServiceImpl;
 import com.bizvane.ishop.service.imp.VipFsendServiceImpl;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -38,7 +39,6 @@ public class AsyncJobFactory extends QuartzJobBean {
         JobKey jobKey = context.getJobDetail().getKey();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
 
-        VipFsendServiceImpl vipFsendService = new VipFsendServiceImpl();
         JobDataMap data = context.getJobDetail().getJobDataMap();
         String func = data.get("func").toString();
         JSONObject func_obj = JSONObject.parseObject(func);
@@ -47,9 +47,11 @@ public class AsyncJobFactory extends QuartzJobBean {
         String user_code = func_obj.getString("user_code");
         String code = func_obj.getString("code");
         if (method.equals("sendSMS")){
+            VipFsendServiceImpl vipFsendService = new VipFsendServiceImpl();
             vipFsendService.fsendSchedule(corp_code,code,user_code);
-        }else if (func.equals("test2")){
-            vipFsendService.test2();
+        }else if (func.equals("changeStatus")){
+            VipActivityServiceImpl vipActivityService = new VipActivityServiceImpl();
+            vipActivityService.updateStatus(code);
         }else {
             System.out.println("it's test2 " + Common.DATETIME_FORMAT.format(new Date()));
         }

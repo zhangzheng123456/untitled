@@ -54,8 +54,8 @@ public class VipActivityServiceImpl implements VipActivityService {
         List<VipActivity> VipActivitys;
         PageHelper.startPage(page_num, page_size);
         VipActivitys = vipActivityMapper.selectAllActivity(corp_code, user_code, search_value);
-        for (VipActivity VipActivity : VipActivitys) {
-            VipActivity.setIsactive(CheckUtils.CheckIsactive(VipActivity.getIsactive()));
+        for (VipActivity vipActivity : VipActivitys) {
+            vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(VipActivitys);
 
@@ -79,8 +79,8 @@ public class VipActivityServiceImpl implements VipActivityService {
         params.put("map", map);
         PageHelper.startPage(page_num, page_size);
         List<VipActivity> list1 = vipActivityMapper.selectActivityScreen(params);
-        for (VipActivity VipActivity : list1) {
-            VipActivity.setIsactive(CheckUtils.CheckIsactive(VipActivity.getIsactive()));
+        for (VipActivity vipActivity : list1) {
+            vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(list1);
         return page;
@@ -131,12 +131,12 @@ public class VipActivityServiceImpl implements VipActivityService {
         String result = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         String activity_code = jsonObject.get("activity_code").toString().trim();
-        VipActivity vipActivity1 = this.selActivityByCode(activity_code);
+       // VipActivity vipActivity1 = this.selActivityByCode(activity_code);
         String corp_code = jsonObject.get("corp_code").toString().trim();
         Date now = new Date();
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme());
-        if (vipActivity2 == null||vipActivity2.getId()==vipActivity1.getId()) {
+        if (vipActivity2 == null||vipActivity2.getActivity_code().equals(activity_code)) {
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
             vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -165,101 +165,14 @@ public class VipActivityServiceImpl implements VipActivityService {
 
     @Override
     public VipActivity getActivityById(int id) throws Exception {
-        VipActivity VipActivity = vipActivityMapper.selActivityById(id);
-        return VipActivity;
+        VipActivity vipActivity = vipActivityMapper.selActivityById(id);
+        return vipActivity;
     }
 
     @Override
     public VipActivity selActivityByCode(String activity_vip_code) throws Exception {
-        return vipActivityMapper.selActivityByCode(activity_vip_code);
-    }
-
-    /**
-     * 获取活动任务执行情况
-     */
-    @Override
-    public JSONObject executeDetail(String corp_code,String activity_code,String task_code) throws Exception {
-        JSONObject result = new JSONObject();
-        VipActivity vipActivity = selActivityByCode(activity_code);
-        String target_vips_count = vipActivity.getTarget_vips_count();
-        String activity_store_code = vipActivity.getActivity_store_code();
-        Double complete_vip_count = 0d;
-        String[] activity_stores = activity_store_code.split(",");
-        JSONArray task_array = new JSONArray();
-        List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
-
-        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
-
-        BasicDBObject dbObject = new BasicDBObject();
-        dbObject.put("corp_code", corp_code);
-        dbObject.put("task_code", task_code);
-        for (int i = 0; i < taskAllocations.size(); i++) {
-            JSONObject task_obj = new JSONObject();
-            String user_code = taskAllocations.get(i).getUser_code();
-            String user_name = taskAllocations.get(i).getUser_name();
-            String store_code = taskAllocations.get(i).getStore_code();
-            dbObject.put("user_code", user_code);
-            DBCursor dbCursor = cursor.find(dbObject);
-            String complete_rate = "0";
-            String store_name = "";
-            while (dbCursor.hasNext()) {
-                DBObject obj = dbCursor.next();
-                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))){
-                    complete_rate = "100";
-                } else if (obj.containsField("complete_rate")){
-                    complete_rate = obj.get("complete_rate").toString();
-                }
-                if (obj.containsField("complete_vip_count")){
-                    String user_complete_vip_count = obj.get("complete_vip_count").toString();
-                    complete_vip_count = complete_vip_count + Double.parseDouble(user_complete_vip_count);
-                }
-            }
-            //任务执行人的店铺编号
-            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
-            String[] codes = store_code.split(",");
-            for (int j = 0; j <codes.length ; j++) {
-                if (Arrays.asList(activity_stores).contains(codes[j])) {
-                    Store store = storeService.getStoreByCode(corp_code,codes[j],Common.IS_ACTIVE_Y);
-                    if (store != null) {
-                        store_name = store.getStore_name();
-                    }
-                    task_obj.put("store_name",store_name);
-                    task_obj.put("store_code",codes[j]);
-                    break;
-                }
-            }
-            task_obj.put("user_code",user_code);
-            task_obj.put("user_name",user_name);
-            task_obj.put("complete_rate",complete_rate);
-            task_array.add(task_obj);
-        }
-        result.put("userList", task_array);
-        result.put("target_vips_count", target_vips_count);
-        result.put("complete_vips_count", complete_vip_count);
-
-        return result;
-    }
-
-
-    /**
-     * 查看员工执行详情
-     * @param corp_code
-     * @param activity_code
-     * @param user_code
-     * @return
-     * @throws Exception
-     */
-    public ArrayList userExecuteDetail(String corp_code, String activity_code, String user_code) throws Exception {
-        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
-        BasicDBObject dbObject = new BasicDBObject();
-        dbObject.put("activity_vip_code", activity_code);
-        dbObject.put("corp_code", corp_code);
-        dbObject.put("user_code", user_code);
-        DBCursor dbCursor = cursor.find(dbObject);
-        ArrayList list = MongoUtils.dbCursorToList(dbCursor);
-        return list;
+        VipActivity vipActivity = vipActivityMapper.selActivityByCode(activity_vip_code);
+        return vipActivity;
     }
 
     @Override
@@ -276,21 +189,50 @@ public class VipActivityServiceImpl implements VipActivityService {
     @Override
     public String executeActivity(VipActivity vipActivity,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
+        String activity_code = vipActivity.getActivity_code();
         String task_code = vipActivity.getTask_code();
         String sms_code = vipActivity.getSms_code();
         Date now = new Date();
 
 //        if (!task_code.trim().equals("")){
 //            status = executeTask(vipActivity,user_code);
+//            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
+//                return status;
 //        }
 //        if (!sms_code.trim().equals("")){
 //            status = executeFsend(vipActivity,user_code);
+//            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
+//                return status;
 //        }
         //更新活动状态activity_state
         vipActivity.setActivity_state("1");
         vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipActivity.setModifier(user_code);
         updateVipActivity(vipActivity);
+
+        String end_time = vipActivity.getEnd_time();
+        String corp_code = vipActivity.getCorp_code();
+        String month = end_time.substring(4,6);
+        String day = end_time.substring(6,8);
+        String hour = end_time.substring(8,10);
+        String min = end_time.substring(10,12);
+        String ss = end_time.substring(12,14);
+        String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
+        String job_name = activity_code;
+        String job_group = activity_code;
+        JSONObject func = new JSONObject();
+        func.put("method","changeStatus");
+        func.put("corp_code",corp_code);
+        func.put("user_code",user_code);
+        func.put("code",activity_code);
+        //创建schedule，结束时间时自动更新状态
+        ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setJob_name(job_name);
+        scheduleJob.setJob_group(job_group);
+        scheduleJob.setFunc(func.toString());
+        scheduleJob.setCron_expression(corn_expression);
+//        scheduleJobService.insert(scheduleJob);
+
         return status;
     }
 
@@ -354,13 +296,12 @@ public class VipActivityServiceImpl implements VipActivityService {
             String job_name = sms_code1;
             String job_group = activity_code;
 
-            String corn_expression = "s min h d m ?";
             String month = st.substring(4,6);
             String day = st.substring(6,8);
             String hour = st.substring(8,10);
             String min = st.substring(10,12);
             String ss = st.substring(12,14);
-            corn_expression = corn_expression.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
+            String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
 
             JSONObject func = new JSONObject();
             func.put("method","sendSMS");
@@ -375,5 +316,114 @@ public class VipActivityServiceImpl implements VipActivityService {
             scheduleJobService.insert(scheduleJob);
         }
         return status;
+    }
+
+    /**
+     * 获取活动任务执行情况
+     */
+    @Override
+    public JSONObject executeDetail(String corp_code,String activity_code,String task_code) throws Exception {
+        JSONObject result = new JSONObject();
+        VipActivity vipActivity = selActivityByCode(activity_code);
+        String target_vips_count = vipActivity.getTarget_vips_count();
+        String activity_store_code = vipActivity.getActivity_store_code();
+        Double complete_vip_count = 0d;
+        JSONArray activity_stores = JSONArray.parseArray(activity_store_code);
+//        String[] activity_stores = activity_store_code.split(",");
+        JSONArray task_array = new JSONArray();
+        List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
+
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
+
+        BasicDBObject dbObject = new BasicDBObject();
+        dbObject.put("corp_code", corp_code);
+        dbObject.put("task_code", task_code);
+        for (int i = 0; i < taskAllocations.size(); i++) {
+            JSONObject task_obj = new JSONObject();
+            String user_code = taskAllocations.get(i).getUser_code();
+            String user_name = taskAllocations.get(i).getUser_name();
+            String store_code = taskAllocations.get(i).getStore_code();
+            dbObject.put("user_code", user_code);
+            DBCursor dbCursor = cursor.find(dbObject);
+            String complete_rate = "0";
+            String store_name = "";
+            while (dbCursor.hasNext()) {
+                DBObject obj = dbCursor.next();
+                if (obj.containsField("vips") && (obj.get("vips").toString().equals("") || obj.get("vips").toString().equals("[]"))){
+                    complete_rate = "100";
+                } else if (obj.containsField("complete_rate")){
+                    complete_rate = obj.get("complete_rate").toString();
+                }
+                if (obj.containsField("complete_vip_count")){
+                    String user_complete_vip_count = obj.get("complete_vip_count").toString();
+                    complete_vip_count = complete_vip_count + Double.parseDouble(user_complete_vip_count);
+                }
+            }
+            //任务执行人的店铺编号
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+            String[] codes = store_code.split(",");
+            for (int j = 0; j < activity_stores.size(); j++) {
+                JSONObject store_obj = activity_stores.getJSONObject(j);
+                String code = store_obj.getString("store_code");
+                String name = store_obj.getString("store_name");
+                for (int k = 0; k < codes.length; k++) {
+                    if (code.equals(codes[k])) {
+                        task_obj.put("store_name",name);
+                        task_obj.put("store_code",code);
+                        break;
+                    }
+                }
+            }
+            task_obj.put("user_code",user_code);
+            task_obj.put("user_name",user_name);
+            task_obj.put("complete_rate",complete_rate);
+            task_array.add(task_obj);
+        }
+        result.put("userList", task_array);
+        result.put("user_count", String.valueOf(task_array.size()));
+        result.put("target_vips_count", target_vips_count);
+        result.put("complete_vips_count", complete_vip_count);
+
+        return result;
+    }
+
+
+    /**
+     * 查看员工执行详情
+     * @param corp_code
+     * @param activity_code
+     * @param user_code
+     * @return
+     * @throws Exception
+     */
+    public ArrayList userExecuteDetail(String corp_code, String activity_code, String user_code) throws Exception {
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_activity_allocation);
+        BasicDBObject dbObject = new BasicDBObject();
+        dbObject.put("activity_vip_code", activity_code);
+        dbObject.put("corp_code", corp_code);
+        dbObject.put("user_code", user_code);
+        DBCursor dbCursor = cursor.find(dbObject);
+        ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+        return list;
+    }
+
+    public void updateStatus(String activity_code){
+        try {
+            VipActivity vipActivity = selActivityByCode(activity_code);
+            String end_time = vipActivity.getEnd_time();
+            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(end_time));
+            String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+            long aa = Integer.parseInt(st);
+            long bb = Integer.parseInt(now);
+            if (aa < bb) {
+                vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
+                updateVipActivity(vipActivity);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            ex.getMessage();
+        }
     }
 }

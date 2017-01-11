@@ -1358,7 +1358,7 @@ $(function(){
     moreSearch();
     qjia();
     chartData();
-    chartShow();
+    //chartShow();
     GET();
 });
 

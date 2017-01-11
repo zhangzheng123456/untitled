@@ -79,7 +79,7 @@ public class VipActivityController {
             } else {
                 //根据活动编号查询活动的状态，只有未执行的活动才可以编辑活动
                 VipActivity vipActivity=vipActivityService.selActivityByCode(activity_code);
-                if(vipActivity.getActivity_state().equals("未执行")){
+
                     result = this.vipActivityService.update(message, user_id);
                     if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                         dataBean.setId(id);
@@ -92,7 +92,7 @@ public class VipActivityController {
                         dataBean.setMessage(result);
                     }
                 }
-                }
+
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setId(id);

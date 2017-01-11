@@ -286,7 +286,7 @@ public class AreaServiceImpl implements AreaService {
             params1.put("corp_code", corp_code);
             params1.put("search_value", "");
             params1.put("isactive", "Y");
-            List<Store> stores = storeMapper.selectByUserId(params1);
+            List<Store> stores = storeMapper.selectByStoreCodes(params1);
             if (stores.size() > 0){
                 for (int i = 0; i < stores.size(); i++) {
                     String area_code = stores.get(i).getArea_code();
@@ -332,7 +332,7 @@ public class AreaServiceImpl implements AreaService {
             params1.put("corp_code", corp_code);
             params1.put("search_value", "");
             params1.put("isactive", "Y");
-            List<Store> stores = storeMapper.selectByUserId(params1);
+            List<Store> stores = storeMapper.selectByStoreCodes(params1);
             for (int i = 0; i < stores.size(); i++) {
                 String area_code = stores.get(i).getArea_code();
                 area_code = area_code.replace(Common.SPECIAL_HEAD,"");
