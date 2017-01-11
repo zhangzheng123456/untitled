@@ -78,6 +78,8 @@ public class WebController {
     ShopMatchService shopMatchService;
     @Autowired
     IceInterfaceService iceInterfaceService;
+    @Autowired
+    ScheduleJobService scheduleJobService;
 
     /**
      *
@@ -1304,5 +1306,72 @@ public class WebController {
     }
 
 
+    @RequestMapping(value = "/api/quartztest", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String quartztest(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String job_name = request.getParameter("job_name");
+            String job_group = request.getParameter("job_group");
+
+            ScheduleJob scheduleJob = new ScheduleJob();
+            scheduleJob.setJob_name(job_name);
+            scheduleJob.setJob_group(job_group);
+            scheduleJob.setFunc("test2");
+            scheduleJob.setCron_expression("0 45 11 9 1 ?");
+
+            scheduleJobService.insert(scheduleJob);
+
+//            scheduleJobService.initScheduleJob();
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage("信息异常");
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 同步
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/api/nearbyStore", method = RequestMethod.POST)
+    @ResponseBody
+    public String nearbyStore(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        String msg = "";
+        String status = "failed";
+        try{
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String post_data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(post_data);
+            String position = jsonObj.get("position").toString();
+            String app_id = jsonObj.get("app_id").toString();
+
+            PageInfo<Store> stores = storeService.getAllStore(request,1,10,"C10000","","","");
+            List<Store> storeList = stores.getList();
+            for (int i = 0; i < storeList.size(); i++) {
+                Store store = storeList.get(i);
+                store.setStore_location("39.9484,116.48548");
+                store.setIs_this_area("200m");
+            }
+            result.put("list",JSON.toJSONString(storeList));
+        } catch (Exception ex) {
+
+        }
+        return result.toString();
+    }
 
 }

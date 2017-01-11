@@ -54,8 +54,8 @@ public class VipActivityServiceImpl implements VipActivityService {
         List<VipActivity> VipActivitys;
         PageHelper.startPage(page_num, page_size);
         VipActivitys = vipActivityMapper.selectAllActivity(corp_code, user_code, search_value);
-        for (VipActivity VipActivity : VipActivitys) {
-            VipActivity.setIsactive(CheckUtils.CheckIsactive(VipActivity.getIsactive()));
+        for (VipActivity vipActivity : VipActivitys) {
+            vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(VipActivitys);
 
@@ -79,8 +79,8 @@ public class VipActivityServiceImpl implements VipActivityService {
         params.put("map", map);
         PageHelper.startPage(page_num, page_size);
         List<VipActivity> list1 = vipActivityMapper.selectActivityScreen(params);
-        for (VipActivity VipActivity : list1) {
-            VipActivity.setIsactive(CheckUtils.CheckIsactive(VipActivity.getIsactive()));
+        for (VipActivity vipActivity : list1) {
+            vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(list1);
         return page;
@@ -165,13 +165,157 @@ public class VipActivityServiceImpl implements VipActivityService {
 
     @Override
     public VipActivity getActivityById(int id) throws Exception {
-        VipActivity VipActivity = vipActivityMapper.selActivityById(id);
-        return VipActivity;
+        VipActivity vipActivity = vipActivityMapper.selActivityById(id);
+        return vipActivity;
     }
 
     @Override
     public VipActivity selActivityByCode(String activity_vip_code) throws Exception {
-        return vipActivityMapper.selActivityByCode(activity_vip_code);
+        VipActivity vipActivity = vipActivityMapper.selActivityByCode(activity_vip_code);
+        return vipActivity;
+    }
+
+    @Override
+    public int updActiveCodeByType(String line_code, String line_value, String corp_code, String activity_code) throws Exception {
+        return vipActivityMapper.updActiveCodeByType(line_code, line_value, corp_code, activity_code);
+    }
+
+    public VipActivity getVipActivityByTheme(String corp_code, String activity_theme) throws Exception {
+
+            return  vipActivityMapper.selActivityByTheme(corp_code,activity_theme);
+
+    }
+
+    @Override
+    public String executeActivity(VipActivity vipActivity,String user_code) throws Exception {
+        String status = Common.DATABEAN_CODE_SUCCESS;
+        String activity_code = vipActivity.getActivity_code();
+        String task_code = vipActivity.getTask_code();
+        String sms_code = vipActivity.getSms_code();
+        Date now = new Date();
+
+//        if (!task_code.trim().equals("")){
+//            status = executeTask(vipActivity,user_code);
+//            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
+//                return status;
+//        }
+//        if (!sms_code.trim().equals("")){
+//            status = executeFsend(vipActivity,user_code);
+//            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
+//                return status;
+//        }
+        //更新活动状态activity_state
+        vipActivity.setActivity_state("1");
+        vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
+        vipActivity.setModifier(user_code);
+        updateVipActivity(vipActivity);
+
+        String end_time = vipActivity.getEnd_time();
+        String corp_code = vipActivity.getCorp_code();
+        String month = end_time.substring(4,6);
+        String day = end_time.substring(6,8);
+        String hour = end_time.substring(8,10);
+        String min = end_time.substring(10,12);
+        String ss = end_time.substring(12,14);
+        String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
+        String job_name = activity_code;
+        String job_group = activity_code;
+        JSONObject func = new JSONObject();
+        func.put("method","changeStatus");
+        func.put("corp_code",corp_code);
+        func.put("user_code",user_code);
+        func.put("code",activity_code);
+        //创建schedule，结束时间时自动更新状态
+        ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setJob_name(job_name);
+        scheduleJob.setJob_group(job_group);
+        scheduleJob.setFunc(func.toString());
+        scheduleJob.setCron_expression(corn_expression);
+//        scheduleJobService.insert(scheduleJob);
+
+        return status;
+    }
+
+    //执行任务
+    public String executeTask(VipActivity vipActivity,String user_code) throws Exception{
+        String status = Common.DATABEAN_CODE_SUCCESS;
+
+        String activity_code = vipActivity.getActivity_code();
+        String corp_code = vipActivity.getCorp_code();
+        String task_code = vipActivity.getTask_code();
+        String activity_store_code = vipActivity.getActivity_store_code();
+
+        //获取执行人
+        String user_codes = "";
+        String phones = "";
+        List<User> userList = userService.selUserByStoreCode(corp_code,"",activity_store_code,null,"");
+        if (userList.size() > 0) {
+            for (int i = 0; i < userList.size(); i++) {
+                user_codes = user_codes + userList.get(i).getUser_code() + ",";
+                phones = phones + userList.get(i).getPhone() + ",";
+            }
+        }else {
+            return "该范围下没有执行人，无法执行";
+        }
+        String[] task_codes = task_code.split(",");
+        for (int i = 0; i < task_codes.length; i++) {
+            String task_code1 = task_codes[i];
+            Task task = taskService.getTaskForId(corp_code,task_code1);
+            taskService.taskAllocation(task, phones, user_codes, user_code,activity_code);
+        }
+        return status;
+    }
+
+    //执行定时群发
+    public String executeFsend(VipActivity vipActivity,String user_code) throws Exception{
+        String status = Common.DATABEAN_CODE_SUCCESS;
+
+        String activity_code = vipActivity.getActivity_code();
+        String corp_code = vipActivity.getCorp_code();
+        String sms_code = vipActivity.getSms_code();
+
+        String[] sms_codes = sms_code.split(",");
+        for (int i = 0; i < sms_codes.length; i++) {
+            String sms_code1 = sms_codes[i];
+            VipFsend vipFsend = vipFsendService.getVipFsendInfoByCode(corp_code, sms_code1);
+
+            String send_time = vipFsend.getSend_time();
+            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
+            String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+            long aa = Integer.parseInt(st);
+            long bb = Integer.parseInt(now);
+            if (aa < bb) {
+                return "群发时间小于当前时间";
+            }
+        }
+        for (int i = 0; i < sms_codes.length; i++) {
+            String sms_code1 = sms_codes[i];
+            VipFsend vipFsend = vipFsendService.getVipFsendInfoByCode(corp_code, sms_code1);
+            String send_time = vipFsend.getSend_time();
+            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
+            String job_name = sms_code1;
+            String job_group = activity_code;
+
+            String month = st.substring(4,6);
+            String day = st.substring(6,8);
+            String hour = st.substring(8,10);
+            String min = st.substring(10,12);
+            String ss = st.substring(12,14);
+            String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
+
+            JSONObject func = new JSONObject();
+            func.put("method","sendSMS");
+            func.put("corp_code",corp_code);
+            func.put("user_code",user_code);
+            func.put("code",sms_code1);
+            ScheduleJob scheduleJob = new ScheduleJob();
+            scheduleJob.setJob_name(job_name);
+            scheduleJob.setJob_group(job_group);
+            scheduleJob.setFunc(func.toString());
+            scheduleJob.setCron_expression(corn_expression);
+            scheduleJobService.insert(scheduleJob);
+        }
+        return status;
     }
 
     /**
@@ -263,118 +407,21 @@ public class VipActivityServiceImpl implements VipActivityService {
         return list;
     }
 
-    @Override
-    public int updActiveCodeByType(String line_code, String line_value, String corp_code, String activity_code) throws Exception {
-        return vipActivityMapper.updActiveCodeByType(line_code, line_value, corp_code, activity_code);
-    }
-
-    public VipActivity getVipActivityByTheme(String corp_code, String activity_theme) throws Exception {
-
-            return  vipActivityMapper.selActivityByTheme(corp_code,activity_theme);
-
-    }
-
-    @Override
-    public String executeActivity(VipActivity vipActivity,String user_code) throws Exception {
-        String status = Common.DATABEAN_CODE_SUCCESS;
-        String task_code = vipActivity.getTask_code();
-        String sms_code = vipActivity.getSms_code();
-        Date now = new Date();
-
-//        if (!task_code.trim().equals("")){
-//            status = executeTask(vipActivity,user_code);
-//        }
-//        if (!sms_code.trim().equals("")){
-//            status = executeFsend(vipActivity,user_code);
-//        }
-        //更新活动状态activity_state
-        vipActivity.setActivity_state("1");
-        vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
-        vipActivity.setModifier(user_code);
-        updateVipActivity(vipActivity);
-        return status;
-    }
-
-    //执行任务
-    public String executeTask(VipActivity vipActivity,String user_code) throws Exception{
-        String status = Common.DATABEAN_CODE_SUCCESS;
-
-        String activity_code = vipActivity.getActivity_code();
-        String corp_code = vipActivity.getCorp_code();
-        String task_code = vipActivity.getTask_code();
-        String activity_store_code = vipActivity.getActivity_store_code();
-
-        //获取执行人
-        String user_codes = "";
-        String phones = "";
-        List<User> userList = userService.selUserByStoreCode(corp_code,"",activity_store_code,null,"");
-        if (userList.size() > 0) {
-            for (int i = 0; i < userList.size(); i++) {
-                user_codes = user_codes + userList.get(i).getUser_code() + ",";
-                phones = phones + userList.get(i).getPhone() + ",";
-            }
-        }else {
-            return "该范围下没有执行人，无法执行";
-        }
-        String[] task_codes = task_code.split(",");
-        for (int i = 0; i < task_codes.length; i++) {
-            String task_code1 = task_codes[i];
-            Task task = taskService.getTaskForId(corp_code,task_code1);
-            taskService.taskAllocation(task, phones, user_codes, user_code,activity_code);
-        }
-        return status;
-    }
-
-    //执行定时群发
-    public String executeFsend(VipActivity vipActivity,String user_code) throws Exception{
-        String status = Common.DATABEAN_CODE_SUCCESS;
-
-        String activity_code = vipActivity.getActivity_code();
-        String corp_code = vipActivity.getCorp_code();
-        String sms_code = vipActivity.getSms_code();
-
-        String[] sms_codes = sms_code.split(",");
-        for (int i = 0; i < sms_codes.length; i++) {
-            String sms_code1 = sms_codes[i];
-            VipFsend vipFsend = vipFsendService.getVipFsendInfoByCode(corp_code, sms_code1);
-
-            String send_time = vipFsend.getSend_time();
-            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
+    public void updateStatus(String activity_code){
+        try {
+            VipActivity vipActivity = selActivityByCode(activity_code);
+            String end_time = vipActivity.getEnd_time();
+            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(end_time));
             String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             long aa = Integer.parseInt(st);
             long bb = Integer.parseInt(now);
             if (aa < bb) {
-                return "群发时间小于当前时间";
+                vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
+                updateVipActivity(vipActivity);
             }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            ex.getMessage();
         }
-        for (int i = 0; i < sms_codes.length; i++) {
-            String sms_code1 = sms_codes[i];
-            VipFsend vipFsend = vipFsendService.getVipFsendInfoByCode(corp_code, sms_code1);
-            String send_time = vipFsend.getSend_time();
-            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
-            String job_name = sms_code1;
-            String job_group = activity_code;
-
-            String corn_expression = "s min h d m ?";
-            String month = st.substring(4,6);
-            String day = st.substring(6,8);
-            String hour = st.substring(8,10);
-            String min = st.substring(10,12);
-            String ss = st.substring(12,14);
-            corn_expression = corn_expression.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
-
-            JSONObject func = new JSONObject();
-            func.put("method","sendSMS");
-            func.put("corp_code",corp_code);
-            func.put("user_code",user_code);
-            func.put("code",sms_code1);
-            ScheduleJob scheduleJob = new ScheduleJob();
-            scheduleJob.setJob_name(job_name);
-            scheduleJob.setJob_group(job_group);
-            scheduleJob.setFunc(func.toString());
-            scheduleJob.setCron_expression(corn_expression);
-            scheduleJobService.insert(scheduleJob);
-        }
-        return status;
     }
 }
