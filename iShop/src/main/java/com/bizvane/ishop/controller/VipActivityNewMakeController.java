@@ -580,13 +580,9 @@ public class VipActivityNewMakeController {
     }
 
 
-    /**
-     * 会员活动
-     * 添加
-     */
-    @RequestMapping(value = "/addStrategyByTicket", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
+    @RequestMapping(value = "/addStrategyByTicket", method = RequestMethod.POST)
     public String addStrategyByTicket(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
