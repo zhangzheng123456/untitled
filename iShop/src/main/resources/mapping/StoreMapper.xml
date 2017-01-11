@@ -4,6 +4,7 @@
 
     <resultMap type="com.bizvane.ishop.entity.Store" id="Store">
         <id column="id" property="id"/>
+        <result column="logo" property="logo" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_id" property="store_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_code" property="store_code"/>
         <result column="store_name" property="store_name"/>
@@ -46,7 +47,8 @@
         def_store.created_date,
         def_store.creater,
         def_store.isactive,
-        def_corp.corp_name
+        def_corp.corp_name,
+        def_store.logo
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.id=#{id}
@@ -89,7 +91,8 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
-        def_corp.corp_name
+        def_corp.corp_name,
+        def_store.logo
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
@@ -117,7 +120,8 @@
     <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
         select
         def_store.store_code,
-        def_store.store_name
+        def_store.store_name,
+        def_store.logo
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = #{corp_code}
@@ -144,6 +148,7 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
+        def_store.logo,
         def_corp.corp_name
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
@@ -194,6 +199,7 @@
         store_name,
         def_store.area_code,
         def_store.corp_code,
+        def_store.logo,
         def_corp.corp_name
         from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
@@ -236,7 +242,8 @@
 
     <select id="selectStore" resultType="com.bizvane.ishop.entity.Store">
         SELECT  store_code,
-        store_name
+        store_name,
+        logo
         FROM def_store
         WHERE 1=1
         AND corp_code=#{corp_code}
@@ -254,6 +261,7 @@
         store_name,
         def_store.area_code,
         def_store.corp_code,
+        def_store.logo,
         def_corp.corp_name
         from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
@@ -291,6 +299,7 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
+        def_store.logo,
         def_corp.corp_name
         from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
@@ -537,6 +546,7 @@
         ds.modified_date,
         ds.modifier,
         ds.isactive,
+        ds.logo,
         dc.corp_name
         FROM def_store ds,def_corp dc,def_area da,def_brand db
         WHERE ds.corp_code = dc.corp_code
@@ -621,6 +631,7 @@
         ds.modified_date,
         ds.modifier,
         ds.isactive,
+        ds.logo,
         dc.corp_name
         FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
@@ -682,7 +693,8 @@
         store_code,
         store_name,
         ds.area_code,
-        ds.corp_code
+        ds.corp_code,
+        ds.logo
         FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = #{corp_code}
@@ -700,7 +712,8 @@
     <select id="selectStoreCountByBrand" resultType="com.bizvane.ishop.entity.Store">
         SELECT ds.id,
         ds.store_code,
-        ds.store_name
+        ds.store_name,
+        ds.logo
         FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code=#{corp_code}
@@ -720,7 +733,7 @@
     </select>
 
     <select id="selectStoreCity" resultType="com.bizvane.ishop.entity.Store">
-        SELECT city
+        SELECT city,logo
         FROM def_store
         WHERE isactive= 'Y'
         AND corp_code = #{corp_code}
