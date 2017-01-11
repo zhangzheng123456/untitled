@@ -142,6 +142,10 @@
     padding:10px  0px ;
     border-bottom: 1px dotted #aaa ;
 }
+.progress_nav div:first-child{
+    background: #41c7db;
+    color:#fff;
+}
 .progress_nav_btn{
     cursor: pointer;
     float: left;
@@ -430,8 +434,9 @@
     text-align: center;
     line-height: 25px;
     border-radius: 5px;
+    cursor: pointer;
 }
-#add_store_tb,#join_store_tb{
+#add_store_tb,#join_store_tb,#showList,#showList2{
     margin-top: 10px;
     text-align: center;
     width: 100%;
@@ -445,17 +450,27 @@
     font-weight: normal;
     text-align: center;
 }
-#add_store_tb td,#join_store_tb td{
+#add_store_tb thead th:nth-child(1),#showList tbody td:nth-child(1),#showList2 tbody td:nth-child(1){width: 20%;text-align: center;}
+#add_store_tb thead th:nth-child(2),#showList tbody td:nth-child(2),#showList2 tbody td:nth-child(2){width: 40%;text-align: center;}
+#add_store_tb thead th:nth-child(3),#showList tbody td:nth-child(3),#showList2 tbody td:nth-child(3){width: 40%;text-align: center;}
+#showList_box,#showList_box2{
+    max-height: 300px;
+    overflow-y: auto;
+}
+#add_store_tb td,#join_store_tb td,#showList td,#showList2 td{
     height: 30px;
 }
-#add_store_tb tbody tr:nth-child(even),#join_store_tb tbody tr:nth-child(even){
+#add_store_tb tbody tr:nth-child(even),#join_store_tb tbody tr:nth-child(even),#showList tbody tr:nth-child(even),#showList2 tbody tr:nth-child(even){
     background: #efefef;
 }
 .add_footer,.join_footer{
     margin-top: 20px;
     overflow: hidden;
     height: 25px;
-    position: relative;
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 10px;
 }
 .add_footer_l{
     float: left;

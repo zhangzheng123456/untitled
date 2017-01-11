@@ -90,8 +90,7 @@ public interface VipActivityService {
      */
     JSONObject executeDetail(String corp_code,String activity_code,String task_code) throws Exception;
 
-    ArrayList userExecuteDetail(String corp_code, String activity_vip_code, String user_code) throws Exception;
-
+    ArrayList userExecuteDetail(String corp_code, String task_code, String user_code) throws Exception;
 
     int updActiveCodeByType(String line_code, String line_value,String corp_code, String activity_code)throws Exception;
 

@@ -95,7 +95,7 @@ body{
 }
 .addAdd{
     color: #c3c3c3;
-    font-size:80px;
+    font-size:40px;
     position: absolute;
     top:0px;
 }
@@ -105,3 +105,23 @@ body{
     font-size:14px;
     color: #c3c3c3;
 }
+/*空提示*/
+.hint{
+    display: none;
+}
+/*列表弹窗*/
+#search_match_goods{
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-top: -200px;
+    margin-left: -225px;
+    z-index: 1000;
+    display: none;
+}
+#search_match_goods .li{margin-bottom: 0;height:100px;}
+#search_match_goods ul{ width:425px;height:350px;overflow-y:auto;overflow-x: hidden;margin-left:20px; margin-bottom: 20px}
+#search_match_goods ul li{width:400px;height:50px;background:#ededed;padding-top:5px;display: inline-block; }
+#search_match_goods ul li:nth-child(even){background: #FFFFFF;}
+#search_match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+#search_match_goods ul li i{position:relative;right:5px;top:8px;color: #c26555;display: none;cursor: pointer;}
