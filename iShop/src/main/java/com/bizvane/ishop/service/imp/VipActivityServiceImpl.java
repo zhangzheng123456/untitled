@@ -131,12 +131,12 @@ public class VipActivityServiceImpl implements VipActivityService {
         String result = "";
         org.json.JSONObject jsonObject = new org.json.JSONObject(message);
         String activity_code = jsonObject.get("activity_code").toString().trim();
-        VipActivity vipActivity1 = this.selActivityByCode(activity_code);
+       // VipActivity vipActivity1 = this.selActivityByCode(activity_code);
         String corp_code = jsonObject.get("corp_code").toString().trim();
         Date now = new Date();
         VipActivity vipActivity = WebUtils.JSON2Bean(jsonObject, VipActivity.class);
         VipActivity vipActivity2 = this.getVipActivityByTheme(corp_code, vipActivity.getActivity_theme());
-        if (vipActivity2 == null||vipActivity2.getId()==vipActivity1.getId()) {
+        if (vipActivity2 == null||vipActivity2.getActivity_code().equals(activity_code)) {
             vipActivity.setActivity_code(activity_code);
             vipActivity.setModifier(user_id);
             vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
