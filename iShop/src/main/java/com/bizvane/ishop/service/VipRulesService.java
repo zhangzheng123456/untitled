@@ -31,5 +31,5 @@ public interface VipRulesService {
 
      String  getCouponInfo1(String corp_code)throws Exception;
 
-
+    List<VipRules> getViprulesByCardTypeCode(String corp_code,String vip_card_type_code)throws Exception;
 }

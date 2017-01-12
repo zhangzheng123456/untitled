@@ -143,6 +143,12 @@ public class VipActivityDetailController {
                         }
                         activity_detail.put("coupon_type",JSON.toJSONString(couponInfo));
                     }
+                }else{
+                    String coupon_type=vipActivityDetail.getCoupon_type();
+                    if(coupon_type!=null&&!coupon_type.equals("")){
+                        JSONArray couponInfo= JSON.parseArray(coupon_type);
+                        activity_detail.put("coupon_type",JSON.toJSONString(couponInfo));
+                    }
                 }
 
             }

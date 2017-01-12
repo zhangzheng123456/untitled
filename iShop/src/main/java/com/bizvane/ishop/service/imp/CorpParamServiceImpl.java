@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
@@ -69,8 +70,13 @@ public class CorpParamServiceImpl implements CorpParamService {
             if (corp_code.equals("all")){
                 corpParam.setCorp_name("全部");
             }else {
-                String corp_name = corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y).getCorp_name();
-                corpParam.setCorp_name(corp_name);
+                Corp corp=corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y);
+                if(corp!=null){
+                    String corp_name = corpMapper.selectByCorpId(0,corp_code,Common.IS_ACTIVE_Y).getCorp_name();
+                    corpParam.setCorp_name(corp_name);
+                }else{
+                    corpParam.setCorp_name("");
+                }
             }
             corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
         }
