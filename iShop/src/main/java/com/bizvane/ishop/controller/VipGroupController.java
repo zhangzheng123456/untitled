@@ -546,6 +546,80 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 获取企业下季度，品类
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getClassQuarter", method = RequestMethod.POST)
+    @ResponseBody
+    public String getClassQuarter(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String type = jsonObject.getString("type");
+
+            if (role_code.equals(Common.ROLE_SYS))
+                corp_code = jsonObject.getString("corp_code");
+
+            JSONArray array = new JSONArray();
+            if (type.equals("class")){
+                JSONObject obj = new JSONObject();
+                obj.put("class","衬衫");
+                JSONObject obj1 = new JSONObject();
+                obj1.put("class","裤子");
+                JSONObject obj2 = new JSONObject();
+                obj2.put("class","裙子");
+                JSONObject obj3 = new JSONObject();
+                obj3.put("class","外套");
+                JSONObject obj4 = new JSONObject();
+                obj4.put("class","鞋子");
+                JSONObject obj5 = new JSONObject();
+                obj5.put("class","袜子");
+                JSONObject obj6 = new JSONObject();
+                obj6.put("class","帽子");
+                array.add(obj);
+                array.add(obj1);
+                array.add(obj2);
+                array.add(obj3);
+                array.add(obj4);
+                array.add(obj5);
+                array.add(obj6);
+            }else if (type.equals("quarter")){
+                JSONObject obj = new JSONObject();
+                obj.put("quarter","16年第一季度");
+                JSONObject obj1 = new JSONObject();
+                obj1.put("quarter","16年第二季度");
+                JSONObject obj2 = new JSONObject();
+                obj2.put("quarter","16年第三季度");
+                JSONObject obj3 = new JSONObject();
+                obj3.put("quarter","16年第四季度");
+                array.add(obj);
+                array.add(obj1);
+                array.add(obj2);
+                array.add(obj3);
+            }
+            JSONObject result = new JSONObject();
+
+            result.put("list", JSON.toJSONString(array));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
 
     /**
      * 获取企业下会员分组
