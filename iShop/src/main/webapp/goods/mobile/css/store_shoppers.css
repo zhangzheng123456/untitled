@@ -26,8 +26,12 @@ body {
   margin-right: 4%; }
 
 .img {
-  width: 100%; }
-
+  width: 100%;
+}
+.img img{
+  width: 100%;
+  border-radius: 0.12077rem;
+}
 .name {
   margin-top: 0.24155rem;
   text-align: center;

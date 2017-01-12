@@ -43,14 +43,16 @@
     function pageVal(list){
         //跳转聊天页面：auth_appid、open_id、user_id、corp_code
         // 页面显示：用户头像、user_name
-        var tempHTML = '<div class="shopper" id="${user_code}"> <div class="img"><img src="${img}" alt="" style="width: 100%"/></div> <div class="name">${name}</div> </div>';
+        var tempHTML = '<div class="shopper" id="${user_code}"> <div class="img"><img src="${img}" alt=""/></div> <div class="name">${name}</div> </div>';
         var html ='';
         for(i=0;i<list.length;i++){
             var user_code = list[i].user_code;
             var img = list[i].avatar;
+            console.log(img);
             var name = list[i].user_name;
-            if(img ==''){
+            if(img ==''|| img=='null'||img=='underfind'||img=='../img/head.png'){
                 img = 'image/goods_default_image.png';
+                console.log('change!!')
             }
             var nowHTML = tempHTML;
             nowHTML = nowHTML.replace('${user_code}',user_code);
