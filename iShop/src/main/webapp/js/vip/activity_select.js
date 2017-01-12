@@ -1031,7 +1031,7 @@ $("#input-txt").keydown(function() {
 });
 function getData(){
     var param={
-        activity_code:"ACls0000000001"
+        activity_code:sessionStorage.getItem("activity_code")
     };
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vipActivity/select","0",param,function(data){
@@ -1044,26 +1044,30 @@ function getData(){
         _param["corp_code"] = "C10000";
         _param["pageNumber"] = inx;
         _param["pageSize"] = pageSize;
+        console.log(activityVip.target_vips);
         _param["screen"]=activityVip.target_vips =="" ?[]:JSON.parse(activityVip.target_vips);
-        if(JSON.parse(activityVip.target_vips).length>0){
+        if(_param["screen"].length>0){
             filtrates(1,10);
-        }else if(JSON.parse(activityVip.target_vips).length==0){
+        }else if(_param["screen"].length==0){
             whir.loading.add("",0.5);//加载等待框
             setPage($("#foot-num")[0],1,1,pageSize);
-            superaddition(JSON.parse(activityVip.target_vips))
+            superaddition(_param["screen"])
         }
 
     })
 }
 getData();
-$("#NEXT").bind("click",function(){
+function postSelect(){
+    var def = $.Deferred();
+    console.log(_param["screen"])
     var param={
         target_vips_count:$("#num").html(),
-        activity_vip_code:"ACls0000000001",
+        activity_vip_code:sessionStorage.getItem("activity_code"),
         screen:_param["screen"]
     };
     oc.postRequire("post","/vipActivity/arrange/addOrUpdateVip","0",param,function(data){
         if(data.code!="0") return;
-        console.log(data)
-    })
-});
+        def.resolve();
+    });
+    return def
+}
