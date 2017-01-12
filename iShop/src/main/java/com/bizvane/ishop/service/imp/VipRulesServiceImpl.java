@@ -164,15 +164,11 @@ public class VipRulesServiceImpl implements VipRulesService {
         String high_degree = jsonObject.get("high_degree").toString().trim();
         String isactive = jsonObject.get("isactive").toString().trim();
         String store_code = jsonObject.get("store_code").toString().trim();
-
-        VipCardType vipCardType1 = vipCardTypeService.getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
-        VipCardType vipCardType2 = vipCardTypeService.getVipCardTypeByCode(corp_code, high_vip_card_type_code, Common.IS_ACTIVE_Y);
-        String vip_type = vipCardType1.getVip_card_type_name();
-        String high_vip_type = vipCardType2.getVip_card_type_name();
+        String vip_type = jsonObject.get("vip_type").toString().trim();
+        String high_vip_type = jsonObject.get("high_vip_type").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, high_vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
-
         if (vipRules1 == null || vipRules1.getId() == id) {
             Date now = new Date();
             if (upgrade_amount.equals("")) {
@@ -188,8 +184,6 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setStore_code(store_code);
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setPresent_point(present_point);
-            vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
             vipRules.setUpgrade_time(upgrade_time);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));

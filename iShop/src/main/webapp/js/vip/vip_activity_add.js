@@ -34,6 +34,15 @@
                             });
                             return ;
                         }
+                        if(activity.theme!==""){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: activity.theme
+                            });
+                            return ;
+                        }
                         if(activity.cache.store_codes==""){
                             art.dialog({
                                 time: 1,

@@ -295,7 +295,7 @@
                     smooth:true,
                     symbolSize:0,
                     type:'line',
-                    data:[230, 172, 201, 214, 300, 320, 300, 223, 512, 301, 100, 129, 240, 182, 103, 134, 128, 143, 145, 220,100,300,150,200],
+                    data:[100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100,500,100,500,100,500],
                     itemStyle:{
                         normal:{
                             color:"#6DADC8"
@@ -305,14 +305,13 @@
                     smooth:true,
                     symbolSize:0,
                     type:'line',
-                    data:[130, 372, 101, 314, 100, 120, 100, 323, 212, 101, 400, 429, 340, 382, 403, 534, 528, 243, 445,520,100,300,150,200],
+                    data:[ 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100,500,100,500,100,500,100],
                     itemStyle:{
                         normal:{
                             color:"#41a0d5"
                         }
                     }
-                },
-                {
+                },{
                     type: 'bar',
                     name:"销售总额",
                     barWidth:"8",
@@ -329,7 +328,10 @@
         var allData=echarts.init(document.getElementById("allDataShow"));
         myChart_type.setOption(option_pie);
         allData.setOption(option);
+        window.addEventListener("resize",function(){
+            allData.resize();
+            myChart_type.resize();
+        });
     })
-
 </script>
 </html>
