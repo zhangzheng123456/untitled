@@ -1059,15 +1059,25 @@ function getData(){
 getData();
 function postSelect(){
     var def = $.Deferred();
-    console.log(_param["screen"])
+    if($("#num").html()=="0"){
+        art.dialog({
+            zIndex: 10003,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "会员数量不能为0"
+        });
+        def.resolve("失败");
+    }
     var param={
         target_vips_count:$("#num").html(),
         activity_vip_code:sessionStorage.getItem("activity_code"),
         screen:_param["screen"]
     };
+
     oc.postRequire("post","/vipActivity/arrange/addOrUpdateVip","0",param,function(data){
         if(data.code!="0") return;
-        def.resolve();
+        def.resolve("成功");
     });
     return def
 }
