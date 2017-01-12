@@ -25,16 +25,35 @@
 <script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <!--匹配js-->
 <script>
-    function pageVal(){
-        var img = '';
-        var name = '王某某'
-        var tempHTML = '<div class="shopper"> <div class="img"><img src="${img}" alt=""/></div> <div class="name">${name}</div> </div>';
+    var oc = new ObjectControl();
+    var corp_code = GetRequest().corp_code;
+    function getPage(){
+        oc.postRequire("get", "http://wechat.dev.bizvane.com/app/wechat/getStoreUser?corp_code="+GetRequest().corp_code+"&store_code="+GetRequest().store_code, "0", "", function (data) {
+            if (data.code == "0") {
+                console.log('拉取列表成功')
+                var msg = JSON.parse(data.message);
+                var list =JSON.parse(msg.list);
+                console.log(list)
+                pageVal(list);
+            }else if(data.code =='-1'){
+                console.log(data);
+            }
+        });
+    }
+    function pageVal(list){
+        //跳转聊天页面：auth_appid、open_id、user_id、corp_code
+        // 页面显示：用户头像、user_name
+        var tempHTML = '<div class="shopper" id="${user_code}"> <div class="img"><img src="${img}" alt=""/></div> <div class="name">${name}</div> </div>';
         var html ='';
-        for(i=0;i<9;i++){
+        for(i=0;i<list.length;i++){
+            var user_code = list[i].user_code;
+            var img = list[i].avatar;
+            var name = list[i].user_name;
             if(img ==''){
                 img = 'image/goods_default_image.png';
             }
             var nowHTML = tempHTML;
+            nowHTML = nowHTML.replace('${user_code}',user_code);
             nowHTML = nowHTML.replace('${img}',img);
             nowHTML = nowHTML.replace('${name}',name);
             html+=nowHTML;
@@ -47,11 +66,27 @@
     }
     function shopperClick(){
         $('.shopper').click(function () {
-            alert('暂时无法联系客服');
+            var user_code =  $(this).attr('id');
+            window.location.href = 'http://wechat.dev.bizvane.com/weixin/webPage/index.html?corp_code='+corp_code+'&user_id='+user_code;
+            // ws = new WebSocket("ws://service.app.bizvane.com:80/app/chatServer");  //正式地址
+           // ws = new WebSocket("ws://wechat.dev.bizvane.com:8080/app/chatServer");  //测试地址
         });
     }
+    //获取？后缀
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
     window.onload = function () {
-        pageVal();
+        getPage();
     }
 </script>
 </body>
