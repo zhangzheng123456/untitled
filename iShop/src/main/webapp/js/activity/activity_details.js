@@ -11,6 +11,8 @@ var corp_code='';//当前活动企业号
 var action={};
 var add_store_code='';//原始店铺号
 var isscroll=false;
+var task_code='';
+var min_date='';
 function stop(){
     var _params={
         "id":"",
@@ -151,6 +153,7 @@ $('#empty').click(function(){
     // $('.btnSecond input:checked').removeAttr('checked');
     $('.inputs input').val('');
     $('#showAll').trigger('click');
+    $('#choose').trigger('click');
     // listShow(staffData);
     // var nowLength = $('.people_title').length;
     // if(nowLength <=0) {
@@ -236,7 +239,7 @@ function search(name,num,area,shop){
             // console.log(param[0])
             if((param.indexOf(0)!=-1)&&(val.user_name.search(name)!=-1)){data.push(val)};
             if((param.indexOf(1)!=-1)&&(val.user_code.search(num)!=-1)){data.push(val)};
-            if((param.indexOf(2)!=-1)&&(val.area_name.search(area)!=-1)){data.push(val)};
+            if((param.indexOf(2)!=-1)&&(val.store_code.search(area)!=-1)){data.push(val)};
             if((param.indexOf(3)!=-1)&&(val.store_name.search(shop)!=-1)){data.push(val)};
         });
     }else if(param.length==2){
@@ -254,7 +257,7 @@ function search(name,num,area,shop){
                 // if ((val.user_name == name) && (val.area_name==area)) {
                 //     data.push(val)
                 // }
-                if ((val.user_name.search(name)!=-1) && (val.area_name.search(area)!=-1)) {
+                if ((val.user_name.search(name)!=-1) && (val.store_code.search(area)!=-1)) {
                     data.push(val)
                 }
             })
@@ -272,7 +275,7 @@ function search(name,num,area,shop){
                 // if ((val.user_code==num) && (val.area_name==area)) {
                 //     data.push(val)
                 // }
-                if ((val.user_code.search(num)!=-1) && (val.area_name.search(area)!=-1)) {
+                if ((val.user_code.search(num)!=-1) && (val.store_code.search(area)!=-1)) {
                     data.push(val)
                 }
             })
@@ -290,7 +293,7 @@ function search(name,num,area,shop){
                 // if ((val.area_name==area) && (val.store_name==shop)) {
                 //     data.push(val)
                 // }
-                if ((val.area_name.search(area)!=-1) && (val.store_name.search(shop)!=-1)) {
+                if ((val.store_code.search(area)!=-1) && (val.store_name.search(shop)!=-1)) {
                     data.push(val)
                 }
             })
@@ -298,7 +301,7 @@ function search(name,num,area,shop){
     }else if(param.length==3){
         if((param.indexOf(0)!=-1) && (param.indexOf(1)!=-1)&&  (param.indexOf(2)!=-1) ){   // 012
             staffData.map(function (val,index,arr) {
-                if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.area_name.search(area)!=-1) ){
+                if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.store_code.search(area)!=-1) ){
                     data.push(val)
                 }
             });
@@ -310,20 +313,20 @@ function search(name,num,area,shop){
             });
         }else if((param.indexOf(0)!=-1) && (param.indexOf(2)!=-1)&&  (param.indexOf(3)!=-1)){ //023
             staffData.map(function (val,index,arr) {
-                if( (val.user_name.search(name)!=-1)&&(val.area_name.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
+                if( (val.user_name.search(name)!=-1)&&(val.store_code.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
                     data.push(val)
                 }
             });
         }else if((param.indexOf(1)!=-1) && (param.indexOf(2)!=-1)&&  (param.indexOf(3)!=-1)){  //123
             staffData.map(function (val,index,arr) {
-                if( (val.user_code.search(num)!=-1)&&(val.area_name.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
+                if( (val.user_code.search(num)!=-1)&&(val.store_code.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
                     data.push(val)
                 }
             });
         }
     }else if(param.length==4){
         staffData.map(function (val,index,arr) {
-            if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.area_name.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
+            if( (val.user_name.search(name)!=-1)&&(val.user_code.search(num)!=-1)&&(val.store_code.search(area)!=-1)&&(val.store_name.search(shop)!=-1) ){
                 data.push(val)
             }
         });
@@ -516,8 +519,8 @@ function listShow(userList){
         nowHTML1 = nowHTML1.replace("${title_name}", userList[i].user_name);
         nowHTML1 = nowHTML1.replace("${num}", userList[i].user_code);
         nowHTML1 = nowHTML1.replace("${title_num}", userList[i].user_code);
-        nowHTML1 = nowHTML1.replace("${area}", userList[i].area_name);
-        nowHTML1 = nowHTML1.replace("${title}", userList[i].area_name);
+        nowHTML1 = nowHTML1.replace("${area}", userList[i].store_code);
+        nowHTML1 = nowHTML1.replace("${title}", userList[i].store_code);
         nowHTML1 = nowHTML1.replace("${shop}", userList[i].store_name);
         nowHTML1 = nowHTML1.replace("${title_shop}", userList[i].store_name);
         nowHTML1 = nowHTML1.replace("${percent}", percent);
@@ -701,26 +704,49 @@ $('#get_more .head_span_r').click(function () {
 $('#peopleContent').on('click','li div.data_detail',function () {
     $('#detail').show();
     //获取该行数据
-    console.log($(this).parent());
-    $('.action_detail_box .s1').html($(this).parent().find('.people_title_name ').html())
+    $('.action_detail_box .s1').html('员工：'+$(this).parent().find('.people_title_name ').html())
     $('.action_detail_box .s2').html($(this).parent().find('.people_title_num  ').html())
     $('.action_detail_box .s3').html($(this).parent().find('.people_title_area  ').html())
     $('.action_detail_box .s4').html($(this).parent().find('.people_title_shop  ').html())
     $('.action_detail_box .s6').css('width',$(this).parent().find('.percent_percent').html())
     $('.action_detail_box .s7').html($(this).parent().find('.percent_percent').html())
     //处理函数
+    var param={}
+    param.task_code=task_code.join(',');
+    param.user_code=$(this).parent().find('.people_title_num  ').html();
+    param.corp_code=corp_code;
+    oc.postRequire("post","/vipActivity/userExecuteDetail","0",param,function(data){
+        if(data.code==0){
+            doResponse(JSON.parse(data.message).list);
+        }else if(data.code==-1){
+
+        }
+    });
     function doResponse(msg) {
+        if(msg.length==0){
+            $('#showList3  tbody').empty();
+            $('#showList3  tbody').append(' <div class="no_data">暂无数据</div>');
+            return;
+        }
+        var arr=msg[0].vips;
         var html='';
-        console.log(msg.length);
-        $('#vip_status table tbody').empty();
-        for(var i=0;i<msg.length;i++){
+        $('#showList3 tbody').empty();
+        for(var i=0;i<arr.length;i++){
             var a=i+1;
-            var status=msg[i].status=='Y'?'已完成':'未分配';
-            html+="<tr><td>"+a+"</td><td>"+msg[i].vip_info.NAME_VIP+"</td><td>"+msg[i].vip_id+"</td><td>"+status+"</td></tr>"
+            var status='';
+            if(arr[i].is_assort=="N"){
+                status='未分配'
+            }else if(arr[i].is_assort=='Y'){
+               if(arr[i].status=='Y'){
+                   status='已执行'
+               }else{
+                   status='未执行'
+               }
+            }
+            html+="<tr><td>"+a+"</td><td>"+arr[i].user_name+"</td><td>"+arr[i].user_code+"</td><td>"+status+"</td></tr>"
         }
         html=html==''?'<div class="no_data">暂无数据</div>':html;
-        $('#vip_status table tbody').append(html);
-        $('#loading').hide();
+        $('#showList3  tbody').append(html);
     }
 });
 $('.vip_status_btn').click(function () {
@@ -731,17 +757,25 @@ function getActive() {
     var param={};
     var _param={};
     param.activity_code=sessionStorage.getItem('activity_code');
+    whir.loading.add("", 0.5);
     oc.postRequire("post","/vipActivity/select","0",param,function(data){
         if(data.code==0){
             var active_data=JSON.parse(JSON.parse(data.message).activityVip);
             corp_code=active_data.corp_code;
             _param.corp_code=active_data.corp_code;
             _param.activity_code=active_data.activity_code;
-            _param.task_code=active_data.task_code;
+            _param.task_code=active_data.task_code.split(',')[0];
             doActiveResponse(active_data);
             getExecuteDetail(_param);
+            whir.loading.remove();//移除加载框
         }else if(data.code==-1){
-
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
+            whir.loading.remove();//移除加载框
         }
     });
 }
@@ -832,6 +866,9 @@ function pieChart(a,b) {
     };
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+    window.addEventListener("resize", function () {
+        myChart.resize();
+    });
 }
 function doActiveResponse(active_data) {
     var store_code=[];
@@ -852,6 +889,7 @@ function doActiveResponse(active_data) {
     action.activity_code=active_data.activity_code;
     action.start_time=active_data.start_time;
     action.end_time=active_data.end_time;
+    min_date=active_data.start_time;
     //run_mode
     var run_mode='';
     switch (active_data.run_mode){
@@ -864,21 +902,33 @@ function doActiveResponse(active_data) {
     }
     //time
     var over=active_data.end_time;
+    var start=active_data.start_time;
+    setInterval(function () {
+        var over_time=new Date(over);
+        var now_time=new Date(start);
+        var time=(over_time.getTime()-now_time.getTime())/1000;
+        var d=parseInt(time/(24*60*60));
+        var h=parseInt((time-d*(24*60*60))/(60*60));
+        var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
+        var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+        $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+    },1000);
     var over_time=new Date(over);
-    var now_time=new Date();
+    var now_time=new Date(start);
     var time=(over_time.getTime()-now_time.getTime())/1000;
     var d=parseInt(time/(24*60*60));
     var h=parseInt((time-d*(24*60*60))/(60*60));
     var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
     var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+    $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
     $('.title_l').html(active_data.activity_theme);
     $('.time_l').html(active_data.start_time);//处理
     $('.time_r').html(active_data.end_time);
     $('.name_l').html(run_mode);//转换
     $('.name_r').html(active_data.corp_name);
     $('.header_sm .p_2').html(store);//处理
-    $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
     //dom节点控制
+    task_code=active_data.task_code.split(',');
     var active_dom=active_data.task_code.split(',');
     if(active_data.task_code==''){
         $('#progress').hide();
@@ -894,13 +944,14 @@ function doActiveResponse(active_data) {
         $('.progress_nav').html(dom.join(''));
     }
 }
-getActive();
 $('.progress_nav').on('click','.progress_nav_btn',function () {
+    whir.loading.add("", 0.5);
     var param={};
     param.corp_code=corp_code;
     param.activity_code=sessionStorage.getItem('activity_code');
     param.task_code=this.dataset.role;
     getExecuteDetail(param);
+    whir.loading.remove();//移除加载框
 });
 //action操作
 $('.modify_footer_r').click(function () {
@@ -938,9 +989,20 @@ function actionPost(role,obj) {//第二个参数是store_code
     }
     oc.postRequire("post","/vipActivity/changeState","0",action,function(data){
         if(data.code==0){
-            console.log(data.message);
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: '保存成功'
+            });
+            location.reload();
         }else if (data.code==-1){
-            alert(data.message);
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
         }
     });
 }
@@ -952,11 +1014,19 @@ function storeShow(store_code) {
     var param={};
     param.corp_code=corp_code;
     param.store_code=store_code;
+    whir.loading.add("", 0.5);
     oc.postRequire("post","/shop/getStoreList","0",param,function(data){
         if(data.code==0){
             storeShowList(JSON.parse(JSON.parse(data.message).list),role)
+            whir.loading.remove();//移除加载框
         }else if(data.code==-1){
-            console.log(data.message)
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
+            whir.loading.remove();//移除加载框
         }
     })
 }
@@ -966,7 +1036,7 @@ function storeShowList(arr) {
     $('#showList2 tbody').empty();
    for(var i=0;i<arr.length;i++){
      html.push('<tr><td>'+(i+1)+'</td><td data-code="'+arr[i].store_code+'">'+arr[i].store_name+'</td><td>'
-         +arr[i].province+'省'+arr[i].city+'市'+arr[i].area+'区'+arr[i].street+'</td></tr>');
+         +arr[i].province+arr[i].city+arr[i].area+arr[i].street+'</td></tr>');
    }
     console.log(arguments);
    arguments[1]?$('#showList2 tbody').html(html.join(',')):$('#showList tbody').html(html.join(','));
@@ -998,8 +1068,11 @@ $('.task_list').click(function () {
 //     $($('.btnSecond input')[2]).attr('checked','true');
 // }
 //点击列表显示选中状态
+$(function () {
+    getActive();
+    $($('.btnSecond input')[2]).attr('checked','true');
+});
 /************************************************************************************/
-$($('.btnSecond input')[2]).attr('checked','true');
 $(".screen_content").on("click","li",function(){
     var input=$(this).find("input")[0];
     var thinput=$("thead input")[0];
@@ -1504,7 +1577,7 @@ $("#shop_area").click(function(){
     isscroll=false;
     area_num=1;
     var left=($('.add_store_box').width()-$("#screen_shop").width())/2;
-    var tp=50;
+    var tp=25;
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
     $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
@@ -1515,7 +1588,7 @@ $("#shop_area").click(function(){
 //店铺里面的品牌点击
 $("#shop_brand").click(function(){
     var left=($('.add_store_box').width()-$("#screen_shop").width())/2;
-    var tp=50;
+    var tp=25;
     $("#screen_brand .screen_content_l ul").empty();
     $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_brand").show();

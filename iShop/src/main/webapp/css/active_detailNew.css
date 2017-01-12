@@ -142,10 +142,10 @@
     padding:10px  0px ;
     border-bottom: 1px dotted #aaa ;
 }
-.progress_nav div:first-child{
-    background: #41c7db;
-    color:#fff;
-}
+/*.progress_nav div:first-child{*/
+    /*background: #41c7db;*/
+    /*color:#fff;*/
+/*}*/
 .progress_nav_btn{
     cursor: pointer;
     float: left;
