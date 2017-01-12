@@ -42,6 +42,8 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
         int count = 0;
         if(task_status.equals("N")){
             count += vipActivityService.updActiveCodeByType("task_status", "N", corp_code, activity_vip_code);
+            count += vipActivityService.updActiveCodeByType("task_code", "", corp_code, activity_vip_code);
+            taskService.delTaskByActivityCode(corp_code, activity_vip_code);
         }else {
             String tasklist = jsonObject.get("tasklist").toString();
             JSONArray jsonArray_task = JSON.parseArray(tasklist);
@@ -93,6 +95,8 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
         int count = 0;
         if(send_status.equals("N")){
             count += vipActivityService.updActiveCodeByType("send_status", "N", corp_code, activity_vip_code);
+            count += vipActivityService.updActiveCodeByType("sms_code", "", corp_code, activity_vip_code);
+            vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
         }else {
             String wxlist = jsonObject.get("wxlist").toString();
             JSONArray jsonArray_wx = new JSONArray();
@@ -118,6 +122,10 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             vipFsendService.delSendByActivityCode(corp_code, activity_vip_code);
             for (int i = 0; i < jsonArray_wx.size(); i++) {
                 JSONObject send_obj = new JSONObject(jsonArray_wx.get(i).toString());
+                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
+                if (vipFsend.getSend_time().equals("") || vipFsend.getContent().equals("")) {
+                    continue;
+                }
                 String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
@@ -127,10 +135,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
                 String send_type = "wx";
                 content = send_obj.get("content").toString();
 
-                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
-                if (vipFsend.getSend_time().equals("") || vipFsend.getContent().equals("")) {
-                    continue;
-                }
+
                 vipFsend.setSms_code(sms_code);
                 vipFsend.setSend_type(send_type);
                 vipFsend.setCorp_code(corp_code);
@@ -149,6 +154,10 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             for (int i = 0; i < jsonArray_sms.size(); i++) {
                 JSONObject send_obj = new JSONObject(jsonArray_sms.get(i).toString());
+                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
+                if (vipFsend.getSend_time().equals("") || vipFsend.getContent().equals("")) {
+                    continue;
+                }
                 String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
@@ -157,10 +166,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
                 String send_type = "sms";
                 content = send_obj.get("content").toString();
 
-                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
-                if (vipFsend.getSend_time().equals("") || vipFsend.getContent().equals("")) {
-                    continue;
-                }
+
                 vipFsend.setSms_code(sms_code);
                 vipFsend.setSend_type(send_type);
                 vipFsend.setCorp_code(corp_code);
@@ -179,6 +185,10 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             for (int i = 0; i < jsonArray_em.size(); i++) {
                 JSONObject send_obj = new JSONObject(jsonArray_em.get(i).toString());
+                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
+                if (vipFsend.getSend_time().equals("") || vipFsend.getContent().equals("")) {
+                    continue;
+                }
                 String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
                 Thread.sleep(1);
                 send_code_actvie = send_code_actvie + sms_code + ",";
@@ -187,10 +197,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
                 String send_type = "email";
                 content = send_obj.get("content").toString();
 
-                VipFsend vipFsend = WebUtils.JSON2Bean(send_obj, VipFsend.class);
-                if (vipFsend.getSend_time().equals("") || vipFsend.getContent().equals("")) {
-                    continue;
-                }
+
                 vipFsend.setSms_code(sms_code);
                 vipFsend.setSend_type(send_type);
                 vipFsend.setCorp_code(corp_code);
