@@ -1,12 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.CorpWechat;
-import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.BrandService;
 import com.bizvane.ishop.service.CorpService;
@@ -143,6 +141,7 @@ public class BrandServiceImpl implements BrandService {
         String brand_code = jsonObject.get("brand_code").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String brand_name = jsonObject.get("brand_name").toString().trim();
+        String logo=jsonObject.get("logo").toString().trim();
 
 
         Brand brand = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
@@ -180,6 +179,7 @@ public class BrandServiceImpl implements BrandService {
             brand.setModified_date(Common.DATETIME_FORMAT.format(now));
             brand.setModifier(user_code);
             brand.setIsactive(jsonObject.get("isactive").toString());
+            brand.setLogo(logo);
             brandMapper.insertBrand(brand);
             result = Common.DATABEAN_CODE_SUCCESS;
         } else if (brand != null) {
@@ -213,6 +213,7 @@ public class BrandServiceImpl implements BrandService {
         String brand_code = jsonObject.get("brand_code").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String brand_name = jsonObject.get("brand_name").toString().trim();
+        String logo=jsonObject.get("logo").toString().trim();
 
         Brand brand = getBrandById(brand_id);
         String app_id1 = brand.getApp_id();
@@ -266,6 +267,7 @@ public class BrandServiceImpl implements BrandService {
                 brand.setModified_date(Common.DATETIME_FORMAT.format(now));
                 brand.setModifier(user_code);
                 brand.setIsactive(jsonObject.get("isactive").toString());
+                brand.setLogo(logo);
                 brandMapper.updateBrand(brand);
                 result = Common.DATABEAN_CODE_SUCCESS;
             } else if (!brand.getBrand_code().trim().equals(brand_code) && brand1 != null) {
@@ -304,6 +306,7 @@ public class BrandServiceImpl implements BrandService {
                 brand.setModified_date(Common.DATETIME_FORMAT.format(now));
                 brand.setModifier(user_code);
                 brand.setIsactive(jsonObject.get("isactive").toString());
+                brand.setLogo(logo);
                 brandMapper.updateBrand(brand);
                 result = Common.DATABEAN_CODE_SUCCESS;
             } else if (!brand.getBrand_code().equals(brand_code) && brand1 != null) {
