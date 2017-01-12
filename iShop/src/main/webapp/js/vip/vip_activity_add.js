@@ -25,20 +25,30 @@
                     console.log(index);
                     if(index==0){
                         activity.checkEmpty();
-                        console.log(activity.isEmpty);
                         if(activity.isEmpty==true){
                             art.dialog({
                                 time: 1,
                                 lock: true,
                                 cancel: false,
-                                content: "不能为空"
+                                content: activity.label+"不能为空"
                             });
                             return ;
                         }
-                        activity.add();
-                        if(activity.next==true){
-                           self.getHtml(src,html);
+                        if(activity.cache.store_codes==""){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: "没有选择参与门店"
+                            });
+                            return ;
                         }
+                        $.when(activity.add())
+                            .then(function(data){
+                                if(data=="成功"){
+                                    self.getHtml(src,html);
+                                }
+                            });
                     }
                     if(index=="1"){
                         $.when(activityPlanning.submitJob(),activityPlanning.submitGroup())
@@ -49,26 +59,13 @@
                         });
                     }
                     if(index=="2"){
-                        self.getHtml(src,html);
+                        $.when(postSelect()).then(function () {
+                            self.getHtml(src,html);
+                        });
                     }
                     if(index=="3"){
                         self.getHtml(src,html);
                     }
-                    // if(activity.next==true){
-                    //     $.ajax({
-                    //         type: "GET",
-                    //         url: src+"?t="+ $.now(),
-                    //         dataType: "html",
-                    //         success: function (data) {
-                    //             $("#tabs-content").html(data);
-                    //         },
-                    //         error: function (msg) {
-                    //             alert(msg);
-                    //         }
-                    //     });
-                    //     $(this).addClass("active");
-                    //     $(this).siblings().removeClass("active");
-                    // }
                 }
             });
         },
