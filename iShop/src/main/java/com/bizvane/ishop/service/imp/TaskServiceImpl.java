@@ -144,7 +144,7 @@ public class TaskServiceImpl implements TaskService{
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_activity_vip_code.key, data_activity_vip_code);
 
-            DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
+//            DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
         }
         return count+"";
     }
