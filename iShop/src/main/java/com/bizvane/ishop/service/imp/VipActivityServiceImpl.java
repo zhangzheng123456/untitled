@@ -57,6 +57,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         VipActivitys = vipActivityMapper.selectAllActivity(corp_code, user_code, search_value);
         for (VipActivity vipActivity : VipActivitys) {
             vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
+            vipActivity.setRun_mode(CheckUtils.CheckVipActivityType(vipActivity.getRun_mode()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(VipActivitys);
 
@@ -82,6 +83,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         List<VipActivity> list1 = vipActivityMapper.selectActivityScreen(params);
         for (VipActivity vipActivity : list1) {
             vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
+            vipActivity.setRun_mode(CheckUtils.CheckVipActivityType(vipActivity.getRun_mode()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(list1);
         return page;
