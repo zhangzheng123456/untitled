@@ -319,7 +319,7 @@
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
                                readonly/>
                         <ul class="execution" id="execution"
-                            style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
+                            style="width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
                             <li>退换转充值</li>
                             <li>直接充值</li>
                             <!--<li>系统短信通知顾客</li>-->
@@ -335,7 +335,7 @@
                         <input data-storecode="" class="PARAM_NAME" id="topUpShop"
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888;margin-left: 0px;border: 1px solid #ddd"
                                readonly/>
-                        <ul class="execution" id="topUpShopSelcet" style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                        <ul class="execution" id="topUpShopSelcet" style="width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;">
                             <ul id="topUpShopSelcet_ul"
                                 style="max-height: 200px;overflow-y:auto;width: 412px;">
                             </ul>
@@ -350,7 +350,7 @@
                                style="width: 412px;height: 30px;border: 1px solid #d7d7d7;border-radius: 5px;color: #888888"
                                readonly/>
                         <ul class="execution" id="topUpPeopleSelect"
-                            style="max-height: 200px;width: 412px;overflow-y:scroll;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
+                            style="max-height: 200px;width: 412px;overflow-y:scroll;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
                         </ul>
                     </ul>
                 </div>
@@ -465,7 +465,7 @@
                             <div hintinfo="退款类型不能为空！" class="error_tips" style="">退款类型不能为空！</div>
                         </div>
                         <ul class="execution" id="refunType"
-                            style="width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                            style="width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #d7d7d7;">
                             <li onclick="refunTopUpShow()">按充值单退款</li>
                             <li onclick="refunBalanceShow()">余额退款</li>
                         </ul>
@@ -482,7 +482,7 @@
                             <div hintinfo="退款店仓不能为空！" class="error_tips" style="">退款店仓不能为空！</div>
                         </div>
                         <ul class="execution" id="refunShopSelcet"
-                            style="max-height: 60px;overflow-y:hidden;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 29px;z-index: 100;background: #f5f5f5;display: none;">
+                            style="max-height: 60px;overflow-y:hidden;overflow-x:hidden;width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;">
                             <li>本店</li>
                         </ul>
                     </ul>
@@ -757,24 +757,24 @@
                     </li>
                 </ul>
             </div>
-            <div class="chart_module" data-id="times">
-                <ul>
-                <span class="chart_head">
-                    <span class="drag_area">
-                        <i class="icon-ishop_6-27"></i>
-                        <span>购买时段</span>
-                    </span>
-                    <span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>
-                        <li>按件数分析</li>
-                        <li>按金额分析</li>
-                    </ul></span>
-                    <i class="icon-ishop_6-12 chart_close_icon"></i>
-                    <i class="icon-ishop_9-05 chart_list_icon"></i>
-                </span>
-                    <li id="times" style="height: 270px;">
-                    </li>
-                </ul>
-            </div>
+            <!--<div class="chart_module" data-id="times">-->
+                <!--<ul>-->
+                <!--<span class="chart_head">-->
+                    <!--<span class="drag_area">-->
+                        <!--<i class="icon-ishop_6-27"></i>-->
+                        <!--<span>购买时段</span>-->
+                    <!--</span>-->
+                    <!--<span class="chart_analyze_condition"><span>按件数分析</span><i class="icon-ishop_8-02"></i><ul>-->
+                        <!--<li>按件数分析</li>-->
+                        <!--<li>按金额分析</li>-->
+                    <!--</ul></span>-->
+                    <!--<i class="icon-ishop_6-12 chart_close_icon"></i>-->
+                    <!--<i class="icon-ishop_9-05 chart_list_icon"></i>-->
+                <!--</span>-->
+                    <!--<li id="times" style="height: 270px;">-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
             <div class="chart_module" data-id="month">
                 <ul>
                 <span class="chart_head">
@@ -863,12 +863,12 @@
                             <span>价格偏好</span>
                         </div>
                     </li>
-                    <li>
-                        <div class="chart_checkbox">
-                            <input type="checkbox" class="check" type="text" id="check_box3"><label for="check_box3"></label>
-                            <span>购买时段</span>
-                        </div>
-                    </li>
+                    <!--<li>-->
+                        <!--<div class="chart_checkbox">-->
+                            <!--<input type="checkbox" class="check" type="text" id="check_box3"><label for="check_box3"></label>-->
+                            <!--<span>购买时段</span>-->
+                        <!--</div>-->
+                    <!--</li>-->
                     <li>
                         <div class="chart_checkbox">
                             <input type="checkbox" class="check" type="text" id="check_box4"><label for="check_box4"></label>

@@ -18,7 +18,7 @@ var chart={
     "myChart":"",
     "myChart1":"",
     "myChart2":"",
-    "myChart3":"",
+    // "myChart3":"",
     "myChart4":"",
     "myChart5":"",
     "myChart6":""
@@ -796,88 +796,88 @@ function init_chart(id,type) {
         chart.myChart2.setOption(option_bar);
         reSize(chart.myChart2);
     }
-    if (id == "times") {
-        var data=chart_data.Time;
-        var arr=[];
-        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
-        var ArrName=[];
-        var ArrValue=[];
-        for(var i=0;i<arr.length;i++){
-            ArrName.push(arr[i].name);
-            ArrValue.push(arr[i].value);
-        }
-        chart.myChart3 = echarts.init(document.getElementById('times'));
-        var option_line = {
-            color: ['#6DADC8'],
-            tooltip: {
-                trigger: 'item'
-            },
-            grid: {
-                borderWidth: 0,
-                x: '50',
-                y: '20',
-                x2: '20',
-                y2: '50'
-            },
-            xAxis: [
-                {
-                    axisLine: {
-                        lineStyle: {color: '#58A0C0'}
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        rotate: 45
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ArrName
-                }
-            ],
-            yAxis: [
-                {
-                    axisLine: {
-                        show: false
-                    },
-                    splitArea: {
-                        show: false
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: '#999',
-                            type: 'dashed'
-                        }
-                    },
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    itemStyle: {
-                        symbolSize: '0',
-                        normal: {
-                            borderRadius: 0,
-                            nodeStyle: {
-                                borderRadius: 0
-                            }
-                        }
-                    },
-                    name: '购买时段',
-                    type: 'line',
-                    stack: '总量',
-                    symbolSize: 0,
-                    smooth: false,
-                    data: ArrValue
-                }
-            ]
-        };
-        chart.myChart3.setOption(option_line);
-        reSize(chart.myChart3);
-    }
+    // if (id == "times") {
+    //     var data=chart_data.Time;
+    //     var arr=[];
+    //     type=="amt"?arr=data.trade_amt:arr=data.trade_num;
+    //     var ArrName=[];
+    //     var ArrValue=[];
+    //     for(var i=0;i<arr.length;i++){
+    //         ArrName.push(arr[i].name);
+    //         ArrValue.push(arr[i].value);
+    //     }
+    //     chart.myChart3 = echarts.init(document.getElementById('times'));
+    //     var option_line = {
+    //         color: ['#6DADC8'],
+    //         tooltip: {
+    //             trigger: 'item'
+    //         },
+    //         grid: {
+    //             borderWidth: 0,
+    //             x: '50',
+    //             y: '20',
+    //             x2: '20',
+    //             y2: '50'
+    //         },
+    //         xAxis: [
+    //             {
+    //                 axisLine: {
+    //                     lineStyle: {color: '#58A0C0'}
+    //                 },
+    //                 splitLine: {
+    //                     show: false
+    //                 },
+    //                 axisLabel: {
+    //                     rotate: 45
+    //                 },
+    //                 axisTick: {
+    //                     show: false
+    //                 },
+    //                 type: 'category',
+    //                 boundaryGap: false,
+    //                 data: ArrName
+    //             }
+    //         ],
+    //         yAxis: [
+    //             {
+    //                 axisLine: {
+    //                     show: false
+    //                 },
+    //                 splitArea: {
+    //                     show: false
+    //                 },
+    //                 splitLine: {
+    //                     lineStyle: {
+    //                         color: '#999',
+    //                         type: 'dashed'
+    //                     }
+    //                 },
+    //                 type: 'value'
+    //             }
+    //         ],
+    //         series: [
+    //             {
+    //                 itemStyle: {
+    //                     symbolSize: '0',
+    //                     normal: {
+    //                         borderRadius: 0,
+    //                         nodeStyle: {
+    //                             borderRadius: 0
+    //                         }
+    //                     }
+    //                 },
+    //                 name: '购买时段',
+    //                 type: 'line',
+    //                 stack: '总量',
+    //                 symbolSize: 0,
+    //                 smooth: false,
+    //                 data: ArrValue
+    //             }
+    //         ]
+    //     };
+    //     chart.myChart3.setOption(option_line);
+    //     reSize(chart.myChart3);
+    // }
     if (id == "month") {
         var data=chart_data.Month;
         var arr=[];

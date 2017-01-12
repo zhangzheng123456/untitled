@@ -42,18 +42,20 @@
         });
     }
     function pageVal(list){
-        var tempHTML = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML = '<div class="box" id="${store_code}"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
         var html = '';
         for(i=0;i<list.length;i++){
-            var img = '';//暂无
+            var store_code = list[i].store_code;
+            var img = list[i].logo;
             var shop =list[i].store_name;
             var num = list[i].is_this_area;
             var add =  list[i].province +''+ list[i].city + ''+list[i].area +''+ list[i].street; //地址是province,city,area,street这几个字段拼起来的
             var store_location = list[i].store_location;
-            if(img ==''){
+            if(img ==''|| img=='null'||img=='underfind'||img=='../img/head.png'){
                 img = 'image/goods_default_image.png';
             }
             var nowHTML = tempHTML;
+            nowHTML = nowHTML.replace('${store_code}',store_code);
             nowHTML = nowHTML.replace('${img}',img);
             nowHTML = nowHTML.replace('${shop}',shop);
             nowHTML = nowHTML.replace('${num}',num);
@@ -67,11 +69,12 @@
     //跳转
     function toNext(){
         $('.more_store').click(function () {
-            window.location.href = 'storeList-all.html';
+            var corp_code = 'C10000';
+            window.location.href = 'storeList-all.html?corp_code='+corp_code;
         });
         $('.box').click(function () {
             var corp_code = 'C10000';
-            var store_code = 'D0003';
+            var store_code =$(this).attr('id');
             window.location.href = 'store_shoppers.html?corp_code='+corp_code+'&store_code='+store_code;
         });
         $('.right_name img').click(function(){

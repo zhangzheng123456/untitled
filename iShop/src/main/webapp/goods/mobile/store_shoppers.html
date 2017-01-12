@@ -48,9 +48,11 @@
         for(i=0;i<list.length;i++){
             var user_code = list[i].user_code;
             var img = list[i].avatar;
+            console.log(img);
             var name = list[i].user_name;
-            if(img ==''){
+            if(img ==''|| img=='null'||img=='underfind'||img=='../img/head.png'){
                 img = 'image/goods_default_image.png';
+                console.log('change!!')
             }
             var nowHTML = tempHTML;
             nowHTML = nowHTML.replace('${user_code}',user_code);

@@ -190,6 +190,9 @@ public class VipActivityServiceImpl implements VipActivityService {
     public String executeActivity(VipActivity vipActivity,String user_code) throws Exception {
         String status = Common.DATABEAN_CODE_SUCCESS;
         String activity_code = vipActivity.getActivity_code();
+        String corp_code = vipActivity.getCorp_code();
+        String end_time = vipActivity.getEnd_time();
+
         String task_code = vipActivity.getTask_code();
         String sms_code = vipActivity.getSms_code();
         Date now = new Date();
@@ -209,29 +212,8 @@ public class VipActivityServiceImpl implements VipActivityService {
         vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipActivity.setModifier(user_code);
         updateVipActivity(vipActivity);
+        insertSchedule(activity_code,corp_code,end_time,user_code);
 
-        String end_time = vipActivity.getEnd_time();
-        String corp_code = vipActivity.getCorp_code();
-        String month = end_time.substring(4,6);
-        String day = end_time.substring(6,8);
-        String hour = end_time.substring(8,10);
-        String min = end_time.substring(10,12);
-        String ss = end_time.substring(12,14);
-        String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
-        String job_name = activity_code;
-        String job_group = activity_code;
-        JSONObject func = new JSONObject();
-        func.put("method","changeStatus");
-        func.put("corp_code",corp_code);
-        func.put("user_code",user_code);
-        func.put("code",activity_code);
-        //创建schedule，结束时间时自动更新状态
-        ScheduleJob scheduleJob = new ScheduleJob();
-        scheduleJob.setJob_name(job_name);
-        scheduleJob.setJob_group(job_group);
-        scheduleJob.setFunc(func.toString());
-        scheduleJob.setCron_expression(corn_expression);
-//        scheduleJobService.insert(scheduleJob);
 
         return status;
     }
@@ -411,6 +393,47 @@ public class VipActivityServiceImpl implements VipActivityService {
         return list;
     }
 
+
+    /**
+     * 创建定时任务（活动）
+     *
+     * @param activity_code
+     */
+    public void insertSchedule(String activity_code,String corp_code,String end_time,String user_code) throws Exception {
+        String month = end_time.substring(4,6);
+        String day = end_time.substring(6,8);
+        String hour = end_time.substring(8,10);
+        String min = end_time.substring(10,12);
+        String ss = end_time.substring(12,14);
+        String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
+        JSONObject func = new JSONObject();
+        func.put("method","changeStatus");
+            func.put("corp_code",corp_code);
+            func.put("user_code",user_code);
+            func.put("code",activity_code);
+            //创建schedule，结束时间时自动更新状态
+
+            ScheduleJob scheduleJob = scheduleJobService.selectScheduleByJob(activity_code,activity_code);
+            if (scheduleJob == null){
+                scheduleJob = new ScheduleJob();
+                scheduleJob.setJob_name(activity_code);
+                scheduleJob.setJob_group(activity_code);
+                scheduleJob.setFunc(func.toString());
+                scheduleJob.setCron_expression(corn_expression);
+//                scheduleJobService.insert(scheduleJob);
+
+            }else {
+                scheduleJob.setFunc(func.toString());
+                scheduleJob.setCron_expression(corn_expression);
+                scheduleJobService.update(scheduleJob);
+            }
+    }
+
+    /**
+     * 定时任务
+     * 修改活动状态为已结束
+     * @param activity_code
+     */
     public void updateStatus(String activity_code){
         try {
             VipActivity vipActivity = selActivityByCode(activity_code);
@@ -429,4 +452,29 @@ public class VipActivityServiceImpl implements VipActivityService {
         }
     }
 
+    /**
+     * 提起结束，手动
+     * 修改活动状态为已结束
+     * @param vipActivity
+     */
+    public void terminalAct(VipActivity vipActivity) throws Exception {
+        try {
+            vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
+            updateVipActivity(vipActivity);
+            String sms_code = vipActivity.getSms_code();
+            String activity_code = vipActivity.getActivity_code();
+            //结束修改活动状态的定时任务
+            scheduleJobService.delete(activity_code,activity_code);
+            //结束群发消息定时任务
+            if (!sms_code.equals("")){
+                String[] codes = sms_code.split(",");
+                for (int i = 0; i < codes.length; i++) {
+                    scheduleJobService.delete(codes[i],activity_code);
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            ex.getMessage();
+        }
+    }
 }

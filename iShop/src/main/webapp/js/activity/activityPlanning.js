@@ -9,6 +9,8 @@ var oc= new ObjectControl();
 var activityPlanning={
 	param:{
 		tasklist:[],
+		task:true,
+		group:true
 	},
 	init:function(){
 		this.allEvent();
@@ -24,7 +26,7 @@ var activityPlanning={
 			self.evaluationTask();
 		});
 		//下拉框样式
-		$(".text_input").click(function(){
+		$(".text_input,.icon_down").click(function(){
 			var ul = $(this).siblings('.input_dropdown');
 			if(ul.css("display")=="none"){
 				ul.show();
@@ -99,31 +101,32 @@ var activityPlanning={
 			var id=$(this).parent().attr("id");
 			if(id=="task_switch"){
 				if($(this).attr("class")==""){
+					self.param.task=false;
 					$(this).parent().find(".switch_text").html("任务已关闭");
 				}else if($(this).attr("class")=="bg"){
+					self.param.task=true;
 					$(this).parent().find(".switch_text").html("任务已开启");
 				}
 				$("#task_parent").toggle(200);
 			}
 			if(id=="group_switch"){
 				if($(this).attr("class")==""){
+					self.param.group=false;
 					$(this).parent().find(".switch_text").html("群发已关闭");
 				}else if($(this).attr("class")=="bg"){
+					self.param.group=true;
 					$(this).parent().find(".switch_text").html("群发已开启");
 				}
 				$("#group_parent").toggle(200);
 			}
-			// var param={};
-			// var tasklist=self.param.tasklist;
-			// param["tasklist"]=tasklist;
-			// 测试
-			// param["activity_vip_code"]="ACls0000000001";
-			// console.log(param);
-			// oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",param, function (data) {
-			// 	console.log(data);
-			// });
-			//测试
-			self.getGroupValue();
+		});
+		//策略补充
+		$("#strategy_footer").on("click","ul li",function(){
+			var index=$(this).index();
+			$(this).addClass("active");
+			$(this).siblings("li").removeClass("active");
+			$("#tab_list .tab_list").eq(index).show();
+			$("#tab_list .tab_list").eq(index).siblings().hide();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -147,7 +150,7 @@ var activityPlanning={
 	},
 	getTaskList:function(){
 		var param={};
-		param["corp_code"]="C10000";
+		param["corp_code"]=$("#tabs div").eq(0).attr("data-corp");
 		oc.postRequire("post","/task/selectAllTaskType", "0",param, function (data) {
 			var message = JSON.parse(data.message);
             var list = JSON.parse(message.list);
@@ -245,6 +248,7 @@ var activityPlanning={
 	    var wxlistnode=$("#wxlist .input_parent");//微信
 	    var smslistnode=$("#smslist .input_parent");//短信
 	    var emlistnode=$("#emlist .input_parent");//邮件群发
+	    var activity_vip_code=sessionStorage.getItem("activity_code");//活动编号
 	    //微信推送
 		for(var i=0;i<wxlistnode.length;i++){
 			var send_time=$(wxlistnode[i]).find(".text_input").val();//发送时间
@@ -272,16 +276,46 @@ var activityPlanning={
 		param["wxlist"]=wxlist;
 		param["smslist"]=smslist;
 		param["emlist"]=emlist;
-		param["activity_vip_code"]="ACls0000000001";
-		console.log(param);
-		oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
-			console.log(data);
-		});
+		param["activity_vip_code"]=activity_vip_code;
+		return param;
+	},
+	submitJob:function(){
+		var self=this;
+		var def = $.Deferred();
+		if(self.param.task==true){
+			var taskparam={};
+			var tasklist=self.param.tasklist;
+			taskparam["tasklist"]=tasklist;
+			taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
+			oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",taskparam, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					def.resolve("失败");
+				}
+			});
+		}
+		return def;
+	},
+	submitGroup:function(){
+		var self=this;
+		var param=self.getGroupValue();
+		var def = $.Deferred();
+		if(self.param.group==true){
+			oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					def.resolve("失败");
+				}
+			});
+		}
+		return def;
 	},
 	getPlanningList:function(){//获取列表信息
 		var self=this;
 		var param={};
-		param["activity_vip_code"]="ACls0000000001";
+		param["activity_vip_code"]=sessionStorage.getItem("activity_code");
 		oc.postRequire("post","/vipActivity/arrange/list","0",param, function (data) {
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);;
@@ -336,7 +370,7 @@ var activityPlanning={
 					                    <div class='edit_frame_left'>\
 					                        <label class='label_frame'>页面链接</label><input class='edit_link' value='"+content.url+"' type='text' placeholder='请输入页面链接'></div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>'"+content.desc+"'</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+content.desc+"</textarea>\
 					                    </div>\
 					                    <div class='edit_frame_left file_parent'>\
 					                        <label class='label_frame' style='margin-top: 5px;'>封面图片</label>\
@@ -392,7 +426,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>'"+smslist[i].content+"'</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -441,7 +475,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>'"+emlist[i].content+"'</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+emlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -471,7 +505,7 @@ var activityPlanning={
 				}
 			}
 		});
-	}
+	},
 }
 $(function(){
 	activityPlanning.init();
