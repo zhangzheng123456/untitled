@@ -1,12 +1,12 @@
 var oc = new ObjectControl();
 var activity={
     isEmpty:false,
+    label:"",
     shop_num:1,
     shop_next:false,
     area_num:1,
     area_next:false,
     isscroll:false,
-    next:false,
     swicth:true,//优惠券开关标志
     activity_code:"",
     cache:{//缓存变量
@@ -42,6 +42,25 @@ var activity={
         $(".setUp_activity_details").on("click","i",function () {
             $(this).nextAll("ul").toggle();
         });
+        $(document).click(function (e) {
+            // if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
+            //     var input=$(".select_input").nextAll("ul");
+            //     console.log(input.length);
+            //     $(input).each(function (i,e) {
+            //         if($(this).css("display")!=="none"){
+            //             $(this).hide();
+            //         }
+            //     });
+            // }
+            // if($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input")){
+            //     var input=$(".select_input").nextAll("ul");
+            //     $(input).each(function (i,e) {
+            //         if($(this).css("display")!=="none"){
+            //             $(this).hide();
+            //         }
+            //     });
+            // }
+        });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
             var id = $(this).attr("data-id");
@@ -52,7 +71,7 @@ var activity={
             $(this).parent().prevAll("input").val(vue);
             $(this).parent().prevAll("input").attr("data-id",id);
         });
-        $(".setUp_activity_details").on("blur",".select_input",function () {
+        $(".setUp_activity").on("blur",".select_input",function () {
             var ul = $(this).nextAll("ul");
             setTimeout(function () {
                 ul.hide();
@@ -821,18 +840,20 @@ var activity={
             var id=$(this).attr("id");
             if($(this).css("display")!=="none"&&id!=="coupon_activity"){
                 var vue=$(this).find(".text_input");
-                $(vue).each(function (i) {
+                $(vue).each(function (i,e) {
                     if($(vue[i]).val()==""){
                         activity.isEmpty=true;
+                        activity.label=$(e).prev("label").html();
                     }
                 });
             }else if($(this).css("display")!=="none"&&id=="coupon_activity"){
                 $(this).children("div:not('.switch')").each(function (i,e) {
                     if($(e).css("display")=="block"){
                         var vue=$(e).find(".text_input");
-                        $(vue).each(function (i) {
+                        $(vue).each(function (i,e) {
                             if($(vue[i]).val()==""){
                                 activity.isEmpty=true;
+                                activity.label=$(e).prev("label").html();
                             }
                         });
                     }
@@ -843,10 +864,12 @@ var activity={
             var vue=$(this).val();
             if(vue==""){
                 activity.isEmpty=true;
+                activity.label=$(this).prev("label").html();
             }
         });
     },
     add:function () {
+        var def=$.Deferred();
         var corp_code=$("#tabs>div:first-child").attr("data-corp");
         var activity_code=activity.activity_code;
         var param={};
@@ -964,12 +987,17 @@ var activity={
                     _param['apply_qrcode']="";
                 }
                 oc.postRequire("post","/vipActivity/detail/add","0",_param,function (data) {
-                        activity.next=true;
+                    if(data.code=="0"){
+                        def.resolve("成功");
+                    }else if(data.code=="-1"){
+                        def.resolve("失败");
+                    }
                 })
             }else if(data.code==-1){
                 console.log(data.message);
             }
         });
+        return def;
     },
     activityEdit:function () {
         var param={
@@ -989,7 +1017,9 @@ var activity={
                 case "festival":type="节日活动";break;
             }
             activity.getcorplist(list.corp_code);
+            $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
             $("#activity_start").val(list.start_time);
+            $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+list.start_time+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
             $("#activity_end").val(list.end_time);
             $("#activity_theme").val(list.activity_theme);
             $("#activity_type").attr("data-id",list.run_mode);
@@ -1024,6 +1054,8 @@ var activity={
                     $("#festival_activity").show();
                     $("#holiday_start").val(list.festival_start);
                     $("#holiday_end").val(list.festival_end);
+                    $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
+                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
                 if(type=="invite"){
                     var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
