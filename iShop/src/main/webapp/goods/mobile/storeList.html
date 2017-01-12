@@ -67,7 +67,8 @@
     //跳转
     function toNext(){
         $('.more_store').click(function () {
-            window.location.href = 'storeList-all.html';
+            var corp_code = 'C10000';
+            window.location.href = 'storeList-all.html?corp_code='+corp_code;
         });
         $('.box').click(function () {
             var corp_code = 'C10000';

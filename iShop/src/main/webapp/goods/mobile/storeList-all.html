@@ -33,6 +33,7 @@
 <script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <!--匹配js-->
 <script>
+    var oc = new ObjectControl();
     //搜索功能
     $('.title input').focus(function () {
         $(this).css('background-image','none');
@@ -47,6 +48,35 @@
             return;
         }
     })
+    //获取？后缀
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    function getPage(){
+        var param={};
+        param["pageNumber"]=1;
+        param["pageSize"]='20'
+        param["corp_code"]=GetRequest().corp_code;;
+        param["search_value"]=$('.title input').val();
+        oc.postRequire("post"," /app/wechat/getAllStore","0",param,function(data){
+            if (data.code == "0") {
+                var msg = JSON.parse(data.message);
+                var list =JSON.parse(msg.list);
+//                pageVal(list);
+            }else if(data.code =='-1'){
+                console.log(data);
+            }
+        });
+    }
     //页面加载
     function pageVal(){
         var areaList= ['江苏省','浙江省','湖南省','上海市','山东省','北京市','云南省'];
@@ -105,7 +135,7 @@
         $('.area_box').find(' .box:last').css('border-bottom','none');
     }
     window.onload= function () {
-        pageVal();
+      getPage();
     }
 </script>
 </body>
