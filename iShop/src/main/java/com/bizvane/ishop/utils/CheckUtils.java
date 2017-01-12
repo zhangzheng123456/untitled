@@ -72,7 +72,7 @@ public class CheckUtils {
         if(run_mode==null){
             result="";
         }else if(run_mode.equals("recruit")){
-            result="是招募活动";
+            result="招募活动";
         }else if(run_mode.equals("sales")){
             result="促销活动";
         }else if(run_mode.equals("h5")){
