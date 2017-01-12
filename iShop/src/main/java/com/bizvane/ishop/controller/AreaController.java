@@ -139,7 +139,7 @@ public class AreaController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String searchValue = jsonObject.get("searchValue").toString();
             PageInfo<Area> list = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
+            if (role_code.equals(Common.ROLE_SYS) && page_number==1) {
                 //系统管理员
                 if (jsonObject.has("corp_code"))
                     corp_code = jsonObject.get("corp_code").toString();
@@ -159,7 +159,7 @@ public class AreaController {
                 areas.add(0,area);
                 areas.addAll(list.getList());
                 list.setList(areas);
-            } else {
+            } else if(!role_code.equals(Common.ROLE_SYS) && page_number==1){
                 if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
                     List<Area> areas = new ArrayList<Area>();
@@ -199,8 +199,21 @@ public class AreaController {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
                 }
+            }else if(role_code.equals(Common.ROLE_SYS) && page_number!=1){
+                if (jsonObject.has("corp_code"))
+                    corp_code = jsonObject.get("corp_code").toString();
+                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+            }else if(!role_code.equals(Common.ROLE_SYS) && page_number!=1){
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM)) {
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
+                }else{
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
+                }
             }
-
             JSONObject result = new JSONObject();
             result.put("role_code", JSON.toJSONString(role_code));
             result.put("list", JSON.toJSONString(list));

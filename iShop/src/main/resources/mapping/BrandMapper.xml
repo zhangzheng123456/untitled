@@ -4,6 +4,7 @@
 
     <resultMap type="com.bizvane.ishop.entity.Brand" id="Brand">
         <id column="id" property="id"/>
+        <result column="logo" property="logo" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="brand_code" property="brand_code"/>
         <result column="brand_name" property="brand_name"/>
         <result column="corp_code" property="corp_code"/>
@@ -30,7 +31,8 @@
         def_brand.created_date,
         def_brand.creater,
         def_brand.isactive,
-        def_corp.corp_name
+        def_corp.corp_name,
+        def_brand.logo
       FROM def_brand,def_corp
       WHERE def_brand.corp_code = def_corp.corp_code
         AND def_brand.id=#{id}
@@ -65,7 +67,8 @@
         def_brand.modified_date,
         def_brand.modifier,
         def_brand.isactive,
-        def_corp.corp_name
+        def_corp.corp_name,
+        def_brand.logo
         FROM def_brand,def_corp
         WHERE def_brand.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
@@ -92,7 +95,8 @@
         def_brand.modified_date,
         def_brand.modifier,
         def_brand.isactive,
-        def_corp.corp_name
+        def_corp.corp_name,
+        def_brand.logo
         FROM def_brand,def_corp
         WHERE def_brand.corp_code = def_corp.corp_code
         AND def_brand.corp_code = #{corp_code}
@@ -169,6 +173,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="logo!=null">
+                logo,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="brand_code!=null">
@@ -197,6 +204,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="logo!=null">
+                #{logo},
             </if>
         </trim>
     </insert>
@@ -230,6 +240,9 @@
             </if>
             <if test="isactive!=null ">
                 isactive=#{isactive},
+            </if>
+            <if test="logo!=null ">
+                logo=#{logo},
             </if>
         </trim>
         WHERE id=#{id};

@@ -318,6 +318,7 @@ function operate() {
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         //$(window.parent.document).find('#iframepage').attr("src","/activity/activity_add.html");
+        sessionStorage.removeItem("activity_code");
         $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
     });
     //点击编辑时页面进行的跳转
@@ -437,8 +438,10 @@ function jumpBianse(){
             state=activityVip.activity_state;
             if(state == "0"){ //未执行
                 $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_add.html");
-            }else if(state == "1"||state == "2"){ //执行中 和 已结束
+            }else if(state == "1"){ //执行
                 $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
+            }else if(state=="2"){// 已结束
+                $(window.parent.document).find('#iframepage').attr("src","/vip/vip_activity_statistics.html");
             }
         });
     });

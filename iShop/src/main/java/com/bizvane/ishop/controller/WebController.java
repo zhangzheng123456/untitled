@@ -1341,7 +1341,7 @@ public class WebController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/api/nearbyStore", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/nearbyStore", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String nearbyStore(HttpServletRequest request) {
         JSONObject result = new JSONObject();
@@ -1357,10 +1357,12 @@ public class WebController {
             }
             String post_data = stringBuffer.toString();
             JSONObject jsonObj = JSONObject.parseObject(post_data);
-            String position = jsonObj.get("position").toString();
-            String app_id = jsonObj.get("app_id").toString();
+            String app_user_name = jsonObj.get("app_user_name").toString();
+            String latitude = jsonObj.get("latitude").toString();
+            String longitude = jsonObj.get("longitude").toString();
 
-            PageInfo<Store> stores = storeService.getAllStore(request,1,10,"C10000","","","");
+            CorpWechat corpWechat = corpService.getCorpByAppUserName(app_user_name);
+            PageInfo<Store> stores = storeService.getAllStore(request,1,10,corpWechat.getCorp_code(),"","","");
             List<Store> storeList = stores.getList();
             for (int i = 0; i < storeList.size(); i++) {
                 Store store = storeList.get(i);
@@ -1368,6 +1370,38 @@ public class WebController {
                 store.setIs_this_area("200m");
             }
             result.put("list",JSON.toJSONString(storeList));
+        } catch (Exception ex) {
+
+        }
+        return result.toString();
+    }
+
+    /**
+     * 同步
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/api/getStoreUser", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getStoreUser(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        try{
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String post_data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(post_data);
+            String corp_code = jsonObj.get("corp_code").toString();
+            String store_code = jsonObj.get("store_code").toString();
+
+            List<User> users = storeService.getStoreUser(corp_code, store_code, "", Common.ROLE_AM, Common.IS_ACTIVE_Y);
+
+            result.put("list",JSON.toJSONString(users));
         } catch (Exception ex) {
 
         }

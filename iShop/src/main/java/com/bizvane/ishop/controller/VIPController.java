@@ -310,7 +310,7 @@ public class VIPController {
             JSONObject vip = JSONObject.parseObject(vip_info);
             vip.put("vip_avatar", avatar);
 
-            if (vip.get("custom") != null || !vip.get("custom").toString().equals("null"))
+            if (vip.containsKey("custom") || !vip.get("custom").toString().equals("null"))
                 extend_info = vip.get("custom").toString();
             JSONObject result = new JSONObject();
             result.put("list", vip);

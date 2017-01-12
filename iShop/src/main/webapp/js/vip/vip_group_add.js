@@ -1131,7 +1131,58 @@ $("#screen_staffl").click(function () {
     $("#screen_staff .screen_content_l ul").empty();
     var staff_num = 1;
     getstafflist(staff_num);
-})
+});
+$("#class span").click(function(){
+    //nodeSave($('#screen_staff .screen_content_r ul li'),$('#screen_staff .screen_content_l ul li'),sf, $('#screen_staff .screen_content_r ul'));
+    //$('#screen_staff .s_pitch span').html($('#screen_staff .screen_content_r ul li').length);
+    var arr = whir.loading.getPageSize();
+    var left = (arr[0] - $("#screen_class").width()) / 2;
+    var tp = (arr[3] - $("#screen_class").height()) / 2 + 30;
+    $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
+    $("#p").show();
+    $("#screen_class").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_class").show();
+    $("#screen_class .screen_content_l ul").empty();
+    var staff_num = 1;
+    //getstafflist(staff_num)
+});
+$("#brand span").click(function(){
+    //nodeSave($('#screen_staff .screen_content_r ul li'),$('#screen_staff .screen_content_l ul li'),sf, $('#screen_staff .screen_content_r ul'));
+    //$('#screen_staff .s_pitch span').html($('#screen_staff .screen_content_r ul li').length);
+    var arr = whir.loading.getPageSize();
+    var left = (arr[0] - $("#screen_class").width()) / 2;
+    var tp = (arr[3] - $("#screen_class").height()) / 2 + 30;
+    $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
+    $("#p").show();
+    $("#screen_brand_add").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_brand_add").show();
+    $("#screen_brand_add .screen_content_l ul").empty();
+    var staff_num = 1;
+    //getstafflist(staff_num)
+});
+$("#season span").click(function(){
+    //nodeSave($('#screen_staff .screen_content_r ul li'),$('#screen_staff .screen_content_l ul li'),sf, $('#screen_staff .screen_content_r ul'));
+    //$('#screen_staff .s_pitch span').html($('#screen_staff .screen_content_r ul li').length);
+    var arr = whir.loading.getPageSize();
+    var left = (arr[0] - $("#screen_class").width()) / 2;
+    var tp = (arr[3] - $("#screen_class").height()) / 2 + 30;
+    $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
+    $("#p").show();
+    $("#screen_season").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_season").show();
+    $("#screen_season .screen_content_l ul").empty();
+    var staff_num = 1;
+    //getstafflist(staff_num)
+});
+$("#screen_close_class,#screen_que_class").click(function(){
+    $("#screen_class").hide();
+});
+$("#screen_close_brand_add,#screen_que_brand_add").click(function(){
+    $("#screen_brand_add").hide();
+});
+$("#screen_close_season,#screen_que_season_add").click(function(){
+    $("#screen_season").hide();
+});
 //节点状态保存
 function nodeSave(node_r,node_l,arr,node_container) {
     if(node_r.length!=0){
@@ -1827,6 +1878,8 @@ $("#group_type").next("ul").find("li").click(function(){
             $("#group_list").children().show();
             $("#group_list").children().eq(1).css("margin-bottom","20px");
             $("#custom_vip_list").hide();
+            $(".select_more").hide();
+            $("#class").show();
             break;
         case "brand":
             $("#group_type").css("width","236px");
@@ -1841,8 +1894,11 @@ $("#group_type").next("ul").find("li").click(function(){
             $("#group_list").children().show();
             $("#group_list").children().eq(1).css("margin-bottom","20px");
             $("#custom_vip_list").hide();
+            $(".select_more").hide();
+            $("#brand").show();
             break;
         case "discount":
+            $(".select_more").hide();
             $("#group_type").css("width","236px");
             $("#group_type").next("ul").css("width","236px");
             $("#select_vip").css("display","none");
@@ -1864,8 +1920,10 @@ $("#group_type").next("ul").find("li").click(function(){
             $("#group_list").children().hide();
             $("#group_list").children().last().show();
             $("#custom_vip_list").hide();
+            $(".select_more").hide();
             break;
         case "season":
+
             $("#group_type").css("width","236px");
             $("#group_type").next("ul").css("width","236px");
             $("#select_vip").css("display","none");
@@ -1877,8 +1935,10 @@ $("#group_type").next("ul").find("li").click(function(){
             $("#group_list").show();
             $("#group_list").children().show();
             $("#group_list").children().last().hide();
-            $("#group_list").children().eq(1).css("margin","0");
             $("#custom_vip_list").hide();
+            $(".select_more").hide();
+            $("#season").show();
+            $("#group_list>div:last-child").css("margin","0");
             break;
     }
     $(this).parent().prev("input").val(Val);
