@@ -15,11 +15,11 @@
     var oc= oc || new ObjectControl();
     $("#execute").bind("click",function(){
         var param={
-            activity_code:"ACls0000000001"
+            activity_code:sessionStorage.getItem("activity_code")
         };
         oc.postRequire("post","/vipActivity/execute","0",param,function(data){
             if(data.code!="0") return;
-           alert(data.message)
+            $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
         })
     })
 </script>
