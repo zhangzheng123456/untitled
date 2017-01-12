@@ -117,10 +117,12 @@ $("#filter_condition ul li").click(function () {
     $("#contion").children("div").eq(index).siblings("div").css("display", "none");
 });
 $("#vip_card_type").click(function () {
+    vipCardtype();
     $("#card_type_select").toggle();
 });
-$("#card_type_select li").click(function () {
+$("#card_type_select").on("click","li",function () {
     $("#vip_card_type").val($(this).html());
+    $("#vip_card_type").attr("data-code",$(this).attr("data-code"));
 });
 $("#sex").click(function () {
     $("#sex_select").toggle();
@@ -275,7 +277,7 @@ $("#screen_vip_que").click(function () {
                         param['value'] = val;
                         screen.push(param);
                     }
-                } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15"|| key == "16") {
+                } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15"|| key == "16"||key=="12") {
                     if ($(input[0]).attr("data-code") !== "") {
                         var param = {};
                         var val = $(input[0]).attr("data-code");
@@ -770,4 +772,25 @@ function removeLeft(a, b) {
     }
     var num = $(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
     $(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
+}
+//卡类型
+function vipCardtype() {
+    var corp_code="C10000";
+    var param={"corp_code":corp_code};
+    oc.postRequire("post","/vipCardType/getVipCardTypes","0",param,function (data) {
+        if(data.code==0){
+            var li="";
+            var message=JSON.parse(data.message);
+            var msg=JSON.parse(message.list);
+            if(msg.length==0){
+
+            }else if(msg.length>0){
+                for(var i=0;i<msg.length;i++){
+                    li+="<li data-code='"+msg[i].vip_card_type_code+"'>"+msg[i].vip_card_type_name+"</li>"
+                }
+            }
+            $("#card_type_select").empty();
+            $("#card_type_select").append(li);
+        }
+    });
 }

@@ -30,7 +30,7 @@
                                 cancel: false,
                                 content: "不能为空"
                             });
-                            // return ;
+                            return ;
                         }
                         activity.add();
                     }
