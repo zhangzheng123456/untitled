@@ -279,27 +279,36 @@ var activityPlanning={
 		param["activity_vip_code"]=activity_vip_code;
 		return param;
 	},
-	ajaxSubmit:function(){
+	submitJob:function(){
+		var self=this;
+		var def = $.Deferred();
+		if(self.param.task==true){
+			var taskparam={};
+			var tasklist=self.param.tasklist;
+			taskparam["tasklist"]=tasklist;
+			taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
+			oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",taskparam, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					def.resolve("失败");
+				}
+			});
+		}
+		return def;
+	},
+	submitGroup:function(){
 		var self=this;
 		var param=self.getGroupValue();
 		var def = $.Deferred();
-		if(self.param.task==true||self.param.group==true){
-			if(self.param.group==true){
-				oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
-					console.log(123123);
-					def.resolve("1");
-				});
-			}
-			if(self.param.task==true){
-				var taskparam={};
-				var tasklist=self.param.tasklist;
-				taskparam["tasklist"]=tasklist;
-				taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
-				oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",taskparam, function (data) {
-					console.log(123123);
-					def.resolve("2");
-				});
-			}
+		if(self.param.group==true){
+			oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					def.resolve("失败");
+				}
+			});
 		}
 		return def;
 	},
