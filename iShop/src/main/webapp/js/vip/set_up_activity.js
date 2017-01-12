@@ -43,23 +43,9 @@ var activity={
             $(this).nextAll("ul").toggle();
         });
         $(document).click(function (e) {
-            // if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
-            //     var input=$(".select_input").nextAll("ul");
-            //     console.log(input.length);
-            //     $(input).each(function (i,e) {
-            //         if($(this).css("display")!=="none"){
-            //             $(this).hide();
-            //         }
-            //     });
-            // }
-            // if($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input")){
-            //     var input=$(".select_input").nextAll("ul");
-            //     $(input).each(function (i,e) {
-            //         if($(this).css("display")!=="none"){
-            //             $(this).hide();
-            //         }
-            //     });
-            // }
+            if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
+                $(".select_input").nextAll("ul").hide();
+            }
         });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
@@ -815,7 +801,7 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0&&$("#coupon_activity").css("display")=="block"){
+                if(msg.length==0&&$("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active")){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -1102,7 +1088,11 @@ var activity={
                 }
                 if(type=="coupon"){
                     var send_coupon_type=list.send_coupon_type;
-                    var coupon_type=JSON.parse(list.coupon_type);
+                    if(list.coupon_type==""){
+                        var coupon_type=list.coupon_type;
+                    }else {
+                        var coupon_type=JSON.parse(list.coupon_type);
+                    }
                     if(send_coupon_type==undefined||send_coupon_type==""){
                         $(".switch div").trigger("click");
                     }else {

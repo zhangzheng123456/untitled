@@ -4,16 +4,16 @@
         <div class="setUp_activity_details" id="activity_basic">
             <div>
                 <ul>
-                    <li style="margin-right: 35px;"><label>所属企业</label><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select><i id="corp_icon" class="icon-ishop_8-02"></i></span></li>
-                    <li style="margin-right:10px"><label>活动时间</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})"></li>
+                    <li style="margin-right: 35px;"><label style="color:#c26555;">所属企业*</label><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select><i id="corp_icon" class="icon-ishop_8-02"></i></span></li>
+                    <li style="margin-right:10px"><label style="color:#c26555;">活动时间*</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})"></li>
                     <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动标题" readonly="readonly" onclick="laydate({elem:'#activity_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})"></li>
                 </ul>
             </div>
             <div>
                 <ul class="activity_details_left">
-                    <li style="margin-right: 35px;"><label>活动标题</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text"></li>
+                    <li style="margin-right: 35px;"><label style="color:#c26555;">活动标题*</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text"></li>
                     <li>
-                        <label>活动类别</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                        <label style="color:#c26555;">活动类别*</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
                         <ul class="activity_select" id="activityType_select">
                             <li data-id="recruit">招募活动</li>
                             <li data-id="sales">促销活动</li>
