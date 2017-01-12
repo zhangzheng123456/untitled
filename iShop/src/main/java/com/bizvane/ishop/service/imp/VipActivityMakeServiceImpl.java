@@ -132,7 +132,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
 
 
                 String content = "";
-                String send_type = "wx";
+                String send_type = "wxmass";
                 content = send_obj.get("content").toString();
 
 
