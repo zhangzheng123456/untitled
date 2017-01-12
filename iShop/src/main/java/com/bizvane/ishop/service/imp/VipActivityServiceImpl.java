@@ -245,7 +245,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         for (int i = 0; i < task_codes.length; i++) {
             String task_code1 = task_codes[i];
             Task task = taskService.getTaskForId(corp_code,task_code1);
-//            taskService.taskAllocation(task, phones, user_codes, user_code,activity_code);
+            taskService.taskAllocation(task, phones, user_codes, user_code,activity_code);
         }
         return status;
     }
@@ -422,11 +422,11 @@ public class VipActivityServiceImpl implements VipActivityService {
                 scheduleJob.setJob_group(activity_code);
                 scheduleJob.setFunc(func.toString());
                 scheduleJob.setCron_expression(corn_expression);
-//                scheduleJobService.insert(scheduleJob);
+                scheduleJobService.insert(scheduleJob);
             }else {
                 scheduleJob.setFunc(func.toString());
                 scheduleJob.setCron_expression(corn_expression);
-//                scheduleJobService.update(scheduleJob);
+                scheduleJobService.update(scheduleJob);
             }
     }
 

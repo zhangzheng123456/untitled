@@ -120,7 +120,6 @@ function nodeSave(node_r,node_l,arr,node_container) {
 function getbrandlist() {
     var searchValue=$("#brand_search").val();
     var _param = {};
-    console.log($("#OWN_CORP").val());
     _param['corp_code']="C10000";
     _param["searchValue"]=searchValue;
     whir.loading.add("", 0.5);//加载等待框
@@ -172,9 +171,6 @@ function getbrandlist() {
 }
 //拉取区域
 function getarealist(a) {
-    // var tr= $('#table tbody tr');
-    // var corp_code=$(tr[0]).attr("id");
-    // console.log(corp_code);
     var area_command = "/area/selAreaByCorpCode";
     var searchValue = $("#area_search").val().trim();
     var pageSize = 20;
@@ -195,7 +191,6 @@ function getarealist(a) {
             var list = list.list;
             var area_html_left = '';
             var area_html_right = '';
-            console.log(list);
             if (list.length == 0) {
             } else {
                 if (list.length>0) {
@@ -1044,7 +1039,6 @@ function getData(){
         _param["corp_code"] = "C10000";
         _param["pageNumber"] = inx;
         _param["pageSize"] = pageSize;
-        console.log(activityVip.target_vips);
         _param["screen"]=activityVip.target_vips =="" ?[]:JSON.parse(activityVip.target_vips);
         if(_param["screen"].length>0){
             filtrates(1,10);
@@ -1059,15 +1053,25 @@ function getData(){
 getData();
 function postSelect(){
     var def = $.Deferred();
-    console.log(_param["screen"])
+    if($("#num").html()=="0"){
+        art.dialog({
+            zIndex: 10003,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "会员数量不能为0"
+        });
+        def.resolve("失败");
+    }
     var param={
         target_vips_count:$("#num").html(),
         activity_vip_code:sessionStorage.getItem("activity_code"),
         screen:_param["screen"]
     };
+
     oc.postRequire("post","/vipActivity/arrange/addOrUpdateVip","0",param,function(data){
         if(data.code!="0") return;
-        def.resolve();
+        def.resolve("成功");
     });
     return def
 }

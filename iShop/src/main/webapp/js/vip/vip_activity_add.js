@@ -68,7 +68,8 @@
                         });
                     }
                     if(index=="2"){
-                        $.when(postSelect()).then(function () {
+                        $.when(postSelect()).then(function (data) {
+                            if(data=="失败") return;
                             self.getHtml(src,html);
                         });
                     }

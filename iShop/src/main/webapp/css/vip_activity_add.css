@@ -156,8 +156,10 @@ body{
 .last_txt span.activity_title{
     font-size: 20px;
     color: #5f8bc8;
+    display: block;
 }
 .last_txt span.activity_time{
+    display: block;
     margin: 18px 0;
 }
 .last_finish{
