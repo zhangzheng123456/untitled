@@ -699,33 +699,15 @@ $('#get_more .head_span_r').click(function () {
 // });
 //详情弹框
 $('#peopleContent').on('click','li div.data_detail',function () {
-    whir.loading.add("",0.5);//加载等待框
-    $('#vip_status').show();
-    var _params={
-        "id":"",
-        "message":{
-            "corp_code":sessionStorage.getItem('corp_code'),
-            'user_code':$(this).parent().attr('data_user_code'),
-            'activity_vip_code':moreDetail.activity_vip_code
-        }
-    };
-    $.ajax({
-        url: '/activity/userExecuteDetail',
-        type: 'POST',
-        dataType: "JSON",
-        data:{
-            param:JSON.stringify(_params)
-        },
-        success: function (data) {
-            var msg=JSON.parse(data.message).list;
-            console.log(msg);
-            msg=msg.join('')==''?[]:msg[0].vips;
-            doResponse(msg);
-        },
-        error: function (data) {
-            alert(data.message);
-        }
-    });
+    $('#detail').show();
+    //获取该行数据
+    console.log($(this).parent());
+    $('.action_detail_box .s1').html($(this).parent().find('.people_title_name ').html())
+    $('.action_detail_box .s2').html($(this).parent().find('.people_title_num  ').html())
+    $('.action_detail_box .s3').html($(this).parent().find('.people_title_area  ').html())
+    $('.action_detail_box .s4').html($(this).parent().find('.people_title_shop  ').html())
+    $('.action_detail_box .s6').css('width',$(this).parent().find('.percent_percent').html())
+    $('.action_detail_box .s7').html($(this).parent().find('.percent_percent').html())
     //处理函数
     function doResponse(msg) {
         var html='';
@@ -741,9 +723,8 @@ $('#peopleContent').on('click','li div.data_detail',function () {
         $('#loading').hide();
     }
 });
-$('#vip_status .head_span_r').click(function () {
-    $('#vip_status').hide();
-    whir.loading.remove();//移除加载框
+$('.vip_status_btn').click(function () {
+    $('#detail').hide();
 });
 /******************************************************************************************/
 function getActive() {
@@ -855,12 +836,12 @@ function pieChart(a,b) {
 function doActiveResponse(active_data) {
     var store_code=[];
     //activity_store_code
-    console.log(active_data)
     corp_code=active_data.corp_code;
     if(active_data.activity_store_code==''){
         store=0;
     }else{
         var store_obj=JSON.parse(active_data.activity_store_code);
+        action.store_code=store_obj;
         for(var i=0;i<store_obj.length;i++){
             store_code.push(store_obj[i].store_code);
         }
@@ -882,7 +863,7 @@ function doActiveResponse(active_data) {
         case 'festival':run_mode='节日';break;
     }
     //time
-    var over="2017-01-25 00:00:00";
+    var over=active_data.end_time;
     var over_time=new Date(over);
     var now_time=new Date();
     var time=(over_time.getTime()-now_time.getTime())/1000;
@@ -923,6 +904,8 @@ $('.progress_nav').on('click','.progress_nav_btn',function () {
 });
 //action操作
 $('.modify_footer_r').click(function () {
+    action.start_time=$('#start_time').val();
+    action.end_time=$('#over_time').val();
     actionPost(this.className.trim());
 });
 $('.action_footer_r').click(function () {
@@ -938,33 +921,40 @@ $('.add_footer_r').click(function () {
     });
     actionPost(this.className.trim(),obj);
 });
-function actionPost(role,obj) {
-    //active_code
-    //start_time
-    //end_time
-    //status
-    //store_code={}
-    //遍历tr
-    action.store_code=obj;
+//修改活动时间
+$('.action_time').click(function () {
+    $('.modify_time_box').show();
+    $('#start_time').val(action.start_time);
+    $('#over_time').val(action.end_time);
+});
+function actionPost(role,obj) {//第二个参数是store_code
+    if(obj){action.store_code=obj;}
     if(role=='action_footer_r'){
         action.status=2;
+        action.start_time='';
+        action.end_time='';
     }else{
         action.status='';
     }
     oc.postRequire("post","/vipActivity/changeState","0",action,function(data){
-        alert(data.message)
+        if(data.code==0){
+            console.log(data.message);
+        }else if (data.code==-1){
+            alert(data.message);
+        }
     });
 }
 $('#return_back').click(function () {
     window.location.href='activity.html';
 });
 function storeShow(store_code) {
+    var role=arguments[1];
     var param={};
     param.corp_code=corp_code;
     param.store_code=store_code;
     oc.postRequire("post","/shop/getStoreList","0",param,function(data){
         if(data.code==0){
-            storeShowList(JSON.parse(JSON.parse(data.message).list))
+            storeShowList(JSON.parse(JSON.parse(data.message).list),role)
         }else if(data.code==-1){
             console.log(data.message)
         }
@@ -972,13 +962,14 @@ function storeShow(store_code) {
 }
 function storeShowList(arr) {
     var html=[];
-    $('#add_store_tb tbody').empty();
-    console.log(arr)
+    $('#showList tbody').empty();
+    $('#showList2 tbody').empty();
    for(var i=0;i<arr.length;i++){
      html.push('<tr><td>'+(i+1)+'</td><td data-code="'+arr[i].store_code+'">'+arr[i].store_name+'</td><td>'
          +arr[i].province+'省'+arr[i].city+'市'+arr[i].area+'区'+arr[i].street+'</td></tr>');
    }
-   $('#showList tbody').html(html.join(','));
+    console.log(arguments);
+   arguments[1]?$('#showList2 tbody').html(html.join(',')):$('#showList tbody').html(html.join(','));
 }
 $('.add_header_r').click(function () {
     var left=($('.add_store_box').width()-$("#screen_shop").width())/2;
@@ -988,6 +979,11 @@ $('.add_header_r').click(function () {
     $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
     $("#screen_staff .screen_content_l").unbind("scroll");
     getstorelist(1)
+});
+//参与门店
+$('.task_list').click(function () {
+    $('.join_store_box').toggle();
+    storeShow(add_store_code,'store');
 });
 // window.onload = function(){
 //     //获取活动执行情况
@@ -1260,7 +1256,6 @@ function getstorelist(a){
     _param['pageNumber']=pageNumber;
     _param['pageSize']=pageSize;
     whir.loading.add("",0.5);//加载等待框
-    console.log(_param)
     $("#mask").css("z-index","10002");
     // oc.postRequire("post","/user/stores","", _param, function(data) {
     oc.postRequire("post","/shop/selectByAreaCode","", _param, function(data) {

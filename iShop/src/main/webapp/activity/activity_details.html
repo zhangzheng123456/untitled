@@ -18,40 +18,40 @@
         #peopleContent li{
             cursor: pointer;
         }
-        #vip_status{
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-45%);
-            width: 570px;
-            background: #fff;
-            border-radius: 5px;
-            z-index: 99999;
-            padding: 10px;
-        }
-        #vip_status .head_span_r{
-            float:right;
-            cursor: pointer;
-        }
-        #vip_status table{
-            width: 100%;
-            clear:both;
-        }
-        #vip_status table tr {
-            padding-left: 10px;
-            height: 50px;
-            line-height: 50px;
-            color: #434960;
-            font-weight: normal;
-            font-size: 14px;
-            text-align: center;
-        }
-        #vip_status table tr th,#vip_status table tr td{
-            font-weight: normal;
-            text-align: center;
-            width: 20%;
-        }
+        /*#vip_status{*/
+            /*display: none;*/
+            /*position: fixed;*/
+            /*top: 50%;*/
+            /*left: 50%;*/
+            /*transform: translate(-50%,-45%);*/
+            /*width: 570px;*/
+            /*background: #fff;*/
+            /*border-radius: 5px;*/
+            /*z-index: 99999;*/
+            /*padding: 10px;*/
+        /*}*/
+        /*#vip_status .head_span_r{*/
+            /*float:right;*/
+            /*cursor: pointer;*/
+        /*}*/
+        /*#vip_status table{*/
+            /*width: 100%;*/
+            /*clear:both;*/
+        /*}*/
+        /*#vip_status table tr {*/
+            /*padding-left: 10px;*/
+            /*height: 50px;*/
+            /*line-height: 50px;*/
+            /*color: #434960;*/
+            /*font-weight: normal;*/
+            /*font-size: 14px;*/
+            /*text-align: center;*/
+        /*}*/
+        /*#vip_status table tr th,#vip_status table tr td{*/
+            /*font-weight: normal;*/
+            /*text-align: center;*/
+            /*width: 20%;*/
+        /*}*/
        #table_content{
            height: 300px;
            overflow-y: auto;
@@ -534,7 +534,44 @@
             </div>
             <div class="modify_footer">
                 <div class="modify_footer_l">取消</div>
-                <div  class="modify_footer_r">结束活动</div>
+                <div  class="modify_footer_r">保存修改</div>
+            </div>
+        </div>
+    </div>
+    <div id='detail'>
+        <div class="vip_status_store">
+            <div class="_header">
+                <div class="join_header_l">
+                    <span class="icon-ishop_6-28 join_bar"></span>员工任务详情
+                    <div class="action_detail_box">
+                        <span class="s1">员工：员工1</span>
+                        <span class="s2">10001</span>
+                        <span class="s3">华东一区</span>
+                        <span class="s4">上海闵行分店</span>
+                        <span class="s7">50%</span>
+                        <span class="s5"><span class="s6"></span></span>
+                    </div>
+                </div>
+            </div>
+            <table id="vip_status_tb">
+                <thead>
+                <th>序号</th>
+                <th>会员名称</th>
+                <th>会员编号</th>
+                <th>活动状态</th>
+                </thead>
+            </table>
+            <div id="showList_box3">
+                <table id="showList3">
+                    <tbody>
+                    <tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
+                    <tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
+                    <tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="join_footer">
+                <div class="vip_status_btn">返回</div>
             </div>
         </div>
     </div>
@@ -588,28 +625,6 @@
         </ul>
     </div>
     <!--活动详情人员状态-->
-    <div id="vip_status">
-        <div>
-            <span class="head_span_r icon-ishop_6-12" ></span>
-            <table>
-                <thead>
-                   <tr>
-                       <th>序号</th>
-                       <th>会员名称</th>
-                       <th>会员编号</th>
-                       <th>活动状态</th>
-                   </tr>
-                </thead>
-            </table>
-            <div id="table_content">
-                <table>
-                    <tbody id="vip_status_tbody">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 </div>
 <!--弹框提示-->
 <div class="tk" id="tk">
@@ -875,9 +890,6 @@
     $('.add_footer_l').click(function () {
         $('.add_store_box').toggle();
     });
-    $('.task_list').click(function () {
-        $('.join_store_box').toggle();
-    });
     $('.join_footer_btn').click(function () {
         $('.join_store_box').toggle();
     });
@@ -886,9 +898,6 @@
     });
     $('.action_footer_l').click(function () {
         $('.action_over_box').hide();
-    });
-    $('.action_time').click(function () {
-        $('.modify_time_box').show();
     });
     $('.modify_footer_l').click(function () {
         $('.modify_time_box').hide()
