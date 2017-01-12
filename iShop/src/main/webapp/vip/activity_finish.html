@@ -1,9 +1,9 @@
 <div>
     <div class="last_content">
         <div class="last_txt">
-            <span class="activity_title">2017新年感恩特惠</span>
-            <span class="activity_time">2017-01-01 00:00:00 至 2017-01-21 00:00:00</span>
-            <span>线下邀约活动</span>
+            <span class="activity_title" id="them">2017新年感恩特惠</span>
+            <span class="activity_time"><span id="startTime"></span> 至 <span id="endTime"></span></span>
+            <span id="mode"></span>
         </div>
         <div class="last_finish">
             <div class="last_finish_btn" id="execute">完成</div>
@@ -12,6 +12,21 @@
     </div>
 </div>
 <script>
+    function getActivityData(){
+        var param={
+            activity_code:sessionStorage.getItem("activity_code")
+        };
+        oc.postRequire("post","/vipActivity/select","0",param,function(data){
+            if(data.code!="0") return;
+            var msg=JSON.parse(data.message);
+            var activityVip=JSON.parse(msg.activityVip);
+            $("#them").html(activityVip.activity_theme);
+            $("#startTime").html(activityVip.start_time);
+            $("#endTime").html(activityVip.end_time);
+            $("#mode").html(activityVip.run_mode);
+        })
+    }
+    getActivityData();
     var oc= oc || new ObjectControl();
     $("#execute").bind("click",function(){
         var param={

@@ -1269,8 +1269,7 @@ function nodeSave(node_r,node_l,arr,node_container) {
             if(arr.length>0 && arr.indexOf($(node_l).eq(i).attr("id"))!=-1){
                 $(node_container).append($(node_l).eq(i).clone())
             }
-        };
-
+        }
     //if(node_r.length!=0){
     //    node_r.each(function () {
     //        arr.indexOf(this.id)==-1&&($(this).remove());
@@ -2343,6 +2342,11 @@ function showOtherGroup(list,type){
             $("#custom_vip_list").hide();
             $(".select_more").hide();
             $("#brand").show();
+            var brand=list.brand && list.brand;
+            for(var i=0;i<brand.length;i++){
+                br.push(brand[i].brand_code);
+            }
+            $("#brand input").val("已选"+br.length+"个");
             break;
         case "discount":
             $("#group_type").val("折扣偏好分组");
@@ -2590,6 +2594,7 @@ function getBrandList(a){
                 }
             }
             $("#screen_brand_add .screen_content_l ul").append(brand_html);
+            nodeSave('#screen_brand_add .screen_content_r ul li','#screen_brand_add .screen_content_l ul li',br, '#screen_brand_add .screen_content_r ul');
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
             alert(data.message);

@@ -299,15 +299,22 @@ public class VipActivityController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("该任务非未执行状态");
             } else {
-                String result = vipActivityService.executeActivity(vipActivity, user_code);
-                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                    dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setMessage("execute success");
-                } else {
+                String target_vips_count = vipActivity.getTarget_vips_count();
+                if (target_vips_count == null || target_vips_count.equals("") || target_vips_count.equals("0")){
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setMessage(result);
+                    dataBean.setMessage("活动还未覆盖会员");
+                }else {
+                    String result = vipActivityService.executeActivity(vipActivity, user_code);
+                    if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                        dataBean.setId(id);
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setMessage("execute success");
+                    } else {
+                        dataBean.setId(id);
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setMessage(result);
+                    }
                 }
             }
         } catch (Exception ex) {

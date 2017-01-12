@@ -144,6 +144,8 @@ public class VipActivityNewMakeController {
             result.put("wxlist", jsonArray_wx);
             result.put("smslist", jsonArray_sms);
             result.put("emlist", jsonArray_em);
+            result.put("task_status", vipActivity.getTask_status());
+            result.put("send_status", vipActivity.getSend_status());
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");
@@ -478,4 +480,6 @@ public class VipActivityNewMakeController {
         }
         return dataBean.getJsonStr();
     }
+
+
 }

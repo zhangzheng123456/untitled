@@ -44,6 +44,26 @@ public class VipActivity {
 
     private String target_vips_count;
 
+    private String task_status;
+
+    private String send_status;
+
+    public String getTask_status() {
+        return task_status;
+    }
+
+    public void setTask_status(String task_status) {
+        this.task_status = task_status;
+    }
+
+    public String getSend_status() {
+        return send_status;
+    }
+
+    public void setSend_status(String send_status) {
+        this.send_status = send_status;
+    }
+
     public int getId() {
         return id;
     }

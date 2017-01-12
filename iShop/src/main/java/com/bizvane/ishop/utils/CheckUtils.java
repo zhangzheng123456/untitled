@@ -64,6 +64,28 @@ public class CheckUtils {
         }
         return result;
     }
+    /**
+     * 会员活动类别
+     */
+    public static String CheckVipActivityType(String run_mode){
+        String result="";
+        if(run_mode==null){
+            result="";
+        }else if(run_mode.equals("recruit")){
+            result="是招募活动";
+        }else if(run_mode.equals("sales")){
+            result="促销活动";
+        }else if(run_mode.equals("h5")){
+            result="H5活动";
+        }else if(run_mode.equals("coupon")){
+            result="优惠券活动";
+        }else if(run_mode.equals("invite")){
+            result="线下邀约活动";
+        }else if(run_mode.equals("festival")){
+            result="节日活动";
+        }
+        return result;
+    }
 
     /***
      * 比较两个list之间的元素

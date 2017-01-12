@@ -10,6 +10,7 @@ public class CommonValue {
     public final static String ACCESS_KEY_SECRET = "DTAJNaALuE6MErpVrC5y3l7tYxGUPd";
     public final static String ENDPOINT = "http://oss-cn-hangzhou.aliyuncs.com";
     //OSS请求访问的Bucket名字
+
     public final static String bucketName = "products-image";
 
 
