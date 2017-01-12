@@ -147,6 +147,7 @@ var activityPlanning={
 		var nextCurrent=this.param.tasklist[nextIndex];
 		$("#task_title").val(nextCurrent.task_title);
 		$("#task_type_code").val(nextCurrent.task_type_name);
+		$("#task_type_code").attr("data-code",nextCurrent.task_type_code);
 		$("#task_description").val(nextCurrent.task_description);
 		$("#target_start_time").val(nextCurrent.target_start_time);
 		$("#target_end_time").val(nextCurrent.target_end_time);
@@ -154,26 +155,37 @@ var activityPlanning={
 	getTaskList:function(){
 		var param={};
 		param["corp_code"]=$("#tabs div").eq(0).attr("data-corp");
+		whir.loading.add("", 0.5);
 		oc.postRequire("post","/task/selectAllTaskType", "0",param, function (data) {
-			var message = JSON.parse(data.message);
-            var list = JSON.parse(message.list);
-            var html="";
-            if (list.length>0) {
-                for (var i = 0; i < list.length; i++) {
-                    html += '<div data-code="' + list[i].task_type_code + '">' + list[i].task_type_name + '</div>';
-                }
-                $("#task_type_code").siblings('.input_dropdown').html(html);
-            } else if (list.length <= 0) {
-                art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "请先定义任务类型"
-                });
-            };
+			if(data.code=="0"){
+				var message = JSON.parse(data.message);
+	            var list = JSON.parse(message.list);
+	            var html="";
+	            if (list.length>0) {
+	                for (var i = 0; i < list.length; i++) {
+	                    html += '<div data-code="' + list[i].task_type_code + '">' + list[i].task_type_name + '</div>';
+	                }
+	                $("#task_type_code").siblings('.input_dropdown').html(html);
+	            } else if (list.length <= 0) {
+	                art.dialog({
+	                    time: 1,
+	                    lock: true,
+	                    cancel: false,
+	                    content: "请先定义任务类型"
+	                });
+	            };
+        	}else if(data.code=="-1"){
+        		art.dialog({
+	                    time: 1,
+	                    lock: true,
+	                    cancel: false,
+	                    content: data.message
+	            });
+        	}
+            whir.loading.remove();//移除加载框
 		})
 	},
-	modifieTask:function(){
+	modifieTask:function(){//修改选中的任务
 		var self=this;
 		var result="成功";
 		var index=$("#task_titles li.active").index();//选取选中的下标值
@@ -185,7 +197,7 @@ var activityPlanning={
 		self.param.tasklist[index]=param;//给当前数组赋值
 		return result;
 	},
-	checkoutTask:function(){
+	checkoutTask:function(){//检查任务不会空的状态
 		var task_title=$("#task_title").val();//任务标题
 		var target_start_time=$("#target_start_time").val();//开始时间
 		var target_end_time=$("#target_end_time").val();//截止时间
@@ -248,7 +260,7 @@ var activityPlanning={
 		param["task_link"]=task_link//链接
 		return param;
 	},
-	addTask:function(){
+	addTask:function(){//添加任务
 		var self=this;
 		var param=self.checkoutTask();
 		if(param==undefined){
@@ -256,10 +268,16 @@ var activityPlanning={
 		}
 		$("#task_titles li").removeClass('active');
 		var length=$("#task_titles li").length+1;
-		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
+		$("#task_titles").append("<li>任务"+length+"</li>");
 		self.param.tasklist.push(param);
+		$("#task_title").val("");
+		$("#task_type_code").val("");
+		$("#task_type_code").attr("data-code","");
+		$("#task_description").val("");
+		$("#target_start_time").val("");
+		$("#target_end_time").val("");
 	},
-	getGroupValue:function(){
+	getGroupValue:function(){//获取群发的所有值
 		var type=$("#group .tabs_left ul li.active").attr("data-type");
 		var index=$("#group .tabs_left ul li.active").index();
 		console.log(index);
@@ -301,15 +319,19 @@ var activityPlanning={
 		param["activity_vip_code"]=activity_vip_code;
 		return param;
 	},
-	submitJob:function(){
+	submitJob:function(){//提交任务
 		var self=this;
 		var def = $.Deferred();
+		var taskparam={};
 		if(self.param.task==true){
-			var taskparam={};
 			var tasklist=self.param.tasklist;
+			if(self.modifieTask()!=="成功"){
+				def.resolve("失败");
+				return;
+			};
 			if(tasklist.length==0){
 				def.resolve("失败");
-   				art.dialog({
+	   			art.dialog({
 					time: 1,
 					lock: true,
 					cancel: false,
@@ -318,40 +340,61 @@ var activityPlanning={
 				return;
 			}
 			taskparam["tasklist"]=tasklist;
-			taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
-			oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",taskparam, function (data) {
-				if(data.code=="0"){
-					def.resolve("成功");
-				}else if(data.code=="-1"){
-					def.resolve("失败");
-				}
-			});
-		}else if(self.param.task==false){
-			def.resolve("成功");
+			taskparam["task_status"]="Y";
 		}
+		if(self.param.task==false){
+			taskparam["task_status"]="N";
+			taskparam["tasklist"]=[];
+		}
+		taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
+		whir.loading.add("", 0.5);
+		oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",taskparam, function (data) {
+			if(data.code=="0"){
+				def.resolve("成功");
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content:"添加任务失败"
+				});
+				def.resolve("失败");
+			}
+			whir.loading.remove();//移除加载框
+		});
 		return def;
 	},
-	submitGroup:function(){
+	submitGroup:function(){//提交群发
 		var self=this;
 		var param=self.getGroupValue();
 		var def = $.Deferred();
 		if(self.param.group==true){
-			oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
-				if(data.code=="0"){
-					def.resolve("成功");
-				}else if(data.code=="-1"){
-					def.resolve("失败");
-				}
-			});
+			param["send_status"]="Y";
 		}else if(self.param.group==false){
-			def.resolve("成功");
+			param["send_status"]="N";
 		}
+		whir.loading.add("", 0.5);
+		oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
+			if(data.code=="0"){
+				def.resolve("成功");
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content:"群发失败"
+				});
+				def.resolve("失败");
+			}
+			whir.loading.remove();//移除加载框
+		});
 		return def;
 	},
 	getPlanningList:function(){//获取列表信息
 		var self=this;
 		var param={};
 		param["activity_vip_code"]=sessionStorage.getItem("activity_code");
+		whir.loading.add("", 0.5);
 		oc.postRequire("post","/vipActivity/arrange/list","0",param, function (data) {
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);;
@@ -454,7 +497,7 @@ var activityPlanning={
                         					<span class='icon-ishop_6-02'></span>\
                     					</div>\
                 					</div>\
-                					<div class='edit_frame'>\
+                					<div class='edit_frame edit_message'>\
 					                    <div class='tabs_title_p'>\
 					                        <div class='tabs_left'>\
 					                            <span class='title_icon'></span>\
@@ -503,7 +546,7 @@ var activityPlanning={
                         					<span class='icon-ishop_6-02'></span>\
                     					</div>\
                 					</div>\
-                					<div class='edit_frame'>\
+                					<div class='edit_frame edit_message'>\
 					                    <div class='tabs_title_p'>\
 					                        <div class='tabs_left'>\
 					                            <span class='title_icon'></span>\
@@ -526,6 +569,8 @@ var activityPlanning={
 					for(var i=0;i<tasklist.length;i++){
 						var a=i+1;
 						var taskparam={};
+						console.log(tasklist);
+						console.log(tasklist[i].task_type_code);
 						taskparam["task_title"]=tasklist[i].task_title;//任务标题
 						taskparam["target_start_time"]=tasklist[i].target_start_time;//开始时间
 						taskparam["target_end_time"]=tasklist[i].target_end_time;//结束时间
@@ -539,7 +584,15 @@ var activityPlanning={
 					$("#task_titles li").eq(0).addClass("active");
 					self.evaluationTask();
 				}
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content:data.message
+				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	},
 }
