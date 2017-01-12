@@ -1012,4 +1012,11 @@ public class StoreServiceImpl implements StoreService {
         }
         return shops;
     }
+
+    public PageInfo<Store> selectAllOrderByCity(int page_number,int page_size,String corp_code, String search_value) throws Exception{
+        PageHelper.startPage(page_number, page_size);
+        List<Store> shops = storeMapper.selectAllOrderByCity(corp_code,search_value);
+        PageInfo<Store> page = new PageInfo<Store>(shops);
+        return page;
+    }
 }
