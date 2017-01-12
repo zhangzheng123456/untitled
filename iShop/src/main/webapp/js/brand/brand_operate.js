@@ -116,6 +116,11 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var app_id=$("#Accounts").attr("data-appid");//公众号
 				var a=$('.xingming input');//所属客服
+				var logo=""
+				var img=$("#BRAND_LOGO").parent().prev("img").attr("src");
+				if(img!==undefined){
+					logo=img;
+				}
 				var cus_user_code="";
 				for(var i=0;i<a.length;i++){
 			        var u=$(a[i]).attr("data-code");
@@ -145,6 +150,7 @@ var oc = new ObjectControl();
 					"app_id":app_id,
 					"cus_user_code":cus_user_code,
 					"brand_name": BRAND_NAME,
+					"logo":logo,
 					"isactive": ISACTIVE
 				};
 				brandjs.ajaxSubmit(_command,_params,opt);
@@ -243,6 +249,7 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(data.message);
 				var list=msg.cus_user;
 				var corp_code=msg.corp.corp_code;//公司编号
+				var logo=msg.logo;
 				console.log(list);
 				$("#BRAND_ID").val(msg.brand_code);
 				$("#BRAND_ID").attr("data-name",msg.brand_code);
@@ -256,6 +263,10 @@ jQuery(document).ready(function(){
 				$("#modifier").val(msg.modifier);
 				$("#Accounts").val(msg.app_name);
 				$("#Accounts").attr("data-appid",msg.app_id);
+				if(logo!==""&&logo!==undefined){
+					var img="<img style='width: 60px;margin-bottom: 10px;' src='"+logo+"' alt='暂无图片'>";
+					$("#BRAND_LOGO").parent().before(img);
+				}
 				if (msg.app_id!= "") {
                     if (msg.brand_code.indexOf(',')== -1) {
                         checknow_data = msg.app_id.split(",");
@@ -434,6 +445,7 @@ jQuery(document).ready(function(){
 	$("#back_brand").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
+	uploadLOGO();
 });
 function getcorplist(a){
 	//获取所属企业列表
@@ -479,4 +491,53 @@ function getcorplist(a){
 			});
 		}
 	});
+}
+//logo OSS
+function uploadLOGO() {
+	var _this=this;
+	var client = new OSS.Wrapper({
+		region: 'oss-cn-hangzhou',
+		accessKeyId: 'O2zXL39br8rSn1zC',
+		accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+		bucket: 'products-image'
+	});
+	document.getElementById('BRAND_LOGO').addEventListener('change', function (e) {
+		whir.loading.add("上传中,请稍后...",0.5);
+		var file = e.target.files[0];
+		var time=_this.getNowFormatDate();
+		var corp_code=$("#OWN_CORP").val();
+		var brand_code=$("#BRAND_ID").attr("data-name");
+		var storeAs='BRAND/logo'+corp_code+'_'+brand_code+'_'+time+'.jpg';
+		client.multipartUpload(storeAs, file).then(function (result) {
+			var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
+			var img="<img style='width: 60px;margin-bottom: 10px;' src='"+url+"' alt='暂无图片'>";
+			var len = $("#BRAND_LOGO").parent().prevAll("img").length;
+			if(len == 0){
+				$("#BRAND_LOGO").parent().before(img);
+			}else {
+				$("#BRAND_LOGO").parent().prev("img").replaceWith(img);
+			}
+			whir.loading.remove();
+		}).catch(function (err) {
+			console.log(err);
+		});
+	});
+}
+function getNowFormatDate() {
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	var H=date.getHours();
+	var M=date.getMinutes();
+	var S=date.getSeconds();
+	var m=date.getMilliseconds();
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = ""+year+month+strDate+H+M+S+m;
+	return currentdate
 }
