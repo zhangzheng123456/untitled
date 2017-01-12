@@ -50,7 +50,9 @@
                         });
                     }
                     if(index=="2"){
-                        self.getHtml(src,html);
+                        $.when(postSelect()).then(function () {
+                            self.getHtml(src,html);
+                        });
                     }
                     if(index=="3"){
                         self.getHtml(src,html);
