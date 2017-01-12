@@ -54,21 +54,6 @@
                     if(index=="3"){
                         self.getHtml(src,html);
                     }
-                    // if(activity.next==true){
-                    //     $.ajax({
-                    //         type: "GET",
-                    //         url: src+"?t="+ $.now(),
-                    //         dataType: "html",
-                    //         success: function (data) {
-                    //             $("#tabs-content").html(data);
-                    //         },
-                    //         error: function (msg) {
-                    //             alert(msg);
-                    //         }
-                    //     });
-                    //     $(this).addClass("active");
-                    //     $(this).siblings().removeClass("active");
-                    // }
                 }
             });
         },

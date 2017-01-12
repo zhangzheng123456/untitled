@@ -21,6 +21,9 @@ var activityPlanning={
 		//任务切换
 		var self=this;
 		$("#task").on("click",".tabs_left ul li",function(){
+			if(self.modifieTask()!=="成功"){
+				return;
+			};
 			$(this).addClass("active");
 			$(this).siblings("li").removeClass("active");
 			self.evaluationTask();
@@ -170,8 +173,19 @@ var activityPlanning={
             };
 		})
 	},
-	addTask:function(){
+	modifieTask:function(){
 		var self=this;
+		var result="成功";
+		var index=$("#task_titles li.active").index();//选取选中的下标值
+		var param=self.checkoutTask();
+		if(param==undefined){
+			result="失败"
+			return;
+		}
+		self.param.tasklist[index]=param;//给当前数组赋值
+		return result;
+	},
+	checkoutTask:function(){
 		var task_title=$("#task_title").val();//任务标题
 		var target_start_time=$("#target_start_time").val();//开始时间
 		var target_end_time=$("#target_end_time").val();//截止时间
@@ -224,9 +238,6 @@ var activityPlanning={
 			});
 			return;
 		}
-		$("#task_titles li").removeClass('active');
-		var length=$("#task_titles li").length+1;
-		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		var param={};
 		param["task_title"]=task_title;//任务标题
 		param["target_start_time"]=target_start_time;//开始时间
@@ -235,6 +246,17 @@ var activityPlanning={
 		param["task_type_name"]=task_type_name;//任务名称
 		param["task_description"]=task_description;//任务简述
 		param["task_link"]=task_link//链接
+		return param;
+	},
+	addTask:function(){
+		var self=this;
+		var param=self.checkoutTask();
+		if(param==undefined){
+			return;
+		}
+		$("#task_titles li").removeClass('active');
+		var length=$("#task_titles li").length+1;
+		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		self.param.tasklist.push(param);
 	},
 	getGroupValue:function(){
@@ -285,6 +307,16 @@ var activityPlanning={
 		if(self.param.task==true){
 			var taskparam={};
 			var tasklist=self.param.tasklist;
+			if(tasklist.length==0){
+				def.resolve("失败");
+   				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content:"请先定义任务"
+				});
+				return;
+			}
 			taskparam["tasklist"]=tasklist;
 			taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
 			oc.postRequire("post","/vipActivity/arrange/addOrUpdateTask","0",taskparam, function (data) {
@@ -294,6 +326,8 @@ var activityPlanning={
 					def.resolve("失败");
 				}
 			});
+		}else if(self.param.task==false){
+			def.resolve("成功");
 		}
 		return def;
 	},
@@ -309,6 +343,8 @@ var activityPlanning={
 					def.resolve("失败");
 				}
 			});
+		}else if(self.param.group==false){
+			def.resolve("成功");
 		}
 		return def;
 	},
@@ -366,9 +402,9 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>推送标题</label><input class='edit_title' value='"+content.title+"' type='text' placeholder='请输入推送标题'></div>\
+					                        <label class='label_frame'>推送标题</label><input class='edit_title' value="+content.title+" type='text' placeholder='请输入推送标题'></div>\
 					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>页面链接</label><input class='edit_link' value='"+content.url+"' type='text' placeholder='请输入页面链接'></div>\
+					                        <label class='label_frame'>页面链接</label><input class='edit_link' value="+content.url+" type='text' placeholder='请输入页面链接'></div>\
 					                    <div class='edit_frame_left'>\
 					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+content.desc+"</textarea>\
 					                    </div>\
