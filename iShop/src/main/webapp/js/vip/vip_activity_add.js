@@ -34,6 +34,15 @@
                             });
                             return ;
                         }
+                        if(activity.cache.store_codes==""){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: "没有选择参与门店"
+                            });
+                            return ;
+                        }
                         $.when(activity.add())
                             .then(function(data){
                                 if(data=="成功"){
