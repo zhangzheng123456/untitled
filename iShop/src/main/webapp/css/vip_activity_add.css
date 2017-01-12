@@ -326,7 +326,10 @@ body{
 }
 .p_task_content .input_parent ul li .link{
     margin-top: 10px;
-    margin-left: 52px;
+    margin-left: 62px;
+}
+.p_task_content .input_parent label{
+    width: 62px;
 }
 .p_task_content .input_parent .float{
     float: left;
@@ -373,20 +376,13 @@ body{
     float: left;
     margin-left: 38px;
 }
-.input_time .text_input{
-    margin-left:0;
-}
 .p_task_content .input_parent textarea{
-    margin-left: 10px;
     width: 510px;
     height: 70px;
     border: 1px solid #d7d7d7;
     outline: none;
     padding-left: 10px;
     padding-top: 10px;
-}
-.input_time .time{
-    margin-left: 10px;
 }
 .text_input{
     width: 240px;
@@ -396,9 +392,8 @@ body{
     border-radius: 5px;
     padding-left: 8px;
     line-height: 30px;
-    margin-left: 10px;
 }
-.input_z{
+.p_task_content .input_parent .input_z{
     display: inline-block;
     width: 30px;
     text-align: center;
