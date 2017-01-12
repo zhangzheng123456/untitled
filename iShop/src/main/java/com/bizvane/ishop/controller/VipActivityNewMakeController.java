@@ -38,6 +38,10 @@ public class VipActivityNewMakeController {
     VipGroupService vipGroupService;
     @Autowired
     private VipActivityDetailService vipActivityDetailService;
+    @Autowired
+    private VipActivityMakeService vipActivityMakeService;
+
+
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/addOrUpdateTask", method = RequestMethod.POST)
@@ -51,44 +55,47 @@ public class VipActivityNewMakeController {
             JSONObject jsonObj = new JSONObject(jsString);
 
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+//            JSONObject jsonObject = new JSONObject(message);
+//
+//            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
+//
+//
+//            String tasklist = jsonObject.get("tasklist").toString();
+//            JSONArray jsonArray_task = JSON.parseArray(tasklist);
+//
+//            int count = 0;
+//            String task_code_actvie = "";
+//            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
+//            String corp_code = vipActivity.getCorp_code();
+//            taskService.delTaskByActivityCode(corp_code, activity_vip_code);
+//            for (int i = 0; i < jsonArray_task.size(); i++) {
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//                String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
+//                Thread.sleep(1);
+//                task_code_actvie = task_code_actvie + task_code + ",";
+//
+//                JSONObject task_obj = new JSONObject(jsonArray_task.get(i).toString());
+//                Task task = WebUtils.JSON2Bean(task_obj, Task.class);
+//                task.setActivity_vip_code(activity_vip_code);
+//
+//
+//                task.setTask_code(task_code);
+//                task.setCorp_code(corp_code);
+//
+//                Date now = new Date();
+//                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//                task.setCreater(user_code);
+//                task.setModified_date(Common.DATETIME_FORMAT.format(now));
+//                task.setModifier(user_code);
+//                task.setIsactive("Y");
+//
+//                count += taskService.insertTask(task);
+//
+//            }
+//            count += vipActivityService.updActiveCodeByType("task_code", task_code_actvie, corp_code, activity_vip_code);
 
-            String activity_vip_code = jsonObject.get("activity_vip_code").toString();
 
-
-            String tasklist = jsonObject.get("tasklist").toString();
-            JSONArray jsonArray_task = JSON.parseArray(tasklist);
-
-            int count = 0;
-            String task_code_actvie = "";
-            VipActivity vipActivity = vipActivityService.selActivityByCode(activity_vip_code);
-            String corp_code = vipActivity.getCorp_code();
-            taskService.delTaskByActivityCode(corp_code, activity_vip_code);
-            for (int i = 0; i < jsonArray_task.size(); i++) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
-                Thread.sleep(1);
-                task_code_actvie = task_code_actvie + task_code + ",";
-
-                JSONObject task_obj = new JSONObject(jsonArray_task.get(i).toString());
-                Task task = WebUtils.JSON2Bean(task_obj, Task.class);
-                task.setActivity_vip_code(activity_vip_code);
-
-
-                task.setTask_code(task_code);
-                task.setCorp_code(corp_code);
-
-                Date now = new Date();
-                task.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                task.setCreater(user_code);
-                task.setModified_date(Common.DATETIME_FORMAT.format(now));
-                task.setModifier(user_code);
-                task.setIsactive("Y");
-
-                count += taskService.insertTask(task);
-
-            }
-            count += vipActivityService.updActiveCodeByType("task_code", task_code_actvie, corp_code, activity_vip_code);
+            int count = vipActivityMakeService.addOrUpdateTask(message, user_code);
             if (count > 0) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("0");
