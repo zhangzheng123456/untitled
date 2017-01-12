@@ -295,7 +295,7 @@ public class VipActivityServiceImpl implements VipActivityService {
             scheduleJob.setJob_group(job_group);
             scheduleJob.setFunc(func.toString());
             scheduleJob.setCron_expression(corn_expression);
-//            scheduleJobService.insert(scheduleJob);
+            scheduleJobService.insert(scheduleJob);
         }
         return status;
     }

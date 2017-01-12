@@ -523,7 +523,16 @@ public class VipFsendServiceImpl implements VipFsendService {
     public void fsendSchedule(String corp_code,String sms_code,String user_code) {
         try {
             VipFsend vipFsend = getVipFsendInfoByCode(corp_code,sms_code);
-            sendSms(vipFsend,Common.ROLE_GM,"","","",user_code);
+//            sendSms(vipFsend,Common.ROLE_GM,"","","",user_code);
+
+            Data data_channel = new Data("channel", "santong", ValueType.PARAM);
+            Data data_phone = new Data("phone", "15251891037", ValueType.PARAM);
+            Data data_text = new Data("text", sms_code+"你好", ValueType.PARAM);
+            Map datalist1 = new HashMap<String, Data>();
+            datalist1.put(data_channel.key, data_channel);
+            datalist1.put(data_phone.key, data_phone);
+            datalist1.put(data_text.key, data_text);
+            DataBox dataBox1 = iceInterfaceService.iceInterfaceV3("SendSMS", datalist1);
         }catch (Exception ex){
             ex.printStackTrace();
             ex.getMessage();
