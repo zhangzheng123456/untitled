@@ -110,7 +110,7 @@ var activityPlanning={
 					self.param.task=true;
 					$(this).parent().find(".switch_text").html("任务已开启");
 				}
-				$("#task_parent").toggle(200);
+				$("#task_parent").slideToggle(200);
 			}
 			if(id=="group_switch"){
 				if($(this).attr("class")==""){
@@ -120,7 +120,7 @@ var activityPlanning={
 					self.param.group=true;
 					$(this).parent().find(".switch_text").html("群发已开启");
 				}
-				$("#group_parent").toggle(200);
+				$("#group_parent").slideToggle(200);
 			}
 		});
 		//策略补充
@@ -237,7 +237,7 @@ var activityPlanning={
 				time: 1,
 				lock:true,
 				cancel: false,
-				content:"截止时间不能为空"
+				content:"任务类型不能为空"
 			});
 			return;
 		}
@@ -268,7 +268,7 @@ var activityPlanning={
 		}
 		$("#task_titles li").removeClass('active');
 		var length=$("#task_titles li").length+1;
-		$("#task_titles").append("<li>任务"+length+"</li>");
+		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		self.param.tasklist.push(param);
 		$("#task_title").val("");
 		$("#task_type_code").val("");
@@ -276,6 +276,7 @@ var activityPlanning={
 		$("#task_description").val("");
 		$("#target_start_time").val("");
 		$("#target_end_time").val("");
+		$("#task_link").val("");
 	},
 	getGroupValue:function(){//获取群发的所有值
 		var type=$("#group .tabs_left ul li.active").attr("data-type");
@@ -402,10 +403,29 @@ var activityPlanning={
 				var smslist=message.smslist;
 				var emlist=message.emlist;
 				var tasklist=message.tasklist;
-				console.log(wxlist);
 				var wxhtml="";
 				var smshtml="";
 				var emlhtml="";
+				if(message.task_status=="Y"){
+					$("#task_switch div").addClass("bg");
+					$("#task_switch div span").addClass("Off");
+				}
+				if(message.task_status=="N"){
+					$("#task_switch div").removeClass("bg");
+					$("#task_switch div span").removeClass("Off");
+					$("#task_parent").hide();
+					self.param.task=false;
+				}
+				if(message.send_status=="Y"){
+					$("#task_switch div").addClass("bg");
+					$("#task_switch div span").addClass("Off");
+				}
+				if(message.send_status=="N"){
+					$("#group_switch div").removeClass("bg");
+					$("#group_switch div span").removeClass("Off");
+					$("#group_parent").hide(200);
+					self.param.group=false;
+				}
 				if(wxlist.length>0){
 					for(var i=0;i<wxlist.length;i++){
 						var content=JSON.parse(wxlist[i].content);
@@ -566,6 +586,7 @@ var activityPlanning={
 					$("#emlist").html(emlhtml);
 				}
 				if(tasklist.length>0){
+					var html="";
 					for(var i=0;i<tasklist.length;i++){
 						var a=i+1;
 						var taskparam={};
@@ -579,8 +600,10 @@ var activityPlanning={
 						taskparam["task_description"]=tasklist[i].task_description;//任务简述
 						taskparam["task_link"]=tasklist[i].task_link//链接
 						self.param.tasklist.push(taskparam);
-						$("#task_titles").append("<li>任务"+a+"</li>");
+						html+="<li>任务"+a+"</li>";
+						
 					}
+					$("#task_titles").html(html);
 					$("#task_titles li").eq(0).addClass("active");
 					self.evaluationTask();
 				}

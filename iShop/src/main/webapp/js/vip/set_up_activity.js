@@ -123,11 +123,11 @@ var activity={
             $(this).parent().parents("li").remove();
         });
         $("#coupon_activity").on("click","#coupon_btn",function () {//新增开卡送券
-            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select vipCardType">'
                 + activity.cache.card_type
                 + '</ul></li></ul><ul class="operate_ul">'
-                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" data-code= type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" data-code= type="text" placeholder="请选择优惠券" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select coupon_activity">'
                 + activity.cache.coupon
                 + '</ul></li><li><span class="add_btn">+</span><span class="remove_btn">-</span></li></ul>'
@@ -864,9 +864,6 @@ var activity={
             if(vue==""){
                 activity.isEmpty=true;
                 activity.label=$(this).prev("label").html();
-                if(activity.label="至"){
-                    activity.label="活动时间";
-                }
             }
         });
     },
@@ -1019,7 +1016,7 @@ var activity={
                 case "festival":type="节日活动";break;
             }
             activity.getcorplist(list.corp_code);
-            $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
+            $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(),max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
             $("#activity_start").val(list.start_time);
             $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+list.start_time+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
             $("#activity_end").val(list.end_time);
@@ -1058,7 +1055,7 @@ var activity={
                     $("#holiday_start").val(list.festival_start);
                     $("#holiday_end").val(list.festival_end);
                     $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
-                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
+                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
                 if(type=="invite"){
                     var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
