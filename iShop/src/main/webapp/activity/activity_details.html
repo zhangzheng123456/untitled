@@ -236,7 +236,7 @@
                                     <label>员工编号</label><input type="text" id="p2"placeholder="请输入员工编号">
                                 </li>
                                 <li>
-                                    <label>所属区域</label><input type="text" id="p3"placeholder="请输入所属区域">
+                                    <label>店铺编号</label><input type="text" id="p3"placeholder="请输入店铺编号">
                                 </li>
                                 <li>
                                     <label>所属店铺</label><input type="text" id="p4"placeholder="请输入所属店铺">
@@ -251,7 +251,7 @@
                         <div class="people_title_order">序号</div>
                         <div class="people_title_name">员工姓名</div>
                         <div class="people_title_num">员工编号</div>
-                        <div class="people_title_area">所属区域</div>
+                        <div class="people_title_area">店铺编号</div>
                         <div class="people_title_shop">所属店铺</div>
                         <div class="people_title_plan">完成进度</div>
                     </li>
@@ -526,11 +526,11 @@
             </div>
             <div class="modify_ipt">
                 <label>开始时间</label>
-                <input type="text" id="start_time" class="laydate-icon" onclick="laydate({istime: false,  fixed:true,format: 'YYYY-MM-DD hh:mm:ss'})">
+                <input type="text" id="start_time" class="laydate-icon">
             </div>
             <div class="modify_ipt">
                 <label>结束时间</label>
-                <input type="text" id="over_time" class="laydate-icon" onclick="laydate({istime: false,  fixed:true,format: 'YYYY-MM-DD hh:mm:ss'})">
+                <input type="text" id="over_time" class="laydate-icon" >
             </div>
             <div class="modify_footer">
                 <div class="modify_footer_l">取消</div>
@@ -564,9 +564,9 @@
             <div id="showList_box3">
                 <table id="showList3">
                     <tbody>
-                    <tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
-                    <tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
-                    <tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>
+                    <!--<tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>-->
+                    <!--<tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>-->
+                    <!--<tr><td>1</td><td>10010</td><td>10010</td><td>上海市闵行区xxx路xxx号xxx楼</td></tr>-->
                     </tbody>
                 </table>
             </div>
@@ -650,6 +650,9 @@
 <script src="../js/loading.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js?201715"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js?201715"></script>
 <!-- ajax -->
 <script type="text/javascript" src="../js/insidePostRequire.js?20170105"></script>
 <!--匹配js文件-->
@@ -657,6 +660,31 @@
 <script src="/js/loading.js?20170105"></script>
 <script type="text/javascript" src="../js/activity/activity_details.js?20170105"></script>
 <script>
+        var start = {
+            min: laydate.now()
+            ,max: '2099-06-16 23:59:59'
+            ,istoday: false
+            , istime: true //是否开启时间选择
+            , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+            ,choose: function(datas){
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas //将结束日的初始值设定为开始日
+            }
+            ,  elem: '#start_time', //需显示日期的元素选择器
+        };
+        var end = {
+            min: laydate.now()
+            ,max: '2099-06-16 23:59:59'
+            , istime: true //是否开启时间选择
+            , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+            ,istoday: false
+            ,choose: function(datas){
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            },
+            elem: '#over_time', //需显示日期的元素选择器
+        };
+        laydate(start);
+        laydate(end)
     $(function () {
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
@@ -858,6 +886,9 @@
             ]
         };
         myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
     }
     barChart();
     $('#nav').on('click','.nav_btn',function () {
@@ -881,7 +912,7 @@
         $('.add_store').hide();
 //        var tp=($('.add_store_box').height()-$("#screen_shop").height())/2;
         var left=($('.add_store_box').width()-$("#screen_shop").width())/2;
-        var tp=50;
+        var tp=25;
         $("#screen_shop").show();
         $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
         $("#screen_staff .screen_content_l").unbind("scroll");

@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.VipActivity;
+import com.bizvane.ishop.service.ScheduleJobService;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipFsendService;
@@ -35,7 +36,8 @@ public class VipActivityController {
     TaskService taskService;
     @Autowired
     VipFsendService vipFsendService;
-
+    @Autowired
+    ScheduleJobService scheduleJobService;
 
     private static final Logger logger = Logger.getLogger(VipActivityController.class);
 
@@ -435,6 +437,7 @@ public class VipActivityController {
     @ResponseBody
     public String changeState(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -444,12 +447,12 @@ public class VipActivityController {
             String activity_code = jsonObject.getString("activity_code");
 
             VipActivity vipActivity = vipActivityService.selActivityByCode(activity_code);
+            String corp_code  = vipActivity.getCorp_code();
             if (vipActivity != null) {
                 if (jsonObject.containsKey("status") && !jsonObject.getString("status").equals("")){
                     String activity_state = vipActivity.getActivity_state();
                     if (activity_state.equals(Common.ACTIVITY_STATUS_1)) {
-                        vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
-                        vipActivityService.updateVipActivity(vipActivity);
+                        vipActivityService.terminalAct(vipActivity);
                     }
                 }
                 if (jsonObject.containsKey("start_time")){
@@ -458,13 +461,10 @@ public class VipActivityController {
                     vipActivity.setStart_time(start_time);
                     vipActivity.setEnd_time(end_time);
                     vipActivityService.updateVipActivity(vipActivity);
+                    vipActivityService.insertSchedule(activity_code,corp_code,end_time,user_code);
                 }
                 if (jsonObject.containsKey("store_code") && !jsonObject.getString("store_code").equals("")){
                     String store_code = jsonObject.getString("store_code");
-//                    String store_code1 = vipActivity.getActivity_store_code();
-//                    if (!store_code1.endsWith(","))
-//                        store_code1 = store_code1 + ",";
-//                    store_code1 = store_code1 + store_code;
                     vipActivity.setActivity_store_code(store_code);
                     vipActivityService.updateVipActivity(vipActivity);
                 }

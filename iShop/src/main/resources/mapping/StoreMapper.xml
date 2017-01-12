@@ -754,4 +754,39 @@
         GROUP BY city
         ORDER BY city;
     </select>
+
+    <select id="selectAllOrderByCity" resultMap="Store">
+        SELECT
+        def_store.id,
+        store_code,
+        store_name,
+        province,
+        city,
+        area,
+        street,
+        def_store.area_code,
+        def_store.brand_code,
+        def_store.corp_code,
+        def_store.store_location,
+        def_store.logo
+        FROM def_store,def_corp
+        WHERE def_store.corp_code = def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND def_store.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (province LIKE concat('%',#{search_value},'%')
+            OR city LIKE concat('%',#{search_value},'%')
+            OR area LIKE concat('%',#{search_value},'%')
+            OR street LIKE concat('%',#{search_value},'%')
+            OR concat(province,city,area,street) LIKE concat('%',#{search_value},'%')
+            OR store_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        AND def_store.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_store.id
+        ORDER BY def_store.province DESC, def_store.city DESC
+    </select>
 </mapper>

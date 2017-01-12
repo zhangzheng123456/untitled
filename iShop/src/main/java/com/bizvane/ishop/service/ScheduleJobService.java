@@ -39,10 +39,11 @@ public interface ScheduleJobService {
 
     /**
      * 删除
-     * 
-     * @param scheduleJobId
+     *
+     * @param job_name
+     * @param job_group
      */
-    public void delete(int scheduleJobId) throws Exception;
+    public void delete(String job_name,String job_group) throws Exception;
 
     /**
      * 运行一次任务
@@ -76,6 +77,8 @@ public interface ScheduleJobService {
      */
     public ScheduleJob get(int scheduleJobId) throws Exception;
 
+
+    ScheduleJob selectScheduleByJob(String job_name, String job_group)throws Exception;
     /**
      * 查询任务列表
      * 
