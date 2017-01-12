@@ -34,6 +34,24 @@
                             });
                             return ;
                         }
+                        if(activity.theme!==""){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: activity.theme
+                            });
+                            return ;
+                        }
+                        if(activity.cache.store_codes==""){
+                            art.dialog({
+                                time: 1,
+                                lock: true,
+                                cancel: false,
+                                content: "没有选择参与门店"
+                            });
+                            return ;
+                        }
                         $.when(activity.add())
                             .then(function(data){
                                 if(data=="成功"){
@@ -50,7 +68,10 @@
                         });
                     }
                     if(index=="2"){
-                        self.getHtml(src,html);
+                        $.when(postSelect()).then(function (data) {
+                            if(data=="失败") return;
+                            self.getHtml(src,html);
+                        });
                     }
                     if(index=="3"){
                         self.getHtml(src,html);

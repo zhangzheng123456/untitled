@@ -2,6 +2,7 @@ var oc = new ObjectControl();
 var activity={
     isEmpty:false,
     label:"",
+    theme:"",
     shop_num:1,
     shop_next:false,
     area_num:1,
@@ -43,23 +44,9 @@ var activity={
             $(this).nextAll("ul").toggle();
         });
         $(document).click(function (e) {
-            // if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
-            //     var input=$(".select_input").nextAll("ul");
-            //     console.log(input.length);
-            //     $(input).each(function (i,e) {
-            //         if($(this).css("display")!=="none"){
-            //             $(this).hide();
-            //         }
-            //     });
-            // }
-            // if($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input")){
-            //     var input=$(".select_input").nextAll("ul");
-            //     $(input).each(function (i,e) {
-            //         if($(this).css("display")!=="none"){
-            //             $(this).hide();
-            //         }
-            //     });
-            // }
+            if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
+                $(".select_input").nextAll("ul").hide();
+            }
         });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
@@ -760,23 +747,32 @@ var activity={
                     time: 1,
                     lock: true,
                     cancel: false,
-                    content: "活动主题不能为空"
+                    content: "活动标题不能为空"
                 });
             }else {
-                var param={};
-                param["corp_code"]=$("#OWN_CORP").val();
-                param["activity_theme"]=theme;
-                param["activity_code"]="";
-                oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
+                var theme_l=$("#activity_theme").attr("data-name");
+                if(theme==theme_l){
+                    activity.theme="";
+                    return ;
+                }else {
+                    var param={};
+                    param["corp_code"]=$("#OWN_CORP").val();
+                    param["activity_theme"]=theme;
+                    param["activity_code"]="";
+                    oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
                         if(data.code=="-1"){
+                            activity.theme="当前企业下该会员活动标题已存在";
                             art.dialog({
                                 time: 1,
                                 lock: true,
                                 cancel: false,
                                 content: data.message
                             });
+                        }else if(data.code==0){
+                            activity.theme="";
                         }
-                });
+                    });
+                }
             }
         });
     },
@@ -815,7 +811,7 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0&&$("#coupon_activity").css("display")=="block"){
+                if(msg.length==0&&$("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active")){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -843,7 +839,7 @@ var activity={
                 $(vue).each(function (i,e) {
                     if($(vue[i]).val()==""){
                         activity.isEmpty=true;
-                        activity.label=$(e).prev("label").html();
+                        activity.label=$(e).prev("label").html().replace("*","");
                     }
                 });
             }else if($(this).css("display")!=="none"&&id=="coupon_activity"){
@@ -853,7 +849,10 @@ var activity={
                         $(vue).each(function (i,e) {
                             if($(vue[i]).val()==""){
                                 activity.isEmpty=true;
-                                activity.label=$(e).prev("label").html();
+                                activity.label=$(e).prev("label").html().replace("*","");
+                                if(activity.label="至"){
+                                    activity.label="活动时间";
+                                }
                             }
                         });
                     }
@@ -865,6 +864,9 @@ var activity={
             if(vue==""){
                 activity.isEmpty=true;
                 activity.label=$(this).prev("label").html();
+                if(activity.label="至"){
+                    activity.label="活动时间";
+                }
             }
         });
     },
@@ -1022,6 +1024,7 @@ var activity={
             $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+list.start_time+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
             $("#activity_end").val(list.end_time);
             $("#activity_theme").val(list.activity_theme);
+            $("#activity_theme").attr("data-name",list.activity_theme);
             $("#activity_type").attr("data-id",list.run_mode);
             $("#activity_type").val(type);
             $("#activity_describe").val(list.activity_desc);
@@ -1102,7 +1105,11 @@ var activity={
                 }
                 if(type=="coupon"){
                     var send_coupon_type=list.send_coupon_type;
-                    var coupon_type=JSON.parse(list.coupon_type);
+                    if(list.coupon_type==""){
+                        var coupon_type=list.coupon_type;
+                    }else {
+                        var coupon_type=JSON.parse(list.coupon_type);
+                    }
                     if(send_coupon_type==undefined||send_coupon_type==""){
                         $(".switch div").trigger("click");
                     }else {

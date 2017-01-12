@@ -92,24 +92,8 @@ public class VipRulesController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject=JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString().trim();
-            String vip_card_type_code = jsonObject.get("vip_card_type_code").toString().trim();
             String result = vipRulesService.update(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                List <VipRules> list1=vipRulesService.getViprulesByCardTypeCode(corp_code,vip_card_type_code);
-                for (int i = 0; i <list1.size() ; i++) {
-                    VipRules vipRules=list1.get(i);
-                    if(vipRules.getHigh_vip_card_type_code().equals(vip_card_type_code)||vipRules.getVip_card_type_code().equals(vip_card_type_code)){
-//                        int m= vipRulesMapper.updateVipRules(vipRules);
-//                        if(m>0){
-//                            System.out.println("=======");
-//                        }
-
-                    }
-
-
-                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
@@ -117,7 +101,7 @@ public class VipRulesController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage(result);
+                dataBean.setMessage("编辑失败");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

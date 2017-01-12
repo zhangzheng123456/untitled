@@ -102,6 +102,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         String id = jsonObject.get("id").toString().trim();
         VipCardType vipCardType = getVipCardTypeById(Integer.parseInt(id));
         String old_code=vipCardType.getVip_card_type_code();
+        System.out.println("====old_code==="+old_code);
 
         VipCardType vipCardType1 = getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
@@ -120,9 +121,10 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setModifier(user_id);
                 vipCardType.setDegree(degree);
                 vipCardType.setIsactive(isactive);
+                List <VipRules> list1=vipRulesService.getViprulesByCardTypeCode(corp_code,old_code);
                 num = vipCardTypeMapper.updateVipCardType(vipCardType);
                 if (num > 0) {
-                    List <VipRules> list1=vipRulesService.getViprulesByCardTypeCode(corp_code,old_code);
+                    System.out.println(JSON.toJSONString(list1));
                     for (int i = 0; i <list1.size() ; i++) {
                         VipRules vipRules=list1.get(i);
                         if(vipRules.getHigh_vip_card_type_code().equals(old_code)){
@@ -138,6 +140,8 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                         int m= vipRulesMapper.updateVipRules(vipRules);
                         if(m>0){
                             System.out.println("=======");
+                        }else{
+                            System.out.println("=00000=");
                         }
 
 

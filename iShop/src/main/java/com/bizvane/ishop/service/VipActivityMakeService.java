@@ -5,4 +5,7 @@ package com.bizvane.ishop.service;
  */
 public interface VipActivityMakeService {
     int addOrUpdateTask(String message,String user_code)throws Exception;
+
+    int addOrUpdateSend(String message,String user_code)throws Exception;
+
 }

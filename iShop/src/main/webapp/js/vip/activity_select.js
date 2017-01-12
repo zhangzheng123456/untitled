@@ -120,7 +120,6 @@ function nodeSave(node_r,node_l,arr,node_container) {
 function getbrandlist() {
     var searchValue=$("#brand_search").val();
     var _param = {};
-    console.log($("#OWN_CORP").val());
     _param['corp_code']="C10000";
     _param["searchValue"]=searchValue;
     whir.loading.add("", 0.5);//加载等待框
@@ -172,9 +171,6 @@ function getbrandlist() {
 }
 //拉取区域
 function getarealist(a) {
-    // var tr= $('#table tbody tr');
-    // var corp_code=$(tr[0]).attr("id");
-    // console.log(corp_code);
     var area_command = "/area/selAreaByCorpCode";
     var searchValue = $("#area_search").val().trim();
     var pageSize = 20;
@@ -195,7 +191,6 @@ function getarealist(a) {
             var list = list.list;
             var area_html_left = '';
             var area_html_right = '';
-            console.log(list);
             if (list.length == 0) {
             } else {
                 if (list.length>0) {
@@ -1031,7 +1026,7 @@ $("#input-txt").keydown(function() {
 });
 function getData(){
     var param={
-        activity_code:"ACls0000000001"
+        activity_code:sessionStorage.getItem("activity_code")
     };
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vipActivity/select","0",param,function(data){
@@ -1045,25 +1040,38 @@ function getData(){
         _param["pageNumber"] = inx;
         _param["pageSize"] = pageSize;
         _param["screen"]=activityVip.target_vips =="" ?[]:JSON.parse(activityVip.target_vips);
-        if(JSON.parse(activityVip.target_vips).length>0){
+        if(_param["screen"].length>0){
             filtrates(1,10);
-        }else if(JSON.parse(activityVip.target_vips).length==0){
+        }else if(_param["screen"].length==0){
             whir.loading.add("",0.5);//加载等待框
             setPage($("#foot-num")[0],1,1,pageSize);
-            superaddition(JSON.parse(activityVip.target_vips))
+            superaddition(_param["screen"])
         }
 
     })
 }
 getData();
-$("#NEXT").bind("click",function(){
+function postSelect(){
+    var def = $.Deferred();
+    if($("#num").html()=="0"){
+        art.dialog({
+            zIndex: 10003,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "会员数量不能为0"
+        });
+        def.resolve("失败");
+    }
     var param={
         target_vips_count:$("#num").html(),
-        activity_vip_code:"ACls0000000001",
+        activity_vip_code:sessionStorage.getItem("activity_code"),
         screen:_param["screen"]
     };
+
     oc.postRequire("post","/vipActivity/arrange/addOrUpdateVip","0",param,function(data){
         if(data.code!="0") return;
-        console.log(data)
-    })
-});
+        def.resolve("成功");
+    });
+    return def
+}

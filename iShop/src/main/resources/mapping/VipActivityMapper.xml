@@ -30,6 +30,8 @@
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_vips_count" property="target_vips_count" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="task_status" property="task_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="send_status" property="send_status" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectAllActivity" resultMap="Activity">
@@ -112,6 +114,12 @@
             <if test="target_vips_count!=null">
                 target_vips_count,
             </if>
+            <if test="task_status!=null">
+                task_status,
+            </if>
+            <if test="send_status!=null">
+                send_status,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="corp_code!=null">
@@ -168,6 +176,12 @@
             <if test="target_vips_count!=null">
                 #{target_vips_count},
             </if>
+            <if test="task_status!=null">
+                #{task_status},
+            </if>
+            <if test="send_status!=null">
+                #{send_status},
+            </if>
         </trim>
     </insert>
 
@@ -221,6 +235,12 @@
             </if>
             <if test="target_vips_count!=null">
                 target_vips_count= #{target_vips_count},
+            </if>
+            <if test="task_status!=null">
+                task_status= #{task_status},
+            </if>
+            <if test="send_status!=null">
+                send_status= #{send_status},
             </if>
         </trim>
         WHERE activity_code=#{activity_code};
