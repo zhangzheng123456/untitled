@@ -1055,7 +1055,7 @@ var activity={
                     $("#holiday_start").val(list.festival_start);
                     $("#holiday_end").val(list.festival_end);
                     $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
-                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
+                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
                 if(type=="invite"){
                     var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";

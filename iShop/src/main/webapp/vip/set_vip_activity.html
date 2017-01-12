@@ -131,8 +131,8 @@
             </div>
             <div class="holiday_activity" id="festival_activity" style="display: none">
                 <ul>
-                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
-                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
+                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
+                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
                 </ul>
             </div>
         </div>
@@ -265,13 +265,13 @@
         $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
     }
     function checkEnd(data){
-        $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:'laydate.now()',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
+        $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(),max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
     }
     function holidayStart(data) {
         $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
     }
     function holidayEnd(data) {
-        $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
+        $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
     }
 </script>
 <script type="text/javascript" src="../js/vip/set_up_activity.js"></script>
