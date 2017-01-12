@@ -20,6 +20,7 @@
                     return ;
                 }else{
                     var index=$("#tabs .active").index();
+                    console.log(index);
                     if(index==0){
                         activity.checkEmpty();
                         console.log(activity.isEmpty);
@@ -33,6 +34,9 @@
                             return ;
                         }
                         activity.add();
+                    }
+                    if(index=="1"){
+                        
                     }
                     if(activity.next==true){
                         $.ajax({
