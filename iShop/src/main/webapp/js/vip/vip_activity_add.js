@@ -25,20 +25,21 @@
                     console.log(index);
                     if(index==0){
                         activity.checkEmpty();
-                        console.log(activity.isEmpty);
                         if(activity.isEmpty==true){
                             art.dialog({
                                 time: 1,
                                 lock: true,
                                 cancel: false,
-                                content: "不能为空"
+                                content: activity.label+"不能为空"
                             });
                             return ;
                         }
-                        activity.add();
-                        if(activity.next==true){
-                           self.getHtml(src,html);
-                        }
+                        $.when(activity.add())
+                            .then(function(data){
+                                if(data=="成功"){
+                                    self.getHtml(src,html);
+                                }
+                            });
                     }
                     if(index=="1"){
                         $.when(activityPlanning.submitJob(),activityPlanning.submitGroup())
