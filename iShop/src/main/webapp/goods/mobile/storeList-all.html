@@ -55,7 +55,7 @@
         var num = '5';
         var add= '江苏省南京市雨花台区软件大道118号';
         var tempHTML1 = ' <div class="area_box"><div class="area"><span>${area}</span></div>';
-        var tempHTML2 = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name">${shop}<img src="image/store_00.png" alt=""/><span>${num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML2 = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
         var tempHTML3 = '</div>';
         var html = '';
         for(k=0;k<areaList.length;k++){
@@ -65,6 +65,7 @@
             nowHTML1= nowHTML1.replace('${area}',area);
             html+=nowHTML1;
             for(i=0;i<3;i++){
+                var store_location = i;
                 if(img ==''){
                     img = 'image/goods_default_image.png';
                 }
@@ -73,6 +74,7 @@
                 nowHTML2 = nowHTML2.replace('${shop}',shop);
                 nowHTML2 = nowHTML2.replace('${num}',num);
                 nowHTML2 = nowHTML2.replace('${add}',add);
+                nowHTML2 = nowHTML2.replace('${store_location}',i);
                 html+=nowHTML2;
             }
             var nowHTML3 = tempHTML3;
@@ -89,7 +91,12 @@
         });
         $('.right img').click(function () {
             event.stopPropagation();
-            alert('暂无功能');
+            var val =  $(this).attr('id').split(',');
+            var x = val[1];
+            var y = val[0];
+            var name = $(this).prev('shop').text();
+            console.log(name);
+            window.location.href = 'baiduMap.html?x='+x+'&y='+y+'&name='+name;
         });
     }
     //修改页面
