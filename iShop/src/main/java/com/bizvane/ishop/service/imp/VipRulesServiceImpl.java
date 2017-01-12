@@ -115,11 +115,6 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
-        String vip_card_type_code = vipRules.getVip_card_type_code();
-        String vip_high_type_code = vipRules.getHigh_vip_card_type_code();
-
-        VipCardType vipCardType1 = vipCardTypeService.getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
-        VipCardType vipCardType2 = vipCardTypeService.getVipCardTypeByCode(corp_code, vip_high_type_code, Common.IS_ACTIVE_Y);
 
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getHigh_vip_type(), vipRules.getIsactive());
         int num = 0;
@@ -131,10 +126,6 @@ public class VipRulesServiceImpl implements VipRulesService {
                 vipRules.setUpgrade_time("");
             }
             vipRules.setCorp_code(corp_code);
-            System.out.print(vipCardType1.getVip_card_type_name());
-            System.out.print(vipCardType2.getVip_card_type_name());
-           vipRules.setVip_type(vipCardType1.getVip_card_type_name());
-            vipRules.setHigh_vip_type(vipCardType2.getVip_card_type_name());
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setCreater(user_id);
@@ -144,7 +135,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             if (num > 0) {
                 VipRules vipRules2 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getHigh_vip_type(), vipRules.getIsactive());
                 status = String.valueOf(vipRules2.getId());
-                System.out.print(String.valueOf(vipRules2.getId()));
+              //  System.out.print(String.valueOf(vipRules2.getId()));
                 return status;
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
@@ -310,6 +301,11 @@ public class VipRulesServiceImpl implements VipRulesService {
             array.add(obj);
         }
         return array.toJSONString();
+    }
+
+    @Override
+    public List<VipRules> getViprulesByCardTypeCode(String corp_code, String vip_card_type_code) throws Exception {
+        return vipRulesMapper.selectByCardTypeCode(corp_code,vip_card_type_code);
     }
 
 
