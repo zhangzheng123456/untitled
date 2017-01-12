@@ -1336,7 +1336,7 @@ public class WebController {
     }
 
     /**
-     * 同步
+     * 获取附件门店
      *
      * @param request
      * @return
@@ -1377,7 +1377,42 @@ public class WebController {
     }
 
     /**
-     * 同步
+     * 获取所有门店
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/api/allStore", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String allStore(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        String msg = "";
+        String status = "failed";
+        try{
+            InputStream inputStream = request.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            String buffer = null;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((buffer = bufferedReader.readLine()) != null) {
+                stringBuffer.append(buffer);
+            }
+            String post_data = stringBuffer.toString();
+            JSONObject jsonObj = JSONObject.parseObject(post_data);
+            int page_size = jsonObj.getInteger("pageSize");
+            int page_num = jsonObj.getInteger("pageNumber");
+            String corp_code = jsonObj.get("corp_code").toString();
+            String search_value = jsonObj.get("searchValue").toString();
+
+            PageInfo<Store> stores = storeService.selectAllOrderByCity(page_num,page_size,corp_code,search_value);
+            result.put("list",JSON.toJSONString(stores));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result.toString();
+    }
+
+    /**
+     * 获取店铺下员工
      *
      * @param request
      * @return

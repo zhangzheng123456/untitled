@@ -37,32 +37,6 @@ public class CorpParamController {
     private BaseService baseService;
     private static final Logger logger = Logger.getLogger(CorpParamController.class);
 
-    /**
-     * 企业参数配置列表
-     *
-     * @param request
-     * @return
-     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String corpParamManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            JSONObject result = new JSONObject();
-//            PageInfo<CorpParam> list = corpParamService.selectAllParam(page_number, page_size, "");
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 根据企业编号拉取企业参数
@@ -341,10 +315,8 @@ public class CorpParamController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
 
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<CorpParam> list = null;
-            list = corpParamService.selectAllParam(page_number, page_size, search_value);
+            PageInfo<CorpParam> list = corpParamService.selectAllParam(page_number, page_size, search_value);
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -353,6 +325,7 @@ public class CorpParamController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
         }
 
         return dataBean.getJsonStr();

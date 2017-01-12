@@ -11,6 +11,7 @@
 <body>
 <div class="title">
     <input type="text" maxlength="50" placeholder="搜索门店"/>
+    <button>搜索</button>
 </div>
 <div class="main">
     <!--盒子模板-->
@@ -27,12 +28,18 @@
         <!--</div>-->
     <!--</div>-->
 </div>
+<div class="main" style="display: none;">
+    <img src="image/img_kong.png" alt="" class="none"/>
+</div>
 <script src="js/flexible.js?20161209"></script>
 <script src="js/jquery-1.11.1.js"></script>
 <script src="js/insidePostRequire.js"></script>
 <script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <!--匹配js-->
 <script>
+    cache = {
+        "page": ''
+    };
     var oc = new ObjectControl();
     //搜索功能
     $('.title input').focus(function () {
@@ -48,6 +55,9 @@
             return;
         }
     })
+    $('.title button').click(function () {
+        getPage();
+    });
     //获取？后缀
     function GetRequest() {
         var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -71,45 +81,72 @@
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list =JSON.parse(msg.list);
-//                pageVal(list);
+                var listList = list.list;
+                pageVal(listList);
             }else if(data.code =='-1'){
                 console.log(data);
             }
         });
     }
+
     //页面加载
-    function pageVal(){
-        var areaList= ['江苏省','浙江省','湖南省','上海市','山东省','北京市','云南省'];
-        var img = '';
-        var shop = '商帆演示一店';
-        var num = '5';
-        var add= '江苏省南京市雨花台区软件大道118号';
+    function pageVal(list){
+        if(list.length=='0'){
+            $('.main').eq(0).css('display','none');
+            $('.main').eq(1).css('display','block');
+        }else{
+            $('.main').eq(0).css('display','block');
+            $('.main').eq(1).css('display','none');
+        }
+        $('.main .area_box').remove();;
+        if(list.length>20){
+            cache.page +=1;
+        }
+        console.log(cache.page);
+        //去重
+        var arr=[];
+        var unqiuearr=[];
+        var hash={};
+        for(l=0;l<list.length;l++){
+            arr.push(list[l].province);
+        }
+        for(var u=0;u<arr.length;u++){
+            if(!hash[arr[u]]){
+                hash[arr[u]] = true; //存入hash表
+                unqiuearr.push(arr[u]);
+            }
+        }
+        console.log(unqiuearr);
+        var areaList= unqiuearr;
         var tempHTML1 = ' <div class="area_box"><div class="area"><span>${area}</span></div>';
-        var tempHTML2 = '<div class="box"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}公里&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML2 = '<div class="box" id="${store_code}"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/></div> <div class="right_add">地址：${add}</div> </div> </div>';
         var tempHTML3 = '</div>';
         var html = '';
         for(k=0;k<areaList.length;k++){
             var nowHTML1 = tempHTML1;
             var area = areaList[k];
-            console.log(area)
             nowHTML1= nowHTML1.replace('${area}',area);
             html+=nowHTML1;
-            for(i=0;i<3;i++){
-                var store_location = i;
-                if(img ==''){
+            for(i=0;i<list.length;i++){
+                var store_code = list[i].store_code;
+                var img = list[i].logo;
+                var shop =list[i].store_name;
+                var add =  list[i].province +''+ list[i].city + ''+list[i].area +''+ list[i].street; //地址是province,city,area,street这几个字段拼起来的
+                var store_location = list[i].store_location;
+                if(img ==''|| img=='null'||img=='underfind'||img=='../img/head.png'){
                     img = 'image/goods_default_image.png';
                 }
                 var nowHTML2 = tempHTML2;
+                nowHTML2 = nowHTML2.replace('${store_code}',store_code);
                 nowHTML2 = nowHTML2.replace('${img}',img);
                 nowHTML2 = nowHTML2.replace('${shop}',shop);
-                nowHTML2 = nowHTML2.replace('${num}',num);
                 nowHTML2 = nowHTML2.replace('${add}',add);
-                nowHTML2 = nowHTML2.replace('${store_location}',i);
+                nowHTML2 = nowHTML2.replace('${store_location}',store_location);
                 html+=nowHTML2;
             }
             var nowHTML3 = tempHTML3;
             html+=nowHTML3;
-            $('.main').html(html);
+            $('.main').eq(0).html(html);
         }
         toNext();
         changePage();
@@ -117,7 +154,9 @@
     //跳转
     function toNext(){
         $('.box').click(function () {
-            window.location.href = 'store_shoppers.html';
+            var corp_code =  GetRequest().corp_code;
+            var store_code = $(this).attr('id');
+            window.location.href = 'store_shoppers.html?corp_code='+corp_code+'&store_code='+store_code;
         });
         $('.right img').click(function () {
             event.stopPropagation();
@@ -135,7 +174,9 @@
         $('.area_box').find(' .box:last').css('border-bottom','none');
     }
     window.onload= function () {
-      getPage();
+        getPage();
+        cache.page = '1';
+
     }
 </script>
 </body>

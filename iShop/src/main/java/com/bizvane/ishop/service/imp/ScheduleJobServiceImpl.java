@@ -79,12 +79,12 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     }
 
-    public void delete(int scheduleJobId) throws Exception{
-        ScheduleJob scheduleJob = scheduleJobMapper.selectScheduleJobById(scheduleJobId);
+    public void delete(String job_name,String job_group) throws Exception{
+        ScheduleJob scheduleJob = scheduleJobMapper.selectScheduleByJob(job_name,job_group);
         //删除运行的任务
         ScheduleUtils.deleteScheduleJob(scheduler, scheduleJob.getJob_name(), scheduleJob.getJob_group());
         //删除数据
-        scheduleJobMapper.deleteScheduleJob(scheduleJobId);
+        scheduleJobMapper.deleteScheduleJob(scheduleJob.getSchedule_job_id());
     }
 
     public void runOnce(int scheduleJobId) throws Exception{
@@ -108,6 +108,11 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public ScheduleJob get(int scheduleJobId)throws Exception {
         ScheduleJob scheduleJob = scheduleJobMapper.selectScheduleJobById(scheduleJobId);
 
+        return scheduleJob;
+    }
+
+    public ScheduleJob selectScheduleByJob(String job_name, String job_group)throws Exception {
+        ScheduleJob scheduleJob = scheduleJobMapper.selectScheduleByJob(job_name,job_group);
         return scheduleJob;
     }
 

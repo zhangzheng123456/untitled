@@ -103,4 +103,7 @@ public interface VipActivityService {
 
      String executeFsend(VipActivity vipActivity,String user_code) throws Exception;
 
-    }
+    void insertSchedule(String activity_code,String corp_code,String end_time,String user_code)throws Exception;
+
+    void terminalAct(VipActivity vipActivity) throws Exception;
+}

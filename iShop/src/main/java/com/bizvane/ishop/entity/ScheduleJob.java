@@ -15,7 +15,7 @@ public class ScheduleJob extends Pageable {
     private static final long serialVersionUID = 4888005949821878223L;
 
     /** 任务id */
-    private Long schedule_job_id;
+    private int schedule_job_id;
 
     /** 任务名称 */
     private String job_name;
@@ -47,11 +47,11 @@ public class ScheduleJob extends Pageable {
     /** 任务执行方法 */
     private String func;
 
-    public Long getSchedule_job_id() {
+    public int getSchedule_job_id() {
         return schedule_job_id;
     }
 
-    public void setSchedule_job_id(Long schedule_job_id) {
+    public void setSchedule_job_id(int schedule_job_id) {
         this.schedule_job_id = schedule_job_id;
     }
 
