@@ -91,9 +91,12 @@
 
     //页面加载
     function pageVal(list){
-        if(list.length==0){
-            console.log(123)
-            $('.main').eq(0).show();
+        if(list.length=='0'){
+            $('.main').eq(0).css('display','none');
+            $('.main').eq(1).css('display','block');
+        }else{
+            $('.main').eq(0).css('display','block');
+            $('.main').eq(1).css('display','none');
         }
         $('.main .area_box').remove();;
         if(list.length>20){
@@ -143,7 +146,7 @@
             }
             var nowHTML3 = tempHTML3;
             html+=nowHTML3;
-            $('.main').html(html);
+            $('.main').eq(0).html(html);
         }
         toNext();
         changePage();

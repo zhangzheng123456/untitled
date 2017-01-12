@@ -47,6 +47,11 @@ input::-webkit-input-placeholder{text-align: center;}
   position: relative;
   width: 100%;
 }
+.none{
+  width: 50%;
+  vertical-align: middle;
+  margin: 100px auto;
+}
 .main .area_box{
   width: 100%;
   margin-bottom: rem(20);
