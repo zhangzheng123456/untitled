@@ -313,6 +313,11 @@ var isscroll=false;
                 } else if (input.checked == false) {
                     ISACTIVE = "N";
                 }
+                var logo=""
+                var img=$("#STORE_LOGO").parent().prev("img").attr("src");
+                if(img!==undefined){
+                    logo=img;
+                }
                 // var SHOP_MANAGER=$("#SHOP_MANAGER").val();
                 var _command = "/shop/edit";//接口名
                 var opt = {//返回成功后的操作
@@ -334,8 +339,8 @@ var isscroll=false;
                     "area_code": AREA_CODE,
                     "store_name": STORE_NAME,
                     "flg_tob": FLG_TOB,
+                    "logo":logo,
                     "isactive": ISACTIVE
-
                 };
                 shopjs.ajaxSubmit(_command, _params, opt);
             } else {
@@ -462,6 +467,11 @@ jQuery(document).ready(function () {
                 }
                 for(var i=0;i<checknow_namedata.length;i++){
                     $('#OWN_BRAND_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+checknow_data[i]+"'  value='"+checknow_namedata[i]+"'><span class='power remove_app_id'>删除</span></p>");
+                }
+                var logo=msg.logo;
+                if(logo!==""&&logo!==undefined){
+                    var img="<img style='width: 60px;margin-bottom: 10px;' src='"+logo+"' alt='暂无图片'>";
+                    $("#STORE_LOGO").parent().before(img);
                 }
                 // $("#OWN_CORP option").val(msg.corp.corp_code);
                 // $("#OWN_CORP option").text(msg.corp.corp_name);
@@ -1061,6 +1071,7 @@ $("#screen_que_area").click(function(){
         $(".address_container").toggle();
     });
     getProvince();
+    uploadLOGO();
 });
 function getcorplist(a) {
     //获取所属企业列表
@@ -1349,7 +1360,56 @@ $("#enter").click(function () {
             $("#show_map").attr("data-location",location);
         }
     }
-})
+});
+//logo OSS
+function uploadLOGO() {
+    var _this=this;
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    document.getElementById('STORE_LOGO').addEventListener('change', function (e) {
+        whir.loading.add("上传中,请稍后...",0.5);
+        var file = e.target.files[0];
+        var time=_this.getNowFormatDate();
+        var corp_code=$("#OWN_CORP").val();
+        var store_code=$("#STORE_ID").attr("data-name");
+        var storeAs='STORE/logo'+corp_code+'_'+store_code+'_'+time+'.jpg';
+        client.multipartUpload(storeAs, file).then(function (result) {
+            var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
+            var img="<img style='width: 60px;margin-bottom: 10px;' src='"+url+"' alt='暂无图片'>";
+            var len = $("#STORE_LOGO").parent().prevAll("img").length;
+            if(len == 0){
+                $("#STORE_LOGO").parent().before(img);
+            }else {
+                $("#STORE_LOGO").parent().prev("img").replaceWith(img);
+            }
+            whir.loading.remove();
+        }).catch(function (err) {
+            console.log(err);
+        });
+    });
+}
+function getNowFormatDate() {
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    var H=date.getHours();
+    var M=date.getMinutes();
+    var S=date.getSeconds();
+    var m=date.getMilliseconds();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = ""+year+month+strDate+H+M+S+m;
+    return currentdate
+}
 //创建地图
 $("#address_nav a:last-child").click(function () {
     var map = new BMap.Map("show_map", {enableMapClick:false});//构造底图时，关闭底图可点功能
