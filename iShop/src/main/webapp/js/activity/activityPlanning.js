@@ -141,6 +141,11 @@ var activityPlanning={
 			$(this).parents('.input_parent').find(".edit_frame").hide()
 			whir.loading.remove('mask');
 		})
+		//编辑保存
+		$(".p_task_content").on("click",".input_parent .edit_footer_save",function(){
+			$(this).parents('.input_parent').find(".edit_frame").hide()
+			whir.loading.remove('mask');
+		})
 	},
 	evaluationTask:function(){
 		var nextIndex=$("#task_titles li.active").index();
@@ -428,7 +433,7 @@ var activityPlanning={
 				}
 				if(wxlist.length>0){
 					for(var i=0;i<wxlist.length;i++){
-						var content=JSON.parse(wxlist[i].content);
+						// var content=JSON.parse(wxlist[i].content);
 						var addnode="";
 						var delnode="";
 						if(i==0&&wxlist.length==1){
@@ -457,25 +462,15 @@ var activityPlanning={
                         					<span class='icon-ishop_6-02'></span>\
                     					</div>\
                 					</div>\
-                					<div class='edit_frame'>\
+                					<div class='edit_frame edit_message'>\
 					                    <div class='tabs_title_p'>\
 					                        <div class='tabs_left'>\
 					                            <span class='title_icon'></span>\
-					                            <span>微信推送服务</span>\
+					                            <span>微信内容设定</span>\
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>推送标题</label><input class='edit_title' value="+content.title+" type='text' placeholder='请输入推送标题'></div>\
-					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>页面链接</label><input class='edit_link' value="+content.url+" type='text' placeholder='请输入页面链接'></div>\
-					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+content.desc+"</textarea>\
-					                    </div>\
-					                    <div class='edit_frame_left file_parent'>\
-					                        <label class='label_frame' style='margin-top: 5px;'>封面图片</label>\
-					                        <div class='edit_file'>\
-					                            <input type='file'><span class='icon-ishop_6-01'></span>\
-					                        </div>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
