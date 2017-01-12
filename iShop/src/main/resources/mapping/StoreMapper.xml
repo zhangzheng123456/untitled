@@ -776,7 +776,11 @@
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (store_code LIKE concat('%',#{search_value},'%')
+            (province LIKE concat('%',#{search_value},'%')
+            OR city LIKE concat('%',#{search_value},'%')
+            OR area LIKE concat('%',#{search_value},'%')
+            OR street LIKE concat('%',#{search_value},'%')
+            OR concat(province,city,area,street) LIKE concat('%',#{search_value},'%')
             OR store_name LIKE concat('%',#{search_value},'%')
             )
         </if>

@@ -10,6 +10,8 @@ public interface ScheduleJobMapper {
 
     ScheduleJob selectScheduleJobById(@Param("schedule_job_id") int schedule_job_id) throws SQLException;
 
+    ScheduleJob selectScheduleByJob(@Param("job_name") String job_name,@Param("job_group") String job_group) throws SQLException;
+
     List<ScheduleJob> selectAllScheduleJob() throws SQLException;
 
     int insertScheduleJob(ScheduleJob record) throws SQLException;
