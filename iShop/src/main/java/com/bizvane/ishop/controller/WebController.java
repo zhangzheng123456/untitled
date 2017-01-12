@@ -1341,7 +1341,7 @@ public class WebController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/api/nearbyStore", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/nearbyStore", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String nearbyStore(HttpServletRequest request) {
         JSONObject result = new JSONObject();
@@ -1382,7 +1382,7 @@ public class WebController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/api/getStoreUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/getStoreUser", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String getStoreUser(HttpServletRequest request) {
         JSONObject result = new JSONObject();

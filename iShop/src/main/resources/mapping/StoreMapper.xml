@@ -377,6 +377,9 @@
             <if test="store_location!=null">
                 store_location,
             </if>
+            <if test="logo!=null">
+                logo,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="store_code!=null">
@@ -429,6 +432,9 @@
             </if>
             <if test="store_location!=null">
                 #{store_location},
+            </if>
+            <if test="logo!=null">
+                #{logo},
             </if>
         </trim>
     </insert>
@@ -486,6 +492,9 @@
             </if>
             <if test="isactive!=null ">
                 isactive=#{isactive},
+            </if>
+            <if test="logo!=null ">
+                logo=#{logo},
             </if>
         </trim>
         WHERE id=#{id};

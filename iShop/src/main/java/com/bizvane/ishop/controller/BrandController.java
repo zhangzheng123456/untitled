@@ -862,38 +862,4 @@ public class BrandController {
         return dataBean.getJsonStr();
     }
 
-
-//    /**
-//     * 获取所选品牌下的店铺
-//     */
-//    @RequestMapping(value = "/getStores", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String getStores(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            logger.info("json---------------" + jsString);
-//            JSONObject jsonObj = new JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = new JSONObject(message);
-//            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-//            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-//            String corp_code = jsonObject.get("corp_code").toString();
-//            String brand_code = jsonObject.get("brand_code").toString();
-//            String search_value = jsonObject.get("search_value").toString();
-//            PageInfo<Store> stores = storeService.selectStoreByBrand(page_number,page_size,corp_code,brand_code,search_value,Common.IS_ACTIVE_Y);
-//            JSONObject result = new JSONObject();
-//            result.put("list", JSON.toJSONString(stores));
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId(id);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage() + ex.toString());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 }
