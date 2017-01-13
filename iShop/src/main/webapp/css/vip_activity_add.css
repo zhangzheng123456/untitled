@@ -362,6 +362,7 @@ body{
     line-height: 24px;
     text-align: center;
     border-radius: 5px;
+    margin-top: 1px;
     cursor: pointer;
     float: left;
 }
