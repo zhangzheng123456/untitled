@@ -12,6 +12,7 @@ $('#toTopUp').click(function(){
     $('#topUpPeopleSelect li').eq(0).click();
     $('#topUpMoneyReality').parent().find('.hint').css('display','none');
     $('#topUpMoney').parent().find('.hint').css('display','none');
+    $("body").css({overflow:"hidden"});
 });
 //退款弹窗
 $('#toRefund').click(function(){
@@ -21,6 +22,7 @@ $('#toRefund').click(function(){
     refunBalanceShow();//默认余额退款
     $('#refunType li').eq(1).click();
     $('#refunShopSelcet li').eq(0).click();
+    $("body").css({overflow:"hidden"});
 });
 //充值记录弹窗
 $('#toRecord').click(function(){
@@ -36,10 +38,12 @@ $('#toReturn').click(function () {
 $('#screen_close_shop').click(function () {
     $('#topUp').css('display','none');
     $('.warp').css('display','none');
+    $("body").css({overflow:"auto"});
 });
 $('#refundClose').click(function () {
     $('#refund').css('display','none');
     $('.warp').css('display','none');
+    $("body").css({overflow:"auto"});
 });
 $('#record .screen_close').click(function () {
     $('#record').css('display','none');

@@ -153,6 +153,7 @@
     color: #6dc1c8;
     cursor: pointer;
     margin-left: 35px;
+    margin-top: 3px;
 }
 .operate_ul span:last-child{
     margin-left: 10px;

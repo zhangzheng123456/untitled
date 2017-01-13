@@ -16,8 +16,12 @@ body {
 
 .main {
   width: 95%;
-  margin-left: 5%;
-  background-color: black; }
+  margin-left: 5%; }
+
+.none {
+  width: 50%;
+  vertical-align: middle;
+  margin: 20% 22.5%; }
 
 .shopper {
   float: left;
@@ -26,12 +30,12 @@ body {
   margin-right: 4%; }
 
 .img {
+  width: 100%; }
+
+.img img {
   width: 100%;
-}
-.img img{
-  width: 100%;
-  border-radius: 0.12077rem;
-}
+  height: 100%; }
+
 .name {
   margin-top: 0.24155rem;
   text-align: center;

@@ -31,6 +31,7 @@
 <div class="main" style="display: none;">
     <img src="image/img_kong.png" alt="" class="none"/>
 </div>
+<div class="bottom"> 已加载全部 </div>
 <script src="js/flexible.js?20161209"></script>
 <script src="js/jquery-1.11.1.js"></script>
 <script src="js/insidePostRequire.js"></script>
@@ -73,7 +74,7 @@
     }
     function getPage(){
         var param={};
-        param["pageNumber"]=1;
+        param["pageNumber"]=cache.page;
         param["pageSize"]='20'
         param["corp_code"]=GetRequest().corp_code;;
         param["search_value"]=$('.title input').val();
@@ -91,6 +92,7 @@
 
     //页面加载
     function pageVal(list){
+        //空提示
         if(list.length=='0'){
             $('.main').eq(0).css('display','none');
             $('.main').eq(1).css('display','block');
@@ -98,11 +100,19 @@
             $('.main').eq(0).css('display','block');
             $('.main').eq(1).css('display','none');
         }
-        $('.main .area_box').remove();;
-        if(list.length>20){
-            cache.page +=1;
+        //底部判断
+        console.log(list.length)
+        if(list.length<20){
+            console.log('y')
+            $('.bottom').css('display','block');
+            if(list == 0){
+                console.log('n')
+                $('.bottom').css('display','none');
+            }
+        }else{
+            console.log('n')
+            $('.bottom').css('display','none');
         }
-        console.log(cache.page);
         //去重
         var arr=[];
         var unqiuearr=[];
@@ -116,7 +126,6 @@
                 unqiuearr.push(arr[u]);
             }
         }
-        console.log(unqiuearr);
         var areaList= unqiuearr;
         var tempHTML1 = ' <div class="area_box"><div class="area"><span>${area}</span></div>';
         var tempHTML2 = '<div class="box" id="${store_code}"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/></div> <div class="right_add">地址：${add}</div> </div> </div>';
@@ -127,27 +136,35 @@
             var area = areaList[k];
             nowHTML1= nowHTML1.replace('${area}',area);
             html+=nowHTML1;
-            for(i=0;i<list.length;i++){
-                var store_code = list[i].store_code;
-                var img = list[i].logo;
-                var shop =list[i].store_name;
-                var add =  list[i].province +''+ list[i].city + ''+list[i].area +''+ list[i].street; //地址是province,city,area,street这几个字段拼起来的
-                var store_location = list[i].store_location;
-                if(img ==''|| img=='null'||img=='underfind'||img=='../img/head.png'){
-                    img = 'image/goods_default_image.png';
+            for(i=0;i<list.length;i++) {
+                if (list[i].province == areaList[k]) {
+                    var store_code = list[i].store_code;
+                    var img = list[i].logo;
+                    var shop = list[i].store_name;
+                    var add = list[i].province + '' + list[i].city + '' + list[i].area + '' + list[i].street; //地址是province,city,area,street这几个字段拼起来的
+                    var store_location = list[i].store_location;
+                    if (img == '' || img == 'null' || img == 'underfind' || img == '../img/head.png') {
+                        img = 'image/goods_default_image.png';
+                    }
+                    var nowHTML2 = tempHTML2;
+                    nowHTML2 = nowHTML2.replace('${store_code}', store_code);
+                    nowHTML2 = nowHTML2.replace('${img}', img);
+                    nowHTML2 = nowHTML2.replace('${shop}', shop);
+                    nowHTML2 = nowHTML2.replace('${add}', add);
+                    nowHTML2 = nowHTML2.replace('${store_location}', store_location);
+                    html += nowHTML2;
                 }
-                var nowHTML2 = tempHTML2;
-                nowHTML2 = nowHTML2.replace('${store_code}',store_code);
-                nowHTML2 = nowHTML2.replace('${img}',img);
-                nowHTML2 = nowHTML2.replace('${shop}',shop);
-                nowHTML2 = nowHTML2.replace('${add}',add);
-                nowHTML2 = nowHTML2.replace('${store_location}',store_location);
-                html+=nowHTML2;
             }
             var nowHTML3 = tempHTML3;
-            html+=nowHTML3;
+            html += nowHTML3;
             $('.main').eq(0).html(html);
         }
+//        $('.main .area_box').remove();
+        if(list.length>20){
+            cache.page +=1;
+            nextPage();
+        }
+        scroll();
         toNext();
         changePage();
     }
@@ -156,6 +173,7 @@
         $('.box').click(function () {
             var corp_code =  GetRequest().corp_code;
             var store_code = $(this).attr('id');
+            $.cookie('storeListAllKey',$(window).scrollTop());
             window.location.href = 'store_shoppers.html?corp_code='+corp_code+'&store_code='+store_code;
         });
         $('.right img').click(function () {
@@ -165,6 +183,7 @@
             var y = val[0];
             var name = $(this).prev('shop').text();
             console.log(name);
+            $.cookie('storeListAllKey',$(window).scrollTop());
             window.location.href = 'baiduMap.html?x='+x+'&y='+y+'&name='+name;
         });
     }
@@ -172,11 +191,39 @@
     function changePage(){
         //去边框
         $('.area_box').find(' .box:last').css('border-bottom','none');
+        $('.none').unbind('click').bind('click',function () {
+            console.log('为空');
+            $('.title input').val('');
+            $('.title input').css('background-image','');
+            $('.title input').attr('placeholder','搜索门店');
+            $('.title button').click(); $('.bottom').css('display','none');
+        });
+    }
+    function nextPage(){
+        var oh=$('.box').height();
+        console.log('盒子的高度是'+oh)
+        console.log('盒子的数量是'+$('.box').length)
+        $(window).scroll(function(){
+            var nh = (oh*20*cache.page) - ($(window).scrollTop()*cache.page);
+            console.log('滚动条当前高度'+$(window).scrollTop()*cache.page);
+            console.log("剩余高度"+nh);
+            if(nh<oh*3){
+                console.log('翻页了');
+                getPage();
+            }
+        });
+    }
+    //控制页面返回的高度
+    function scroll(){
+        var storeListAllKey = $.cookie('storeListAllKey');
+        if(storeListAllKey==''){
+            storeListAllKey=0;
+        }
+        $(window).scrollTop(storeListAllKey);
     }
     window.onload= function () {
-        getPage();
         cache.page = '1';
-
+        getPage();
     }
 </script>
 </body>

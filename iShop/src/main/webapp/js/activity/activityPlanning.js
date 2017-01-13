@@ -14,8 +14,8 @@ var activityPlanning={
 	},
 	init:function(){
 		this.allEvent();
-		this.getTaskList();
-		this.getPlanningList();
+		// this.getTaskList();
+		// this.getPlanningList();
 	},
 	allEvent:function(){
 		//任务切换
@@ -83,6 +83,8 @@ var activityPlanning={
 		$(".p_task_content").on("click",'.input_parent .group_add',function(){
 			$(this).parents(".add_del").hide();
 			var html=$(this).parents('.input_parent').clone();
+			$(html).find(".text_input").val("");
+			$(html).find("")
 			$(html).find(".add_del").show();
 			$(html).find(".group_del").show();
 			$(this).parents('.group_parent').append(html);
@@ -128,8 +130,8 @@ var activityPlanning={
 			var index=$(this).index();
 			$(this).addClass("active");
 			$(this).siblings("li").removeClass("active");
-			$("#tab_list .tab_list").eq(index).show();
-			$("#tab_list .tab_list").eq(index).siblings().hide();
+			$("#tabs-content .tab_list").eq(index).show();
+			$("#tabs-content .tab_list").eq(index).siblings().hide();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -141,6 +143,11 @@ var activityPlanning={
 			$(this).parents('.input_parent').find(".edit_frame").hide()
 			whir.loading.remove('mask');
 		})
+		//编辑保存
+		$(".p_task_content").on("click",".input_parent .edit_footer_save",function(){
+			$(this).parents('.input_parent').find(".edit_frame").hide()
+			whir.loading.remove('mask');
+		})//所有点击事件
 	},
 	evaluationTask:function(){
 		var nextIndex=$("#task_titles li.active").index();
@@ -151,6 +158,7 @@ var activityPlanning={
 		$("#task_description").val(nextCurrent.task_description);
 		$("#target_start_time").val(nextCurrent.target_start_time);
 		$("#target_end_time").val(nextCurrent.target_end_time);
+		$("#task_link").val(nextCurrent.task_link);//给任务的input赋值
 	},
 	getTaskList:function(){
 		var param={};
@@ -183,7 +191,7 @@ var activityPlanning={
 	            });
         	}
             whir.loading.remove();//移除加载框
-		})
+		})//获取任务列表
 	},
 	modifieTask:function(){//修改选中的任务
 		var self=this;
@@ -241,15 +249,6 @@ var activityPlanning={
 			});
 			return;
 		}
-		if(task_description==""){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content:"任务简述不能为空"
-			});
-			return;
-		}
 		var param={};
 		param["task_title"]=task_title;//任务标题
 		param["target_start_time"]=target_start_time;//开始时间
@@ -266,8 +265,17 @@ var activityPlanning={
 		if(param==undefined){
 			return;
 		}
-		$("#task_titles li").removeClass('active');
 		var length=$("#task_titles li").length+1;
+		if(length>=6){
+			art.dialog({
+	            time: 1,
+	            lock: true,
+	            cancel: false,
+	            content:"添加任务不能超过5个"
+	        });
+			return;
+		}
+		$("#task_titles li").removeClass('active');
 		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		self.param.tasklist.push(param);
 		$("#task_title").val("");
@@ -293,11 +301,12 @@ var activityPlanning={
 	    //微信推送
 		for(var i=0;i<wxlistnode.length;i++){
 			var send_time=$(wxlistnode[i]).find(".text_input").val();//发送时间
-			var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
-			var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
-			var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
-			var image="";//封面链接
-			var wxparam={"send_time":send_time,"content":{"title":title,url:url,desc:desc,image:image}};
+			// var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
+			// var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
+			// var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			var content=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			// var image="";//封面链接
+			var wxparam={"send_time":send_time,"content":content};
 			wxlist.push(wxparam);
 		}
 		//短信群发
@@ -428,7 +437,7 @@ var activityPlanning={
 				}
 				if(wxlist.length>0){
 					for(var i=0;i<wxlist.length;i++){
-						var content=JSON.parse(wxlist[i].content);
+						// var content=JSON.parse(wxlist[i].content);
 						var addnode="";
 						var delnode="";
 						if(i==0&&wxlist.length==1){
@@ -457,25 +466,15 @@ var activityPlanning={
                         					<span class='icon-ishop_6-02'></span>\
                     					</div>\
                 					</div>\
-                					<div class='edit_frame'>\
+                					<div class='edit_frame edit_message'>\
 					                    <div class='tabs_title_p'>\
 					                        <div class='tabs_left'>\
 					                            <span class='title_icon'></span>\
-					                            <span>微信推送服务</span>\
+					                            <span>微信内容设定</span>\
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>推送标题</label><input class='edit_title' value="+content.title+" type='text' placeholder='请输入推送标题'></div>\
-					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>页面链接</label><input class='edit_link' value="+content.url+" type='text' placeholder='请输入页面链接'></div>\
-					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+content.desc+"</textarea>\
-					                    </div>\
-					                    <div class='edit_frame_left file_parent'>\
-					                        <label class='label_frame' style='margin-top: 5px;'>封面图片</label>\
-					                        <div class='edit_file'>\
-					                            <input type='file'><span class='icon-ishop_6-01'></span>\
-					                        </div>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\

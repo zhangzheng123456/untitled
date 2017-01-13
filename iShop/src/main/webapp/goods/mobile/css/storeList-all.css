@@ -24,9 +24,9 @@ body {
   border-radius: 0.12077rem;
   border: 1px solid #e1e1e1;
   color: #888888;
-  font-size: 0.36232rem;
-  background: #FFF url("../image/all_0.png") no-repeat 2.22222rem 51%;
-  background-size: 0.38647rem; }
+  font-size: 0.38647rem;
+  background: #FFF url("../image/all_0.png") no-repeat 33% 0.28986rem;
+  background-size: 0.43478rem; }
 
 input::-ms-input-placeholder {
   text-align: center; }
@@ -53,7 +53,15 @@ input::-webkit-input-placeholder {
 .none {
   width: 50%;
   vertical-align: middle;
-  margin: 100px auto; }
+  margin: 30% 25%; }
+
+.bottom {
+  position: relative;
+  bottom: 10px;
+  text-align: center;
+  font-size: 0.28986rem;
+  color: #888;
+  display: none; }
 
 .main .area_box {
   width: 100%;

@@ -54,6 +54,8 @@ public class VipFsendServiceImpl implements VipFsendService {
     private CorpService corpService;
     @Autowired
     MongoDBClient mongodbClient;
+    @Autowired
+    ScheduleJobService scheduleJobService;
 
     private static HttpClient httpClient = new HttpClient();
     private static final Logger logger = Logger.getLogger(VipFsendServiceImpl.class);
@@ -299,7 +301,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     String[] send_cardnos = send_cardno.split(",");
 
                     String message_type = "text";
-                    if (send_type.equals("wx")){
+                    if (send_type.equals("wxmass")){
                         message_type = "text";
                     }
                     String  result="";
@@ -523,7 +525,10 @@ public class VipFsendServiceImpl implements VipFsendService {
     public void fsendSchedule(String corp_code,String sms_code,String user_code) {
         try {
             VipFsend vipFsend = getVipFsendInfoByCode(corp_code,sms_code);
+            String activity_code = vipFsend.getActivity_vip_code();
 //            sendSms(vipFsend,Common.ROLE_GM,"","","",user_code);
+
+            scheduleJobService.updateSchedule(sms_code,activity_code);
 
             Data data_channel = new Data("channel", "santong", ValueType.PARAM);
             Data data_phone = new Data("phone", "15251891037", ValueType.PARAM);
@@ -533,16 +538,13 @@ public class VipFsendServiceImpl implements VipFsendService {
             datalist1.put(data_phone.key, data_phone);
             datalist1.put(data_text.key, data_text);
             DataBox dataBox1 = iceInterfaceService.iceInterfaceV3("SendSMS", datalist1);
+
         }catch (Exception ex){
             ex.printStackTrace();
             ex.getMessage();
         }
 
         System.out.println("it's test1 " + Common.DATETIME_FORMAT.format(new Date()));
-    }
-
-    public void test2(){
-        System.out.println("it's test2 " + Common.DATETIME_FORMAT.format(new Date()));
     }
 
     public int insertSend(VipFsend vipFsend) throws Exception {

@@ -232,7 +232,12 @@ public class VipActivityServiceImpl implements VipActivityService {
         //获取执行人
         String user_codes = "";
         String phones = "";
-        List<User> userList = userService.selUserByStoreCode(corp_code,"",activity_store_code,null,"");
+        String store_codes = "";
+        JSONArray store_array = JSONArray.parseArray(activity_store_code);
+        for (int i = 0; i < store_array.size(); i++) {
+            store_codes = store_codes + store_array.getJSONObject(i).getString("store_code") + ",";
+        }
+        List<User> userList = userService.selUserByStoreCode(corp_code,"",store_codes,null,"");
         if (userList.size() > 0) {
             for (int i = 0; i < userList.size(); i++) {
                 user_codes = user_codes + userList.get(i).getUser_code() + ",";
@@ -266,8 +271,8 @@ public class VipActivityServiceImpl implements VipActivityService {
             String send_time = vipFsend.getSend_time();
             String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(send_time));
             String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
-            long aa = Integer.parseInt(st);
-            long bb = Integer.parseInt(now);
+            long aa = Long.parseLong(st);
+            long bb = Long.parseLong(now);
             if (aa < bb) {
                 return "群发时间小于当前时间";
             }
@@ -296,6 +301,7 @@ public class VipActivityServiceImpl implements VipActivityService {
             scheduleJob.setJob_name(job_name);
             scheduleJob.setJob_group(job_group);
             scheduleJob.setFunc(func.toString());
+            scheduleJob.setStatus("N");
             scheduleJob.setCron_expression(corn_expression);
             scheduleJobService.insert(scheduleJob);
         }
@@ -402,6 +408,7 @@ public class VipActivityServiceImpl implements VipActivityService {
      * @param activity_code
      */
     public void insertSchedule(String activity_code,String corp_code,String end_time,String user_code) throws Exception {
+        end_time = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(end_time));
         String month = end_time.substring(4,6);
         String day = end_time.substring(6,8);
         String hour = end_time.substring(8,10);
@@ -410,24 +417,25 @@ public class VipActivityServiceImpl implements VipActivityService {
         String corn_expression = Common.CORN_EXPRESSION.replace("s",ss).replace("min",min).replace("h",hour).replace("d",day).replace("m",month);
         JSONObject func = new JSONObject();
         func.put("method","changeStatus");
-            func.put("corp_code",corp_code);
-            func.put("user_code",user_code);
-            func.put("code",activity_code);
-            //创建schedule，结束时间时自动更新状态
+        func.put("corp_code",corp_code);
+        func.put("user_code",user_code);
+        func.put("code",activity_code);
+        //创建schedule，结束时间时自动更新状态
 
-            ScheduleJob scheduleJob = scheduleJobService.selectScheduleByJob(activity_code,activity_code);
-            if (scheduleJob == null){
-                scheduleJob = new ScheduleJob();
-                scheduleJob.setJob_name(activity_code);
-                scheduleJob.setJob_group(activity_code);
-                scheduleJob.setFunc(func.toString());
-                scheduleJob.setCron_expression(corn_expression);
-                scheduleJobService.insert(scheduleJob);
-            }else {
-                scheduleJob.setFunc(func.toString());
-                scheduleJob.setCron_expression(corn_expression);
-                scheduleJobService.update(scheduleJob);
-            }
+        ScheduleJob scheduleJob = scheduleJobService.selectScheduleByJob(activity_code,activity_code);
+        if (scheduleJob == null){
+            scheduleJob = new ScheduleJob();
+            scheduleJob.setJob_name(activity_code);
+            scheduleJob.setJob_group(activity_code);
+            scheduleJob.setFunc(func.toString());
+            scheduleJob.setCron_expression(corn_expression);
+            scheduleJob.setStatus("N");
+            scheduleJobService.insert(scheduleJob);
+        }else {
+            scheduleJob.setFunc(func.toString());
+            scheduleJob.setCron_expression(corn_expression);
+            scheduleJobService.update(scheduleJob);
+        }
     }
 
     /**
@@ -441,11 +449,13 @@ public class VipActivityServiceImpl implements VipActivityService {
             String end_time = vipActivity.getEnd_time();
             String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(end_time));
             String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
-            long aa = Integer.parseInt(st);
-            long bb = Integer.parseInt(now);
+            long aa = Long.parseLong(st);
+            long bb = Long.parseLong(now);
             if (aa < bb) {
+                vipActivity.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
                 vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
                 updateVipActivity(vipActivity);
+                scheduleJobService.updateSchedule(activity_code,activity_code);
             }
         }catch (Exception ex){
             ex.printStackTrace();

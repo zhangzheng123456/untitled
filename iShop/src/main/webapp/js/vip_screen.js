@@ -708,10 +708,10 @@ function expend_data() {
 function removeRight(a, b) {
     var li = "";
     if (a == "only") {
-        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li");
+        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li:visible");
     }
     if (a == "all") {
-        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li");
+        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li:visible");
     }
     if (li.length == "0") {
         art.dialog({
