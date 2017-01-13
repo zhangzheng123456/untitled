@@ -19,6 +19,9 @@
         <!--<div class="name">${name}</div>-->
     <!--</div>-->
 </div>
+<div class="main" style="display: none;">
+    <img src="image/img_kong.png" alt="" class="none"/>
+</div>
 <script src="js/flexible.js?20161209"></script>
 <script src="js/jquery-1.11.1.js"></script>
 <script src="js/insidePostRequire.js"></script>
@@ -41,6 +44,14 @@
         });
     }
     function pageVal(list){
+        //空提示
+        if(list.length=='0'){
+            $('.main').eq(0).css('display','none');
+            $('.main').eq(1).css('display','block');
+        }else{
+            $('.main').eq(0).css('display','block');
+            $('.main').eq(1).css('display','none');
+        }
         //跳转聊天页面：auth_appid、open_id、user_id、corp_code
         // 页面显示：用户头像、user_name
         var tempHTML = '<div class="shopper" id="${user_code}"> <div class="img"><img src="${img}" alt=""/></div> <div class="name">${name}</div> </div>';
@@ -61,9 +72,9 @@
             html+=nowHTML;
             $('.main').html(html);
         }
-        var width = $('.main .img').width();
-        $('.main .img').css('height',width);
-        $('.main .img img').css('max-height',width);
+//        var width = $('.main .img').width();
+//        $('.main .img').css('height',width);
+//        $('.main .img img').css('max-height',width);
         shopperClick();
     }
     function shopperClick(){
