@@ -74,7 +74,7 @@
     }
     function getPage(){
         var param={};
-        param["pageNumber"]=1;
+        param["pageNumber"]=cache.page;
         param["pageSize"]='20'
         param["corp_code"]=GetRequest().corp_code;;
         param["search_value"]=$('.title input').val();
@@ -92,16 +92,13 @@
 
     //页面加载
     function pageVal(list){
+        //空提示
         if(list.length=='0'){
             $('.main').eq(0).css('display','none');
             $('.main').eq(1).css('display','block');
         }else{
             $('.main').eq(0).css('display','block');
             $('.main').eq(1).css('display','none');
-        }
-        $('.main .area_box').remove();;
-        if(list.length>20){
-            cache.page +=1;
         }
         //去重
         var arr=[];
@@ -155,9 +152,13 @@
         }else{
             $('.bottom').css('display','none');
         }
+//        $('.main .area_box').remove();
+        if(list.length>20){
+            cache.page +=1;
+            nextPage();
+        }
         toNext();
         changePage();
-        nextPage();
     }
     //跳转
     function toNext(){
@@ -188,20 +189,21 @@
     }
     function nextPage(){
         var oh=$('.box').height();
+        console.log('盒子的高度是'+oh)
         console.log('盒子的数量是'+$('.box').length)
         $(window).scroll(function(){
-            var nh = oh*20 - $(window).scrollTop();
-            console.log(oh);
-            console.log($(window).scrollTop())
-            if(nh<50){
-//                alert("该翻页了");
+            var nh = (oh*20*cache.page) - ($(window).scrollTop()*cache.page);
+            console.log('滚动条当前高度'+$(window).scrollTop()*cache.page);
+            console.log("剩余高度"+nh);
+            if(nh<oh*3){
+                console.log('翻页了');
+                getPage();
             }
         });
     }
     window.onload= function () {
-        getPage();
         cache.page = '1';
-
+        getPage();
     }
 </script>
 </body>
