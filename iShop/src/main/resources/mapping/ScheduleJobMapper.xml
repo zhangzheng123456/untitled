@@ -34,6 +34,13 @@
         FROM schedule_job
     </select>
 
+    <!--获取所有未执行的任务-->
+    <select id="selectAllUnJob" resultMap="ScheduleJob">
+        SELECT *
+        FROM schedule_job
+        WHERE status = 'N'
+    </select>
+
     <insert id="insertScheduleJob" parameterType="com.bizvane.ishop.entity.ScheduleJob">
         INSERT INTO schedule_job
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -137,6 +144,13 @@
             </if>
         </trim>
         WHERE schedule_job_id = #{schedule_job_id};
+    </update>
+
+    <update id="updateStatus">
+        UPDATE schedule_job
+        SET status = 'Y'
+        WHERE job_group = #{job_group}
+        AND job_name = #{job_name};
     </update>
 
     <delete id="deleteScheduleJob">

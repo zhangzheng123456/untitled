@@ -103,6 +103,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         VipCardType vipCardType = getVipCardTypeById(Integer.parseInt(id));
         String old_code = vipCardType.getVip_card_type_code();
         String old_corp = vipCardType.getCorp_code();
+        String old_degree = vipCardType.getDegree();
         VipCardType vipCardType1 = getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
@@ -130,10 +131,13 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                             vipRules.setHigh_vip_card_type_code(vip_card_type_code);
                             vipRules.setCorp_code(corp_code);
                             vipRules.setHigh_vip_type(vip_card_type_name);
+                            vipRules.setHigh_degree(old_degree);
+
                         } else if (vipRules.getVip_card_type_code().equals(old_code)) {
                             vipRules.setVip_type(vip_card_type_name);
                             vipRules.setVip_card_type_code(vip_card_type_code);
                             vipRules.setCorp_code(corp_code);
+                            vipRules.setDegree(old_degree);
                         }
                         vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
                         vipRules.setModifier(user_id);
@@ -149,6 +153,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 }
             }
         } else {
+
             if (vipCardType1 == null && vipCardType2 == null) {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
@@ -166,11 +171,13 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                         if (vipRules.getHigh_vip_card_type_code().equals(old_code)) {
                             vipRules.setHigh_vip_card_type_code(vip_card_type_code);
                             vipRules.setCorp_code(corp_code);
+                            vipRules.setHigh_degree(old_degree);
                             vipRules.setHigh_vip_type(vip_card_type_name);
                         } else if (vipRules.getVip_card_type_code().equals(old_code)) {
                             vipRules.setVip_type(vip_card_type_name);
                             vipRules.setVip_card_type_code(vip_card_type_code);
                             vipRules.setCorp_code(corp_code);
+                            vipRules.setDegree(old_degree);
                         }
                         vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
                         vipRules.setModifier(user_id);

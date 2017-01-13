@@ -128,7 +128,7 @@ public class VipActivityNewMakeController {
             List<VipFsend> sendByActivityCodes = vipFsendService.getSendByActivityCode(corp_code, activity_vip_code);
             for (int i = 0; i < sendByActivityCodes.size(); i++) {
                 VipFsend vipFsend = sendByActivityCodes.get(i);
-                if (vipFsend.getSend_type().equals("wx")) {
+                if (vipFsend.getSend_type().equals("wxmass")) {
                     jsonArray_wx.add(vipFsend);
                 } else if (vipFsend.getSend_type().equals("sms")) {
                     jsonArray_sms.add(vipFsend);

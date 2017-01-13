@@ -41,7 +41,7 @@
                 <li>优惠券</li>
             </ul>
         </div>
-        <div id="tab_list">
+        <div id="tabs-content" class="tabs-content">
             <div class="tab_list" style="display: block;">
                 <div class="tabs_title_p">
                     <div class="tabs_left">
@@ -151,7 +151,7 @@
                                     </div>
                                 </div>
                                 <!--微信推送弹框 -->
-                                <div class="edit_frame">
+                               <!--  <div class="edit_frame">
                                     <div class="tabs_title_p">
                                         <div class="tabs_left">
                                             <span class="title_icon"></span>
@@ -170,6 +170,22 @@
                                         <div class="edit_file">
                                             <input type="file"><span class="icon-ishop_6-01"></span>
                                         </div>
+                                    </div>
+                                    <div class="edit_footer">
+                                        <div class="edit_footer_close">取消</div>
+                                        <div class="edit_footer_save">保存修改</div>
+                                    </div>
+                                </div> -->
+                                <!--短信弹框 -->
+                                <div class="edit_frame edit_message">
+                                    <div class="tabs_title_p">
+                                        <div class="tabs_left">
+                                            <span class="title_icon"></span>
+                                            <span>微信内容设定</span>
+                                        </div>
+                                    </div>
+                                    <div class="edit_frame_left">
+                                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容设定</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
                                     </div>
                                     <div class="edit_footer">
                                         <div class="edit_footer_close">取消</div>
@@ -247,7 +263,7 @@
                     </div>
                 </div>            
             </div>
-            <div class="tab_list">
+            <div class="tab_list setUp_activity_details" style="padding: 0">
                 <div class="tabs_title_p">
                     <div class="tabs_left">
                         <span class="title_icon"></span>
@@ -262,6 +278,62 @@
                         </div>
                     </div>
                 </div>       
+                <div id="coupon_activity">
+                    <div class="p_task" id="group">
+                        <div class="tabs_left">
+                            <ul>
+                                <li class="active">批量发卷</li>
+                                <li>开卡送券</li>
+                                <li>纪念日发券</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="choose_coupon">
+                        <ul class="operate_ul">
+                            <li>
+                                <ul>
+                                    <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                        <ul class="activity_select coupon_activity"></ul>
+                                    </li>
+                                    <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="display: none">
+                        <div class="coupon_btn"><span id="coupon_btn">添加</span></div>
+                        <div class="coupon_details_wrap">
+                            <ul>
+                                <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code="" type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                    <ul class="activity_select vipCardType"></ul>
+                                </li>
+                            </ul>
+                            <ul class="operate_ul">
+                                <li>
+                                    <ul>
+                                        <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                            <ul class="activity_select coupon_activity"></ul>
+                                        </li>
+                                        <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <i class="icon-ishop_6-12 coupon_details_close"></i>
+                        </div>
+                    </div>
+                    <div class="choose_coupon" style="display: none">
+                        <ul class="operate_ul">
+                            <li>
+                                <ul>
+                                    <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                        <ul class="activity_select coupon_activity"></ul>
+                                    </li>
+                                    <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -285,5 +357,13 @@
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"></script>-->
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.js"></script>-->
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/lang/zh-cn/zh-cn.js"></script>-->
+<script>
+    $(function(){
+        $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-220+"px");
+        $(window).resize(function(){
+            $("#tabs-content").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-220+"px");
+        });
+    })
+</script>
 </body>
 </html>
