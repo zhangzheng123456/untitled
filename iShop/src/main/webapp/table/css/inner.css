@@ -729,7 +729,7 @@ input::-webkit-input-placeholder{
 	display: none;
 	text-align: center;
 	border: 1px solid #a9c9e2;
-	width:80px;
+	/*width:80px;*/
 	z-index: 3;
 }
 .more_down div{
