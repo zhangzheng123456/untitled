@@ -30,6 +30,7 @@ public interface ScheduleJobService {
      */
     public void update(ScheduleJob scheduleJob) throws Exception;
 
+    void updateSchedule(String job_name,String job_group) throws Exception;
     /**
      * 删除重新创建方式
      * 
