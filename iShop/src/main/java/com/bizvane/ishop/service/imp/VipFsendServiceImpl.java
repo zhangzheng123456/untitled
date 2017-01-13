@@ -299,7 +299,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                     String[] send_cardnos = send_cardno.split(",");
 
                     String message_type = "text";
-                    if (send_type.equals("wx")){
+                    if (send_type.equals("wxmass")){
                         message_type = "text";
                     }
                     String  result="";

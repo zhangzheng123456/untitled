@@ -218,7 +218,7 @@ function superaddition(data,num){//页面加载循环
                 TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
             })(c)
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"'' data-state='"+data[i].activity_state+"' data-activity-code='"+data[i].activity_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"' data-corp='"+data[i].corp_code+"' data-state='"+data[i].activity_state+"' data-activity-code='"+data[i].activity_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
             + "'/><label for='checkboxTwoInput"
@@ -418,6 +418,7 @@ function jumpBianse(){
         var state = "";
         var id=$(this).attr("id");
         var activity_code=$(this).attr("data-activity-code");
+        var corp_code=$(this).attr("data-corp");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -427,7 +428,7 @@ function jumpBianse(){
         return_jump["list"]=list;//筛选的请求的list;
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-        sessionStorage.setItem("id",id);
+        sessionStorage.setItem("corp_code",corp_code);
         sessionStorage.setItem("activity_code",activity_code);
         var _params = {};
         _params["activity_code"] = activity_code;

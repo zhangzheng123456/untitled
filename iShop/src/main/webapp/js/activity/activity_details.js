@@ -13,6 +13,9 @@ var add_store_code='';//原始店铺号
 var isscroll=false;
 var task_code='';
 var min_date='';
+var nav_role='';//nav显示与否
+var laydate_start={};
+var laydate_end={};
 function stop(){
     var _params={
         "id":"",
@@ -131,7 +134,7 @@ $('.btnSecond .radio_b').click(function () {
     $(this).next().trigger('click');
 });
 //筛选按钮
-var state=0;
+var state=0;//判断收起与展开
 $('#choose').click(function(){
     $('#screening').slideToggle(600,function () {
         $(".people").getNiceScroll().resize();
@@ -526,7 +529,6 @@ function listShow(userList){
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         nowHTML1 = nowHTML1.replace("${percent}", percent);
         html += nowHTML1;
-
         //判断进度颜色
         if (percent < 100 && percent > 0) {
             $('.percent_percent').css('color', '#42a0a8');
@@ -766,7 +768,7 @@ function getActive() {
             _param.activity_code=active_data.activity_code;
             _param.task_code=active_data.task_code.split(',')[0];
             doActiveResponse(active_data);
-            getExecuteDetail(_param);
+            _param.task_code==''?'':getExecuteDetail(_param);
             whir.loading.remove();//移除加载框
         }else if(data.code==-1){
             art.dialog({
@@ -784,10 +786,11 @@ function   doExecuteDetail(message) {
     $('.covers').html(message.complete_vips_count);
     $('.target').html(message.target_vips_count);
     var taskInfo=JSON.parse(message.taskInfo);
-    var start_time=new Date(taskInfo.target_start_time);
+    var start_time=new Date();
     var end_time=new Date(taskInfo.target_end_time);
     var time=(end_time.getTime()-start_time.getTime())/1000;
     var d=parseInt(time/(24*60*60));
+    d<=0&&(d=0);
     $('.task_detail_l .p1').html(taskInfo.task_title);
     $('.task_detail_l .p2').html(taskInfo.task_type_name);
     $('.task_detail_l .p3').html(store);
@@ -799,8 +802,15 @@ function   doExecuteDetail(message) {
 function pieChart(a,b) {
     //a  完成 b  目标
     var myChart = echarts.init(document.getElementById('chart_pie'));
-    var NoCover = ((b - a)/b*100).toFixed(2);
-    var TheCover = (a/b*100).toFixed(2);
+    var NoCover ='';
+    var TheCover ='';
+    if(b==0){
+        NoCover=100;
+        TheCover = 0;
+    }else{
+        NoCover = ((b - a)/b*100).toFixed(2);
+        TheCover = (a/b*100).toFixed(2);
+    }
     // 指定图表的配置项和数据
     var labelTop = {
         normal : {
@@ -905,21 +915,29 @@ function doActiveResponse(active_data) {
     var start=active_data.start_time;
     setInterval(function () {
         var over_time=new Date(over);
-        var now_time=new Date(start);
+        var now_time=new Date();
         var time=(over_time.getTime()-now_time.getTime())/1000;
         var d=parseInt(time/(24*60*60));
         var h=parseInt((time-d*(24*60*60))/(60*60));
         var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
         var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+        d<=0&&(d=0);
+        h<=0&&(h=0);
+        m<=0&&(m=0);
+        s<=0&&(s=0);
         $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
     },1000);
     var over_time=new Date(over);
-    var now_time=new Date(start);
+    var now_time=new Date();
     var time=(over_time.getTime()-now_time.getTime())/1000;
     var d=parseInt(time/(24*60*60));
     var h=parseInt((time-d*(24*60*60))/(60*60));
     var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
     var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+    d<=0&&(d=0);
+    h<=0&&(h=0);
+    m<=0&&(m=0);
+    s<=0&&(s=0);
     $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
     $('.title_l').html(active_data.activity_theme);
     $('.time_l').html(active_data.start_time);//处理
@@ -932,6 +950,7 @@ function doActiveResponse(active_data) {
     var active_dom=active_data.task_code.split(',');
     if(active_data.task_code==''){
         $('#progress').hide();
+        nav_role='N';
     }else{
         var dom=[];
         for(var i=0;i<active_dom.length;i++){
@@ -944,6 +963,19 @@ function doActiveResponse(active_data) {
         $('.progress_nav').html(dom.join(''));
     }
 }
+//nav控制
+$('#nav').on('click','.nav_btn',function () {
+    $(this).addClass('nav_action').siblings('.nav_action').removeClass('nav_action');
+    if(nav_role=='N')return;
+    if($(this).html().trim()=='任务完成度分析'){
+        $('#progress').show()
+        $('#customer').hide();
+    }else{
+        $('#customer').show();
+        $('#progress').hide()
+    }
+});
+//任务控制
 $('.progress_nav').on('click','.progress_nav_btn',function () {
     whir.loading.add("", 0.5);
     var param={};
@@ -974,6 +1006,35 @@ $('.add_footer_r').click(function () {
 });
 //修改活动时间
 $('.action_time').click(function () {
+    laydate_start = {
+        min: laydate.now()
+        ,max: '2099-06-16 23:59:59'
+        ,istoday: false
+        , istime: true //是否开启时间选择
+        , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+        ,choose: function(datas){
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            end.start = datas //将结束日的初始值设定为开始日
+        }
+        ,  elem: '#start_time', //需显示日期的元素选择器
+    };
+    laydate_end= {
+        min: laydate.now()
+        ,max: '2099-06-16 23:59:59'
+        , istime: true //是否开启时间选择
+        , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+        ,istoday: false
+        ,choose: function(datas){
+            start.max = datas; //结束日选好后，重置开始日的最大日期
+        },
+        elem: '#over_time', //需显示日期的元素选择器
+    };
+    var s=new Date(min_date);
+    var n=new Date();
+    if(s<n){
+        $('#start_time').attr('disabled','disabled');
+        $('#start_time').removeAttr('onclick');
+    }
     $('.modify_time_box').show();
     $('#start_time').val(action.start_time);
     $('#over_time').val(action.end_time);

@@ -83,6 +83,8 @@ var activityPlanning={
 		$(".p_task_content").on("click",'.input_parent .group_add',function(){
 			$(this).parents(".add_del").hide();
 			var html=$(this).parents('.input_parent').clone();
+			$(html).find(".text_input").val("");
+			$(html).find("")
 			$(html).find(".add_del").show();
 			$(html).find(".group_del").show();
 			$(this).parents('.group_parent').append(html);
@@ -110,7 +112,7 @@ var activityPlanning={
 					self.param.task=true;
 					$(this).parent().find(".switch_text").html("任务已开启");
 				}
-				$("#task_parent").toggle(200);
+				$("#task_parent").slideToggle(200);
 			}
 			if(id=="group_switch"){
 				if($(this).attr("class")==""){
@@ -120,7 +122,7 @@ var activityPlanning={
 					self.param.group=true;
 					$(this).parent().find(".switch_text").html("群发已开启");
 				}
-				$("#group_parent").toggle(200);
+				$("#group_parent").slideToggle(200);
 			}
 		});
 		//策略补充
@@ -141,6 +143,11 @@ var activityPlanning={
 			$(this).parents('.input_parent').find(".edit_frame").hide()
 			whir.loading.remove('mask');
 		})
+		//编辑保存
+		$(".p_task_content").on("click",".input_parent .edit_footer_save",function(){
+			$(this).parents('.input_parent').find(".edit_frame").hide()
+			whir.loading.remove('mask');
+		})//所有点击事件
 	},
 	evaluationTask:function(){
 		var nextIndex=$("#task_titles li.active").index();
@@ -151,6 +158,7 @@ var activityPlanning={
 		$("#task_description").val(nextCurrent.task_description);
 		$("#target_start_time").val(nextCurrent.target_start_time);
 		$("#target_end_time").val(nextCurrent.target_end_time);
+		$("#task_link").val(nextCurrent.task_link);//给任务的input赋值
 	},
 	getTaskList:function(){
 		var param={};
@@ -183,7 +191,7 @@ var activityPlanning={
 	            });
         	}
             whir.loading.remove();//移除加载框
-		})
+		})//获取任务列表
 	},
 	modifieTask:function(){//修改选中的任务
 		var self=this;
@@ -237,16 +245,7 @@ var activityPlanning={
 				time: 1,
 				lock:true,
 				cancel: false,
-				content:"截止时间不能为空"
-			});
-			return;
-		}
-		if(task_description==""){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content:"任务简述不能为空"
+				content:"任务类型不能为空"
 			});
 			return;
 		}
@@ -266,9 +265,18 @@ var activityPlanning={
 		if(param==undefined){
 			return;
 		}
-		$("#task_titles li").removeClass('active');
 		var length=$("#task_titles li").length+1;
-		$("#task_titles").append("<li>任务"+length+"</li>");
+		if(length>=6){
+			art.dialog({
+	            time: 1,
+	            lock: true,
+	            cancel: false,
+	            content:"添加任务不能超过5个"
+	        });
+			return;
+		}
+		$("#task_titles li").removeClass('active');
+		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		self.param.tasklist.push(param);
 		$("#task_title").val("");
 		$("#task_type_code").val("");
@@ -276,6 +284,7 @@ var activityPlanning={
 		$("#task_description").val("");
 		$("#target_start_time").val("");
 		$("#target_end_time").val("");
+		$("#task_link").val("");
 	},
 	getGroupValue:function(){//获取群发的所有值
 		var type=$("#group .tabs_left ul li.active").attr("data-type");
@@ -292,11 +301,12 @@ var activityPlanning={
 	    //微信推送
 		for(var i=0;i<wxlistnode.length;i++){
 			var send_time=$(wxlistnode[i]).find(".text_input").val();//发送时间
-			var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
-			var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
-			var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
-			var image="";//封面链接
-			var wxparam={"send_time":send_time,"content":{"title":title,url:url,desc:desc,image:image}};
+			// var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
+			// var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
+			// var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			var content=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			// var image="";//封面链接
+			var wxparam={"send_time":send_time,"content":content};
 			wxlist.push(wxparam);
 		}
 		//短信群发
@@ -402,13 +412,32 @@ var activityPlanning={
 				var smslist=message.smslist;
 				var emlist=message.emlist;
 				var tasklist=message.tasklist;
-				console.log(wxlist);
 				var wxhtml="";
 				var smshtml="";
 				var emlhtml="";
+				if(message.task_status=="Y"){
+					$("#task_switch div").addClass("bg");
+					$("#task_switch div span").addClass("Off");
+				}
+				if(message.task_status=="N"){
+					$("#task_switch div").removeClass("bg");
+					$("#task_switch div span").removeClass("Off");
+					$("#task_parent").hide();
+					self.param.task=false;
+				}
+				if(message.send_status=="Y"){
+					$("#task_switch div").addClass("bg");
+					$("#task_switch div span").addClass("Off");
+				}
+				if(message.send_status=="N"){
+					$("#group_switch div").removeClass("bg");
+					$("#group_switch div span").removeClass("Off");
+					$("#group_parent").hide(200);
+					self.param.group=false;
+				}
 				if(wxlist.length>0){
 					for(var i=0;i<wxlist.length;i++){
-						var content=JSON.parse(wxlist[i].content);
+						// var content=JSON.parse(wxlist[i].content);
 						var addnode="";
 						var delnode="";
 						if(i==0&&wxlist.length==1){
@@ -437,25 +466,15 @@ var activityPlanning={
                         					<span class='icon-ishop_6-02'></span>\
                     					</div>\
                 					</div>\
-                					<div class='edit_frame'>\
+                					<div class='edit_frame edit_message'>\
 					                    <div class='tabs_title_p'>\
 					                        <div class='tabs_left'>\
 					                            <span class='title_icon'></span>\
-					                            <span>微信推送服务</span>\
+					                            <span>微信内容设定</span>\
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>推送标题</label><input class='edit_title' value="+content.title+" type='text' placeholder='请输入推送标题'></div>\
-					                    <div class='edit_frame_left'>\
-					                        <label class='label_frame'>页面链接</label><input class='edit_link' value="+content.url+" type='text' placeholder='请输入页面链接'></div>\
-					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>摘要</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+content.desc+"</textarea>\
-					                    </div>\
-					                    <div class='edit_frame_left file_parent'>\
-					                        <label class='label_frame' style='margin-top: 5px;'>封面图片</label>\
-					                        <div class='edit_file'>\
-					                            <input type='file'><span class='icon-ishop_6-01'></span>\
-					                        </div>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -566,6 +585,7 @@ var activityPlanning={
 					$("#emlist").html(emlhtml);
 				}
 				if(tasklist.length>0){
+					var html="";
 					for(var i=0;i<tasklist.length;i++){
 						var a=i+1;
 						var taskparam={};
@@ -579,8 +599,10 @@ var activityPlanning={
 						taskparam["task_description"]=tasklist[i].task_description;//任务简述
 						taskparam["task_link"]=tasklist[i].task_link//链接
 						self.param.tasklist.push(taskparam);
-						$("#task_titles").append("<li>任务"+a+"</li>");
+						html+="<li>任务"+a+"</li>";
+						
 					}
+					$("#task_titles").html(html);
 					$("#task_titles li").eq(0).addClass("active");
 					self.evaluationTask();
 				}

@@ -526,11 +526,11 @@
             </div>
             <div class="modify_ipt">
                 <label>开始时间</label>
-                <input type="text" id="start_time" class="laydate-icon">
+                <input type="text" id="start_time" class="laydate-icon"onclick="laydate(laydate_start)">
             </div>
             <div class="modify_ipt">
                 <label>结束时间</label>
-                <input type="text" id="over_time" class="laydate-icon" >
+                <input type="text" id="over_time" class="laydate-icon" onclick="laydate(laydate_end)">
             </div>
             <div class="modify_footer">
                 <div class="modify_footer_l">取消</div>
@@ -660,31 +660,40 @@
 <script src="/js/loading.js?20170105"></script>
 <script type="text/javascript" src="../js/activity/activity_details.js?20170105"></script>
 <script>
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            , istime: true //是否开启时间选择
-            , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
-            ,choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-            ,  elem: '#start_time', //需显示日期的元素选择器
-        };
-        var end = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            , istime: true //是否开启时间选择
-            , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
-            ,istoday: false
-            ,choose: function(datas){
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            },
-            elem: '#over_time', //需显示日期的元素选择器
-        };
-        laydate(start);
-        laydate(end)
+//       setTimeout(function () {
+//           var s=new Date(min_date);
+//           var n=new Date();
+//           console.log(s<n);
+//           if(s<n){
+//               var start = {
+//                   min: '2020-06-16 23:59:59'
+//                   ,istoday: false
+//                   , istime: true //是否开启时间选择
+//                   , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+//                   ,choose: function(datas){
+//                       end.min = datas; //开始日选好后，重置结束日的最小日期
+//                       end.start = datas //将结束日的初始值设定为开始日
+//                   }
+//                   ,  elem: '#start_time', //需显示日期的元素选择器
+//               };
+//           }else{
+//               start = {
+//                   min: laydate.now()
+//                   ,max: '2099-06-16 23:59:59'
+//                   ,istoday: false
+//                   , istime: true //是否开启时间选择
+//                   , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+//                   ,choose: function(datas){
+//                       end.min = datas; //开始日选好后，重置结束日的最小日期
+//                       end.start = datas //将结束日的初始值设定为开始日
+//                   }
+//                   ,  elem: '#start_time', //需显示日期的元素选择器
+//               };
+//           }
+//           laydate(start);
+//       },2000)
+//        laydate(start);
+//        laydate(end)
     $(function () {
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
@@ -891,16 +900,6 @@
         });
     }
     barChart();
-    $('#nav').on('click','.nav_btn',function () {
-        $(this).addClass('nav_action').siblings('.nav_action').removeClass('nav_action');
-        if($(this).html().trim()=='任务完成度分析'){
-            $('#progress').show()
-            $('#customer').hide();
-        }else{
-            $('#customer').show();
-            $('#progress').hide()
-        }
-    });
     $('.progress_nav').on('click','.progress_nav_btn',function () {
         $(this).addClass('progress_nav_btn_action').siblings('.progress_nav_btn_action').removeClass('progress_nav_btn_action');
     });
