@@ -850,9 +850,6 @@ var activity={
                             if($(vue[i]).val()==""){
                                 activity.isEmpty=true;
                                 activity.label=$(e).prev("label").html().replace("*","");
-                                if(activity.label="至"){
-                                    activity.label="活动时间";
-                                }
                             }
                         });
                     }
@@ -864,6 +861,9 @@ var activity={
             if(vue==""){
                 activity.isEmpty=true;
                 activity.label=$(this).prev("label").html();
+                if(activity.label="至"){
+                    activity.label="活动时间";
+                }
             }
         });
     },
@@ -999,6 +999,7 @@ var activity={
         return def;
     },
     activityEdit:function () {
+        whir.loading.add("",0.5);
         var param={
             "activity_code":activity.activity_code
         };
@@ -1183,7 +1184,8 @@ var activity={
                     $("#coupon_activity").show();
                 }
             }
-        })
+            whir.loading.remove();
+        });
     }
 };
 $(function () {
