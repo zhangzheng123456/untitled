@@ -10,6 +10,9 @@
     <script src="../table/js/jquery.min.js"></script>
     <script src="/js/loading.js?201715"></script>
     <style>
+        .foot-sum .page_row{
+            width: 100px;
+        }
         .dad-container::after{
             display: none;
         }
@@ -23,6 +26,10 @@
             left: 55%;
             top: 55%;
             transform: translate(-50%,-50%);
+        }
+        .foot-jum{
+            padding-left: 13px;
+            box-sizing: border-box;
         }
         /*批量标签*/
         .batch_label_wrapper{
@@ -223,7 +230,7 @@
 </head>
 <body>
 <div class="content">
-    <div class="con_table" id="con_table">
+    <div class="con_table" id="con_table" style="position: relative;min-height: 600px;">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
@@ -304,7 +311,7 @@
                 <ul></ul>
             </div>
         </div>
-        <div style="width: 170px;min-height:600px;background-color: #FFFFFF;position: absolute;padding: 10px 10px 0 0;box-sizing: border-box" id="left">
+        <div style="width: 170px;top:100px;bottom:0;background-color: #FFFFFF;position: absolute;padding: 10px 10px 0 0;box-sizing: border-box" id="left">
             <div style="border-right:1px solid #e8e8e8;width: 100%;height: 100%;" class="group_left">
                 <ul id="group_list">
                     <li data-type="brand">
@@ -377,7 +384,7 @@
                 </ul>
             </div>
         </div>
-        <div style="margin-left:170px; min-height: 600px">
+        <div style="margin-left:170px; ">
             <div id="list_show"  style="display: none">
                 <div class="table">
                 <table id="table" cellpadding="0" cellspacing="0" width="100%">
@@ -422,7 +429,7 @@
             </ul>
         </div>
             </div>
-            <div style="padding: 10px 10px 0 10px;background-color: #fff" id="chart_parent">
+            <div style="padding: 10px 10px 10px 0;background-color: #fff" id="chart_parent">
                 <div style="background-color: #DDDDDD;overflow: hidden;height: 100%">
                 <div id="chart_analyze" style="margin:0 -0.5% 0 0;background-color: #e8e8e8;">
                 <div class="chart_module" data-id="type">
@@ -580,7 +587,7 @@
                     <!--<span>添加图表</span>-->
                 <!--</div>-->
             </div>
-                <div id="add_chart" class="add_chart" style="width: 49.5%;height: 300px;float: left;background-color: #DDDDDD">
+                <div id="add_chart" class="add_chart" style="box-sizing: border-box;width: 49.5%;height: 300px;float: left;background-color: #DDDDDD">
                     <span>+</span>
                     <span>添加图表</span>
                 </div>
