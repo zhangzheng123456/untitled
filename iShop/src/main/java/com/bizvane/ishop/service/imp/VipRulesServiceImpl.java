@@ -115,11 +115,6 @@ public class VipRulesServiceImpl implements VipRulesService {
         String present_coupon = jsonObject.get("present_coupon").toString().trim();
 
         VipRules vipRules = WebUtils.JSON2Bean(jsonObject, VipRules.class);
-        String vip_card_type_code = vipRules.getVip_card_type_code();
-        String vip_high_type_code = vipRules.getHigh_vip_card_type_code();
-
-        VipCardType vipCardType1 = vipCardTypeService.getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
-        VipCardType vipCardType2 = vipCardTypeService.getVipCardTypeByCode(corp_code, vip_high_type_code, Common.IS_ACTIVE_Y);
 
         VipRules vipRules1 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getHigh_vip_type(), vipRules.getIsactive());
         int num = 0;
@@ -131,10 +126,6 @@ public class VipRulesServiceImpl implements VipRulesService {
                 vipRules.setUpgrade_time("");
             }
             vipRules.setCorp_code(corp_code);
-            System.out.print(vipCardType1.getVip_card_type_name());
-            System.out.print(vipCardType2.getVip_card_type_name());
-           vipRules.setVip_type(vipCardType1.getVip_card_type_name());
-            vipRules.setHigh_vip_type(vipCardType2.getVip_card_type_name());
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setCreater(user_id);
@@ -144,7 +135,7 @@ public class VipRulesServiceImpl implements VipRulesService {
             if (num > 0) {
                 VipRules vipRules2 = this.getVipRulesByType(vipRules.getCorp_code(), vipRules.getVip_type(), vipRules.getHigh_vip_type(), vipRules.getIsactive());
                 status = String.valueOf(vipRules2.getId());
-                System.out.print(String.valueOf(vipRules2.getId()));
+              //  System.out.print(String.valueOf(vipRules2.getId()));
                 return status;
             } else {
                 status = Common.DATABEAN_CODE_ERROR;
@@ -173,15 +164,11 @@ public class VipRulesServiceImpl implements VipRulesService {
         String high_degree = jsonObject.get("high_degree").toString().trim();
         String isactive = jsonObject.get("isactive").toString().trim();
         String store_code = jsonObject.get("store_code").toString().trim();
-
-        VipCardType vipCardType1 = vipCardTypeService.getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
-        VipCardType vipCardType2 = vipCardTypeService.getVipCardTypeByCode(corp_code, high_vip_card_type_code, Common.IS_ACTIVE_Y);
-        String vip_type = vipCardType1.getVip_card_type_name();
-        String high_vip_type = vipCardType2.getVip_card_type_name();
+        String vip_type = jsonObject.get("vip_type").toString().trim();
+        String high_vip_type = jsonObject.get("high_vip_type").toString().trim();
 
         VipRules vipRules1 = this.getVipRulesByType(corp_code, vip_type, high_vip_type, Common.IS_ACTIVE_Y);
         VipRules vipRules = getVipRulesById(id);
-
         if (vipRules1 == null || vipRules1.getId() == id) {
             Date now = new Date();
             if (upgrade_amount.equals("")) {
@@ -197,8 +184,6 @@ public class VipRulesServiceImpl implements VipRulesService {
             vipRules.setStore_code(store_code);
             vipRules.setPresent_coupon(present_coupon);
             vipRules.setPresent_point(present_point);
-            vipRules.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            vipRules.setCreater(user_id);
             vipRules.setModifier(user_id);
             vipRules.setUpgrade_time(upgrade_time);
             vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -235,6 +220,7 @@ public class VipRulesServiceImpl implements VipRulesService {
         List<VipRules> list1 = vipRulesMapper.selectVipRulesScreen(params);
         for (VipRules vipRules1 : list1) {
             vipRules1.setIsactive(CheckUtils.CheckIsactive(vipRules1.getIsactive()));
+
         }
         PageInfo<VipRules> page = new PageInfo<VipRules>(list1);
         return page;
@@ -310,6 +296,11 @@ public class VipRulesServiceImpl implements VipRulesService {
             array.add(obj);
         }
         return array.toJSONString();
+    }
+
+    @Override
+    public List<VipRules> getViprulesByCardTypeCode(String corp_code, String vip_card_type_code) throws Exception {
+        return vipRulesMapper.selectByCardTypeCode(corp_code,vip_card_type_code);
     }
 
 

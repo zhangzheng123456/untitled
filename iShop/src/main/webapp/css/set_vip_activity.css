@@ -88,7 +88,7 @@
 }
 .activity_details_left{
     float: left;
-    width: 674px;
+    width: 684px;
 }
 .activity_details_right{
     float: left;
@@ -124,9 +124,9 @@
     cursor: pointer;
 }
 .text_introduction{
-    width: 577px;
+    width: 585px;
     height: 70px;
-    margin-left: 10px;
+    margin-left: 15px;
     padding: 5px;
     border: 1px solid #d7d7d7;
     border-radius: 5px;
@@ -293,7 +293,7 @@
     float: left;
 }
 .coupon_details_wrap .operate_ul{
-    width: 50%;
+    width: 460px;
 }
 .choose_coupon{
     width: 435px;

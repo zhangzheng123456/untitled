@@ -29,5 +29,8 @@ public interface VipRulesMapper {
 
     List<VipRules>  selectByCorp(@Param("corp_code") String corp_code,@Param("isactive") String isactive)throws SQLException;
 
+   List<VipRules> selectByCardTypeCode (@Param("corp_code") String corp_code,@Param("vip_card_type_code") String vip_card_type_code)throws SQLException;
+
+
 
 }

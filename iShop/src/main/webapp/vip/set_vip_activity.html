@@ -4,16 +4,16 @@
         <div class="setUp_activity_details" id="activity_basic">
             <div>
                 <ul>
-                    <li style="margin-right: 35px;"><label>所属企业</label><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select><i id="corp_icon" class="icon-ishop_8-02"></i></span></li>
-                    <li style="margin-right:10px"><label>活动时间</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})"></li>
-                    <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动标题" readonly="readonly" onclick="laydate({elem:'#activity_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})"></li>
+                    <li style="margin-right: 35px;"><label style="color:#c26555;">所属企业*</label><span class="corp_select"><select id="OWN_CORP" style="display:inline-flex"></select><i id="corp_icon" class="icon-ishop_8-02"></i></span></li>
+                    <li style="margin-right:10px"><label style="color:#c26555;">活动时间*</label><input id="activity_start" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_start',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})"></li>
+                    <li><label>至</label><input id="activity_end" class="text_input laydate-icon" type="text" placeholder="请输入活动时间" readonly="readonly" onclick="laydate({elem:'#activity_end',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})"></li>
                 </ul>
             </div>
             <div>
                 <ul class="activity_details_left">
-                    <li style="margin-right: 35px;"><label>活动标题</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text"></li>
+                    <li style="margin-right: 35px;"><label style="color:#c26555;">活动标题*</label><input placeholder="请输入活动标题" id="activity_theme" class="text_input" type="text"></li>
                     <li>
-                        <label>活动类别</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                        <label style="color:#c26555;">活动类别*</label><input class="text_input select_input" id="activity_type" data-id="" type="text" placeholder="请选择活动类别" readonly="readonly"><i class="icon-ishop_8-02"></i>
                         <ul class="activity_select" id="activityType_select">
                             <li data-id="recruit">招募活动</li>
                             <li data-id="sales">促销活动</li>
@@ -34,7 +34,7 @@
     <div>
         <div class="tabs_title"><span class="title_icon"></span><span>活动设置</span></div>
         <div class="setUp_activity_details" id="setUp_activityType" style="padding-left: 0">
-            <div id="recruit_activity" style="display: none">
+            <div id="recruit_activity" style="display: none;width: 80%">
                 <ul class="operate_ul">
                     <li>
                         <ul>
@@ -79,7 +79,7 @@
                     <div class="coupon_btn"><span id="coupon_btn">添加</span></div>
                     <div class="coupon_details_wrap">
                         <ul>
-                            <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code="" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                            <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code="" type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>
                                 <ul class="activity_select vipCardType"></ul>
                             </li>
                         </ul>
@@ -131,8 +131,8 @@
             </div>
             <div class="holiday_activity" id="festival_activity" style="display: none">
                 <ul>
-                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
-                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
+                    <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
+                    <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
                 </ul>
             </div>
         </div>
@@ -265,13 +265,13 @@
         $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
     }
     function checkEnd(data){
-        $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
+        $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(),max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
     }
     function holidayStart(data) {
         $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
     }
     function holidayEnd(data) {
-        $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
+        $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
     }
 </script>
 <script type="text/javascript" src="../js/vip/set_up_activity.js"></script>

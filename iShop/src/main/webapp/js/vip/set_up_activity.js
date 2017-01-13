@@ -1,12 +1,13 @@
 var oc = new ObjectControl();
 var activity={
     isEmpty:false,
+    label:"",
+    theme:"",
     shop_num:1,
     shop_next:false,
     area_num:1,
     area_next:false,
     isscroll:false,
-    next:false,
     swicth:true,//优惠券开关标志
     activity_code:"",
     cache:{//缓存变量
@@ -42,6 +43,11 @@ var activity={
         $(".setUp_activity_details").on("click","i",function () {
             $(this).nextAll("ul").toggle();
         });
+        $(document).click(function (e) {
+            if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
+                $(".select_input").nextAll("ul").hide();
+            }
+        });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
             var vue = $(this).html();
             var id = $(this).attr("data-id");
@@ -52,7 +58,7 @@ var activity={
             $(this).parent().prevAll("input").val(vue);
             $(this).parent().prevAll("input").attr("data-id",id);
         });
-        $(".setUp_activity_details").on("blur",".select_input",function () {
+        $(".setUp_activity").on("blur",".select_input",function () {
             var ul = $(this).nextAll("ul");
             setTimeout(function () {
                 ul.hide();
@@ -117,11 +123,11 @@ var activity={
             $(this).parent().parents("li").remove();
         });
         $("#coupon_activity").on("click","#coupon_btn",function () {//新增开卡送券
-            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select vipCardType">'
                 + activity.cache.card_type
                 + '</ul></li></ul><ul class="operate_ul">'
-                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" data-code= type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" data-code= type="text" placeholder="请选择优惠券" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select coupon_activity">'
                 + activity.cache.coupon
                 + '</ul></li><li><span class="add_btn">+</span><span class="remove_btn">-</span></li></ul>'
@@ -741,23 +747,32 @@ var activity={
                     time: 1,
                     lock: true,
                     cancel: false,
-                    content: "活动主题不能为空"
+                    content: "活动标题不能为空"
                 });
             }else {
-                var param={};
-                param["corp_code"]=$("#OWN_CORP").val();
-                param["activity_theme"]=theme;
-                param["activity_code"]="";
-                oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
+                var theme_l=$("#activity_theme").attr("data-name");
+                if(theme==theme_l){
+                    activity.theme="";
+                    return ;
+                }else {
+                    var param={};
+                    param["corp_code"]=$("#OWN_CORP").val();
+                    param["activity_theme"]=theme;
+                    param["activity_code"]="";
+                    oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
                         if(data.code=="-1"){
+                            activity.theme="当前企业下该会员活动标题已存在";
                             art.dialog({
                                 time: 1,
                                 lock: true,
                                 cancel: false,
                                 content: data.message
                             });
+                        }else if(data.code==0){
+                            activity.theme="";
                         }
-                });
+                    });
+                }
             }
         });
     },
@@ -796,7 +811,7 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0&&$("#coupon_activity").css("display")=="block"){
+                if(msg.length==0&&$("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active")){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -821,18 +836,23 @@ var activity={
             var id=$(this).attr("id");
             if($(this).css("display")!=="none"&&id!=="coupon_activity"){
                 var vue=$(this).find(".text_input");
-                $(vue).each(function (i) {
+                $(vue).each(function (i,e) {
                     if($(vue[i]).val()==""){
                         activity.isEmpty=true;
+                        activity.label=$(e).prev("label").html().replace("*","");
                     }
                 });
             }else if($(this).css("display")!=="none"&&id=="coupon_activity"){
                 $(this).children("div:not('.switch')").each(function (i,e) {
                     if($(e).css("display")=="block"){
                         var vue=$(e).find(".text_input");
-                        $(vue).each(function (i) {
+                        $(vue).each(function (i,e) {
                             if($(vue[i]).val()==""){
                                 activity.isEmpty=true;
+                                activity.label=$(e).prev("label").html().replace("*","");
+                                if(activity.label="至"){
+                                    activity.label="活动时间";
+                                }
                             }
                         });
                     }
@@ -843,10 +863,12 @@ var activity={
             var vue=$(this).val();
             if(vue==""){
                 activity.isEmpty=true;
+                activity.label=$(this).prev("label").html();
             }
         });
     },
     add:function () {
+        var def=$.Deferred();
         var corp_code=$("#tabs>div:first-child").attr("data-corp");
         var activity_code=activity.activity_code;
         var param={};
@@ -964,12 +986,17 @@ var activity={
                     _param['apply_qrcode']="";
                 }
                 oc.postRequire("post","/vipActivity/detail/add","0",_param,function (data) {
-                        activity.next=true;
+                    if(data.code=="0"){
+                        def.resolve("成功");
+                    }else if(data.code=="-1"){
+                        def.resolve("失败");
+                    }
                 })
             }else if(data.code==-1){
                 console.log(data.message);
             }
         });
+        return def;
     },
     activityEdit:function () {
         var param={
@@ -989,9 +1016,12 @@ var activity={
                 case "festival":type="节日活动";break;
             }
             activity.getcorplist(list.corp_code);
+            $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(),max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
             $("#activity_start").val(list.start_time);
+            $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+list.start_time+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
             $("#activity_end").val(list.end_time);
             $("#activity_theme").val(list.activity_theme);
+            $("#activity_theme").attr("data-name",list.activity_theme);
             $("#activity_type").attr("data-id",list.run_mode);
             $("#activity_type").val(type);
             $("#activity_describe").val(list.activity_desc);
@@ -1024,6 +1054,8 @@ var activity={
                     $("#festival_activity").show();
                     $("#holiday_start").val(list.festival_start);
                     $("#holiday_end").val(list.festival_end);
+                    $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
+                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
                 if(type=="invite"){
                     var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
@@ -1070,7 +1102,11 @@ var activity={
                 }
                 if(type=="coupon"){
                     var send_coupon_type=list.send_coupon_type;
-                    var coupon_type=JSON.parse(list.coupon_type);
+                    if(list.coupon_type==""){
+                        var coupon_type=list.coupon_type;
+                    }else {
+                        var coupon_type=JSON.parse(list.coupon_type);
+                    }
                     if(send_coupon_type==undefined||send_coupon_type==""){
                         $(".switch div").trigger("click");
                     }else {

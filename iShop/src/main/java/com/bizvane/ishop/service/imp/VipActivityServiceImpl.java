@@ -57,6 +57,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         VipActivitys = vipActivityMapper.selectAllActivity(corp_code, user_code, search_value);
         for (VipActivity vipActivity : VipActivitys) {
             vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
+            vipActivity.setRun_mode(CheckUtils.CheckVipActivityType(vipActivity.getRun_mode()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(VipActivitys);
 
@@ -82,6 +83,7 @@ public class VipActivityServiceImpl implements VipActivityService {
         List<VipActivity> list1 = vipActivityMapper.selectActivityScreen(params);
         for (VipActivity vipActivity : list1) {
             vipActivity.setIsactive(CheckUtils.CheckIsactive(vipActivity.getIsactive()));
+            vipActivity.setRun_mode(CheckUtils.CheckVipActivityType(vipActivity.getRun_mode()));
         }
         PageInfo<VipActivity> page = new PageInfo<VipActivity>(list1);
         return page;
@@ -197,16 +199,16 @@ public class VipActivityServiceImpl implements VipActivityService {
         String sms_code = vipActivity.getSms_code();
         Date now = new Date();
 
-//        if (!task_code.trim().equals("")){
-//            status = executeTask(vipActivity,user_code);
-//            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
-//                return status;
-//        }
-//        if (!sms_code.trim().equals("")){
-//            status = executeFsend(vipActivity,user_code);
-//            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
-//                return status;
-//        }
+        if (!task_code.trim().equals("")){
+            status = executeTask(vipActivity,user_code);
+            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
+                return status;
+        }
+        if (!sms_code.trim().equals("")){
+            status = executeFsend(vipActivity,user_code);
+            if (!status.equals(Common.DATABEAN_CODE_SUCCESS))
+                return status;
+        }
         //更新活动状态activity_state
         vipActivity.setActivity_state("1");
         vipActivity.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -420,8 +422,7 @@ public class VipActivityServiceImpl implements VipActivityService {
                 scheduleJob.setJob_group(activity_code);
                 scheduleJob.setFunc(func.toString());
                 scheduleJob.setCron_expression(corn_expression);
-//                scheduleJobService.insert(scheduleJob);
-
+                scheduleJobService.insert(scheduleJob);
             }else {
                 scheduleJob.setFunc(func.toString());
                 scheduleJob.setCron_expression(corn_expression);
