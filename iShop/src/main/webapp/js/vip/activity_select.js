@@ -794,7 +794,7 @@ function GET(a,b){
             $("#vip_list ul").empty();
             var messages=JSON.parse(data.message);
             var list=messages.all_vip_list;
-            cout=messages.pages;
+            count=messages.pages;
             var pageNum = messages.pageNum;
             //var list=list.list;
             $("#num").html(messages.count);
@@ -802,7 +802,7 @@ function GET(a,b){
 //                    jumpBianse();
             filtrate="";
             $('.contion .input').val("");
-            setPage($("#foot-num")[0],cout,pageNum,b);
+            setPage($("#foot-num")[0],count,pageNum,b);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -815,7 +815,7 @@ function filtrates(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=message.all_vip_list;
-            cout=message.pages;
+            count=message.pages;
             $("#num").html(message.count);
             $("#vip_list ul").empty();
             if(list.length<=0){
@@ -827,7 +827,7 @@ function filtrates(a,b){
                 superaddition(list,a);
 //                    jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,a,b);
+            setPage($("#foot-num")[0],count,a,b);
         }else if(data.code=="-1"){
             whir.loading.remove();//移除加载框
             art.dialog({
