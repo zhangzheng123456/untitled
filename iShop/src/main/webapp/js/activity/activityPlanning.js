@@ -14,8 +14,8 @@ var activityPlanning={
 	},
 	init:function(){
 		this.allEvent();
-		this.getTaskList();
-		this.getPlanningList();
+		// this.getTaskList();
+		// this.getPlanningList();
 	},
 	allEvent:function(){
 		//任务切换
@@ -130,8 +130,8 @@ var activityPlanning={
 			var index=$(this).index();
 			$(this).addClass("active");
 			$(this).siblings("li").removeClass("active");
-			$("#tab_list .tab_list").eq(index).show();
-			$("#tab_list .tab_list").eq(index).siblings().hide();
+			$("#tabs-content .tab_list").eq(index).show();
+			$("#tabs-content .tab_list").eq(index).siblings().hide();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
