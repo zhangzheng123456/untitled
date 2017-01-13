@@ -2,6 +2,7 @@ package com.bizvane.ishop.utils;
 
 import com.bizvane.ishop.constant.Common;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -59,4 +60,19 @@ public class TimeUtils {
 
         System.out.println(getWeek("2016-6-18"));
     }
+
+    public static String formatDateByPattern(Date date, String dateFormat) {
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        String formatTimeStr = null;
+        if (date != null) {
+            formatTimeStr = sdf.format(date);
+        }
+        return formatTimeStr;
+    }
+
+    public static String getCron(java.util.Date date) {
+        String dateFormat = "ss mm HH dd MM ? yyyy";
+        return formatDateByPattern(date, dateFormat);
+    }
+
 }

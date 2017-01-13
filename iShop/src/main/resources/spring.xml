@@ -72,4 +72,6 @@
 	</bean>
 	<!-- MongoDB Client 配置结束 -->
 
+	<bean id="springBeanFactoryUtils" class="com.bizvane.ishop.utils.SpringBeanFactoryUtils"/>
+
 </beans>

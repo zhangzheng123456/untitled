@@ -29,8 +29,6 @@ public interface VipFsendService {
 
     void fsendSchedule(String corp_code,String sms_code,String user_code);
 
-    void test2();
-
      int insertSend(VipFsend vipFsend) throws Exception ;
 
     int delSendByActivityCode(String corp_code,String activity_vip_code)throws Exception;
