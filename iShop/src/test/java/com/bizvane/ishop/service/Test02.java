@@ -17,11 +17,11 @@ public class Test02 {
 
             HashMap<String,Object> map=new HashMap<String, Object>();
 //        //查询
-//            map.put("table","18690");
-//        map.put("columns",new String[]{"id"});
+            map.put("table","18690");
+        map.put("columns",new String[]{"id"});
 
-//
- // CRMInterfaceServiceImpl.selectvip(map);
+
+  CRMInterfaceServiceImpl.selectvip(map);
 
 
 //        //新增
@@ -61,12 +61,14 @@ public class Test02 {
 //        CRMInterfaceServiceImpl.getObject(map);
 
 
+
+
         //webaction
 
-
-        map.put("webaction","1059167");
-        map.put("id","1059167");
-        CRMInterfaceServiceImpl.excuteWebaction(map);
+//
+//        map.put("webaction","1059167");
+//        map.put("id","1059167");
+//        CRMInterfaceServiceImpl.excuteWebaction(map);
 
     }
 }
