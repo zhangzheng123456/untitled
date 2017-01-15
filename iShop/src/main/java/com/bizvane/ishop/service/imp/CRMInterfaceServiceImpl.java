@@ -15,8 +15,7 @@ import java.util.Map;
 public class CRMInterfaceServiceImpl  {
 
     private static WebConnection webConnection=new WebConnection();
-    public static final String sip_appkey="nea@burgeon.com.cn";
-    public static final String appSecret="lifecycle";
+
     public static  String url = "http://60.190.132.114:8080/servlets/binserv/Rest";
 
 
@@ -34,18 +33,13 @@ public class CRMInterfaceServiceImpl  {
     //增加会员(通过测试)
     public static String addvip(HashMap<String,Object> hashmap){
 
-        CreateObjectRequestParams createObjectRequestParams = new CreateObjectRequestParams();
-        CreateObjectRequestParams.CreateObjectTrans createObjectTrans = createObjectRequestParams.new CreateObjectTrans();
-
-        createObjectRequestParams.setAppSecret(appSecret);
-        createObjectRequestParams.setSip_appkey(sip_appkey);
-        createObjectRequestParams.setSip_timestamp();
-        createObjectRequestParams.setSip_sign();
+        RequestParams createObjectRequestParams = new RequestParams();
+        RequestParams.BaseTrans createObjectTrans = createObjectRequestParams.new BaseTrans();
 
         //请求方式
         createObjectTrans.setCommand("ObjectCreate");
         //设置id
-        createObjectTrans.setId("112");
+        createObjectTrans.setId(112);
         //请求params
         JSONObject vipJsonObject = new JSONObject(hashmap);
 
@@ -55,10 +49,11 @@ public class CRMInterfaceServiceImpl  {
 
         //执行添加
         String info=getConnection(createObjectRequestParams.getSip_sign(),createObjectRequestParams.getSip_appkey(),
-                             createObjectRequestParams.getAppSecret(),createObjectRequestParams.getSip_timestamp(),
+                createObjectRequestParams.getAppSecret(),createObjectRequestParams.getSip_timestamp(),
                              createObjectRequestParams.getTransactions());
 
 
+        System.out.println(info);
         return  info;
     }
 
@@ -69,10 +64,7 @@ public class CRMInterfaceServiceImpl  {
         QueryRequestParams.QueryTrans queryTrans = queryRequestParams.new QueryTrans();
         QueryRequestParams.QueryTrans.QueryTransParams queryTransParams = queryTrans.new QueryTransParams();
 
-        queryRequestParams.setAppSecret(appSecret);
-        queryRequestParams.setSip_appkey(sip_appkey);
-        queryRequestParams.setSip_timestamp();
-        queryRequestParams.setSip_sign();
+
 
         //请求方式
         queryTrans.setCommand("Query");
@@ -123,19 +115,15 @@ public class CRMInterfaceServiceImpl  {
     //修改会员(测试成功)
     public  static  String modifyvip(HashMap<String,Object> hashmap){
 
-        ModifyObjectRequestParams modifyObjectRequestParams = new ModifyObjectRequestParams();
-        ModifyObjectRequestParams.ModifyObjectTrans modifyObjectTrans = modifyObjectRequestParams.new ModifyObjectTrans();
+        RequestParams modifyObjectRequestParams = new RequestParams();
+        RequestParams.BaseTrans modifyObjectTrans = modifyObjectRequestParams.new BaseTrans();
 
-        modifyObjectRequestParams.setAppSecret(appSecret);
-        modifyObjectRequestParams.setSip_appkey(sip_appkey);
-        modifyObjectRequestParams.setSip_timestamp();
-        modifyObjectRequestParams.setSip_sign();
 
         //查询方式为修改
         modifyObjectTrans.setCommand("ObjectModify");
 
         //id值
-        modifyObjectTrans.setId("112");
+        modifyObjectTrans.setId(112);
 
             JSONObject vipJsonObject = new JSONObject(hashmap);
 
@@ -160,11 +148,6 @@ public class CRMInterfaceServiceImpl  {
         SendSMSRequestParams sendsmsRequestParams = new SendSMSRequestParams();
         SendSMSRequestParams.SendSMSTrans sendsmsTrans = sendsmsRequestParams.new SendSMSTrans();
         SendSMSRequestParams.SendSMSTrans.SendSMSTransParams sendsmsTransParams = sendsmsTrans.new SendSMSTransParams();
-
-        sendsmsRequestParams.setAppSecret(appSecret);
-        sendsmsRequestParams.setSip_appkey(sip_appkey);
-        sendsmsRequestParams.setSip_timestamp();
-        sendsmsRequestParams.setSip_sign();
 
         //设置id
         sendsmsTrans.setId(112);
@@ -195,15 +178,10 @@ public class CRMInterfaceServiceImpl  {
 
     //执行查询
     public  static  String excuteSql(HashMap<String,Object> hashmap){
+
         ExecuteSQLRequestParams executeSQLRequestParams = new ExecuteSQLRequestParams();
         ExecuteSQLRequestParams.ExecuteSQLTrans executeSQLTrans = executeSQLRequestParams.new ExecuteSQLTrans();
         ExecuteSQLRequestParams.ExecuteSQLTrans.ExecuteSQLTransParams executeSQLTransParams = executeSQLTrans.new ExecuteSQLTransParams();
-
-        executeSQLRequestParams.setAppSecret(appSecret);
-        executeSQLRequestParams.setSip_appkey(sip_appkey);
-        executeSQLRequestParams.setSip_timestamp();
-        executeSQLRequestParams.setSip_sign();
-
 
         for(String key:hashmap.keySet()){
             if(key.equals("name")){
@@ -214,6 +192,7 @@ public class CRMInterfaceServiceImpl  {
         }
 
         executeSQLTrans.setId(112);
+        executeSQLTrans.setCommand("ExecuteSQL");
         executeSQLTrans.setParams(executeSQLTransParams);
 
         executeSQLRequestParams.setTransactions(executeSQLTrans);
@@ -235,10 +214,6 @@ public class CRMInterfaceServiceImpl  {
         ExecuteWebActionRequestParams.ExecuteWebActionTrans executeWebActionTrans = executeWebActionRequestParams.new ExecuteWebActionTrans();
         ExecuteWebActionRequestParams.ExecuteWebActionTrans.ExecuteWebActionTransParams executeWebActionTransParams = executeWebActionTrans.new ExecuteWebActionTransParams();
 
-        executeWebActionRequestParams.setAppSecret(appSecret);
-        executeWebActionRequestParams.setSip_appkey(sip_appkey);
-        executeWebActionRequestParams.setSip_timestamp();
-        executeWebActionRequestParams.setSip_sign();
 
         for(String key:hashmap.keySet()){
             if(key.equals("webaction")){
@@ -249,6 +224,7 @@ public class CRMInterfaceServiceImpl  {
         }
 
         executeWebActionTrans.setId(112);
+        executeWebActionTrans.setCommand("ExecuteWebAction");
         executeWebActionTrans.setParams(executeWebActionTransParams);
 
         executeWebActionRequestParams.setTransactions(executeWebActionTrans);
@@ -271,10 +247,6 @@ public class CRMInterfaceServiceImpl  {
         GetObjectRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
                 getObjectTran.new GetObjectTransParams();
 
-        getObjectRequestParams.setAppSecret(appSecret);
-        getObjectRequestParams.setSip_appkey(sip_appkey);
-        getObjectRequestParams.setSip_timestamp();
-        getObjectRequestParams.setSip_sign();
 
         for(String key:hashmap.keySet()){
             if(key.equals("table")){
@@ -287,6 +259,7 @@ public class CRMInterfaceServiceImpl  {
         }
 
         getObjectTran.setId(112);
+        getObjectTran.setCommand("GetObject");
         getObjectTran.setParams(getObjectTransParams);
 
         getObjectRequestParams.setTransactions(getObjectTran);
