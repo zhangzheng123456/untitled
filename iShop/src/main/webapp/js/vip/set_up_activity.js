@@ -39,9 +39,17 @@ var activity={
     selectClick:function () {//input下拉模拟
         $(".setUp_activity_details").on("click",".select_input",function () {
             $(this).nextAll("ul").toggle();
+            var li=$(this).children("li");
+            if(li.length<1){
+                $(".activity_select").css("border","none");
+            }
         });
         $(".setUp_activity_details").on("click","i",function () {
             $(this).nextAll("ul").toggle();
+            var li=$(this).children("li");
+            if(li.length<1){
+                $(".activity_select").css("border","none");
+            }
         });
         $(document).click(function (e) {
             if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
@@ -835,7 +843,7 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0&&$("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active")){
+                if(msg.length==0&&(($("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active"))||$("#recruit_activity").css("display")=="block")){
                     art.dialog({
                         time: 1,
                         lock: true,

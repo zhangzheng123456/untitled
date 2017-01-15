@@ -197,9 +197,10 @@
     margin-left: 5px;
     cursor: pointer;
 }
-.chart_title{
+#page-wrapper .chart_title{
     padding-top: 10px;
     text-align: center;
+    margin-bottom: 0;
 }
 .chart_count{
     overflow: hidden;
@@ -237,7 +238,7 @@
     width: 30.6%;
     position: relative;
 }
-#chart_pie{
+#chart_pie,#customer_pie,.chart_h{
     height: 165px;
 }
 .shoppers{
@@ -536,6 +537,7 @@
     height:260px;
     background: #fff;
     margin-right: 0.95%;
+    margin-bottom: 0.95%;
 }
 #customer>div:nth-child(3n){
     margin-right: 0 !important;
@@ -573,4 +575,25 @@
     height: 10px;
     background: #62cddd;
     width: 50%;
+}
+#customer .count1{
+   float: left;
+    width: 50%;
+    height: 65px;
+}
+#customer .count1 p{
+    text-align: right;
+    padding-right:15px;
+    margin-bottom: 10px;
+}
+#customer .count1 ._p{color:#41c7db}
+#customer .count2{
+    float: left;
+    width: 50%;
+    height: 65px;
+}
+#customer .count2 p{
+    text-align: left;
+    padding-left:15px;
+    margin-bottom: 10px;
 }

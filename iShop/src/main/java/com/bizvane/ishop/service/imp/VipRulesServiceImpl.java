@@ -220,7 +220,6 @@ public class VipRulesServiceImpl implements VipRulesService {
         List<VipRules> list1 = vipRulesMapper.selectVipRulesScreen(params);
         for (VipRules vipRules1 : list1) {
             vipRules1.setIsactive(CheckUtils.CheckIsactive(vipRules1.getIsactive()));
-
         }
         PageInfo<VipRules> page = new PageInfo<VipRules>(list1);
         return page;
