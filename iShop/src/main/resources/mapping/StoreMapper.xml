@@ -18,7 +18,8 @@
         <result column="city" property="city" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="area" property="area" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="street" property="street" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="store_location" property="store_location" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="lng" property="lng" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="lat" property="lat" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
@@ -39,7 +40,8 @@
         def_store.city,
         def_store.area,
         def_store.street,
-        def_store.store_location,
+        def_store.lng,
+        def_store.lat,
         def_store.area_code,
         def_store.corp_code,
         def_store.modified_date,
@@ -374,8 +376,11 @@
             <if test="store_id!=null">
                 store_id,
             </if>
-            <if test="store_location!=null">
-                store_location,
+            <if test="lng!=null">
+                lng,
+            </if>
+            <if test="lat!=null">
+                lat,
             </if>
             <if test="logo!=null">
                 logo,
@@ -430,8 +435,11 @@
             <if test="store_id!=null">
                 #{store_id},
             </if>
-            <if test="store_location!=null">
-                #{store_location},
+            <if test="lng!=null">
+                #{lng},
+            </if>
+            <if test="lat!=null">
+                #{lat},
             </if>
             <if test="logo!=null">
                 #{logo},
@@ -475,8 +483,11 @@
             <if test="street!=null ">
                 street = #{street},
             </if>
-            <if test="store_location!=null ">
-                store_location = #{store_location},
+            <if test="lng!=null ">
+                lng = #{lng},
+            </if>
+            <if test="lat!=null ">
+                lat = #{lat},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
@@ -767,7 +778,8 @@
         def_store.area_code,
         def_store.brand_code,
         def_store.corp_code,
-        def_store.store_location,
+        def_store.lng,
+        def_store.lat,
         def_store.logo
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
@@ -789,4 +801,33 @@
         GROUP BY def_store.id
         ORDER BY def_store.province DESC, def_store.city DESC
     </select>
+
+    <select id="selectNearByStore" resultMap="Store">
+        SELECT
+        def_store.id,
+        store_code,
+        store_name,
+        province,
+        city,
+        area,
+        street,
+        def_store.area_code,
+        def_store.brand_code,
+        def_store.corp_code,
+        def_store.lng,
+        def_store.lat,
+        def_store.logo,
+        (st_distance (point (lng, lat),point(#{lng},#{lat}) ) *111195) AS distance
+        FROM def_store,def_corp
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = #{corp_code}
+        AND def_store.lng IS NOT NULL AND def_store.lng != ''
+        AND def_store.lat IS NOT NULL AND def_store.lat != ''
+        AND def_store.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_store.id
+            HAVING distance &lt; #{distance}
+        ORDER BY distance
+    </select>
+
 </mapper>

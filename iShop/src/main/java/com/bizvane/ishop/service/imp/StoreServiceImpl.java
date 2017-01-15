@@ -132,6 +132,13 @@ public class StoreServiceImpl implements StoreService {
         }
         List<StoreQrcode> qrcodeList = storeMapper.selectByStoreCode(corp_code,store.getStore_code());
         store.setQrcodeList(qrcodeList);
+        String lng = store.getLng();
+        String lat = store.getLat();
+        if (lng != null && lat != null && !lng.equals("") && !lat.equals("")){
+            store.setStore_location(lat+","+lng);
+        }else {
+            store.setStore_location("");
+        }
         return store;
     }
 
@@ -343,8 +350,10 @@ public class StoreServiceImpl implements StoreService {
             shop.setCity(jsonObject.get("city").toString().trim());
             shop.setArea(jsonObject.get("area").toString().trim());
             shop.setStreet(jsonObject.get("street").toString().trim());
-            if (jsonObject.has("store_location")){
-                shop.setStore_location(jsonObject.get("store_location").toString().trim());
+            if (jsonObject.has("store_location") && !jsonObject.get("store_location").toString().equals("")){
+                String location = jsonObject.get("store_location").toString().trim();
+                shop.setLat(location.split(",")[0]);
+                shop.setLng(location.split(",")[1]);
             }
             Date now = new Date();
             shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -526,7 +535,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
                 if (jsonObject.has("store_location")){
-                    store.setStore_location(jsonObject.get("store_location").toString().trim());
+                    String location = jsonObject.get("store_location").toString().trim();
+                    store.setLat(location.split(",")[0]);
+                    store.setLng(location.split(",")[1]);
                 }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -566,7 +577,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
                 if (jsonObject.has("store_location")){
-                    store.setStore_location(jsonObject.get("store_location").toString().trim());
+                    String location = jsonObject.get("store_location").toString().trim();
+                    store.setLat(location.split(",")[0]);
+                    store.setLng(location.split(",")[1]);
                 }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -1023,5 +1036,10 @@ public class StoreServiceImpl implements StoreService {
         List<Store> shops = storeMapper.selectAllOrderByCity(corp_code,search_value);
         PageInfo<Store> page = new PageInfo<Store>(shops);
         return page;
+    }
+
+    public List<Store> selectNearByStore(String corp_code, String lng, String lat, String distance) throws Exception{
+        List<Store> shops = storeMapper.selectNearByStore(corp_code,lng,lat,distance);
+        return shops;
     }
 }

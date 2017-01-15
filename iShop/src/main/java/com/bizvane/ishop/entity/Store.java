@@ -43,7 +43,10 @@ public class Store {
     private String isactive;
     //店铺坐标
     private String store_location;
-
+    //经度
+    private String lng;
+    //纬度
+    private String lat;
     private String brand_name;
     private String corp_name;
     //是否为该区域店铺
@@ -247,6 +250,22 @@ public class Store {
 
     public void setStore_location(String store_location) {
         this.store_location = store_location;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
     public String getBrand_name() {
