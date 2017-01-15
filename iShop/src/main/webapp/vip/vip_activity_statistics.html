@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>活动跟踪</title>
+    <title>活动分析</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../table/css/inner.css">
@@ -94,13 +94,13 @@
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><label>活动跟踪</label></div>
+    <div class="col-lg-12 pre_title"><span>活动管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><label>活动分析</label></div>
     <div class="main col-lg-12">
         <div class="activity_statistics_head">
             <div class="activity_statistics_head_left">
-                <div class="activity_statistics_head_left_title"><span>2017新年感恩特惠</span> <span class="icon-ishop_6-29" style="cursor: pointer"></span></div>
-                <div class="activity_statistics_head_left_time"><span>2017-01-01 00:00:00</span> 至 <span>2017-02-20 00:00:00</span></div>
-                <div><span>线下邀约活动</span> | <span>太平鸟</span></div>
+                <div class="activity_statistics_head_left_title"><span id="them"></span> <span class="icon-ishop_6-29" style="cursor: pointer"></span></div>
+                <div class="activity_statistics_head_left_time"><span id="startTime"></span> 至 <span id="endTime"></span></div>
+                <div><span id="mode"></span> | <span id="corp"></span></div>
             </div>
             <div class="activity_statistics_head_center">
                 <div >
@@ -185,6 +185,23 @@
 </body>
 <script>
     $(function(){
+        var oc=new ObjectControl();
+        function getActivityData(){
+            var param={
+                activity_code:sessionStorage.getItem("activity_code")
+            };
+            oc.postRequire("post","/vipActivity/select","0",param,function(data){
+                if(data.code!="0") return;
+                var msg=JSON.parse(data.message);
+                var activityVip=JSON.parse(msg.activityVip);
+                $("#them").html(activityVip.activity_theme);
+                $("#startTime").html(activityVip.start_time);
+                $("#endTime").html(activityVip.end_time);
+                $("#mode").html(activityVip.run_mode);
+                $("#corp").html(activityVip.corp_name);
+            })
+        }
+        getActivityData();
         $("#active_tabs li").bind("click",function(){
             $(this).addClass("current");
             $(this).siblings().removeClass("current");

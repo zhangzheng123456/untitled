@@ -140,11 +140,11 @@
                     <div class="task_detail_l task_block">
                         <div>
                             <p class="task_title">任务标题</p>
-                            <p class="task_title_describe p1">短语通知本次报名活动</p>
+                            <p class="task_title_describe p1"></p>
                         </div>
                         <div>
                             <p class="task_title">任务类型</p>
-                            <p class="task_title_describe p2">短语通知客户</p>
+                            <p class="task_title_describe p2"></p>
                         </div>
                         <div>
                             <p class="task_title">任务状态</p>
@@ -152,19 +152,19 @@
                         </div>
                         <div>
                             <p class="task_title">参与门店</p>
-                            <p class="task_title_describe"><span class="count p3">20</span>门店 <span class="task_list">参与门店列表 <span class="icon-ishop_8-03"></span></span></p>
+                            <p class="task_title_describe"><span class="count p3"></span>门店 <span class="task_list">参与门店列表 <span class="icon-ishop_8-03"></span></span></p>
                         </div>
                         <div>
                             <p class="task_title">任务时间</p>
                             <div class="task_title_describe">
-                                <p class="p4">2017-01-01 00:00:00开始</p>
-                                <p class="p5">2017-01-01 00:00:00结束</p>
-                                <p>还剩 <span class="count p6">20</span>天</p>
+                                <p class="p4"></p>
+                                <p class="p5"></p>
+                                <p>还剩 <span class="count p6"></span>天</p>
                             </div>
                         </div>
                         <div>
                             <p class="task_title">任务简述</p>
-                            <p class="task_title_describe p7">短语通知本次报名活动，帮助客户填写报名表</p>
+                            <p class="task_title_describe p7"></p>
                         </div>
                     </div>
                     <div class="task_blank"></div>
@@ -269,9 +269,48 @@
     </div>
       <!--客户分析-->
       <div id="customer">
-          <div></div>
-          <div></div>
-          <div></div>
+          <div>
+              <p class="chart_title">意向客户统计</p>
+              <div id="customer_pie2"class="chart_h"></div>
+              <div class="intention">
+                  <div class="count1">
+                      <p>意向客户</p>
+                      <p class="_p">2000</p>
+                  </div>
+                  <div class="count2">
+                      <p>目标会员</p>
+                      <p>4000</p>
+                  </div>
+              </div>
+          </div>
+          <div>
+              <p class="chart_title">意向客户分类</p>
+              <div id="customer_pie"></div>
+              <div class="chart_count">
+                  <div class="blank_2"></div>
+                  <div class="chart_count_l">
+                      <div>
+                          <p>可能参加</p>
+                          <p class="shoppers">3074</p>
+                      </div>
+                  </div>
+                  <div class="blank_3"></div>
+                  <div class="chart_count_m">
+                      <div>
+                          <p>即将参加</p>
+                          <p class="covers">10100</p>
+                      </div>
+                  </div>
+                  <div class="blank_3"></div>
+                  <div class="chart_count_r">
+                      <div>
+                          <p>已经参加</p>
+                          <p class="target">12663</p>
+                      </div>
+                  </div>
+                  <div class="blank_2"></div>
+              </div>
+          </div>
       </div>
       <!--影响分析-->
       <div id="influence"></div>
@@ -526,11 +565,11 @@
             </div>
             <div class="modify_ipt">
                 <label>开始时间</label>
-                <input type="text" id="start_time" class="laydate-icon">
+                <input type="text" id="start_time" class="laydate-icon"onclick="laydate(laydate_start)">
             </div>
             <div class="modify_ipt">
                 <label>结束时间</label>
-                <input type="text" id="over_time" class="laydate-icon" >
+                <input type="text" id="over_time" class="laydate-icon" onclick="laydate(laydate_end)">
             </div>
             <div class="modify_footer">
                 <div class="modify_footer_l">取消</div>
@@ -575,6 +614,10 @@
             </div>
         </div>
     </div>
+    <!--暂无任务提示-->
+    <!--<div id="no_task">-->
+        <!--<span>尚未分配任务</span>-->
+    <!--</div>-->
 </div>
    <!--更多详情页面-->
     <div id="get_more">
@@ -660,31 +703,40 @@
 <script src="/js/loading.js?20170105"></script>
 <script type="text/javascript" src="../js/activity/activity_details.js?20170105"></script>
 <script>
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            , istime: true //是否开启时间选择
-            , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
-            ,choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-            ,  elem: '#start_time', //需显示日期的元素选择器
-        };
-        var end = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            , istime: true //是否开启时间选择
-            , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
-            ,istoday: false
-            ,choose: function(datas){
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            },
-            elem: '#over_time', //需显示日期的元素选择器
-        };
-        laydate(start);
-        laydate(end)
+//       setTimeout(function () {
+//           var s=new Date(min_date);
+//           var n=new Date();
+//           console.log(s<n);
+//           if(s<n){
+//               var start = {
+//                   min: '2020-06-16 23:59:59'
+//                   ,istoday: false
+//                   , istime: true //是否开启时间选择
+//                   , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+//                   ,choose: function(datas){
+//                       end.min = datas; //开始日选好后，重置结束日的最小日期
+//                       end.start = datas //将结束日的初始值设定为开始日
+//                   }
+//                   ,  elem: '#start_time', //需显示日期的元素选择器
+//               };
+//           }else{
+//               start = {
+//                   min: laydate.now()
+//                   ,max: '2099-06-16 23:59:59'
+//                   ,istoday: false
+//                   , istime: true //是否开启时间选择
+//                   , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+//                   ,choose: function(datas){
+//                       end.min = datas; //开始日选好后，重置结束日的最小日期
+//                       end.start = datas //将结束日的初始值设定为开始日
+//                   }
+//                   ,  elem: '#start_time', //需显示日期的元素选择器
+//               };
+//           }
+//           laydate(start);
+//       },2000)
+//        laydate(start);
+//        laydate(end)
     $(function () {
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
@@ -750,77 +802,157 @@
             cursorwidth:"9px",
             cursorborderradius:"10px"});
     });
-//    function pieChart() {
-//        var myChart = echarts.init(document.getElementById('chart_pie'));
-//        var NoCover = ((12664 - 10100)/12664*100).toFixed(2);
-//        var TheCover = (10100/12664*100).toFixed(2);
-//        // 指定图表的配置项和数据
-//        var labelTop = {
-//            normal : {
-//                color:'#7bc7cd',
-//                label : {
-//                    show : false,
-//                    position : 'center',
-//                    formatter : '{b}',
-//                    textStyle: {
-//                        baseline : 'bottom'
-//                    }
-//                },
-//                labelLine : {
-//                    show : false
-//                }
-//            }
-//        };
-//        var labelFromatter = {
-//            normal : {
-//                label : {
-//                    formatter : function (params){
-//                        var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
-//                        data=data>100?100:data;
-//                        return data+ '%'
-//                    },
-//                    textStyle: {
-//                        color:'#7bc7cd',
-//                        fontSize: 25
-//                    }
-//                }
-//            },
-//        }
-//        var labelBottom = {
-//            normal : {
-//                color: '#eaeaea',
-//                label : {
-//                    show : true,
-//                    position : 'center'
-//                },
-//                labelLine : {
-//                    show : false
-//                }
-//            },
-//            emphasis: {
-//                color: '#eaeaea'
-//            }
-//        };
-//        var radius = [55, 70];
-//        var  option = {
-//            series : [
-//                {
-//                    type : 'pie',
-//                    center : ['50%', '50%'],
-//                    radius : radius,
-//                    x: '0%', // for funnel
+    function pieChart2() {
+        var myChart = echarts.init(document.getElementById('customer_pie'));
+        var NoCover = ((12664 - 10100)/12664*100).toFixed(2);
+        var TheCover = (10100/12664*100).toFixed(2);
+        // 指定图表的配置项和数据
+        var labelTop = {
+            normal : {
+                color:'#7bc7cd',
+                label : {
+                    show : false,
+                    position : 'center',
+                    formatter : '{b}',
+                    textStyle: {
+                        baseline : 'bottom'
+                    }
+                },
+                labelLine : {
+                    show : false
+                }
+            }
+        };
+        var labelFromatter = {
+            normal : {
+                label : {
+                    formatter : function (params){
+                        var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
+                        data=data>100?100:data;
+                        return data+ '%'
+                    },
+                    textStyle: {
+                        color:'#7bc7cd',
+                        fontSize: 25
+                    }
+                }
+            },
+        }
+        var labelBottom = {
+            normal : {
+                color: '#eaeaea',
+                label : {
+                    show :false,
+                    position : 'center'
+                },
+                labelLine : {
+                    show : false
+                }
+            },
+            emphasis: {
+                color: '#eaeaea'
+            }
+        };
+        var radius = [55, 70];
+        var  option = {
+            tooltip: {
+                trigger: 'item',
+                formatter:  "{d}% {b}",
+                backgroundColor:'#9999cc'
+            },
+            series : [
+                {
+                    type : 'pie',
+                    center : ['50%', '50%'],
+                    radius : radius,
+                    x: '0%', // for funnel
 //                    itemStyle : labelFromatter,
-//                    data : [
-//                        {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
-//                        {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
-//                    ]
-//                }
-//            ]
-//        };
-//        // 使用刚指定的配置项和数据显示图表。
-//        myChart.setOption(option);
-//    }
-//    pieChart();
+                    data : [
+                        {name:'未参加', value:NoCover,itemStyle :labelBottom },
+                        {name:'已参加', value:TheCover, itemStyle : labelTop}
+                    ]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+    function pieChart3() {
+    var myChart = echarts.init(document.getElementById('customer_pie2'));
+    var NoCover = ((4000 - 2000)/4000*100).toFixed(2);
+    var TheCover = (2000/4000*100).toFixed(2);
+    // 指定图表的配置项和数据
+    var labelTop = {
+        normal : {
+            color:'#7bc7cd',
+            label : {
+                show : false,
+                position : 'center',
+                formatter : '{b}',
+                textStyle: {
+                    baseline : 'bottom'
+                }
+            },
+            labelLine : {
+                show : false
+            }
+        }
+    };
+    var labelFromatter = {
+        normal : {
+            label : {
+                formatter : function (params){
+                    var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
+                    data=data>100?100:data;
+                    return data+ '%'
+                },
+                textStyle: {
+                    color:'#7bc7cd',
+                    fontSize: 25
+                }
+            }
+        },
+    }
+    var labelBottom = {
+        normal : {
+            color: '#eaeaea',
+            label : {
+                show : true,
+                position : 'center'
+            },
+            labelLine : {
+                show : false
+            }
+        },
+        emphasis: {
+            color: '#eaeaea'
+        }
+    };
+    var radius = [55, 70];
+    var  option = {
+        series : [
+            {
+                type : 'pie',
+                center : ['50%', '50%'],
+                radius : radius,
+                x: '0%', // for funnel
+                itemStyle : labelFromatter,
+                data : [
+                    {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
+                    {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
+                ]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+}
     function barChart() {
         var myChart = echarts.init(document.getElementById('chart_bar'));
         var data = [220, 182, 191, 234, 290, 330, 310, 123];
@@ -891,19 +1023,9 @@
         });
     }
     barChart();
-    $('#nav').on('click','.nav_btn',function () {
-        $(this).addClass('nav_action').siblings('.nav_action').removeClass('nav_action');
-        if($(this).html().trim()=='任务完成度分析'){
-            $('#progress').show()
-            $('#customer').hide();
-        }else{
-            $('#customer').show();
-            $('#progress').hide()
-        }
-    });
-    $('.progress_nav').on('click','.progress_nav_btn',function () {
-        $(this).addClass('progress_nav_btn_action').siblings('.progress_nav_btn_action').removeClass('progress_nav_btn_action');
-    });
+//    $('.progress_nav').on('click','.progress_nav_btn',function () {
+//        $(this).addClass('progress_nav_btn_action').siblings('.progress_nav_btn_action').removeClass('progress_nav_btn_action');
+//    });
     $('.title_action').click(function () {
         $('.action_tip').toggle();
     });
@@ -911,7 +1033,7 @@
         $('.add_store_box').toggle();
         $('.add_store').hide();
 //        var tp=($('.add_store_box').height()-$("#screen_shop").height())/2;
-        var left=($('.add_store_box').width()-$("#screen_shop").width())/2;
+        var left=($('.add_store_box').width()-$("#screen_shop").width())/2-120;
         var tp=25;
         $("#screen_shop").show();
         $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});

@@ -25,9 +25,9 @@ body{
   border-radius: rem(5);
   border: 1px solid #e1e1e1;
   color: #888888;
-  font-size:rem(15);
-  background:#FFF url("../image/all_0.png")no-repeat rem(92) 51%;
-  background-size:rem(16);
+  font-size:rem(16);
+  background:#FFF url("../image/all_0.png")no-repeat 33% rem(12);
+  background-size:rem(18);
 }
 input::-ms-input-placeholder{text-align: center;}
 input::-webkit-input-placeholder{text-align: center;}

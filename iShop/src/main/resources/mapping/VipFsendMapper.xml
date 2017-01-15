@@ -15,6 +15,7 @@
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="send_time" property="send_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_vip_code" property="activity_vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" />
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
@@ -28,6 +29,7 @@
         def_vip_fsendsms.sms_code,
          def_vip_fsendsms.send_type,
          def_vip_fsendsms.send_scope,
+         def_vip_fsendsms.send_time,
         def_vip_fsendsms.sms_vips,
        def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
@@ -48,6 +50,7 @@
         def_vip_fsendsms.id,
         def_vip_fsendsms.sms_code,
         def_vip_fsendsms.send_type,
+        def_vip_fsendsms.send_time,
         def_vip_fsendsms.send_scope,
         def_vip_fsendsms.sms_vips,
         def_vip_fsendsms.vip_group_code,
@@ -181,6 +184,7 @@
         def_vip_fsendsms.sms_code,
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
+        def_vip_fsendsms.send_time,
         def_vip_fsendsms.sms_vips,
         def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
@@ -226,14 +230,16 @@
         def_vip_fsendsms.sms_code,
         def_vip_fsendsms.send_type,
         def_vip_fsendsms.send_scope,
+        def_vip_fsendsms.send_time,
         def_vip_fsendsms.sms_vips,
-         def_vip_fsendsms.vip_group_code,
+        def_vip_fsendsms.vip_group_code,
         def_vip_fsendsms.content,
         def_vip_fsendsms.corp_code,
         def_vip_fsendsms.modified_date,
         def_vip_fsendsms.modifier,
         def_vip_fsendsms.created_date,
         def_vip_fsendsms.creater,
+        def_vip_fsendsms.activity_vip_code,
         def_vip_fsendsms.isactive
         FROM def_vip_fsendsms
         WHERE def_vip_fsendsms.corp_code = #{corp_code}

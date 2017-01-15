@@ -10,6 +10,7 @@ var vip_group_info={
     nowList:[],
     staff_num:1,
     staff_next:false,
+    choose_staff_next:false,
     isscroll:false,
     list_show:false,
     charts:{},
@@ -34,14 +35,17 @@ var vip_group_info={
         this.transAnalysis();
         this.transShowModel();
         this.addChart();
+        this.staffSearch();
+        this.staff_bind();
     },
     switchModel:function(){
         $("#show_chart").click(function(){
             $(this).addClass("active").siblings().removeClass("active");
             $("#list_show").hide();
             $("#action").find(".action_r").hide();
-            $("#chart_analyze").parent().show();
+            $("#chart_parent").show();
             vip_group_info.list_show=false;
+            $("#left").getNiceScroll().resize()
         });
         $("#show_list").click(function(){
            if( !vip_group_info.list_show && vip_group_info.nowId!=""){
@@ -53,8 +57,9 @@ var vip_group_info={
             $(this).addClass("active").siblings().removeClass("active");
             $("#list_show").show();
             $("#action").find(".action_r").show();
-            $("#chart_analyze").parent().hide();
+            $("#chart_parent").hide();
             vip_group_info.list_show=true;
+            $("#left").getNiceScroll().resize()
         })
     }
     ,
@@ -153,7 +158,9 @@ var vip_group_info={
     slideLeft:function(){
         $("#group_list li div").click(function(){
             if($(this).next().find("li").length>0){
-                $(this).next().slideToggle();
+                $(this).next().slideToggle(function(){
+                    $("#left").getNiceScroll().resize()
+                });
                 $(this).parent().find("i").toggle();
             }
         });
@@ -360,7 +367,15 @@ var vip_group_info={
                 }
             }
             vip_group_info.getChartsData();
-        })
+        });
+        $("#left").niceScroll({
+            cursorborder: "0 none", cursoropacitymin: "0", boxzoom: false,
+            cursorcolor: " rgba(0,0,0,0.1)",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorminheight: 30,
+            autohidemode: false
+        });
     },
     setPageSize: function () {
         $("#page_row").click(function(){
@@ -795,7 +810,6 @@ var vip_group_info={
                 vip_group_info.isscroll=false;
                 $("#choose_staff .screen_content_l").unbind("scroll");
                 $("#choose_staff .screen_content_l ul").empty();
-                $("#choose_staff .screen_content_r ul").empty();
                 vip_group_info.getstafflist(staff_num,mark);
             }
         });
@@ -852,10 +866,10 @@ var vip_group_info={
                 if(hasNextPage==false){
                     vip_group_info.staff_next=true;
                 }
-                $("#screen_staff .screen_content_l ul").append(staff_html);
+                //$("#screen_staff .screen_content_l ul").append(staff_html);
                 $("#choose_staff .screen_content_l ul").append(staff_html);
                 if(!vip_group_info.isscroll){
-                    $("#screen_staff .screen_content_l").bind("scroll",function () {
+                    $("#choose_staff .screen_content_l").bind("scroll",function () {
                         var nScrollHight = $(this)[0].scrollHeight;
                         var nScrollTop = $(this)[0].scrollTop;
                         var nDivHight=$(this).height();
@@ -863,8 +877,8 @@ var vip_group_info={
                             if(vip_group_info.staff_next){
                                 return;
                             }
-                            getstafflist(vip_group_info.staff_num);
-                        };
+                            vip_group_info.getstafflist(vip_group_info.staff_num,"staff");
+                        }
                     })
                 }
                 vip_group_info.isscroll=true;
@@ -881,6 +895,8 @@ var vip_group_info={
                 alert(data.message);
             }
         });
+    },
+    staff_bind:function(){
         //导购关闭
         $("#close_choose_staff").click(function(){
             $("#choose_staff").hide();
@@ -928,6 +944,16 @@ var vip_group_info={
                 })
             }
         })
+    },
+    staffSearch:function(){
+      $("#search_staff").bind("keydown",function(){
+          var event=window.event||arguments[0];
+          if(event.keyCode=="13"){
+              vip_group_info.staff_num=1;
+              $("#choose_staff .screen_content_l ul").empty();
+              vip_group_info.getstafflist("1","staff");
+          }
+      })
     },
     fsendMessage:function(){
         $("#more").on("click","#fsendMessage",function(){
@@ -1044,7 +1070,6 @@ var vip_group_info={
                 param.vip_group_code="";
                 param.fixed_code=$("#"+vip_group_info.nowId).attr("id");
             }
-        console.log(param.vip_group_code)
             oc.postRequire("post","/vipAnalysis/vipChart","0",param,function (data) {
                vip_group_info.allChartsData=JSON.parse(data.message);
                vip_group_info.getCharts()
@@ -1685,9 +1710,6 @@ $(function(){
     $(".icon-ishop_6-07").parent().click(function () {
         window.location.reload();
     });
-    $("#chart_parent").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-100+"px");
-    $("#chart_parent>div").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-100+"px");
-    setInterval(function(){
-        $("#left").height($("#left").next().height()-10)
-    },0);
 });
+$("#chart_parent").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-195+"px");
+$("#chart_parent>div").css("minHeight",parseInt(window.innerHeight||document.documentElement.clientHeight)-195+"px");

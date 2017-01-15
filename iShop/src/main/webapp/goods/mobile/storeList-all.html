@@ -100,6 +100,19 @@
             $('.main').eq(0).css('display','block');
             $('.main').eq(1).css('display','none');
         }
+        //底部判断
+        console.log(list.length)
+        if(list.length<20){
+            console.log('y')
+            $('.bottom').css('display','block');
+            if(list == 0){
+                console.log('n')
+                $('.bottom').css('display','none');
+            }
+        }else{
+            console.log('n')
+            $('.bottom').css('display','none');
+        }
         //去重
         var arr=[];
         var unqiuearr=[];
@@ -146,17 +159,12 @@
             html += nowHTML3;
             $('.main').eq(0).html(html);
         }
-        //底部判断
-        if(list.length<20){
-            $('.bottom').css('display','block');
-        }else{
-            $('.bottom').css('display','none');
-        }
 //        $('.main .area_box').remove();
         if(list.length>20){
             cache.page +=1;
             nextPage();
         }
+        scroll();
         toNext();
         changePage();
     }
@@ -165,6 +173,7 @@
         $('.box').click(function () {
             var corp_code =  GetRequest().corp_code;
             var store_code = $(this).attr('id');
+            $.cookie('storeListAllKey',$(window).scrollTop());
             window.location.href = 'store_shoppers.html?corp_code='+corp_code+'&store_code='+store_code;
         });
         $('.right img').click(function () {
@@ -174,6 +183,7 @@
             var y = val[0];
             var name = $(this).prev('shop').text();
             console.log(name);
+            $.cookie('storeListAllKey',$(window).scrollTop());
             window.location.href = 'baiduMap.html?x='+x+'&y='+y+'&name='+name;
         });
     }
@@ -184,7 +194,9 @@
         $('.none').unbind('click').bind('click',function () {
             console.log('为空');
             $('.title input').val('');
-            $('.title button').click();
+            $('.title input').css('background-image','');
+            $('.title input').attr('placeholder','搜索门店');
+            $('.title button').click(); $('.bottom').css('display','none');
         });
     }
     function nextPage(){
@@ -200,6 +212,14 @@
                 getPage();
             }
         });
+    }
+    //控制页面返回的高度
+    function scroll(){
+        var storeListAllKey = $.cookie('storeListAllKey');
+        if(storeListAllKey==''){
+            storeListAllKey=0;
+        }
+        $(window).scrollTop(storeListAllKey);
     }
     window.onload= function () {
         cache.page = '1';

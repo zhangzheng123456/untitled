@@ -35,7 +35,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public void initScheduleJob() throws Exception{
 //        List<ScheduleJob> scheduleJobList = jdbcDao.queryList(Criteria.select(ScheduleJob.class));
 
-        List<ScheduleJob> scheduleJobList = scheduleJobMapper.selectAllScheduleJob();
+        List<ScheduleJob> scheduleJobList = scheduleJobMapper.selectAllUnJob();
 
         if (CollectionUtils.isEmpty(scheduleJobList)) {
             return;
@@ -67,6 +67,10 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public void update(ScheduleJob scheduleJob) throws Exception{
         ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
         scheduleJobMapper.updateScheduleJob(scheduleJob);
+    }
+
+    public void updateSchedule(String job_name,String job_group) throws Exception{
+        scheduleJobMapper.updateStatus(job_name, job_group);
     }
 
     public void delUpdate(ScheduleJob scheduleJob) throws Exception{

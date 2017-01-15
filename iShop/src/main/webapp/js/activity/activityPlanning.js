@@ -14,8 +14,8 @@ var activityPlanning={
 	},
 	init:function(){
 		this.allEvent();
-		this.getTaskList();
-		this.getPlanningList();
+		// this.getTaskList();
+		// this.getPlanningList();
 	},
 	allEvent:function(){
 		//任务切换
@@ -83,6 +83,8 @@ var activityPlanning={
 		$(".p_task_content").on("click",'.input_parent .group_add',function(){
 			$(this).parents(".add_del").hide();
 			var html=$(this).parents('.input_parent').clone();
+			$(html).find(".text_input").val("");
+			$(html).find("")
 			$(html).find(".add_del").show();
 			$(html).find(".group_del").show();
 			$(this).parents('.group_parent').append(html);
@@ -128,8 +130,8 @@ var activityPlanning={
 			var index=$(this).index();
 			$(this).addClass("active");
 			$(this).siblings("li").removeClass("active");
-			$("#tab_list .tab_list").eq(index).show();
-			$("#tab_list .tab_list").eq(index).siblings().hide();
+			$("#tabs-content .tab_list").eq(index).show();
+			$("#tabs-content .tab_list").eq(index).siblings().hide();
 		})
 		//编辑弹框
 		$(".p_task_content").on("click",".input_parent .group_edit",function(){
@@ -145,7 +147,7 @@ var activityPlanning={
 		$(".p_task_content").on("click",".input_parent .edit_footer_save",function(){
 			$(this).parents('.input_parent').find(".edit_frame").hide()
 			whir.loading.remove('mask');
-		})
+		})//所有点击事件
 	},
 	evaluationTask:function(){
 		var nextIndex=$("#task_titles li.active").index();
@@ -156,6 +158,7 @@ var activityPlanning={
 		$("#task_description").val(nextCurrent.task_description);
 		$("#target_start_time").val(nextCurrent.target_start_time);
 		$("#target_end_time").val(nextCurrent.target_end_time);
+		$("#task_link").val(nextCurrent.task_link);//给任务的input赋值
 	},
 	getTaskList:function(){
 		var param={};
@@ -188,7 +191,7 @@ var activityPlanning={
 	            });
         	}
             whir.loading.remove();//移除加载框
-		})
+		})//获取任务列表
 	},
 	modifieTask:function(){//修改选中的任务
 		var self=this;
@@ -246,15 +249,6 @@ var activityPlanning={
 			});
 			return;
 		}
-		if(task_description==""){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content:"任务简述不能为空"
-			});
-			return;
-		}
 		var param={};
 		param["task_title"]=task_title;//任务标题
 		param["target_start_time"]=target_start_time;//开始时间
@@ -271,8 +265,17 @@ var activityPlanning={
 		if(param==undefined){
 			return;
 		}
-		$("#task_titles li").removeClass('active');
 		var length=$("#task_titles li").length+1;
+		if(length>=6){
+			art.dialog({
+	            time: 1,
+	            lock: true,
+	            cancel: false,
+	            content:"添加任务不能超过5个"
+	        });
+			return;
+		}
+		$("#task_titles li").removeClass('active');
 		$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		self.param.tasklist.push(param);
 		$("#task_title").val("");
@@ -298,11 +301,12 @@ var activityPlanning={
 	    //微信推送
 		for(var i=0;i<wxlistnode.length;i++){
 			var send_time=$(wxlistnode[i]).find(".text_input").val();//发送时间
-			var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
-			var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
-			var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
-			var image="";//封面链接
-			var wxparam={"send_time":send_time,"content":{"title":title,url:url,desc:desc,image:image}};
+			// var title=$(wxlistnode[i]).find(".edit_frame .edit_title").val();//推送标题
+			// var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
+			// var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			var content=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			// var image="";//封面链接
+			var wxparam={"send_time":send_time,"content":content};
 			wxlist.push(wxparam);
 		}
 		//短信群发

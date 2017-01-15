@@ -64,6 +64,7 @@
             html+=nowHTML;
             $('.main').html(html);
         }
+        scroll();
         toNext();
     }
     //跳转
@@ -75,6 +76,7 @@
         $('.box').click(function () {
             var corp_code = 'C10000';
             var store_code =$(this).attr('id');
+            $.cookie('storeListKey',$(window).scrollTop());
             window.location.href = 'store_shoppers.html?corp_code='+corp_code+'&store_code='+store_code;
         });
         $('.right_name img').click(function(){
@@ -84,8 +86,17 @@
             var y = val[0];
             var name = $(this).prev('shop').text();
             console.log(name);
+            $.cookie('storeListKey',$(window).scrollTop());
             window.location.href = 'baiduMap.html?x='+x+'&y='+y+'&name='+name;
         })
+    }
+    //控制页面返回的高度
+    function scroll(){
+        var storeListKey = $.cookie('storeListKey');
+        if(storeListKey==''){
+            storeListKey=0;
+        }
+        $(window).scrollTop(storeListKey);
     }
     //获取？后缀
     function GetRequest() {

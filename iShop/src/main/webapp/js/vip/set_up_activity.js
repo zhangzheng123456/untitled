@@ -1,8 +1,8 @@
 var oc = new ObjectControl();
 var activity={
-    isEmpty:false,
+    isEmpty:false,//input为空判断
     label:"",
-    theme:"",
+    theme:"",//活动标题唯一性判断
     shop_num:1,
     shop_next:false,
     area_num:1,
@@ -39,9 +39,17 @@ var activity={
     selectClick:function () {//input下拉模拟
         $(".setUp_activity_details").on("click",".select_input",function () {
             $(this).nextAll("ul").toggle();
+            var li=$(this).children("li");
+            if(li.length<1){
+                $(".activity_select").css("border","none");
+            }
         });
         $(".setUp_activity_details").on("click","i",function () {
             $(this).nextAll("ul").toggle();
+            var li=$(this).children("li");
+            if(li.length<1){
+                $(".activity_select").css("border","none");
+            }
         });
         $(document).click(function (e) {
             if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
@@ -508,9 +516,14 @@ var activity={
                         var corp=$("#OWN_CORP").val();
                         $("#tabs>div:first-child").attr("data-corp",corp);
                         var input=$("#coupon_activity").find("input");
+                        var input_l=$("#recruit_activity").find("input");
                         for(var j=0;j<input.length;j++){
                             $(input[j]).val("");
                             $(input[j]).attr("data-code","");
+                        }
+                        for(var k=0;l<input_l.length;k++){
+                            $(input_l[k]).val("");
+                            $(input_l[k]).attr("data-code","");
                         }
                         activity.getCoupon();
                     }
@@ -518,9 +531,14 @@ var activity={
                 $('.searchable-select-item').click(function () {
                     var corp=$("#OWN_CORP").val();
                     var input=$("#coupon_activity").find("input");
+                    var input_l=$("#recruit_activity").find("input");
                     for(var j=0;j<input.length;j++){
                         $(input[j]).val("");
                         $(input[j]).attr("data-code","");
+                    }
+                    for(var k=0;k<input_l.length;k++){
+                        $(input_l[k]).val("");
+                        $(input_l[k]).attr("data-code","");
                     }
                     $("#tabs>div:first-child").attr("data-corp",corp);
                     activity.getCoupon();
@@ -775,6 +793,20 @@ var activity={
                 }
             }
         });
+        //招募金额限制数字格式
+        $(".setUp_activity_details").on("blur",".number_input",function () {
+            var reg = /^\d+$|^\d+\.\d+$/g
+            var val = $(this).val();
+            if(!reg.test(val)){
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "请输入正确招募金额"
+                });
+                $(this).val("");
+            }
+        });
     },
     createCode:function () {//生成二维码
         $("#create_code").click(function () {
@@ -811,7 +843,7 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0&&$("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active")){
+                if(msg.length==0&&(($("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active"))||$("#recruit_activity").css("display")=="block")){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -850,9 +882,6 @@ var activity={
                             if($(vue[i]).val()==""){
                                 activity.isEmpty=true;
                                 activity.label=$(e).prev("label").html().replace("*","");
-                                if(activity.label="至"){
-                                    activity.label="活动时间";
-                                }
                             }
                         });
                     }
@@ -864,6 +893,9 @@ var activity={
             if(vue==""){
                 activity.isEmpty=true;
                 activity.label=$(this).prev("label").html();
+                if(activity.label="至"){
+                    activity.label="活动时间";
+                }
             }
         });
     },
@@ -999,6 +1031,7 @@ var activity={
         return def;
     },
     activityEdit:function () {
+        whir.loading.add("",0.5);
         var param={
             "activity_code":activity.activity_code
         };
@@ -1093,7 +1126,7 @@ var activity={
                             li+="<li><ul><li><label>招募级别</label><input class='text_input select_input' value='"+recruit[i].vip_card_type_name+"' data-code='"+recruit[i].vip_card_type_code+"' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                 +"<ul class='activity_select vipCardType'>"
                                 +"</ul></li><li>"
-                                +"<label>招募金额</label><input placeholder='请输入招募最低消费额' value='"+recruit[i].join_threshold+"' class='text_input'></li>"
+                                +"<label>招募金额</label><input placeholder='请输入招募最低消费额' value='"+recruit[i].join_threshold+"' class='text_input number_input'></li>"
                                 +"<li "+display+"><span class='add_recruit'>+</span><span class='remove_recruit'>-</span></li></ul></li>"
                         }
                         $("#recruit_activity .operate_ul").append(li);
@@ -1183,7 +1216,8 @@ var activity={
                     $("#coupon_activity").show();
                 }
             }
-        })
+            whir.loading.remove();
+        });
     }
 };
 $(function () {

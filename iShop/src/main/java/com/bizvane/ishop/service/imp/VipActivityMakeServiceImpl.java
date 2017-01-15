@@ -214,6 +214,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
 
                 count += vipFsendService.insertSend(vipFsend);
             }
+            //开关，Y为开，N为关
             count += vipActivityService.updActiveCodeByType("send_status", "Y", corp_code, activity_vip_code);
             count += vipActivityService.updActiveCodeByType("sms_code", send_code_actvie, corp_code, activity_vip_code);
         }
