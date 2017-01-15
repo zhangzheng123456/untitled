@@ -8,4 +8,8 @@ public interface VipActivityMakeService {
 
     int addOrUpdateSend(String message,String user_code)throws Exception;
 
+     int addStrategyByTask(String message, String user_code) throws Exception;
+
+     int addStrategyBySend(String message, String user_code) throws Exception ;
+
 }
