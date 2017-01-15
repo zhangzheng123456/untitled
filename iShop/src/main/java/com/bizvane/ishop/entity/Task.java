@@ -45,15 +45,8 @@ public class Task {
 
     //关联活动
     private String activity_vip_code;
-    private String task_link;
 
-    public String getTask_link() {
-        return task_link;
-    }
 
-    public void setTask_link(String task_link) {
-        this.task_link = task_link;
-    }
 
     public String getTask_type_code_old() {
         return task_type_code_old;
