@@ -11,6 +11,7 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.AESUtils;
+import com.bizvane.ishop.utils.BaiduMapUtils;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
@@ -1360,14 +1361,23 @@ public class WebController {
             String app_user_name = jsonObj.get("app_user_name").toString();
             String latitude = jsonObj.get("latitude").toString();
             String longitude = jsonObj.get("longitude").toString();
+            JSONArray array = BaiduMapUtils.ConvertCoords(longitude+","+latitude,"1","5");
 
+            if (array.size()>0){
+                JSONObject coords = array.getJSONObject(0);
+                longitude = coords.getString("x");
+                latitude = coords.getString("y");
+            }
             CorpWechat corpWechat = corpService.getCorpByAppUserName(app_user_name);
-            PageInfo<Store> stores = storeService.getAllStore(request,1,10,corpWechat.getCorp_code(),"","","");
-            List<Store> storeList = stores.getList();
+            List<Store> storeList = storeService.selectNearByStore(corpWechat.getCorp_code(),longitude,latitude,"5000");
             for (int i = 0; i < storeList.size(); i++) {
                 Store store = storeList.get(i);
-                store.setStore_location("39.9484,116.48548");
-                store.setIs_this_area("200m");
+                String lng = store.getLng();
+                String lat = store.getLat();
+                store.setStore_location(lat+","+lng);
+
+                Double distance = BaiduMapUtils.GetDistance(latitude,longitude,lat,lng);
+                store.setIs_this_area(distance.toString());
             }
             result.put("list",JSON.toJSONString(storeList));
         } catch (Exception ex) {
