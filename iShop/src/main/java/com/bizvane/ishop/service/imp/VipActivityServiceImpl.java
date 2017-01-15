@@ -174,6 +174,12 @@ public class VipActivityServiceImpl implements VipActivityService {
     @Override
     public VipActivity selActivityByCode(String activity_vip_code) throws Exception {
         VipActivity vipActivity = vipActivityMapper.selActivityByCode(activity_vip_code);
+        if(null!=vipActivity.getTask_code()&&!"".equals(vipActivity.getTask_code())&&vipActivity.getTask_code().endsWith(",")){
+            vipActivity.setTask_code(vipActivity.getTask_code().substring(0,vipActivity.getTask_code().length()-1));
+        }
+        if(null!=vipActivity.getSms_code()&&!"".equals(vipActivity.getSms_code())&&vipActivity.getSms_code().endsWith(",")){
+            vipActivity.setSms_code(vipActivity.getSms_code().substring(0,vipActivity.getSms_code().length()-1));
+        }
         return vipActivity;
     }
 
