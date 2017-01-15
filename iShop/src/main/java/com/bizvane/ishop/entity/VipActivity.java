@@ -13,6 +13,8 @@ public class VipActivity {
     private String activity_theme;
     //活动执行状态
     private String activity_state;
+    //活动链接
+    private String activity_url;
     //活动类别
     private String run_mode;
     //活动开始时间
@@ -222,5 +224,13 @@ public class VipActivity {
 
     public void setTarget_vips_count(String target_vips_count) {
         this.target_vips_count = target_vips_count;
+    }
+
+    public String getActivity_url() {
+        return activity_url;
+    }
+
+    public void setActivity_url(String activity_url) {
+        this.activity_url = activity_url;
     }
 }

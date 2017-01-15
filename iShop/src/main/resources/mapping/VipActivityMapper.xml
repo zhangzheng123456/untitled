@@ -12,7 +12,8 @@
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_state" property="activity_state"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-
+        <result column="activity_url" property="activity_url"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="run_mode" property="run_mode" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="start_time" property="start_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="end_time" property="end_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -71,6 +72,9 @@
             </if>
             <if test="activity_state!=null">
                 activity_state,
+            </if>
+            <if test="activity_url!=null">
+                activity_url,
             </if>
             <if test="run_mode!=null">
                 run_mode,
@@ -133,6 +137,9 @@
             </if>
             <if test="activity_state!=null">
                 #{activity_state},
+            </if>
+            <if test="activity_url!=null">
+                #{activity_url},
             </if>
             <if test="run_mode!=null">
                 #{run_mode},
@@ -199,6 +206,9 @@
             </if>
             <if test="activity_state!=null">
                 activity_state=#{activity_state},
+            </if>
+            <if test="activity_url!=null">
+                activity_url=#{activity_url},
             </if>
             <if test="run_mode!=null">
                 run_mode=#{run_mode},
