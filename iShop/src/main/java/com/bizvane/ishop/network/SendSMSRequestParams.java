@@ -1,25 +1,12 @@
 package com.bizvane.ishop.network;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SendSMSRequestParams {
+public class SendSMSRequestParams extends  RequestParams {
 
-	private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
+	public class SendSMSTrans extends  BaseTrans{
 
-	public class SendSMSTrans {
-		private int id;
-
-		public String getCommand() {
-			return command;
-		}
-
-		public void setCommand(String command) {
-			this.command = command;
-		}
-
-		private String command;
 		private JSONObject params;
 
 		public class SendSMSTransParams {
@@ -56,15 +43,6 @@ public class SendSMSRequestParams {
 
 		}
 
-		public int getId() {
-			return id;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
-
 		public JSONObject getParams() {
 			return params;
 		}
@@ -84,22 +62,5 @@ public class SendSMSRequestParams {
 
 
 
-	public String getTransactions() {
-		return transactions;
-	}
 
-	public void setTransactions(SendSMSTrans transaction) throws JSONException {
-
-		JSONArray jSONTransactions = new JSONArray();
-		JSONObject JSONTransaction = new JSONObject();
-
-		JSONTransaction.put("id", transaction.id);
-		JSONTransaction.put("command", transaction.command);
-		JSONTransaction.put("params", transaction.params);
-
-		jSONTransactions.put(JSONTransaction);
-
-		this.transactions = jSONTransactions.toString();
-
-	}
 }

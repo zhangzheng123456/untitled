@@ -4,13 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ExecuteWebActionRequestParams {
+public class ExecuteWebActionRequestParams  extends  RequestParams{
 
 	private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
 
-	public class ExecuteWebActionTrans {
-		private int id;
-		private String command = "ExecuteWebAction";
+	public class ExecuteWebActionTrans  extends BaseTrans{
+
 		private JSONObject params;
 
 		public class ExecuteWebActionTransParams {
@@ -33,22 +32,6 @@ public class ExecuteWebActionRequestParams {
 			
 		}
 
-		public int getId() {
-			return id;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
-		// public String getCommand() {
-		// return command;
-		// }
-		//
-		// public void setCommand(String command) {
-		// this.command = command;
-		// }
-
 		public JSONObject getParams() {
 			return params;
 		}
@@ -68,14 +51,14 @@ public class ExecuteWebActionRequestParams {
 		return transactions;
 	}
 
-	public void setTransactions(ExecuteWebActionTrans transaction) throws JSONException {
+	public void setTransactions(BaseTrans transaction) throws JSONException {
 
 		JSONArray jSONTransactions = new JSONArray();
 		JSONObject jSONTransaction = new JSONObject();
 
-		jSONTransaction.put("id", transaction.id);
-		jSONTransaction.put("command", transaction.command);
-		jSONTransaction.put("params", transaction.params);
+		jSONTransaction.put("id", transaction.getId());
+		jSONTransaction.put("command", transaction.getCommand());
+		jSONTransaction.put("params", transaction.getParams());
 
 		jSONTransactions.put(jSONTransaction);
 

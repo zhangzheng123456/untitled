@@ -4,13 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ExecuteSQLRequestParams {
+public class ExecuteSQLRequestParams  extends  RequestParams{
 
-	private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
+	public class ExecuteSQLTrans extends BaseTrans{
 
-	public class ExecuteSQLTrans {
-		private int id;
-		private String command = "ExecuteSQL";
 		private JSONObject params;
 
 		public class ExecuteSQLTransParams {
@@ -34,21 +31,6 @@ public class ExecuteSQLRequestParams {
 			}
 		}
 
-		public int getId() {
-			return id;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
-		// public String getCommand() {
-		// return command;
-		// }
-		//
-		// public void setCommand(String command) {
-		// this.command = command;
-		// }
 
 		public JSONObject getParams() {
 			return params;
@@ -67,22 +49,4 @@ public class ExecuteSQLRequestParams {
 
 
 
-	public String getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(ExecuteSQLTrans transaction) throws JSONException {
-
-		JSONArray jSONTransactions = new JSONArray();
-		JSONObject JSONTransaction = new JSONObject();
-
-		JSONTransaction.put("id", transaction.id);
-		JSONTransaction.put("command", transaction.command);
-		JSONTransaction.put("params", transaction.params);
-
-		jSONTransactions.put(JSONTransaction);
-
-		this.transactions = jSONTransactions.toString();
-
-	}
 }

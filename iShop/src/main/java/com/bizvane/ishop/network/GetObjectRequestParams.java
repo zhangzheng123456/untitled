@@ -4,13 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GetObjectRequestParams {
+public class GetObjectRequestParams  extends RequestParams{
 
-	private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
+	public class GetObjectTran extends BaseTrans{
 
-	public class GetObjectTran{
-		private int id;
-		private String command = "GetObject";
 		private JSONObject params;
 		
 		public class GetObjectTransParams{
@@ -41,14 +38,6 @@ public class GetObjectRequestParams {
 			
 		}
 
-		public int getId() {
-			return id;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
 		public JSONObject getParams() {
 			return params;
 		}
@@ -62,25 +51,5 @@ public class GetObjectRequestParams {
 		}
 		
 	}
-	
 
-
-	public String getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(GetObjectTran transaction) throws JSONException {
-
-		JSONArray jSONTransactions = new JSONArray();
-		JSONObject JSONTransaction = new JSONObject();
-
-		JSONTransaction.put("id", transaction.getId());
-		JSONTransaction.put("command", transaction.command);
-		JSONTransaction.put("params", transaction.getParams());
-
-		jSONTransactions.put(JSONTransaction);
-
-		this.transactions = jSONTransactions.toString();
-
-	}
 }

@@ -18,8 +18,6 @@ public class CRMInterfaceServiceImpl  {
 
     public static  String url = "http://60.190.132.114:8080/servlets/binserv/Rest";
 
-    private static Appsign appsign=new Appsign();
-
 
     /**
      *
@@ -35,16 +33,13 @@ public class CRMInterfaceServiceImpl  {
     //增加会员(通过测试)
     public static String addvip(HashMap<String,Object> hashmap){
 
-        CreateObjectRequestParams createObjectRequestParams = new CreateObjectRequestParams();
-        CreateObjectRequestParams.CreateObjectTrans createObjectTrans = createObjectRequestParams.new CreateObjectTrans();
-
-           //获取登录信息
-           Appsign.sign(appsign);
+        RequestParams createObjectRequestParams = new RequestParams();
+        RequestParams.BaseTrans createObjectTrans = createObjectRequestParams.new BaseTrans();
 
         //请求方式
         createObjectTrans.setCommand("ObjectCreate");
         //设置id
-        createObjectTrans.setId("112");
+        createObjectTrans.setId(112);
         //请求params
         JSONObject vipJsonObject = new JSONObject(hashmap);
 
@@ -53,11 +48,12 @@ public class CRMInterfaceServiceImpl  {
         createObjectRequestParams.setTransactions(createObjectTrans);
 
         //执行添加
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(createObjectRequestParams.getSip_sign(),createObjectRequestParams.getSip_appkey(),
+                createObjectRequestParams.getAppSecret(),createObjectRequestParams.getSip_timestamp(),
                              createObjectRequestParams.getTransactions());
 
 
+        System.out.println(info);
         return  info;
     }
 
@@ -68,8 +64,7 @@ public class CRMInterfaceServiceImpl  {
         QueryRequestParams.QueryTrans queryTrans = queryRequestParams.new QueryTrans();
         QueryRequestParams.QueryTrans.QueryTransParams queryTransParams = queryTrans.new QueryTransParams();
 
-        //获取登录信息
-        Appsign.sign(appsign);
+
 
         //请求方式
         queryTrans.setCommand("Query");
@@ -108,8 +103,8 @@ public class CRMInterfaceServiceImpl  {
         queryRequestParams.setTransactions(queryTrans);
 
         //查询
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(queryRequestParams.getSip_sign(),queryRequestParams.getSip_appkey(),
+                queryRequestParams.getAppSecret(),queryRequestParams.getSip_timestamp(),
                 queryRequestParams.getTransactions());
 
           System.out.println(info.toString());
@@ -120,17 +115,15 @@ public class CRMInterfaceServiceImpl  {
     //修改会员(测试成功)
     public  static  String modifyvip(HashMap<String,Object> hashmap){
 
-        ModifyObjectRequestParams modifyObjectRequestParams = new ModifyObjectRequestParams();
-        ModifyObjectRequestParams.ModifyObjectTrans modifyObjectTrans = modifyObjectRequestParams.new ModifyObjectTrans();
+        RequestParams modifyObjectRequestParams = new RequestParams();
+        RequestParams.BaseTrans modifyObjectTrans = modifyObjectRequestParams.new BaseTrans();
 
-        //获取登录信息
-        Appsign.sign(appsign);
 
         //查询方式为修改
         modifyObjectTrans.setCommand("ObjectModify");
 
         //id值
-        modifyObjectTrans.setId("112");
+        modifyObjectTrans.setId(112);
 
             JSONObject vipJsonObject = new JSONObject(hashmap);
 
@@ -140,8 +133,8 @@ public class CRMInterfaceServiceImpl  {
         modifyObjectRequestParams.setTransactions(modifyObjectTrans);
 
         //查询
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(modifyObjectRequestParams.getSip_sign(),modifyObjectRequestParams.getSip_appkey(),
+                modifyObjectRequestParams.getAppSecret(),modifyObjectRequestParams.getSip_timestamp(),
                 modifyObjectRequestParams.getTransactions());
 
         System.out.println(info.toString());
@@ -155,9 +148,6 @@ public class CRMInterfaceServiceImpl  {
         SendSMSRequestParams sendsmsRequestParams = new SendSMSRequestParams();
         SendSMSRequestParams.SendSMSTrans sendsmsTrans = sendsmsRequestParams.new SendSMSTrans();
         SendSMSRequestParams.SendSMSTrans.SendSMSTransParams sendsmsTransParams = sendsmsTrans.new SendSMSTransParams();
-
-        //获取登录信息
-        Appsign.sign(appsign);
 
         //设置id
         sendsmsTrans.setId(112);
@@ -178,8 +168,8 @@ public class CRMInterfaceServiceImpl  {
         sendsmsRequestParams.setTransactions(sendsmsTrans);
 
         //执行添加
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(sendsmsRequestParams.getSip_sign(),sendsmsRequestParams.getSip_appkey(),
+                sendsmsRequestParams.getAppSecret(),sendsmsRequestParams.getSip_timestamp(),
                 sendsmsRequestParams.getTransactions());
 
         return  info;
@@ -193,10 +183,6 @@ public class CRMInterfaceServiceImpl  {
         ExecuteSQLRequestParams.ExecuteSQLTrans executeSQLTrans = executeSQLRequestParams.new ExecuteSQLTrans();
         ExecuteSQLRequestParams.ExecuteSQLTrans.ExecuteSQLTransParams executeSQLTransParams = executeSQLTrans.new ExecuteSQLTransParams();
 
-        //获取登录信息
-        Appsign.sign(appsign);
-
-
         for(String key:hashmap.keySet()){
             if(key.equals("name")){
                 executeSQLTransParams.setName(hashmap.get(key).toString());
@@ -206,14 +192,15 @@ public class CRMInterfaceServiceImpl  {
         }
 
         executeSQLTrans.setId(112);
+        executeSQLTrans.setCommand("ExecuteSQL");
         executeSQLTrans.setParams(executeSQLTransParams);
 
         executeSQLRequestParams.setTransactions(executeSQLTrans);
 
 
         //执行添加
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(executeSQLRequestParams.getSip_sign(),executeSQLRequestParams.getSip_appkey(),
+                executeSQLRequestParams.getAppSecret(),executeSQLRequestParams.getSip_timestamp(),
                 executeSQLRequestParams.getTransactions());
 
         return  info;
@@ -227,9 +214,6 @@ public class CRMInterfaceServiceImpl  {
         ExecuteWebActionRequestParams.ExecuteWebActionTrans executeWebActionTrans = executeWebActionRequestParams.new ExecuteWebActionTrans();
         ExecuteWebActionRequestParams.ExecuteWebActionTrans.ExecuteWebActionTransParams executeWebActionTransParams = executeWebActionTrans.new ExecuteWebActionTransParams();
 
-        //获取登录信息
-        Appsign.sign(appsign);
-
 
         for(String key:hashmap.keySet()){
             if(key.equals("webaction")){
@@ -240,13 +224,14 @@ public class CRMInterfaceServiceImpl  {
         }
 
         executeWebActionTrans.setId(112);
+        executeWebActionTrans.setCommand("ExecuteWebAction");
         executeWebActionTrans.setParams(executeWebActionTransParams);
 
         executeWebActionRequestParams.setTransactions(executeWebActionTrans);
 
         //执行添加
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(executeWebActionRequestParams.getSip_sign(),executeWebActionRequestParams.getSip_appkey(),
+                executeWebActionRequestParams.getAppSecret(),executeWebActionRequestParams.getSip_timestamp(),
                 executeWebActionRequestParams.getTransactions());
 
         System.out.println(info);
@@ -262,9 +247,6 @@ public class CRMInterfaceServiceImpl  {
         GetObjectRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
                 getObjectTran.new GetObjectTransParams();
 
-        //获取登录信息
-        Appsign.sign(appsign);
-
 
         for(String key:hashmap.keySet()){
             if(key.equals("table")){
@@ -277,13 +259,14 @@ public class CRMInterfaceServiceImpl  {
         }
 
         getObjectTran.setId(112);
+        getObjectTran.setCommand("GetObject");
         getObjectTran.setParams(getObjectTransParams);
 
         getObjectRequestParams.setTransactions(getObjectTran);
 
         //执行添加
-        String info=getConnection(appsign.getSip_sign(),appsign.getSip_appkey(),
-                appsign.getAppSecret(),appsign.getSip_timestamp(),
+        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
                 getObjectRequestParams.getTransactions());
 
 

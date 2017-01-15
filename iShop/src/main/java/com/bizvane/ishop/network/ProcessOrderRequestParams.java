@@ -1,17 +1,14 @@
 package com.bizvane.ishop.network;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ProcessOrderRequestParams {
-
-	private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
+public class ProcessOrderRequestParams extends  RequestParams {
 
 	public class ProcessOrderTrans {
-		private String id;
-		private String command = "ProcessOrder";
+
+	//	private String command = "ProcessOrder";
 		private JSONObject params;
 
 		public class ProcessOrderTransParams {
@@ -64,13 +61,6 @@ public class ProcessOrderRequestParams {
 
 		}
 
-		// public String getCommand() {
-		// return command;
-		// }
-		//
-		// public void setCommand(String command) {
-		// this.command = command;
-		// }
 
 		public JSONObject getParams() {
 			return params;
@@ -88,32 +78,8 @@ public class ProcessOrderRequestParams {
 			this.params = JSONParams;
 		}
 
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}
-	}
-
-
-	public String getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(ProcessOrderTrans transaction) throws JSONException {
-
-		JSONArray jSONTransactions = new JSONArray();
-		JSONObject JSONTransaction = new JSONObject();
-
-		JSONTransaction.put("id", transaction.getId());
-		JSONTransaction.put("command", transaction.command);
-		JSONTransaction.put("params", transaction.params);
-
-		jSONTransactions.put(JSONTransaction);
-
-		this.transactions = jSONTransactions.toString();
 
 	}
+
+
 }
