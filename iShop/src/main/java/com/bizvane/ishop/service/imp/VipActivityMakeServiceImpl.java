@@ -60,7 +60,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
                 JSONObject task_obj = new JSONObject(jsonArray_task.get(i).toString());
                 Task task = WebUtils.JSON2Bean(task_obj, Task.class);
 
-                if (task.getTask_title().equals("") || task.getTask_type_code().equals("") || task.getTask_description().equals("") || task.getTarget_start_time().equals("") || task.getTarget_end_time().equals("")) {
+                if (task.getTask_title().equals("") || task.getTask_type_code().equals("")  || task.getTarget_start_time().equals("") || task.getTarget_end_time().equals("")) {
                     continue;
                 }
                 task.setActivity_vip_code(activity_vip_code);
@@ -238,7 +238,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
         for (int i = 0; i < jsonArray_task.size(); i++) {
             JSONObject task_obj = new JSONObject(jsonArray_task.get(i).toString());
             Task task = WebUtils.JSON2Bean(task_obj, Task.class);
-            if(task.getTask_title().equals("")||task.getTask_type_code().equals("")||task.getTask_description().equals("")||task.getTarget_start_time().equals("")||task.getTarget_end_time().equals("")){
+            if(task.getTask_title().equals("")||task.getTask_type_code().equals("")||task.getTarget_start_time().equals("")||task.getTarget_end_time().equals("")){
                 continue;
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
@@ -395,7 +395,7 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             String send_type = Common.SEND_TYPE_EMAIL;
             content = send_obj.get("content").toString();
 
-
+            System.out.println("--------发送时间----------------------"+vipFsend.getSend_time());
             vipFsend.setSms_code(sms_code);
             vipFsend.setSend_type(send_type);
             vipFsend.setCorp_code(corp_code);
