@@ -2,6 +2,7 @@ package com.bizvane.ishop.utils;
 
 import com.bizvane.ishop.constant.Common;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,6 +10,8 @@ import java.util.Date;
  * Created by ZhouZhou on 2016/6/24.
  */
 public class TimeUtils {
+
+    public static final SimpleDateFormat DATETIME_FORMAT_DATE_MS = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.111");
 
     //前几天的日期
     //@param day
@@ -52,6 +55,25 @@ public class TimeUtils {
         String sunday = Common.DATETIME_FORMAT_DAY.format(cal.getTime());
 
         return monday+" "+sunday;
+    }
+
+    /**
+     * get current time with milliseconds
+     *
+     * @return
+     */
+    public static String getTimeWithMS(long timeInMillis) {
+        return getTime(timeInMillis, DATETIME_FORMAT_DATE_MS);
+    }
+    /**
+     * long time to string
+     *
+     * @param timeInMillis
+     * @param dateFormat
+     * @return
+     */
+    public static String getTime(long timeInMillis, SimpleDateFormat dateFormat) {
+        return dateFormat.format(new Date(timeInMillis));
     }
 
 
