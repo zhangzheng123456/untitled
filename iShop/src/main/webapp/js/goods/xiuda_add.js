@@ -5,19 +5,7 @@ var oc = new ObjectControl();
 //    var corp_code =GetRequest().corp_code;
 var num=1;
 var next=false;
-//获取？后缀
-function GetRequest() {
-    var url = decodeURI(location.search); //获取url中"?"符后的字串
-    var theRequest = new Object();
-    if (url.indexOf("?") != -1) {
-        var str = url.substr(1);
-        strs = str.split("&");
-        for (var i = 0; i < strs.length; i++) {
-            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-        }
-    }
-    return theRequest;
-}
+
 //输入框不为空检查
 function checkTemp(){
     $('.the_listTitle').find('input').blur(function(){
@@ -34,12 +22,6 @@ $('#add_one').click(function () {
     console.log('show');
     //点击添加匹配商品弹窗
     $("#search_match_goods").show();
-//            var corp_code='C10000'
-//            var pageSize=10;
-//            var pageIndex=1;
-//            var categoryId='';
-//            var row_num=0;
-//            var productName='';//搜索商品名称
     if(num>1){
         return;
     }else {
@@ -53,22 +35,6 @@ $('#add_one').click(function () {
 $('#close_match_goods').click(function () {
     $("#search_match_goods").hide();
 })
-//    function getList(){
-//        whir.loading.add("",0.5);//加载等待框
-//        oc.postRequire("get","/api/shopMatch/getGoodsByWx?corp_code="+corp_code+"&pageSize="+pageSize+"&pageIndex="+pageIndex+"&categoryId="+categoryId+"&row_num="+row_num+"&productName="+productName,'','',function(data){
-//            if(data.code=="0"){
-//                whir.loading.remove();//移除加载框
-//            }else if(data.code=="-1"){
-//                whir.loading.remove();//移除加载框
-//                art.dialog({
-//                    time: 1,
-//                    lock:true,
-//                    cancel: false,
-//                    content: data.message
-//                });
-//            }
-//        });
-//    }
 //搜索相关商品
 $("#d_search").click(function () {
     jQuery('#search_match_goods ul').empty();
@@ -185,6 +151,20 @@ $("#search_match_goods ul").scroll(function () {
         getmatchgoodsList(num);
     };
 })
+//******************封装插件******************
+//获取？后缀
+function GetRequest() {
+    var url = decodeURI(location.search); //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+}
 window.onload = function () {
     checkTemp();
 //        //搭配效果图
