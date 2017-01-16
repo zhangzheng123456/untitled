@@ -22,7 +22,7 @@
                     return ;
                 }else{
                     var index=$("#tabs .active").index();
-                    console.log(index);
+                    var prvindex=$(this).index();//获取上一个的坐标
                     if(index==0){
                         activity.checkEmpty();
                         if(activity.isEmpty==true){
@@ -60,12 +60,16 @@
                             });
                     }
                     if(index=="1"){
-                        $.when(activityPlanning.submitJob(),activityPlanning.submitGroup())
+                        if (prvindex>index){
+                            $.when(activityPlanning.submitJob(),activityPlanning.submitGroup())
                             .then(function(data1,data2){
                                 if(data1=="成功"&&data2=="成功"){
                                     self.getHtml(src,html);
                                 }
-                        });
+                            });
+                        }else if(prvindex<index){
+                            self.getHtml(src,html);
+                        }
                     }
                     if(index=="2"){
                         $.when(postSelect()).then(function (data) {
