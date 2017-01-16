@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class TimeUtils {
 
+    public static final SimpleDateFormat DATETIME_FORMAT_DATE_MS = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss.111");
+
     //前几天的日期
     //@param day
     public static String beforDays(int day) {
@@ -55,10 +57,23 @@ public class TimeUtils {
         return monday+" "+sunday;
     }
 
-
-    public static void main(String[] args) throws Exception {
-
-        System.out.println(getWeek("2016-6-18"));
+    /**
+     * get current time with milliseconds
+     *
+     * @return
+     */
+    public static String getTimeWithMS(long timeInMillis) {
+        return getTime(timeInMillis, DATETIME_FORMAT_DATE_MS);
+    }
+    /**
+     * long time to string
+     *
+     * @param timeInMillis
+     * @param dateFormat
+     * @return
+     */
+    public static String getTime(long timeInMillis, SimpleDateFormat dateFormat) {
+        return dateFormat.format(new Date(timeInMillis));
     }
 
     public static String formatDateByPattern(Date date, String dateFormat) {

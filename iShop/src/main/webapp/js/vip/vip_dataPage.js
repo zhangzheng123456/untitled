@@ -102,6 +102,7 @@ laydate(chooseDate);
 laydate(refundDate);
 //充值类型
 $('#execution_input').click(function () {
+    event.stopPropagation();
     $('#topUpShopSelcet').css('display','none');
     $('#topUpPeopleSelect').css('display','none');
     $('#execution').toggle();
@@ -116,6 +117,7 @@ $("#execution li").click(function () {
 });
 //退款类型
 $('#refunTypeInput').click(function () {
+    event.stopPropagation();
     $('#refunShopSelcet').css('display','none');
     $('#refunType').toggle();
 })
@@ -164,9 +166,12 @@ function topUpShopShow(listList){
     }
 }
 $('#topUpShop').click(function(){
+    event.stopPropagation();
     $('#execution').css('display','none');
     $('#topUpPeopleSelect').css('display','none');
+    $('#topUpPeopleSelect_ul').css('display','none');
     $('#topUpShopSelcet').toggle();
+    $('#topUpShopSelcet_ul').toggle();
 });
 //下拉选择
 function topUpShopSelcetClick(dom){
@@ -181,6 +186,7 @@ function topUpShopSelcetClick(dom){
 }
 //退款店仓
 $('#refunShop').click(function () {
+    event.stopPropagation();
     $('#refunType').css('display','none');
     $('#refunShopSelcet').toggle();
 })
@@ -228,6 +234,7 @@ function topUpPeopleShow(msg){
     $("#topUpPeopleSelect li").eq(0).click();
 }
 $('#topUpPeople').click(function(){
+    event.stopPropagation();
     $('#execution').css('display','none');
     $('#refunShopSelcet').css('display','none');
     $('#topUpPeopleSelect').toggle();
@@ -553,6 +560,13 @@ $('#toAddMore').click(function () {
         content: "加载更多..."
     });
 })
+//选择日期点击，影藏其他下拉框
+$('#chooseDate').click(function () {
+    $('#execution').hide();
+    $('#topUpShopSelcet').hide();
+    $('#topUpShopSelcet_ul').hide();
+    $('#topUpPeopleSelect').hide();
+});
 //遮罩层
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
@@ -571,5 +585,13 @@ window.onload = function(){
             })
         }
     },500);
+    $('body').click(function () {
+        $('#execution').hide();
+        $('#topUpShopSelcet').hide();
+        $('#topUpShopSelcet_ul').hide();
+        $('#topUpPeopleSelect').hide();
+        $('#refunType').hide();
+        $('#refunShopSelcet').hide();
+    });
 
 }
