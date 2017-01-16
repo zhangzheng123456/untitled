@@ -9,6 +9,8 @@
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="activity_type" property="activity_type"
                 typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="activity_url" property="activity_url"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="recruit" property="recruit" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="h5_url" property="h5_url" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="sales_no" property="sales_no" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -39,6 +41,7 @@
         dvad.corp_code,
         dvad.activity_code,
         dvad.activity_type,
+        dvad.activity_url,
         dvad.recruit,
         dvad.h5_url,
         dvad.sales_no,
@@ -88,6 +91,9 @@
             </if>
             <if test="activity_type!=null">
                 activity_type,
+            </if>
+            <if test="activity_url!=null">
+                activity_url,
             </if>
             <if test="recruit!=null">
                 recruit,
@@ -153,6 +159,9 @@
             </if>
             <if test="activity_type!=null">
                 #{activity_type},
+            </if>
+            <if test="activity_url!=null">
+                #{activity_url},
             </if>
             <if test="recruit!=null">
                 #{recruit},
@@ -225,6 +234,9 @@
             </if>
             <if test="activity_type!=null">
                 activity_type=#{activity_type},
+            </if>
+            <if test="activity_url!=null">
+                activity_url=#{activity_url},
             </if>
             <if test="recruit!=null">
                 recruit=#{recruit},
@@ -333,6 +345,7 @@
         dvad.corp_code,
         dvad.activity_code,
         dvad.activity_type,
+        dvad.activity_url,
         dvad.recruit,
         dvad.h5_url,
         dvad.sales_no,
@@ -361,6 +374,7 @@
         dvad.corp_code,
         dvad.activity_code,
         dvad.activity_type,
+         dvad.activity_url,
         dvad.recruit,
         dvad.h5_url,
         dvad.sales_no,

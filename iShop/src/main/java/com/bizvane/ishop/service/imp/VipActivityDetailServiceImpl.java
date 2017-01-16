@@ -94,7 +94,8 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         String apply_success_tips="";
         String apply_logo="";
         String apply_qrcode="";
-        //会员活动类型
+       String activity_url=jsonObject.get("activity_url").toString().trim();
+        //会员活动类型=
         //招募活动,h5活动,促销,优惠券,线下邀约,节日,
         if(activity_type.equals("recruit")){
             recruit = jsonObject.get("recruit").toString().trim();
@@ -125,6 +126,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         vipActivityDetail.setCorp_code(corp_code);
         vipActivityDetail.setActivity_code(activity_code);
         vipActivityDetail.setActivity_type(activity_type);
+        vipActivityDetail.setActivity_url(activity_url);
         vipActivityDetail.setRecruit(recruit);
         vipActivityDetail.setH5_url(h5_url);
         vipActivityDetail.setSales_no(sales_no);
@@ -165,6 +167,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = jsonObject.get("activity_code").toString().trim();
         String activity_type = jsonObject.get("activity_type").toString().trim();
+        String activity_url = jsonObject.get("activity_url").toString().trim();
         VipActivityDetail vipActivityDetail=new VipActivityDetail();
         String recruit="";
         String h5_url="";
@@ -206,6 +209,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         vipActivityDetail.setCorp_code(corp_code);
         vipActivityDetail.setActivity_code(activity_code);
         vipActivityDetail.setActivity_type(activity_type);
+        vipActivityDetail.setActivity_url(activity_url);
         vipActivityDetail.setRecruit(recruit);
         vipActivityDetail.setH5_url(h5_url);
         vipActivityDetail.setSales_no(sales_no);
@@ -243,7 +247,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String activity_code = jsonObject.get("activity_code").toString().trim();
         String activity_type = jsonObject.get("activity_type").toString().trim();
-
+        String activity_url = jsonObject.get("activity_url").toString().trim();
         VipActivityDetail vipActivityDetail=new VipActivityDetail();
         String recruit="";
         String h5_url="";
@@ -286,6 +290,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         vipActivityDetail.setCorp_code(corp_code);
         vipActivityDetail.setActivity_code(activity_code);
         vipActivityDetail.setActivity_type(activity_type);
+        vipActivityDetail.setActivity_url(activity_url);
         vipActivityDetail.setRecruit(recruit);
         vipActivityDetail.setH5_url(h5_url);
         vipActivityDetail.setSales_no(sales_no);
