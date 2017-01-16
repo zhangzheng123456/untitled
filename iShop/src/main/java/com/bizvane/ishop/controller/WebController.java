@@ -1375,6 +1375,7 @@ public class WebController {
                 String distance = store.getDistance();
                 distance = NumberUtil.keepPrecision(distance);
                 store.setIs_this_area(distance);
+                store.setDistance(distance);
             }
             result.put("list",JSON.toJSONString(storeList));
         } catch (Exception ex) {
