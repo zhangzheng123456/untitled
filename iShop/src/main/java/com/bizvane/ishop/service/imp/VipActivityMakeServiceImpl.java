@@ -246,7 +246,9 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
             Thread.sleep(1);
             task_code_actvie_new = task_code_actvie_new + task_code + ",";
-            if(task_code_actvie_old.endsWith(",")) {
+            if(task_code_actvie_old==null ||task_code_actvie_old.equals("")){
+                task_code_actvie_old = task_code + ",";
+            }else if( task_code_actvie_old.endsWith(",") ) {
                 task_code_actvie_old = task_code_actvie_old + task_code + ",";
             }else {
                 task_code_actvie_old = task_code_actvie_old +","+ task_code + ",";
@@ -333,7 +335,9 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             Thread.sleep(1);
-            if(send_code_actvie_old.endsWith(",")){
+            if(send_code_actvie_old ==null || send_code_actvie_old.equals("")){
+                send_code_actvie_old = sms_code + ",";
+            }else if(send_code_actvie_old.endsWith(",")){
                 send_code_actvie_old = send_code_actvie_old + sms_code + ",";
             }else {
                 send_code_actvie_old = send_code_actvie_old+ "," + sms_code + ",";
@@ -370,7 +374,9 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             Thread.sleep(1);
-            if(send_code_actvie_old.endsWith(",")){
+            if(send_code_actvie_old ==null || send_code_actvie_old.equals("")){
+                send_code_actvie_old = sms_code + ",";
+            }else if(send_code_actvie_old ==null || send_code_actvie_old.equals("")||send_code_actvie_old.endsWith(",")){
                send_code_actvie_old = send_code_actvie_old + sms_code + ",";
             }else {
                 send_code_actvie_old = send_code_actvie_old+ "," + sms_code + ",";
@@ -407,11 +413,12 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             Thread.sleep(1);
-            if(send_code_actvie_old.endsWith(",")){
+            if(send_code_actvie_old ==null || send_code_actvie_old.equals("")){
+                send_code_actvie_old = sms_code + ",";
+            }else if(send_code_actvie_old ==null || send_code_actvie_old.equals("") || send_code_actvie_old.endsWith(",")){
                 send_code_actvie_old = send_code_actvie_old + sms_code + ",";
             }else {
                 send_code_actvie_old = send_code_actvie_old+ "," + sms_code + ",";
-
             }
             send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
