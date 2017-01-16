@@ -4,12 +4,15 @@ import com.bizvane.ishop.network.drpapi.burgeon.Rest;
 import com.bizvane.ishop.service.CRMInterfaceService;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
 /**
  * Created by yanyadong on 2016/1/13.
  */
+
+@Service
 public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
 
