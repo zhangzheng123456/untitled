@@ -19,11 +19,131 @@ var ar=[];//区域
 var sp=[];//店铺
 var sf=[];//员工
 var nowScreen=[];
+var corp_code=$("#tabs").children().eq(0).attr("data-corp");
 var  message={
     cache:{//缓存变量
-        "group_codes":""
+        "group_codes":"",
+        "brand_codes":"",
+        "area_codes":"",
+        "store_codes":""
     }
 };
+//获取拓展资料
+function expend_data() {
+    var param={"corp_code":corp_code};
+    oc.postRequire("post","/vipparam/corpVipParams","0",param,function (data) {
+        if(data.code == 0){
+            $("#expend_attribute").empty();
+            var msg = JSON.parse(data.message);
+            var list = JSON.parse(msg.list);
+            var html="";
+            var simple_html="";
+            if(list.length>0){
+                for(var i=0;i<list.length;i++){
+                    var param_type = list[i].param_type;
+                    if(param_type=="date"){
+                        simple_html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                            + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'s" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'s\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                            + '<input readonly="true" id="end'+i+'s" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'s\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
+                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                            + '<input data-expend="date" data-kye="'+list[i].param_name+'" readonly="true" id="start'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#start'+i+'\', min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"><label class="jian">~</label>'
+                            + '<input readonly="true" id="end'+i+'" class="short_input_date laydate-icon" onclick="laydate({elem:\'#end'+i+'\',min:\'1900-01-0\', max:\'2099-12-31 23:59:59\' ,istime: false, format: \'YYYY-MM-DD\'})"></div>'
+                    }
+                    if(param_type=="select"){
+                        var param_values = "";
+                        param_values = list[i].param_values.split(",");
+                        if(param_values.length>0){
+                            var li="";
+                            for(var j=0;j<param_values.length;j++){
+                                li+='<li>'+param_values[j]+'</li>'
+                            }
+                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                                + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select">'
+                                + li
+                                + '</ul></div>'
+                        }else {
+                            html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                                + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="select" readonly><ul class="sex_select"></ul></div>'
+                        }
+                    }
+                    if(param_type=="text"){
+                        html+='<div class="contion_input"><label>'+list[i].param_desc+'</label>'
+                            + '<input data-expend="text" data-kye="'+list[i].param_name+'" class="input"><ul class="sex_select"></ul></div>'
+                    }
+                    if(param_type=="longtext"){
+                        html+='<div class="textarea"><label>'+list[i].param_desc+'</label>'
+                            + '<textarea data-kye="'+list[i].param_name+'" rows="0" cols="0"></textarea><ul class="sex_select"></ul></div>'
+                    }
+                }
+            }
+            $("#expend_attribute").append(html);
+            $("#memorial_day").append(simple_html);
+        }else if(data.code == -1){
+            console.log(data.message);
+        }
+    });
+}
+//员工里面的店铺点击
+$("#staff_shop").click(function(){
+    if(message.cache.store_codes!==""){
+        var store_codes=message.cache.store_codes.split(',');
+        var store_names=message.cache.store_names.split(',');
+        var shop_html_right="";
+        for(var h=0;h<store_codes.length;h++){
+            shop_html_right+="<li id='"+store_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+store_codes[h]+"'  data-storename='"+store_names[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+store_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_shop .s_pitch span").html(h);
+        $("#screen_shop .screen_content_r ul").html(shop_html_right);
+    }else{
+        $("#screen_shop .s_pitch span").html("0");
+        $("#screen_shop .screen_content_r ul").empty();
+    }
+    isscroll=false;
+    shop_num=1;
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_shop .screen_content_l").unbind("scroll");
+    $("#screen_shop .screen_content_l ul").empty();
+    $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_shop").show();
+    $("#screen_staff").hide();
+    getstorelist(shop_num);
+});
+//员工里面的区域点击
+$("#staff_area").click(function(){
+    if(message.cache.area_codes!==""){
+        var area_codes=message.cache.area_codes.split(',');
+        var area_names=message.cache.area_names.split(',');
+        var area_html_right="";
+        for(var h=0;h<area_codes.length;h++){
+            area_html_right+="<li id='"+area_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+area_codes[h]+"'  data-storename='"+area_names[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+area_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_area .s_pitch span").html(h);
+        $("#screen_area .screen_content_r ul").html(area_html_right);
+    }else{
+        $("#screen_area .s_pitch span").html("0");
+        $("#screen_area .screen_content_r ul").empty();
+    }
+    isscroll=false;
+    area_num=1;
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_area .screen_content_l").unbind("scroll");
+    $("#screen_area .screen_content_l ul").empty();
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").show();
+    $("#screen_staff").hide();
+    getarealist(area_num);
+});
+expend_data();
 //   打开筛选界面
 $("#select_vip").bind("click",function(){
     var arr = whir.loading.getPageSize();
@@ -46,7 +166,7 @@ $("#screen_brandl").click(function () {
     var tp = (arr[3] - $("#screen_shop").height()) / 2 + 30;
     $("#screen_wrapper").hide();
     $("#screen_brand").show();
-    $("#screen_brand").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_brand").css({"left": +left + "px", "top": +tp + "px","position":"fixed"});
     $("#screen_brand .screen_content_l ul").empty();
     // $("#screen_brand .screen_content_r ul").empty();
     getbrandlist();
@@ -60,7 +180,7 @@ $("#screen_areal").click(function () {
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
     $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
     $("#p").show();
-    $("#screen_area").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_area").css({"left": +left + "px", "top": +tp + "px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_area").show();
     var area_num = 1;
@@ -95,12 +215,37 @@ $("#screen_staffl").click(function () {
     var tp = (arr[3] - $("#screen_area").height()) / 2 + 30;
     $("#p").css({"width": +arr[0] + "px", "height": +arr[1] + "px"});
     $("#p").show();
-    $("#screen_staff").css({"left": +left + "px", "top": +tp + "px"});
+    $("#screen_staff").css({"left": +left + "px", "top": +tp + "px","position":"fixed"});
     $("#screen_wrapper").hide();
     $("#screen_staff").show();
     $("#screen_staff .screen_content_l ul").empty();
     var staff_num = 1;
     getstafflist(staff_num);
+});
+$("#activity_screen_group_icon").click(function(){
+    if(message.cache.group_codes!==""){
+        var group_codes=message.cache.group_codes.split(',');
+        var group_names=message.cache.group_names.split(',');
+        var group_html_right="";
+        for(var h=0;h<group_codes.length;h++){
+            group_html_right+="<li id='"+group_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+group_codes[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+group_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_group .s_pitch span").html(h);
+        $("#screen_group .screen_content_r ul").html(group_html_right);
+    }else{
+        $("#screen_group .s_pitch span").html("0");
+        $("#screen_group .screen_content_r ul").empty();
+    }
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_group").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
+    $("#screen_wrapper").hide();
+    $("#screen_group").show();
+    getActivityGroup();
 });
 //节点状态保存
 function nodeSave(node_r,node_l,arr,node_container) {
@@ -120,7 +265,7 @@ function nodeSave(node_r,node_l,arr,node_container) {
 function getbrandlist() {
     var searchValue=$("#brand_search").val();
     var _param = {};
-    _param['corp_code']="C10000";
+    _param['corp_code']=corp_code;
     _param["searchValue"]=searchValue;
     whir.loading.add("", 0.5);//加载等待框
     $("#mask").css("z-index", "10002");
@@ -176,7 +321,7 @@ function getarealist(a) {
     var pageSize = 20;
     var pageNumber = a;
     var _param = {};
-    _param["corp_code"] ="C10000";
+    _param["corp_code"] =corp_code;
     _param["searchValue"] = searchValue;
     _param["pageSize"] = pageSize;
     _param["pageNumber"] = pageNumber;
@@ -237,7 +382,7 @@ function getstorelist(a) {
     var _param = {};
     var checknow_data = [];
     var checknow_namedata = [];
-    _param['corp_code'] = "C10000";
+    _param['corp_code'] = corp_code;
     _param['area_code'] = area_code;
     _param['brand_code'] = brand_code;
     _param['searchValue'] = searchValue;
@@ -285,6 +430,90 @@ function getstorelist(a) {
         }
     })
 }
+//员工里面的品牌点击
+$("#staff_brand").click(function(){
+    if(message.cache.brand_codes!==""){
+        var brand_codes=message.cache.brand_codes.split(',');
+        var brand_names=message.cache.brand_names.split(',');
+        var brand_html_right="";
+        for(var h=0;h<brand_codes.length;h++){
+            brand_html_right+="<li id='"+brand_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+brand_codes[h]+"'  data-storename='"+brand_names[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+brand_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_brand .s_pitch span").html(h);
+        $("#screen_brand .screen_content_r ul").html(brand_html_right);
+    }else{
+        $("#screen_brand .s_pitch span").html("0");
+        $("#screen_brand .screen_content_r ul").empty();
+    }
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_brand .screen_content_l ul").empty();
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").show();
+    $("#screen_staff").hide();
+    getbrandlist();
+});
+//店铺里面的区域点击
+$("#shop_area").click(function(){
+    if(message.cache.area_codes!==""){
+        var area_codes=message.cache.area_codes.split(',');
+        var area_names=message.cache.area_names.split(',');
+        var area_html_right="";
+        for(var h=0;h<area_codes.length;h++){
+            area_html_right+="<li id='"+area_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+area_codes[h]+"'  data-storename='"+area_names[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+area_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_area .s_pitch span").html(h);
+        $("#screen_area .screen_content_r ul").html(area_html_right);
+    }else{
+        $("#screen_area .s_pitch span").html("0");
+        $("#screen_area .screen_content_r ul").empty();
+    }
+    isscroll=false;
+    area_num=1;
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_area .screen_content_l").unbind("scroll");
+    $("#screen_area .screen_content_l ul").empty();
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").show();
+    $("#screen_shop").hide();
+    getarealist(area_num);
+});
+//店铺里面的品牌点击
+$("#shop_brand").click(function(){
+    if(message.cache.brand_codes!==""){
+        var brand_codes=message.cache.brand_codes.split(',');
+        var brand_names=message.cache.brand_names.split(',');
+        var brand_html_right="";
+        for(var h=0;h<brand_codes.length;h++){
+            brand_html_right+="<li id='"+brand_codes[h]+"'>\
+            <div class='checkbox1'><input type='checkbox' value='"+brand_codes[h]+"'  data-storename='"+brand_names[h]+"' name='test' class='check'>\
+            <label></div><span class='p16'>"+brand_names[h]+"</span>\
+            \</li>"
+        }
+        $("#screen_brand .s_pitch span").html(h);
+        $("#screen_brand .screen_content_r ul").html(brand_html_right);
+    }else{
+        $("#screen_brand .s_pitch span").html("0");
+        $("#screen_brand .screen_content_r ul").empty();
+    }
+    var arr=whir.loading.getPageSize();
+    var left=(arr[0]-$("#screen_shop").width())/2;
+    var tp=(arr[3]-$("#screen_shop").height())/2+50;
+    $("#screen_brand .screen_content_l ul").empty();
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").show();
+    $("#screen_shop").hide();
+    getbrandlist();
+});
 //获取员工列表
 function getstafflist(a) {
     // var tr= $('#table tbody tr');
@@ -296,7 +525,7 @@ function getstafflist(a) {
     var pageSize = 20;
     var pageNumber = a;
     var _param = {};
-    _param['corp_code'] ="C10000";
+    _param['corp_code'] =corp_code;
     _param['area_code'] = area_code;
     _param['brand_code'] = brand_code;
     _param['store_code'] = store_code;
@@ -345,6 +574,63 @@ function getstafflist(a) {
         }
     })
 }
+//获取分组
+function getActivityGroup() {
+    var corp_command = "/vipGroup/getCorpGroups";
+    var _param = {};
+    _param["corp_code"] =corp_code;
+    _param["search_value"] = $("#group_search_activity").val();
+    oc.postRequire("post", corp_command, "0", _param, function (data) {
+        if (data.code == "0") {
+            var message = JSON.parse(data.message);
+            var list = JSON.parse(message.list);
+            var html = "";
+            $("#screen_group .screen_content_l ul").empty();
+            $("#filter_group").attr("data-corp", corp_code);
+            if (list.length > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    html+="<li><div class='checkbox1'><input  data-type='"+list[i].group_type+"' type='checkbox' value='"+list[i].vip_group_code+"' name='test'  class='check'  id='checkboxOneInput"
+                        + i
+                        + "'/><label for='checkboxOneInput"
+                        + i
+                        + "'></label></div><span class='p16'>"+list[i].vip_group_name+"</span></li>"
+                }
+                $("#screen_group .screen_content_l ul").append(html);
+            } else if (list.length <= 0) {
+                //art.dialog({
+                //    time: 1,
+                //    lock: true,
+                //    cancel: false,
+                //    zIndex:10002,
+                //    content: data.message
+                //});
+            }
+        }
+    })
+}
+$("#activity_screen_que_group").click(function(){
+    var li=$("#screen_group .screen_content_r input[type='checkbox']").parents("li");
+    var group_codes="";
+    var group_names="";
+    for(var i=li.length-1;i>=0;i--){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i>0){
+            group_codes+=r+",";
+            group_names+=p+",";
+        }else{
+            group_codes+=r;
+            group_names+=p;
+        }
+    };
+    message.cache.group_codes=group_codes;
+    message.cache.group_names=group_names;
+    $("#screen_group").hide();
+    $("#screen_wrapper").show();
+    $("#filter_group").val("已选"+li.length+"个");
+    $("#filter_group").attr("data-code",group_codes);
+    $("#filter_group").attr("data-code_name",group_names);
+})
 //点击品牌确定按钮
 $("#screen_que_brand").click(function () {
     bd=[];
@@ -466,7 +752,16 @@ $("#screen_que_staff").click(function () {
     $("#screen_staff").hide();
     $("#screen_wrapper").show();
 });
-
+//分组搜索
+$("#group_search_activity").keydown(function () {
+    var event = window.event || arguments[0];
+    if (event.keyCode == 13) {
+        getActivityGroup();
+    }
+});
+$("#group_search_f_activity").click(function () {
+    getActivityGroup();
+});
 //区域关闭
 $("#screen_close_area").click(function () {
     $("#screen_area").hide();
@@ -616,12 +911,7 @@ $("#activate_card_end1").bind("click",function(){
 
 $("#screen_vip_que_activity").bind("click",function(){  //筛选确定
     inx = 1;
-    var corp_code = $("#OWN_CORP").val();
-    if (corp_code !== "" && corp_code !== undefined) {
-        _param["corp_code"] = corp_code;
-    } else {
-        _param["corp_code"] = "C10000";
-    }
+    _param["corp_code"] = corp_code;
     _param["pageNumber"] = inx;
     _param["pageSize"] = pageSize;
     var screen = [];
@@ -788,7 +1078,7 @@ function GET(a,b){
     var param={};
     param["pageNumber"]=a;
     param["pageSize"]=b;
-    param["corp_code"]='C10000';
+    param["corp_code"]=corp_code;
     oc.postRequire("post","/vipAnalysis/allVip","",param,function(data){
         if(data.code=="0"){
             $("#vip_list ul").empty();
@@ -1036,7 +1326,7 @@ function getData(){
         var activityVip=JSON.parse(msg.activityVip);
         var num=activityVip.target_vips_count=="" ? "0" : activityVip.target_vips_count;
         $("#num").html(num);
-        _param["corp_code"] = "C10000";
+        _param["corp_code"] = corp_code;
         _param["pageNumber"] = inx;
         _param["pageSize"] = pageSize;
         _param["screen"]=activityVip.target_vips =="" ?[]:JSON.parse(activityVip.target_vips);
