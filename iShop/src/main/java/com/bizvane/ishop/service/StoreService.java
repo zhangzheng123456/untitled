@@ -95,4 +95,6 @@ public interface StoreService {
     List<Store> getStoreByBrandCode(String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map,String area_store_codes,String isactive) throws Exception;
 
     PageInfo<Store> selectAllOrderByCity(int page_number,int page_size,String corp_code, String search_value) throws Exception;
+
+    List<Store> selectNearByStore(String corp_code, String lng, String lat, String distance) throws Exception;
 }

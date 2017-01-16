@@ -39,9 +39,17 @@ var activity={
     selectClick:function () {//input下拉模拟
         $(".setUp_activity_details").on("click",".select_input",function () {
             $(this).nextAll("ul").toggle();
+            var li=$(this).children("li");
+            if(li.length<1){
+                $(".activity_select").css("border","none");
+            }
         });
         $(".setUp_activity_details").on("click","i",function () {
             $(this).nextAll("ul").toggle();
+            var li=$(this).children("li");
+            if(li.length<1){
+                $(".activity_select").css("border","none");
+            }
         });
         $(document).click(function (e) {
             if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
@@ -87,6 +95,14 @@ var activity={
                 $(this).addClass("coupon_active");
                 $(this).siblings("li").removeClass("coupon_active");
             }
+        });
+        $("#url_mould").click(function () {//线下邀约切换
+           $("#extend_url").show();
+            $("#invite_wrap").hide();
+        });
+        $("#invite_span").click(function () {//线下邀约切换
+            $("#extend_url").hide();
+            $("#invite_wrap").show();
         });
         $(".switch div").click(function(){//优惠券开关
             if($(this).attr("class")=="bg"){
@@ -835,7 +851,7 @@ var activity={
                 var li="";
                 var message=JSON.parse(data.message);
                 var msg=JSON.parse(message.list);
-                if(msg.length==0&&$("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active")){
+                if(msg.length==0&&(($("#coupon_activity").css("display")=="block"&&$("#coupon_title li:nth-child(2)").hasClass("coupon_active"))||$("#recruit_activity").css("display")=="block")){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -940,18 +956,23 @@ var activity={
                         recruit.push(obj);
                     }
                     _param["recruit"]=recruit;
+                    _param["activity_url"]=$("#recruit_url").val();
                 }
                 if(runMode=="h5"){
                     _param["h5_url"]=$("#h5_activity").find("input").val();
+                    _param["activity_url"]="";
                 }
                 if(runMode=="sales"){
                     _param["sales_no"]=$("#sales_activity").find("input").val();
+                    _param["activity_url"]=$("#sales_url").val();
                 }
                 if(runMode=="festival"){
+                    _param["activity_url"]=$("#festival_url").val();
                     _param["festival_start"]=$($("#festival_activity").find("input")[0]).val();
                     _param["festival_end"]=$($("#festival_activity").find("input")[1]).val();
                 }
                 if(runMode=="coupon"){
+                    _param["activity_url"]=$("#coupon_url").val();
                     if(!(activity.swicth)){
                         console.log("优惠券已关闭");
                     }else {
@@ -1002,12 +1023,23 @@ var activity={
                     }
                 }
                 if(runMode=="invite"){
-                    _param['apply_title']=$("#invite_title").val();
-                    _param['apply_endtime']=$("#offline_end").val();
-                    _param['apply_desc']=$("#invite_summary").val();
-                    _param['apply_success_tips']=$("#invite_message").val();
-                    _param['apply_logo']=$("#upload_logo").parent().prev("img").attr("src");
-                    _param['apply_qrcode']="";
+                    if($("#invite_wrap").css("display")=="none"){
+                        _param["activity_url"]=$("#invite_url").val();
+                        _param['apply_title']="";
+                        _param['apply_endtime']="";
+                        _param['apply_desc']="";
+                        _param['apply_success_tips']="";
+                        _param['apply_logo']="";
+                        _param['apply_qrcode']="";
+                    }else {
+                        _param["activity_url"]="";
+                        _param['apply_title']=$("#invite_title").val();
+                        _param['apply_endtime']=$("#offline_end").val();
+                        _param['apply_desc']=$("#invite_summary").val();
+                        _param['apply_success_tips']=$("#invite_message").val();
+                        _param['apply_logo']=$("#upload_logo").parent().prev("img").attr("src");
+                        _param['apply_qrcode']="";
+                    }
                 }
                 oc.postRequire("post","/vipActivity/detail/add","0",_param,function (data) {
                     if(data.code=="0"){

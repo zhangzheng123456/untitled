@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipCardTypeMapper;
 import com.bizvane.ishop.dao.VipRulesMapper;
@@ -13,7 +14,6 @@ import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +92,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
     @Override
     public String update(String message, String user_id) throws Exception {
         String status = "";
-        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(message);
+        JSONObject jsonObject=JSON.parseObject(message);
         Date now = new Date();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String vip_card_type_code = jsonObject.get("vip_card_type_code").toString().trim();
@@ -103,17 +103,20 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
         VipCardType vipCardType = getVipCardTypeById(Integer.parseInt(id));
         String old_code = vipCardType.getVip_card_type_code();
         String old_corp = vipCardType.getCorp_code();
-        String old_degree = vipCardType.getDegree();
         VipCardType vipCardType1 = getVipCardTypeByCode(corp_code, vip_card_type_code, Common.IS_ACTIVE_Y);
         VipCardType vipCardType2 = getVipCardTypeByName(corp_code, vip_card_type_name, Common.IS_ACTIVE_Y);
         List<VipCardType> list = getVipCardTypes(corp_code, Common.IS_ACTIVE_Y);
-        int num = 0;
+        int degree1 = Integer.valueOf(degree);
+        List<VipRules> list1 = vipRulesService.getViprulesByCardTypeCode(old_corp, old_code);
+
         if (list.size() > 0) {
+
             if (vipCardType1 != null && !id.equals(vipCardType1.getId())) {
                 status = "该编号已存在";
             } else if (vipCardType2 != null && !id.equals(vipCardType2.getId())) {
                 status = "该名称已存在";
             } else {
+
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
                 vipCardType.setVip_card_type_name(vip_card_type_name);
@@ -121,39 +124,58 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setModifier(user_id);
                 vipCardType.setDegree(degree);
                 vipCardType.setIsactive(isactive);
-                List<VipRules> list1 = vipRulesService.getViprulesByCardTypeCode(old_corp, old_code);
-                num = vipCardTypeMapper.updateVipCardType(vipCardType);
-                //编辑会员卡类型表成功, 同步更新会员制度里相应的会员卡类型信息
-                if (num > 0) {
-                    for (int i = 0; i < list1.size(); i++) {
-                        VipRules vipRules = list1.get(i);
-                        if (vipRules.getHigh_vip_card_type_code().equals(old_code)) {
-                            vipRules.setHigh_vip_card_type_code(vip_card_type_code);
-                            vipRules.setCorp_code(corp_code);
-                            vipRules.setHigh_vip_type(vip_card_type_name);
-                            vipRules.setHigh_degree(old_degree);
-
-                        } else if (vipRules.getVip_card_type_code().equals(old_code)) {
-                            vipRules.setVip_type(vip_card_type_name);
-                            vipRules.setVip_card_type_code(vip_card_type_code);
-                            vipRules.setCorp_code(corp_code);
-                            vipRules.setDegree(old_degree);
-                        }
-                        vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        vipRules.setModifier(user_id);
-                        int m = vipRulesMapper.updateVipRules(vipRules);
-                        if (m > 0) {
-                            status = Common.DATABEAN_CODE_SUCCESS;
+                int m = 0;
+                for (int i = 0; i < list1.size(); i++) {
+                    VipRules vipRules = list1.get(i);
+                    if (vipRules.getHigh_vip_card_type_code().equals(old_code)) {
+                        vipRules.setHigh_vip_card_type_code(vip_card_type_code);
+                        vipRules.setCorp_code(corp_code);
+                        //更换企业的情况
+//                        if (!corp_code.equals(old_corp)) {
+//                            vipRules.setVip_card_type_code("");
+//                            vipRules.setVip_type("");
+//                        }
+                        vipRules.setHigh_vip_type(vip_card_type_name);
+                        if (degree1 > Integer.valueOf(vipRules.getDegree())) {
+                            vipRules.setHigh_degree(degree);
+                            vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            vipRules.setModifier(user_id);
+                            m = vipRulesMapper.updateVipRules(vipRules);
                         } else {
-                            status = Common.DATABEAN_CODE_ERROR;
+                            status = "该会员卡类型在会员制度里已配置为高级会员，等级不能低于所选会员类型的等级";
+                            return status;
+                        }
+                    } else if (vipRules.getVip_card_type_code().equals(old_code)) {
+                        vipRules.setVip_type(vip_card_type_name);
+                        vipRules.setVip_card_type_code(vip_card_type_code);
+                        vipRules.setCorp_code(corp_code);
+                        //更换企业的情况
+//                        if (!corp_code.equals(old_corp)) {
+//                            vipRules.setHigh_vip_card_type_code("");
+//                            vipRules.setHigh_vip_type("");
+//                        }
+                        if (degree1 < Integer.valueOf(vipRules.getHigh_degree())) {
+                            vipRules.setDegree(degree);
+                            vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            vipRules.setModifier(user_id);
+                            m = vipRulesMapper.updateVipRules(vipRules);
+                        } else {
+                            status = "该会员卡类型在会员制度里已配置，等级不能高于上级会员类型的等级";
+                            return status;
                         }
                     }
+                }
+                int num=0;
+                //编辑会员卡类型表成功, 同步更新会员制度里相应的会员卡类型信息
+                num = vipCardTypeMapper.updateVipCardType(vipCardType);
+                if (num > 0 && m >= 0) {
+                    status = Common.DATABEAN_CODE_SUCCESS;
                 } else {
                     status = Common.DATABEAN_CODE_ERROR;
                 }
             }
         } else {
-
+            int m = 0;
             if (vipCardType1 == null && vipCardType2 == null) {
                 vipCardType.setCorp_code(corp_code);
                 vipCardType.setVip_card_type_code(vip_card_type_code);
@@ -162,31 +184,54 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 vipCardType.setModifier(user_id);
                 vipCardType.setDegree(degree);
                 vipCardType.setIsactive(isactive);
-                List<VipRules> list1 = vipRulesService.getViprulesByCardTypeCode(old_corp, old_code);
-                num = vipCardTypeMapper.updateVipCardType(vipCardType);
-                //编辑会员卡类型表成功, 同步更新会员制度里相应的会员卡类型信息
-                if (num > 0) {
-                    for (int i = 0; i < list1.size(); i++) {
-                        VipRules vipRules = list1.get(i);
-                        if (vipRules.getHigh_vip_card_type_code().equals(old_code)) {
-                            vipRules.setHigh_vip_card_type_code(vip_card_type_code);
-                            vipRules.setCorp_code(corp_code);
-                            vipRules.setHigh_degree(old_degree);
-                            vipRules.setHigh_vip_type(vip_card_type_name);
-                        } else if (vipRules.getVip_card_type_code().equals(old_code)) {
-                            vipRules.setVip_type(vip_card_type_name);
-                            vipRules.setVip_card_type_code(vip_card_type_code);
-                            vipRules.setCorp_code(corp_code);
-                            vipRules.setDegree(old_degree);
-                        }
-                        vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        vipRules.setModifier(user_id);
-                        int m = vipRulesMapper.updateVipRules(vipRules);
-                        if (m > 0) {
-                            status = Common.DATABEAN_CODE_SUCCESS;
+                for (int i = 0; i < list1.size(); i++) {
+                    VipRules vipRules = list1.get(i);
+                    if (vipRules.getHigh_vip_card_type_code().equals(old_code)) {
+                        vipRules.setHigh_vip_card_type_code(vip_card_type_code);
+                        vipRules.setCorp_code(corp_code);
+                        //更换企业的情况
+//                        if (!corp_code.equals(old_corp)) {
+//                            vipRules.setVip_card_type_code("");
+//                            vipRules.setVip_type("");
+//                        }
+                        vipRules.setHigh_vip_type(vip_card_type_name);
+                        if (degree1 > Integer.valueOf(vipRules.getDegree())) {
+                            vipRules.setHigh_degree(degree);
+                            vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            vipRules.setModifier(user_id);
+                            //更新会员制度
+                            m = vipRulesMapper.updateVipRules(vipRules);
                         } else {
-                            status = Common.DATABEAN_CODE_ERROR;
+                            status = "该会员卡类型在会员制度里已配置为高级会员，等级不能低于所选会员类型的等级";
+                            return status;
                         }
+                    } else if (vipRules.getVip_card_type_code().equals(old_code)) {
+                        vipRules.setVip_type(vip_card_type_name);
+                        vipRules.setVip_card_type_code(vip_card_type_code);
+                        vipRules.setCorp_code(corp_code);
+                        //更换企业的情况
+//                        if (!corp_code.equals(old_corp)) {
+//                            vipRules.setHigh_vip_card_type_code("");
+//                            vipRules.setHigh_vip_type("");
+//                        }
+                        if (degree1 < Integer.valueOf(vipRules.getHigh_degree())) {
+                            vipRules.setDegree(degree);
+                            vipRules.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            vipRules.setModifier(user_id);
+                            //更新会员制度
+                            m = vipRulesMapper.updateVipRules(vipRules);
+                        } else {
+                            status = "该会员卡类型在会员制度里已配置，等级不能高于上级会员类型的等级";
+                            return status;
+                        }
+                    }
+                    int num=0;
+                    //更新会员卡类型
+                    num = vipCardTypeMapper.updateVipCardType(vipCardType);
+                    if (num > 0 && m >= 0) {
+                        status = Common.DATABEAN_CODE_SUCCESS;
+                    } else {
+                        status = Common.DATABEAN_CODE_ERROR;
                     }
                 }
             } else if (vipCardType1 != null) {
@@ -195,7 +240,6 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 status = "该名称已存在";
             }
         }
-
         return status;
     }
 

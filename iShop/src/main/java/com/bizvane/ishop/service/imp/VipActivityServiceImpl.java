@@ -174,6 +174,12 @@ public class VipActivityServiceImpl implements VipActivityService {
     @Override
     public VipActivity selActivityByCode(String activity_vip_code) throws Exception {
         VipActivity vipActivity = vipActivityMapper.selActivityByCode(activity_vip_code);
+        if(null!=vipActivity.getTask_code()&&!"".equals(vipActivity.getTask_code())&&vipActivity.getTask_code().endsWith(",")){
+            vipActivity.setTask_code(vipActivity.getTask_code().substring(0,vipActivity.getTask_code().length()-1));
+        }
+        if(null!=vipActivity.getSms_code()&&!"".equals(vipActivity.getSms_code())&&vipActivity.getSms_code().endsWith(",")){
+            vipActivity.setSms_code(vipActivity.getSms_code().substring(0,vipActivity.getSms_code().length()-1));
+        }
         return vipActivity;
     }
 
@@ -250,6 +256,15 @@ public class VipActivityServiceImpl implements VipActivityService {
         for (int i = 0; i < task_codes.length; i++) {
             String task_code1 = task_codes[i];
             Task task = taskService.getTaskForId(corp_code,task_code1);
+            String target_start_time = task.getTarget_start_time();
+            System.out.println("--------------开始时间---------"+target_start_time);
+            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(target_start_time));
+            String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+            long aa = Long.parseLong(st);
+            long bb = Long.parseLong(now);
+            if (aa < bb) {
+                return "任务时间小于当前时间";
+            }
             taskService.taskAllocation(task, phones, user_codes, user_code,activity_code);
         }
         return status;
