@@ -1,4 +1,4 @@
-package com.bizvane.ishop.network;
+package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +48,7 @@ public class GetObjectRequestParams  extends RequestParams{
 			jsonParams.put("id", params.id);
 			jsonParams.put("reftables", params.reftables);
 			this.params = jsonParams;
+			System.out.println("params........"+jsonParams.toString());
 		}
 		
 	}
