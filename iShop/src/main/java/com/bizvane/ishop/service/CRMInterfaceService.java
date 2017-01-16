@@ -16,4 +16,8 @@ public interface CRMInterfaceService {
     public  String  modPasswordVip(HashMap<String,Object> modVip);
 
     public String couponInfo(int vipid);
+
+    public  String  addPrepaidDocuments(HashMap<String,Object> documentInfo);
+
+    public  String  modPrepaidStatus(HashMap<String,Object> modStatus);
 }

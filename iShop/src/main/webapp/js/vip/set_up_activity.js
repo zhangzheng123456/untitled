@@ -96,6 +96,14 @@ var activity={
                 $(this).siblings("li").removeClass("coupon_active");
             }
         });
+        $("#url_mould").click(function () {//线下邀约切换
+           $("#extend_url").show();
+            $("#invite_wrap").hide();
+        });
+        $("#invite_span").click(function () {//线下邀约切换
+            $("#extend_url").hide();
+            $("#invite_wrap").show();
+        });
         $(".switch div").click(function(){//优惠券开关
             if($(this).attr("class")=="bg"){
                 activity.swicth=false;
@@ -948,18 +956,23 @@ var activity={
                         recruit.push(obj);
                     }
                     _param["recruit"]=recruit;
+                    _param["activity_url"]=$("#recruit_url").val();
                 }
                 if(runMode=="h5"){
                     _param["h5_url"]=$("#h5_activity").find("input").val();
+                    _param["activity_url"]="";
                 }
                 if(runMode=="sales"){
                     _param["sales_no"]=$("#sales_activity").find("input").val();
+                    _param["activity_url"]=$("#sales_url").val();
                 }
                 if(runMode=="festival"){
+                    _param["activity_url"]=$("#festival_url").val();
                     _param["festival_start"]=$($("#festival_activity").find("input")[0]).val();
                     _param["festival_end"]=$($("#festival_activity").find("input")[1]).val();
                 }
                 if(runMode=="coupon"){
+                    _param["activity_url"]=$("#coupon_url").val();
                     if(!(activity.swicth)){
                         console.log("优惠券已关闭");
                     }else {
@@ -1010,12 +1023,23 @@ var activity={
                     }
                 }
                 if(runMode=="invite"){
-                    _param['apply_title']=$("#invite_title").val();
-                    _param['apply_endtime']=$("#offline_end").val();
-                    _param['apply_desc']=$("#invite_summary").val();
-                    _param['apply_success_tips']=$("#invite_message").val();
-                    _param['apply_logo']=$("#upload_logo").parent().prev("img").attr("src");
-                    _param['apply_qrcode']="";
+                    if($("#invite_wrap").css("display")=="none"){
+                        _param["activity_url"]=$("#invite_url").val();
+                        _param['apply_title']="";
+                        _param['apply_endtime']="";
+                        _param['apply_desc']="";
+                        _param['apply_success_tips']="";
+                        _param['apply_logo']="";
+                        _param['apply_qrcode']="";
+                    }else {
+                        _param["activity_url"]="";
+                        _param['apply_title']=$("#invite_title").val();
+                        _param['apply_endtime']=$("#offline_end").val();
+                        _param['apply_desc']=$("#invite_summary").val();
+                        _param['apply_success_tips']=$("#invite_message").val();
+                        _param['apply_logo']=$("#upload_logo").parent().prev("img").attr("src");
+                        _param['apply_qrcode']="";
+                    }
                 }
                 oc.postRequire("post","/vipActivity/detail/add","0",_param,function (data) {
                     if(data.code=="0"){

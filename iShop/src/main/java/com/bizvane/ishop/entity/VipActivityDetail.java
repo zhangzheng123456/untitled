@@ -11,6 +11,8 @@ public class VipActivityDetail {
     private String activity_code;
     //活动类别
     private String activity_type;
+    //活动链接
+    private String activity_url;
     //招募
     private String recruit;
     //h5链接
@@ -232,5 +234,13 @@ public class VipActivityDetail {
 
     public void setCorp_name(String corp_name) {
         this.corp_name = corp_name;
+    }
+
+    public String getActivity_url() {
+        return activity_url;
+    }
+
+    public void setActivity_url(String activity_url) {
+        this.activity_url = activity_url;
     }
 }

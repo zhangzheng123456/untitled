@@ -108,7 +108,7 @@ public class Rest {
 
 
     //修改会员(测试成功)
-    public  static  String modifyVip(String table,HashMap<String,Object> modVip){
+    public  static  String modify(String table,HashMap<String,Object> modVip){
 
         RequestParams modifyObjectRequestParams = new RequestParams();
         RequestParams.BaseTrans modifyObjectTrans = modifyObjectRequestParams.new BaseTrans();
