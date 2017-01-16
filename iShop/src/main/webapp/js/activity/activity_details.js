@@ -764,30 +764,74 @@ $('.vip_status_btn').click(function () {
 });
 /******************************************************************************************/
 function getActive() {
-    var param={};
+    var params={
+        "id":"",
+        "message":param
+    };
     var _param={};
     param.activity_code=sessionStorage.getItem('activity_code');
     whir.loading.add("", 0.5);
-    oc.postRequire("post","/vipActivity/select","0",param,function(data){
-        if(data.code==0){
-            var active_data=JSON.parse(JSON.parse(data.message).activityVip);
-            corp_code=active_data.corp_code;
-            _param.corp_code=active_data.corp_code;
-            _param.activity_code=active_data.activity_code;
-            _param.task_code=active_data.task_code.split(',')[0];
-            doActiveResponse(active_data);
-            _param.task_code==''?'':getExecuteDetail(_param);
-            whir.loading.remove();//移除加载框
-        }else if(data.code==-1){
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
-            whir.loading.remove();//移除加载框
+    var xhr = null;
+    if(window.XMLHttpRequest){
+        xhr = new window.XMLHttpRequest();
+    }else{ // ie
+        xhr = new ActiveObject("Microsoft")
+    }
+    // 通过get的方式请求当前文件
+    xhr.open("post","/vipActivity/select");
+    xhr.send(JSON.stringify(params));
+    // 监听请求状态变化
+    xhr.onreadystatechange = function(response){
+        var time = null;
+        var curDate = null;
+        if(xhr.readyState===2){
+            // 获取响应头里的时间戳
+            time = xhr.getResponseHeader("Date");
+            console.log(xhr.getAllResponseHeaders())
+            curDate = new Date(time);
+            console.log(curDate);
+        }else if(xhr.readyState===4){
+            if (xhr.status==200){// 200 = OK
+                console.log(arguments);
+                var active_data=JSON.parse(JSON.parse(data.message).activityVip);
+                corp_code=active_data.corp_code;
+                _param.corp_code=active_data.corp_code;
+                _param.activity_code=active_data.activity_code;
+                _param.task_code=active_data.task_code.split(',')[0];
+                doActiveResponse(active_data);
+                _param.task_code==''?'':getExecuteDetail(_param);
+                whir.loading.remove();//移除加载框
+            }else{//失败
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
+                whir.loading.remove();//移除加载框
+            }
         }
-    });
+    }
+    // oc.postRequire("post","/vipActivity/select","0",param,function(data){
+    //     if(data.code==0){
+    //         var active_data=JSON.parse(JSON.parse(data.message).activityVip);
+    //         corp_code=active_data.corp_code;
+    //         _param.corp_code=active_data.corp_code;
+    //         _param.activity_code=active_data.activity_code;
+    //         _param.task_code=active_data.task_code.split(',')[0];
+    //         doActiveResponse(active_data);
+    //         _param.task_code==''?'':getExecuteDetail(_param);
+    //         whir.loading.remove();//移除加载框
+    //     }else if(data.code==-1){
+    //         art.dialog({
+    //             time: 1,
+    //             lock: true,
+    //             cancel: false,
+    //             content: data.message
+    //         });
+    //         whir.loading.remove();//移除加载框
+    //     }
+    // });
 }
 function   doExecuteDetail(message) {
     $('#progress .shoppers').html(message.user_count);
