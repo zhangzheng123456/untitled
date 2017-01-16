@@ -10,6 +10,7 @@ import com.bizvane.ishop.service.ScheduleJobService;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipFsendService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -346,6 +347,8 @@ public class VipActivityController {
             String corp_code = jsonObject.getString("corp_code");
             VipActivity activityVip = this.vipActivityService.selActivityByCode(activity_code);
             JSONObject result = new JSONObject();
+            activityVip.setRun_mode(CheckUtils.CheckVipActivityType(activityVip.getRun_mode()));
+
             result.put("activityVip", JSON.toJSONString(activityVip));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
