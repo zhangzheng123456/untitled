@@ -363,7 +363,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //            }
             if (modStatus.get("STATUS") == null) {
 
-                return "STATUS";
+                return "缺少STATUS";
             }
             if (modStatus.get("id") == null) {
                 return "缺少id";

@@ -33,12 +33,12 @@ public class Test02 {
     //    System.out.println(map.toString());
 //
 //        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
-//        String ij= crmInterfaceService.selVip(1059167);
+//        String ij= crmInterfaceService.selVip("C10016",1059167);
 //        System.out.println(ij);
 
 //        //新增
 //           map.put("VIPNAME", "test123000");
-//        map.put("C_VIPTYPE_ID__NAME", "玖姿卡");
+//     //   map.put("C_VIPTYPE_ID__NAME", "玖姿卡");
 //       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
 //        map.put("C_STORE_ID__NAME","大庆大商新玛特购物休闲广场尹默专柜");
 //        map.put("SEX", "W");
@@ -55,24 +55,24 @@ public class Test02 {
 
 //
 //        //修改
-//       map.put("VIPNAME", "test123");
+  //     map.put("VIPNAME", "test12ha3");
 //       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
 //        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
 //        //只能为男女 如果传入的类型或者值不匹配 虽显示修改成功  但实际不会变化
-      map.put("SEX", "女");
+  //    map.put("SEX", "女");
 //        map.put("C_STORE_ID",802);
 //        map.put("PASS_WORD","123rrr");
  //       map.put("INTEGRAL_PASSWORD","456ttt");
         //必传
       //  map.put("SALESREP_ID__NAME","付梦");
      //   map.put("partial_update", true);
-       // map.put("STATUS",1);
-        map.put("id",1059167);
-
+      // map.put("STATUS",1);
+       map.put("id",3);
+//
         JSONObject jsonObject=new JSONObject(map);
         System.out.println(jsonObject);
         CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
-        String infp=crmInterfaceService.modInfoVip("C10016",map);
+        String infp=crmInterfaceService.modPrepaidStatus("C10016",map);
         System.out.println(infp);
 
 
