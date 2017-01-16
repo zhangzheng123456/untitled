@@ -56,6 +56,9 @@
                 num = (nowNum/1000).toFixed(2)+'km';
             }
             var add =  list[i].province +''+ list[i].city + ''+list[i].area +''+ list[i].street; //地址是province,city,area,street这几个字段拼起来的
+            if(add==''){
+                add=='暂无地址信息';
+            }
             var store_location = list[i].store_location;
             if(img ==''|| img=='null'||img=='underfind'||img=='../img/head.png'){
                 img = 'image/goods_default_image.png';

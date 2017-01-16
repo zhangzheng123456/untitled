@@ -141,6 +141,9 @@
                     var img = list[i].logo;
                     var shop = list[i].store_name;
                     var add = list[i].province + '' + list[i].city + '' + list[i].area + '' + list[i].street; //地址是province,city,area,street这几个字段拼起来的
+                    if(add==''){
+                        add=='暂无地址信息';
+                    }
                     var x = list[i].lat;
                     var y = list[i].lng;
                     if(x!=''&& y!=''){
