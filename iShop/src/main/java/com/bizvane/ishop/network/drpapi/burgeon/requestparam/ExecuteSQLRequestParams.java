@@ -1,10 +1,10 @@
-package com.bizvane.ishop.network;
+package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ExecuteSQLRequestParams  extends  RequestParams{
+public class ExecuteSQLRequestParams  extends RequestParams {
 
 	public class ExecuteSQLTrans extends BaseTrans{
 
