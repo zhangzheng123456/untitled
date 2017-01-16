@@ -6,6 +6,10 @@ import org.json.JSONObject;
 
 public class GetObjectRequestParams  extends RequestParams{
 
+	public GetObjectRequestParams(String corpcode) {
+		super(corpcode);
+	}
+
 	public class GetObjectTran extends BaseTrans{
 
 		private JSONObject params;

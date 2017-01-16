@@ -62,7 +62,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
              }
 
-             String info = Rest.Add("C_VIP_IMP", vipInfo);
+             String info = Rest.Add("C_VIP_IMP", corpcode,vipInfo);
 
              System.out.println("info...." + info);
 
@@ -119,7 +119,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                  return "缺少id";
              }
 
-              info= Rest.modify("C_VIP", modVip);
+              info= Rest.modify("C_VIP",corpcode, modVip);
              JSONArray jsonArray=new JSONArray(info);
              info=jsonArray.getJSONObject(0).toString();
          }
@@ -152,9 +152,10 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             expr1.put("condition", id);
             map.put("params", expr1);
 
-            String info = Rest.query(map);
+            String info = Rest.query(corpcode,map);
 
-            //System.out.println("cccc"+info);
+            System.out.println("cccc"+info);
+
 
             HashMap<String, Object> maprows = new HashMap<String, Object>();
             HashMap<String, Object> maprow = new HashMap<String, Object>();
@@ -162,6 +163,12 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             JSONArray jsonArray = new JSONArray(info);
             int code = (Integer) jsonArray.getJSONObject(0).get("code");
             String message = jsonArray.getJSONObject(0).get("message").toString();
+
+            if(code==-1){
+                JSONArray jsonArray1=new JSONArray(info);
+                return  jsonArray1.getJSONObject(0).toString();
+
+            }
             String rows = jsonArray.getJSONObject(0).get("rows").toString();
             JSONArray rowsjsonArray = new JSONArray(rows);
             JSONArray rowjsonArray = rowsjsonArray.getJSONArray(0);
@@ -220,7 +227,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //        }
 
 
-             info = Rest.modify("C_VIP", modVip);
+             info = Rest.modify("C_VIP",corpcode, modVip);
             JSONArray jsonArray=new JSONArray(info);
             info=jsonArray.getJSONObject(0).toString();
         }else{
@@ -236,7 +243,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         String info="";
         if(corpcode.equals("C10016")) {
 
-            info = Rest.excuteWebaction("C_VIP_TDEFTICKET_GEN", vipid);
+            info = Rest.excuteWebaction(corpcode,"C_VIP_TDEFTICKET_GEN",vipid);
             JSONArray jsonArray=new JSONArray(info);
             info=jsonArray.getJSONObject(0).toString();
         }else{
@@ -296,7 +303,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             }
 
-             info = Rest.Add("B_VIPMONEY", documentInfo);
+             info = Rest.Add("B_VIPMONEY", corpcode,documentInfo);
 
             JSONArray jsonArray=new JSONArray(info);
             info=jsonArray.getJSONObject(0).toString();
@@ -370,7 +377,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             }
 
 
-            info = Rest.modify("B_VIPMONEY", modStatus);
+            info = Rest.modify("B_VIPMONEY",corpcode, modStatus);
             JSONArray jsonArray=new JSONArray(info);
             info=jsonArray.getJSONObject(0).toString();
         }else{
@@ -406,7 +413,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             }
 
-             info = Rest.Add("B_RET_VIPMONEY", refundInfo);
+             info = Rest.Add("B_RET_VIPMONEY", corpcode,refundInfo);
             JSONArray jsonArray=new JSONArray(info);
            info= jsonArray.getJSONObject(0).toString();
 
@@ -443,7 +450,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                 return "缺少id";
             }
 
-            info = Rest.modify("B_RET_VIPMONEY", modStatusRefund);
+            info = Rest.modify("B_RET_VIPMONEY",corpcode, modStatusRefund);
             JSONArray jsonArray=new JSONArray(info);
            info= jsonArray.getJSONObject(0).toString();
 
