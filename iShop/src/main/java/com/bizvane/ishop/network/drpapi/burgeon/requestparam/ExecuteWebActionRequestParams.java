@@ -5,7 +5,11 @@ import org.json.JSONObject;
 
 public class ExecuteWebActionRequestParams  extends RequestParams {
 
-	public class ExecuteWebActionTrans  extends BaseTrans{
+    public ExecuteWebActionRequestParams(String corpcode) {
+        super(corpcode);
+    }
+
+    public class ExecuteWebActionTrans  extends BaseTrans{
 
 		private JSONObject params;
 

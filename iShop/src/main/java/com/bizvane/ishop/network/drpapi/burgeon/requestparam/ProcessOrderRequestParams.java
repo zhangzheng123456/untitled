@@ -6,6 +6,10 @@ import org.json.JSONObject;
 
 public class ProcessOrderRequestParams extends  RequestParams {
 
+	public ProcessOrderRequestParams(String corpcode) {
+		super(corpcode);
+	}
+
 	public class ProcessOrderTrans extends  BaseTrans{
 
 	//	private String command = "ProcessOrder";

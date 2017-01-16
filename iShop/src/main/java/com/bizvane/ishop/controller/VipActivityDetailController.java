@@ -11,6 +11,7 @@ import com.bizvane.ishop.entity.VipActivityDetail;
 import com.bizvane.ishop.entity.VipCardType;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.service.imp.VipActivityServiceImpl;
+import com.bizvane.ishop.utils.CheckUtils;
 import org.apache.avro.data.Json;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,13 +118,15 @@ public class VipActivityDetailController {
             VipActivityDetail vipActivityDetail = vipActivityDetailService.selActivityDetailByCode(activity_code);
             JSONObject result = new JSONObject();
             String vip_card_type_code ="";
+
+
+            vipActivityDetail.setActivity_type(CheckUtils.CheckVipActivityType(vipActivityDetail.getActivity_type()));
+            String actvity_type=vipActivityDetail.getActivity_type();
             JSONObject activity_detail=JSON.parseObject( JSON.toJSONString(vipActivityDetail));
            //活动类型：招募活动
            String  recruit= vipActivityDetail.getRecruit();
-            String actvity_type=vipActivityDetail.getActivity_type();
-
             String  send_coupon_type= vipActivityDetail.getSend_coupon_type();
-            if(actvity_type.equals("coupon")){
+            if(actvity_type.equals("优惠券活动")){
                 if(send_coupon_type.equals("card")){
                     String coupon_type=vipActivityDetail.getCoupon_type();
                     if(coupon_type!=null&&!coupon_type.equals("")){
