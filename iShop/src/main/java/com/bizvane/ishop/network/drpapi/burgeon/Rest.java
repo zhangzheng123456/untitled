@@ -24,9 +24,9 @@ public class Rest {
 
 
 
-    public static String Add(String table,HashMap<String,Object> tableRow){
+    public static String Add(String table,String corpcode,HashMap<String,Object> tableRow){
 
-        RequestParams createObjectRequestParams = new RequestParams();
+        RequestParams createObjectRequestParams = new RequestParams(corpcode);
         RequestParams.BaseTrans createObjectTrans = createObjectRequestParams.new BaseTrans();
 
         //请求方式
@@ -54,9 +54,9 @@ public class Rest {
 
 
     //查询
-    public static String query(HashMap<String,Object> tableRow){
+    public static String query(String corpcode,HashMap<String,Object> tableRow){
 
-        QueryRequestParams queryRequestParams = new QueryRequestParams();
+        QueryRequestParams queryRequestParams = new QueryRequestParams(corpcode);
         QueryRequestParams.QueryTrans queryTrans = queryRequestParams.new QueryTrans();
         QueryRequestParams.QueryTrans.QueryTransParams queryTransParams = queryTrans.new QueryTransParams();
 
@@ -108,9 +108,9 @@ public class Rest {
 
 
     //修改
-    public  static  String modify(String table,HashMap<String,Object> modVip){
+    public  static  String modify(String table,String  corpcode,HashMap<String,Object> modVip){
 
-        RequestParams modifyObjectRequestParams = new RequestParams();
+        RequestParams modifyObjectRequestParams = new RequestParams(corpcode);
         RequestParams.BaseTrans modifyObjectTrans = modifyObjectRequestParams.new BaseTrans();
 
 
@@ -137,15 +137,15 @@ public class Rest {
 
         System.out.println(info.toString());
 
-        return  info;
+        return  info.toString();
     }
 
 
     //执行WebAction查询
 
-    public static String excuteWebaction(String webaction,int vipid){
+    public static String excuteWebaction(String corpcode,String webaction,int vipid){
 
-        ExecuteWebActionRequestParams executeWebActionRequestParams = new ExecuteWebActionRequestParams();
+        ExecuteWebActionRequestParams executeWebActionRequestParams = new ExecuteWebActionRequestParams(corpcode);
         ExecuteWebActionRequestParams.ExecuteWebActionTrans executeWebActionTrans = executeWebActionRequestParams.new ExecuteWebActionTrans();
         ExecuteWebActionRequestParams.ExecuteWebActionTrans.ExecuteWebActionTransParams executeWebActionTransParams = executeWebActionTrans.new ExecuteWebActionTransParams();
 

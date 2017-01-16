@@ -5,6 +5,10 @@ import org.json.JSONObject;
 
 public class SendSMSRequestParams extends  RequestParams {
 
+	public SendSMSRequestParams(String corpcode) {
+		super(corpcode);
+	}
+
 	public class SendSMSTrans extends  BaseTrans{
 
 		private JSONObject params;

@@ -6,6 +6,10 @@ import org.json.JSONObject;
 
 public class ExecuteSQLRequestParams  extends RequestParams {
 
+	public ExecuteSQLRequestParams(String corpcode) {
+		super(corpcode);
+	}
+
 	public class ExecuteSQLTrans extends BaseTrans{
 
 		private JSONObject params;

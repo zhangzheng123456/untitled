@@ -7,7 +7,11 @@ import org.json.JSONObject;
 public class QueryRequestParams  extends  RequestParams{
 
 
-	public class QueryTrans extends  BaseTrans{
+    public QueryRequestParams(String corpcode) {
+        super(corpcode);
+    }
+
+    public class QueryTrans extends  BaseTrans{
 
 		private JSONObject params;
 
