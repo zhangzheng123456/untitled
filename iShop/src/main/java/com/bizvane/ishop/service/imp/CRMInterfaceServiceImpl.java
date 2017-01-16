@@ -19,7 +19,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     /**
      *
      * @param vipInfo
-     * @return    VIPNAME,SALESREP_ID__NAME,C_VIPTYPE_ID__NAME,DOCNOS,VIPCARDNO__CARDNO,MOBIL,ADDRESS,SEX,BIRTHDAY
+     * @return
+     * 新增字段
+     * VIPNAME,SALESREP_ID__NAME,C_VIPTYPE_ID__NAME,DOCNOS,VIPCARDNO__CARDNO,MOBIL,ADDRESS,SEX,BIRTHDAY
      */
 
      public  String  addVip(HashMap<String,Object> vipInfo) {
@@ -106,7 +108,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
              return  "缺少id";
          }
 
-         String info= Rest.modifyVip("C_VIP",modVip);
+         String info= Rest.modify("C_VIP",modVip);
 
 
          return  info;
@@ -124,7 +126,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> map=new HashMap<String, Object>();
         //查询
         map.put("table","C_VIP_IMP");
-        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
+        map.put("columns",new String[]{"id","C_VIPTYPE_ID__NAME","CARDNO"});
         JSONObject expr1 = new JSONObject();
         expr1.put("column", "id");
         expr1.put("condition", id);
@@ -135,7 +137,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     }
 
 
-    //修改密码(C_VIP)
+    //会员密码短信推送,修改密码(C_VIP)
 
     /**
      *
@@ -170,7 +172,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         }
 
 
-            String info= Rest.modifyVip("C_VIP",modVip);
+            String info= Rest.modify("C_VIP",modVip);
 
                 return  info;
     }
@@ -184,6 +186,114 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         return  info;
     }
+
+
+    //VIP卡充值单据 新增
+
+    /**
+     *
+     * @param
+     * @return
+     * 新增字段
+     * BILLDATE,RECHARGE_TYPE,C_VIPMONEY_STORE_ID__NAME,SALESREP_ID__NAME,C_VIP_ID__CARDNO，
+     *    TOT_AMT_ACTUAL,AMOUNT_ACTUAL,ACTIVE_CONTENT,DESCRIPTION,KVGR1
+     */
+
+    public  String  addPrepaidDocuments(HashMap<String,Object> documentInfo) {
+
+        if (documentInfo.get("BILLDATE") == null){
+
+            return "缺少BILLDATE";
+        }
+        if(documentInfo.get("RECHARGE_TYPE")==null){
+            return "缺少RECHARGE_TYPE";
+        }
+        if(documentInfo.get("C_VIPMONEY_STORE_ID__NAME")==null){
+            return  "缺少C_VIPMONEY_STORE_ID__NAME";
+
+        }
+        if(documentInfo.get("SALESREP_ID__NAME")==null){
+            return  "缺少SALESREP_ID__NAME";
+
+        }
+         if(documentInfo.get("C_VIP_ID__CARDNO")==null){
+             return  "缺少C_VIP_ID__CARDNO";
+
+         }
+        if(documentInfo.get("TOT_AMT_ACTUAL")==null){
+            return  "缺少TOT_AMT_ACTUAL";
+
+        }
+
+        if(documentInfo.get("AMOUNT_ACTUAL")==null){
+
+            return  "缺少AMOUNT_ACTUAL";
+        }
+        if(documentInfo.get("ACTIVE_CONTENT")==null){
+            return  "缺少ACTIVE_CONTENT";
+
+        }
+
+        String  info=Rest.Add("B_VIPMONEY", documentInfo);
+
+        System.out.println("info...."+info);
+
+        JSONArray jsonArray=new JSONArray(info);
+        int code= (Integer)jsonArray.getJSONObject(0).get("code");
+        if(code==-1){
+            return  info;
+        }
+
+        int id=(Integer) jsonArray.getJSONObject(0).get("objectid");
+
+        String vipinfo=selVip(id);
+
+        System.out.println(vipinfo);
+
+
+        return vipinfo;
+    }
+
+
+    ////VIP卡充值单据 审核(修改单据状态)
+
+    public  String  modPrepaidStatus(HashMap<String,Object> modStatus){
+
+        if(modStatus.get("VIPNAME")==null){
+            return "缺少VIPNAME";
+        }
+        if(modStatus.get("C_CUSTOMER_ID__NAME")==null){
+            return "缺少C_CUSTOMER_ID__NAME";
+        }
+        if(modStatus.get("SEX")==null){
+            return "缺少SEX";
+        }
+        if(modStatus.get("SALESREP_ID__NAME")==null){
+            return "缺少SALESREP_ID__NAME";
+        }
+        if(modStatus.get("id")==null){
+            return  "缺少id";
+        }
+        if(modStatus.get("PASS_WORD")==null){
+            return "缺少PASS_WORD";
+        }
+        if(modStatus.get("INTEGRAL_PASSWORD")==null){
+            return "缺少INTEGRAL_PASSWORD";
+        }
+        if(modStatus.get("ISACTIVE")==null){
+
+            return  "缺少ISACTIVE";
+        }
+
+
+        String info= Rest.modify("B_VIPMONEY",modStatus);
+
+        return  info;
+    }
+
+
+
+
 
 
 

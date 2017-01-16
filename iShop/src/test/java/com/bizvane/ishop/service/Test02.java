@@ -1,5 +1,7 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.service.imp.CRMInterfaceServiceImpl;
+
 import java.util.HashMap;
 
 /**
@@ -25,13 +27,13 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 //        expr1.put("column", "VIPNAME");
 //        expr1.put("condition", "test123");
 //        map.put("params",expr1);
-////Object=new com.alibaba.fastjson.JSONObject(map);
-//
-//        System.out.println(map.toString());
-//
-//        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
-//        String ij= crmInterfaceService.selVip(map);
-//System.out.println(ij);
+//Object=new com.alibaba.fastjson.JSONObject(map);
+
+    //    System.out.println(map.toString());
+
+        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
+        String ij= crmInterfaceService.selVip(1059167);
+System.out.println(ij);
 
 //        //新增
 //           map.put("VIPNAME", "test123000");
@@ -50,7 +52,7 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 //        System.out.println(info);
 
 //
-////        //修改
+//        //修改
 //       map.put("VIPNAME", "test123");
 //       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
 //        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
@@ -62,12 +64,12 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 //        //必传
 //     //   map.put("SALESREP_ID__NAME","卢春玲");
 //     //   map.put("partial_update", true);
-//        map.put("id",1059167);
+//       // map.put("id",1059167);
 //
 //        JSONObject jsonObject=new JSONObject(map);
 //        System.out.println(jsonObject);
 //        CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
-//        String infp=crmInterfaceService.modPasswordVip(map);
+//        String infp=crmInterfaceService.modInfoVip(map);
 //        System.out.println(infp);
 
 
