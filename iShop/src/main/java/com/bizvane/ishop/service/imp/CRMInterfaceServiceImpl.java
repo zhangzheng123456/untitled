@@ -126,7 +126,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> map=new HashMap<String, Object>();
         //查询
         map.put("table","C_VIP_IMP");
-        map.put("columns",new String[]{"id","C_VIPTYPE_ID__NAME","CARDNO"});
+        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
         JSONObject expr1 = new JSONObject();
         expr1.put("column", "id");
         expr1.put("condition", id);
