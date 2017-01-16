@@ -55,23 +55,23 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 
 //
 //        //修改
-       map.put("VIPNAME", "test123");
-       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
-        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
-        //只能为男女 如果传入的类型或者值不匹配 虽显示修改成功  但实际不会变化
-      map.put("SEX", "男");
-        map.put("C_STORE_ID",802);
+//       map.put("VIPNAME", "test123");
+//       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
+//        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
+//        //只能为男女 如果传入的类型或者值不匹配 虽显示修改成功  但实际不会变化
+//      map.put("SEX", "男");
+//        map.put("C_STORE_ID",802);
         map.put("PASS_WORD","123rrr");
-        map.put("INTEGRAL_PASSWORD","456ttt");
+ //       map.put("INTEGRAL_PASSWORD","456ttt");
         //必传
-     //   map.put("SALESREP_ID__NAME","卢春玲");
+      //  map.put("SALESREP_ID__NAME","付梦");
      //   map.put("partial_update", true);
         map.put("id",1059167);
 
         JSONObject jsonObject=new JSONObject(map);
         System.out.println(jsonObject);
         CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
-        String infp=crmInterfaceService.modInfoVip(map);
+        String infp=crmInterfaceService.modPasswordVip(map);
         System.out.println(infp);
 
 
