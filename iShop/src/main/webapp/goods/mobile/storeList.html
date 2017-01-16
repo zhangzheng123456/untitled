@@ -29,7 +29,6 @@
     var oc = new ObjectControl();
     var app_user_name = GetRequest().app_user_name;
     var open_id = GetRequest().open_id;
-    var corp_code = GetRequest().corp_code;
     //获取附近店铺列表
     function getPage(){
         oc.postRequire("get", "http://wechat.dev.bizvane.com/app/wechat/getNearByStore?app_user_name="+app_user_name+"&open_id="+open_id, "0", "", function (data) {
@@ -43,10 +42,11 @@
         });
     }
     function pageVal(list){
-        var tempHTML = '<div class="box" id="${store_code}"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML = '<div class="box" id="${store_code}" title="${corp_code}"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/store_00.png" alt="" id="${store_location}"/><span>${num}&nbsp;&nbsp;|&nbsp;&nbsp;</span></div> <div class="right_add">地址：${add}</div> </div> </div>';
         var html = '';
         for(i=0;i<list.length;i++){
             var store_code = list[i].store_code;
+            var corp_code = list[i].corp_code;
             var img = list[i].logo;
             var shop =list[i].store_name;
             var nowNum = Math.ceil(list[i].is_this_area);
@@ -65,6 +65,7 @@
             }
             var nowHTML = tempHTML;
             nowHTML = nowHTML.replace('${store_code}',store_code);
+            nowHTML = nowHTML.replace('${corp_code}',corp_code);
             nowHTML = nowHTML.replace('${img}',img);
             nowHTML = nowHTML.replace('${shop}',shop);
             nowHTML = nowHTML.replace('${num}',num);
@@ -79,10 +80,12 @@
     //跳转
     function toNext(){
         $('.more_store').click(function () {
+            var corp_code = $('.box').eq(0).attr('title');
             window.location.href = 'storeList-all.html?corp_code='+corp_code;
         });
         $('.box').click(function () {
             var store_code =$(this).attr('id');
+            var corp_code = $(this).attr('title');
             $.cookie('storeListKey',$(window).scrollTop());
             window.location.href = 'store_shoppers.html?corp_code='+corp_code+'&store_code='+store_code;
         });
