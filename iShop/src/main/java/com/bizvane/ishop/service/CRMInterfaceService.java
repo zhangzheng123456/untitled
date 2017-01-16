@@ -20,4 +20,8 @@ public interface CRMInterfaceService {
     public  String  addPrepaidDocuments(String corpcode,HashMap<String,Object> documentInfo);
 
     public  String  modPrepaidStatus(String corpcode,HashMap<String,Object> modStatus);
+
+    public  String addRefund(String corpcode,HashMap<String,Object> refundInfo);
+
+    public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund);
 }
