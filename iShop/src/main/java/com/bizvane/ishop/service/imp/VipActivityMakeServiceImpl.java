@@ -246,7 +246,11 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             String task_code = "T" + sdf.format(new Date()) + Math.round(Math.random() * 9);
             Thread.sleep(1);
             task_code_actvie_new = task_code_actvie_new + task_code + ",";
-            task_code_actvie_old = task_code_actvie_old + task_code + ",";
+            if(task_code_actvie_old.endsWith(",")) {
+                task_code_actvie_old = task_code_actvie_old + task_code + ",";
+            }else {
+                task_code_actvie_old = task_code_actvie_old +","+ task_code + ",";
+            }
 
             task.setActivity_vip_code(activity_vip_code);
             task.setTask_code(task_code);
@@ -262,16 +266,21 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             count += taskService.insertTask(task);
 
         }
-        count += vipActivityService.updActiveCodeByType("task_status", "Y", corp_code, activity_vip_code);
-        count += vipActivityService.updActiveCodeByType("task_code", task_code_actvie_old, corp_code, activity_vip_code);
+        System.out.println("-----------old------------"+task_code_actvie_old);
+        System.out.println("-----------new------------"+task_code_actvie_new);
+        String status="";
+        if(count>0) {
+            count += vipActivityService.updActiveCodeByType("task_status", "Y", corp_code, activity_vip_code);
+            count += vipActivityService.updActiveCodeByType("task_code", task_code_actvie_old, corp_code, activity_vip_code);
 
-        VipActivity vipActivity_new = new VipActivity();
-        vipActivity_new.setCorp_code(corp_code);
-        vipActivity_new.setActivity_code(activity_vip_code);
-        vipActivity_new.setActivity_store_code(vipActivity.getActivity_store_code());
-        vipActivity_new.setTask_code(task_code_actvie_new);
+            VipActivity vipActivity_new = new VipActivity();
+            vipActivity_new.setCorp_code(corp_code);
+            vipActivity_new.setActivity_code(activity_vip_code);
+            vipActivity_new.setActivity_store_code(vipActivity.getActivity_store_code());
+            vipActivity_new.setTask_code(task_code_actvie_new);
 
-        String status = vipActivityService.executeTask(vipActivity_new, user_code);
+            status = vipActivityService.executeTask(vipActivity_new, user_code);
+        }
         if (count > 0) {
             if(status.equals(Common.DATABEAN_CODE_SUCCESS)){
                count+=1;
@@ -324,7 +333,12 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             Thread.sleep(1);
-            send_code_actvie_old = send_code_actvie_old + sms_code + ",";
+            if(send_code_actvie_old.endsWith(",")){
+                send_code_actvie_old = send_code_actvie_old + sms_code + ",";
+            }else {
+                send_code_actvie_old = send_code_actvie_old+ "," + sms_code + ",";
+
+            }
             send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
             String content = "";
@@ -356,7 +370,12 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             Thread.sleep(1);
-            send_code_actvie_old = send_code_actvie_old + sms_code + ",";
+            if(send_code_actvie_old.endsWith(",")){
+               send_code_actvie_old = send_code_actvie_old + sms_code + ",";
+            }else {
+                send_code_actvie_old = send_code_actvie_old+ "," + sms_code + ",";
+
+            }
             send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
             String content = "";
@@ -388,7 +407,12 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
             }
             String sms_code = "Fs" + corp_code + Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
             Thread.sleep(1);
-            send_code_actvie_old = send_code_actvie_old + sms_code + ",";
+            if(send_code_actvie_old.endsWith(",")){
+                send_code_actvie_old = send_code_actvie_old + sms_code + ",";
+            }else {
+                send_code_actvie_old = send_code_actvie_old+ "," + sms_code + ",";
+
+            }
             send_code_actvie_new = send_code_actvie_new + sms_code + ",";
 
             String content = "";
@@ -412,16 +436,19 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
 
             count += vipFsendService.insertSend(vipFsend);
         }
-        count += vipActivityService.updActiveCodeByType("send_status", "Y", corp_code, activity_vip_code);
-        count += vipActivityService.updActiveCodeByType("sms_code", send_code_actvie_old, corp_code, activity_vip_code);
+        String status="";
+        if(count>0) {
+            count += vipActivityService.updActiveCodeByType("send_status", "Y", corp_code, activity_vip_code);
+            count += vipActivityService.updActiveCodeByType("sms_code", send_code_actvie_old, corp_code, activity_vip_code);
 
-        VipActivity vipActivity_new = new VipActivity();
-        vipActivity_new.setCorp_code(corp_code);
-        vipActivity_new.setActivity_code(activity_vip_code);
-        vipActivity_new.setActivity_store_code(vipActivity.getActivity_store_code());
-        vipActivity_new.setSms_code(send_code_actvie_new);
+            VipActivity vipActivity_new = new VipActivity();
+            vipActivity_new.setCorp_code(corp_code);
+            vipActivity_new.setActivity_code(activity_vip_code);
+            vipActivity_new.setActivity_store_code(vipActivity.getActivity_store_code());
+            vipActivity_new.setSms_code(send_code_actvie_new);
 
-        String status = vipActivityService.executeFsend(vipActivity_new, user_code);
+            status  = vipActivityService.executeFsend(vipActivity_new, user_code);
+        }
         if (count > 0) {
             if(status.equals(Common.DATABEAN_CODE_SUCCESS)){
                count+=1;

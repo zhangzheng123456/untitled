@@ -57,17 +57,21 @@ public class VIPController {
     @Autowired
     MongoDBClient mongodbClient;
     @Autowired
-    TableManagerService tableManagerService;
-    @Autowired
     VipRulesService vipRulesService;
     @Autowired
     VipGroupService vipGroupService;
+    @Autowired
+    VipService vipService;
+
     /**
      * 新增会员信息
      */
     @RequestMapping(value = "/addVip", method = RequestMethod.POST)
     @ResponseBody
     public String addVip(HttpServletRequest request) {
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -76,30 +80,48 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
+            if (role_code.equals(Common.ROLE_SYS))
+                corp_code = jsonObject.get("corp_code").toString();
 
             String card_no = "";
+            String vip_card_type = "";
             String vip_id = "";
-            String phone = jsonObject.get("phone").toString();
+//            String vip_card_type = jsonObject.get("vip_card_type").toString();
+//            if (jsonObject.containsKey("card_no"))
+//                card_no = jsonObject.get("card_no").toString();
+            String billNo = jsonObject.get("billNo").toString();
             String vip_name = jsonObject.get("vip_name").toString();
-            String vip_card_type = jsonObject.get("vip_card_type").toString();
-            if (jsonObject.containsKey("card_no"))
-                card_no = jsonObject.get("card_no").toString();
             String user_code = jsonObject.get("user_code").toString();
+            String user_name = jsonObject.get("user_name").toString();
             String store_code = jsonObject.get("store_code").toString();
+            String phone = jsonObject.get("phone").toString();
             String birthday = jsonObject.get("birthday").toString();
             String sex = jsonObject.get("sex").toString();
-            JSONObject obj = new JSONObject();
-            if (corp_code.equals("C10016")) {
-                //调安正新增会员接口，返回会员卡号，vip_id
-                obj.put("card_no", "14544423432898");
-                obj.put("vip_id", "14544423432898");
+
+            HashMap<String,Object> vipInfo = new HashMap<String, Object>();
+            vipInfo.put("VIPNAME",vip_name);
+            vipInfo.put("SEX",sex);
+            vipInfo.put("BIRTHDAY",birthday);
+            vipInfo.put("MOBIL",phone);
+            //开卡人姓名
+            vipInfo.put("SALESREP_ID__NAME",user_name);
+            //零食单号
+            vipInfo.put("DOCNOS",billNo);
+            //会员卡类型 ？？？？
+            vipInfo.put("C_VIPTYPE_ID__NAME","玖姿贵宾卡");
+
+            String result = vipService.addVip(vipInfo);
+            if (!result.equals(Common.DATABEAN_CODE_ERROR)){
+                JSONObject result_obj = JSONObject.parseObject(result);
+                vip_id = result_obj.getString("ID");
+                card_no = result_obj.getString("CARDNO");
+                vip_card_type = result_obj.getString("C_VIPTYPE_ID");
             }
             //调毛伟栋新增接口
             iceInterfaceService.addNewVip(corp_code,vip_id,vip_name,sex,birthday,phone,vip_card_type,card_no,store_code,user_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(obj.toString());
+            dataBean.setMessage(result);
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

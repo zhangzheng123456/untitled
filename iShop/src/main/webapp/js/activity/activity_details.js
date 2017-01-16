@@ -405,7 +405,12 @@ function getExecuteDetail(param){
                 listShow(userList);
             }
         }else if(data.code==-1){
-            console.log(data.message)
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
         }
     });
 }
@@ -916,10 +921,27 @@ function doActiveResponse(active_data) {
     //time
     var over=active_data.end_time;
     var start=active_data.start_time;
-    setInterval(function () {
-        var over_time=new Date(over);
+    var over_time=new Date(over).getTime();
+    var start_time=new Date(start).getTime();
+    var now_judge=new Date().getTime();
+    if(start_time<now_judge&&(over_time< now_judge)){//活动已开始并结束
+        $('.header_m .p_2').html('0天0小时0分钟0秒');
+    }else if(start_time<now_judge&&(over_time >now_judge)){//已经开始但未结束
+        setInterval(function () {
+            var now_time=new Date();
+            var time=(over_time-now_time.getTime())/1000;
+            var d=parseInt(time/(24*60*60));
+            var h=parseInt((time-d*(24*60*60))/(60*60));
+            var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
+            var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+            d<=0&&(d=0);
+            h<=0&&(h=0);
+            m<=0&&(m=0);
+            s<=0&&(s=0);
+            $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+        },1000);
         var now_time=new Date();
-        var time=(over_time.getTime()-now_time.getTime())/1000;
+        var time=(over_time-now_time.getTime())/1000;
         var d=parseInt(time/(24*60*60));
         var h=parseInt((time-d*(24*60*60))/(60*60));
         var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
@@ -929,19 +951,34 @@ function doActiveResponse(active_data) {
         m<=0&&(m=0);
         s<=0&&(s=0);
         $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
-    },1000);
-    var over_time=new Date(over);
-    var now_time=new Date();
-    var time=(over_time.getTime()-now_time.getTime())/1000;
-    var d=parseInt(time/(24*60*60));
-    var h=parseInt((time-d*(24*60*60))/(60*60));
-    var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
-    var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
-    d<=0&&(d=0);
-    h<=0&&(h=0);
-    m<=0&&(m=0);
-    s<=0&&(s=0);
-    $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+    }else if(start_time>now_judge){//还没开始
+        $('.header_m_c .p_3').html('距离活动开始还剩');
+        setInterval(function () {
+            var now_time=new Date();
+            var time=(start_time-now_time.getTime())/1000;
+            var d=parseInt(time/(24*60*60));
+            var h=parseInt((time-d*(24*60*60))/(60*60));
+            var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
+            var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+            d<=0&&(d=0);
+            h<=0&&(h=0);
+            m<=0&&(m=0);
+            s<=0&&(s=0);
+            $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+        },1000);
+        var now_time=new Date();
+        var time=(start_time-now_time.getTime())/1000;
+        var d=parseInt(time/(24*60*60));
+        var h=parseInt((time-d*(24*60*60))/(60*60));
+        var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
+        var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+        d<=0&&(d=0);
+        h<=0&&(h=0);
+        m<=0&&(m=0);
+        s<=0&&(s=0);
+        $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+    }
+
     $('.title_l').html(active_data.activity_theme);
     $('.time_l').html(active_data.start_time);//处理
     $('.time_r').html(active_data.end_time);
@@ -949,8 +986,6 @@ function doActiveResponse(active_data) {
     $('.name_r').html(active_data.corp_name);
     $('.header_sm .p_2').html(store);//处理
     //dom节点控制
-    console.log(active_data)
-    console.log(active_data.task_code)
     task_code=active_data.task_code.split(',');
     var active_dom=active_data.task_code.split(',');
     if(active_data.task_code==''){
@@ -1023,8 +1058,8 @@ $('.action_time').click(function () {
         , istime: true //是否开启时间选择
         , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
         ,choose: function(datas){
-            end.min = datas; //开始日选好后，重置结束日的最小日期
-            end.start = datas //将结束日的初始值设定为开始日
+            laydate_end.min = datas; //开始日选好后，重置结束日的最小日期
+            laydate_end.start = datas //将结束日的初始值设定为开始日
         }
         ,  elem: '#start_time', //需显示日期的元素选择器
     };
@@ -1035,7 +1070,7 @@ $('.action_time').click(function () {
         , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
         ,istoday: false
         ,choose: function(datas){
-            start.max = datas; //结束日选好后，重置开始日的最大日期
+            laydate_start.max = datas; //结束日选好后，重置开始日的最大日期
         },
         elem: '#over_time', //需显示日期的元素选择器
     };
@@ -1127,6 +1162,11 @@ $('.task_list').click(function () {
 });
 $('#header .btn').click(function () {
     $(window.parent.document).find('#iframepage').attr("src",'/vip/vip_strategy_supplement.html');
+});
+//取消下拉框
+$(document).on('click', function (e) {
+    if(e.target.id=='cancel_box'){return};
+    if($(e.target).parents('#cancel_box').length==0)$('.action_tip').hide();
 });
 /************************************************************************************/
 $(".screen_content").on("click","li",function(){

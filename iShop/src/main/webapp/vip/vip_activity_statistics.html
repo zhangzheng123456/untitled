@@ -98,20 +98,20 @@
     <div class="main col-lg-12">
         <div class="activity_statistics_head">
             <div class="activity_statistics_head_left">
-                <div class="activity_statistics_head_left_title"><span id="them"></span> <span class="icon-ishop_6-29" style="cursor: pointer"></span></div>
+                <div class="activity_statistics_head_left_title"><span id="them"></span></div>
                 <div class="activity_statistics_head_left_time"><span id="startTime"></span> 至 <span id="endTime"></span></div>
                 <div><span id="mode"></span> | <span id="corp"></span></div>
             </div>
             <div class="activity_statistics_head_center">
                 <div >
                     <span>参与门店数</span>
-                    <span class="num" >200</span>
+                    <span class="num" id="store_num"></span>
                 </div>
             </div>
             <div class="activity_statistics_head_right">
                 <div >
                     <span >活动历时</span>
-                    <span class="num">50天</span>
+                    <span class="num" id="activity_all_day"></span>
                 </div>
             </div>
         </div>
@@ -186,6 +186,13 @@
 <script>
     $(function(){
         var oc=new ObjectControl();
+        // 给日期类对象添加日期差方法，返回日期与diff参数日期的时间差，单位为天
+        Date.prototype.diffH = function(date){
+            return (this.getTime() - date.getTime())/(60 * 60 * 1000);
+        };
+        Date.prototype.diffD = function(date){
+            return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
+        };
         function getActivityData(){
             var param={
                 activity_code:sessionStorage.getItem("activity_code")
@@ -199,8 +206,25 @@
                 $("#endTime").html(activityVip.end_time);
                 $("#mode").html(activityVip.run_mode);
                 $("#corp").html(activityVip.corp_name);
+                $("#store_num").html(JSON.parse(activityVip.activity_store_code).length);
+                var startTime=new Date(activityVip.start_time.replace(/-/g,"/")); //构造两个日期，活动截止日期和开始日期
+                var endTime=new Date(activityVip.end_time.replace(/-/g,"/"));
+                var diffTime=endTime.diffH(startTime);                            //调用日期差方法，求两日期差，单位 时
+                if(diffTime>24){                                                   // 如果大于24小时 调用日期差方法，求两日期差，单位 天
+                    diffTime=parseInt(endTime.diffD(startTime));
+                    $("#activity_all_day").html(diffTime+"天")
+                }else{
+                    $("#activity_all_day").html(diffTime+"时")
+                }
             })
         }
+//    // 构造两个日期，分别是系统时间和2013/04/08 12:43:45
+//        var now = new Date();
+//        var date = new Date('2013/04/08 12:43:45');
+//    // 调用日期差方法，求得参数日期与系统时间相差的天数
+//        var diff = now.diff(date);
+//    // 打印日期差
+//        alert(diff);
         getActivityData();
         $("#active_tabs li").bind("click",function(){
             $(this).addClass("current");
@@ -349,6 +373,9 @@
             allData.resize();
             myChart_type.resize();
         });
+        $("#back_corp_param").bind("click",function(){
+            $(window.parent.document).find('#iframepage').attr("src", "/activity/activity.html");
+        })
     })
 </script>
 </html>
