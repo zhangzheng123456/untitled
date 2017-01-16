@@ -51,6 +51,8 @@ public class VIPController {
     @Autowired
     StoreService storeService;
     @Autowired
+    UserService userService;
+    @Autowired
     ParamConfigureService paramConfigureService;
     @Autowired
     CorpParamService corpParamService;
@@ -62,6 +64,8 @@ public class VIPController {
     VipGroupService vipGroupService;
     @Autowired
     VipService vipService;
+    @Autowired
+    CRMInterfaceService crmInterfaceService;
 
     /**
      * 新增会员信息
@@ -99,6 +103,7 @@ public class VIPController {
             String sex = jsonObject.get("sex").toString();
 
             HashMap<String,Object> vipInfo = new HashMap<String, Object>();
+            vipInfo.put("corp_code",corp_code);
             vipInfo.put("VIPNAME",vip_name);
             vipInfo.put("SEX",sex);
             vipInfo.put("BIRTHDAY",birthday);
@@ -1234,6 +1239,61 @@ public class VIPController {
 
             DataBox dataBox = iceInterfaceService.iceInterfaceV3("Favorites", datalist);
             String result = dataBox.data.get("message").value;
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+
+    }
+
+
+    /**
+     * 发送验证码
+     */
+    @RequestMapping(value = "/sendAuthcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String sendAuthcode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
+            String phone = jsonObject.get("phone").toString();
+            String type = jsonObject.get("type").toString();
+
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("corp_code",corp_code);
+            map.put("id",vip_id);
+            String result = "";
+            if (type.equals("3")) {
+                //券信息获取
+            }else {
+
+                String authcode = userService.getAuthCode("15251891037");
+                if (!authcode.equals(Common.DATABEAN_CODE_ERROR)){
+                    if (type.equals("1")){
+                        // 预存款密码
+                        map.put("PASS_WORD",authcode);
+                        result = crmInterfaceService.modPasswordVip(map);
+                    }else if (type.equals("2")){
+                        //积分付款密码
+                        map.put("INTEGRAL_PASSWORD",authcode);
+                        result = crmInterfaceService.modPasswordVip(map);
+                    }
+                }
+            }
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());

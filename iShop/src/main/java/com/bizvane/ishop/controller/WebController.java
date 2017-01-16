@@ -10,10 +10,7 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
-import com.bizvane.ishop.utils.AESUtils;
-import com.bizvane.ishop.utils.BaiduMapUtils;
-import com.bizvane.ishop.utils.MongoUtils;
-import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.ishop.utils.*;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 
 import com.bizvane.sun.v1.common.DataBox;
@@ -1375,8 +1372,9 @@ public class WebController {
                 String lng = store.getLng();
                 String lat = store.getLat();
                 store.setStore_location(lat+","+lng);
-//                Double distance = BaiduMapUtils.GetDistance(latitude,longitude,lat,lng);
-                store.setIs_this_area(store.getDistance());
+                String distance = store.getDistance();
+                distance = NumberUtil.keepPrecision(distance);
+                store.setIs_this_area(distance);
             }
             result.put("list",JSON.toJSONString(storeList));
         } catch (Exception ex) {
