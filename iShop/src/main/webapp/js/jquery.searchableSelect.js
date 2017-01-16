@@ -7,6 +7,7 @@
   // a case insensitive jQuery :contains selector
   $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
     return function( elem ) {
+      if(typeof (arg)==='undefined')arg='';
       return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
     };
   });
@@ -50,8 +51,9 @@
         _this.hoverPreviousItem();
       }
     }).on('keyup', function(event){
-      if(event.which != 13 && event.which != 27 && event.which != 38 && event.which != 40)
+      if(event.which != 13 && event.which != 27 && event.which != 38 && event.which != 40){
         _this.filter();
+      }
     })
   }
 
