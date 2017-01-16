@@ -817,8 +817,7 @@ public class UserServiceImpl implements UserService {
      * 获取验证码
      */
     @Transactional
-    public String getAuthCode(String phone, String platform) throws Exception {
-
+    public String getAuthCode(String phone) throws Exception {
         String text = "[爱秀]您的验证码为：";
         Random r = new Random();
         Double d = r.nextDouble();
@@ -832,37 +831,39 @@ public class UserServiceImpl implements UserService {
         datalist.put(data_text.key, data_text);
 
         DataBox dataBox = iceInterfaceService.iceInterface("SendSMS", datalist);
-//        logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
-//        String msg = dataBox.data.get("message").value;
-//        System.out.println("------------" + msg);
-//        logger.info("------------" + msg);
-//        JSONObject obj = new JSONObject(msg);
-        if (dataBox.status.toString().equals("SUCCESS")) {
-            //验证码存表
-            ValidateCode code = validateCodeService.selectPhoneExist("web", phone, "");
-            Date now = new Date();
-            if (code == null) {
-                code = new ValidateCode();
-                code.setValidate_code(authcode);
-                code.setPhone(phone);
-                code.setPlatform(platform);
-                code.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                code.setModified_date(Common.DATETIME_FORMAT.format(now));
-                code.setCreater("root");
-                code.setModifier("root");
-                code.setIsactive(Common.IS_ACTIVE_Y);
-                validateCodeService.insertValidateCode(code);
-            } else {
-                code.setValidate_code(authcode);
-                code.setModified_date(Common.DATETIME_FORMAT.format(now));
-                code.setModifier("root");
-                code.setPlatform(platform);
-                code.setIsactive(Common.IS_ACTIVE_Y);
-                validateCodeService.updateValidateCode(code);
-            }
-            return CheckUtils.encryptMD5Hash(authcode);
+        if (!dataBox.status.toString().equals("SUCCESS"))
+            return Common.DATABEAN_CODE_ERROR;
+        return authcode;
+    }
+
+    /**
+     * 保存验证码
+     */
+    @Transactional
+    public String saveAuthCode(String phone,String authcode, String platform) throws Exception {
+        //验证码存表
+        ValidateCode code = validateCodeService.selectPhoneExist(platform, phone, "");
+        Date now = new Date();
+        if (code == null) {
+            code = new ValidateCode();
+            code.setValidate_code(authcode);
+            code.setPhone(phone);
+            code.setPlatform(platform);
+            code.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            code.setModified_date(Common.DATETIME_FORMAT.format(now));
+            code.setCreater("root");
+            code.setModifier("root");
+            code.setIsactive(Common.IS_ACTIVE_Y);
+            validateCodeService.insertValidateCode(code);
+        } else {
+            code.setValidate_code(authcode);
+            code.setModified_date(Common.DATETIME_FORMAT.format(now));
+            code.setModifier("root");
+            code.setPlatform(platform);
+            code.setIsactive(Common.IS_ACTIVE_Y);
+            validateCodeService.updateValidateCode(code);
         }
-        return Common.DATABEAN_CODE_ERROR;
+        return CheckUtils.encryptMD5Hash(authcode);
     }
 
     /**

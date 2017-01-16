@@ -20,6 +20,7 @@
         <result column="street" property="street" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="lng" property="lng" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="lat" property="lat" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="distance" property="distance" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>

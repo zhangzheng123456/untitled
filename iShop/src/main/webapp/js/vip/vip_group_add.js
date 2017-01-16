@@ -257,14 +257,54 @@ $(function () {
                     var group_condition={};
                     var circle_val=$("#type").attr("data-type");
                     group_condition["circle"]=circle_val;
-                    $("#class").is(":hidden")==true? delete group_condition.class:group_condition["class"]=$("#class input").attr("data-name");
-                    $("#season").is(":hidden")==true? delete group_condition.quarter:group_condition["quarter"]=$("#season input").attr("data-name");
-                    $("#brand").is(":hidden")==true? delete group_condition.brand:group_condition["brand"]=brand_value;
+                    //$("#class").is(":hidden")==true? delete group_condition.class:group_condition["class"]=$("#class input").attr("data-name");
+                    //$("#season").is(":hidden")==true? delete group_condition.quarter:group_condition["quarter"]=$("#season input").attr("data-name");
+                    //$("#brand").is(":hidden")==true? delete group_condition.brand:group_condition["brand"]=brand_value;
+                    if($("#class").is(":hidden")==true){
+                        delete group_condition.class;
+                    }else if($("#class").is(":hidden")==false && $("#class input").attr("data-code")!=undefined && $("#class input").attr("data-code")!=""){
+                        group_condition["class"]=$("#class input").attr("data-code");
+                    }else if($("#class").is(":hidden")===false && $("#class input").attr("data-code")==undefined || $("#class input").attr("data-code")==""){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请选择品类"
+                        });
+                        return false;
+                    }
+                    if($("#season").is(":hidden")==true){
+                        delete group_condition.quarter;
+                    }else if($("#season").is(":hidden")==false && $("#season input").attr("data-code")!=undefined && $("#season input").attr("data-code")!=""){
+                        group_condition["quarter"]=$("#season input").attr("data-code");
+                    }else if($("#season").is(":hidden")===false && $("#season input").attr("data-code")==undefined || $("#season input").attr("data-code")==""){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请选择季节"
+                        });
+                        return false;
+                    }
+
+                    if($("#brand").is(":hidden")==true){
+                        delete group_condition.brand;
+                    }else if($("#brand").is(":hidden")==false && (brand_value.length>0)){
+                        group_condition["brand"]=brand_value;
+                    }else if($("#brand").is(":hidden")==false && (brand_value.length==0)){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请选择品牌"
+                        });
+                        return false;
+                    }
                     $("#consume_amount").is(":hidden")==true? delete group_condition.consume_amount:group_condition["consume_amount"]={start:$("#consume_amount input").eq(0).val(),end:$("#consume_amount input").eq(1).val()}; //消费金额
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
                     _params["group_condition"]=group_condition;
-                    var allInput=$("#group_list input");
+                    var allInput=$("#group_list>div").not('.select_more').find("input");
                     var isNoValue=true;
                     for(var i=0;i<allInput.length;i++){
                         if(!$(allInput[i]).parent().is(":hidden") && $(allInput[i]).val().trim()!=""){
@@ -357,9 +397,49 @@ $(function () {
                     var group_condition={};
                     var circle_val=$("#type").attr("data-type");
                     group_condition["circle"]=circle_val;
-                    $("#class").is(":hidden")==true? delete group_condition.class:group_condition["class"]=$("#class input").attr("data-name");
-                    $("#season").is(":hidden")==true? delete group_condition.quarter:group_condition["quarter"]=$("#season input").attr("data-name");
-                    $("#brand").is(":hidden")==true? delete group_condition.brand:group_condition["brand"]=brand_value;
+                    //$("#class").is(":hidden")==true? delete group_condition.class:group_condition["class"]=$("#class input").attr("data-name");
+                    //$("#season").is(":hidden")==true? delete group_condition.quarter:group_condition["quarter"]=$("#season input").attr("data-name");
+                    //$("#brand").is(":hidden")==true? delete group_condition.brand:group_condition["brand"]=brand_value;
+                    if($("#class").is(":hidden")==true){
+                        delete group_condition.class;
+                    }else if($("#class").is(":hidden")==false && $("#class input").attr("data-code")!=undefined && $("#class input").attr("data-code")!=""){
+                        group_condition["class"]=$("#class input").attr("data-code");
+                    }else if($("#class").is(":hidden")===false && $("#class input").attr("data-code")==undefined || $("#class input").attr("data-code")==""){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请选择品类"
+                        });
+                        return false;
+                    }
+                    if($("#season").is(":hidden")==true){
+                        delete group_condition.quarter;
+                    }else if($("#season").is(":hidden")==false && $("#season input").attr("data-code")!=undefined && $("#season input").attr("data-code")!=""){
+                        group_condition["quarter"]=$("#season input").attr("data-code");
+                    }else if($("#season").is(":hidden")===false && $("#season input").attr("data-code")==undefined || $("#season input").attr("data-code")==""){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请选择季节"
+                        });
+                        return false;
+                    }
+
+                    if($("#brand").is(":hidden")==true){
+                        delete group_condition.brand;
+                    }else if($("#brand").is(":hidden")==false && (brand_value.length>0)){
+                       group_condition["brand"]=brand_value;
+                    }else if($("#brand").is(":hidden")==false && (brand_value.length==0)){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content:"请选择品牌"
+                        });
+                        return false;
+                    }
                     $("#consume_amount").is(":hidden")==true? delete group_condition.consume_amount:group_condition["consume_amount"]={start:$("#consume_amount input").eq(0).val(),end:$("#consume_amount input").eq(1).val()}; //消费金额
                     $("#consume_piece").is(":hidden")==true?delete group_condition.consume_piece:group_condition["consume_piece"]={start:$("#consume_piece input").eq(0).val(),end:$("#consume_piece input").eq(1).val()};   //消费件数
                     $("#consume_discount").is(":hidden")==true?delete group_condition.consume_discount:group_condition["consume_discount"]={start:$("#consume_discount input").eq(0).val(),end:$("#consume_discount input").eq(1).val()}; //消费折扣
@@ -2269,6 +2349,8 @@ function showOtherGroup(list,type){
             $("#custom_vip_list").hide();
             $(".select_more").hide();
             $("#class").show();
+            $("#class input").attr("data-code",list.class);
+            $("#class input").attr("data-name",list.class);
             cla=list.class.split(",");
             $("#class input").val("已选"+cla.length+"个");
             $("#screen_class .input_s .s_pitch span").html(cla.length);
@@ -2292,6 +2374,7 @@ function showOtherGroup(list,type){
             $(".select_more").hide();
             $("#brand").show();
             var brand=list.brand && list.brand;
+            brand_value=brand;
             for(var i=0;i<brand.length;i++){
                 br.push(brand[i].brand_code);
             }

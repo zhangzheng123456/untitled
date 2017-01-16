@@ -11,19 +11,23 @@ import org.json.JSONObject;
  */
 public class RequestParams  {
 
-    public static final String appkey="nea@burgeon.com.cn";
-    public static final String appsecret="lifecycle";
+   // public static final String appkey="nea@burgeon.com.cn";
+  //  public static final String appsecret="lifecycle";
     private String sip_sign; // 签名，使用sip_appkey+sip_timestamp+appSecret进行MD5哈希运算，结果为32位长字符串，全部小写，服务器需要校验此值
     private String appSecret; // 密钥，即为系统用户名对应密码的MD5哈希码，32位长全部小写
     private String sip_appkey; // 应用程序编号,即为系统用户名
     private String sip_timestamp; // 服务请求时间戳(yyyy-mm-dd hh:mm:ss.xxx)，支持毫秒，若系统不能产生毫秒，必须补足内容，如使用.000
     private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
 
-    public  RequestParams(){
-        setSip_appkey(appkey);
-        setAppSecret(appsecret);
-        setSip_timestamp();
-        setSip_sign();
+    public  RequestParams(String corpcode){
+
+        //安正
+        if(corpcode.equals("C10016")) {
+            setSip_appkey("nea@burgeon.com.cn");
+            setAppSecret("lifecycle");
+            setSip_timestamp();
+            setSip_sign();
+        }
     }
 
     public String getSip_sign() {
