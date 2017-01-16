@@ -1375,9 +1375,8 @@ public class WebController {
                 String lng = store.getLng();
                 String lat = store.getLat();
                 store.setStore_location(lat+","+lng);
-
-                Double distance = BaiduMapUtils.GetDistance(latitude,longitude,lat,lng);
-                store.setIs_this_area(distance.toString());
+//                Double distance = BaiduMapUtils.GetDistance(latitude,longitude,lat,lng);
+                store.setIs_this_area(store.getDistance());
             }
             result.put("list",JSON.toJSONString(storeList));
         } catch (Exception ex) {
