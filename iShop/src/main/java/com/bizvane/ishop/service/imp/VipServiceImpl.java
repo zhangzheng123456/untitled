@@ -21,20 +21,8 @@ public class VipServiceImpl implements VipService {
     CRMInterfaceService crmInterfaceService;
 
     public String addVip(HashMap<String,Object> vipInfo) throws Exception{
-        String result = crmInterfaceService.addVip(vipInfo);
 
-        System.out.println("===="+result);
-
-        JSONArray array = JSONArray.parseArray(result);
-        JSONObject result_obj = array.getJSONObject(0);
-
-        String code = result_obj.getString("code");
-        if (code.equals("0")){
-            result = result_obj.getString("rows");
-        }else {
-            return Common.DATABEAN_CODE_ERROR;
-        }
-        return result;
+        return "";
     }
 
 }
