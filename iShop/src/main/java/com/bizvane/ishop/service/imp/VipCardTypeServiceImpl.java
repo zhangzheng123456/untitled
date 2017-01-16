@@ -168,7 +168,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                 int num=0;
                 //编辑会员卡类型表成功, 同步更新会员制度里相应的会员卡类型信息
                 num = vipCardTypeMapper.updateVipCardType(vipCardType);
-                if (num > 0 && m > 0) {
+                if (num > 0 && m >= 0) {
                     status = Common.DATABEAN_CODE_SUCCESS;
                 } else {
                     status = Common.DATABEAN_CODE_ERROR;
@@ -228,7 +228,7 @@ public class VipCardTypeServiceImpl implements VipCardTypeService {
                     int num=0;
                     //更新会员卡类型
                     num = vipCardTypeMapper.updateVipCardType(vipCardType);
-                    if (num > 0 && m > 0) {
+                    if (num > 0 && m >= 0) {
                         status = Common.DATABEAN_CODE_SUCCESS;
                     } else {
                         status = Common.DATABEAN_CODE_ERROR;

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>创建活动</title>
+    <title>策略补充</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../table/css/inner.css">
@@ -22,23 +22,23 @@
 </head>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><span>活动跟踪</span><i class="icon-ishop_8-03"></i><span>策略补充</span></div>
+    <div class="col-lg-12 pre_title"><span>会员管理</span><i class="icon-ishop_8-03"></i><span id="back_corp_param">会员活动</span><i class="icon-ishop_8-03"></i><span id="back_tracking">活动跟踪</span><i class="icon-ishop_8-03"></i><span>策略补充</span></div>
     <div class="main col-lg-12">
         <div class="strategy_head">
             <div class="tabs_left">
-                <h3 class="strategy_title">2017新年感恩特惠</h3> 
-                <p class="strategy_time">2017-01-01 00:00:00 至 2017-02-20 00:00:00</p>
-                <div class="strategy_name">线下邀约活动&nbsp;|&nbsp;太平鸟</div>
+                <h3 class="strategy_title" id="activity_theme"></h3> 
+                <p class="strategy_time" id="time"></p>
+                <div class="strategy_name" id="corp_name"></div>
             </div>
             <div class="tabs_right">
-                 <div class="complete">完成</div> 
+                 <div class="complete" id="complete">完成</div> 
             </div>
         </div>
         <div class="strategy_footer" id="strategy_footer">
             <ul>
                 <li class="active">任务</li>
                 <li>群发</li>
-                <li>优惠券</li>
+                <!-- <li>优惠券</li> -->
             </ul>
         </div>
         <div id="tabs-content" class="tabs-content">
@@ -48,20 +48,36 @@
                         <span class="title_icon"></span>
                         <span>分配导购任务</span>
                     </div>
-                    <div class="tabs_right">
+                    <!-- <div class="tabs_right">
                         <div class="switch" id="task_switch">
                             <span class="switch_text">任务已开启</span>
                             <div class="bg">
                                 <span class="Off"></span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div id="task_parent">
                     <!-- 分配任务 -->
                     <div class="p_task" id="task">
                         <div class="tabs_left">
-                            <ul id="task_titles"></ul>
+                            <ul id="task_titles" style="width: 300px;overflow-x:scroll;height: 30px;">
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                                <li>任务1</li>
+                            </ul>
                         </div>
                         <div class="tabs_right">
                             <div class="task_r add" id="task_add">添加任务</div>
@@ -74,10 +90,10 @@
                             <div class="input_parent">
                                 <ul>
                                     <li>
-                                        <label for="">任务标题</label><input type="text" id="task_title" class="text_input" placeholder="请填写任务标题">
+                                        <label for="" style="color:#c26555;">任务标题*</label><input type="text" id="task_title" class="text_input" placeholder="请填写任务标题">
                                     </li>
                                     <li class="input_time">
-                                        <label for="">活动时间</label><input onclick="laydate({elem:'#target_start_time',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkStart})" id="target_start_time" type="text" class="text_input time laydate-icon"><label for="" class="input_z">至</label><input type="text" class="text_input laydate-icon" onclick="laydate({elem:'#target_end_time',min:'2017-01-10',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD',choose:checkEnd})" id="target_end_time">
+                                        <label for="" style="color:#c26555;" >活动时间*</label><input onclick="laydate({elem:'#target_start_time',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})" id="target_start_time" type="text" class="text_input time laydate-icon"><label for="" class="input_z">至</label><input type="text" class="text_input laydate-icon" onclick="laydate({elem:'#target_end_time',min:'2017-01-10',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})" id="target_end_time">
                                     </li>
                                 </ul>
                             </div>
@@ -87,12 +103,6 @@
                                         <div>
                                             <label for="">任务类型</label><input id="task_type_code" type="text" class="text_input" placeholder="请选择任务类型"><span class="icon-ishop_8-02 icon_down"></span>
                                             <div class="input_dropdown">
-                                                <div>asdasd</div>
-                                                <div>asdasd</div>
-                                                <div>asdasd</div>
-                                                <div>adsasd</div>
-                                                <div>asdasd</div>
-                                                <div>asdasd</div>
                                             </div>
                                         </div>
                                         <div class="link">
@@ -115,12 +125,12 @@
                         <span>群发管理</span>
                     </div>
                     <div class="tabs_right">
-                        <div class="switch" id="group_switch">
+                        <!-- <div class="switch" id="group_switch">
                             <span class="switch_text">群发已开启</span>
                             <div class="bg">
                                 <span class="Off"></span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div id="group_parent">
@@ -263,14 +273,14 @@
                     </div>
                 </div>            
             </div>
-            <div class="tab_list setUp_activity_details" style="padding: 0">
+            <div class="tab_list setUp_activity_details setUp_activity" style="padding: 0">
                 <div class="tabs_title_p">
                     <div class="tabs_left">
                         <span class="title_icon"></span>
                         <span>优惠券设置</span>
                     </div>
                     <div class="tabs_right">
-                        <div class="switch" id="group_switch">
+                        <div class="switch" id="ticket_switch">
                             <span class="switch_text">优惠已开启</span>
                             <div class="bg">
                                 <span class="Off"></span>
@@ -278,36 +288,18 @@
                         </div>
                     </div>
                 </div>       
-                <div id="coupon_activity">
-                    <div class="p_task" id="group">
+                <div id="coupon_activity" style="padding: 0">
+                    <div class="p_task" id="ticket">
                         <div class="tabs_left">
                             <ul>
-                                <li class="active">批量发卷</li>
-                                <li>开卡送券</li>
-                                <li>纪念日发券</li>
+                                <li class="active" data-id="batch">批量发卷</li>
+                                <li data-id="card">开卡送券</li>
+                                <li data-id="anniversary">纪念日发券</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="choose_coupon">
-                        <ul class="operate_ul">
-                            <li>
-                                <ul>
-                                    <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                        <ul class="activity_select coupon_activity"></ul>
-                                    </li>
-                                    <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div style="display: none">
-                        <div class="coupon_btn"><span id="coupon_btn">添加</span></div>
-                        <div class="coupon_details_wrap">
-                            <ul>
-                                <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code="" type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                    <ul class="activity_select vipCardType"></ul>
-                                </li>
-                            </ul>
+                    <div style="padding-top: 10px;" id="ticket_content">
+                        <div class="choose_coupon ticket_content" style="display: block;">
                             <ul class="operate_ul">
                                 <li>
                                     <ul>
@@ -318,20 +310,40 @@
                                     </ul>
                                 </li>
                             </ul>
-                            <i class="icon-ishop_6-12 coupon_details_close"></i>
                         </div>
-                    </div>
-                    <div class="choose_coupon" style="display: none">
-                        <ul class="operate_ul">
-                            <li>
+                        <div class="ticket_content" style="display: none;">
+                            <div class="coupon_btn"><span id="coupon_btn">添加</span></div>
+                            <div class="coupon_details_wrap">
                                 <ul>
-                                    <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
-                                        <ul class="activity_select coupon_activity"></ul>
+                                    <li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code="" type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                        <ul class="activity_select vipCardType"></ul>
                                     </li>
-                                    <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
                                 </ul>
-                            </li>
-                        </ul>
+                                <ul class="operate_ul">
+                                    <li>
+                                        <ul>
+                                            <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                                <ul class="activity_select coupon_activity"></ul>
+                                            </li>
+                                            <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <i class="icon-ishop_6-12 coupon_details_close"></i>
+                            </div>
+                        </div>
+                        <div class="choose_coupon ticket_content" style="display: none;">
+                            <ul class="operate_ul">
+                                <li>
+                                    <ul>
+                                        <li><label>选择优惠券</label><input class="text_input select_input" data-code="" placeholder="请选择优惠券" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>
+                                            <ul class="activity_select coupon_activity"></ul>
+                                        </li>
+                                        <li><span class="add_btn">+</span><span class="remove_btn">-</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -351,7 +363,8 @@
  <!--//带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <script type="text/javascript" src="../js/moni_select.js"></script>
-<script src="../js/activity/activityPlanning.js"></script>
+<!-- <script src="../js/activity/activityPlanning.js"></script> -->
+<!-- <script src="../js/vip/set_up_activity.js"></script> -->
 <!--&lt;!&ndash;富文本编辑&ndash;&gt;-->
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.config.js"></script>-->
 <!--<script type="text/javascript" charset="utf-8" src="../goods/ueditor/ueditor.all.min.js"></script>-->

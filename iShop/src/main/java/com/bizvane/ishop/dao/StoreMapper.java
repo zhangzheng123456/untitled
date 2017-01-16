@@ -54,6 +54,8 @@ public interface StoreMapper {
 
     List<Store> selectAllOrderByCity(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
+    List<Store> selectNearByStore(@Param("corp_code") String corp_code, @Param("lng") String lng, @Param("lat") String lat, @Param("distance") String distance) throws SQLException;
+
     //------------------------StoreQrcodeMapper.xml----------
 
     List<StoreQrcode> selectByStoreCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;

@@ -76,12 +76,6 @@ public class TimeUtils {
         return dateFormat.format(new Date(timeInMillis));
     }
 
-
-    public static void main(String[] args) throws Exception {
-
-        System.out.println(getWeek("2016-6-18"));
-    }
-
     public static String formatDateByPattern(Date date, String dateFormat) {
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         String formatTimeStr = null;
