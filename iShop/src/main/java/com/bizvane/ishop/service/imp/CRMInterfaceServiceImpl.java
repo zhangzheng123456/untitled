@@ -30,35 +30,62 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      public  String  addVip(String corpcode,HashMap<String,Object> vipInfo) {
 
          String vipinfo="";
+         HashMap<String,Object> errormap=new HashMap<String, Object>();
 
          if(corpcode.equals("C10016")) {
              if (vipInfo.get("VIPNAME") == null) {
 
-                 return "缺少VIPNAME";
+                 errormap.put("message","缺少VIPNAME");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
              }
              if (vipInfo.get("SALESREP_ID__NAME") == null) {
-                 return "缺少SALESREP_ID__NAME";
+
+                 errormap.put("message","缺少SALESREP_ID__NAME");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
              }
              if (vipInfo.get("C_VIPTYPE_ID__NAME") == null) {
-                 return "缺少C_VIPTYPE_ID__NAME";
 
+                 errormap.put("message","缺少C_VIPTYPE_ID__NAME");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
              }
              if (vipInfo.get("DOCNOS") == null) {
-                 return "缺少DOCNOS";
+
+                 errormap.put("message","缺少DOCNOS");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
 
              }
 
              if (vipInfo.get("MOBIL") == null) {
-                 return "缺少MOBIL";
+
+                 errormap.put("message","缺少MOBIL");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
 
              }
 
              if (vipInfo.get("SEX") == null) {
 
-                 return "缺少SEX";
+                 errormap.put("message","缺少SEX");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
+
              }
              if (vipInfo.get("BIRTHDAY") == null) {
-                 return "缺少BIRTHDAY";
+
+                 errormap.put("message","缺少BIRTHDAY");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return jsonObject.toString();
 
              }
 
@@ -101,6 +128,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      public  String  modInfoVip(String corpcode,HashMap<String,Object> modVip){
 
          String info="";
+         HashMap<String,Object> errormap=new HashMap<String, Object>();
          if(corpcode.equals("C10016")) {
 
 //             if (modVip.get("VIPNAME") == null) {
@@ -116,7 +144,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //                 return "缺少SALESREP_ID__NAME";
 //             }
              if (modVip.get("id") == null) {
-                 return "缺少id";
+
+                 errormap.put("message","缺少id");
+                 errormap.put("code",-1);
+                 JSONObject jsonObject=new JSONObject(errormap);
+                 return  jsonObject.toString();
              }
 
               info= Rest.modify("C_VIP",corpcode, modVip);
@@ -202,6 +234,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         String info="";
 
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
+
         if(corpcode.equals("C10016")) {
 
 //        if(modVip.get("VIPNAME")==null){
@@ -217,10 +251,17 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //            return "缺少SALESREP_ID__NAME";
 //        }
             if (modVip.get("id") == null) {
-                return "缺少id";
+                errormap.put("message","缺少id");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return  jsonObject.toString();
             }
             if (modVip.get("PASS_WORD") == null && modVip.get("SALESREP_ID__NAME") == null) {
-                return "缺少PASS_WORD或者SALESREP_ID__NAME";
+
+                errormap.put("message","缺少PASS_WORD或者SALESREP_ID__NAME");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return  jsonObject.toString();
             }
 //        if(modVip.get("INTEGRAL_PASSWORD")==null){
 //            return "缺少INTEGRAL_PASSWORD";
@@ -268,38 +309,71 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  addPrepaidDocuments(String corpcode,HashMap<String,Object> documentInfo) {
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
             if (documentInfo.get("BILLDATE") == null) {
 
-                return "缺少BILLDATE";
+                errormap.put("message","缺少BILLDATE");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+
+                return jsonObject.toString();
             }
             if (documentInfo.get("RECHARGE_TYPE") == null) {
-                return "缺少RECHARGE_TYPE";
+
+                errormap.put("message","缺少RECHARGE_TYPE");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+
+                return jsonObject.toString();
             }
             if (documentInfo.get("C_VIPMONEY_STORE_ID__NAME") == null) {
-                return "缺少C_VIPMONEY_STORE_ID__NAME";
+
+                errormap.put("message","缺少C_VIPMONEY_STORE_ID__NAME");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
 
             }
             if (documentInfo.get("SALESREP_ID__NAME") == null) {
-                return "缺少SALESREP_ID__NAME";
+
+                errormap.put("message","缺少SALESREP_ID__NAME");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
 
             }
             if (documentInfo.get("C_VIP_ID__CARDNO") == null) {
-                return "缺少C_VIP_ID__CARDNO";
+
+                errormap.put("message","缺少C_VIP_ID__CARDNO");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
 
             }
             if (documentInfo.get("TOT_AMT_ACTUAL") == null) {
-                return "缺少TOT_AMT_ACTUAL";
+
+                errormap.put("message","缺少TOT_AMT_ACTUAL");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
 
             }
 
             if (documentInfo.get("AMOUNT_ACTUAL") == null) {
+                errormap.put("message","缺少AMOUNT_ACTUAL");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
 
-                return "缺少AMOUNT_ACTUAL";
+                return jsonObject.toString();
             }
             if (documentInfo.get("ACTIVE_CONTENT") == null) {
-                return "缺少ACTIVE_CONTENT";
+
+                errormap.put("message","缺少ACTIVE_CONTENT");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
 
             }
 
@@ -334,6 +408,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  modPrepaidStatus(String corpcode,HashMap<String,Object> modStatus){
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
 //            if (modStatus.get("BILLDATE") == null) {
@@ -369,11 +444,18 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //
 //            }
             if (modStatus.get("STATUS") == null) {
+                errormap.put("message","缺少STATUS");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
 
-                return "缺少STATUS";
+                return jsonObject.toString();
             }
             if (modStatus.get("id") == null) {
-                return "缺少id";
+
+                errormap.put("message","缺少id");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
             }
 
 
@@ -399,17 +481,29 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String addRefund(String corpcode,HashMap<String,Object> refundInfo){
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
             if (refundInfo.get("BILLDATE") == null) {
 
-                return "缺少BILLDATE";
+                errormap.put("message","缺少BILLDATE");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+
+                return jsonObject.toString();
             }
             if (refundInfo.get("RECHARGE_TYPE") == null) {
-                return "缺少RECHARGE_TYPE";
+                errormap.put("message","缺少RECHARGE_TYPE");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
             }
             if (refundInfo.get("C_VIPMONEY_STORE_ID__NAME") == null) {
-                return "缺少C_VIPMONEY_STORE_ID__NAME";
+                errormap.put("message","缺少C_VIPMONEY_STORE_ID__NAME");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+
+                return jsonObject.toString();
 
             }
 
@@ -430,6 +524,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund){
         String info="";
 
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
 //            if (modStatusRefund.get("BILLDATE") == null) {
@@ -443,11 +538,20 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //            }
 
             if (modStatusRefund.get("STATUS") == null) {
-                return "缺少STATUS";
+
+                errormap.put("message","缺少STATUS");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+
+                return jsonObject.toString();
             }
 
             if (modStatusRefund.get("id") == null) {
-                return "缺少id";
+
+                errormap.put("message","缺少id");
+                errormap.put("code",-1);
+                JSONObject jsonObject=new JSONObject(errormap);
+                return jsonObject.toString();
             }
 
             info = Rest.modify("B_RET_VIPMONEY",corpcode, modStatusRefund);
