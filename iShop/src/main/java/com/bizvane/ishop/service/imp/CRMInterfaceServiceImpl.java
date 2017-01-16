@@ -68,8 +68,13 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
          JSONArray jsonArray=new JSONArray(info);
           int code= (Integer)jsonArray.getJSONObject(0).get("code");
+            String message=jsonArray.getJSONObject(0).get("message").toString();
          if(code==-1){
-             return  info;
+             HashMap<String,Object> map=new HashMap<String, Object>();
+             map.put("code",code);
+             map.put("message",message);
+             JSONObject jsonObject=new JSONObject(map);
+             return  jsonObject.toString();
          }
 
          int id=(Integer) jsonArray.getJSONObject(0).get("objectid");
@@ -101,9 +106,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
          if(modVip.get("SEX")==null){
              return "缺少SEX";
          }
-         if(modVip.get("SALESREP_ID__NAME")==null){
-             return "缺少SALESREP_ID__NAME";
-         }
+//         if(modVip.get("SALESREP_ID__NAME")==null){
+//             return "缺少SALESREP_ID__NAME";
+//         }
          if(modVip.get("id")==null){
              return  "缺少id";
          }
@@ -132,8 +137,29 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         expr1.put("condition", id);
         map.put("params",expr1);
 
-        String info= Rest.selectVip(map);
-                return  info;
+        String info= Rest.query(map);
+
+       //System.out.println("cccc"+info);
+
+        HashMap<String,Object> maprows=new HashMap<String, Object>();
+        HashMap<String,Object> maprow=new HashMap<String, Object>();
+
+
+        JSONArray jsonArray=new JSONArray(info);
+        int code= (Integer)jsonArray.getJSONObject(0).get("code");
+        String message=jsonArray.getJSONObject(0).get("message").toString();
+        String rows=jsonArray.getJSONObject(0).get("rows").toString();
+        JSONArray rowsjsonArray=new JSONArray(rows);
+        JSONArray rowjsonArray=rowsjsonArray.getJSONArray(0);
+        maprow.put("id",rowjsonArray.get(0));
+        maprow.put("C_VIPTYPE_ID",rowjsonArray.get(1));
+        maprow.put("CARDNO",rowjsonArray.get(2));
+        maprows.put("message",message);
+        maprows.put("code",code);
+        maprows.put("rows",maprow);
+        JSONObject jsonObject=new JSONObject(maprows);
+
+                return  jsonObject.toString();
     }
 
 
@@ -280,9 +306,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         if(modStatus.get("INTEGRAL_PASSWORD")==null){
             return "缺少INTEGRAL_PASSWORD";
         }
-        if(modStatus.get("ISACTIVE")==null){
+        if(modStatus.get("STATUS")==null){
 
-            return  "缺少ISACTIVE";
+            return  "STATUS";
         }
 
 
@@ -290,6 +316,14 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         return  info;
     }
+
+
+    /**
+     * VIP充值退款：
+     处理方式：CRM调用DRP接口完成充值单据新增、审核（审核状态如何修改）
+     审核（修改单据状态）
+     表（B_RET_VIPMONEY）
+     */
 
 
 

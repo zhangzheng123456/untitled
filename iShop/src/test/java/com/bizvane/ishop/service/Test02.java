@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.service.imp.CRMInterfaceServiceImpl;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -30,21 +31,22 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 //Object=new com.alibaba.fastjson.JSONObject(map);
 
     //    System.out.println(map.toString());
-
-        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
-        String ij= crmInterfaceService.selVip(1059167);
-System.out.println(ij);
+//
+//        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
+//        String ij= crmInterfaceService.selVip(1059167);
+//        System.out.println(ij);
 
 //        //新增
 //           map.put("VIPNAME", "test123000");
 //        map.put("C_VIPTYPE_ID__NAME", "玖姿卡");
 //       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
 //        map.put("C_STORE_ID__NAME","大庆大商新玛特购物休闲广场尹默专柜");
-//        map.put("SEX", "女");
+//        map.put("SEX", "W");
 //        map.put("BIRTHDAY","19950824");
-//        map.put("MOBIL","13211078901");
+//        map.put("MOBIL","13291070901");
 //        map.put("table","18690");
 //       map.put("SALESREP_ID__NAME","付梦");
+//        map.put("DOCNOS",2324);
 //        JSONObject jsonObject=new JSONObject(map);
 //
 //        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
@@ -53,24 +55,24 @@ System.out.println(ij);
 
 //
 //        //修改
-//       map.put("VIPNAME", "test123");
-//       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
-//        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
-//        //只能为男女 如果传入的类型或者值不匹配 虽显示修改成功  但实际不会变化
-//      map.put("SEX", "男");
-//        map.put("C_STORE_ID",802);
-//        map.put("PASS_WORD","123rrr");
-//        map.put("INTEGRAL_PASSWORD","456ttt");
-//        //必传
-//     //   map.put("SALESREP_ID__NAME","卢春玲");
-//     //   map.put("partial_update", true);
-//       // map.put("id",1059167);
-//
-//        JSONObject jsonObject=new JSONObject(map);
-//        System.out.println(jsonObject);
-//        CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
-//        String infp=crmInterfaceService.modInfoVip(map);
-//        System.out.println(infp);
+       map.put("VIPNAME", "test123");
+       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
+        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
+        //只能为男女 如果传入的类型或者值不匹配 虽显示修改成功  但实际不会变化
+      map.put("SEX", "男");
+        map.put("C_STORE_ID",802);
+        map.put("PASS_WORD","123rrr");
+        map.put("INTEGRAL_PASSWORD","456ttt");
+        //必传
+     //   map.put("SALESREP_ID__NAME","卢春玲");
+     //   map.put("partial_update", true);
+        map.put("id",1059167);
+
+        JSONObject jsonObject=new JSONObject(map);
+        System.out.println(jsonObject);
+        CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
+        String infp=crmInterfaceService.modInfoVip(map);
+        System.out.println(infp);
 
 
     //获取一个vip的所有信息
@@ -97,5 +99,6 @@ System.out.println(ij);
 //        JSONObject jsonObject=new JSONObject(map);
 //        System.out.println(jsonObject);
 //        CRMInterfaceServiceImpl.delObject(map);
+
     }
 }

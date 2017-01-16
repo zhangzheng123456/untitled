@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class TimeUtils {
 
-    public static final SimpleDateFormat DATETIME_FORMAT_DATE_MS = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss.111");
+    public static final SimpleDateFormat DATETIME_FORMAT_DATE_MS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.111");
 
     //前几天的日期
     //@param day

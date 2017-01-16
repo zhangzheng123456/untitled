@@ -53,8 +53,8 @@ public class Rest {
     }
 
 
-    //查询vip(通过测试)
-    public static String selectVip(HashMap<String,Object> tableRow){
+    //查询
+    public static String query(HashMap<String,Object> tableRow){
 
         QueryRequestParams queryRequestParams = new QueryRequestParams();
         QueryRequestParams.QueryTrans queryTrans = queryRequestParams.new QueryTrans();
@@ -107,7 +107,7 @@ public class Rest {
     }
 
 
-    //修改会员(测试成功)
+    //修改
     public  static  String modify(String table,HashMap<String,Object> modVip){
 
         RequestParams modifyObjectRequestParams = new RequestParams();

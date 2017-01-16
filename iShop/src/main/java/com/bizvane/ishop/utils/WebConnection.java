@@ -27,6 +27,8 @@ public  class WebConnection {
 
     public  HttpResult Request(String url,String method,Map<String,String> params,byte[] data ) throws IOException {
         httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
+        httpURLConnection.setReadTimeout(20000);
+        httpURLConnection.setConnectTimeout(20000);
         httpURLConnection.setRequestMethod(method);
         if(params!=null){
             for(String key : params.keySet()){
