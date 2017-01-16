@@ -320,7 +320,9 @@ public class StoreServiceImpl implements StoreService {
         String store_id = jsonObject.get("store_id").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String store_name = jsonObject.get("store_name").toString().trim();
-        String logo=jsonObject.get("logo").toString().trim();
+        String logo = "";
+        if (jsonObject.has("logo"))
+            logo=jsonObject.get("logo").toString().trim();
         Store store = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
         List<Store> store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
         if (store == null && store1.size()<1) {
@@ -491,7 +493,9 @@ public class StoreServiceImpl implements StoreService {
         String store_id1 = jsonObject.get("store_id").toString().trim();
         String corp_code = jsonObject.get("corp_code").toString().trim();
         String store_name = jsonObject.get("store_name").toString().trim();
-        String logo=jsonObject.get("logo").toString().trim();
+        String logo = "";
+        if (jsonObject.has("logo"))
+            logo=jsonObject.get("logo").toString().trim();
 
         Store store = getById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
