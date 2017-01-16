@@ -622,10 +622,9 @@ function getmatchgoodsList(a) {
     });
 }
 $("#search_match_goods ul").scroll(function () {
-    var nScrollHight = $(this)[0].scrollHeight;
-    var nScrollTop = $(this)[0].scrollTop;
-    var nDivHight=$(this).height();
-
+    var nScrollHight = $(this)[0].scrollHeight;  //初始化的顶部，距离可见（当前底部）的高度
+    var nScrollTop = $(this)[0].scrollTop;  //距离顶部的高度
+    var nDivHight=$(this).height();       //单个盒子的高度
     if(nScrollTop + nDivHight >= nScrollHight){
         if(next){
             return;
