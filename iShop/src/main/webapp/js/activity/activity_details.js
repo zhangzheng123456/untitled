@@ -764,12 +764,13 @@ $('.vip_status_btn').click(function () {
 });
 /******************************************************************************************/
 function getActive() {
+    var _param={};
+    var param={}
+    param.activity_code=sessionStorage.getItem('activity_code');
     var params={
         "id":"",
         "message":param
     };
-    var _param={};
-    param.activity_code=sessionStorage.getItem('activity_code');
     whir.loading.add("", 0.5);
     var xhr = null;
     if(window.XMLHttpRequest){
