@@ -47,6 +47,9 @@ public class Store {
     private String lng;
     //纬度
     private String lat;
+    //距离
+    private String distance;
+
     private String brand_name;
     private String corp_name;
     //是否为该区域店铺
@@ -266,6 +269,14 @@ public class Store {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 
     public String getBrand_name() {
