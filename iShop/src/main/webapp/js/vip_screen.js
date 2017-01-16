@@ -534,7 +534,18 @@ $(function () {
 //点击列表显示选中状态
 $(".screen_content").on("click", "li", function () {
     var input = $(this).find("input")[0];
-    if (input.type == "checkbox" && input.checked == false) {
+    var type=$(this).find("input").eq(0).attr("data-type");
+    if(type=="define"){
+        art.dialog({
+            zIndex: 10010,
+            time: 1,
+            lock: true,
+            cancel: false,
+            content: "暂不支持选择自定义分组"
+        });
+        return false;
+    }
+    if (input.type == "checkbox" && input.checked == false ) {
         input.checked = true;
     } else if (input.type == "checkbox" && input.checked == true) {
         input.checked = false;
@@ -631,7 +642,7 @@ function getGroup() {
             $("#filter_group").attr("data-corp", list[0].corp_code);
             if (list.length > 0) {
                 for (var i = 0; i < list.length; i++) {
-                    html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].vip_group_code+"' name='test'  class='check'  id='checkboxOneInput"
+                    html+="<li><div class='checkbox1'><input  data-type='"+list[i].group_type+"' type='checkbox' value='"+list[i].vip_group_code+"' name='test'  class='check'  id='checkboxOneInput"
                         + i
                         + "'/><label for='checkboxOneInput"
                         + i
@@ -711,7 +722,7 @@ function removeRight(a, b) {
         li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']:checked").parents("li:visible");
     }
     if (a == "all") {
-        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox']").parents("li:visible");
+        li = $(b).parents(".screen_content").find(".screen_content_l input[type='checkbox'][data-type!='define']").parents("li:visible");
     }
     if (li.length == "0") {
         art.dialog({

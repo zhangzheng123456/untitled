@@ -4,12 +4,15 @@ import com.bizvane.ishop.network.drpapi.burgeon.Rest;
 import com.bizvane.ishop.service.CRMInterfaceService;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
 /**
  * Created by yanyadong on 2016/1/13.
  */
+
+@Service
 public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
 
@@ -24,61 +27,66 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      * VIPNAME,SALESREP_ID__NAME,C_VIPTYPE_ID__NAME,DOCNOS,VIPCARDNO__CARDNO,MOBIL,ADDRESS,SEX,BIRTHDAY
      */
 
-     public  String  addVip(HashMap<String,Object> vipInfo) {
+     public  String  addVip(String corpcode,HashMap<String,Object> vipInfo) {
 
-         if (vipInfo.get("VIPNAME") == null){
+         String vipinfo="";
 
-             return "缺少VIPNAME";
+         if(corpcode.equals("C10016")) {
+             if (vipInfo.get("VIPNAME") == null) {
+
+                 return "缺少VIPNAME";
+             }
+             if (vipInfo.get("SALESREP_ID__NAME") == null) {
+                 return "缺少SALESREP_ID__NAME";
+             }
+             if (vipInfo.get("C_VIPTYPE_ID__NAME") == null) {
+                 return "缺少C_VIPTYPE_ID__NAME";
+
+             }
+             if (vipInfo.get("DOCNOS") == null) {
+                 return "缺少DOCNOS";
+
+             }
+
+             if (vipInfo.get("MOBIL") == null) {
+                 return "缺少MOBIL";
+
+             }
+
+             if (vipInfo.get("SEX") == null) {
+
+                 return "缺少SEX";
+             }
+             if (vipInfo.get("BIRTHDAY") == null) {
+                 return "缺少BIRTHDAY";
+
+             }
+
+             String info = Rest.Add("C_VIP_IMP", corpcode,vipInfo);
+
+             System.out.println("info...." + info);
+
+             JSONArray jsonArray = new JSONArray(info);
+             int code = (Integer) jsonArray.getJSONObject(0).get("code");
+             String message = jsonArray.getJSONObject(0).get("message").toString();
+             if (code == -1) {
+                 HashMap<String, Object> map = new HashMap<String, Object>();
+                 map.put("code", code);
+                 map.put("message", message);
+                 JSONObject jsonObject = new JSONObject(map);
+                 return jsonObject.toString();
+             }
+
+             int id = (Integer) jsonArray.getJSONObject(0).get("objectid");
+
+              vipinfo= selVip(corpcode,id);
+
+             System.out.println(vipinfo);
+
+         }else{
+
+
          }
-         if(vipInfo.get("SALESREP_ID__NAME")==null){
-             return "缺少SALESREP_ID__NAME";
-         }
-         if(vipInfo.get("C_VIPTYPE_ID__NAME")==null){
-             return  "缺少C_VIPTYPE_ID__NAME";
-
-         }
-         if(vipInfo.get("DOCNOS")==null){
-             return  "缺少DOCNOS";
-
-         }
-//         if(vipInfo.get("VIPCARDNO__CARDNO")==null){
-//             return  "缺少VIPCARDNO__CARDNO";
-//
-//         }
-         if(vipInfo.get("MOBIL")==null){
-             return  "缺少MOBIL";
-
-         }
-//         if(vipInfo.get("ADDRESS")==null){
-//
-//             return  "缺少ADDRESS";
-//         }
-         if(vipInfo.get("SEX")==null){
-
-             return  "缺少SEX";
-         }
-         if(vipInfo.get("BIRTHDAY")==null){
-             return  "缺少BIRTHDAY";
-
-         }
-
-         String  info=Rest.Add("C_VIP_IMP", vipInfo);
-
-         System.out.println("info...."+info);
-
-         JSONArray jsonArray=new JSONArray(info);
-          int code= (Integer)jsonArray.getJSONObject(0).get("code");
-         if(code==-1){
-             return  info;
-         }
-
-         int id=(Integer) jsonArray.getJSONObject(0).get("objectid");
-
-          String vipinfo=selVip(id);
-
-         System.out.println(vipinfo);
-
-
          return vipinfo;
      }
 
@@ -90,25 +98,34 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      */
 
      //修改信息（C_VIP）
-     public  String  modInfoVip(HashMap<String,Object> modVip){
+     public  String  modInfoVip(String corpcode,HashMap<String,Object> modVip){
 
-         if(modVip.get("VIPNAME")==null){
-             return "缺少VIPNAME";
-         }
-         if(modVip.get("C_CUSTOMER_ID__NAME")==null){
-             return "缺少C_CUSTOMER_ID__NAME";
-         }
-         if(modVip.get("SEX")==null){
-             return "缺少SEX";
-         }
-         if(modVip.get("SALESREP_ID__NAME")==null){
-             return "缺少SALESREP_ID__NAME";
-         }
-         if(modVip.get("id")==null){
-             return  "缺少id";
-         }
+         String info="";
+         if(corpcode.equals("C10016")) {
 
-         String info= Rest.modify("C_VIP",modVip);
+//             if (modVip.get("VIPNAME") == null) {
+//                 return "缺少VIPNAME";
+//             }
+//             if (modVip.get("C_CUSTOMER_ID__NAME") == null) {
+//                 return "缺少C_CUSTOMER_ID__NAME";
+//             }
+//             if (modVip.get("SEX") == null) {
+//                 return "缺少SEX";
+//             }
+//             if (modVip.get("SALESREP_ID__NAME") == null) {
+//                 return "缺少SALESREP_ID__NAME";
+//             }
+             if (modVip.get("id") == null) {
+                 return "缺少id";
+             }
+
+              info= Rest.modify("C_VIP",corpcode, modVip);
+             JSONArray jsonArray=new JSONArray(info);
+             info=jsonArray.getJSONObject(0).toString();
+         }
+         else{
+
+         }
 
 
          return  info;
@@ -120,20 +137,54 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
      //查询vip
 
-    public  String  selVip(int id){
+    public  String  selVip(String corpcode,int id){
 
-        //返回 会员ID 会员类型 会员卡号
-        HashMap<String,Object> map=new HashMap<String, Object>();
-        //查询
-        map.put("table","C_VIP_IMP");
-        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
-        JSONObject expr1 = new JSONObject();
-        expr1.put("column", "id");
-        expr1.put("condition", id);
-        map.put("params",expr1);
+        String  infos="";
 
-        String info= Rest.selectVip(map);
-                return  info;
+        if(corpcode.equals("C10016")) {
+            //返回 会员ID 会员类型 会员卡号
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            //查询
+            map.put("table", "C_VIP_IMP");
+            map.put("columns", new String[]{"id", "C_VIPTYPE_ID", "CARDNO"});
+            JSONObject expr1 = new JSONObject();
+            expr1.put("column", "id");
+            expr1.put("condition", id);
+            map.put("params", expr1);
+
+            String info = Rest.query(corpcode,map);
+
+            System.out.println("cccc"+info);
+
+
+            HashMap<String, Object> maprows = new HashMap<String, Object>();
+            HashMap<String, Object> maprow = new HashMap<String, Object>();
+
+            JSONArray jsonArray = new JSONArray(info);
+            int code = (Integer) jsonArray.getJSONObject(0).get("code");
+            String message = jsonArray.getJSONObject(0).get("message").toString();
+
+            if(code==-1){
+                JSONArray jsonArray1=new JSONArray(info);
+                return  jsonArray1.getJSONObject(0).toString();
+
+            }
+            String rows = jsonArray.getJSONObject(0).get("rows").toString();
+            JSONArray rowsjsonArray = new JSONArray(rows);
+            JSONArray rowjsonArray = rowsjsonArray.getJSONArray(0);
+            maprow.put("id", rowjsonArray.get(0));
+            maprow.put("C_VIPTYPE_ID", rowjsonArray.get(1));
+            maprow.put("CARDNO", rowjsonArray.get(2));
+            maprows.put("message", message);
+            maprows.put("code", code);
+            maprows.put("rows", maprow);
+            JSONObject jsonObject = new JSONObject(maprows);
+
+            infos = jsonObject.toString();
+        }else{
+
+        }
+        return  infos;
     }
 
 
@@ -147,42 +198,57 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      * VIPNAME,C_CUSTOMER_ID__NAME,SEX,SALESREP_ID__NAME,SALEHREMP_ID__NAME,PASS_WORD,INTEGRAL_PASSWORD,id
      */
 
-    public  String  modPasswordVip(HashMap<String,Object> modVip){
+    public  String  modPasswordVip(String corpcode,HashMap<String,Object> modVip){
 
-        if(modVip.get("VIPNAME")==null){
-            return "缺少VIPNAME";
-        }
-        if(modVip.get("C_CUSTOMER_ID__NAME")==null){
-            return "缺少C_CUSTOMER_ID__NAME";
-        }
-        if(modVip.get("SEX")==null){
-            return "缺少SEX";
-        }
-        if(modVip.get("SALESREP_ID__NAME")==null){
-            return "缺少SALESREP_ID__NAME";
-        }
-        if(modVip.get("id")==null){
-            return  "缺少id";
-        }
-        if(modVip.get("PASS_WORD")==null){
-            return "缺少PASS_WORD";
-        }
-        if(modVip.get("INTEGRAL_PASSWORD")==null){
-            return "缺少INTEGRAL_PASSWORD";
-        }
+        String info="";
+
+        if(corpcode.equals("C10016")) {
+
+//        if(modVip.get("VIPNAME")==null){
+//            return "缺少VIPNAME";
+//        }
+//        if(modVip.get("C_CUSTOMER_ID__NAME")==null){
+//            return "缺少C_CUSTOMER_ID__NAME";
+//        }
+//        if(modVip.get("SEX")==null){
+//            return "缺少SEX";
+//        }
+//        if(modVip.get("SALESREP_ID__NAME")==null){
+//            return "缺少SALESREP_ID__NAME";
+//        }
+            if (modVip.get("id") == null) {
+                return "缺少id";
+            }
+            if (modVip.get("PASS_WORD") == null && modVip.get("SALESREP_ID__NAME") == null) {
+                return "缺少PASS_WORD或者SALESREP_ID__NAME";
+            }
+//        if(modVip.get("INTEGRAL_PASSWORD")==null){
+//            return "缺少INTEGRAL_PASSWORD";
+//        }
 
 
-            String info= Rest.modify("C_VIP",modVip);
+             info = Rest.modify("C_VIP",corpcode, modVip);
+            JSONArray jsonArray=new JSONArray(info);
+            info=jsonArray.getJSONObject(0).toString();
+        }else{
+
+        }
 
                 return  info;
     }
 
     //券信息获取
 
-    public String couponInfo(int vipid){
+    public String couponInfo(String corpcode,int vipid){
+        String info="";
+        if(corpcode.equals("C10016")) {
 
+            info = Rest.excuteWebaction(corpcode,"C_VIP_TDEFTICKET_GEN",vipid);
+            JSONArray jsonArray=new JSONArray(info);
+            info=jsonArray.getJSONObject(0).toString();
+        }else{
 
-        String info=Rest.excuteWebaction("C_VIP_TDEFTICKET_GEN",vipid);
+        }
 
         return  info;
     }
@@ -199,97 +265,285 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      *    TOT_AMT_ACTUAL,AMOUNT_ACTUAL,ACTIVE_CONTENT,DESCRIPTION,KVGR1
      */
 
-    public  String  addPrepaidDocuments(HashMap<String,Object> documentInfo) {
+    public  String  addPrepaidDocuments(String corpcode,HashMap<String,Object> documentInfo) {
 
-        if (documentInfo.get("BILLDATE") == null){
+        String info="";
+        if(corpcode.equals("C10016")) {
 
-            return "缺少BILLDATE";
+            if (documentInfo.get("BILLDATE") == null) {
+
+                return "缺少BILLDATE";
+            }
+            if (documentInfo.get("RECHARGE_TYPE") == null) {
+                return "缺少RECHARGE_TYPE";
+            }
+            if (documentInfo.get("C_VIPMONEY_STORE_ID__NAME") == null) {
+                return "缺少C_VIPMONEY_STORE_ID__NAME";
+
+            }
+            if (documentInfo.get("SALESREP_ID__NAME") == null) {
+                return "缺少SALESREP_ID__NAME";
+
+            }
+            if (documentInfo.get("C_VIP_ID__CARDNO") == null) {
+                return "缺少C_VIP_ID__CARDNO";
+
+            }
+            if (documentInfo.get("TOT_AMT_ACTUAL") == null) {
+                return "缺少TOT_AMT_ACTUAL";
+
+            }
+
+            if (documentInfo.get("AMOUNT_ACTUAL") == null) {
+
+                return "缺少AMOUNT_ACTUAL";
+            }
+            if (documentInfo.get("ACTIVE_CONTENT") == null) {
+                return "缺少ACTIVE_CONTENT";
+
+            }
+
+             info = Rest.Add("B_VIPMONEY", corpcode,documentInfo);
+
+            JSONArray jsonArray=new JSONArray(info);
+            info=jsonArray.getJSONObject(0).toString();
+
+            System.out.println("info...." + info);
+
+//        JSONArray jsonArray=new JSONArray(info);
+//        int code= (Integer)jsonArray.getJSONObject(0).get("code");
+//        if(code==-1){
+//            return  info;
+//        }
+//
+//        int id=(Integer) jsonArray.getJSONObject(0).get("objectid");
+//
+//        String vipinfo=selVip(id);
+//
+//        System.out.println(vipinfo);
+        }else{
+
         }
-        if(documentInfo.get("RECHARGE_TYPE")==null){
-            return "缺少RECHARGE_TYPE";
-        }
-        if(documentInfo.get("C_VIPMONEY_STORE_ID__NAME")==null){
-            return  "缺少C_VIPMONEY_STORE_ID__NAME";
 
-        }
-        if(documentInfo.get("SALESREP_ID__NAME")==null){
-            return  "缺少SALESREP_ID__NAME";
-
-        }
-         if(documentInfo.get("C_VIP_ID__CARDNO")==null){
-             return  "缺少C_VIP_ID__CARDNO";
-
-         }
-        if(documentInfo.get("TOT_AMT_ACTUAL")==null){
-            return  "缺少TOT_AMT_ACTUAL";
-
-        }
-
-        if(documentInfo.get("AMOUNT_ACTUAL")==null){
-
-            return  "缺少AMOUNT_ACTUAL";
-        }
-        if(documentInfo.get("ACTIVE_CONTENT")==null){
-            return  "缺少ACTIVE_CONTENT";
-
-        }
-
-        String  info=Rest.Add("B_VIPMONEY", documentInfo);
-
-        System.out.println("info...."+info);
-
-        JSONArray jsonArray=new JSONArray(info);
-        int code= (Integer)jsonArray.getJSONObject(0).get("code");
-        if(code==-1){
-            return  info;
-        }
-
-        int id=(Integer) jsonArray.getJSONObject(0).get("objectid");
-
-        String vipinfo=selVip(id);
-
-        System.out.println(vipinfo);
-
-
-        return vipinfo;
+        return info;
     }
 
 
     ////VIP卡充值单据 审核(修改单据状态)
 
-    public  String  modPrepaidStatus(HashMap<String,Object> modStatus){
+    public  String  modPrepaidStatus(String corpcode,HashMap<String,Object> modStatus){
 
-        if(modStatus.get("VIPNAME")==null){
-            return "缺少VIPNAME";
-        }
-        if(modStatus.get("C_CUSTOMER_ID__NAME")==null){
-            return "缺少C_CUSTOMER_ID__NAME";
-        }
-        if(modStatus.get("SEX")==null){
-            return "缺少SEX";
-        }
-        if(modStatus.get("SALESREP_ID__NAME")==null){
-            return "缺少SALESREP_ID__NAME";
-        }
-        if(modStatus.get("id")==null){
-            return  "缺少id";
-        }
-        if(modStatus.get("PASS_WORD")==null){
-            return "缺少PASS_WORD";
-        }
-        if(modStatus.get("INTEGRAL_PASSWORD")==null){
-            return "缺少INTEGRAL_PASSWORD";
-        }
-        if(modStatus.get("ISACTIVE")==null){
+        String info="";
+        if(corpcode.equals("C10016")) {
 
-            return  "缺少ISACTIVE";
+//            if (modStatus.get("BILLDATE") == null) {
+//
+//                return "缺少BILLDATE";
+//            }
+//            if (modStatus.get("RECHARGE_TYPE") == null) {
+//                return "缺少RECHARGE_TYPE";
+//            }
+//            if (modStatus.get("C_VIPMONEY_STORE_ID__NAME") == null) {
+//                return "缺少C_VIPMONEY_STORE_ID__NAME";
+//
+//            }
+//            if (modStatus.get("SALESREP_ID__NAME") == null) {
+//                return "缺少SALESREP_ID__NAME";
+//
+//            }
+//            if (modStatus.get("C_VIP_ID__CARDNO") == null) {
+//                return "缺少C_VIP_ID__CARDNO";
+//
+//            }
+//            if (modStatus.get("TOT_AMT_ACTUAL") == null) {
+//                return "缺少TOT_AMT_ACTUAL";
+//
+//            }
+//
+//            if (modStatus.get("AMOUNT_ACTUAL") == null) {
+//
+//                return "缺少AMOUNT_ACTUAL";
+//            }
+//            if (modStatus.get("ACTIVE_CONTENT") == null) {
+//                return "缺少ACTIVE_CONTENT";
+//
+//            }
+            if (modStatus.get("STATUS") == null) {
+
+                return "缺少STATUS";
+            }
+            if (modStatus.get("id") == null) {
+                return "缺少id";
+            }
+
+
+            info = Rest.modify("B_VIPMONEY",corpcode, modStatus);
+            JSONArray jsonArray=new JSONArray(info);
+            info=jsonArray.getJSONObject(0).toString();
+        }else{
+
         }
-
-
-        String info= Rest.modify("B_VIPMONEY",modStatus);
 
         return  info;
     }
+
+
+    /**
+     * VIP充值退款：
+     处理方式：CRM调用DRP接口完成充值单据新增、审核（审核状态如何修改）
+     审核（修改单据状态）
+     表（B_RET_VIPMONEY）
+     */
+
+    //充值退款单据新增
+    public  String addRefund(String corpcode,HashMap<String,Object> refundInfo){
+
+        String info="";
+        if(corpcode.equals("C10016")) {
+
+            if (refundInfo.get("BILLDATE") == null) {
+
+                return "缺少BILLDATE";
+            }
+            if (refundInfo.get("RECHARGE_TYPE") == null) {
+                return "缺少RECHARGE_TYPE";
+            }
+            if (refundInfo.get("C_VIPMONEY_STORE_ID__NAME") == null) {
+                return "缺少C_VIPMONEY_STORE_ID__NAME";
+
+            }
+
+             info = Rest.Add("B_RET_VIPMONEY", corpcode,refundInfo);
+            JSONArray jsonArray=new JSONArray(info);
+           info= jsonArray.getJSONObject(0).toString();
+
+        }else{
+
+        }
+        return  info;
+
+    }
+
+
+    //修改充值退款单据状态
+
+    public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund){
+        String info="";
+
+        if(corpcode.equals("C10016")) {
+
+//            if (modStatusRefund.get("BILLDATE") == null) {
+//                return "缺少BILLDATE";
+//            }
+//            if (modStatusRefund.get("RECHARGE_TYPE") == null) {
+//                return "缺少RECHARGE_TYPE";
+//            }
+//            if (modStatusRefund.get("C_VIPMONEY_STORE_ID__NAME") == null) {
+//                return "缺少C_VIPMONEY_STORE_ID__NAME";
+//            }
+
+            if (modStatusRefund.get("STATUS") == null) {
+                return "缺少STATUS";
+            }
+
+            if (modStatusRefund.get("id") == null) {
+                return "缺少id";
+            }
+
+            info = Rest.modify("B_RET_VIPMONEY",corpcode, modStatusRefund);
+            JSONArray jsonArray=new JSONArray(info);
+           info= jsonArray.getJSONObject(0).toString();
+
+        }else{
+
+        }
+        return  info;
+    }
+
+
+    //充值单验证
+
+//    public  String  selPrepaidOrder(int id){
+//
+//        //返回 会员ID 会员类型 会员卡号
+//        HashMap<String,Object> map=new HashMap<String, Object>();
+//        //查询
+//        map.put("table","C_VIP_IMP");
+//        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
+//        JSONObject expr1 = new JSONObject();
+//        expr1.put("column", "id");
+//        expr1.put("condition", id);
+//        map.put("params",expr1);
+//
+//        String info= Rest.query(map);
+//
+//        //System.out.println("cccc"+info);
+//
+//        HashMap<String,Object> maprows=new HashMap<String, Object>();
+//        HashMap<String,Object> maprow=new HashMap<String, Object>();
+//
+//
+//        JSONArray jsonArray=new JSONArray(info);
+//        int code= (Integer)jsonArray.getJSONObject(0).get("code");
+//        String message=jsonArray.getJSONObject(0).get("message").toString();
+//        String rows=jsonArray.getJSONObject(0).get("rows").toString();
+//        JSONArray rowsjsonArray=new JSONArray(rows);
+//        JSONArray rowjsonArray=rowsjsonArray.getJSONArray(0);
+//        maprow.put("id",rowjsonArray.get(0));
+//        maprow.put("C_VIPTYPE_ID",rowjsonArray.get(1));
+//        maprow.put("CARDNO",rowjsonArray.get(2));
+//        maprows.put("message",message);
+//        maprows.put("code",code);
+//        maprows.put("rows",maprow);
+//        JSONObject jsonObject=new JSONObject(maprows);
+//
+//        return  jsonObject.toString();
+//    }
+//
+//
+
+
+    //余额验证
+
+//    public  String  selPrepaidOrder(int id){
+//
+//        //返回 会员ID 会员类型 会员卡号
+//        HashMap<String,Object> map=new HashMap<String, Object>();
+//        //查询
+//        map.put("table","C_VIP_IMP");
+//        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
+//        JSONObject expr1 = new JSONObject();
+//        expr1.put("column", "id");
+//        expr1.put("condition", id);
+//        map.put("params",expr1);
+//
+//        String info= Rest.query(map);
+//
+//        //System.out.println("cccc"+info);
+//
+//        HashMap<String,Object> maprows=new HashMap<String, Object>();
+//        HashMap<String,Object> maprow=new HashMap<String, Object>();
+//
+//
+//        JSONArray jsonArray=new JSONArray(info);
+//        int code= (Integer)jsonArray.getJSONObject(0).get("code");
+//        String message=jsonArray.getJSONObject(0).get("message").toString();
+//        String rows=jsonArray.getJSONObject(0).get("rows").toString();
+//        JSONArray rowsjsonArray=new JSONArray(rows);
+//        JSONArray rowjsonArray=rowsjsonArray.getJSONArray(0);
+//        maprow.put("id",rowjsonArray.get(0));
+//        maprow.put("C_VIPTYPE_ID",rowjsonArray.get(1));
+//        maprow.put("CARDNO",rowjsonArray.get(2));
+//        maprows.put("message",message);
+//        maprows.put("code",code);
+//        maprows.put("rows",maprow);
+//        JSONObject jsonObject=new JSONObject(maprows);
+//
+//        return  jsonObject.toString();
+//    }
+
+
+
 
 
 

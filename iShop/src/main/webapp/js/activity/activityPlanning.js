@@ -15,15 +15,19 @@ var activityPlanning={
 		coupon:""
 	},
 	init:function(){
-		this.allEvent();
-		this.getTaskList();
-		this.getPlanningList();
+		var self=this;
+		self.allEvent();
+		self.getTaskList();
+		self.getPlanningList();
 		// if(document.title=="创建活动"){
 		// 	this.getPlanningList();
 		// }
 		if(document.title=="策略补充"){
-			this.getTitle();
-			this.getCoupon();
+			self.getTitle();
+			// this.getCoupon();
+			setTimeout(function(){
+				self.lay1();
+			},1000);
 		}
 	},
 	allEvent:function(){
@@ -104,10 +108,12 @@ var activityPlanning={
 			$(this).parents(".add_del").hide();
 			var html=$(this).parents('.input_parent').clone();
 			$(html).find(".text_input").val("");
-			console.log($(html).attr("is_modify",""));
-			$(html).find(".text_input").attr("is_modify","");
+			$(html).attr("is_modify","");
+			$(html).find(".text_input").removeAttr("disabled");
 			$(html).find(".add_del").show();
 			$(html).find(".group_del").show();
+			$(html).find(".edit_frame .edit_content").val("");
+			$(html).find(".edit_frame .edit_content").removeAttr("disabled");
 			$(this).parents('.group_parent').append(html);
 		})
 		//删除一个div
@@ -223,8 +229,9 @@ var activityPlanning={
         //点击完成
         $("#complete").click(function(){
         	$.when(self.submitJobStrategy(),self.submitGroupStrategy()).then(function(data1,data2){
-                console.log(data1);
-                console.log(data2);
+               	if(data1=="成功"&&data2=="成功"){
+               		$(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
+               	}
             });
         })
         //活动列表点击事件
@@ -256,6 +263,9 @@ var activityPlanning={
         $("#back_tracking").click(function(){
             $(window.parent.document).find('#iframepage').attr("src","/activity/activity_details.html");
         })
+        // $(".input_time .laydate-icon").click(function(){
+        // 	self.lay1();
+        // })
 	},
 	getCoupon:function () {//拉取优惠券和卡类型
         var corp_code=sessionStorage.getItem("corp_code");
@@ -379,13 +389,13 @@ var activityPlanning={
 		console.log(index);
 		var arrIndex=self.param.tasklist[index];//获取选取下标的内容
 		console.log(arrIndex);
+		var param=self.checkoutTask();
+		if(param==undefined){
+			result="失败"
+			return;
+		}
 		if(arrIndex.is_modify=="Y"){
 		}else{
-			var param=self.checkoutTask();
-			if(param==undefined){
-				result="失败"
-				return;
-			}
 			self.param.tasklist[index]=param;//给当前数组赋值
 		}
 		return result;
@@ -509,9 +519,11 @@ var activityPlanning={
 			// var url=$(wxlistnode[i]).find(".edit_frame .edit_link").val();//页面链接
 			// var desc=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
 			var content=$(wxlistnode[i]).find(".edit_frame .edit_content").val();//摘要
+			if(send_time!==""&&content!==""){
+				var wxparam={"send_time":send_time,"content":content};
+				wxlist.push(wxparam);
+			}
 			// var image="";//封面链接
-			var wxparam={"send_time":send_time,"content":content};
-			wxlist.push(wxparam);
 		}
 		//短信群发
 		for(var h=0;h<smslistnode.length;h++){
@@ -522,8 +534,11 @@ var activityPlanning={
 			}
 			var send_time=$(smslistnode[h]).find(".text_input").val();//发送时间
 			var content=$(smslistnode[h]).find(".edit_frame .edit_content").val();//短信内容
-			var smsparam={"send_time":send_time,"content":content};
-			smslist.push(smsparam);
+			if(send_time!==""&&content!==""){
+				var smsparam={"send_time":send_time,"content":content};
+				smslist.push(smsparam);
+			}
+			
 		}
 		//邮件群发
 		for(var k=0;k<emlistnode.length;k++){
@@ -534,9 +549,16 @@ var activityPlanning={
 			}
 			var send_time=$(emlistnode[k]).find(".text_input").val();//发送时间
 			var content="";//短信内容
-			var emparam={"send_time":send_time,"content":content};
-			emlist.push(emparam);
+			if(send_time==!""&&content!==""){
+				var emparam={"send_time":send_time,"content":content};
+				emlist.push(emparam);
+			}
 		}
+		if(wxlist.length=="0"&&smslist.length=="0"&&emlist.length=="0"){
+			return;
+		}
+		console.log(wxlist);
+		console.log(smslist);
 		param["wxlist"]=wxlist;
 		param["smslist"]=smslist;
 		param["emlist"]=emlist;
@@ -592,26 +614,31 @@ var activityPlanning={
 		var self=this;
 		var param=self.getGroupValue();
 		var def = $.Deferred();
-		if(self.param.group==true){
-			param["send_status"]="Y";
-		}else if(self.param.group==false){
-			param["send_status"]="N";
-		}
-		whir.loading.add("", 0.5);
-		oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
-			if(data.code=="0"){
-				def.resolve("成功");
-			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock: true,
-					cancel: false,
-					content:"群发失败"
-				});
-				def.resolve("失败");
+		if(param==undefined){
+			def.resolve("成功");
+		};
+		if(param!==undefined){
+			if(self.param.group==true){
+				param["send_status"]="Y";
+			}else if(self.param.group==false){
+				param["send_status"]="N";
 			}
-			whir.loading.remove();//移除加载框
-		});
+			whir.loading.add("", 0.5);
+			oc.postRequire("post","/vipActivity/arrange/addOrUpdateSend","0",param, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock: true,
+						cancel: false,
+						content:"群发失败"
+					});
+					def.resolve("失败");
+				}
+				whir.loading.remove();//移除加载框
+			});
+		}
 		return def;
 	},
 	getPlanningList:function(){//获取列表信息
@@ -631,10 +658,10 @@ var activityPlanning={
 				var smshtml="";
 				var emlhtml="";
 				var is_modify="";
-				var disabled=""
+				var disabled="";
 			    if(document.title=="策略补充"){
 					is_modify="Y";
-					disabled="disabled"
+					disabled="disabled";
 				}
 				if(message.task_status=="Y"){
 					$("#task_switch div").addClass("bg");
@@ -679,7 +706,7 @@ var activityPlanning={
 						}
 						wxhtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='start' value='"+wxlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+										<label>发送时间</label><input id='start' "+disabled+" value='"+wxlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>微信推送配置</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -699,7 +726,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容设定</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -729,7 +756,7 @@ var activityPlanning={
 						}
 						smshtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='start' value='"+smslist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+										<label>发送时间</label><input id='start' "+disabled+" value='"+smslist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>短信内容设定</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -749,7 +776,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容设定</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -778,7 +805,7 @@ var activityPlanning={
 						}
 						emlhtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='start' value='"+emlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+										<label>发送时间</label><input id='start' "+disabled+" value='"+emlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>邮件内容设定</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -798,7 +825,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea class='edit_content' placeholder='请输入推送摘要'>"+emlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+emlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -866,71 +893,99 @@ var activityPlanning={
 		var def = $.Deferred();
 		var taskparam = {};
 		var tasklist = self.param.tasklist;
-		if(self.modifieTask()!=="成功"){
-			def.resolve("失败");
-			return;
-		};
+		// if(self.modifieTask()!=="成功"){
+		// 	def.resolve("失败");
+		// 	return;
+		// };
 		var tasklistStrategy=[];
 		for(var i=0;i<tasklist.length;i++){
 			if(tasklist[i].is_modify!=="Y"){
 				tasklistStrategy.push(tasklist[i]);
 			}
 		}
-		if (self.modifieTask() !== "成功") {
-			def.resolve("失败");
-			return;
+		if($("#task_titles li").length>0){
+			if(self.modifieTask() !== "成功"){
+				def.resolve("失败");
+				return;
+			}
 		};
 		if (tasklistStrategy.length == 0) {
-			def.resolve("失败");
-			art.dialog({
-				time: 1,
-				lock: true,
-				cancel: false,
-				content: "请先定义任务"
+			def.resolve("成功");
+		}else if(tasklistStrategy.length>0){
+			taskparam["tasklist"] = tasklistStrategy;
+			taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
+			whir.loading.add("", 0.5);
+			oc.postRequire("post","/vipActivity/arrange/addStrategyByTask","0",taskparam, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock: true,
+						cancel: false,
+						content:"添加任务失败"
+					});
+					def.resolve("失败");
+				}
+				whir.loading.remove();//移除加载框
 			});
-			return;
 		}
-		taskparam["tasklist"] = tasklistStrategy;
-		taskparam["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
-		whir.loading.add("", 0.5);
-		oc.postRequire("post","/vipActivity/arrange/addStrategyByTask","0",taskparam, function (data) {
-			if(data.code=="0"){
-				def.resolve("成功");
-			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock: true,
-					cancel: false,
-					content:"添加任务失败"
-				});
-				def.resolve("失败");
-			}
-			whir.loading.remove();//移除加载框
-		});
 		return def;
 	},
 	submitGroupStrategy:function(){
 		var self=this;
 		var param=self.getGroupValue();
 		var def = $.Deferred();
-		whir.loading.add("", 0.5);
-		oc.postRequire("post","/vipActivity/arrange/addStrategyBySend","0",param, function (data) {
-			if(data.code=="0"){
-				def.resolve("成功");
-			}else if(data.code=="-1"){
-				setTimeout(function(){
-					art.dialog({
-						time: 1,
-						lock: true,
-						cancel: false,
-						content:"群发失败"
-					});
-					def.resolve("失败");
-				},1500);
-			}
-			whir.loading.remove();//移除加载框
-		});
+		if(param==undefined){
+			def.resolve("成功");
+		};
+		if(param!==undefined){
+			whir.loading.add("", 0.5);
+			oc.postRequire("post","/vipActivity/arrange/addStrategyBySend","0",param, function (data) {
+				if(data.code=="0"){
+					def.resolve("成功");
+				}else if(data.code=="-1"){
+					setTimeout(function(){
+						art.dialog({
+							time: 1,
+							lock: true,
+							cancel: false,
+							content:"群发失败"
+						});
+						def.resolve("失败");
+					},1500);
+				}
+				whir.loading.remove();//移除加载框
+			});
+		}
 		return def;
+	},
+	lay1:function(){//定义日期格式
+		var start = {
+			elem:"#target_start_time",
+			format: 'YYYY-MM-DD hh:mm:ss',
+			min: laydate.now(),
+			 max: '2099-06-16 23:59:59',
+			istime: true,
+			istoday: false,
+			choose: function(datas) {
+				end.min = datas; //开始日选好后，重置结束日的最小日期
+        		end.start = datas //将结束日的初始值设定为开始日
+			}
+		};
+		var end = {
+		    elem: '#target_end_time',
+		    format: 'YYYY-MM-DD hh:mm:ss',
+		    min: laydate.now(),
+		    max: '2099-06-16 23:59:59',
+		    istime: false,
+		    istoday: false,
+		    choose: function (datas) {
+		        start.max = datas; //结束日选好后，重置开始日的最大日期
+		    }
+		};
+		laydate(start);
+		laydate(end);
 	}
 }
 $(function(){

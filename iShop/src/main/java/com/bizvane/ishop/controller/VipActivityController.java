@@ -10,6 +10,7 @@ import com.bizvane.ishop.service.ScheduleJobService;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.service.VipActivityService;
 import com.bizvane.ishop.service.VipFsendService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -346,6 +347,8 @@ public class VipActivityController {
             String corp_code = jsonObject.getString("corp_code");
             VipActivity activityVip = this.vipActivityService.selActivityByCode(activity_code);
             JSONObject result = new JSONObject();
+            activityVip.setRun_mode(CheckUtils.CheckVipActivityType(activityVip.getRun_mode()));
+
             result.put("activityVip", JSON.toJSONString(activityVip));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -379,15 +382,18 @@ public class VipActivityController {
             String activity_code = jsonObject.get("activity_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             VipActivity vipActivity = vipActivityService.getVipActivityByTheme(corp_code, activity_theme);
-         VipActivity vipActivity1=vipActivityService.selActivityByCode(activity_code);
-            if (vipActivity == null||(vipActivity1!=null&&vipActivity1.getId()==vipActivity.getId())){
+
+            if (vipActivity == null){
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("当前企业下该会员活动标题不存在");
             } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("当前企业下该会员活动标题已存在");
+                VipActivity  vipActivity1=vipActivityService.selActivityByCode(activity_code);
+                if(vipActivity1!=null&&vipActivity1.getId()==vipActivity.getId()){
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage("当前企业下该会员活动标题已存在");
+                }
             }
         } catch (Exception ex) {
             dataBean.setId(id);
