@@ -18,7 +18,7 @@ public class Test02 {
 //////
 //
 //        com.alibaba.fastjson.JSONObject json
-HashMap<String,Object> map=new HashMap<String, Object>();
+   HashMap<String,Object> map=new HashMap<String, Object>();
 ////////////        //查询
 //           map.put("table","12899");
 //        map.put("columns",new String[]{"C_STORE_ID","id","VIPNAME"});
@@ -43,14 +43,14 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 //        map.put("C_STORE_ID__NAME","大庆大商新玛特购物休闲广场尹默专柜");
 //        map.put("SEX", "W");
 //        map.put("BIRTHDAY","19950824");
-//        map.put("MOBIL","13291070901");
+//        map.put("MOBIL","13291090901");
 //        map.put("table","18690");
 //       map.put("SALESREP_ID__NAME","付梦");
-//        map.put("DOCNOS",2324);
+//      //  map.put("DOCNOS",2324);
 //        JSONObject jsonObject=new JSONObject(map);
 //
 //        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
-//        String info=crmInterfaceService.addVip(map);
+//        String info=crmInterfaceService.addVip("C10016",map);
 //        System.out.println(info);
 
 //
@@ -59,19 +59,20 @@ HashMap<String,Object> map=new HashMap<String, Object>();
 //       map.put("C_CUSTOMER_ID__NAME", "上海尹默公司");
 //        map.put("C_STORE_ID__NAME","上海久光百货尹默专柜");
 //        //只能为男女 如果传入的类型或者值不匹配 虽显示修改成功  但实际不会变化
-//      map.put("SEX", "男");
+      map.put("SEX", "女");
 //        map.put("C_STORE_ID",802);
-        map.put("PASS_WORD","123rrr");
+//        map.put("PASS_WORD","123rrr");
  //       map.put("INTEGRAL_PASSWORD","456ttt");
         //必传
       //  map.put("SALESREP_ID__NAME","付梦");
      //   map.put("partial_update", true);
+       // map.put("STATUS",1);
         map.put("id",1059167);
 
         JSONObject jsonObject=new JSONObject(map);
         System.out.println(jsonObject);
         CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
-        String infp=crmInterfaceService.modPasswordVip(map);
+        String infp=crmInterfaceService.modInfoVip("C10016",map);
         System.out.println(infp);
 
 
