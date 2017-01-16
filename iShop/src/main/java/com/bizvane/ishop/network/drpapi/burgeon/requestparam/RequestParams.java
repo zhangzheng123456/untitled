@@ -1,4 +1,4 @@
-package com.bizvane.ishop.network;
+package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 
 import com.bizvane.ishop.utils.CryptUtil;
 import com.bizvane.ishop.utils.TimeUtils;

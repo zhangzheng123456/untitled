@@ -1,9 +1,9 @@
-package com.bizvane.ishop.network;
+package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ExecuteWebActionRequestParams  extends  RequestParams{
+public class ExecuteWebActionRequestParams  extends RequestParams {
 
 	public class ExecuteWebActionTrans  extends BaseTrans{
 
@@ -11,7 +11,7 @@ public class ExecuteWebActionRequestParams  extends  RequestParams{
 
 		public class ExecuteWebActionTransParams {
 			private String webaction;
-			private String id;
+			private int id;
 			
 			public String getWebaction() {
 				return webaction;
@@ -19,10 +19,10 @@ public class ExecuteWebActionRequestParams  extends  RequestParams{
 			public void setWebaction(String webaction) {
 				this.webaction = webaction;
 			}
-			public String getId() {
+			public int getId() {
 				return id;
 			}
-			public void setId(String id) {
+			public void setId(int id) {
 				this.id = id;
 			}
 

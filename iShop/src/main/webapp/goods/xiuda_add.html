@@ -122,9 +122,9 @@
                <label>搭配效果图</label>
                 <form class="list_content" style="height:150px;margin-bottom: 15px">
                     <!--商品模板-->
-                    <div class="item_box">
-                        <div class="item_area"></div>
-                    </div>
+                    <!--<div class="item_box">-->
+                        <!--<div class="item_area"></div>-->
+                    <!--</div>-->
                     <!--添加模板-->
                     <div id="add_all">
                         <div class="addAdd">+</div>
@@ -139,10 +139,10 @@
                <label>商品搭配</label>
                 <form class="list_content">
                     <!--商品模板-->
-                    <div class="item_box">
-                        <div class="item_area"></div>
-                        <div class="item_text">AJEL55598</div>
-                    </div>
+                    <!--<div class="item_box">-->
+                        <!--<div class="item_area"></div>-->
+                        <!--<div class="item_text">AJEL55598</div>-->
+                    <!--</div>-->
                     <!--添加模板-->
                     <div id="add_one">
                         <div class="addAdd">+</div>
@@ -163,7 +163,7 @@
                 <input type="text" class="input" id="search" placeholder="商品编号/商品名称">
                 <i class="icon-ishop_3-05" id="d_search"></i>
             </div>
-            <ul id="stop"  onmousedown=" stopBubble(this.id)" onmousemove=" stopBubble(this.id)" onmouseup=" stopBubble(this.id)">
+            <ul id="stop" onmousedown=" stopBubble(this.id)" onmousemove=" stopBubble(this.id)" onmouseup=" stopBubble(this.id)">
 
             </ul>
             <div id="more" class="more">加载更多<i class="icon-ishop_6-18"></i></div>
@@ -202,49 +202,12 @@
 <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?20170105"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+<!-- oss -->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script src="../js/loading.js?20170105"></script>
+<!--匹配js-->
+<script src="../js/goods/xiuda_add.js"></script>
 <script>
-    var oc = new ObjectControl();
-//    var corp_code =GetRequest().corp_code;
-    //获取？后缀
-    function GetRequest() {
-        var url = decodeURI(location.search); //获取url中"?"符后的字串
-        var theRequest = new Object();
-        if (url.indexOf("?") != -1) {
-            var str = url.substr(1);
-            strs = str.split("&");
-            for (var i = 0; i < strs.length; i++) {
-                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-            }
-        }
-        return theRequest;
-    }
-    //输入框不为空检查
-    function checkTemp(){
-        $('.the_listTitle').find('input').blur(function(){
-            if($(this).val()==''){
-               $(this).next('.hint').show();
-            }else{
-                $(this).next('.hint').hide();
-            }
-        });
-    }
-    function getList(){
-        whir.loading.add("",0.5);//加载等待框
-        oc.postRequire("get","/api/shopMatch/getGoodsByWx?corp_code="+corp_code+"&pageSize="+pageSize+"&pageIndex="+pageIndex+"&categoryId="+categoryId+"&row_num="+row_num+"&productName="+productName,'','',function(data){
-        if(data.code=="0"){
-            whir.loading.remove();//移除加载框
-        }else if(data.code=="-1"){
-            whir.loading.remove();//移除加载框
-            art.dialog({
-                time: 1,
-                lock:true,
-                cancel: false,
-                content: data.message
-            });
-        }
-    });
-    }
-    //窗体移动
     var mouseX, mouseY;
     var objX, objY;
     var isDowm = false;  //是否按下鼠标
@@ -285,35 +248,6 @@
         else {//IE浏览器
             window.event.cancelBubble = true;
         }
-    }
-    window.onload = function () {
-        checkTemp();
-        //搭配效果图
-        $('#add_all').click(function () {
-
-        });
-        //商品搭配
-        $('#add_one').click(function () {
-            //点击添加匹配商品弹窗
-            $("#search_match_goods").show();
-//            var corp_code='C10000'
-//            var pageSize=10;
-//            var pageIndex=1;
-//            var categoryId='';
-//            var row_num=0;
-//            var productName='';//搜索商品名称
-//            if(num>1){
-//                return;
-//            }else {
-//                num=1;
-//                next=false;
-//                jQuery('#search_match_goods ul').empty();
-//                getList();
-//            }
-        });
-        $('#close_match_goods').click(function () {
-            $("#search_match_goods").hide();
-        })
     }
 </script>
 </body>

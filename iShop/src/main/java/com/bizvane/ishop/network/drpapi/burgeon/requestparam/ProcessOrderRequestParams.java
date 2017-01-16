@@ -1,4 +1,4 @@
-package com.bizvane.ishop.network;
+package com.bizvane.ishop.network.drpapi.burgeon.requestparam;
 
 
 import org.json.JSONException;
@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class ProcessOrderRequestParams extends  RequestParams {
 
-	public class ProcessOrderTrans {
+	public class ProcessOrderTrans extends  BaseTrans{
 
 	//	private String command = "ProcessOrder";
 		private JSONObject params;

@@ -24,6 +24,9 @@
                         </ul>
                     </li>
                     <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" id="activity_describe" placeholder="请输入活动简介" name="活动简述"></textarea></li>
+                   <!--  <li>
+                        <li style="margin-right: 35px;"><label>活动链接</label><input placeholder="请输入活动链接" id="activity_link" class="text_input" type="text"></li>
+                    </li> -->
                 </ul>
                 <ul class="activity_details_right">
                     <li class="shop_amount_wrap"><p>参与门店数</p><p class="shop_amount" id="shop_amount">0</p><span class="choose_shop" id="choose_shop">选择参与门店</span></li>
@@ -35,6 +38,7 @@
         <div class="tabs_title"><span class="title_icon"></span><span>活动设置</span></div>
         <div class="setUp_activity_details" id="setUp_activityType" style="padding-left: 0">
             <div id="recruit_activity" style="display: none;width: 80%">
+                <li class="extend_url"><label>推广链接</label><input id="recruit_url" placeholder="请输入推广链接" class="text_input" type="text"></li>
                 <ul class="operate_ul">
                     <li>
                         <ul>
@@ -48,6 +52,7 @@
                 </ul>
             </div>
             <div id="sales_activity" style="display: none">
+                <li class="extend_url"><label>推广链接</label><input id="sales_url" placeholder="请输入推广链接" class="text_input" type="text"></li>
                 <ul>
                     <li><label>设置促销编号</label><input placeholder="请输入促销编号" class="text_input" type="text"></li>
                 </ul>
@@ -58,6 +63,7 @@
                 </ul>
             </div>
             <div id="coupon_activity" style="display: none">
+                <li class="extend_url"><label>推广链接</label><input id="coupon_url" placeholder="请输入推广链接" class="text_input" type="text"></li>
                 <ul class="coupon_title" id="coupon_title">
                     <li class="coupon_active" data-id="batch">批量发卷</li>
                     <li data-id="card">开卡送券</li>
@@ -116,20 +122,27 @@
                 </div>
             </div>
             <div class="offline_activity" style="display: none">
-                <div class="offline_left_wrap">
-                    <ul>
-                        <li><label>报名标题</label><input placeholder="请输入标题" id="invite_title" class="text_input" type="text"></li>
-                        <li><label>报名截止时间</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#offline_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></li>
-                        <li style="display: inline-flex"><label>报名简介</label><textarea id="invite_summary" placeholder="请输入报名简介"  type="text"></textarea></li>
-                        <li><label>报名成功提示</label><input placeholder="请输入报名成功提示" id="invite_message" class="text_input" type="text"></li>
-                        <li class="upload_logo"><label>logo图片</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
-                    </ul>
+                <div class="url_offline">
+                    <span id="url_mould">URL_模板</span><span id="invite_span">线下邀约活动</span>
                 </div>
-                <div class="offline_right_wrap">
-                    <span id="create_code">生成活动二维码</span>
+                <li class="extend_url" id="extend_url"><label>推广链接</label><input id="invite_url" placeholder="请输入推广链接" class="text_input" type="text"></li>
+                <div id="invite_wrap" style="display: none">
+                    <div class="offline_left_wrap">
+                        <ul>
+                            <li><label>报名标题</label><input placeholder="请输入标题" id="invite_title" class="text_input" type="text"></li>
+                            <li><label>报名截止时间</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#offline_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></li>
+                            <li style="display: inline-flex"><label>报名简介</label><textarea id="invite_summary" placeholder="请输入报名简介"  type="text"></textarea></li>
+                            <li><label>报名成功提示</label><input placeholder="请输入报名成功提示" id="invite_message" class="text_input" type="text"></li>
+                            <li class="upload_logo"><label>logo图片</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
+                        </ul>
+                    </div>
+                    <div class="offline_right_wrap">
+                        <span id="create_code">生成活动二维码</span>
+                    </div>
                 </div>
             </div>
             <div class="holiday_activity" id="festival_activity" style="display: none">
+                <li class="extend_url"><label>推广链接</label><inpu id="festival_url" placeholder="请输入推广链接" class="text_input" type="text"></li>
                 <ul>
                     <li><label>节日时间范围</label><input id="holiday_start" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_start',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})"></li>
                     <li style="margin-left: 10px"><label>至</label><input id="holiday_end" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#holiday_end',min:laydate.now(),max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})"></li>
