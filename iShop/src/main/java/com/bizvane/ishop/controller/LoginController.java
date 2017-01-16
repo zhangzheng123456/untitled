@@ -142,7 +142,9 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String phone = jsonObject.get("PHONENUMBER").toString();
             System.out.println(phone);
-            String msg = userService.getAuthCode(phone, "web");
+            String msg = userService.getAuthCode(phone);
+            if (!msg.equals(Common.DATABEAN_CODE_ERROR))
+                userService.saveAuthCode(phone,msg,"web");
             if (msg.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
