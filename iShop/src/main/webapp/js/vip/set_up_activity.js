@@ -874,18 +874,21 @@ var activity={
         activity.isEmpty=false;
         $("#setUp_activityType>div").each(function () {
             var id=$(this).attr("id");
-            if($(this).css("display")!=="none"&&id!=="coupon_activity"){
-                var vue=$(this).find(".text_input");
+            if($(this).css("display")!=="none"&&id!=="coupon_activity"&&id!=="invite_activity"){
+                var vue=$(this).find(".text_input:not('.url_input')");
                 $(vue).each(function (i,e) {
                     if($(vue[i]).val()==""){
                         activity.isEmpty=true;
                         activity.label=$(e).prev("label").html().replace("*","");
+                        if(activity.label=="至"){
+                            activity.label="节日时间";
+                        }
                     }
                 });
             }else if($(this).css("display")!=="none"&&id=="coupon_activity"){
                 $(this).children("div:not('.switch')").each(function (i,e) {
                     if($(e).css("display")=="block"){
-                        var vue=$(e).find(".text_input");
+                        var vue=$(e).find(".text_input:not('.url_input')");
                         $(vue).each(function (i,e) {
                             if($(vue[i]).val()==""){
                                 activity.isEmpty=true;
@@ -894,14 +897,30 @@ var activity={
                         });
                     }
                 });
+            }else if($(this).css("display")!=="none"&&id=="invite_activity"){
+                if($("#extend_url").css("display")!=="none"){
+                    var vue=$("#invite_url").val();
+                    if(vue==""){
+                        activity.isEmpty=true;
+                        activity.label="推广链接";
+                    }
+                }else {
+                    var vue=$("#invite_wrap").find(".text_input");
+                    $(vue).each(function (i,e) {
+                        if($(vue[i]).val()==""){
+                            activity.isEmpty=true;
+                            activity.label=$(e).prev("label").html().replace("*","");
+                        }
+                    });
+                }
             }
         });
         $("#activity_basic .text_input").each(function () {
             var vue=$(this).val();
             if(vue==""){
                 activity.isEmpty=true;
-                activity.label=$(this).prev("label").html();
-                if(activity.label="至"){
+                activity.label=$(this).prev("label").html().replace("*","");
+                if(activity.label=="至"){
                     activity.label="活动时间";
                 }
             }
@@ -963,13 +982,13 @@ var activity={
                     _param["activity_url"]="";
                 }
                 if(runMode=="sales"){
-                    _param["sales_no"]=$("#sales_activity").find("input").val();
+                    _param["sales_no"]=$($("#sales_activity").find("input")[1]).val();
                     _param["activity_url"]=$("#sales_url").val();
                 }
                 if(runMode=="festival"){
                     _param["activity_url"]=$("#festival_url").val();
-                    _param["festival_start"]=$($("#festival_activity").find("input")[0]).val();
-                    _param["festival_end"]=$($("#festival_activity").find("input")[1]).val();
+                    _param["festival_start"]=$($("#festival_activity").find("input")[1]).val();
+                    _param["festival_end"]=$($("#festival_activity").find("input")[2]).val();
                 }
                 if(runMode=="coupon"){
                     _param["activity_url"]=$("#coupon_url").val();
@@ -1065,12 +1084,12 @@ var activity={
             var type="";
             var activity_store_code=JSON.parse(list.activity_store_code);
             switch (list.run_mode){
-                case "recruit":type="招募活动";break;
-                case "h5":type="H5活动";break;
-                case "sales":type="促销活动";break;
-                case "coupon":type="优惠券活动";break;
-                case "invite":type="线下邀约活动";break;
-                case "festival":type="节日活动";break;
+                case "招募活动":type="recruit";break;
+                case "H5活动":type="h5";break;
+                case "促销活动":type="sales";break;
+                case "优惠券活动":type="coupon";break;
+                case "线下邀约活动":type="invite";break;
+                case "节日活动":type="festival";break;
             }
             activity.getcorplist(list.corp_code);
             $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(),max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
@@ -1079,8 +1098,8 @@ var activity={
             $("#activity_end").val(list.end_time);
             $("#activity_theme").val(list.activity_theme);
             $("#activity_theme").attr("data-name",list.activity_theme);
-            $("#activity_type").attr("data-id",list.run_mode);
-            $("#activity_type").val(type);
+            $("#activity_type").attr("data-id",type);
+            $("#activity_type").val(list.run_mode);
             $("#activity_describe").val(list.activity_desc);
             $("#shop_amount").html(activity_store_code.length);
             for(var i=0;i<activity_store_code.length;i++){
@@ -1099,42 +1118,53 @@ var activity={
                 var msg=JSON.parse(data.message);
                 var list=msg.activityVip;
                 var type=list.activity_type;
-                if(type=="sales"){
+                if(type=="促销活动"){
                     $("#sales_activity").show();
-                    $($("#sales_activity").find("input")[0]).val(list.sales_no);
+                    $("#sales_url").val(list.activity_url);
+                    $($("#sales_activity").find("input")[1]).val(list.sales_no);
                 }
-                if(type=="h5"){
+                if(type=="H5活动"){
                     $("#h5_activity").show();
                     $($("#h5_activity").find("input")[0]).val(list.h5_url);
                 }
-                if(type=="festival"){
+                if(type=="节日活动"){
                     $("#festival_activity").show();
                     $("#holiday_start").val(list.festival_start);
                     $("#holiday_end").val(list.festival_end);
+                    $("#festival_url").val(list.activity_url);
                     $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
                     $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
-                if(type=="invite"){
-                    var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
-                    var twoCode=list.apply_qrcode;
-                    if(twoCode!==""){
-                        $(".offline_right_wrap").empty().append("<img style='width: 100%' src='"+twoCode+"'>");
-                    }
-                    var len = $("#upload_logo").parent().prevAll("img").length;
-                    if(len == 0){
-                        $("#upload_logo").parent().before(img);
-                    }else {
-                        $("#upload_logo").parent().prev("img").replaceWith(img);
-                    }
+                if(type=="线下邀约活动"){
                     $(".offline_activity").show();
-                    $("#invite_title").val(list.apply_title);
-                    $("#offline_end").val(list.apply_endtime);
-                    $("#invite_summary").val(list.apply_desc);
-                    $("#invite_message").val(list.apply_success_tips);
+                    if(list.activity_url==""){
+                        $("#extend_url").hide();
+                        $("#invite_wrap").show();
+                        var img="<img src='"+list.apply_logo+"' alt='暂无图片'>";
+                        var twoCode=list.apply_qrcode;
+                        if(twoCode!==""){
+                            $(".offline_right_wrap").empty().append("<img style='width: 100%' src='"+twoCode+"'>");
+                        }
+                        var len = $("#upload_logo").parent().prevAll("img").length;
+                        if(len == 0){
+                            $("#upload_logo").parent().before(img);
+                        }else {
+                            $("#upload_logo").parent().prev("img").replaceWith(img);
+                        }
+                        $("#invite_title").val(list.apply_title);
+                        $("#offline_end").val(list.apply_endtime);
+                        $("#invite_summary").val(list.apply_desc);
+                        $("#invite_message").val(list.apply_success_tips);
+                    }else if(list.activity_url!==""){
+                        $("#extend_url").show();
+                        $("#invite_wrap").hide();
+                        $("#invite_url").val(list.activity_url);
+                    }
                 }
-                if(type=="recruit"){
+                if(type=="招募活动"){
                     var recruit=list.recruit;
                     var li="";
+                    $("#recruit_url").val(list.activity_url);
                     $($("#recruit_activity>ul>li:first-child").find("input")[0]).val(recruit[0].vip_card_type_name);
                     $($("#recruit_activity>ul>li:first-child").find("input")[0]).attr("data-code",recruit[0].vip_card_type_code);
                     $($("#recruit_activity>ul>li:first-child").find("input")[1]).val(recruit[0].join_threshold);
@@ -1147,18 +1177,19 @@ var activity={
                             }else {
                                 display="style='display:block'";
                             }
-                            li+="<li><ul><li><label>招募级别</label><input class='text_input select_input' value='"+recruit[i].vip_card_type_name+"' data-code='"+recruit[i].vip_card_type_code+"' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                            li+="<li><ul><li><label style='color:#c26555;'>招募级别*</label><input class='text_input select_input' value='"+recruit[i].vip_card_type_name+"' data-code='"+recruit[i].vip_card_type_code+"' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                 +"<ul class='activity_select vipCardType'>"
                                 +"</ul></li><li>"
-                                +"<label>招募金额</label><input placeholder='请输入招募最低消费额' value='"+recruit[i].join_threshold+"' class='text_input number_input'></li>"
+                                +"<label style='color:#c26555;'>招募金额*</label><input placeholder='请输入招募最低消费额' value='"+recruit[i].join_threshold+"' class='text_input number_input'></li>"
                                 +"<li "+display+"><span class='add_recruit'>+</span><span class='remove_recruit'>-</span></li></ul></li>"
                         }
                         $("#recruit_activity .operate_ul").append(li);
                     }
                     $("#recruit_activity").show();
                 }
-                if(type=="coupon"){
+                if(type=="优惠券活动"){
                     var send_coupon_type=list.send_coupon_type;
+                    $("#coupon_url").val(list.activity_url);
                     if(list.coupon_type==""){
                         var coupon_type=list.coupon_type;
                     }else {
@@ -1182,7 +1213,7 @@ var activity={
                                         }else {
                                             display="style='display:block'";
                                         }
-                                        li+="<li><ul><li><label>选择优惠券</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                             +"<ul class='activity_select coupon_activity'></ul>"
                                             +"</li><li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
                                     }
@@ -1203,7 +1234,7 @@ var activity={
                                         }else {
                                             display="style='display:block'";
                                         }
-                                        li+="<li><ul><li><label>选择优惠券</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                             +"<ul class='activity_select coupon_activity'></ul>"
                                             +"</li><li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
                                     }
@@ -1225,11 +1256,11 @@ var activity={
                                         }else {
                                             display="style='display:block'";
                                         }
-                                        li+="<li><ul><li><label>选择优惠券</label><input class='text_input select_input' value='"+coupon_name[j]+"' data-code='"+coupon_code[j]+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_name[j]+"' data-code='"+coupon_code[j]+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
                                             +"<ul class='activity_select coupon_activity'></ul></li>"
                                             +"<li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
                                     }
-                                    ul+='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" value="'+coupon_type[i].vip_card_type_name+'" data-code="'+coupon_type[i].vip_card_type_code+'" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                                    ul+='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" value="'+coupon_type[i].vip_card_type_name+'" data-code="'+coupon_type[i].vip_card_type_code+'" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                                         +'<ul class="activity_select vipCardType"></ul></li></ul><ul class="operate_ul">'
                                         + li
                                         +'</ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>'
