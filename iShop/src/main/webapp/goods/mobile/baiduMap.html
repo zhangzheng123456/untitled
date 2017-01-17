@@ -29,8 +29,8 @@
     }
     // 百度地图API功能
     //GPS坐标
-    var x = GetRequest().x;
-    var y = GetRequest().y;
+    var x = GetRequest().x -0.01176;
+    var y = GetRequest().y - 0.00385;
     console.log(x+','+y)
     var ggPoint = new BMap.Point(x,y);
     //地图初始化

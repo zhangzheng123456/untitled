@@ -25,10 +25,10 @@ var activityPlanning={
 		if(document.title=="策略补充"){
 			self.getTitle();
 			// this.getCoupon();
-			setTimeout(function(){
-				self.lay1();
-			},1000);
 		}
+		setTimeout(function(){
+			self.lay1();
+		},1000);
 	},
 	allEvent:function(){
 		//任务切换
@@ -46,6 +46,14 @@ var activityPlanning={
 		//下拉框样式
 		$(".text_input,.icon_down").click(function(){
 			var ul = $(this).siblings('.input_dropdown');
+		    if($(ul).find("div").length==0&&$(this).attr("id")=="task_type_code"){
+		    	art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "请先定义任务类型"
+                });
+		    }
 			if(ul.css("display")=="none"){
 				ul.show();
 			}else{
@@ -86,20 +94,35 @@ var activityPlanning={
 				prev=$("#task_titles li.active").prev();
 			}
 		    var current=self.param.tasklist[index];//获取当前下标为几的值
-		    if(current.is_modify=="Y"){
-		    	art.dialog({
-                    time: 1,
-                    lock: true,
-                    cancel: false,
-                    content: "不能删除已新增的"
-                });
-                return;
-		    }
+		    if(current!==undefined){
+			    if(current.is_modify=="Y"){
+			    	art.dialog({
+	                    time: 1,
+	                    lock: true,
+	                    cancel: false,
+	                    content: "不能删除已新增的"
+	                });
+	                return;
+			    }
+			}
 		    self.param.tasklist.remove(current);
-			$("#task_titles li.active").remove();
 			$("#task_title").val("");
 			$("#task_type_code").val("");
 			$("#task_description").val("");
+			$('#target_start_time').val("");
+			$('#target_end_time').val("");
+			if(document.title=="创建活动"){
+				if($("#task_titles li").length==1){
+					return;
+				}
+			}
+			if(document.title=="策略补充"){
+				if($("#task_titles li").length==1){
+					$("#task_content").hide();
+				}
+			}
+			laydate.reset();
+			$("#task_titles li.active").remove();
 			$(prev).addClass('active');
 			self.evaluationTask();
 		});
@@ -108,6 +131,8 @@ var activityPlanning={
 			$(this).parents(".add_del").hide();
 			var html=$(this).parents('.input_parent').clone();
 			$(html).find(".text_input").val("");
+			var id=$(html).find(".laydate-icon").attr("id");
+			$(html).find(".laydate-icon").attr("id",id+new Date().getTime());
 			$(html).attr("is_modify","");
 			$(html).find(".text_input").removeAttr("disabled");
 			$(html).find(".add_del").show();
@@ -115,6 +140,7 @@ var activityPlanning={
 			$(html).find(".edit_frame .edit_content").val("");
 			$(html).find(".edit_frame .edit_content").removeAttr("disabled");
 			$(this).parents('.group_parent').append(html);
+
 		})
 		//删除一个div
 		$(".p_task_content").on("click",".input_parent .group_del",function(){
@@ -135,6 +161,10 @@ var activityPlanning={
 			}
 			$(this).parents('.input_parent').prev().find(".add_del").show();
 			$(this).parents('.input_parent').remove();
+		})
+		$(".p_task_content").on("click",".input_parent .laydate-icon",function(){
+			var id=$(this).attr("id");
+			self.lay2(id);
 		})
 		//开关按钮
 		$(".switch div").click(function(){
@@ -319,6 +349,7 @@ var activityPlanning={
 	evaluationTask:function(){
 		var nextIndex=$("#task_titles li.active").index();
 		var nextCurrent=this.param.tasklist[nextIndex];
+		console.log(000);
 		if(nextCurrent.is_modify=="Y"){
 			$("#task_title").attr("disabled",true);
 			$("#task_type_code").attr("disabled",true);
@@ -364,12 +395,6 @@ var activityPlanning={
 	                }
 	                $("#task_type_code").siblings('.input_dropdown').html(html);
 	            } else if (list.length <= 0) {
-	                art.dialog({
-	                    time: 1,
-	                    lock: true,
-	                    cancel: false,
-	                    content: "请先定义任务类型"
-	                });
 	            };
         	}else if(data.code=="-1"){
         		art.dialog({
@@ -386,16 +411,16 @@ var activityPlanning={
 		var self=this;
 		var result="成功";
 		var index=$("#task_titles li.active").index();//选取选中的下标值
-		console.log(index);
-		var arrIndex=self.param.tasklist[index];//获取选取下标的内容
-		console.log(arrIndex);
 		var param=self.checkoutTask();
 		if(param==undefined){
-			result="失败"
+			result="失败";
 			return;
 		}
-		if(arrIndex.is_modify=="Y"){
-		}else{
+		var length=self.param.tasklist.length-1;
+		if(index>length){
+			self.param.tasklist[index]=param;//给当前数组赋值
+		}
+		if(self.param.tasklist[index].is_modify=="N"){
 			self.param.tasklist[index]=param;//给当前数组赋值
 		}
 		return result;
@@ -457,13 +482,16 @@ var activityPlanning={
 		return param;
 	},
 	addTask:function(){//添加任务
+		console.log(0);
 		var self=this;
-		var param=self.checkoutTask();
-		if(param==undefined){
-			return;
-		}
+		$("#task_content").show();
 		var length=$("#task_titles li").length+1;
-
+		if(length>1){
+			var param=self.checkoutTask();
+			if(param==undefined){
+				return;
+			}
+		}
 		// if(length>=6){
 		// 	art.dialog({
 	 //            time: 1,
@@ -483,7 +511,7 @@ var activityPlanning={
 			$("#target_start_time").removeAttr("disabled");
 			$("#target_end_time").removeAttr("disabled");
 			$("#task_link").removeAttr("disabled");
-		}else if(document.title=="新增任务"){
+		}else if(document.title=="创建活动"){
 			$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		}
 		self.param.tasklist.push(param);
@@ -613,11 +641,12 @@ var activityPlanning={
 	submitGroup:function(){//提交群发
 		var self=this;
 		var param=self.getGroupValue();
+		console.log(param);
 		var def = $.Deferred();
 		if(param==undefined){
-			def.resolve("成功");
+			param={};
+			param["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
 		};
-		if(param!==undefined){
 			if(self.param.group==true){
 				param["send_status"]="Y";
 			}else if(self.param.group==false){
@@ -638,7 +667,6 @@ var activityPlanning={
 				}
 				whir.loading.remove();//移除加载框
 			});
-		}
 		return def;
 	},
 	getPlanningList:function(){//获取列表信息
@@ -663,29 +691,31 @@ var activityPlanning={
 					is_modify="Y";
 					disabled="disabled";
 				}
-				if(message.task_status=="Y"){
-					$("#task_switch div").addClass("bg");
-					$("#task_switch div span").addClass("Off");
-					$("#task_switch .switch_text").html("任务已开启");
-				}
-				if(message.task_status=="N"){
-					$("#task_switch div").removeClass("bg");
-					$("#task_switch div span").removeClass("Off");
-					$("#task_switch .switch_text").html("任务已关闭");
-					$("#task_parent").hide();
-					self.param.task=false;
-				}
-				if(message.send_status=="Y"){
-					$("#group_switch div").addClass("bg");
-					$("#group_switch div span").addClass("Off");
-					$("#group_switch .switch_text").html("群发已开启");
-				}
-				if(message.send_status=="N"){
-					$("#group_switch div").removeClass("bg");
-					$("#group_switch div span").removeClass("Off");
-					$("#group_switch .switch_text").html("群发已关闭");
-					$("#group_parent").hide(200);
-					self.param.group=false;
+				if(document.title=="创建活动"){
+					if(message.task_status=="Y"){
+						$("#task_switch div").addClass("bg");
+						$("#task_switch div span").addClass("Off");
+						$("#task_switch .switch_text").html("任务已开启");
+					}
+					if(message.task_status=="N"){
+						$("#task_switch div").removeClass("bg");
+						$("#task_switch div span").removeClass("Off");
+						$("#task_switch .switch_text").html("任务已关闭");
+						$("#task_parent").hide();
+						self.param.task=false;
+					}
+					if(message.send_status=="Y"){
+						$("#group_switch div").addClass("bg");
+						$("#group_switch div span").addClass("Off");
+						$("#group_switch .switch_text").html("群发已开启");
+					}
+					if(message.send_status=="N"){
+						$("#group_switch div").removeClass("bg");
+						$("#group_switch div span").removeClass("Off");
+						$("#group_switch .switch_text").html("群发已关闭");
+						$("#group_parent").hide(200);
+						self.param.group=false;
+					}
 				}
 				if(wxlist.length>0){
 					for(var i=0;i<wxlist.length;i++){
@@ -706,7 +736,7 @@ var activityPlanning={
 						}
 						wxhtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='start' "+disabled+" value='"+wxlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+										<label>发送时间</label><input id='wxlist"+i+"' "+disabled+" value='"+wxlist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>微信推送配置</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -726,11 +756,11 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容设定</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
-					                        <div class='edit_footer_save'>保存修改</div>\
+					                        <div class='edit_footer_save'>保存</div>\
 					                    </div>\
                 					</div>\
 								</div>"
@@ -756,7 +786,7 @@ var activityPlanning={
 						}
 						smshtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='start' "+disabled+" value='"+smslist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+										<label>发送时间</label><input id='smslist"+i+"' "+disabled+" value='"+smslist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>短信内容设定</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -772,15 +802,15 @@ var activityPlanning={
 					                    <div class='tabs_title_p'>\
 					                        <div class='tabs_left'>\
 					                            <span class='title_icon'></span>\
-					                            <span>短信内容设定</span>\
+					                            <span>短信内容</span>\
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容设定</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
-					                        <div class='edit_footer_save'>保存修改</div>\
+					                        <div class='edit_footer_save'>保存</div>\
 					                    </div>\
                 					</div>\
 								</div>"
@@ -805,7 +835,7 @@ var activityPlanning={
 						}
 						emlhtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='start' "+disabled+" value='"+emlist[i].send_time+"' onclick=\"laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})\" type='text' class='text_input laydate-icon' placeholder=''>\
+										<label>发送时间</label><input id='emlhtml"+i+"' "+disabled+" value='"+emlist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>邮件内容设定</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -859,6 +889,7 @@ var activityPlanning={
 						html+="<li>任务"+a+"</li>";
 						
 					}
+					$("#task_content").show();
 					$("#task_titles").html(html);
 					$("#task_titles li").eq(0).addClass("active");
 					self.evaluationTask();
@@ -897,18 +928,18 @@ var activityPlanning={
 		// 	def.resolve("失败");
 		// 	return;
 		// };
-		var tasklistStrategy=[];
-		for(var i=0;i<tasklist.length;i++){
-			if(tasklist[i].is_modify!=="Y"){
-				tasklistStrategy.push(tasklist[i]);
-			}
-		}
 		if($("#task_titles li").length>0){
 			if(self.modifieTask() !== "成功"){
 				def.resolve("失败");
 				return;
 			}
 		};
+		var tasklistStrategy=[];
+		for(var i=0;i<tasklist.length;i++){
+			if(tasklist[i].is_modify!=="Y"){
+				tasklistStrategy.push(tasklist[i]);
+			}
+		}
 		if (tasklistStrategy.length == 0) {
 			def.resolve("成功");
 		}else if(tasklistStrategy.length>0){
@@ -963,9 +994,9 @@ var activityPlanning={
 	lay1:function(){//定义日期格式
 		var start = {
 			elem:"#target_start_time",
-			format: 'YYYY-MM-DD hh:mm:ss',
+			format: 'YYYY-MM-DD',
 			min: laydate.now(),
-			 max: '2099-06-16 23:59:59',
+			max: '2099-06-16 23:59:59',
 			istime: true,
 			istoday: false,
 			choose: function(datas) {
@@ -975,17 +1006,51 @@ var activityPlanning={
 		};
 		var end = {
 		    elem: '#target_end_time',
-		    format: 'YYYY-MM-DD hh:mm:ss',
+		    format: 'YYYY-MM-DD',
 		    min: laydate.now(),
 		    max: '2099-06-16 23:59:59',
 		    istime: false,
 		    istoday: false,
 		    choose: function (datas) {
+		    	console.log(datas);
 		        start.max = datas; //结束日选好后，重置开始日的最大日期
 		    }
 		};
 		laydate(start);
 		laydate(end);
+		console.log(0123123);
+	},
+	getNowFormatDate:function () {//获取当前日期
+		var date = new Date();
+		var seperator1 = "-";
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		var strDate = date.getDate() + 1;
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+		var currentdate = year + seperator1 + month + seperator1 + strDate;
+		return currentdate
+	},
+	lay2:function(InputID){
+		console.log(InputID);
+		var time=this.getNowFormatDate();
+		var str=time+"  00:00:00";
+		console.log(str);
+		var time = {
+			elem:"#"+InputID,
+			format: 'YYYY-MM-DD hh:mm:ss',
+			min:str, //最大日期
+			istime: true,
+			istoday: false,
+			choose: function(datas) {
+				time.min=str;
+			}
+		};
+		laydate(time);
 	}
 }
 $(function(){
