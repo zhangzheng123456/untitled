@@ -345,7 +345,7 @@
         var nScrollTop = $(this).scrollTop(); //距离顶部的高度
         var nDivHight=$(this).height();
 //        console.log('目前高度：'+nScrollTop +','+nDivHight+'总高度'+nScrollHight);
-        if(parseInt(nScrollTop) + parseInt(nDivHight) >= nScrollHight){
+        if(parseInt(nScrollTop) + parseInt(nDivHight)*2>= nScrollHight){
             if(cache.next =='false'){
                 return;
             }
