@@ -29,6 +29,7 @@ function getConsumCount(){//获取会员信息
        var Data=JSON.parse(data.message);
        var album=JSON.parse(Data.Album);
        var label=JSON.parse(Data.Label);
+       var memorandum=JSON.parse(Data.Memo);
        var HTML="";
        var Ablum_all_html="";
        var LABEL="";
@@ -53,7 +54,6 @@ function getConsumCount(){//获取会员信息
             HTML+="<p>暂无图片</p>";
         }
         $("#images").html(HTML);
-        //$("#Ablum-all").html(Ablum_all_html);
         if(label.length!==0){
             for(var i=0;i<label.length;i++){
                 LABEL+="<span>"+label[i].label_name+"</span>";
@@ -61,6 +61,12 @@ function getConsumCount(){//获取会员信息
             }
         }else{
             LABEL+="<p>暂无标签</p>";
+        }
+        if(memorandum.length!==0){
+            $("#memorandum_table tbody").empty();
+            for(var i=0;i<memorandum.length;i++){
+                $("#memorandum_table tbody").append("<tr id='"+memorandum[i].memoid+"'><td>"+memorandum[i].time+"</td><td><span title='"+memorandum[i].content+"'>"+memorandum[i].content+"</span></td><td class='icon-ishop_6-12'></td></tr>");
+            }
         }
         //统计已有标签
         $(".span_total").html(label.length);
@@ -385,88 +391,6 @@ function init_chart(id,type) {
         chart.myChart2.setOption(option_bar);
         reSize(chart.myChart2);
     }
-    if (id == "times") {
-        var data=chart_data.Time;
-        var arr=[];
-        type=="amt"?arr=data.trade_amt:arr=data.trade_num;
-        var ArrName=[];
-        var ArrValue=[];
-        for(var i=0;i<arr.length;i++){
-            ArrName.push(arr[i].name);
-            ArrValue.push(arr[i].value);
-        }
-        chart.myChart3 = echarts.init(document.getElementById('times'));
-        var option_line = {
-            color: ['#6DADC8'],
-            tooltip: {
-                trigger: 'item'
-            },
-            grid: {
-                borderWidth: 0,
-                x: '50',
-                y: '20',
-                x2: '20',
-                y2: '50'
-            },
-            xAxis: [
-                {
-                    axisLine: {
-                        lineStyle: {color: '#58A0C0'}
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        rotate: 45
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ArrName
-                }
-            ],
-            yAxis: [
-                {
-                    axisLine: {
-                        show: false
-                    },
-                    splitArea: {
-                        show: false
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: '#999',
-                            type: 'dashed'
-                        }
-                    },
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    itemStyle: {
-                        symbolSize: '0',
-                        normal: {
-                            borderRadius: 0,
-                            nodeStyle: {
-                                borderRadius: 0
-                            }
-                        }
-                    },
-                    name: '购买时段',
-                    type: 'line',
-                    stack: '总量',
-                    symbolSize: 0,
-                    smooth: false,
-                    data: ArrValue
-                }
-            ]
-        };
-        chart.myChart3.setOption(option_line);
-        reSize(chart.myChart3);
-    }
     if (id == "month") {
         var data=chart_data.Month;
         var arr=[];
@@ -598,7 +522,7 @@ function chartData() {
     oc.postRequire("post","/vipAnalysis/vipChart","0",param,function (data) {
         if(data.code == 0){
             var msg = JSON.parse(data.message);
-            chart_data= msg;
+            chart_data= msg.message;
             chartShow();
         }else if(data.code == -1){
             console.log(data.message);
