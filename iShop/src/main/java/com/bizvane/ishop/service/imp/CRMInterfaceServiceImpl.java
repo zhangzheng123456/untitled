@@ -95,12 +95,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
              JSONArray jsonArray = new JSONArray(info);
              int code = (Integer) jsonArray.getJSONObject(0).get("code");
-             String message = jsonArray.getJSONObject(0).get("message").toString();
+
              if (code == -1) {
-                 HashMap<String, Object> map = new HashMap<String, Object>();
-                 map.put("code", code);
-                 map.put("message", message);
-                 JSONObject jsonObject = new JSONObject(map);
+                 JSONObject jsonObject=jsonArray.getJSONObject(0);
                  return jsonObject.toString();
              }
 
@@ -195,6 +192,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             JSONArray jsonArray = new JSONArray(info);
             int code = (Integer) jsonArray.getJSONObject(0).get("code");
             String message = jsonArray.getJSONObject(0).get("message").toString();
+            String id1 = jsonArray.getJSONObject(0).get("id").toString();
 
             if(code==-1){
                 JSONArray jsonArray1=new JSONArray(info);
@@ -202,21 +200,83 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             }
             String rows = jsonArray.getJSONObject(0).get("rows").toString();
-            JSONArray rowsjsonArray = new JSONArray(rows);
-            JSONArray rowjsonArray = rowsjsonArray.getJSONArray(0);
-            maprow.put("id", rowjsonArray.get(0));
-            maprow.put("C_VIPTYPE_ID", rowjsonArray.get(1));
-            maprow.put("CARDNO", rowjsonArray.get(2));
+            JSONArray jsonArray1=new JSONArray(rows);
+
             maprows.put("message", message);
             maprows.put("code", code);
+            maprows.put("id",id1);
+
+            if(jsonArray1.length()>0) {
+                JSONArray rowjsonArray = jsonArray1.getJSONArray(0);
+                maprow.put("id", rowjsonArray.get(0));
+                maprow.put("C_VIPTYPE_ID", rowjsonArray.get(1));
+                maprow.put("CARDNO", rowjsonArray.get(2));
+            }
             maprows.put("rows", maprow);
             JSONObject jsonObject = new JSONObject(maprows);
-
             infos = jsonObject.toString();
+
         }else{
 
         }
         return  infos;
+    }
+
+    //查询单据编号+id
+    public  String selBill(String table,String corpcode,int id){
+
+        String  infos="";
+
+        if(corpcode.equals("C10016")) {
+
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            //查询
+            map.put("table", table);
+            map.put("columns", new String[]{"id", "DOCNO"});
+            JSONObject expr1 = new JSONObject();
+            expr1.put("column", "id");
+            expr1.put("condition", id);
+            map.put("params", expr1);
+
+            String info = Rest.query(corpcode,map);
+
+            System.out.println("cccc"+info);
+
+
+            HashMap<String, Object> maprows = new HashMap<String, Object>();
+            HashMap<String, Object> maprow = new HashMap<String, Object>();
+
+            JSONArray jsonArray = new JSONArray(info);
+            int code = (Integer) jsonArray.getJSONObject(0).get("code");
+            String message = jsonArray.getJSONObject(0).get("message").toString();
+            String id1 = jsonArray.getJSONObject(0).get("id").toString();
+
+            if(code==-1){
+                JSONArray jsonArray1=new JSONArray(info);
+                return  jsonArray1.getJSONObject(0).toString();
+
+            }
+            String rows = jsonArray.getJSONObject(0).get("rows").toString();
+            JSONArray jsonArray1=new JSONArray(rows);
+
+            maprows.put("message", message);
+            maprows.put("code", code);
+            maprows.put("id",id1);
+
+            if(jsonArray1.length()>0) {
+                JSONArray rowjsonArray = jsonArray1.getJSONArray(0);
+                maprow.put("id", rowjsonArray.get(0));
+                maprow.put("DOCNO", rowjsonArray.get(1));
+            }
+            maprows.put("rows", maprow);
+            JSONObject jsonObject = new JSONObject(maprows);
+            infos = jsonObject.toString();
+
+        }else{
+
+        }
+        return  infos;
+
     }
 
 
@@ -224,7 +284,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     /**
      *
-     * @param modVip
+     * @param
      * @return
      * 修改字段
      * VIPNAME,C_CUSTOMER_ID__NAME,SEX,SALESREP_ID__NAME,SALEHREMP_ID__NAME,PASS_WORD,INTEGRAL_PASSWORD,id
@@ -276,6 +336,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         }
 
                 return  info;
+
+
+
     }
 
     //券信息获取
@@ -308,7 +371,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     public  String  addPrepaidDocuments(String corpcode,HashMap<String,Object> documentInfo) {
 
-        String info="";
+        String billinfo="";
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
@@ -377,29 +440,28 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             }
 
-             info = Rest.Add("B_VIPMONEY", corpcode,documentInfo);
+           String info = Rest.Add("B_VIPMONEY", corpcode,documentInfo);
 
             JSONArray jsonArray=new JSONArray(info);
-            info=jsonArray.getJSONObject(0).toString();
+            JSONObject jsonOb=jsonArray.getJSONObject(0);
 
-            System.out.println("info...." + info);
+            int code = (Integer) jsonOb.get("code");
 
-//        JSONArray jsonArray=new JSONArray(info);
-//        int code= (Integer)jsonArray.getJSONObject(0).get("code");
-//        if(code==-1){
-//            return  info;
-//        }
-//
-//        int id=(Integer) jsonArray.getJSONObject(0).get("objectid");
-//
-//        String vipinfo=selVip(id);
-//
-//        System.out.println(vipinfo);
+            if (code == -1) {
+                return jsonOb.toString();
+            }
+
+            int id = (Integer) jsonOb.get("objectid");
+
+            billinfo= selBill("B_VIPMONEY",corpcode,id);
+
+      //      System.out.println("info...." + info);
+
         }else{
 
         }
 
-        return info;
+        return billinfo;
     }
 
 
@@ -443,8 +505,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //                return "缺少ACTIVE_CONTENT";
 //
 //            }
-            if (modStatus.get("STATUS") == null) {
-                errormap.put("message","缺少STATUS");
+            if (modStatus.get("AU_STATE") == null) {
+                errormap.put("message","缺少AU_STATE");
                 errormap.put("code",-1);
                 JSONObject jsonObject=new JSONObject(errormap);
 
@@ -480,7 +542,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     //充值退款单据新增
     public  String addRefund(String corpcode,HashMap<String,Object> refundInfo){
 
-        String info="";
+        String billinfo="";
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
@@ -507,14 +569,25 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             }
 
-             info = Rest.Add("B_RET_VIPMONEY", corpcode,refundInfo);
+           String  info = Rest.Add("B_RET_VIPMONEY", corpcode,refundInfo);
+
             JSONArray jsonArray=new JSONArray(info);
-           info= jsonArray.getJSONObject(0).toString();
+            JSONObject jsonOb=jsonArray.getJSONObject(0);
+
+            int code = (Integer) jsonOb.get("code");
+
+            if (code == -1) {
+                return jsonOb.toString();
+            }
+
+            int id = (Integer) jsonOb.get("objectid");
+
+            billinfo= selBill("B_RET_VIPMONEY",corpcode,id);
 
         }else{
 
         }
-        return  info;
+        return  billinfo;
 
     }
 
@@ -537,9 +610,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //                return "缺少C_VIPMONEY_STORE_ID__NAME";
 //            }
 
-            if (modStatusRefund.get("STATUS") == null) {
+            if (modStatusRefund.get("AU_STATE") == null) {
 
-                errormap.put("message","缺少STATUS");
+                errormap.put("message","缺少AU_STATE");
                 errormap.put("code",-1);
                 JSONObject jsonObject=new JSONObject(errormap);
 
@@ -563,6 +636,70 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         }
         return  info;
     }
+
+    //VIP卡充值单据提交
+    public String submitPrepaidBill(String corpcode,int id){
+
+        String info="";
+        if(corpcode.equals("C10016")) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("table", "B_VIPMONEY");
+            map.put("id", id);
+            info = Rest.submitObject(corpcode, map);
+            JSONArray jsonArray = new JSONArray(info);
+            info = jsonArray.getJSONObject(0).toString();
+        }
+         return  info;
+    }
+
+    //VIP卡充值退款单据提交
+    public String submitRefundBill(String corpcode,int id){
+
+        String info="";
+        if(corpcode.equals("C10016")) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("table", "B_RET_VIPMONEY");
+            map.put("id", id);
+            info = Rest.submitObject(corpcode, map);
+            JSONArray jsonArray = new JSONArray(info);
+            info = jsonArray.getJSONObject(0).toString();
+        }
+        return  info;
+    }
+
+
+    //VIP卡充值单据取消提交
+    public String canclePrepaidBill(String corpcode,int id){
+
+        String info="";
+        if(corpcode.equals("C10016")) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("table", "B_VIPMONEY");
+            map.put("id", id);
+            info = Rest.unSubmitObject(corpcode, map);
+            JSONArray jsonArray = new JSONArray(info);
+            info = jsonArray.getJSONObject(0).toString();
+        }
+        return  info;
+    }
+
+    //VIP卡充值退款单据取消提交
+    public String cancleRefundBill(String corpcode,int id){
+
+        String info="";
+        if(corpcode.equals("C10016")) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("table", "B_RET_VIPMONEY");
+            map.put("id", id);
+            info = Rest.unSubmitObject(corpcode, map);
+            JSONArray jsonArray = new JSONArray(info);
+            info = jsonArray.getJSONObject(0).toString();
+        }
+        return  info;
+    }
+
+
+
 
 
     //充值单验证
@@ -694,36 +831,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //    }
 //
 //
-//    //执行查询
-//    public  static  String excuteSql(HashMap<String,Object> hashmap){
-//
-//        ExecuteSQLRequestParams executeSQLRequestParams = new ExecuteSQLRequestParams();
-//        ExecuteSQLRequestParams.ExecuteSQLTrans executeSQLTrans = executeSQLRequestParams.new ExecuteSQLTrans();
-//        ExecuteSQLRequestParams.ExecuteSQLTrans.ExecuteSQLTransParams executeSQLTransParams = executeSQLTrans.new ExecuteSQLTransParams();
-//
-//        for(String key:hashmap.keySet()){
-//            if(key.equals("name")){
-//                executeSQLTransParams.setName(hashmap.get(key).toString());
-//            }else if(key.equals("values")){
-//                executeSQLTransParams.setValues(new org.json.JSONArray(hashmap.get(key)));
-//            }
-//        }
-//
-//        executeSQLTrans.setId(112);
-//        executeSQLTrans.setCommand("ExecuteSQL");
-//        executeSQLTrans.setParams(executeSQLTransParams);
-//
-//        executeSQLRequestParams.setTransactions(executeSQLTrans);
-//
-//
-//        //执行添加
-//        String info=getConnection(executeSQLRequestParams.getSip_sign(),executeSQLRequestParams.getSip_appkey(),
-//                executeSQLRequestParams.getAppSecret(),executeSQLRequestParams.getSip_timestamp(),
-//                executeSQLRequestParams.getTransactions());
-//
-//        return  info;
-//    }
-//
+
 
 //
 //    //获取一个对象(vip)的信息
@@ -799,105 +907,5 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 //
 //    }
 //
-//    //提交单据
-//    public  static  String  submitObject(HashMap<String,Object> hashmap){
-//
-//        GetObjectRequestParams getObjectRequestParams=new GetObjectRequestParams();
-//        GetObjectRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
-//        GetObjectRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
-//                getObjectTran.new GetObjectTransParams();
-//
-//
-//        for(String key:hashmap.keySet()){
-//            if(key.equals("table")){
-//                getObjectTransParams.setTable(hashmap.get(key).toString());
-//            }else  if(key.equals("id")){
-//                getObjectTransParams.setId((Integer)hashmap.get(key));
-//            }
-//        }
-//
-//        getObjectTran.setId(112);
-//        getObjectTran.setCommand("ObjectSubmit");
-//        getObjectTran.setParams(getObjectTransParams);
-//
-//        getObjectRequestParams.setTransactions(getObjectTran);
-//
-//        //执行添加
-//        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
-//                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
-//                getObjectRequestParams.getTransactions());
-//
-//
-//        System.out.println(info.toString());
-//        return  info;
-//
-//    }
-//
-//
-//    //取消提交单据
-//    public  static  String  unSubmitObject(HashMap<String,Object> hashmap){
-//
-//        GetObjectRequestParams getObjectRequestParams=new GetObjectRequestParams();
-//        GetObjectRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
-//        GetObjectRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
-//                getObjectTran.new GetObjectTransParams();
-//
-//
-//        for(String key:hashmap.keySet()){
-//            if(key.equals("table")){
-//                getObjectTransParams.setTable(hashmap.get(key).toString());
-//            }else  if(key.equals("id")){
-//                getObjectTransParams.setId((Integer)hashmap.get(key));
-//            }
-//        }
-//
-//        getObjectTran.setId(112);
-//        getObjectTran.setCommand("ObjectUnsubmit");
-//        getObjectTran.setParams(getObjectTransParams);
-//
-//        getObjectRequestParams.setTransactions(getObjectTran);
-//
-//        //执行添加
-//        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
-//                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
-//                getObjectRequestParams.getTransactions());
-//
-//
-//        System.out.println(info.toString());
-//        return  info;
-//
-//    }
-//
-
-
-//    //网络请求
-//    public static String getConnection(String sip_sign,String sip_appkey,String appSecret,String sip_timestamp,
-//                                 String transactions){
-//
-//
-//
-//        HttpResult result=null;
-//        try{
-//            Map<String,String> head=new HashMap<String,String>();
-//            head.put("Content-Type", "application/x-www-form-urlencoded");
-//            StringBuffer sb=new StringBuffer();
-//            sb.append("sip_sign=").append(sip_sign).append("&")
-//                    .append("sip_appkey=").append(sip_appkey).append("&")
-//                    .append("appSecret=").append(appSecret).append("&")
-//                    .append("sip_timestamp=").append(sip_timestamp).append("&")
-//                    .append("transactions=").append(transactions);
-//
-//
-//             result=webConnection.Request(url,"POST",head,sb.toString().getBytes());
-//
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//        return  result.getPage().toString();
-//    }
-
 
 }

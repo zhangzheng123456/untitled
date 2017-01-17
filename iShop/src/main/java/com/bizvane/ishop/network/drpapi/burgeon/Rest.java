@@ -1,8 +1,6 @@
 package com.bizvane.ishop.network.drpapi.burgeon;
 
-import com.bizvane.ishop.network.drpapi.burgeon.requestparam.ExecuteWebActionRequestParams;
-import com.bizvane.ishop.network.drpapi.burgeon.requestparam.QueryRequestParams;
-import com.bizvane.ishop.network.drpapi.burgeon.requestparam.RequestParams;
+import com.bizvane.ishop.network.drpapi.burgeon.requestparam.*;
 import com.bizvane.ishop.utils.HttpResult;
 import com.bizvane.ishop.utils.WebConnection;
 import org.json.JSONArray;
@@ -130,7 +128,7 @@ public class Rest {
          System.out.println("modifyVip jsonObject:" + vipJsonObject.toString());
         modifyObjectRequestParams.setTransactions(modifyObjectTrans);
 
-        //查询
+        //修改
         String info=getConnection(modifyObjectRequestParams.getSip_sign(),modifyObjectRequestParams.getSip_appkey(),
                 modifyObjectRequestParams.getAppSecret(),modifyObjectRequestParams.getSip_timestamp(),
                 modifyObjectRequestParams.getTransactions());
@@ -159,7 +157,7 @@ public class Rest {
 
         executeWebActionRequestParams.setTransactions(executeWebActionTrans);
 
-        //执行添加
+        //执行webaction
         String info=getConnection(executeWebActionRequestParams.getSip_sign(),executeWebActionRequestParams.getSip_appkey(),
                 executeWebActionRequestParams.getAppSecret(),executeWebActionRequestParams.getSip_timestamp(),
                 executeWebActionRequestParams.getTransactions());
@@ -168,6 +166,107 @@ public class Rest {
         return  info;
 
     }
+
+    //    //执行查询
+    public  static  String excuteSql(String corpcode,HashMap<String,Object> hashmap){
+
+        ExecuteSQLRequestParams executeSQLRequestParams = new ExecuteSQLRequestParams(corpcode);
+        ExecuteSQLRequestParams.ExecuteSQLTrans executeSQLTrans = executeSQLRequestParams.new ExecuteSQLTrans();
+        ExecuteSQLRequestParams.ExecuteSQLTrans.ExecuteSQLTransParams executeSQLTransParams = executeSQLTrans.new ExecuteSQLTransParams();
+
+        for(String key:hashmap.keySet()){
+            if(key.equals("name")){
+                executeSQLTransParams.setName(hashmap.get(key).toString());
+            }else if(key.equals("values")){
+                executeSQLTransParams.setValues(new org.json.JSONArray(hashmap.get(key)));
+            }
+        }
+
+        executeSQLTrans.setId(112);
+        executeSQLTrans.setCommand("ExecuteSQL");
+        executeSQLTrans.setParams(executeSQLTransParams);
+
+        executeSQLRequestParams.setTransactions(executeSQLTrans);
+
+
+        //执行添加
+        String info=getConnection(executeSQLRequestParams.getSip_sign(),executeSQLRequestParams.getSip_appkey(),
+                executeSQLRequestParams.getAppSecret(),executeSQLRequestParams.getSip_timestamp(),
+                executeSQLRequestParams.getTransactions());
+
+        return  info;
+    }
+
+    //提交单据
+    public  static  String  submitObject(String corpcode,HashMap<String,Object> hashmap){
+
+        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(corpcode);
+        GetOrSubOrUnSubRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
+        GetOrSubOrUnSubRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
+                getObjectTran.new GetObjectTransParams();
+
+
+        for(String key:hashmap.keySet()){
+            if(key.equals("table")){
+                getObjectTransParams.setTable(hashmap.get(key).toString());
+            }else  if(key.equals("id")){
+                getObjectTransParams.setId((Integer)hashmap.get(key));
+            }
+        }
+
+        getObjectTran.setId(112);
+        getObjectTran.setCommand("ObjectSubmit");
+        getObjectTran.setParams(getObjectTransParams);
+
+        getObjectRequestParams.setTransactions(getObjectTran);
+
+        //执行添加
+        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
+                getObjectRequestParams.getTransactions());
+
+
+        System.out.println(info.toString());
+        return  info;
+
+    }
+
+
+    //取消提交单据
+    public  static  String  unSubmitObject(String corpcode,HashMap<String,Object> hashmap){
+
+        GetOrSubOrUnSubRequestParams getObjectRequestParams=new GetOrSubOrUnSubRequestParams(corpcode);
+        GetOrSubOrUnSubRequestParams.GetObjectTran getObjectTran= getObjectRequestParams.new GetObjectTran();
+        GetOrSubOrUnSubRequestParams.GetObjectTran.GetObjectTransParams getObjectTransParams=
+                getObjectTran.new GetObjectTransParams();
+
+
+        for(String key:hashmap.keySet()){
+            if(key.equals("table")){
+                getObjectTransParams.setTable(hashmap.get(key).toString());
+            }else  if(key.equals("id")){
+                getObjectTransParams.setId((Integer)hashmap.get(key));
+            }
+        }
+
+        getObjectTran.setId(112);
+        getObjectTran.setCommand("ObjectUnsubmit");
+        getObjectTran.setParams(getObjectTransParams);
+
+        getObjectRequestParams.setTransactions(getObjectTran);
+
+        //执行添加
+        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+                getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
+                getObjectRequestParams.getTransactions());
+
+
+        System.out.println(info.toString());
+        return  info;
+
+    }
+
+
 
 
     //网络请求
