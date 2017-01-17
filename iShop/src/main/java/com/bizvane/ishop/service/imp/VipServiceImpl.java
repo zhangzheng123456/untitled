@@ -107,9 +107,11 @@ public class VipServiceImpl implements VipService {
                         array = JSON.parseArray(memo);
                     }
                     String content = jsonObject.get("memo").toString();
+                    String time = jsonObject.get("time").toString();
+                    now = Common.DATETIME_FORMAT.parse(time);
                     JSONObject memo_obj = new JSONObject();
                     memo_obj.put("content", content);
-                    memo_obj.put("time", Common.DATETIME_FORMAT.format(now));
+                    memo_obj.put("time", time);
                     memo_obj.put("memoid", corp_code + vip_id + Common.DATETIME_FORMAT_DAY_NUM.format(now));
                     array.add(memo_obj);
 
@@ -144,11 +146,13 @@ public class VipServiceImpl implements VipService {
                     image.put("time", Common.DATETIME_FORMAT.format(now));
                     album_array.add(image);
                 }
-                if (jsonObject.containsKey("image_url")) {
+                if (jsonObject.containsKey("memo")) {
                     String content = jsonObject.get("memo").toString();
+                    String time = jsonObject.get("time").toString();
+                    now = Common.DATETIME_FORMAT.parse(time);
                     JSONObject memo_obj = new JSONObject();
                     memo_obj.put("content", content);
-                    memo_obj.put("time", Common.DATETIME_FORMAT.format(now));
+                    memo_obj.put("time", time);
                     memo_obj.put("memoid", corp_code + vip_id + Common.DATETIME_FORMAT_DAY_NUM.format(now));
                     memo_array.add(memo_obj);
                 }
@@ -173,17 +177,28 @@ public class VipServiceImpl implements VipService {
         String store_name = jsonObject.get("store_name").toString();//操作店仓
         String date = jsonObject.get("date").toString();//单据日期
 
+        DBObject object = new BasicDBObject();
+        object.put("corp_code",corp_code);
+        object.put("check_status","0"); //未审核
+        object.put("vip_id",vip_id);
+        object.put("card_no",card_no);
+        object.put("vip_name",vip_name);
+
+        object.put("store_code",store_code);
+        object.put("store_name",store_name);
+        object.put("created_date",date);
+        object.put("modified_date",date);
+        object.put("remark",remark);
         if (type.equals("pay")) {
             String pay_type = jsonObject.get("pay_type").toString();//1：直接充值:2：退换转充值
             String user_code = jsonObject.get("user_code").toString();//经办人
             String user_name = jsonObject.get("user_name").toString();//经办人
-
             String price = jsonObject.get("price").toString();//吊牌金额
             String pay_price = jsonObject.get("pay_price").toString();//实付金额
             String discount = jsonObject.get("discount").toString();//折扣
 
             HashMap<String,Object> map = new HashMap<String, Object>();
-            map.put("BILLDATE",date);
+            map.put("BILLDATE",date.replace("-",""));
             map.put("RECHARGE_TYPE",pay_type);
             map.put("C_VIPMONEY_STORE_ID__NAME",store_name);
             map.put("SALESREP_ID__NAME",user_name);
@@ -202,27 +217,16 @@ public class VipServiceImpl implements VipService {
                 String bill_id = obj.getString("ID");
                 String bill_NO = obj.getString("DOCNO");
 
-                DBObject object = new BasicDBObject();
                 object.put("_id",corp_code+"_"+bill_id);
-                object.put("corp_code",corp_code);
                 object.put("check_type","pay"); //充值
-                object.put("check_status","0"); //未审核
-                object.put("vip_id",vip_id);
-                object.put("card_no",card_no);
-                object.put("vip_name",vip_name);
-
-                object.put("store_code",store_code);
-                object.put("store_name",store_name);
-                object.put("user_code",user_code);
-                object.put("user_name",user_name);
-
                 object.put("billNO",bill_NO);
-                object.put("date",date);
-                object.put("pay_type",pay_type);
-                object.put("price",price);
-                object.put("pay_price",pay_price);
-                object.put("discount",discount);
-                object.put("remark",remark);
+
+//                object.put("user_code",user_code);
+//                object.put("user_name",user_name);
+//                object.put("pay_type",pay_type);
+//                object.put("price",price);
+//                object.put("pay_price",pay_price);
+//                object.put("discount",discount);
                 cursor.save(object);
 
             }
@@ -235,7 +239,7 @@ public class VipServiceImpl implements VipService {
             String balance = jsonObject.get("balance").toString();//折扣
 
             HashMap<String,Object> map = new HashMap<String, Object>();
-            map.put("BILLDATE",date);
+            map.put("BILLDATE",date.replace("-",""));
             if (refund_type.equals("1")){
                 map.put("RECHARGE_TYPE","VM");
             }else if (refund_type.equals("2")){
@@ -244,7 +248,6 @@ public class VipServiceImpl implements VipService {
             map.put("C_VIPMONEY_STORE_ID__NAME",store_name);
             map.put("ORGDOCNO",sourceNo);
             map.put("C_VIP_ID__CARDNO",card_no);
-//                    map.put("PASS_WORD",price);
             map.put("TOT_AMT_ACTUAL",price);
             map.put("DESCRIPTION",remark);
             String result = crmInterfaceService.addPrepaidDocuments(corp_code,map);
@@ -257,31 +260,18 @@ public class VipServiceImpl implements VipService {
                 String bill_id = obj.getString("ID");
                 String bill_NO = obj.getString("DOCNO");
 
-                DBObject object = new BasicDBObject();
                 object.put("_id",corp_code+"_"+bill_id);
-                object.put("corp_code",corp_code);
                 object.put("check_type","refund"); //退款
-                object.put("check_status","0"); //未审核
-                object.put("vip_id",vip_id);
-                object.put("card_no",card_no);
-                object.put("vip_name",vip_name);
-
-                object.put("store_code",store_code);
-                object.put("store_name",store_name);
-
                 object.put("billNO",bill_NO);
-                object.put("date",date);
-                object.put("refund_type",refund_type);
-                object.put("sourceNo",sourceNo);
-                object.put("price",price);
-                object.put("pay_price",pay_price);
-                object.put("discount",discount);
-                object.put("balance",balance);
 
-                object.put("remark",remark);
+//                object.put("refund_type",refund_type);
+//                object.put("sourceNo",sourceNo);
+//                object.put("price",price);
+//                object.put("pay_price",pay_price);
+//                object.put("discount",discount);
+//                object.put("balance",balance);
                 cursor.save(object);
             }
-
         }
         return "";
     }

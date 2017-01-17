@@ -149,56 +149,6 @@ public class UserActionController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 用户行为日志
-     * 页面查找
-     */
-//    @RequestMapping(value = "/select", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String select(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        JSONObject result = new JSONObject();
-//        int pages = 0;
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            String vip_id = jsonObject.get("vip_id").toString();
-//
-//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-//            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
-//            DBCursor dbCursor=null;
-//            // 读取数据
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                BasicDBObject dbObject=new BasicDBObject();
-//                dbObject.put("vip_id",vip_id);
-//                dbCursor= cursor.find(dbObject);
-//            System.out.println(cursor.toString());
-//            } else {
-//                BasicDBObject dbObject=new BasicDBObject();
-//                dbObject.put("vip_id",vip_id);
-//                dbObject.put("corp_code",corp_code);
-//                dbCursor= cursor.find(dbObject);
-//                System.out.println(cursor.toString());
-//            }
-//
-//            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
-//            result.put("list", list);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//            logger.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 用户行为日志

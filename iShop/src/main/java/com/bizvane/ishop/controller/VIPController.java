@@ -823,6 +823,63 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * MongoDB
+     * 会员备忘删除
+     */
+    @RequestMapping(value = "/vipMemoDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipMemoDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String memoid = jsonObject.get("memoid").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+            Map keyMap = new HashMap();
+            keyMap.put("_id", corp_code + vip_id);
+            BasicDBObject queryCondition = new BasicDBObject();
+            queryCondition.putAll(keyMap);
+            DBCursor dbCursor1 = cursor.find(queryCondition);
+            if (dbCursor1.size() > 0) {
+                DBObject obj = dbCursor1.next();
+                String album = obj.get("memo").toString();
+                JSONArray array = JSONArray.parseArray(album);
+                JSONArray new_array = new JSONArray();
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject memo_obj = array.getJSONObject(i);
+                    String memoid1 = memo_obj.get("memoid").toString();
+                    if (!memoid.equals(memoid1)) {
+                        new_array.add(memo_obj);
+                    }
+                }
+                DBObject updateCondition = new BasicDBObject();
+                updateCondition.put("_id", corp_code + vip_id);
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("memo", new_array);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
+
 //    /**
 //     * 会员列表，批量导出会员相册
 //     */
@@ -1006,7 +1063,7 @@ public class VIPController {
                 errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
-            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            result.put("path", JSON.toJSONString("api/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -1043,6 +1100,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

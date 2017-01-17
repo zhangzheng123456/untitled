@@ -658,6 +658,93 @@ $(".record_search").click(function () {
     text_third=$(".record_input li:nth-child(3) input").val().trim();
     getVipPoints();
 });
+//备忘录新增,删除
+$("#memorandum_save").click(function () {
+    var date=getNowDate();
+    var val=$(".memorandum_top textarea").val().trim();
+    var corp_code=sessionStorage.getItem("corp_code");
+    var vip_id=sessionStorage.getItem("id");
+    var memoid=corp_code+vip_id+date[1];
+    var param={};
+    param["vip_id"]=vip_id;
+    param["memo"]=val;
+    param["time"]=date[0];
+    param["phone"]=$("#vip_phone").html();
+    param["card_no"]=$("#vip_card_no").html();
+    param["corp_code"]=corp_code;
+    oc.postRequire("post","/vip/vipSaveInfo","",param,function(data){
+        if(data.code==0){
+            var tr="<tr id='"+memoid+"'><td>"
+                + date[0]
+                + "</td><td><span title='"+val+"'>"
+                + val
+                +"</span></td><td class='icon-ishop_6-12'></td></tr>";
+            $("#memorandum_table tbody").append(tr);
+        }else if(data.code==-1){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "保存失败"
+            });
+        }
+    });
+});
+$("#memorandum_table").on("click",".icon-ishop_6-12",function () {
+    var param={};
+    var _this=$(this);
+    param["vip_id"]=sessionStorage.getItem("id");
+    param["memoid"]=$(this).parent("tr").attr("id");
+    param["corp_code"]=sessionStorage.getItem("corp_code");
+    oc.postRequire("post","/vip/vipMemoDelete","",param,function (data) {
+        if(data.code=="0"){
+            $(_this).parents("tr").remove();
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "删除失败"
+            });
+        }
+    });
+});
+function getNowDate() {//获取当前日期
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    var H=date.getHours();
+    var M=date.getMinutes();
+    var S=date.getSeconds();
+    var m=date.getMilliseconds();
+    var currentdate=[];
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    if (H >= 0 && H <= 9) {
+        H = "0" + H;
+    }
+    if (M >= 0 && M <= 9) {
+        M = "0" + M;
+    }
+    if (S >= 0 && S <= 9) {
+        S = "0" + S;
+    }
+    if (m >= 0 && m <= 9) {
+        m = "00" + m;
+    }
+    if (m >= 10 && m <= 99) {
+        m = "0" + m;
+    }
+    var date1 =year+"-"+month+"-"+strDate+" "+H+":"+M+":"+S;
+    var date2 = year+month+strDate+H+M+S+m;
+    currentdate.push(date1,date2);
+    return currentdate;
+}
 //发送手机验证码
 $("#send_code i,#send_code input").click(function () {
     $("#send_code ul").toggle();

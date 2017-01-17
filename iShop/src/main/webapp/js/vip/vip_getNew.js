@@ -23,20 +23,72 @@ var getNewVip={
             whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_save').click(function () {
-            if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}
-            if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
-            if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
-            if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
+            // if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}
+            // if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
+            // if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
+            // if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
             // if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
-            this.postParma();
+            // this.postParma();
         }.bind(this));
         var me=this;
         $('#content').on('blur','input',function () {
-            if(this.className=='billNo'){
-                me.testBlur();
-            }else if(this.className=='searchable-select-input'){}else{
-                me.testInput(this);
+            var html=''
+            if(this.className=='vipName'){
+                if($(this).val().trim()==''){
+                    if($('#test_1').find('.hint_l').length==1)return;
+                    $('#test_1').show();
+                html='<span class="hint hint_l" style="display: inline-block;width: 25%;">姓名不能为空</span>';
+                    $('#test_1').append(html);
+                }else{
+                    $('#test_1').find('.hint_l').remove();
+                }
+            }else if(this.className.search('birthday')!=-1){
+                if($(this).val().trim()==''){
+                    if($('#test_1').find('.hint_r').length==1)return;
+                    $('#test_1').show();
+                    html='<span class="hint hint_r" style="float:right;width: 25%;">生日不能为空</span>';
+                    $('#test_1').append(html);
+                }else{
+                    $('#test_1').find('.hint_r').remove();
+                }
+            }else if(this.className=='phone'){
+                if($(this).val().trim()==''){
+                    if($('#test_2').find('.hint_l').length==1)return;
+                    $('#test_2').show();
+                    html='<span class="hint hint_l" style="display: inline-block;width: 30%;">手机号不能为空</span>';
+                    $('#test_2').html(html);
+                }else{
+                    var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+                    console.log();
+                    if(!reg.test($(this).val().trim())){
+                        html='<span class="hint hint_l" style="display: inline-block;width: 30%;">手机号格式不正确</span>';
+                        $('#test_2').html(html);
+                        return
+                    }
+                    $('#test_2').find('.hint_l').remove();
+                }
             }
+        });
+        //失去焦点
+        $('.billNo').focus(function () {
+            $('.down_icon_vip').trigger('click');
+        });
+        $('.down_icon_vip').click(function () {
+            $('#billNo_drop_down').toggle();
+            $("#billNo_drop_down").niceScroll({
+                cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+                cursorcolor:" #dfdfdf",
+                cursoropacitymax:1,
+                touchbehavior:false,
+                cursorminheight:50,
+
+                cursorwidth:"5px",
+                cursorborderradius:"10px"});
+        });
+        $('#billNo_drop_down').on('click','li',function () {
+            $(this).addClass('selected').siblings('.selected').removeClass('selected');
+            $('.billNo').val(this.innerHTML);
+            $('#billNo_drop_down').toggle();
         });
     },
     getparamCtrol:function () {
@@ -243,11 +295,19 @@ var getNewVip={
         })
     },
     testInput:function (node) {
+        console.log($(node).parent().prev().html().slice(0,-1))
+        if($(node).val().trim()==''){
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+        }
+        return;
         //不为空验证
         var html='';
         if($(node).val().trim()==''){
             html=$(node).parent().prev().html().slice(0,-1);
-            var HTML='<li class="hint_li"><div class="content_hint"style="display: block"><span class="hint">'+html+'不能为空</span></div></li>';
+            //left
+            var HTML='<li class="hint_li"><div class="content_hint"style="display: block;overflow: hidden"><div style="width:50%;float: left"><span class="hint">'+html+'不能为空</span></div></div></li>';
+            //right
+            var HTML='<li class="hint_li"><div class="content_hint"style="display: block;overflow: hidden"><div style="width:50%;float:right"><span class="hint">'+html+'不能为空</span></div></div></li>';
             var nd=$(node).parent().parent().next()[0];
             if(!nd.className){
                 $(node).parent().parent().after(HTML);
@@ -259,6 +319,7 @@ var getNewVip={
 }
 function checkStart(data) {
     getNewVip.testInput($('#content .birthday')[0]);
+    $('#test_1').find('.hint_r').hide();
 }
 function scroll() {
     console.log('触发');

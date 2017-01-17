@@ -235,7 +235,7 @@ function superaddition(data,num){//页面加载循环
                 }
             })(c)
         }
-        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"'  data-phone='"+data[i].vip_phone+"' data-card_no='"+data[i].cardno+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -876,7 +876,7 @@ function clearAll(name){
             el[i].checked = false;
         }
     }
-};
+}
 //导出会员相册
 $("#album_leadingout").click(function () {
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
@@ -890,9 +890,9 @@ $("#album_leadingout").click(function () {
             var param = {};
             var vip_id = $(tr[i]).find("td").eq(2).text();
             var vip_name = $(tr[i]).find("td").eq(3).text();
-            var phone = $(tr[i]).find("td").eq(5).text();
-            var card_no = $(tr[i]).find("td").eq(7).text();
-            var corp_code =$(tr[i]).attr("id");
+            var phone = $(tr[i]).attr("data-phone");
+            var card_no = $(tr[i]).attr("data-card_no");
+            var corp_code =$(tr[i]).attr("data-code");
             param['vip_id'] = vip_id;
             param['vip_name'] = vip_name;
             param['corp_code'] = corp_code;
@@ -913,11 +913,12 @@ $("#album_leadingout").click(function () {
                 $("#tk").css({"left":+left+"px","top":+tp+"px"});
                 $("#p").show();
                 $("#tk").show();
-                $("#enter").html("<a style='color: white;' href='/"+path+"'>确认</a>");
+                $("#enter").html("<a style='color: white;' href='/"+path+"' target='_blank'>确认</a>");
                 whir.loading.remove();//移除加载框
                 $("#enter").click(function () {
                     $("#p").hide();
                     $("#tk").hide();
+                    return true;
                 })
             }else {
                 alert("导出相册失败");
