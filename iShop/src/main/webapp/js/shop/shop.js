@@ -313,11 +313,7 @@ var isscroll=false;
                 } else if (input.checked == false) {
                     ISACTIVE = "N";
                 }
-                var logo=""
-                var img=$("#STORE_LOGO").parent().prev("img").attr("src");
-                if(img!==undefined){
-                    logo=img;
-                }
+                var logo=$("#shopLogo").attr("data-src");
                 // var SHOP_MANAGER=$("#SHOP_MANAGER").val();
                 var _command = "/shop/edit";//接口名
                 var opt = {//返回成功后的操作
@@ -469,9 +465,8 @@ jQuery(document).ready(function () {
                     $('#OWN_BRAND_All').append("<p><input type='text 'readonly='readonly' style='width: 348px;margin-right: 10px' data-code='"+checknow_data[i]+"'  value='"+checknow_namedata[i]+"'><span class='power remove_app_id'>删除</span></p>");
                 }
                 var logo=msg.logo;
-                if(logo!==""&&logo!==undefined){
-                    var img="<img style='width: 60px;margin-bottom: 10px;' src='"+logo+"' alt='暂无图片'>";
-                    $("#STORE_LOGO").parent().before(img);
+                if(logo!==""){
+                    $("#shopLogo").attr({"src":logo,"data-src":logo});
                 }
                 // $("#OWN_CORP option").val(msg.corp.corp_code);
                 // $("#OWN_CORP option").text(msg.corp.corp_name);
@@ -1379,13 +1374,7 @@ function uploadLOGO() {
         var storeAs='STORE/logo'+corp_code+'_'+store_code+'_'+time+'.jpg';
         client.multipartUpload(storeAs, file).then(function (result) {
             var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
-            var img="<img style='width: 60px;margin-bottom: 10px;' src='"+url+"' alt='暂无图片'>";
-            var len = $("#STORE_LOGO").parent().prevAll("img").length;
-            if(len == 0){
-                $("#STORE_LOGO").parent().before(img);
-            }else {
-                $("#STORE_LOGO").parent().prev("img").replaceWith(img);
-            }
+            $("#shopLogo").attr({"src":url,"data-src":url});
             whir.loading.remove();
         }).catch(function (err) {
             console.log(err);
