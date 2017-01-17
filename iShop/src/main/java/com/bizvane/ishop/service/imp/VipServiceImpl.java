@@ -162,4 +162,127 @@ public class VipServiceImpl implements VipService {
         return "";
     }
 
+    public String recharge(JSONObject jsonObject,DBCollection cursor) throws Exception{
+        String type = jsonObject.get("type").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String vip_id = jsonObject.get("vip_id").toString();
+        String vip_name = jsonObject.get("vip_name").toString();
+        String card_no = jsonObject.get("card_no").toString();//会员卡号
+        String remark = jsonObject.get("remark").toString();
+        String store_code = jsonObject.get("store_code").toString();//操作店仓
+        String store_name = jsonObject.get("store_name").toString();//操作店仓
+        String date = jsonObject.get("date").toString();//单据日期
+
+        if (type.equals("pay")) {
+            String pay_type = jsonObject.get("pay_type").toString();//1：直接充值:2：退换转充值
+            String user_code = jsonObject.get("user_code").toString();//经办人
+            String user_name = jsonObject.get("user_name").toString();//经办人
+
+            String price = jsonObject.get("price").toString();//吊牌金额
+            String pay_price = jsonObject.get("pay_price").toString();//实付金额
+            String discount = jsonObject.get("discount").toString();//折扣
+
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("BILLDATE",date);
+            map.put("RECHARGE_TYPE",pay_type);
+            map.put("C_VIPMONEY_STORE_ID__NAME",store_name);
+            map.put("SALESREP_ID__NAME",user_name);
+            map.put("C_VIP_ID__CARDNO",card_no);
+            map.put("TOT_AMT_ACTUAL",price);
+            map.put("AMOUNT_ACTUAL",pay_price);
+            map.put("ACTIVE_CONTENT","无");
+            map.put("DESCRIPTION",remark);
+            String result = crmInterfaceService.addPrepaidDocuments(corp_code,map);
+
+            JSONObject result_obj = JSONObject.parseObject(result);
+            String code = result_obj.getString("code");
+            if (code.equals("0")){
+                result = result_obj.getString("rows");
+                JSONObject obj = JSONObject.parseObject(result);
+                String bill_id = obj.getString("ID");
+                String bill_NO = obj.getString("DOCNO");
+
+                DBObject object = new BasicDBObject();
+                object.put("_id",corp_code+"_"+bill_id);
+                object.put("corp_code",corp_code);
+                object.put("check_type","pay"); //充值
+                object.put("check_status","0"); //未审核
+                object.put("vip_id",vip_id);
+                object.put("card_no",card_no);
+                object.put("vip_name",vip_name);
+
+                object.put("store_code",store_code);
+                object.put("store_name",store_name);
+                object.put("user_code",user_code);
+                object.put("user_name",user_name);
+
+                object.put("billNO",bill_NO);
+                object.put("date",date);
+                object.put("pay_type",pay_type);
+                object.put("price",price);
+                object.put("pay_price",pay_price);
+                object.put("discount",discount);
+                object.put("remark",remark);
+                cursor.save(object);
+
+            }
+        } else if (type.equals("refund")) {
+            String refund_type = jsonObject.get("refund_type").toString();//1:充值单退款，2:余额退款
+            String sourceNo = jsonObject.get("sourceNo").toString();//来源单号
+            String price = jsonObject.get("price").toString();//吊牌金额
+            String pay_price = jsonObject.get("pay_price").toString();//实付金额
+            String discount = jsonObject.get("discount").toString();//折扣
+            String balance = jsonObject.get("balance").toString();//折扣
+
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("BILLDATE",date);
+            if (refund_type.equals("1")){
+                map.put("RECHARGE_TYPE","VM");
+            }else if (refund_type.equals("2")){
+                map.put("RECHARGE_TYPE","BA");
+            }
+            map.put("C_VIPMONEY_STORE_ID__NAME",store_name);
+            map.put("ORGDOCNO",sourceNo);
+            map.put("C_VIP_ID__CARDNO",card_no);
+//                    map.put("PASS_WORD",price);
+            map.put("TOT_AMT_ACTUAL",price);
+            map.put("DESCRIPTION",remark);
+            String result = crmInterfaceService.addPrepaidDocuments(corp_code,map);
+
+            JSONObject result_obj = JSONObject.parseObject(result);
+            String code = result_obj.getString("code");
+            if (code.equals("0")){
+                result = result_obj.getString("rows");
+                JSONObject obj = JSONObject.parseObject(result);
+                String bill_id = obj.getString("ID");
+                String bill_NO = obj.getString("DOCNO");
+
+                DBObject object = new BasicDBObject();
+                object.put("_id",corp_code+"_"+bill_id);
+                object.put("corp_code",corp_code);
+                object.put("check_type","refund"); //退款
+                object.put("check_status","0"); //未审核
+                object.put("vip_id",vip_id);
+                object.put("card_no",card_no);
+                object.put("vip_name",vip_name);
+
+                object.put("store_code",store_code);
+                object.put("store_name",store_name);
+
+                object.put("billNO",bill_NO);
+                object.put("date",date);
+                object.put("refund_type",refund_type);
+                object.put("sourceNo",sourceNo);
+                object.put("price",price);
+                object.put("pay_price",pay_price);
+                object.put("discount",discount);
+                object.put("balance",balance);
+
+                object.put("remark",remark);
+                cursor.save(object);
+            }
+
+        }
+        return "";
+    }
 }

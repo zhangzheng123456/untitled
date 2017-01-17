@@ -1667,7 +1667,7 @@ $("#screen_areal").click(function(){
         $("#screen_area .s_pitch span").html("0");
         $("#screen_area .screen_content_r ul").empty();
     }
-    var area_num=1;
+    area_num=1;
     isscroll=false;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -1724,7 +1724,7 @@ $("#screen_shopl").click(function(){
         $("#screen_shop .s_pitch span").html("0");
         $("#screen_shop .screen_content_r ul").empty();
     }
-    var shop_num=1;
+    shop_num=1;
     isscroll=false;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -1754,7 +1754,7 @@ $("#screen_staffl").click(function(){
         $("#screen_staff .s_pitch span").html("0");
         $("#screen_staff .screen_content_r ul").empty();
     }
-    var staff_num=1;
+    staff_num=1;
     isscroll=false;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -2026,9 +2026,9 @@ $("#choose_staff .screen_que").click(function () {
        var vip_id = "";
        for(var i=0;i<tr.length;i++){
            if(i<tr.length-1){
-               vip_id += $(tr[i]).children("td:nth-child(3)").html()+",";
+               vip_id += $(tr[i]).children("td:nth-child(3)").children().html()+",";
            }else{
-               vip_id += $(tr[i]).children("td:nth-child(3)").html();
+               vip_id += $(tr[i]).children("td:nth-child(3)").children().html();
            }
        }
        var _param={};
