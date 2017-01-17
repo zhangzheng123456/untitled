@@ -292,18 +292,21 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      */
 
     //积分付款密码（INTEGRAL_PASSWORD）
-    public  String  modIntegral_passwordVip(String corpcode,int id,int integral_password){
+    public  String  modIntegral_passwordVip(String corpcode,HashMap<String,Object> integral_passwordVip){
 
         String info="";
 
 
         if(corpcode.equals("C10016")) {
 
+            int modfiy_password=(Integer)integral_passwordVip.get("INTEGRAL_PASSWORD");
+            int id=(Integer)integral_passwordVip.get("id");
+
             HashMap<String,Object> map=new HashMap<String, Object>();
             map.put("name","modfiy_integral_password");
             JSONArray jsonArray=new JSONArray();
-            jsonArray.put(id);
             jsonArray.put(integral_password);
+            jsonArray.put(id);
             map.put("values",jsonArray);
             info= Rest.excuteSql("C10016",map);
             JSONArray jsonArray1=new JSONArray(info);
@@ -319,17 +322,20 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
 
     //预存款密码（PASS_WORD）
-    public  String  modfiy_passwordVip(String corpcode,int id,int modfiy_password){
+    public  String  modfiy_passwordVip(String corpcode,HashMap<String,Object> passwordMap){
 
         String info="";
 
         if(corpcode.equals("C10016")) {
 
+            int modfiy_password=(Integer)passwordMap.get("INTEGRAL_PASSWORD");
+            int id=(Integer)passwordMap.get("id");
+
             HashMap<String,Object> map=new HashMap<String, Object>();
             map.put("name","modfiy_password");
             JSONArray jsonArray=new JSONArray();
-            jsonArray.put(id);
             jsonArray.put(modfiy_password);
+            jsonArray.put(id);
             map.put("values",jsonArray);
             info= Rest.excuteSql("C10016",map);
             JSONArray jsonArray1=new JSONArray(info);

@@ -13,9 +13,9 @@ public interface CRMInterfaceService {
 
     public  String  modInfoVip(String corpcode,HashMap<String,Object> modVip);
 
-    public  String  modIntegral_passwordVip(String corpcode,int id,int integral_password);
+    public  String  modIntegral_passwordVip(String corpcode,HashMap<String,Object> integral_passwordVip);
 
-    public  String  modfiy_passwordVip(String corpcode,int id,int modfiy_password);
+    public  String  modfiy_passwordVip(String corpcode,HashMap<String,Object> passwordMap);
 
     public String couponInfo(String corpcode,int vipid);
 
@@ -38,6 +38,6 @@ public interface CRMInterfaceService {
     public  String selBill(String table,String corpcode,int id);
 
     public  String  confRefundBalance(String corpcode,String docno);
-    
+
     public  String  confPrepaidOrder(String corpcode,String docno);
 }
