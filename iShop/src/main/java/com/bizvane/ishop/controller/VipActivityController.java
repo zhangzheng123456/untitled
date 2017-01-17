@@ -181,7 +181,7 @@ public class VipActivityController {
                 if (activityVip != null) {
                     String activity_state = activityVip.getActivity_state();
                     if (activity_state.equals("1")) {
-                        msg = "执行中活动，不可删除";
+                        msg =activityVip.getActivity_theme() +"为执行中活动，不可删除";
                         break;
                     } else if (activity_state.equals("0")) {
                         String task_code = activityVip.getTask_code();
