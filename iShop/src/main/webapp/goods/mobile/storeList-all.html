@@ -39,7 +39,11 @@
 <!--匹配js-->
 <script>
     cache = {
-        "page": ''
+        "page": '',
+        'next':'',
+        'num':'',
+        'temp':'',
+        scrollHight:''
     };
     var oc = new ObjectControl();
     //搜索功能
@@ -73,21 +77,33 @@
         return theRequest;
     }
     function getPage(){
-        var param={};
-        param["pageNumber"]=cache.page;
-        param["pageSize"]='20'
-        param["corp_code"]=GetRequest().corp_code;;
-        param["search_value"]=$('.title input').val();
-        oc.postRequire("post"," /app/wechat/getAllStore","0",param,function(data){
-            if (data.code == "0") {
-                var msg = JSON.parse(data.message);
-                var list =JSON.parse(msg.list);
-                var listList = list.list;
-                pageVal(listList);
-            }else if(data.code =='-1'){
-                console.log(data);
-            }
-        });
+        if(cache.num == 'y' ){
+            console.log('获取页面，页码是'+cache.page);
+            var param={};
+            param["pageNumber"]=cache.page;
+            param["pageSize"]='20'
+            param["corp_code"]=GetRequest().corp_code;
+            param["search_value"]=$('.title input').val();
+            oc.postRequire("post"," /app/wechat/getAllStore","0",param,function(data){
+                if (data.code == "0") {
+                    var msg = JSON.parse(data.message);
+                    var list =JSON.parse(msg.list);
+                    var listList = list.list;
+                    if(cache.page>1){
+                        pageAdd(listList);
+                    }else{
+                        pageVal(listList);
+                    }
+                    scroll();
+                    toNext();
+                    changePage();
+                }else if(data.code =='-1'){
+                    console.log(data);
+                }
+            });
+        }else{
+            console.log('重复error!!!编号是'+cache.num);
+        }
     }
     //页面加载
     function pageVal(list){
@@ -100,16 +116,15 @@
             $('.main').eq(1).css('display','none');
         }
         //底部判断
-        console.log(list.length)
         if(list.length<20){
-            console.log('y')
+            console.log('显示底部！');
             $('.bottom').css('display','block');
             if(list == 0){
-                console.log('n')
+                console.log('不显示底部');
                 $('.bottom').css('display','none');
             }
         }else{
-            console.log('n')
+            console.log('不显示底部');
             $('.bottom').css('display','none');
         }
         //去重
@@ -141,8 +156,8 @@
                     var img = list[i].logo;
                     var shop = list[i].store_name;
                     var add = list[i].province + '' + list[i].city + '' + list[i].area + '' + list[i].street; //地址是province,city,area,street这几个字段拼起来的
-                    if(add==''){
-                        add=='暂无地址信息';
+                    if(add.trim()==''){
+                        add='暂无该店铺地址信息';
                     }
                     var x = list[i].lat;
                     var y = list[i].lng;
@@ -165,21 +180,124 @@
             }
             var nowHTML3 = tempHTML3;
             html += nowHTML3;
-            $('.main').eq(0).html(html);
+            if(cache.page ==1){
+                $('.main').eq(0).html(html);
+            }else{
+                $('.main').eq(0).append(html);
+            }
         }
-//        $('.main .area_box').remove();
-        if(list.length>20){
+        if(list.length>=20){
             cache.page +=1;
-            nextPage();
+            cache.next ='true';
+            cache.num ='y';
+        }else{
+            cache.next ='false';
         }
         $('.right_name img').each(function () {
             if($(this).attr('id')=='temp'){
                 $(this).attr('src','image/icon_01.png');
             }
         })
-        scroll();
-        toNext();
-        changePage();
+    }
+    function pageAdd(list){
+        //底部判断
+        if(list.length<20){
+            console.log('显示底部！');
+            $('.bottom').css('display','block');
+            if(list == 0){
+                console.log('不显示底部');
+                $('.bottom').css('display','none');
+            }
+        }else{
+            console.log('不显示底部');
+            $('.bottom').css('display','none');
+        }
+        //去重
+        var arr=[];
+        var unqiuearr=[];
+        var hash={};
+        for(l=0;l<list.length;l++){
+            arr.push(list[l].province);
+        }
+        for(var u=0;u<arr.length;u++){
+            if(!hash[arr[u]]){
+                hash[arr[u]] = true; //存入hash表
+                unqiuearr.push(arr[u]);
+            }
+        }
+        var areaList= unqiuearr;
+        var tempHTML1 = ' <div class="area_box"><div class="area"><span>${area}</span></div>';
+        var tempHTML2 = '<div class="box" id="${store_code}"> <div class="left"><img src="${img}" alt=""/></div> <div class="right"> <div class="right_name"><shop>${shop}</shop><img src="image/icon_02.png" alt="" id="${store_location}"/></div> <div class="right_add">地址：${add}</div> </div> </div>';
+        var tempHTML3 = '</div>';
+        var html = '';
+        for(k=0;k<areaList.length;k++){
+            var area = areaList[k];
+            if($('.area_box area span').each(function () {$(this).text() == area;})){
+                var nowHTML1 = '';
+                cache.temp = area;
+            }else{
+                cache.temp = 'n';
+                var nowHTML1 = tempHTML1;
+                nowHTML1= nowHTML1.replace('${area}',area);
+
+            }
+            html+=nowHTML1;
+            for(i=0;i<list.length;i++) {
+                if (list[i].province == areaList[k]) {
+                    var store_code = list[i].store_code;
+                    var img = list[i].logo;
+                    var shop = list[i].store_name;
+                    var add = list[i].province + '' + list[i].city + '' + list[i].area + '' + list[i].street; //地址是province,city,area,street这几个字段拼起来的
+                    if(add.trim()==''){
+                        add='暂无该店铺地址信息';
+                    }
+                    var x = list[i].lat;
+                    var y = list[i].lng;
+                    if(x!=''&& y!=''){
+                        var store_location = x + ',' + y;
+                    }else{
+                        var store_location = 'temp'
+                    }
+                    if (img == '' || img == 'null' || img == 'underfind' || img == '../img/head.png') {
+                        img = 'image/goods_default_image.png';
+                    }
+                    var nowHTML2 = tempHTML2;
+                    nowHTML2 = nowHTML2.replace('${store_code}', store_code);
+                    nowHTML2 = nowHTML2.replace('${img}', img);
+                    nowHTML2 = nowHTML2.replace('${shop}', shop);
+                    nowHTML2 = nowHTML2.replace('${add}', add);
+                    nowHTML2 = nowHTML2.replace('${store_location}', store_location);
+                    html += nowHTML2;
+                }
+            }
+            if(cache.temp !='n'){
+                var nowHTML3='';
+                html += nowHTML3;
+                var name = cache.temp;
+                $('.main').eq(0).find('.area span').each(function () {
+                    if($(this).text() ==name){
+                        $(this).parents('.area_box').append(html);
+                    }
+                })
+            }else{
+                var nowHTML3 = tempHTML3;
+                html += nowHTML3;
+                $('.main').eq(0).append(html);
+            }
+        }
+        $(window).scrollTop(cache.scrollHight);
+        if(list.length>=20){
+            cache.page +=1;
+            cache.next ='true';
+            cache.num ='y';
+        }else{
+            cache.next ='false';
+        }
+        $('.right_name img').each(function () {
+            if($(this).attr('id')=='temp'){
+                $(this).attr('src','image/icon_01.png');
+            }
+        })
     }
     //跳转
     function toNext(){
@@ -215,20 +333,28 @@
             $('.title button').click(); $('.bottom').css('display','none');
         });
     }
-    function nextPage(){
-        var oh=$('.box').height();
-        console.log('盒子的高度是'+oh)
-        console.log('盒子的数量是'+$('.box').length)
-        $(window).scroll(function(){
-            var nh = (oh*20*cache.page) - ($(window).scrollTop()*cache.page);
-            console.log('滚动条当前高度'+$(window).scrollTop()*cache.page);
-            console.log("剩余高度"+nh);
-            if(nh<oh*4){
-                console.log('翻页了');
-                getPage();
+    $(window).scroll(function () {
+        //根据page判断页面总高度
+        var page = cache.page;
+        if(page == 1){
+            page =1;
+        }else{
+            page-=1;
+        }
+        var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
+        var nScrollTop = $(this).scrollTop(); //距离顶部的高度
+        var nDivHight=$(this).height();
+//        console.log('目前高度：'+nScrollTop +','+nDivHight+'总高度'+nScrollHight);
+        if(parseInt(nScrollTop) + parseInt(nDivHight)*2>= nScrollHight){
+            if(cache.next =='false'){
+                return;
             }
-        });
-    }
+            cache.scrollHight = $(this).scrollTop();
+            console.log('记录滚动条高度'+ cache.scrollHight);
+            getPage();
+            cache.num +=1;
+        };
+    })
     //控制页面返回的高度
     function scroll(){
         var storeListAllKey = $.cookie('storeListAllKey');
@@ -238,7 +364,8 @@
         $(window).scrollTop(storeListAllKey);
     }
     window.onload= function () {
-        cache.page = '1';
+        cache.page = 1;
+        cache.num = 'y';
         getPage();
         $.cookie('storeListKey',0);
     }

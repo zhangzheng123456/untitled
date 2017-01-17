@@ -764,10 +764,44 @@ $('.vip_status_btn').click(function () {
 });
 /******************************************************************************************/
 function getActive() {
-    var param={};
     var _param={};
+    var param={}
     param.activity_code=sessionStorage.getItem('activity_code');
     whir.loading.add("", 0.5);
+    // var xhr = null;
+    // var params={
+    //     "id":"",
+    //     "message":param
+    // };
+    // var xhr_obj={};
+    // xhr_obj.param=JSON.stringify(params);
+    // if(window.XMLHttpRequest){
+    //     xhr = new window.XMLHttpRequest();
+    // }else{ // ie
+    //     xhr = new ActiveObject("Microsoft")
+    // }
+    //
+    // xhr.open('POST',"/vipActivity/select", true);
+    // xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+    // xhr.send(xhr_obj);
+    // // 监听请求状态变化
+    // xhr.onreadystatechange = function(response){
+    //     var time = null;
+    //     var curDate = null;
+    //     if(xhr.readyState===2){
+    //         // 获取响应头里的时间戳
+    //         time = xhr.getResponseHeader("Date");
+    //         console.log(xhr.getAllResponseHeaders())
+    //         curDate = new Date(time);
+    //         console.log(curDate);
+    //     }else if(xhr.readyState===4){
+    //         if (xhr.status==200){// 200 = OK
+    //
+    //         }else{//失败
+    //
+    //         }
+    //     }
+    // }
     oc.postRequire("post","/vipActivity/select","0",param,function(data){
         if(data.code==0){
             var active_data=JSON.parse(JSON.parse(data.message).activityVip);
@@ -909,15 +943,15 @@ function doActiveResponse(active_data) {
     action.end_time=active_data.end_time;
     min_date=active_data.start_time;
     //run_mode
-    var run_mode='';
-    switch (active_data.run_mode){
-        case 'recruit':run_mode='招募';break;
-        case 'h5':run_mode='H5';break;
-        case 'sales':run_mode='促销';break;
-        case 'coupon':run_mode='优惠券';break;
-        case 'invite':run_mode='线下邀约';break;
-        case 'festival':run_mode='节日';break;
-    }
+    var run_mode=active_data.run_mode;
+    // switch (active_data.run_mode){
+    //     case 'recruit':run_mode='招募';break;
+    //     case 'h5':run_mode='H5';break;
+    //     case 'sales':run_mode='促销';break;
+    //     case 'coupon':run_mode='优惠券';break;
+    //     case 'invite':run_mode='线下邀约';break;
+    //     case 'festival':run_mode='节日';break;
+    // }
     //time
     var over=active_data.end_time;
     var start=active_data.start_time;
@@ -927,7 +961,7 @@ function doActiveResponse(active_data) {
     if(start_time<now_judge&&(over_time< now_judge)){//活动已开始并结束
         $('.header_m .p_2').html('0天0小时0分钟0秒');
     }else if(start_time<now_judge&&(over_time >now_judge)){//已经开始但未结束
-        setInterval(function () {
+            setInterval(function () {
             var now_time=new Date();
             var time=(over_time-now_time.getTime())/1000;
             var d=parseInt(time/(24*60*60));

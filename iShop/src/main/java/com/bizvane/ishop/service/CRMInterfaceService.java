@@ -24,4 +24,12 @@ public interface CRMInterfaceService {
     public  String addRefund(String corpcode,HashMap<String,Object> refundInfo);
 
     public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund);
+
+    public String submitPrepaidBill(String corpcode,int id);
+
+    public String canclePrepaidBill(String corpcode,int id);
+
+    public String submitRefundBill(String corpcode,int id);
+
+    public String cancleRefundBill(String corpcode,int id);
 }

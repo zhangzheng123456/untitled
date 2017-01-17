@@ -54,7 +54,8 @@ public class CommonValue {
     public final static String table_error_log = "error_log";
     //会员活动执行
     public final static String table_vip_activity_allocation = "vip_activity_allocation";
-
+    //会员审核
+    public final static String table_vip_check = "vip_check";
 
     //参数
     //新增会员是否验证单号

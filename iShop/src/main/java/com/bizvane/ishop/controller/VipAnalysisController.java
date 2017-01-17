@@ -348,16 +348,7 @@ public class VipAnalysisController {
                 corp_code = jsonObject.get("corp_code").toString();
 
             String query_type = jsonObject.get("type").toString();
-            if (query_type.equals("analysis")){
-                String brand_code = jsonObject.get("brand_code").toString();
-                String area_code = jsonObject.get("area_code").toString();
-                String store_code = jsonObject.get("store_code").toString();
-                String vip_group_code = jsonObject.get("vip_group_code").toString();
-            }else if (query_type.equals("vipInfo")){
-                String vip_id = jsonObject.get("vip_id").toString();
-            }else if (query_type.equals("vipGroup")){
-                String vip_group_code = jsonObject.get("vip_group_code").toString();
-            }
+
 
 
 
@@ -532,9 +523,36 @@ public class VipAnalysisController {
             chart_obj.put("Type",type_obj);
             chart_obj.put("Area",area_obj);
 
+
+            String a = chart_obj.toString();
+            if (query_type.equals("analysis")){
+                String brand_code = jsonObject.get("brand_code").toString();
+                String area_code = jsonObject.get("area_code").toString();
+                String store_code = jsonObject.get("store_code").toString();
+                String vip_group_code = jsonObject.get("vip_group_code").toString();
+            }else if (query_type.equals("vipInfo")){
+                String vip_id = jsonObject.get("vip_id").toString();
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+                Data data_k = new Data("k", "", ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_vip_id.key, data_vip_id);
+                datalist.put(data_k.key, data_k);
+
+                DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipTagSearchForWeb", datalist);
+                if (dataBox.status.toString().equals("SUCCESS")){
+                    logger.info("----------vipChart:" + dataBox.data.get("message").value);
+                    a = dataBox.data.get("message").value;
+                }
+            }else if (query_type.equals("vipGroup")){
+                String vip_group_code = jsonObject.get("vip_group_code").toString();
+            }
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(chart_obj.toString());
+            dataBean.setMessage(a);
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

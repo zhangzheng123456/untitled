@@ -154,7 +154,7 @@ var getNewVip={
               var msg=JSON.parse(data.message);
               var corp_html='';
               for( var i=0;i<msg.length;i++){
-                  corp_html+='<option value="'+msg[i].user_code+'">'+msg[i].user_name+'</option>';
+                  corp_html+='<option value="'+msg[i].user_code+'-'+msg[i].user_name+'">'+msg[i].user_name+'</option>';
               }
               $("#OWN_SHOPPERS").append(corp_html);
               $('#OWN_SHOPPERS').searchableSelect();
@@ -198,7 +198,8 @@ var getNewVip={
         param.vip_card_type=$('#content').find('.vipCardType').val();
         param.birthday=$('#content').find('.birthday').val();
         param.sex=$('#content').find('.gender').val();
-        param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val();
+        param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[0];
+        param.user_name=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[1];
         param.store_code=String($('#OWN_STORE').val()).search('null')!=-1?'':$('#OWN_STORE').val().split('-')[0];
         oc.postRequire("post","/vip/addVip","", param, function(data) {
             if(data.code==0){

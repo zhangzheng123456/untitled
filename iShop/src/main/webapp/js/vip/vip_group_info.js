@@ -304,7 +304,7 @@ var vip_group_info={
         getListParam["pageNumber"]=vip_group_info.inx;
         getListParam["pageSize"]=vip_group_info.pageSize;
         getListParam["type"]="list";
-        getListParam["corp_code"]="C10000";
+        getListParam["corp_code"]=$("#"+vip_group_info.nowId).attr("data-code");
        if($("#"+vip_group_info.nowId).attr("data-group-code")==undefined){
            delete getListParam.id;
            getListParam["fixed_code"]=vip_group_info.nowId;
@@ -359,12 +359,16 @@ var vip_group_info={
                        $("#group_list li[data-type='define'] ul").append("<li id='"+list[i].id+"' data-code='"+list[i].corp_code+"' data-group-code='"+list[i].vip_group_code+"'>"+list[i].vip_group_name+"</li>");
                         break;
                 }
-                if(list.length>0){
-                    $("#group_list li[data-type='"+list[0].group_type+"'] ul").show();
-                    $("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).addClass("active");
-                    $("#group_list li[data-type='"+list[0].group_type+"']").find("div i").show();
-                    vip_group_info.nowId=$("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).attr("id")
-                }
+            }
+            if(list.length>0){
+                $("#group_list li ul li").eq(0).parent().show();
+                $("#group_list li ul li").eq(0).addClass("active");
+                $("#group_list li ul li").eq(0).parent().prev().find("i").show();
+                //$("#group_list li[data-type='"+list[0].group_type+"'] ul").show();
+                //$("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).addClass("active");
+                //$("#group_list li[data-type='"+list[0].group_type+"']").find("div i").show();
+                //vip_group_info.nowId=$("#group_list li[data-type='"+list[0].group_type+"'] ul").children().eq(0).attr("id")
+                vip_group_info.nowId=$("#group_list li ul li").eq(0).attr("id");
             }
             vip_group_info.getChartsData();
         });
@@ -489,7 +493,7 @@ var vip_group_info={
                     vip_id+=$(tr[j]).attr("id")+",";
                 }
                 param['vip_id']=vip_id;
-                param["corp_code"]="C10000"
+                param["corp_code"]="C10000";
                 oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
                     if(data.code=="0"){
                         var msg=JSON.parse(data.message);

@@ -127,8 +127,9 @@
                     <!--</div>-->
                     <!--添加模板-->
                     <div id="add_all">
-                        <div class="addAdd">+</div>
-                        <div class="addText">添加图片</div>
+                        <input accept="image/*" type="file" name="upload" id="upFile" style="width: 100%;height: 100%;opacity: 0.0;position:absolute;z-index: 999;top:0;outline: none;"/>
+                        <div class="addAdd" style="z-index: 1">+</div>
+                        <div class="addText" style="z-index: 1">添加图片</div>
                     </div>
                 </form>
             </span>
@@ -157,6 +158,7 @@
                <label>搭配描述</label><textarea name="" cols="30" rows="10" maxlength="1000"></textarea>
             </span>
         </div>
+        <!--列表弹窗-->
         <div id="search_match_goods" onmousedown="mouseDown(this,event)" onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">
             <i class="icon-ishop_6-12" id="close_match_goods"></i>
             <div class="li">
@@ -207,6 +209,8 @@
 <script src="../js/loading.js?20170105"></script>
 <!--匹配js-->
 <script src="../js/goods/xiuda_add.js"></script>
+<!--oss-->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script>
     var mouseX, mouseY;
     var objX, objY;

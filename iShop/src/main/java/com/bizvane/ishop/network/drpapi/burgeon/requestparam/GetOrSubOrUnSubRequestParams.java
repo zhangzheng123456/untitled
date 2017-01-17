@@ -4,9 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GetObjectRequestParams  extends RequestParams{
+/**
+ * 此类GetObject Submit UnSubmit 通用
+ */
+public class GetOrSubOrUnSubRequestParams extends RequestParams{
 
-	public GetObjectRequestParams(String corpcode) {
+	public GetOrSubOrUnSubRequestParams(String corpcode) {
 		super(corpcode);
 	}
 
