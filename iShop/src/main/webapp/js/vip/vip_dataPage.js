@@ -368,20 +368,24 @@ $('#toSave').click(function(){
          }else if(topType == '退换转充值'){
              pay_type =2;
          }
-        var param = {};
-        param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
-        param["vip_id"] = sessionStorage.getItem("id");//会员编号
-        param["card_no"] = topUpCard;//会员卡号
-        param["type"] = 'pay';
-        param["billNo"] = topUpNum;//单据编号
-        param["date"] = topData;//单据日期
-        param["pay_type"] = pay_type;//充值类型
-        param["store_name"] = topUpShop;//充值店铺
-        param["user_name"] = topUpPeople;//经办人
-        param["price"] = topUpMoney;//吊牌金额
-        param["pay_price"] = topUpMoneyReality;//实付金额
-        param["discount"] = topUpMoneyDiscount;//折扣
-        param["remark"] = topUpNote;//备注
+         var param = {};
+         param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
+         param["vip_id"] = sessionStorage.getItem("id");//会员编号
+         param["vip_name"] = $('#vip_name').text();//会员名称
+         param["card_no"] = topUpCard;//会员卡号
+         param["remark"] = topUpNote;//备注
+         param["store_name"] = topUpShop;//充值店铺
+         param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
+         param["date"] = topData;//单据日期
+         param["pay_type"] = pay_type;//充值类型
+         param["user_code"] = '1000409104';
+         param["user_name"] = topUpPeople;//经办人
+         param["price"] = topUpMoney;//吊牌金额
+         param["pay_price"] = topUpMoneyReality;//实付金额
+         param["discount"] = topUpMoneyDiscount;//折扣
+        //param["type"] = 'pay';
+        //param["billNo"] = topUpNum;//单据编号
+        //param["pay_price"] = topUpMoneyReality;//实付金额
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
                 $('#topUp').css('display','none');
