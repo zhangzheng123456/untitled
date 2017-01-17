@@ -227,12 +227,13 @@
         margin-left: 20%;
         display: none;
         padding-left: 20px;
+        padding-right: 20px;
     }
     #content .hint{
         padding-left: 20px;
         /* display: none; */
         color: #c26555;
-        margin-top: 10px;
+        /*margin-top: 10px;*/
         background: url(../img/pwd_sprite.png) 0 -350px no-repeat;
     }
     #OWN_CORP, .search_input{
@@ -321,6 +322,45 @@
     #expend_attribute{
         max-height: 250px;
         overflow-y: scroll;
+    }
+    .down_icon_vip{
+        width: 30px;
+        height: 30px;
+        background: #6cc1c8;
+        position: absolute;
+        top:9px;
+        right: 20px;
+        border-radius: 0px 4px 4px 0px;
+        text-align: center;
+        line-height: 30px;
+        background:url(../img/btn_dropmenu.png) no-repeat center center;
+        background-size: 30px 30px;
+    }
+    #billNo_drop_down{
+        position: absolute;
+        width:384px;
+        z-index: 1000;
+        height: 160px;
+        top:40px;
+        padding-top: 10px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        display: none;
+        overflow-y: auto;
+    }
+    #billNo_drop_down li{
+        height: 30px;
+        line-height: 30px;
+        text-indent: 5px;
+    }
+    #billNo_drop_down li.selected{
+        background: #6cc1c8;
+        color:#fff;
+    }
+    #billNo_drop_down li:hover{
+        background: #4a5f7c;
+        color:#fff;
+        cursor: pointer;
     }
 </style>
 <body>
@@ -956,8 +996,20 @@
     <ul id="content">
         <li>
             <span class="content_l">零售单号</span>
-            <div class="content_r">
+            <div class="content_r"style="position: relative">
                     <input type="text"class="billNo">
+                <span class="down_icon_vip "></span>
+                <ul id="billNo_drop_down">
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                    <li>12345678901</li>
+                </ul>
             </div>
         </li>
         <li>
@@ -990,9 +1042,47 @@
             </div>
         </li>
         <li>
-            <span class="content_l" style="color:#c26555">会员姓名*</span>
-            <div class="content_r">
-                <input type="text"class="vipName">
+            <!--<span class="content_l" style="color:#c26555">会员姓名*</span>-->
+            <!--<div class="content_r">-->
+                <!--<input type="text"class="vipName">-->
+            <!--</div>-->
+            <div style="display: inline-block;width: 50%;">
+                <span class="content_l" style="color:#c26555;width: 40%;">会员姓名*</span>
+                <div class="content_r" style="margin-left: 40%;">
+                    <input type="text" class="vipName">
+                </div>
+            </div>
+            <div style="display: inline-block;width: 49%;">
+                <span class="content_l" style="color:#c26555;width: 35%;">生日*</span>
+                <div class="content_r" style="margin-left: 35%;">
+                    <input  type="text"class="laydate-icon birthday" value="" onclick="laydate({ fixed:true,istime: true,max:laydate.now(-3650) ,min:laydate.now(-28480),format: 'YYYY-MM-DD',choose:checkStart})">
+                </div>
+            </div>
+            <div class="content_hint"id="test_1"style="overflow: hidden">
+            </div>
+        </li>
+        <li>
+            <!--<span class="content_l" style="color:#c26555">会员姓名*</span>-->
+            <!--<div class="content_r">-->
+            <!--<input type="text"class="vipName">-->
+            <!--</div>-->
+            <div style="display: inline-block;width: 50%;">
+                <span class="content_l" style="color:#c26555;width: 40%;">手机号*</span>
+                <div class="content_r" style="margin-left: 40%;">
+                    <input type="text"class="phone">
+                </div>
+            </div>
+            <div style="display: inline-block;width: 49%;">
+                <span class="content_l" style="color:#c26555;width: 35%;">性别*</span>
+                <div class="content_r" style="margin-left: 35%;">
+                    <input type="text"class="gender"id="gender" value="男">
+                    <ul class="gender_input">
+                        <li>男</li>
+                        <li>女</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content_hint"id="test_2"style="overflow: hidden">
             </div>
         </li>
         <li>
@@ -1001,28 +1091,28 @@
                 <input class="cardNo" type="text"value="由系统自动生成"readonly style=" color:#888;">
             </div>
         </li>
-        <li>
-            <span class="content_l" style="color:#c26555">手机号*</span>
-            <div class="content_r">
-                <input type="text"class="phone">
-            </div>
-        </li>
-        <li>
-            <span class="content_l" style="color:#c26555">生日*</span>
-            <div class="content_r">
-                <input  type="text"class="laydate-icon birthday" value="" onclick="laydate({ fixed:true,istime: true, format: 'YYYY-MM-DD',choose:checkStart})">
-            </div>
-        </li>
-        <li>
-            <span class="content_l" style="color:#c26555">性别*</span>
-            <div class="content_r">
-                <input type="text"class="gender"id="gender" value="男">
-                <ul class="gender_input">
-                    <li>男</li>
-                    <li>女</li>
-                </ul>
-            </div>
-        </li>
+        <!--<li>-->
+            <!--<span class="content_l" style="color:#c26555">手机号*</span>-->
+            <!--<div class="content_r">-->
+                <!--<input type="text"class="phone">-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<span class="content_l" style="color:#c26555">生日*</span>-->
+            <!--<div class="content_r">-->
+                <!--<input  type="text"class="laydate-icon birthday" value="" onclick="laydate({ fixed:true,istime: true, format: 'YYYY-MM-DD',choose:checkStart})">-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<span class="content_l" style="color:#c26555">性别*</span>-->
+            <!--<div class="content_r">-->
+                <!--<input type="text"class="gender"id="gender" value="男">-->
+                <!--<ul class="gender_input">-->
+                    <!--<li>男</li>-->
+                    <!--<li>女</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</li>-->
         <li>
             <span class="content_l" style="color:#c26555">会员卡类型*</span>
             <div class="content_r">

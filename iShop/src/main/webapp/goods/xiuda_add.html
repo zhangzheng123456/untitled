@@ -117,14 +117,14 @@
             </span>
         </div>
         <!--搭配效果图-->
-        <div class="the_listTitle">
+        <div class="the_listTitle" style="clear: both">
            <span>
                <label>搭配效果图</label>
-                <form class="list_content" style="height:150px;margin-bottom: 15px">
+                <form class="list_content">
                     <!--商品模板-->
-                    <!--<div class="item_box">-->
-                        <!--<div class="item_area" onclick="removeIt()"></div>-->
-                    <!--</div>-->
+                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
+                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
+                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
                     <!--添加模板-->
                     <div id="add_all">
                         <input accept="image/*" type="file" name="upload" id="upFile" style="width: 100%;height: 100%;opacity: 0;position:absolute;z-index: 999;top:0;outline: none;"/>
@@ -135,7 +135,7 @@
             </span>
         </div>
         <!--商品搭配-->
-        <div class="the_listTitle">
+        <div class="the_listTitle" style="clear: both">
            <span>
                <label>商品搭配</label>
                 <form class="list_content">
