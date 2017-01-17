@@ -167,7 +167,11 @@ public class VipServiceImpl implements VipService {
         return "";
     }
 
-    public String recharge(JSONObject jsonObject,DBCollection cursor) throws Exception{
+    public String recharge(JSONObject jsonObject) throws Exception{
+        String status = Common.DATABEAN_CODE_SUCCESS;
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
+
         String type = jsonObject.get("type").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String vip_id = jsonObject.get("vip_id").toString();
@@ -230,6 +234,8 @@ public class VipServiceImpl implements VipService {
 //                object.put("discount",discount);
                 cursor.save(object);
 
+            }else {
+                return result_obj.getString("message");
             }
         } else if (type.equals("refund")) {
             String refund_type = jsonObject.get("refund_type").toString();//1:充值单退款，2:余额退款
@@ -251,7 +257,7 @@ public class VipServiceImpl implements VipService {
             map.put("C_VIP_ID__CARDNO",card_no);
             map.put("TOT_AMT_ACTUAL",price);
             map.put("DESCRIPTION",remark);
-            String result = crmInterfaceService.addPrepaidDocuments(corp_code,map);
+            String result = crmInterfaceService.addRefund(corp_code,map);
 
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
@@ -272,11 +278,12 @@ public class VipServiceImpl implements VipService {
 //                object.put("discount",discount);
 //                object.put("balance",balance);
                 cursor.save(object);
+            }else {
+                return result_obj.getString("message");
             }
         }
-        return "";
+        return status;
     }
-
 
     /**
      * 获取验证码
