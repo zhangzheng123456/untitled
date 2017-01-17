@@ -284,7 +284,10 @@
                 html += nowHTML3;
                 $('.main').eq(0).append(html);
             }
+            console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
+            $(window).scrollTop(cache.scrollHight);
         }
+        console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
         $(window).scrollTop(cache.scrollHight);
         if(list.length>=20){
             cache.page +=1;
@@ -298,6 +301,7 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
+
     }
     //跳转
     function toNext(){
@@ -345,7 +349,7 @@
         var nScrollTop = $(this).scrollTop(); //距离顶部的高度
         var nDivHight=$(this).height();
 //        console.log('目前高度：'+nScrollTop +','+nDivHight+'总高度'+nScrollHight);
-        if(parseInt(nScrollTop) + parseInt(nDivHight)*2>= nScrollHight){
+        if(parseInt(nScrollTop) + parseInt(nDivHight)>= nScrollHight){
             if(cache.next =='false'){
                 return;
             }
