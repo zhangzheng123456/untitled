@@ -42,7 +42,8 @@
         "page": '',
         'next':'',
         'num':'',
-        'temp':''
+        'temp':'',
+        scrollHight:''
     };
     var oc = new ObjectControl();
     //搜索功能
@@ -283,9 +284,8 @@
                 html += nowHTML3;
                 $('.main').eq(0).append(html);
             }
-
-
         }
+        $(window).scrollTop(cache.scrollHight);
         if(list.length>=20){
             cache.page +=1;
             cache.next ='true';
@@ -342,6 +342,7 @@
         }
         var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
         var nScrollTop = $(this).scrollTop(); //距离顶部的高度
+        cache.scrollHight = nScrollHight;
         var nDivHight=$(this).height();
         if(nScrollTop + nDivHight >= nScrollHight){
             if(cache.next =='false'){
