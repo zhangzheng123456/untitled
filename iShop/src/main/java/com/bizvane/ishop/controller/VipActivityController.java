@@ -180,10 +180,10 @@ public class VipActivityController {
                 VipActivity activityVip = vipActivityService.getActivityById(Integer.valueOf(ids[i]));
                 if (activityVip != null) {
                     String activity_state = activityVip.getActivity_state();
-                    if (activity_state.equals("执行中")) {
-                        msg = "执行中活动，不可删除";
+                    if (activity_state.equals("1")) {
+                        msg =activityVip.getActivity_theme() +"为执行中活动，不可删除";
                         break;
-                    } else if (activity_state.equals("未执行")) {
+                    } else if (activity_state.equals("0")) {
                         String task_code = activityVip.getTask_code();
                         String sms_code = activityVip.getSms_code();
                         if (task_code != null && !task_code.equals("")) {

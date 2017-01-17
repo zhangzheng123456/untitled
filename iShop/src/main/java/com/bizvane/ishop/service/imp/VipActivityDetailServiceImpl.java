@@ -106,7 +106,9 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         }else if(activity_type.equals("coupon")){
             if (jsonObject.containsKey("send_coupon_type")){
                 send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
-                if(vipActivityDetail_new.getCoupon_type().endsWith(",")) {
+                if(vipActivityDetail_new.getCoupon_type()==null || vipActivityDetail_new.getCoupon_type().equals("")){
+                    coupon_type =  jsonObject.get("coupon_type").toString().trim();
+                }else if(vipActivityDetail_new.getCoupon_type().endsWith(",")) {
                     coupon_type = vipActivityDetail_new.getCoupon_type() + jsonObject.get("coupon_type").toString().trim();
                 }else{
                     coupon_type = vipActivityDetail_new.getCoupon_type()+"," + jsonObject.get("coupon_type").toString().trim();

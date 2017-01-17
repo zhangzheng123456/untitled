@@ -285,6 +285,51 @@
         button{
             outline:none;
         }
+        .memorandum{
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 10px 10px 10px;
+            background: #FFFFFF;
+        }
+        .memorandum_top{
+            text-align: center;
+        }
+        .memorandum_top textarea{
+            width: 420px;
+            height: 60px;
+            border: 1px solid #d7d7d7;
+            margin-left: 20px;
+            padding: 5px;
+            border-radius: 5px;
+            outline: none;
+            resize: none;
+        }
+        .memorandum_top label{
+            font-size: 14px;
+            color: #434960;
+        }
+        .memorandum_save{
+            display: inline-block;
+            width: 100px;
+            height: 30px;
+            margin-top: 10px;
+            margin-right: 230px;
+            margin-bottom: 30px;
+            line-height: 30px;
+            color: #FFFFFF;
+            background: #6cc1cb;
+            border-radius: 5px;
+        }
+        .memorandum_table tr{
+            height: 30px;
+            color: #4a5f7c;
+        }
+        .memorandum_table tr th{
+            font-weight: normal;
+        }
+        .memorandum_table thead tr{
+            background: #e8e8ed;
+        }
     </style>
 </head>
 <body>
@@ -320,8 +365,8 @@
                                readonly/>
                         <ul class="execution" id="execution"
                             style="width: 412px;position: absolute;left: 123px;top: 32px;z-index: 100;background: #f5f5f5;display: none;border: 1px solid #ddd">
-                            <li>退换转充值</li>
                             <li>直接充值</li>
+                            <li>退换转充值</li>
                             <!--<li>系统短信通知顾客</li>-->
                             <!--<li>(任务)分享链接到社交平台</li>-->
                             <!--<li>微信公众号推送</li>-->
@@ -922,9 +967,11 @@
                     <li data-name="Ablum">相册</li>
                     <li data-name="label">标签</li>
                     <li>收藏夹</li>
+                    <li>备忘录</li>
+                    <li>购物车</li>
                     <li>备注</li>
                     <div id="remark"
-                         style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
+                         style="width: 11.111%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
             </div>
             <div class="all_list">
@@ -939,6 +986,15 @@
                         <i class="icon-ishop_6-09"></i>
                         <input type="file" id="VIP_avatar"
                                style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
+                            </div>
+                            <div class="item_1">
+                            <span><label>所属店铺</label><input class="input_select" value="" id="store_name_edit"
+                                                            type="text" style="background: #dfdfdf" readonly/>
+                                <!--<ul>-->
+                                <!--<li>正常</li>-->
+                                <!--<li>异常</li>-->
+                                <!--</ul>-->
+                            </span>
                             </div>
                             <div class="item_1">
                             <span><label>性别</label><input class="input_select" value="男" type="text" id="USER_SEX"
@@ -992,15 +1048,6 @@
                                 <label>所属导购</label><input verify="Empty" id="user_name_edit" style="background: #dfdfdf"
                                                           readonly/>
                                 <!--<div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>-->
-                            </div>
-                            <div class="item_1">
-                            <span><label>所属店铺</label><input class="input_select" value="" id="store_name_edit"
-                                                            type="text" style="background: #dfdfdf" readonly/>
-                                <!--<ul>-->
-                                <!--<li>正常</li>-->
-                                <!--<li>异常</li>-->
-                                <!--</ul>-->
-                            </span>
                             </div>
                             <div>
                                 <label>所属分组</label><input verify="Empty" id="user_group_edit"
@@ -1299,6 +1346,43 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="memorandum">
+                    <div class="memorandum_top">
+                        <span style="display: inline-flex">
+                            <label>添加备忘录</label>
+                            <textarea placeholder="请输入备忘录内容"></textarea>
+                        </span>
+                        <div>
+                            <span class="memorandum_save"></i>保存</span>
+                        </div>
+                    </div>
+                    <div>
+                        <table class="memorandum_table" cellpadding="0" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>添加时间</th>
+                                <th>备忘内容</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>2016-5-13</td>
+                                <td>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2016-5-13</td>
+                                <td>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="shopping_cart">
+                    暂无相关数据.
                 </div>
                 <div class="remark">
                     <span>

@@ -26,7 +26,6 @@ $(".select_Date").mouseout(function(){
 	$(this).parent(".choose").removeClass("cur");
 	$(this).hide()
 });
-
 function getNowFormatDate() {//获取当前日期
 	var date = new Date();
 	var seperator1 = "-";

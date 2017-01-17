@@ -235,7 +235,7 @@ function superaddition(data,num){//页面加载循环
                 }
             })(c)
         }
-        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr data-storecode='"+data[i].store_code+"'  data-phone='"+data[i].phone+"' data-storeId='"+data[i].store_id+"' data-code='"+data[i].corp_code+"' id='"+data[i].vip_id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -876,7 +876,7 @@ function clearAll(name){
             el[i].checked = false;
         }
     }
-};
+}
 //导出会员相册
 $("#album_leadingout").click(function () {
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
@@ -890,9 +890,9 @@ $("#album_leadingout").click(function () {
             var param = {};
             var vip_id = $(tr[i]).find("td").eq(2).text();
             var vip_name = $(tr[i]).find("td").eq(3).text();
-            var phone = $(tr[i]).find("td").eq(5).text();
+            var phone = $(tr[i]).attr("data-phone");
             var card_no = $(tr[i]).find("td").eq(7).text();
-            var corp_code =$(tr[i]).attr("id");
+            var corp_code =$(tr[i]).attr("data-code");
             param['vip_id'] = vip_id;
             param['vip_name'] = vip_name;
             param['corp_code'] = corp_code;
@@ -1667,7 +1667,7 @@ $("#screen_areal").click(function(){
         $("#screen_area .s_pitch span").html("0");
         $("#screen_area .screen_content_r ul").empty();
     }
-    var area_num=1;
+    area_num=1;
     isscroll=false;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -1724,7 +1724,7 @@ $("#screen_shopl").click(function(){
         $("#screen_shop .s_pitch span").html("0");
         $("#screen_shop .screen_content_r ul").empty();
     }
-    var shop_num=1;
+    shop_num=1;
     isscroll=false;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -1754,7 +1754,7 @@ $("#screen_staffl").click(function(){
         $("#screen_staff .s_pitch span").html("0");
         $("#screen_staff .screen_content_r ul").empty();
     }
-    var staff_num=1;
+    staff_num=1;
     isscroll=false;
     var arr=whir.loading.getPageSize();
     var left=(arr[0]-$("#screen_shop").width())/2;
@@ -2026,9 +2026,9 @@ $("#choose_staff .screen_que").click(function () {
        var vip_id = "";
        for(var i=0;i<tr.length;i++){
            if(i<tr.length-1){
-               vip_id += $(tr[i]).children("td:nth-child(3)").html()+",";
+               vip_id += $(tr[i]).children("td:nth-child(3)").children().html()+",";
            }else{
-               vip_id += $(tr[i]).children("td:nth-child(3)").html();
+               vip_id += $(tr[i]).children("td:nth-child(3)").children().html();
            }
        }
        var _param={};

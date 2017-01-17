@@ -23,6 +23,10 @@
                 }else{
                     var index=$("#tabs .active").index();
                     var prvindex=$(this).index();//获取上一个的坐标
+                 if(prvindex-index<0){
+                     self.getHtml(src,html);
+                     return;
+                 }
                     if(index==0){
                         activity.checkEmpty();
                         if(activity.isEmpty==true){

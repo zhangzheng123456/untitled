@@ -117,16 +117,17 @@
             </span>
         </div>
         <!--搭配效果图-->
-        <div class="the_listTitle">
+        <div class="the_listTitle" style="clear: both">
            <span>
                <label>搭配效果图</label>
-                <form class="list_content" style="height:150px;margin-bottom: 15px">
+                <form class="list_content">
                     <!--商品模板-->
-                    <!--<div class="item_box">-->
-                        <!--<div class="item_area"></div>-->
-                    <!--</div>-->
+                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
+                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
+                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
                     <!--添加模板-->
                     <div id="add_all">
+                        <input accept="image/*" type="file" name="upload" id="upFile" style="width: 100%;height: 100%;opacity: 0;position:absolute;z-index: 999;top:0;outline: none;"/>
                         <div class="addAdd">+</div>
                         <div class="addText">添加图片</div>
                     </div>
@@ -134,7 +135,7 @@
             </span>
         </div>
         <!--商品搭配-->
-        <div class="the_listTitle">
+        <div class="the_listTitle" style="clear: both">
            <span>
                <label>商品搭配</label>
                 <form class="list_content">
@@ -157,6 +158,7 @@
                <label>搭配描述</label><textarea name="" cols="30" rows="10" maxlength="1000"></textarea>
             </span>
         </div>
+        <!--列表弹窗-->
         <div id="search_match_goods" onmousedown="mouseDown(this,event)" onmousemove="mouseMove(event)" onmouseup="mouseUp(event)">
             <i class="icon-ishop_6-12" id="close_match_goods"></i>
             <div class="li">
@@ -207,6 +209,8 @@
 <script src="../js/loading.js?20170105"></script>
 <!--匹配js-->
 <script src="../js/goods/xiuda_add.js"></script>
+<!--oss-->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script>
     var mouseX, mouseY;
     var objX, objY;
