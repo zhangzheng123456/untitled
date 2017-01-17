@@ -61,7 +61,7 @@
         }
     })
     $('.title button').click(function () {
-        getPage();
+        searchPage();
     });
     //获取？后缀
     function GetRequest() {
@@ -105,8 +105,29 @@
             console.log('重复error!!!编号是'+cache.num);
         }
     }
+    function searchPage(){
+            var param={};
+            param["pageNumber"]=cache.page;
+            param["pageSize"]='20'
+            param["corp_code"]=GetRequest().corp_code;
+            param["search_value"]=$('.title input').val();
+            oc.postRequire("post"," /app/wechat/getAllStore","0",param,function(data){
+                if (data.code == "0") {
+                    var msg = JSON.parse(data.message);
+                    var list =JSON.parse(msg.list);
+                    var listList = list.list;
+                    pageVal(listList);
+//                    scroll();
+                    toNext();
+                    changePage();
+                }else if(data.code =='-1'){
+                    console.log(data);
+                }
+            });
+    }
     //页面加载
     function pageVal(list){
+        $('.main').eq(0).children().remove();
         //空提示
         if(list.length=='0'){
             $('.main').eq(0).css('display','none');
@@ -336,7 +357,9 @@
             $('.title input').val('');
             $('.title input').css('background-image','');
             $('.title input').attr('placeholder','搜索门店');
-            $('.title button').click(); $('.bottom').css('display','none');
+            cache.page =1;
+            $('.title button').click();
+            $('.bottom').css('display','none');
         });
     }
     $(window).scroll(function () {
