@@ -164,6 +164,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
 
 
+
      //查询vip
 
     public  String  selVip(String corpcode,int id){
@@ -286,58 +287,59 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
      *
      * @param
      * @return
-     * 修改字段
+     * 修改modfiy_integral_password
      * VIPNAME,C_CUSTOMER_ID__NAME,SEX,SALESREP_ID__NAME,SALEHREMP_ID__NAME,PASS_WORD,INTEGRAL_PASSWORD,id
      */
 
-    public  String  modPasswordVip(String corpcode,HashMap<String,Object> modVip){
+    //积分付款密码（INTEGRAL_PASSWORD）
+    public  String  modIntegral_passwordVip(String corpcode,int id,int integral_password){
 
         String info="";
 
-        HashMap<String,Object> errormap=new HashMap<String, Object>();
 
         if(corpcode.equals("C10016")) {
 
-//        if(modVip.get("VIPNAME")==null){
-//            return "缺少VIPNAME";
-//        }
-//        if(modVip.get("C_CUSTOMER_ID__NAME")==null){
-//            return "缺少C_CUSTOMER_ID__NAME";
-//        }
-//        if(modVip.get("SEX")==null){
-//            return "缺少SEX";
-//        }
-//        if(modVip.get("SALESREP_ID__NAME")==null){
-//            return "缺少SALESREP_ID__NAME";
-//        }
-            if (modVip.get("id") == null) {
-                errormap.put("message","缺少id");
-                errormap.put("code",-1);
-                JSONObject jsonObject=new JSONObject(errormap);
-                return  jsonObject.toString();
-            }
-            if (modVip.get("PASS_WORD") == null && modVip.get("SALESREP_ID__NAME") == null) {
+            HashMap<String,Object> map=new HashMap<String, Object>();
+            map.put("name","modfiy_integral_password");
+            JSONArray jsonArray=new JSONArray();
+            jsonArray.put(id);
+            jsonArray.put(integral_password);
+            map.put("values",jsonArray);
+            info= Rest.excuteSql("C10016",map);
+            JSONArray jsonArray1=new JSONArray(info);
+            info=jsonArray1.getJSONObject(0).toString();
 
-                errormap.put("message","缺少PASS_WORD或者SALESREP_ID__NAME");
-                errormap.put("code",-1);
-                JSONObject jsonObject=new JSONObject(errormap);
-                return  jsonObject.toString();
-            }
-//        if(modVip.get("INTEGRAL_PASSWORD")==null){
-//            return "缺少INTEGRAL_PASSWORD";
-//        }
-
-
-             info = Rest.modify("C_VIP",corpcode, modVip);
-            JSONArray jsonArray=new JSONArray(info);
-            info=jsonArray.getJSONObject(0).toString();
         }else{
 
         }
 
-                return  info;
+        return  info;
+
+    }
 
 
+    //预存款密码（PASS_WORD）
+    public  String  modfiy_passwordVip(String corpcode,int id,int modfiy_password){
+
+        String info="";
+
+        if(corpcode.equals("C10016")) {
+
+            HashMap<String,Object> map=new HashMap<String, Object>();
+            map.put("name","modfiy_password");
+            JSONArray jsonArray=new JSONArray();
+            jsonArray.put(id);
+            jsonArray.put(modfiy_password);
+            map.put("values",jsonArray);
+            info= Rest.excuteSql("C10016",map);
+            JSONArray jsonArray1=new JSONArray(info);
+            info=jsonArray1.getJSONObject(0).toString();
+
+        }else{
+
+        }
+
+        return  info;
 
     }
 
@@ -464,7 +466,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         return billinfo;
     }
 
-
+/**
     ////VIP卡充值单据 审核(修改单据状态)
 
     public  String  modPrepaidStatus(String corpcode,HashMap<String,Object> modStatus){
@@ -531,6 +533,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         return  info;
     }
 
+ */
 
     /**
      * VIP充值退款：
@@ -591,7 +594,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     }
 
-
+/**
     //修改充值退款单据状态
 
     public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund){
@@ -636,6 +639,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         }
         return  info;
     }
+ */
 
     //VIP卡充值单据提交
     public String submitPrepaidBill(String corpcode,int id){
@@ -704,84 +708,102 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     //充值单验证
 
-//    public  String  selPrepaidOrder(int id){
-//
-//        //返回 会员ID 会员类型 会员卡号
-//        HashMap<String,Object> map=new HashMap<String, Object>();
-//        //查询
-//        map.put("table","C_VIP_IMP");
-//        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
-//        JSONObject expr1 = new JSONObject();
-//        expr1.put("column", "id");
-//        expr1.put("condition", id);
-//        map.put("params",expr1);
-//
-//        String info= Rest.query(map);
-//
-//        //System.out.println("cccc"+info);
-//
-//        HashMap<String,Object> maprows=new HashMap<String, Object>();
-//        HashMap<String,Object> maprow=new HashMap<String, Object>();
-//
-//
-//        JSONArray jsonArray=new JSONArray(info);
-//        int code= (Integer)jsonArray.getJSONObject(0).get("code");
-//        String message=jsonArray.getJSONObject(0).get("message").toString();
-//        String rows=jsonArray.getJSONObject(0).get("rows").toString();
-//        JSONArray rowsjsonArray=new JSONArray(rows);
-//        JSONArray rowjsonArray=rowsjsonArray.getJSONArray(0);
-//        maprow.put("id",rowjsonArray.get(0));
-//        maprow.put("C_VIPTYPE_ID",rowjsonArray.get(1));
-//        maprow.put("CARDNO",rowjsonArray.get(2));
-//        maprows.put("message",message);
-//        maprows.put("code",code);
-//        maprows.put("rows",maprow);
-//        JSONObject jsonObject=new JSONObject(maprows);
-//
-//        return  jsonObject.toString();
-//    }
-//
-//
+    public  String  confPrepaidOrder(String corpcode,String docno){
+
+        HashMap<String,Object> map=new HashMap<String, Object>();
+        //查询
+        map.put("table","B_RET_VIPMONEY");
+        map.put("columns",new String[]{"TOT_AMT_ACTUAL", "AMOUNT_ACTUAL"});
+        JSONObject expr1 = new JSONObject();
+        expr1.put("column", "DOCNO");
+        expr1.put("condition", docno);
+        map.put("params",expr1);
+
+        String info= Rest.query(corpcode,map);
+
+        //System.out.println("cccc"+info);
+
+        HashMap<String,Object> maprows=new HashMap<String, Object>();
+        HashMap<String,Object> maprow=new HashMap<String, Object>();
 
 
-    //余额验证
+        JSONArray jsonArray=new JSONArray(info);
+        int code= (Integer)jsonArray.getJSONObject(0).get("code");
+        String message=jsonArray.getJSONObject(0).get("message").toString();
+        String rows=jsonArray.getJSONObject(0).get("rows").toString();
+        JSONArray rowsjsonArray=new JSONArray(rows);
+        JSONArray rowjsonArray=rowsjsonArray.getJSONArray(0);
+        maprow.put("TOT_AMT_ACTUAL",rowjsonArray.get(0));
+        maprow.put("AMOUNT_ACTUAL",rowjsonArray.get(1));
+        maprows.put("message",message);
+        maprows.put("code",code);
+        maprows.put("rows",maprow);
+        JSONObject jsonObject=new JSONObject(maprows);
+        return  jsonObject.toString();
+    }
 
-//    public  String  selPrepaidOrder(int id){
-//
-//        //返回 会员ID 会员类型 会员卡号
-//        HashMap<String,Object> map=new HashMap<String, Object>();
-//        //查询
-//        map.put("table","C_VIP_IMP");
-//        map.put("columns",new String[]{"id","C_VIPTYPE_ID","CARDNO"});
-//        JSONObject expr1 = new JSONObject();
-//        expr1.put("column", "id");
-//        expr1.put("condition", id);
-//        map.put("params",expr1);
-//
-//        String info= Rest.query(map);
-//
-//        //System.out.println("cccc"+info);
-//
-//        HashMap<String,Object> maprows=new HashMap<String, Object>();
-//        HashMap<String,Object> maprow=new HashMap<String, Object>();
-//
-//
-//        JSONArray jsonArray=new JSONArray(info);
-//        int code= (Integer)jsonArray.getJSONObject(0).get("code");
-//        String message=jsonArray.getJSONObject(0).get("message").toString();
-//        String rows=jsonArray.getJSONObject(0).get("rows").toString();
-//        JSONArray rowsjsonArray=new JSONArray(rows);
-//        JSONArray rowjsonArray=rowsjsonArray.getJSONArray(0);
-//        maprow.put("id",rowjsonArray.get(0));
-//        maprow.put("C_VIPTYPE_ID",rowjsonArray.get(1));
-//        maprow.put("CARDNO",rowjsonArray.get(2));
-//        maprows.put("message",message);
-//        maprows.put("code",code);
-//        maprows.put("rows",maprow);
-//        JSONObject jsonObject=new JSONObject(maprows);
-//
-//        return  jsonObject.toString();
-//    }
+
+
+
+    //退款余额验证
+
+    public  String  confRefundBalance(String corpcode,String docno){
+
+        String  infos="";
+
+        if(corpcode.equals("C10016")) {
+            //返回 会员ID 会员类型 会员卡号
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            //查询
+            map.put("table", "B_RET_VIPMONEY");
+            //折合吊牌金额  实付金额
+            map.put("columns", new String[]{"TOT_AMT_ACTUAL", "AMOUNT_ACTUAL"});
+            JSONObject expr1 = new JSONObject();
+            expr1.put("column", "DOCNO");
+            expr1.put("condition", docno);
+            map.put("params", expr1);
+
+            String info = Rest.query(corpcode,map);
+
+            System.out.println("cccc"+info);
+
+
+            HashMap<String, Object> maprows = new HashMap<String, Object>();
+            HashMap<String, Object> maprow = new HashMap<String, Object>();
+
+            JSONArray jsonArray = new JSONArray(info);
+            int code = (Integer) jsonArray.getJSONObject(0).get("code");
+            String message = jsonArray.getJSONObject(0).get("message").toString();
+            String id1 = jsonArray.getJSONObject(0).get("id").toString();
+
+            if(code==-1){
+                JSONArray jsonArray1=new JSONArray(info);
+                return  jsonArray1.getJSONObject(0).toString();
+
+            }
+            String rows = jsonArray.getJSONObject(0).get("rows").toString();
+            JSONArray jsonArray1=new JSONArray(rows);
+
+            maprows.put("message", message);
+            maprows.put("code", code);
+            maprows.put("id",id1);
+
+            if(jsonArray1.length()>0) {
+                JSONArray rowjsonArray = jsonArray1.getJSONArray(0);
+                maprow.put("TOT_AMT_ACTUAL", rowjsonArray.get(0));
+                maprow.put("AMOUNT_ACTUAL", rowjsonArray.get(1));
+            }
+            maprows.put("rows", maprow);
+            JSONObject jsonObject = new JSONObject(maprows);
+            infos = jsonObject.toString();
+
+        }else{
+
+        }
+        return  infos;
+
+
+    }
 
 
 
