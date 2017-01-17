@@ -723,8 +723,8 @@ function addImg(){
             self.client.multipartUpload(storeAs, file).then(function (result) {
                 console.log(result);
                 var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
-                showImg(storeAs);
                 console.log('发送图片的地址是：'+storeAs);
+                showImg(storeAs);
                 $("#upFile").val("");
             }).catch(function (err) {
                 console.log(err);
@@ -735,6 +735,19 @@ function addImg(){
             return false;
         }
     })
+}
+//搭配图片展现
+function showImg(storeAs){
+    var tempHTML = '<div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>'
+    var html = '';
+    var nowHTML1 = tempHTML;
+    var msg =  '<img src = "' + storeAs + '"  class="showBoxImg" />';
+    nowHTML1 = nowHTML1.replace("${msg}", msg);
+    html += nowHTML1;
+    $(".list_content #add_all").before(html);
+}
+function removeIt(dom){
+    $(dom).parent('.item_box').remove();
 }
 //获取？后缀
 function GetRequest() {

@@ -61,7 +61,7 @@
         }
     })
     $('.title button').click(function () {
-        getPage();
+        searchPage();
     });
     //获取？后缀
     function GetRequest() {
@@ -94,7 +94,7 @@
                     }else{
                         pageVal(listList);
                     }
-                    scroll();
+//                    scroll();
                     toNext();
                     changePage();
                 }else if(data.code =='-1'){
@@ -105,8 +105,29 @@
             console.log('重复error!!!编号是'+cache.num);
         }
     }
+    function searchPage(){
+            var param={};
+            param["pageNumber"]=cache.page;
+            param["pageSize"]='20'
+            param["corp_code"]=GetRequest().corp_code;
+            param["search_value"]=$('.title input').val();
+            oc.postRequire("post"," /app/wechat/getAllStore","0",param,function(data){
+                if (data.code == "0") {
+                    var msg = JSON.parse(data.message);
+                    var list =JSON.parse(msg.list);
+                    var listList = list.list;
+                    pageVal(listList);
+//                    scroll();
+                    toNext();
+                    changePage();
+                }else if(data.code =='-1'){
+                    console.log(data);
+                }
+            });
+    }
     //页面加载
     function pageVal(list){
+        $('.main').eq(0).children().remove();
         //空提示
         if(list.length=='0'){
             $('.main').eq(0).css('display','none');
@@ -198,8 +219,12 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
+
     }
     function pageAdd(list){
+        console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
+        $(window).scrollTop(cache.scrollHight);
+
         //底部判断
         if(list.length<20){
             console.log('显示底部！');
@@ -285,6 +310,7 @@
                 $('.main').eq(0).append(html);
             }
         }
+        console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
         $(window).scrollTop(cache.scrollHight);
         if(list.length>=20){
             cache.page +=1;
@@ -298,6 +324,7 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
+
     }
     //跳转
     function toNext(){
@@ -330,7 +357,9 @@
             $('.title input').val('');
             $('.title input').css('background-image','');
             $('.title input').attr('placeholder','搜索门店');
-            $('.title button').click(); $('.bottom').css('display','none');
+            cache.page =1;
+            $('.title button').click();
+            $('.bottom').css('display','none');
         });
     }
     $(window).scroll(function () {
@@ -341,11 +370,11 @@
         }else{
             page-=1;
         }
-        var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
+        var nScrollHight = $('.box').height()*20*page;  //整个页面的高度  + $('.title').height()
         var nScrollTop = $(this).scrollTop(); //距离顶部的高度
         var nDivHight=$(this).height();
 //        console.log('目前高度：'+nScrollTop +','+nDivHight+'总高度'+nScrollHight);
-        if(parseInt(nScrollTop) + parseInt(nDivHight)*2>= nScrollHight){
+        if(parseInt(nScrollTop) + parseInt(nDivHight)>= nScrollHight){
             if(cache.next =='false'){
                 return;
             }
