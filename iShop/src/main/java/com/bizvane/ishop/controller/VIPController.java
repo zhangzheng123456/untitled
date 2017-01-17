@@ -940,9 +940,8 @@ public class VIPController {
     @ResponseBody
     public String recharge(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
         String errormessage = "数据异常，操作失败";
         try {
             String jsString = request.getParameter("param");
@@ -950,75 +949,7 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String type = jsonObject.get("type").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String vip_id = jsonObject.get("vip_id").toString();
-            String vip_name = jsonObject.get("vip_name").toString();
-            String card_no = jsonObject.get("card_no").toString();//会员卡号
-            String billNO = jsonObject.get("billNO").toString();//单据编号
-            String remark = jsonObject.get("remark").toString();
-            String store_code = jsonObject.get("store_code").toString();//操作店仓
-            String store_name = jsonObject.get("store_name").toString();//操作店仓
-            String date = jsonObject.get("date").toString();//单据日期
-
-            if (type.equals("pay")) {
-                if (corp_code.equals("C10016")) {
-                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退换转充值
-                    String user_code = jsonObject.get("user_code").toString();//经办人
-                    String user_name = jsonObject.get("user_name").toString();//经办人
-
-                    String price = jsonObject.get("price").toString();//吊牌金额
-                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
-                    String discount = jsonObject.get("discount").toString();//折扣
-
-                    DBObject object = new BasicDBObject();
-                    object.put("corp_code",corp_code);
-                    object.put("check_type","pay"); //充值
-                    object.put("check_status","0"); //未审核
-                    object.put("vip_id",vip_id);
-                    object.put("card_no",card_no);
-                    object.put("vip_name",vip_name);
-
-                    object.put("store_code",store_code);
-                    object.put("store_name",store_name);
-                    object.put("user_code",user_code);
-                    object.put("user_name",user_name);
-
-                    object.put("billNO",billNO);
-                    object.put("date",date);
-                    object.put("pay_type",pay_type);
-                    object.put("price",price);
-                    object.put("pay_price",pay_price);
-                    object.put("discount",discount);
-                    object.put("remark",remark);
-                    cursor.save(object);
-                }
-
-            } else if (type.equals("refund")) {
-                if (corp_code.equals("C10016")) {
-                    String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
-                    String sourceNo = jsonObject.get("sourceNo").toString();//来源单号
-
-                    DBObject object = new BasicDBObject();
-                    object.put("corp_code",corp_code);
-                    object.put("check_type","pay"); //充值
-                    object.put("check_status","0"); //未审核
-                    object.put("vip_id",vip_id);
-                    object.put("card_no",card_no);
-                    object.put("vip_name",vip_name);
-
-                    object.put("store_code",store_code);
-                    object.put("store_name",store_name);
-
-                    object.put("billNO",billNO);
-                    object.put("date",date);
-                    object.put("refund_type",refund_type);
-                    object.put("sourceNo",sourceNo);
-                    object.put("remark",remark);
-                    cursor.save(object);
-                }
-            }
-
+            vipService.recharge(jsonObject,cursor);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("success");
