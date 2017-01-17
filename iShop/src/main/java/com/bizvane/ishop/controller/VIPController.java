@@ -1081,7 +1081,8 @@ public class VIPController {
     @ResponseBody
     public String recharge(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String user_name = request.getSession().getAttribute("user_name").toString();
         String errormessage = "数据异常，操作失败";
         try {
             String jsString = request.getParameter("param");
@@ -1089,7 +1090,7 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String status = vipService.recharge(jsonObject);
+            String status = vipService.recharge(jsonObject,user_code,user_name);
             if (!status.equals(Common.DATABEAN_CODE_SUCCESS)){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -1201,6 +1202,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

@@ -40,8 +40,6 @@ public class VipCheckController {
     @Autowired
     MongoDBClient mongodbClient;
     @Autowired
-    MongoHelperServiceImpl mongoHelperService;
-    @Autowired
     CRMInterfaceService crmInterfaceService;
 
 
