@@ -1006,7 +1006,7 @@ public class VIPController {
                 errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
-            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            result.put("path", JSON.toJSONString("api/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
