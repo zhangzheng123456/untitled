@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>会员相册</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            padding: 20px;
+            background-color: #fcfcfc;
+            color: #888888;
+        }
+        .album_title{
+            text-align: center;
+            font-size: 18px;
+        }
+        .line{
+            margin-top: 20px;
+        }
+        .album_info{
+            font-size: 14px;
+            padding-left: 10px;
+            background-color: #e9e9e9;
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 10px;
+        }
+        .album_list{
+            overflow: hidden;
+            margin-bottom: -10px;
+        }
+        .album_list ul{
+            margin-right: -10px;
+        }
+        .album_list ul li{
+            float: left;
+            list-style: none;
+            padding-right: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            height: 160px;
+        }
+        .album_list ul li div{
+            border: 1px solid #dadada;
+            position: relative;
+            box-sizing: border-box;
+            height: 100%;
+        }
+        .album_list ul li img {
+            padding: 5px;
+            box-sizing: border-box;
+            max-width: 100%;
+            max-height: 100%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        @media screen and (max-width: 720px)  {
+            .album_list ul li{
+                width: 33.33%
+            }
+        }
+        @media screen and (min-width: 720px) and (max-width: 840px)  {
+            .album_list ul li{
+                width: 25%
+               
+            }
+        }
+        @media screen and (min-width: 840px)  {
+            .album_list ul li{
+                width: 20%
+               
+            }
+        }
+        @media screen and (min-width: 960px)  {
+            .album_list ul li{
+                width: 16.66%;
+               
+            }
+        }
+        @media screen and (min-width: 1280px)  {
+            .album_list ul li{
+                width: 12.5%;
+            }
+        }
+        .tip{
+            text-align: center;
+            font-size: 12px;
+            height: 20px;
+            color: #aaaaaa;
+            line-height: 30px;
+        }
+        .phone{
+            width: 90px;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top
+        }
+    </style>
+</head>
+<body>
+    <div class="album_title">会员相册</div>
+    <div class="tip">建议按快捷键 Ctrl+S 将网页保存到本地以便随时查看</div>
+    <div class="line">
+        <div class="album_info">
+            <span style="width: 60px;display: inline-block">王某</span>
+            <span >手机:</span><span class="phone">17755310395</span>
+            <span>卡号:</span><span>213123213123</span>
+        </div>
+        <div class="album_list">
+            <ul>
+                    <!--<li class="album_parent">-->
+                        <!--<div >-->
+                            <!--<img src="../img/code_bg.jpg" alt="">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li class="album_parent">-->
+                        <!--<div ><img src="../img/aixiu_code.png" alt=""></div>-->
+                    <!--</li>-->
+                    <!--<li class="album_parent">-->
+                        <!--<div ><img src="../img/banner.png" alt=""></div>-->
+                    <!--</li>-->
+                    <!--<li class="album_parent">-->
+                        <!--<div ><img src="../image/upload/20160927/1474959090342032143.jpg" alt=""></div>-->
+                    <!--</li>-->
+                    <!--<li class="album_parent">-->
+                        <!--<div ><img src="../img/phone1.png" alt=""></div>-->
+                    <!--</li>-->
+                    <!--<li class="album_parent">-->
+                       <!--<div > <img src="../img/completion_100.png" alt=""></div>-->
+                    <!--</li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="line">
+        <div class="album_info">
+            <span style="width: 60px;display: inline-block">王某某</span>
+            <span >手机:</span><span class="phone">17755310395</span>
+            <span>卡号:</span><span>213123213123</span>
+        </div>
+        <div class="album_list">
+            <ul>
+                <li class="album_parent">
+                   <div > <img src="../img/code_bg.jpg" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div ><img src="../img/aixiu_code.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                   <div> <img src="../img/banner.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div ><img src="../image/upload/20160927/1474959090342032143.jpg" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div><img src="../img/phone1.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div ><img src="../img/completion_100.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                   <div > <img src="../img/code_bg.jpg" alt=""></div>
+                </li >
+                <li class="album_parent">
+                    <div ><img src="../img/aixiu_code.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                   <div > <img src="../img/banner.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div ><img src="../image/upload/20160927/1474959090342032143.jpg" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div ><img src="../img/phone1.png" alt=""></div>
+                </li>
+                <li class="album_parent">
+                    <div ><img src="../img/completion_100.png" alt=""></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="text-align: right;height: 50px;line-height: 50px">——数据由<a style="cursor: pointer;text-decoration: none;color: #4a5f7c" href="http://www.bizvane.com/" target="_blank">上海商帆信息科技有限公司提供</a></div>
+</body>
+<script>
+        function setHeight() {
+            var div=document.getElementsByClassName("album_parent");
+            if(div.length==0) return;
+            var W=div[0].offsetWidth;
+            for(var i=0;i<div.length;i++){
+                div[i].style.height=W+"px";
+            }
+        }
+        function showTip(){
+            var all_album=document.getElementsByClassName("album_list");
+            if(all_album.length==0) return;
+            for(var a=0;a<all_album.length;a++){
+                if(all_album[a].getElementsByTagName("li").length==0){
+                    all_album[a].innerHTML="<div style='text-align: center'>暂无图片</div>";
+                }
+            }
+            console.log(all_album)
+        }
+        setHeight();
+        window.onresize=function(){
+            setHeight();
+        };
+        window.onload=function(){
+            showTip();
+        }
+</script>
+</html>

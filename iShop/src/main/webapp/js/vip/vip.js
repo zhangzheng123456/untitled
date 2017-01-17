@@ -913,9 +913,10 @@ $("#album_leadingout").click(function () {
                 $("#tk").css({"left":+left+"px","top":+tp+"px"});
                 $("#p").show();
                 $("#tk").show();
-                $("#enter").html("<a style='color: white;' href='/"+path+"' target='_blank'>确认</a>");
+                $("#enter").html("<a style='color: white;' data-src='/"+path+"'>确认</a>");
                 whir.loading.remove();//移除加载框
                 $("#enter").click(function () {
+                    window.open($(this).find("a").eq(0).attr("data-src"));
                     $("#p").hide();
                     $("#tk").hide();
                     return true;
