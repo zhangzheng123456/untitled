@@ -823,6 +823,63 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * MongoDB
+     * 会员备忘删除
+     */
+    @RequestMapping(value = "/vipMemoDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipMemoDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String memoid = jsonObject.get("memoid").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+            Map keyMap = new HashMap();
+            keyMap.put("_id", corp_code + vip_id);
+            BasicDBObject queryCondition = new BasicDBObject();
+            queryCondition.putAll(keyMap);
+            DBCursor dbCursor1 = cursor.find(queryCondition);
+            if (dbCursor1.size() > 0) {
+                DBObject obj = dbCursor1.next();
+                String album = obj.get("memo").toString();
+                JSONArray array = JSONArray.parseArray(album);
+                JSONArray new_array = new JSONArray();
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject memo_obj = array.getJSONObject(i);
+                    String memoid1 = memo_obj.get("memoid").toString();
+                    if (!memoid.equals(memoid1)) {
+                        new_array.add(memo_obj);
+                    }
+                }
+                DBObject updateCondition = new BasicDBObject();
+                updateCondition.put("_id", corp_code + vip_id);
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("memo", new_array);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
+
 //    /**
 //     * 会员列表，批量导出会员相册
 //     */
@@ -1043,6 +1100,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
@@ -1255,6 +1313,8 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String vip_id = jsonObject.get("vip_id").toString();
+            String vip_name = jsonObject.get("vip_name").toString();
+
             String phone = jsonObject.get("phone").toString();
             String type = jsonObject.get("type").toString();
 
@@ -1265,17 +1325,28 @@ public class VIPController {
                 //券信息获取
                 result = crmInterfaceService.couponInfo(corp_code,Integer.parseInt(vip_id));
             }else {
-                String authcode = userService.getAuthCode("15251891037");
-                if (!authcode.equals(Common.DATABEAN_CODE_ERROR)){
-                    if (type.equals("1")){
-                        // 预存款密码
-                        map.put("PASS_WORD",authcode);
-                        result = crmInterfaceService.modPasswordVip(corp_code,map);
-                    }else if (type.equals("2")){
-                        //积分付款密码
-                        map.put("INTEGRAL_PASSWORD",authcode);
-                        result = crmInterfaceService.modPasswordVip(corp_code,map);
-                    }
+                Random r = new Random();
+                Double d = r.nextDouble();
+                String authcode = d.toString().substring(3, 3 + 4);
+                String text = "";
+                if (type.equals("1")){
+                    // 预存款密码
+                    map.put("PASS_WORD",authcode);
+                    result = crmInterfaceService.modfiy_passwordVip(corp_code,map);
+                    text = "尊敬的#VIP_NAME# :您本次充值消费密码为#AuthCode#【安正时尚】";
+                    vipService.sendSMS(text,phone);
+                }else if (type.equals("2")){
+                    //积分付款密码
+                    map.put("INTEGRAL_PASSWORD",authcode);
+                    result = crmInterfaceService.modIntegral_passwordVip(corp_code,map);
+                    text = "尊敬的#VIP_NAME# :您本次积分付款密码为#AuthCode#【安正时尚】";
+                }
+                JSONObject result_obj = JSONObject.parseObject(result);
+                String code = result_obj.getString("code");
+                if (code.equals("0")){
+                    text = text.replace("#VIP_NAME#",vip_name);
+                    text = text.replace("#AuthCode#",authcode);
+                    vipService.sendSMS(text,phone);
                 }
             }
             JSONObject result_obj = JSONObject.parseObject(result);
@@ -1292,4 +1363,42 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 当天没有会员的零售单
+     */
+    @RequestMapping(value = "/dayNoVipBill", method = RequestMethod.POST)
+    @ResponseBody
+    public String dayNoVipBill(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+
+            String time = Common.DATETIME_FORMAT_DAY.format(new Date());
+
+           JSONArray array = new JSONArray();
+            for (int i = 0; i < 3; i++) {
+                JSONObject result1 = new JSONObject();
+                result1.put("no","2333311111");
+                array.add(result1);
+            }
+            JSONObject result = new JSONObject();
+            result.put("list",array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

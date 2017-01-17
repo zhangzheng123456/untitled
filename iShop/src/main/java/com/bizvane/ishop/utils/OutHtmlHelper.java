@@ -30,6 +30,7 @@ public class OutHtmlHelper {
                     "<head>\n" +
                     "    <meta charset=\"UTF-8\">\n" +
                     "    <title>会员相册</title>\n" +
+
                     "    <style>\n" +
                     "        *{\n" +
                     "            margin: 0;\n" +
@@ -68,6 +69,7 @@ public class OutHtmlHelper {
                     "            padding-right: 10px;\n" +
                     "            margin-bottom: 10px;\n" +
                     "            box-sizing: border-box;\n" +
+                    "            height: 160px;\n"+
                     "        }\n" +
                     "        .album_list ul li div{\n" +
                     "            border: 1px solid #dadada;\n" +
@@ -117,11 +119,19 @@ public class OutHtmlHelper {
                     "            .album_list ul li{\n" +
                     "                width: 12.5%;\n" +
                     "            }\n" +
+                    "        }" +
+                    "         .tip{\n" +
+                    "            text-align: center;\n" +
+                    "            font-size: 12px;\n" +
+                    "            height: 20px;\n" +
+                    "            color: #aaaaaa;\n" +
+                    "            line-height: 30px;\n" +
                     "        }\n" +
                     "    </style>\n" +
                     "</head>");
             builder.append("<body>\n" +
-                    "    <div class=\"album_title\">会员相册</div>");
+                    "    <div class=\"album_title\">会员相册</div>" +
+                    "<div class=\"tip\">建议按快捷键 Ctrl+S 将网页保存到本地以便随时查看</div>");
 
             for (int i = 0; i < array.size(); i++) {
                 JSONObject object = JSON.parseObject(array.get(i).toString());
@@ -157,19 +167,31 @@ public class OutHtmlHelper {
             }
             builder.append("</body>");
             builder.append("<script>\n" +
-                    "    window.onload=function(){\n" +
                     "        function setHeight() {\n" +
                     "            var div=document.getElementsByClassName(\"album_parent\");\n" +
+                    "            if(div.length==0) return;\n" +
                     "            var W=div[0].offsetWidth;\n" +
                     "            for(var i=0;i<div.length;i++){\n" +
                     "                div[i].style.height=W+\"px\";\n" +
                     "            }\n" +
                     "        }\n" +
+                    "        function showTip(){\n" +
+                    "            var all_album=document.getElementsByClassName(\"album_list\");\n" +
+                    "            if(all_album.length==0) return;\n" +
+                    "            for(var a=0;a<all_album.length;a++){\n" +
+                    "                if(all_album[a].getElementsByTagName(\"li\").length==0){\n" +
+                    "                    all_album[a].innerHTML=\"<div style='text-align: center'>暂无图片</div>\";\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "            console.log(all_album)\n" +
+                    "        }\n" +
                     "        setHeight();\n" +
                     "        window.onresize=function(){\n" +
                     "            setHeight();\n" +
+                    "        };\n" +
+                    "        window.onload=function(){\n" +
+                    "            showTip();\n" +
                     "        }\n" +
-                    "    }\n" +
                     "</script>");
             builder.append("</html>");
 
