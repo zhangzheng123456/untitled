@@ -1083,8 +1083,7 @@ public class VIPController {
     @ResponseBody
     public String recharge(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
+
         String errormessage = "数据异常，操作失败";
         try {
             String jsString = request.getParameter("param");
@@ -1092,7 +1091,12 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            vipService.recharge(jsonObject,cursor);
+            String status = vipService.recharge(jsonObject);
+            if (!status.equals(Common.DATABEAN_CODE_SUCCESS)){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(status);
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("success");
