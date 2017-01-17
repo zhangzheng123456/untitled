@@ -21,11 +21,11 @@ public interface CRMInterfaceService {
 
     public  String  addPrepaidDocuments(String corpcode,HashMap<String,Object> documentInfo);
 
-//    public  String  modPrepaidStatus(String corpcode,HashMap<String,Object> modStatus);
+    public  String  modPrepaidStatus(String corpcode,HashMap<String,Object> modStatus);
 
     public  String addRefund(String corpcode,HashMap<String,Object> refundInfo);
 
-  //  public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund);
+    public  String  modRefundStatus(String corpcode,HashMap<String,Object> modStatusRefund);
 
     public String submitPrepaidBill(String corpcode,int id);
 
@@ -37,7 +37,9 @@ public interface CRMInterfaceService {
 
     public  String selBill(String table,String corpcode,int id);
 
-    public  String  confRefundBalance(String corpcode,String docno);
+    public  String  getBalance(String corpcode,int vipid);
 
-    public  String  confPrepaidOrder(String corpcode,String docno);
+    public  String  getPrepaidOrder(String corpcode,int id);
+
+    public  String getRefundOrder(String corpcode,int id);
 }
