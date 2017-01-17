@@ -334,20 +334,26 @@
         });
     }
     $(window).scroll(function () {
-        var page = cache.page;
-        if(page == 1){
-            page =1;
-        }else{
-            page-=1;
-        }
-        var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
-        var nScrollTop = $(this).scrollTop(); //距离顶部的高度
-        cache.scrollHight = nScrollHight;
+        //根据page判断页面总高度
+//        var page = cache.page;
+//        if(page == 1){
+//            page =1;
+//        }else{
+//            page-=1;
+//        }
+//        var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
+//        var nScrollTop = $(this).scrollTop(); //距离顶部的高度
+//        var nDivHight=$(this).height();
+        var nScrollHight = $(this)[0].scrollHeight;
+        var nScrollTop = $(this)[0].scrollTop;
         var nDivHight=$(this).height();
+        console.log('nScrollHight：'+nScrollHight + 'nScrollTop'+nScrollTop);
         if(nScrollTop + nDivHight >= nScrollHight){
             if(cache.next =='false'){
                 return;
             }
+            cache.scrollHight = $(this).scrollTop();
+            console.log('记录滚动条高度'+ cache.scrollHight);
             getPage();
             cache.num +=1;
         };
