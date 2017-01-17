@@ -1313,6 +1313,8 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String vip_id = jsonObject.get("vip_id").toString();
+            String vip_name = jsonObject.get("vip_name").toString();
+
             String phone = jsonObject.get("phone").toString();
             String type = jsonObject.get("type").toString();
 
@@ -1323,17 +1325,28 @@ public class VIPController {
                 //券信息获取
                 result = crmInterfaceService.couponInfo(corp_code,Integer.parseInt(vip_id));
             }else {
-                String authcode = userService.getAuthCode("15251891037");
-                if (!authcode.equals(Common.DATABEAN_CODE_ERROR)){
-                    if (type.equals("1")){
-                        // 预存款密码
-                        map.put("PASS_WORD",authcode);
-                        result = crmInterfaceService.modPasswordVip(corp_code,map);
-                    }else if (type.equals("2")){
-                        //积分付款密码
-                        map.put("INTEGRAL_PASSWORD",authcode);
-                        result = crmInterfaceService.modPasswordVip(corp_code,map);
-                    }
+                Random r = new Random();
+                Double d = r.nextDouble();
+                String authcode = d.toString().substring(3, 3 + 4);
+                String text = "";
+                if (type.equals("1")){
+                    // 预存款密码
+                    map.put("PASS_WORD",authcode);
+                    result = crmInterfaceService.modfiy_passwordVip(corp_code,map);
+                    text = "尊敬的#VIP_NAME# :您本次充值消费密码为#AuthCode#【安正时尚】";
+                    vipService.sendSMS(text,phone);
+                }else if (type.equals("2")){
+                    //积分付款密码
+                    map.put("INTEGRAL_PASSWORD",authcode);
+                    result = crmInterfaceService.modIntegral_passwordVip(corp_code,map);
+                    text = "尊敬的#VIP_NAME# :您本次积分付款密码为#AuthCode#【安正时尚】";
+                }
+                JSONObject result_obj = JSONObject.parseObject(result);
+                String code = result_obj.getString("code");
+                if (code.equals("0")){
+                    text = text.replace("#VIP_NAME#",vip_name);
+                    text = text.replace("#AuthCode#",authcode);
+                    vipService.sendSMS(text,phone);
                 }
             }
             JSONObject result_obj = JSONObject.parseObject(result);
@@ -1350,4 +1363,42 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 当天没有会员的零售单
+     */
+    @RequestMapping(value = "/dayNoVipBill", method = RequestMethod.POST)
+    @ResponseBody
+    public String dayNoVipBill(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+
+            String time = Common.DATETIME_FORMAT_DAY.format(new Date());
+
+           JSONArray array = new JSONArray();
+            for (int i = 0; i < 3; i++) {
+                JSONObject result1 = new JSONObject();
+                result1.put("no","2333311111");
+                array.add(result1);
+            }
+            JSONObject result = new JSONObject();
+            result.put("list",array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

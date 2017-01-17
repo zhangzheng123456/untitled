@@ -1,5 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
@@ -33,6 +35,7 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
     private UserService userService;
     @Autowired
     private VipActivityService vipActivityService;
+
     @Override
     public PageInfo<VipActivityDetail> selectAllActivityDetail(int page_num, int page_size, String corp_code, String user_code, String search_value) throws Exception {
         List<VipActivityDetail> vipActivityDetails;
@@ -80,50 +83,50 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         String activity_type = jsonObject.get("activity_type").toString().trim();
 
         VipActivityDetail vipActivityDetail_new = selActivityDetailByCode(activity_code);
-        VipActivityDetail vipActivityDetail=new VipActivityDetail();
-        String recruit="";
-        String h5_url="";
-        String sales_no="";
-        String festival_start="";
-        String festival_end="";
-        String send_coupon_type="";
-        String coupon_type="";
-        String apply_title="";
-        String apply_endtime="";
-        String apply_desc="";
-        String apply_success_tips="";
-        String apply_logo="";
-        String apply_qrcode="";
-       String activity_url=jsonObject.get("activity_url").toString().trim();
+        VipActivityDetail vipActivityDetail = new VipActivityDetail();
+        String recruit = "";
+        String h5_url = "";
+        String sales_no = "";
+        String festival_start = "";
+        String festival_end = "";
+        String send_coupon_type = "";
+        String coupon_type = "";
+        String apply_title = "";
+        String apply_endtime = "";
+        String apply_desc = "";
+        String apply_success_tips = "";
+        String apply_logo = "";
+        String apply_qrcode = "";
+        String activity_url = jsonObject.get("activity_url").toString().trim();
         //会员活动类型=
         //招募活动,h5活动,促销,优惠券,线下邀约,节日,
-        if(activity_type.equals("recruit")){
+        if (activity_type.equals("recruit")) {
             recruit = jsonObject.get("recruit").toString().trim();
-        }else if(activity_type.equals("h5")){
-            h5_url= jsonObject.get("h5_url").toString().trim();
-        }else if(activity_type.equals("sales")){
-            sales_no=jsonObject.get("sales_no").toString().trim();
-        }else if(activity_type.equals("coupon")){
-            if (jsonObject.containsKey("send_coupon_type")){
-                send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
-                if(vipActivityDetail_new.getCoupon_type()==null || vipActivityDetail_new.getCoupon_type().equals("")){
-                    coupon_type =  jsonObject.get("coupon_type").toString().trim();
-                }else if(vipActivityDetail_new.getCoupon_type().endsWith(",")) {
+        } else if (activity_type.equals("h5")) {
+            h5_url = jsonObject.get("h5_url").toString().trim();
+        } else if (activity_type.equals("sales")) {
+            sales_no = jsonObject.get("sales_no").toString().trim();
+        } else if (activity_type.equals("coupon")) {
+            if (jsonObject.containsKey("send_coupon_type")) {
+                send_coupon_type = jsonObject.get("send_coupon_type").toString().trim();
+                if (vipActivityDetail_new.getCoupon_type() == null || vipActivityDetail_new.getCoupon_type().equals("")) {
+                    coupon_type = jsonObject.get("coupon_type").toString().trim();
+                } else if (vipActivityDetail_new.getCoupon_type().endsWith(",")) {
                     coupon_type = vipActivityDetail_new.getCoupon_type() + jsonObject.get("coupon_type").toString().trim();
-                }else{
-                    coupon_type = vipActivityDetail_new.getCoupon_type()+"," + jsonObject.get("coupon_type").toString().trim();
+                } else {
+                    coupon_type = vipActivityDetail_new.getCoupon_type() + "," + jsonObject.get("coupon_type").toString().trim();
                 }
             }
-        }else if(activity_type.equals("invite")){
-            apply_title=jsonObject.get("apply_title").toString().trim();
-            apply_endtime=jsonObject.get("apply_endtime").toString().trim();
-            apply_desc=jsonObject.get("apply_desc").toString().trim();
-            apply_success_tips=jsonObject.get("apply_success_tips").toString().trim();
-            apply_logo=jsonObject.get("apply_logo").toString().trim();
-            apply_qrcode=jsonObject.get("apply_qrcode").toString().trim();
-        }else if(activity_type.equals("festival")){
-            festival_start=jsonObject.get("festival_start").toString().trim();
-            festival_end=jsonObject.get("festival_end").toString().trim();
+        } else if (activity_type.equals("invite")) {
+            apply_title = jsonObject.get("apply_title").toString().trim();
+            apply_endtime = jsonObject.get("apply_endtime").toString().trim();
+            apply_desc = jsonObject.get("apply_desc").toString().trim();
+            apply_success_tips = jsonObject.get("apply_success_tips").toString().trim();
+            apply_logo = jsonObject.get("apply_logo").toString().trim();
+            apply_qrcode = jsonObject.get("apply_qrcode").toString().trim();
+        } else if (activity_type.equals("festival")) {
+            festival_start = jsonObject.get("festival_start").toString().trim();
+            festival_end = jsonObject.get("festival_end").toString().trim();
         }
         vipActivityDetail.setCorp_code(corp_code);
         vipActivityDetail.setActivity_code(activity_code);
@@ -159,8 +162,6 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
     }
 
 
-
-
     @Override
     public String insert(String message, String user_id) throws Exception {
         String result = null;
@@ -170,43 +171,63 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         String activity_code = jsonObject.get("activity_code").toString().trim();
         String activity_type = jsonObject.get("activity_type").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-        VipActivityDetail vipActivityDetail=new VipActivityDetail();
-        String recruit="";
-        String h5_url="";
-        String sales_no="";
-        String festival_start="";
-        String festival_end="";
-        String send_coupon_type="";
-        String coupon_type="";
-        String apply_title="";
-        String apply_endtime="";
-        String apply_desc="";
-        String apply_success_tips="";
-        String apply_logo="";
-        String apply_qrcode="";
+        VipActivityDetail vipActivityDetail = new VipActivityDetail();
+        String recruit = "";
+        String h5_url = "";
+        String sales_no = "";
+        String festival_start = "";
+        String festival_end = "";
+        String send_coupon_type = "";
+        String coupon_type = "";
+        String apply_title = "";
+        String apply_endtime = "";
+        String apply_desc = "";
+        String apply_success_tips = "";
+        String apply_logo = "";
+        String apply_qrcode = "";
         //会员活动类型
         //招募活动,h5活动,促销,优惠券,线下邀约,节日,
-        if(activity_type.equals("recruit")){
+        if (activity_type.equals("recruit")) {
             recruit = jsonObject.get("recruit").toString().trim();
-        }else if(activity_type.equals("h5")){
-            h5_url= jsonObject.get("h5_url").toString().trim();
-        }else if(activity_type.equals("sales")){
-            sales_no=jsonObject.get("sales_no").toString().trim();
-        }else if(activity_type.equals("coupon")){
-            if (jsonObject.containsKey("send_coupon_type")){
-                send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
-                coupon_type=jsonObject.get("coupon_type").toString().trim();
+            JSONArray recruitInfo = JSONArray.parseArray(recruit);
+            JSONObject obj1 = recruitInfo.getJSONObject(0);
+            String vip_card_type_code = obj1.getString("vip_card_type_code");
+            String join_threshold = obj1.getString("join_threshold");
+
+            if (recruitInfo.size() > 1) {
+                for (int i = 1; i < recruitInfo.size(); i++) {
+                    JSONObject obj2 = recruitInfo.getJSONObject(i);
+                    String vip_card_type_code1 = obj2.getString("vip_card_type_code");
+                    String join_threshold1 = obj2.getString("join_threshold");
+                    if (vip_card_type_code.equals(vip_card_type_code1)) {
+                        result = "招募级别不能重复";
+                        return result;
+                    } else if (join_threshold.equals(join_threshold1)) {
+                        result = "招募金额不能重复";
+                        return result;
+                    }
+                }
             }
-        }else if(activity_type.equals("invite")){
-            apply_title=jsonObject.get("apply_title").toString().trim();
-            apply_endtime=jsonObject.get("apply_endtime").toString().trim();
-            apply_desc=jsonObject.get("apply_desc").toString().trim();
-            apply_success_tips=jsonObject.get("apply_success_tips").toString().trim();
-            apply_logo=jsonObject.get("apply_logo").toString().trim();
-            apply_qrcode=jsonObject.get("apply_qrcode").toString().trim();
-        }else if(activity_type.equals("festival")){
-            festival_start=jsonObject.get("festival_start").toString().trim();
-            festival_end=jsonObject.get("festival_end").toString().trim();
+
+        } else if (activity_type.equals("h5")) {
+            h5_url = jsonObject.get("h5_url").toString().trim();
+        } else if (activity_type.equals("sales")) {
+            sales_no = jsonObject.get("sales_no").toString().trim();
+        } else if (activity_type.equals("coupon")) {
+            if (jsonObject.containsKey("send_coupon_type")) {
+                send_coupon_type = jsonObject.get("send_coupon_type").toString().trim();
+                coupon_type = jsonObject.get("coupon_type").toString().trim();
+            }
+        } else if (activity_type.equals("invite")) {
+            apply_title = jsonObject.get("apply_title").toString().trim();
+            apply_endtime = jsonObject.get("apply_endtime").toString().trim();
+            apply_desc = jsonObject.get("apply_desc").toString().trim();
+            apply_success_tips = jsonObject.get("apply_success_tips").toString().trim();
+            apply_logo = jsonObject.get("apply_logo").toString().trim();
+            apply_qrcode = jsonObject.get("apply_qrcode").toString().trim();
+        } else if (activity_type.equals("festival")) {
+            festival_start = jsonObject.get("festival_start").toString().trim();
+            festival_end = jsonObject.get("festival_end").toString().trim();
         }
         vipActivityDetail.setCorp_code(corp_code);
         vipActivityDetail.setActivity_code(activity_code);
@@ -250,43 +271,62 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
         String activity_code = jsonObject.get("activity_code").toString().trim();
         String activity_type = jsonObject.get("activity_type").toString().trim();
         String activity_url = jsonObject.get("activity_url").toString().trim();
-        VipActivityDetail vipActivityDetail=new VipActivityDetail();
-        String recruit="";
-        String h5_url="";
-        String sales_no="";
-        String festival_start="";
-        String festival_end="";
-        String send_coupon_type="";
-        String coupon_type="";
-        String apply_title="";
-        String apply_endtime="";
-        String apply_desc="";
-        String apply_success_tips="";
-        String apply_logo="";
-        String apply_qrcode="";
+        VipActivityDetail vipActivityDetail = new VipActivityDetail();
+        String recruit = "";
+        String h5_url = "";
+        String sales_no = "";
+        String festival_start = "";
+        String festival_end = "";
+        String send_coupon_type = "";
+        String coupon_type = "";
+        String apply_title = "";
+        String apply_endtime = "";
+        String apply_desc = "";
+        String apply_success_tips = "";
+        String apply_logo = "";
+        String apply_qrcode = "";
         //会员活动类型
         //招募活动,h5活动,促销,优惠券,线下邀约,节日,
-        if(activity_type.equals("recruit")){
+        if (activity_type.equals("recruit")) {
             recruit = jsonObject.get("recruit").toString().trim();
-        }else if(activity_type.equals("h5")){
-            h5_url= jsonObject.get("h5_url").toString().trim();
-        }else if(activity_type.equals("sales")){
-            sales_no=jsonObject.get("sales_no").toString().trim();
-        }else if(activity_type.equals("coupon")){
-            if (jsonObject.containsKey("send_coupon_type")){
-                send_coupon_type=jsonObject.get("send_coupon_type").toString().trim();
-                coupon_type=jsonObject.get("coupon_type").toString().trim();
+            JSONArray recruitInfo = JSONArray.parseArray(recruit);
+            JSONObject obj1 = recruitInfo.getJSONObject(0);
+            String vip_card_type_code = obj1.getString("vip_card_type_code");
+            String join_threshold = obj1.getString("join_threshold");
+
+            if (recruitInfo.size() > 1) {
+                for (int i = 1; i < recruitInfo.size(); i++) {
+                    JSONObject obj2 = recruitInfo.getJSONObject(i);
+                    String vip_card_type_code1 = obj2.getString("vip_card_type_code");
+                    String join_threshold1 = obj2.getString("join_threshold");
+                    if (vip_card_type_code.equals(vip_card_type_code1)) {
+                        result = "招募级别不能重复";
+                        return result;
+                    } else if (join_threshold.equals(join_threshold1)) {
+                        result = "招募金额不能重复";
+                        return result;
+                    }
+                }
             }
-        }else if(activity_type.equals("invite")){
-            apply_title=jsonObject.get("apply_title").toString().trim();
-            apply_endtime=jsonObject.get("apply_endtime").toString().trim();
-            apply_desc=jsonObject.get("apply_desc").toString().trim();
-            apply_success_tips=jsonObject.get("apply_success_tips").toString().trim();
-            apply_logo=jsonObject.get("apply_logo").toString().trim();
-            apply_qrcode=jsonObject.get("apply_qrcode").toString().trim();
-        }else if(activity_type.equals("festival")){
-            festival_start=jsonObject.get("festival_start").toString().trim();
-            festival_end=jsonObject.get("festival_end").toString().trim();
+        } else if (activity_type.equals("h5")) {
+            h5_url = jsonObject.get("h5_url").toString().trim();
+        } else if (activity_type.equals("sales")) {
+            sales_no = jsonObject.get("sales_no").toString().trim();
+        } else if (activity_type.equals("coupon")) {
+            if (jsonObject.containsKey("send_coupon_type")) {
+                send_coupon_type = jsonObject.get("send_coupon_type").toString().trim();
+                coupon_type = jsonObject.get("coupon_type").toString().trim();
+            }
+        } else if (activity_type.equals("invite")) {
+            apply_title = jsonObject.get("apply_title").toString().trim();
+            apply_endtime = jsonObject.get("apply_endtime").toString().trim();
+            apply_desc = jsonObject.get("apply_desc").toString().trim();
+            apply_success_tips = jsonObject.get("apply_success_tips").toString().trim();
+            apply_logo = jsonObject.get("apply_logo").toString().trim();
+            apply_qrcode = jsonObject.get("apply_qrcode").toString().trim();
+        } else if (activity_type.equals("festival")) {
+            festival_start = jsonObject.get("festival_start").toString().trim();
+            festival_end = jsonObject.get("festival_end").toString().trim();
         }
 
         vipActivityDetail.setCorp_code(corp_code);
@@ -335,19 +375,19 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
 
     @Override
     public String creatActivityInviteQrcode(String corp_code, String auth_appid, String activity_code, String user_id) throws Exception {
-       //根据活动编号，更新活动详情表
+        //根据活动编号，更新活动详情表
         VipActivityDetail vipActivityDetail = this.selActivityDetailByCode(activity_code);
         String picture = "";
-        String rst="";
+        String rst = "";
         String url = CommonValue.wechat_url + "/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=a&emp_id=" + activity_code;
         String result = IshowHttpClient.get(url);
         if (!result.startsWith("{")) {
-             rst= Common.DATABEAN_CODE_ERROR;
+            rst = Common.DATABEAN_CODE_ERROR;
             return rst;
         }
         JSONObject obj = JSONObject.parseObject(result);
         if (result.contains("errcode")) {
-             rst = obj.get("errcode").toString();
+            rst = obj.get("errcode").toString();
             return rst;
         } else {
             Date now = new Date();
@@ -358,10 +398,10 @@ public class VipActivityDetailServiceImpl implements VipActivityDetailService {
             vipActivityDetail.setModifier(user_id);
             int info = 0;
             info = vipActivityDetailMapper.updateActivityDetail(vipActivityDetail);
-            if (info>0) {
-                rst=Common.DATABEAN_CODE_SUCCESS;
+            if (info > 0) {
+                rst = Common.DATABEAN_CODE_SUCCESS;
             } else {
-                rst=Common.DATABEAN_CODE_ERROR;
+                rst = Common.DATABEAN_CODE_ERROR;
             }
         }
         return rst;

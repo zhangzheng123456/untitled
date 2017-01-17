@@ -167,7 +167,7 @@ public class Rest {
 
     }
 
-    //    //执行查询
+    //执行查询
     public  static  String excuteSql(String corpcode,HashMap<String,Object> hashmap){
 
         ExecuteSQLRequestParams executeSQLRequestParams = new ExecuteSQLRequestParams(corpcode);
@@ -178,16 +178,15 @@ public class Rest {
             if(key.equals("name")){
                 executeSQLTransParams.setName(hashmap.get(key).toString());
             }else if(key.equals("values")){
-                executeSQLTransParams.setValues(new org.json.JSONArray(hashmap.get(key)));
+                executeSQLTransParams.setValues((JSONArray)hashmap.get(key));
             }
         }
+        System.out.println(executeSQLTransParams.getValues());
 
         executeSQLTrans.setId(112);
         executeSQLTrans.setCommand("ExecuteSQL");
         executeSQLTrans.setParams(executeSQLTransParams);
-
         executeSQLRequestParams.setTransactions(executeSQLTrans);
-
 
         //执行添加
         String info=getConnection(executeSQLRequestParams.getSip_sign(),executeSQLRequestParams.getSip_appkey(),
