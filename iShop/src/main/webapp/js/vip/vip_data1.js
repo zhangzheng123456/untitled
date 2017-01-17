@@ -689,6 +689,7 @@ $("#memorandum_save").click(function () {
             });
         }
     });
+    $(".memorandum_top textarea").val("");
 });
 $("#memorandum_table").on("click",".icon-ishop_6-12",function () {
     var param={};
@@ -760,6 +761,7 @@ $("#sendAuthcode").click(function () {
     param['vip_id']=sessionStorage.getItem("id");
     param['phone']=$("#vip_phone").html();
     param['type']= $("#send_code input").attr("data-type");
+    param["vip_name"]=$("#vip_name").html();
     oc.postRequire("post","/vip/sendAuthcode","0",param,function (data) {
         if(data.code=="0"){
             art.dialog({
