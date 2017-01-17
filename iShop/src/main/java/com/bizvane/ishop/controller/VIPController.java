@@ -9,6 +9,7 @@ import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.OutHtmlHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
@@ -822,6 +823,118 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+//    /**
+//     * 会员列表，批量导出会员相册
+//     */
+//    @RequestMapping(value = "/exportVipAlbums", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String exportVipAlbums(HttpServletRequest request, HttpServletResponse response) {
+//        DataBean dataBean = new DataBean();
+//        String errormessage = "数据异常，导出失败";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//
+//            String vip = jsonObject.get("vip").toString();
+//            JSONArray vip_array = JSONArray.parseArray(vip);
+//
+//            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+//            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+//
+//            JSONArray array_album = new JSONArray();
+//            for (int i = 0; i < vip_array.size(); i++) {
+//                JSONObject vip_obj = vip_array.getJSONObject(i);
+//                String vip_id = vip_obj.get("vip_id").toString();
+//                String vip_name = vip_obj.get("vip_name").toString();
+//                String corp_code = vip_obj.get("corp_code").toString();
+//                String card_no = vip_obj.get("card_no").toString();
+//                String phone = vip_obj.get("phone").toString();
+//
+//                Map keyMap = new HashMap();
+//                keyMap.put("_id", corp_code + vip_id);
+//                BasicDBObject queryCondition = new BasicDBObject();
+//                queryCondition.putAll(keyMap);
+//                DBCursor dbCursor1 = cursor.find(queryCondition);
+//                if (dbCursor1.hasNext()) {
+//                    DBObject obj = dbCursor1.next();
+////                    String phone = obj.get("phone").toString();
+////                    String card_no = obj.get("card_no").toString();
+//                    String album = "";
+//                    if (obj.containsField("album"))
+//                        album = obj.get("album").toString();
+//                    if (!album.equals("")) {
+//                        JSONArray array1 = JSONArray.parseArray(album);
+//                        for (int j = 0; j < array1.size(); j++) {
+//                            String image_url = array1.getJSONObject(j).getString("image_url");
+//                            String time = array1.getJSONObject(j).getString("time");
+//                            JSONObject obj_album = new JSONObject();
+//                            obj_album.put("vip_id", vip_id);
+//                            obj_album.put("vip_name", vip_name);
+//                            obj_album.put("card_no", card_no);
+//                            obj_album.put("phone", phone);
+//                            obj_album.put("image_url", image_url);
+//                            obj_album.put("time", time);
+//                            array_album.add(obj_album);
+//                        }
+//                    } else {
+//                        JSONObject obj_album = new JSONObject();
+//                        obj_album.put("vip_id", vip_id);
+//                        obj_album.put("vip_name", vip_name);
+//                        obj_album.put("card_no", card_no);
+//                        obj_album.put("phone", phone);
+//                        obj_album.put("image_url", "");
+//                        obj_album.put("time", "");
+//                        array_album.add(obj_album);
+//                    }
+//                } else {
+//                    JSONObject obj_album = new JSONObject();
+//                    obj_album.put("vip_id", vip_id);
+//                    obj_album.put("vip_name", vip_name);
+//                    obj_album.put("card_no", card_no);
+//                    obj_album.put("phone", phone);
+//                    obj_album.put("image_url", "");
+//                    obj_album.put("time", "");
+//                    array_album.add(obj_album);
+//                }
+//            }
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//            String json = mapper.writeValueAsString(array_album);
+//            if (array_album.size() >= 29999) {
+//                errormessage = "导出数据过大";
+//                int i = 9 / 0;
+//            }
+////            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+//            LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+//            map.put("vip_id", "会员编号");
+//            map.put("vip_name", "会员名称");
+//            map.put("card_no", "会员卡号");
+//            map.put("phone", "手机号");
+//            map.put("image_url", "相册图片地址");
+//            map.put("time", "图片上传时间");
+//
+//            String pathname = OutExeclHelper.OutExecl(json, array_album, map, response, request);
+//            JSONObject result = new JSONObject();
+//            if (pathname == null || pathname.equals("")) {
+//                errormessage = "数据异常，导出失败";
+//                int a = 8 / 0;
+//            }
+//            result.put("path", JSON.toJSONString("lupload/" + pathname));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("-1");
+//            dataBean.setMessage(errormessage);
+//        }
+//        return dataBean.getJsonStr();
+//    }
+
+
+
     /**
      * 会员列表，批量导出会员相册
      */
@@ -844,6 +957,8 @@ public class VIPController {
 
             JSONArray array_album = new JSONArray();
             for (int i = 0; i < vip_array.size(); i++) {
+                JSONObject vip_obj_new = vip_array.getJSONObject(i);
+
                 JSONObject vip_obj = vip_array.getJSONObject(i);
                 String vip_id = vip_obj.get("vip_id").toString();
                 String vip_name = vip_obj.get("vip_name").toString();
@@ -858,63 +973,34 @@ public class VIPController {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 if (dbCursor1.hasNext()) {
                     DBObject obj = dbCursor1.next();
-//                    String phone = obj.get("phone").toString();
-//                    String card_no = obj.get("card_no").toString();
+
                     String album = "";
                     if (obj.containsField("album"))
                         album = obj.get("album").toString();
                     if (!album.equals("")) {
                         JSONArray array1 = JSONArray.parseArray(album);
-                        for (int j = 0; j < array1.size(); j++) {
-                            String image_url = array1.getJSONObject(j).getString("image_url");
-                            String time = array1.getJSONObject(j).getString("time");
-                            JSONObject obj_album = new JSONObject();
-                            obj_album.put("vip_id", vip_id);
-                            obj_album.put("vip_name", vip_name);
-                            obj_album.put("card_no", card_no);
-                            obj_album.put("phone", phone);
-                            obj_album.put("image_url", image_url);
-                            obj_album.put("time", time);
-                            array_album.add(obj_album);
-                        }
+
+                        vip_obj_new.put("vip_name",vip_name);
+                        vip_obj_new.put("card_no",card_no);
+                        vip_obj_new.put("phone",phone);
+                        vip_obj_new.put("album",array1);
+
                     } else {
-                        JSONObject obj_album = new JSONObject();
-                        obj_album.put("vip_id", vip_id);
-                        obj_album.put("vip_name", vip_name);
-                        obj_album.put("card_no", card_no);
-                        obj_album.put("phone", phone);
-                        obj_album.put("image_url", "");
-                        obj_album.put("time", "");
-                        array_album.add(obj_album);
+                        vip_obj_new.put("vip_name",vip_name);
+                        vip_obj_new.put("card_no",card_no);
+                        vip_obj_new.put("phone",phone);
+                        vip_obj_new.put("album","");
                     }
                 } else {
-                    JSONObject obj_album = new JSONObject();
-                    obj_album.put("vip_id", vip_id);
-                    obj_album.put("vip_name", vip_name);
-                    obj_album.put("card_no", card_no);
-                    obj_album.put("phone", phone);
-                    obj_album.put("image_url", "");
-                    obj_album.put("time", "");
-                    array_album.add(obj_album);
+                    vip_obj_new.put("vip_name",vip_name);
+                    vip_obj_new.put("card_no",card_no);
+                    vip_obj_new.put("phone",phone);
+                    vip_obj_new.put("album","");
                 }
+                array_album.add(vip_obj_new);
             }
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(array_album);
-            if (array_album.size() >= 29999) {
-                errormessage = "导出数据过大";
-                int i = 9 / 0;
-            }
-//            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-            map.put("vip_id", "会员编号");
-            map.put("vip_name", "会员名称");
-            map.put("card_no", "会员卡号");
-            map.put("phone", "手机号");
-            map.put("image_url", "相册图片地址");
-            map.put("time", "图片上传时间");
+            String pathname = OutHtmlHelper.OutHtml(array_album, request);
 
-            String pathname = OutExeclHelper.OutExecl(json, array_album, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -940,9 +1026,8 @@ public class VIPController {
     @ResponseBody
     public String recharge(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
         String errormessage = "数据异常，操作失败";
         try {
             String jsString = request.getParameter("param");
@@ -950,75 +1035,7 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
-            String type = jsonObject.get("type").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String vip_id = jsonObject.get("vip_id").toString();
-            String vip_name = jsonObject.get("vip_name").toString();
-            String card_no = jsonObject.get("card_no").toString();//会员卡号
-            String billNO = jsonObject.get("billNO").toString();//单据编号
-            String remark = jsonObject.get("remark").toString();
-            String store_code = jsonObject.get("store_code").toString();//操作店仓
-            String store_name = jsonObject.get("store_name").toString();//操作店仓
-            String date = jsonObject.get("date").toString();//单据日期
-
-            if (type.equals("pay")) {
-                if (corp_code.equals("C10016")) {
-                    String pay_type = jsonObject.get("pay_type").toString();//直接充值，退换转充值
-                    String user_code = jsonObject.get("user_code").toString();//经办人
-                    String user_name = jsonObject.get("user_name").toString();//经办人
-
-                    String price = jsonObject.get("price").toString();//吊牌金额
-                    String pay_price = jsonObject.get("pay_price").toString();//实付金额
-                    String discount = jsonObject.get("discount").toString();//折扣
-
-                    DBObject object = new BasicDBObject();
-                    object.put("corp_code",corp_code);
-                    object.put("check_type","pay"); //充值
-                    object.put("check_status","0"); //未审核
-                    object.put("vip_id",vip_id);
-                    object.put("card_no",card_no);
-                    object.put("vip_name",vip_name);
-
-                    object.put("store_code",store_code);
-                    object.put("store_name",store_name);
-                    object.put("user_code",user_code);
-                    object.put("user_name",user_name);
-
-                    object.put("billNO",billNO);
-                    object.put("date",date);
-                    object.put("pay_type",pay_type);
-                    object.put("price",price);
-                    object.put("pay_price",pay_price);
-                    object.put("discount",discount);
-                    object.put("remark",remark);
-                    cursor.save(object);
-                }
-
-            } else if (type.equals("refund")) {
-                if (corp_code.equals("C10016")) {
-                    String refund_type = jsonObject.get("refund_type").toString();//充值单退款，余额退款
-                    String sourceNo = jsonObject.get("sourceNo").toString();//来源单号
-
-                    DBObject object = new BasicDBObject();
-                    object.put("corp_code",corp_code);
-                    object.put("check_type","pay"); //充值
-                    object.put("check_status","0"); //未审核
-                    object.put("vip_id",vip_id);
-                    object.put("card_no",card_no);
-                    object.put("vip_name",vip_name);
-
-                    object.put("store_code",store_code);
-                    object.put("store_name",store_name);
-
-                    object.put("billNO",billNO);
-                    object.put("date",date);
-                    object.put("refund_type",refund_type);
-                    object.put("sourceNo",sourceNo);
-                    object.put("remark",remark);
-                    cursor.save(object);
-                }
-            }
-
+            vipService.recharge(jsonObject,cursor);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("success");

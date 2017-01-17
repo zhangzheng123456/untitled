@@ -94,7 +94,7 @@
                     }else{
                         pageVal(listList);
                     }
-                    scroll();
+//                    scroll();
                     toNext();
                     changePage();
                 }else if(data.code =='-1'){
@@ -198,8 +198,12 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
+
     }
     function pageAdd(list){
+        console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
+        $(window).scrollTop(cache.scrollHight);
+
         //底部判断
         if(list.length<20){
             console.log('显示底部！');
@@ -285,6 +289,7 @@
                 $('.main').eq(0).append(html);
             }
         }
+        console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
         $(window).scrollTop(cache.scrollHight);
         if(list.length>=20){
             cache.page +=1;
@@ -298,6 +303,7 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
+
     }
     //跳转
     function toNext(){
@@ -335,20 +341,17 @@
     }
     $(window).scroll(function () {
         //根据page判断页面总高度
-//        var page = cache.page;
-//        if(page == 1){
-//            page =1;
-//        }else{
-//            page-=1;
-//        }
-//        var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
-//        var nScrollTop = $(this).scrollTop(); //距离顶部的高度
-//        var nDivHight=$(this).height();
-        var nScrollHight = $(this)[0].scrollHeight;
-        var nScrollTop = $(this)[0].scrollTop;
+        var page = cache.page;
+        if(page == 1){
+            page =1;
+        }else{
+            page-=1;
+        }
+        var nScrollHight = $('.box').height()*20*page;  //整个页面的高度  + $('.title').height()
+        var nScrollTop = $(this).scrollTop(); //距离顶部的高度
         var nDivHight=$(this).height();
-        console.log('nScrollHight：'+nScrollHight + 'nScrollTop'+nScrollTop);
-        if(nScrollTop + nDivHight >= nScrollHight){
+//        console.log('目前高度：'+nScrollTop +','+nDivHight+'总高度'+nScrollHight);
+        if(parseInt(nScrollTop) + parseInt(nDivHight)>= nScrollHight){
             if(cache.next =='false'){
                 return;
             }

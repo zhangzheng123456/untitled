@@ -119,6 +119,10 @@ body{
     z-index: 1000;
     display: none;
 }
+.showBoxImg{
+    width: 100%;
+    height: 100%;
+}
 #search_match_goods .li{margin-bottom: 0;height:100px;}
 #search_match_goods ul{ width:425px;height:350px;overflow-y:auto;overflow-x: hidden;margin-left:20px; margin-bottom: 20px}
 #search_match_goods ul li{width:400px;height:50px;background:#ededed;padding-top:5px;display: inline-block; }

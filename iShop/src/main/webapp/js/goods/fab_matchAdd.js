@@ -622,7 +622,6 @@ $("#search_match_goods ul").scroll(function () {
     var nScrollHight = $(this)[0].scrollHeight;
     var nScrollTop = $(this)[0].scrollTop;
     var nDivHight=$(this).height();
-
     if(nScrollTop + nDivHight >= nScrollHight){
         if(next){
             return;
