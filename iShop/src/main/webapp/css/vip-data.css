@@ -1051,6 +1051,75 @@ padding:25px 15px 0 15px;
     padding:5px 30px 5px 2px;
     text-indent:10px;
 }
+/*备忘录*/
+.memorandum{
+    width: 100%;
+    overflow: hidden;
+    padding: 20px 10px 10px 10px;
+    background: #FFFFFF;
+}
+.memorandum_top{
+    text-align: center;
+}
+.memorandum_top textarea{
+    width: 420px;
+    height: 60px;
+    border: 1px solid #d7d7d7;
+    margin-left: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+}
+.memorandum_top label{
+    font-size: 14px;
+    color: #434960;
+}
+.memorandum_save{
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    margin-top: 10px;
+    margin-right: 230px;
+    margin-bottom: 30px;
+    line-height: 30px;
+    color: #FFFFFF;
+    background: #6cc1cb;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.memorandum_table thead th:nth-child(2){
+    width: 70%;
+}
+.memorandum_table tr{
+    height: 30px;
+    color: #4a5f7c;
+}
+.memorandum_table tr th{
+    font-weight: normal;
+    padding:0 5px;
+}
+.memorandum_table thead tr{
+    background: #e8e8ed;
+}
+.memorandum_table tbody td{
+    padding:0 5px;
+}
+.memorandum_table span{
+    width: 70%;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.memorandum_table .icon-ishop_6-12{
+    color: #c8856d;
+    font-size: 17px;
+    cursor: pointer;
+}
+.memorandum_table tbody tr:nth-child(odd){
+    background: #efefef;
+}
 /*配合定位*/
 .expand .position{
     position: relative;
