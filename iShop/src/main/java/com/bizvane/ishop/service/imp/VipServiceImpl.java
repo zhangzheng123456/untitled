@@ -9,15 +9,16 @@ import com.bizvane.ishop.service.CRMInterfaceService;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.VipService;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.mongodb.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -234,9 +235,9 @@ public class VipServiceImpl implements VipService {
             String refund_type = jsonObject.get("refund_type").toString();//1:充值单退款，2:余额退款
             String sourceNo = jsonObject.get("sourceNo").toString();//来源单号
             String price = jsonObject.get("price").toString();//吊牌金额
-            String pay_price = jsonObject.get("pay_price").toString();//实付金额
-            String discount = jsonObject.get("discount").toString();//折扣
-            String balance = jsonObject.get("balance").toString();//折扣
+//            String pay_price = jsonObject.get("pay_price").toString();//实付金额
+//            String discount = jsonObject.get("discount").toString();//折扣
+//            String balance = jsonObject.get("balance").toString();//折扣
 
             HashMap<String,Object> map = new HashMap<String, Object>();
             map.put("BILLDATE",date.replace("-",""));
@@ -273,6 +274,22 @@ public class VipServiceImpl implements VipService {
                 cursor.save(object);
             }
         }
+        return "";
+    }
+
+
+    /**
+     * 获取验证码
+     */
+    @Transactional
+    public String sendSMS(String text,String phone) throws Exception {
+        Data data_phone = new Data("phone", phone, ValueType.PARAM);
+        Data data_text = new Data("text", text, ValueType.PARAM);
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_phone.key, data_phone);
+        datalist.put(data_text.key, data_text);
+
+        DataBox dataBox = iceInterfaceService.iceInterface("SendSMS", datalist);
         return "";
     }
 }

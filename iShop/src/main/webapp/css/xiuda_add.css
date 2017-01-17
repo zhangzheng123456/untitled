@@ -62,7 +62,6 @@ body{
     margin-top: 5px;
     width: 495px;
     height: auto;
-    margin-bottom: 15px;
 }
 .item_box{
     width: 150px;
@@ -91,7 +90,7 @@ body{
     line-height: 130px;
     text-align: center;
     position: relative;
-    margin-bottom: 60px;
+    margin-bottom: 15px;
     float: left;
     margin-right: 15px;
 }
