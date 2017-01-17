@@ -94,7 +94,7 @@
                     }else{
                         pageVal(listList);
                     }
-                    scroll();
+//                    scroll();
                     toNext();
                     changePage();
                 }else if(data.code =='-1'){
@@ -198,8 +198,12 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
+
     }
     function pageAdd(list){
+        console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
+        $(window).scrollTop(cache.scrollHight);
+
         //底部判断
         if(list.length<20){
             console.log('显示底部！');
@@ -284,8 +288,6 @@
                 html += nowHTML3;
                 $('.main').eq(0).append(html);
             }
-            console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
-            $(window).scrollTop(cache.scrollHight);
         }
         console.log('翻页后滚动条跳转的位置是:'+cache.scrollHight);
         $(window).scrollTop(cache.scrollHight);
@@ -345,7 +347,7 @@
         }else{
             page-=1;
         }
-        var nScrollHight = $('.box').height()*20*page + $('.title').height();  //整个页面的高度
+        var nScrollHight = $('.box').height()*20*page;  //整个页面的高度  + $('.title').height()
         var nScrollTop = $(this).scrollTop(); //距离顶部的高度
         var nDivHight=$(this).height();
 //        console.log('目前高度：'+nScrollTop +','+nDivHight+'总高度'+nScrollHight);
