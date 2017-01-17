@@ -744,10 +744,10 @@ function showImg(storeAs){
     var msg =  '<img src = "' + storeAs + '"  class="showBoxImg" />';
     nowHTML1 = nowHTML1.replace("${msg}", msg);
     html += nowHTML1;
-    $("#add_all").before(html);
+    $(".list_content #add_all").before(html);
 }
 function removeIt(dom){
-    $(dom).remove();
+    $(dom).parent('.item_box').remove();
 }
 //获取？后缀
 function GetRequest() {

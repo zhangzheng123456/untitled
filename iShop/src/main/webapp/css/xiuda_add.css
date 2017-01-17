@@ -61,12 +61,14 @@ body{
     float: left;
     margin-top: 5px;
     width: 495px;
+    height: auto;
+    margin-bottom: 15px;
 }
 .item_box{
     width: 150px;
     /*height: 190px;*/
     margin-bottom: 20px;
-    margin-right:20px;
+    margin-right:15px;
     float: left;
 }
 .item_area{
