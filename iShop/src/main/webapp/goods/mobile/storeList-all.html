@@ -93,6 +93,9 @@
                     }else{
                         pageVal(listList);
                     }
+                    scroll();
+                    toNext();
+                    changePage();
                 }else if(data.code =='-1'){
                     console.log(data);
                 }
@@ -194,9 +197,6 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
-        scroll();
-        toNext();
-        changePage();
     }
     function pageAdd(list){
         //底部判断
@@ -298,9 +298,6 @@
                 $(this).attr('src','image/icon_01.png');
             }
         })
-        scroll();
-        toNext();
-        changePage();
     }
     //跳转
     function toNext(){
