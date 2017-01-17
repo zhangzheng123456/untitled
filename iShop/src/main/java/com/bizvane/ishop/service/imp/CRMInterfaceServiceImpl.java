@@ -299,7 +299,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         if(corpcode.equals("C10016")) {
 
-            int modfiy_password=(Integer)integral_passwordVip.get("INTEGRAL_PASSWORD");
+            int integral_password=(Integer)integral_passwordVip.get("INTEGRAL_PASSWORD");
             int id=(Integer)integral_passwordVip.get("id");
 
             HashMap<String,Object> map=new HashMap<String, Object>();
@@ -308,7 +308,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             jsonArray.put(integral_password);
             jsonArray.put(id);
             map.put("values",jsonArray);
-            info= Rest.excuteSql("C10016",map);
+            info= Rest.excuteSql(corpcode,map);
             JSONArray jsonArray1=new JSONArray(info);
             info=jsonArray1.getJSONObject(0).toString();
 
@@ -328,7 +328,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         if(corpcode.equals("C10016")) {
 
-            int modfiy_password=(Integer)passwordMap.get("INTEGRAL_PASSWORD");
+            int modfiy_password=(Integer)passwordMap.get("PASS_WORD");
             int id=(Integer)passwordMap.get("id");
 
             HashMap<String,Object> map=new HashMap<String, Object>();
@@ -337,7 +337,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             jsonArray.put(modfiy_password);
             jsonArray.put(id);
             map.put("values",jsonArray);
-            info= Rest.excuteSql("C10016",map);
+            info= Rest.excuteSql(corpcode,map);
             JSONArray jsonArray1=new JSONArray(info);
             info=jsonArray1.getJSONObject(0).toString();
 
