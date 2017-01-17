@@ -122,12 +122,10 @@
                <label>搭配效果图</label>
                 <form class="list_content">
                     <!--商品模板-->
-                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
-                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
-                    <div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>
+                    <!--<div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>-->
                     <!--添加模板-->
                     <div id="add_all">
-                        <input accept="image/*" type="file" name="upload" id="upFile" style="width: 100%;height: 100%;opacity: 0;position:absolute;z-index: 999;top:0;outline: none;"/>
+                        <input accept="image/jpg,image/jpeg,image/png,img/bmp"  type="file" name="upload" id="upFile" style="width: 100%;height: 100%;opacity: 0;position:absolute;z-index: 999;top:0;outline: none;"/>
                         <div class="addAdd">+</div>
                         <div class="addText">添加图片</div>
                     </div>

@@ -1106,7 +1106,7 @@ padding:25px 15px 0 15px;
     padding:0 5px;
 }
 .memorandum_table span{
-    width: 70%;
+    width: 600px;
     display: inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
