@@ -80,7 +80,7 @@ public class CheckUtils {
         }else if(run_mode.equals("coupon")){
             result="优惠券活动";
         }else if(run_mode.equals("invite")){
-            result="线下邀约活动";
+            result="线下报名活动";
         }else if(run_mode.equals("festival")){
             result="节日活动";
         }
