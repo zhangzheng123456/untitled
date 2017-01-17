@@ -2,6 +2,9 @@
  * Created by Administrator on 2016/12/13.
  */
 var oc = new ObjectControl();
+cache={
+     user_code:''
+}
 //充值弹窗
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block');
@@ -223,7 +226,7 @@ function topUpPeopleShow(msg){
     var html = '';
     for(i=0;i<msg.length;i++){
         var user_name = msg[i].user_name;
-        var user_id = msg[i].user_id;
+        var user_code = msg[i].user_code;
         var nowHTML1 = tempHTML;
         nowHTML1 = nowHTML1.replace("${id}", user_id);
         nowHTML1 = nowHTML1.replace("${msg}", user_name);
@@ -245,6 +248,8 @@ function topUpPeopleClick(dom){
     var val =$(dom).text();
     $(dom).addClass("liactive").siblings("li").removeClass("liactive");
     $("#topUpPeople").val(val);
+    cache.user_code = $(dom).attr('id');
+    console.log(cache.user_code);
     $('#topUpPeopleSelect').css('display','none');
 }
 //vip卡号、vip姓名
@@ -378,7 +383,7 @@ $('#toSave').click(function(){
          param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
          param["date"] = topData;//单据日期
          param["pay_type"] = pay_type;//充值类型
-         param["user_code"] = '1000409104';
+         param["user_code"] = cache.user_code;
          param["user_name"] = topUpPeople;//经办人
          param["price"] = topUpMoney;//吊牌金额
          param["pay_price"] = topUpMoneyReality;//实付金额

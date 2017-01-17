@@ -12,7 +12,6 @@ var getNewVip={
             $('#get_more').show();
             this.getMoreStore();
             this.getparamCtrol();
-            this.gender();
         }.bind(this));
         $('#get_more .head_span_r').click(function () {
             $('#get_more').hide();
@@ -23,12 +22,16 @@ var getNewVip={
             whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_save').click(function () {
-            // if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}
-            // if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
-            // if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
-            // if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
-            // if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
-            // this.postParma();
+            if($('#content .vipName').val().trim()==''){$('#content .vipName').trigger('blur');return}
+            if($('#content .birthday').val().trim()==''){$('#content .birthday').trigger('blur');return}
+            if($('#content .cardNo').val().trim()==''){$('#content .cardNo').trigger('blur');return}
+            if($('#content .phone').val().trim()==''){
+                $('#content .phone').trigger('blur');
+                return
+            }else{
+                if($('#test_2').find('.hint_l').length==1)return;
+            }
+            this.postParma();
         }.bind(this));
         var me=this;
         $('#content').on('blur','input',function () {
@@ -89,6 +92,14 @@ var getNewVip={
             $(this).addClass('selected').siblings('.selected').removeClass('selected');
             $('.billNo').val(this.innerHTML);
             $('#billNo_drop_down').toggle();
+        });
+    },
+    getBillNo:function () {
+        var param={};
+        param.store_code=String($('#OWN_STORE').val()).search('null')!=-1?'':$('#OWN_STORE').val().split('-')[0];
+        param.corp_code='C10000';
+        oc.postRequire("post","/vip/dayNoVipBill","", param, function(data) {
+            console.log(data.message)
         });
     },
     getparamCtrol:function () {
@@ -243,11 +254,12 @@ var getNewVip={
         //获取参数
         var param={};
         param.corp_code='C10000';
+        console.log($('#OWN_SHOPPERS').val());
         param.phone=$('#content').find('.phone').val();
         param.card_no=$('#content').find('.cardNo').val();
         param.vip_name=$('#content').find('.vipName').val();
         param.billNo=$('#content').find('.billNo').val();
-        param.vip_card_type=$('#content').find('.vipCardType').val();
+        param.vip_card_type=$('#vipCardType').val();
         param.birthday=$('#content').find('.birthday').val();
         param.sex=$('#content').find('.gender').val();
         param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[0];
@@ -295,7 +307,6 @@ var getNewVip={
         })
     },
     testInput:function (node) {
-        console.log($(node).parent().prev().html().slice(0,-1))
         if($(node).val().trim()==''){
             var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
         }
