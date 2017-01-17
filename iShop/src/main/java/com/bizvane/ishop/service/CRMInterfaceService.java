@@ -37,9 +37,9 @@ public interface CRMInterfaceService {
 
     public  String selBill(String table,String corpcode,int id);
 
-    public  String  getBalance(String corpcode,int vipid);
+    public  String  getBalance(String corpcode,String vipid);
 
-    public  String  getPrepaidOrder(String corpcode,int id);
+    public  String  getPrepaidOrder(String corpcode,HashMap<String,Object> prepaidMap);
 
-    public  String getRefundOrder(String corpcode,int id);
+    public  String getRefundOrder(String corpcode,String id);
 }

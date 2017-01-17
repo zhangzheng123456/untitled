@@ -589,6 +589,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             }
 
             int id = (Integer) jsonOb.get("objectid");
+            System.out.println("充值退款:"+id);
 
             billinfo= selBill("B_RET_VIPMONEY",corpcode,id);
 
@@ -713,11 +714,12 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     //充值单详情
 
-    public  String  getPrepaidOrder(String corpcode,int id){
+    public  String  getPrepaidOrder(String corpcode,HashMap<String,Object> prepaidMap){
 
         String infos="";
 
         if(corpcode.equals("C10016")) {
+
 
             HashMap<String, Object> map = new HashMap<String, Object>();
             //查询
@@ -728,8 +730,15 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                     , "CREATIONDATE", "MODIFIEDDATE", "STATUSERID", "STATUSTIME", "ISACTIVE"};
             map.put("columns", columns);
             JSONObject expr1 = new JSONObject();
-            expr1.put("column", "id");
-            expr1.put("condition", id);
+
+            if(prepaidMap.get("DOCNO")!=null){
+                expr1.put("column", "DOCNO");
+                expr1.put("condition", prepaidMap.get("DOCNO").toString());
+            }else{
+                expr1.put("column", "id");
+                expr1.put("condition", prepaidMap.get("id").toString());
+            }
+
             map.put("params", expr1);
 
             String info = Rest.query(corpcode, map);
@@ -773,7 +782,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     //获取充值退款详情
     @Override
-    public String getRefundOrder(String corpcode, int id) {
+    public String getRefundOrder(String corpcode, String id) {
 
         String  infos="";
 
@@ -838,7 +847,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     // 获取余额详情  FA_VIPACC
 
-    public  String  getBalance(String corpcode,int vipid){
+    public  String  getBalance(String corpcode,String vipid){
 
         String  infos="";
 
