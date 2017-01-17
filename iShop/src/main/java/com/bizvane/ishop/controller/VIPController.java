@@ -88,32 +88,31 @@ public class VIPController {
                 corp_code = jsonObject.get("corp_code").toString();
 
             String card_no = "";
-            String vip_card_type = "";
             String vip_id = "";
-//            String vip_card_type = jsonObject.get("vip_card_type").toString();
-//            if (jsonObject.containsKey("card_no"))
-//                card_no = jsonObject.get("card_no").toString();
             String billNo = jsonObject.get("billNo").toString();
             String vip_name = jsonObject.get("vip_name").toString();
             String user_code = jsonObject.get("user_code").toString();
             String user_name = jsonObject.get("user_name").toString();
             String store_code = jsonObject.get("store_code").toString();
+            String vip_card_type = jsonObject.get("vip_card_type").toString();
             String phone = jsonObject.get("phone").toString();
             String birthday = jsonObject.get("birthday").toString();
             String sex = jsonObject.get("sex").toString();
 
+            birthday = birthday.replace("-","");
             HashMap<String,Object> vipInfo = new HashMap<String, Object>();
             vipInfo.put("VIPNAME",vip_name);
             vipInfo.put("SEX",sex);
-            vipInfo.put("BIRTHDAY",birthday.replace("-",""));
+            vipInfo.put("BIRTHDAY",birthday);
             vipInfo.put("MOBIL",phone);
             //开卡人姓名
             vipInfo.put("SALESREP_ID__NAME",user_name);
             //零售单号
             vipInfo.put("DOCNOS",billNo);
             //会员卡类型 ？？？？
-            vipInfo.put("C_VIPTYPE_ID__NAME","玖姿卡");
+            vipInfo.put("C_VIPTYPE_ID__NAME",vip_card_type);
 
+            logger.info("-----vipInfo:"+JSON.toJSONString(vipInfo));
             String result = crmInterfaceService.addVip(corp_code,vipInfo);
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
@@ -130,8 +129,8 @@ public class VIPController {
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             }else {
-                String msg = new String(result_obj.getString("message").getBytes("GBK"), "UTF-8");
-
+//                String msg = new String(result_obj.getString("message").getBytes("GBK"), "UTF-8");
+                String msg = result_obj.getString("message");
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(msg);

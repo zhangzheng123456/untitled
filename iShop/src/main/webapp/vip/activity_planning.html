@@ -41,7 +41,7 @@
                             <label for="" style="color:#c26555;">任务标题*</label><input type="text" id="task_title" class="text_input" placeholder="请填写任务标题">
                         </li>
                         <li class="input_time">
-                            <label for="" style="color:#c26555;" >活动时间*</label><input onclick="laydate({elem:'#target_start_time',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})" id="target_start_time" type="text" class="text_input time laydate-icon"><label for="" class="input_z">至</label><input type="text" class="text_input laydate-icon" onclick="laydate({elem:'#target_end_time',min:'2017-01-10',max: '2099-12-31 23:59:59',istime: false, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})" id="target_end_time">
+                            <label for="" style="color:#c26555;" >任务时间*</label><input id="target_start_time" type="text" class="text_input time laydate-icon"><label for="" class="input_z">至</label><input type="text" class="text_input laydate-icon" id="target_end_time">
                         </li>
                     </ul>
                 </div>
@@ -52,9 +52,6 @@
                                 <label for="" style="color:#c26555;">任务类型*</label><input id="task_type_code" type="text" class="text_input" placeholder="请选择任务类型"><span class="icon-ishop_8-02 icon_down"></span>
                                 <div class="input_dropdown">
                                 </div>
-                            </div>
-                            <div class="link">
-                                <input type="text" class="text_input" placeholder="请输入链接" id="task_link">
                             </div>
                         </li>
                         <li >
@@ -86,7 +83,7 @@
                 <ul>
                     <li class="active" data-type="wx">微信推送</li>
                     <li data-type="sms">短信群发</li>
-                    <li data-type="email">邮件群发</li>
+                    <!-- <li data-type="email">邮件群发</li> -->
                 </ul>
             </div>
         </div>
@@ -95,7 +92,7 @@
             <div class="group_parent" style="display: block;" id="wxlist">
                 <div class="input_parent">
                     <div class="float">
-                        <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
+                        <label for="">发送时间</label><input id="wxlist_time"type="text" class="text_input laydate-icon" placeholder="">
                     </div>
                     <div class="float margin_left">微信推送配置</div>
                     <div class="float group_edit margin_left">编辑</div>
@@ -157,7 +154,7 @@
             <div class="group_parent" id="smslist">
                 <div class="input_parent">
                     <div class="float">
-                        <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
+                        <label for="">发送时间</label><input id="smslist_time"  type="text" class="text_input laydate-icon" placeholder="">
                     </div>
                     <div class="float margin_left">短信内容设定</div>
                     <div class="float group_edit margin_left">编辑</div>
@@ -190,7 +187,7 @@
             <div class="group_parent" id="emlist">
                 <div class="input_parent">
                     <div class="float">
-                        <label for="">发送时间</label><input id="start" onclick="laydate({min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" type="text" class="text_input laydate-icon" placeholder="">
+                        <label for="">发送时间</label><input id="emlist_time" type="text" class="text_input laydate-icon" placeholder="">
                     </div>
                     <div class="float margin_left">邮件内容设定</div>
                     <div class="float group_edit margin_left">编辑</div>

@@ -763,4 +763,100 @@ public class VipGroupController {
         return dataBean.getJsonStr();
 
     }
+
+    /**
+     * 查看分组下会员
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/groupVipsScreen", method = RequestMethod.POST)
+    @ResponseBody
+    public String groupVipsScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String user_brand_code = request.getSession().getAttribute("brand_code").toString();
+        String user_area_code = request.getSession().getAttribute("area_code").toString();
+        String user_store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+            JSONArray screen = jsonObject.getJSONArray("screen");
+            String type = jsonObject.get("type").toString();
+
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                corp_code = jsonObject.getString("corp_code");
+            }
+            DataBox dataBox = new DataBox();
+            String group_key = "16";
+
+            JSONObject post_obj = new JSONObject();
+            post_obj.put("key",group_key);
+            post_obj.put("type",type);
+
+            if (type.equals("list")){
+                if (jsonObject.containsKey("id")) {
+                    id = jsonObject.get("id").toString();
+                    VipGroup vipGroup = vipGroupService.getVipGroupById(Integer.parseInt(id));
+                    String group_type = vipGroup.getGroup_type();
+
+                    if (group_type.equals("define")){
+                        JSONArray code_array = new JSONArray();
+                        JSONObject code_obj = new JSONObject();
+                        code_obj.put("type","define");
+                        code_obj.put("value",vipGroup.getGroup_condition());
+                        code_array.add(code_obj);
+                        post_obj.put("value",JSON.toJSONString(code_array));
+                        screen.add(post_obj);
+                        dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,role_code,user_brand_code,user_area_code,user_store_code,user_code);
+                    }else {
+                        JSONArray code_array = new JSONArray();
+                        JSONObject code_obj = new JSONObject();
+                        code_obj.put("type","smart");
+                        code_obj.put("value",vipGroup.getVip_group_code());
+                        code_array.add(code_obj);
+                        post_obj.put("value",JSON.toJSONString(code_array));
+                        screen.add(post_obj);
+                        dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,role_code,user_brand_code,user_area_code,user_store_code,user_code);
+                    }
+                }else if (jsonObject.containsKey("fixed_code")){
+                    String fixed_code = jsonObject.get("fixed_code").toString();
+                    fixed_code = "#"+fixed_code+"#";
+                    JSONArray code_array = new JSONArray();
+                    JSONObject code_obj = new JSONObject();
+                    code_obj.put("type","fixed");
+                    code_obj.put("value",fixed_code);
+                    code_array.add(code_obj);
+                    post_obj.put("value",JSON.toJSONString(code_array));
+                    screen.add(post_obj);
+                    dataBox = vipGroupService.vipScreenBySolr(screen,corp_code,page_num,page_size,role_code,user_brand_code,user_area_code,user_store_code,user_code);
+                }
+            }
+
+            if (dataBox.status.toString().equals("SUCCESS")){
+                String result = dataBox.data.get("message").value;
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("fail");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+
+    }
 }
