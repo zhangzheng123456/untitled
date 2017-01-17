@@ -1133,7 +1133,7 @@ $("#screen_areal").click(function () {
     $("#screen_area").css({"left": +left + "px", "top": +tp + "px"});
     $("#screen_wrapper").hide();
     $("#screen_area").show();
-    var area_num = 1;
+    area_num = 1;
     //if ($("#screen_area .screen_content_l ul li").length > 1) {
     //    return;
     //}
@@ -1170,7 +1170,7 @@ $("#screen_shopl").click(function () {
     $("#screen_wrapper").hide();
     $("#screen_shop").show();
     $("#screen_shop .screen_content_l ul").empty();
-    var shop_num = 1;
+    shop_num = 1;
     getstorelist(shop_num);
 });
 //点击筛选会员的所属员工
@@ -1186,7 +1186,7 @@ $("#screen_staffl").click(function () {
     $("#screen_wrapper").hide();
     $("#screen_staff").show();
     $("#screen_staff .screen_content_l ul").empty();
-    var staff_num = 1;
+    staff_num = 1;
     getstafflist(staff_num);
 });
 $("#class span").click(function(){
@@ -1325,7 +1325,7 @@ $("#shop_area").click(function () {
     $("#screen_shop").hide();
     $("#screen_area").show();
     $("#screen_area").css({"left": +left + "px", "top": +tp + "px"});
-    var area_num = 1;
+    area_num = 1;
     $("#screen_area .screen_content_l ul").empty();
     // $("#screen_area .screen_content_r ul").empty();
     // $("#screen_area .s_pitch span").html("0");
@@ -1430,9 +1430,8 @@ $("#screen_area .screen_content_l").scroll(function () {
             return;
         }
         getarealist(area_num);
-    }
-    ;
-})
+    };
+});
 //店铺滚动事件
 $("#screen_shop .screen_content_l").scroll(function () {
     var nScrollHight = $(this)[0].scrollHeight;
@@ -1457,7 +1456,6 @@ $("#screen_staff .screen_content_l").scroll(function () {
         }
         getstafflist(staff_num);
     }
-    ;
 })
 //点击区域确定追加节点
 $("#screen_que_area").click(function () {
@@ -2092,6 +2090,32 @@ $("#select_vip").click(function(){
     $("#screen_wrapper").css({"left": +left + "px", "top": +tp + "px"});
     $("#screen_wrapper").show();
 });
+//清空筛选
+$("#empty_filter_define").click(function () {
+    $("#screen_wrapper .contion_input input").each(function () {
+        var key = $(this).attr("data-kye");
+        if (key == "6" || key == "8" || key == "12") {
+            $(this).val("全部");
+        } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15") {
+            $(this).val("");
+            $(this).attr("data-code", "");
+        } else if (key == "16") {
+            $(this).val("");
+            $(this).attr("data-code", "");
+            $("#filter_group").attr("data-corp", "");
+            groupCode = [];
+            groupName = [];
+        } else if (key == "17") {
+            return;
+        } else {
+            $(this).val("");
+        }
+    });
+    $("#screen_wrapper textarea").each(function () {
+        $(this).val("");
+    });
+    all_select_vip_list=[];
+});
 $("#select_vip_que").click(function(){ //筛选确定
         var screen = [];
         function settingValue(){
@@ -2175,6 +2199,7 @@ $("#select_vip_que").click(function(){ //筛选确定
                                 screen.push(param);
                             }
                         } else if (key == "brand_code" || key == "area_code" || key == "14" || key == "15" || key == "16") {
+                            console.log($(input[0]).val())
                             if ($(input[0]).val() !== "" && $(input[0]).val() !== "全部") {
                                 var param = {};
                                 var val = $(input[0]).attr("data-code");
