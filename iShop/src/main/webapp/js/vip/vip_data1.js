@@ -538,7 +538,7 @@ function jumpBianse(){
 }
 function GET(){
     var param={};
-    param["corp_code"]=sessionStorage.getItem("corp_code");;
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param['open_id']='';
     param["vip_card_no"]=$("#vip_card_no").html();
     oc.postRequire("post","/vip/avorites","",param,function(data){
@@ -664,5 +664,30 @@ $("#send_code i,#send_code input").click(function () {
 });
 $("#send_code ul li").click(function () {
     $("#send_code input").val($(this).html());
+    $("#send_code input").attr("data-type",$(this).attr("data-type"));
     $("#send_code ul").hide();
+});
+$("#sendAuthcode").click(function () {
+    var param={};
+    param['corp_code']=sessionStorage.getItem("corp_code");;
+    param['vip_id']=sessionStorage.getItem("id");
+    param['phone']=$("#vip_phone").html();
+    param['type']= $("#send_code input").attr("data-type");
+    oc.postRequire("post","/vip/sendAuthcode","0",param,function (data) {
+        if(data.code=="0"){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "发送成功"
+            });
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: "发送失败"
+            });
+        }
+    })
 });

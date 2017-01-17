@@ -258,12 +258,19 @@ public class VipActivityServiceImpl implements VipActivityService {
             Task task = taskService.getTaskForId(corp_code,task_code1);
             String target_start_time = task.getTarget_start_time();
             System.out.println("--------------开始时间---------"+target_start_time);
-            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(target_start_time));
+            String st2 = Common.DATETIME_FORMAT_DAY_NO.format(Common.DATETIME_FORMAT_DAY.parse(target_start_time));
+            String now2 = Common.DATETIME_FORMAT_DAY_NO.format(new Date());
+            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT_DAY.parse(target_start_time));
             String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+
+            long aa2= Long.parseLong(st2);
+            long bb2 = Long.parseLong(now2);
             long aa = Long.parseLong(st);
             long bb = Long.parseLong(now);
-            if (aa < bb) {
-                return "任务时间小于当前时间";
+            if(aa2!=bb2){
+                if (aa < bb) {
+                    return "任务时间小于当前时间";
+                }
             }
             taskService.taskAllocation(task, phones, user_codes, user_code,activity_code);
         }

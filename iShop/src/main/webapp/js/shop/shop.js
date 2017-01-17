@@ -1266,7 +1266,7 @@ function getProvince() {
                 getCity();
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",$(this).attr("data-code"));
-                $("#show_map").attr("data-location",location);
+                // $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1295,7 +1295,7 @@ function getCity() {
                 getCounty();
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",data_code);
-                $("#show_map").attr("data-location",location);
+                // $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);
@@ -1322,7 +1322,7 @@ function getCounty() {
                 $("#address_nav a:nth-child(3)").trigger("click");
                 $("#STORE_address").val(val);
                 $("#STORE_address").attr("data-code",data_code);
-                $("#show_map").attr("data-location",location);
+                // $("#show_map").attr("data-location",location);
             })
         }else {
             console.log(data.message);

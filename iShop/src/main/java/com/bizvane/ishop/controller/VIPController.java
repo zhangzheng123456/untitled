@@ -88,20 +88,18 @@ public class VIPController {
                 corp_code = jsonObject.get("corp_code").toString();
 
             String card_no = "";
-            String vip_card_type = "";
             String vip_id = "";
-//            String vip_card_type = jsonObject.get("vip_card_type").toString();
-//            if (jsonObject.containsKey("card_no"))
-//                card_no = jsonObject.get("card_no").toString();
             String billNo = jsonObject.get("billNo").toString();
             String vip_name = jsonObject.get("vip_name").toString();
             String user_code = jsonObject.get("user_code").toString();
             String user_name = jsonObject.get("user_name").toString();
             String store_code = jsonObject.get("store_code").toString();
+            String vip_card_type = jsonObject.get("vip_card_type").toString();
             String phone = jsonObject.get("phone").toString();
             String birthday = jsonObject.get("birthday").toString();
             String sex = jsonObject.get("sex").toString();
 
+            birthday = birthday.replace("-","");
             HashMap<String,Object> vipInfo = new HashMap<String, Object>();
             vipInfo.put("VIPNAME",vip_name);
             vipInfo.put("SEX",sex);
@@ -109,16 +107,14 @@ public class VIPController {
             vipInfo.put("MOBIL",phone);
             //开卡人姓名
             vipInfo.put("SALESREP_ID__NAME",user_name);
-            //零食单号
+            //零售单号
             vipInfo.put("DOCNOS",billNo);
             //会员卡类型 ？？？？
-            vipInfo.put("C_VIPTYPE_ID__NAME","玖姿贵宾卡");
+            vipInfo.put("C_VIPTYPE_ID__NAME",vip_card_type);
 
+            logger.info("-----vipInfo:"+JSON.toJSONString(vipInfo));
             String result = crmInterfaceService.addVip(corp_code,vipInfo);
-
-            JSONArray array = JSONArray.parseArray(result);
-            JSONObject result_obj = array.getJSONObject(0);
-
+            JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
                 result = result_obj.getString("rows");
@@ -126,14 +122,19 @@ public class VIPController {
                 vip_id = obj.getString("ID");
                 card_no = obj.getString("CARDNO");
                 vip_card_type = obj.getString("C_VIPTYPE_ID");
+                //调毛伟栋新增接口
+                iceInterfaceService.addNewVip(corp_code,vip_id,vip_name,sex,birthday,phone,vip_card_type,card_no,store_code,user_code);
+
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
             }else {
-                return Common.DATABEAN_CODE_ERROR;
+//                String msg = new String(result_obj.getString("message").getBytes("GBK"), "UTF-8");
+                String msg = result_obj.getString("message");
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
-            //调毛伟栋新增接口
-            iceInterfaceService.addNewVip(corp_code,vip_id,vip_name,sex,birthday,phone,vip_card_type,card_no,store_code,user_code);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -165,28 +166,38 @@ public class VIPController {
             String vip_name = jsonObject.get("vip_name").toString();
             String birthday = jsonObject.get("birthday").toString();
 
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_vip_card_no = new Data("vip_card_no", card_no, ValueType.PARAM);
-            Data data_vip_phone = new Data("vip_phone", phone, ValueType.PARAM);
-            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-            Data data_name = new Data("name", vip_name, ValueType.PARAM);
-            Data data_birthday = new Data("birthday", birthday, ValueType.PARAM);
+            HashMap<String,Object> vipInfo = new HashMap<String, Object>();
+            vipInfo.put("id",vip_id);
+            vipInfo.put("VIPNAME",vip_name);
+            vipInfo.put("BIRTHDAY",birthday.replace("-",""));
 
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_vip_card_no.key, data_vip_card_no);
-            datalist.put(data_vip_phone.key, data_vip_phone);
-            datalist.put(data_vip_id.key, data_vip_id);
-            datalist.put(data_name.key, data_name);
-            datalist.put(data_birthday.key, data_birthday);
+            String result = crmInterfaceService.modInfoVip(corp_code,vipInfo);
+            JSONObject result_obj = JSONObject.parseObject(result);
+            String code = result_obj.getString("code");
+            if (code.equals("0")){
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_vip_card_no = new Data("vip_card_no", card_no, ValueType.PARAM);
+                Data data_vip_phone = new Data("vip_phone", phone, ValueType.PARAM);
+                Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+                Data data_name = new Data("name", vip_name, ValueType.PARAM);
+                Data data_birthday = new Data("birthday", birthday, ValueType.PARAM);
 
-            DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipProfileBackup", datalist);
-            String status = dataBox.status.toString();
-            if (status.equals("SUCCESS")) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("SUCCESS");
-            } else {
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_vip_card_no.key, data_vip_card_no);
+                datalist.put(data_vip_phone.key, data_vip_phone);
+                datalist.put(data_vip_id.key, data_vip_id);
+                datalist.put(data_name.key, data_name);
+                datalist.put(data_birthday.key, data_birthday);
+
+                DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipProfileBackup", datalist);
+                String status = dataBox.status.toString();
+                if (status.equals("SUCCESS")) {
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("SUCCESS");
+                }
+            }else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("1");
                 dataBean.setMessage("FAILED");
@@ -1133,8 +1144,6 @@ public class VIPController {
 
             JSONObject obj = new JSONObject();
 
-
-
             if (type.equals("billNo")){
 //                if (corp_code.equals("C10016")){
                     String billNo = jsonObject.get("billNo").toString();//单据编号
@@ -1147,7 +1156,6 @@ public class VIPController {
                     String vip_id = jsonObject.get("vip_id").toString();
                     obj.put("balance","450");
 //                }
-
             }
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1284,8 +1292,8 @@ public class VIPController {
             String result = "";
             if (type.equals("3")) {
                 //券信息获取
+                result = crmInterfaceService.couponInfo(corp_code,Integer.parseInt(vip_id));
             }else {
-
                 String authcode = userService.getAuthCode("15251891037");
                 if (!authcode.equals(Common.DATABEAN_CODE_ERROR)){
                     if (type.equals("1")){
@@ -1299,10 +1307,10 @@ public class VIPController {
                     }
                 }
             }
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            JSONObject result_obj = JSONObject.parseObject(result);
+            dataBean.setCode(result_obj.getString("code"));
             dataBean.setId("1");
-            dataBean.setMessage(result.toString());
+            dataBean.setMessage(result_obj.getString("message"));
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1311,7 +1319,6 @@ public class VIPController {
             logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
-
     }
 
 }

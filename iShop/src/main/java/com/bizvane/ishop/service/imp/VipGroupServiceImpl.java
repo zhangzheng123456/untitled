@@ -103,6 +103,11 @@ public class VipGroupServiceImpl implements VipGroupService {
         if (vipGroup2 != null) {
             result = "该会员分组名称已存在";
         } else {
+            String group_type = vipGroup.getGroup_type();
+            if (group_type.equals("define")){
+                String group_condition = vipGroup.getGroup_condition();
+
+            }
             Date now = new Date();
             vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setCreater(user_code);
@@ -333,7 +338,6 @@ public class VipGroupServiceImpl implements VipGroupService {
                 if (screen_obj.containsKey("date")){
                     post_obj.put("date",screen_obj.getString("date"));
                 }
-//                post_array.add(post_obj);
                 //根据key值，找出其对应name
                 if (key.equals(store_code_key))
                     store_code = value;
