@@ -235,6 +235,7 @@
                 var nowHTML1 = '';
                 cache.temp = area;
             }else{
+                cache.temp = 'n';
                 var nowHTML1 = tempHTML1;
                 nowHTML1= nowHTML1.replace('${area}',area);
 
@@ -268,7 +269,7 @@
                     html += nowHTML2;
                 }
             }
-            if(cache.temp !=''){
+            if(cache.temp !='n'){
                 var nowHTML3='';
                 html += nowHTML3;
                 var name = cache.temp;
