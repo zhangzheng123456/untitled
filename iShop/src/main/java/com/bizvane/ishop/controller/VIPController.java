@@ -1174,26 +1174,31 @@ public class VIPController {
 
             String type = jsonObject.get("type").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-
             JSONObject obj = new JSONObject();
 
+            String result = "";
             if (type.equals("billNo")){
-//                if (corp_code.equals("C10016")){
-                    String billNo = jsonObject.get("billNo").toString();//单据编号
-                    obj.put("can_pass","Y");
-                    obj.put("price","100");
-                    obj.put("pay_price","80");
-//                }
-            }else if (type.equals("balances")){
-//                if (corp_code.equals("C10016")){
-                    String vip_id = jsonObject.get("vip_id").toString();
-                    obj.put("balance","450");
-//                }
-            }
+                String billNo = jsonObject.get("billNo").toString();//单据编号
+                HashMap<String,Object> map = new HashMap<String, Object>();
+                map.put("DOCNO",billNo);
+                result = crmInterfaceService.getPrepaidOrder(corp_code,map);
 
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(obj.toString());
+            }else if (type.equals("balances")){
+                String vip_id = jsonObject.get("vip_id").toString();
+                result = crmInterfaceService.getBalance(corp_code,vip_id);
+            }
+            JSONObject result_obj = JSONObject.parseObject(result);
+            String code = result_obj.getString("code");
+            if (code.equals("0")){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(result_obj.getString("rows"));
+            }else {
+                String msg = result_obj.getString("message");
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
@@ -1383,19 +1388,28 @@ public class VIPController {
             String corp_code = jsonObject.get("corp_code").toString();
             String store_code = jsonObject.get("store_code").toString();
 
-            String time = Common.DATETIME_FORMAT_DAY.format(new Date());
+            String time = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
 
-           JSONArray array = new JSONArray();
-            for (int i = 0; i < 3; i++) {
-                JSONObject result1 = new JSONObject();
-                result1.put("no","2333311111");
-                array.add(result1);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
+            Data data_time = new Data("time_id", time, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_time.key, data_time);
+
+            DataBox box = iceInterfaceService.iceInterfaceV3("QueryOrderIdNoVip",datalist);
+
+            if (box.status.toString().equals("SUCCESS")){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(box.data.get("message").toString());
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("fail");
             }
-            JSONObject result = new JSONObject();
-            result.put("list",array);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1405,4 +1419,5 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
 }

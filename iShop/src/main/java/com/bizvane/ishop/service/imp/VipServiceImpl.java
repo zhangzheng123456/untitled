@@ -240,7 +240,7 @@ public class VipServiceImpl implements VipService {
         } else if (type.equals("refund")) {
             String refund_type = jsonObject.get("refund_type").toString();//1:充值单退款，2:余额退款
             String sourceNo = jsonObject.get("sourceNo").toString();//来源单号
-            String price = jsonObject.get("price").toString();//吊牌金额
+//            String price = jsonObject.get("price").toString();//吊牌金额
 //            String pay_price = jsonObject.get("pay_price").toString();//实付金额
 //            String discount = jsonObject.get("discount").toString();//折扣
 //            String balance = jsonObject.get("balance").toString();//折扣
@@ -255,7 +255,7 @@ public class VipServiceImpl implements VipService {
             map.put("C_VIPMONEY_STORE_ID__NAME",store_name);
             map.put("ORGDOCNO",sourceNo);
             map.put("C_VIP_ID__CARDNO",card_no);
-            map.put("TOT_AMT_ACTUAL",price);
+//            map.put("TOT_AMT_ACTUAL",price);
             map.put("DESCRIPTION",remark);
             String result = crmInterfaceService.addRefund(corp_code,map);
 
@@ -270,7 +270,6 @@ public class VipServiceImpl implements VipService {
                 object.put("_id",corp_code+"_"+bill_id);
                 object.put("check_type","refund"); //退款
                 object.put("billNO",bill_NO);
-
 //                object.put("refund_type",refund_type);
 //                object.put("sourceNo",sourceNo);
 //                object.put("price",price);
