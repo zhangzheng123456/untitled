@@ -167,7 +167,7 @@ public class VipServiceImpl implements VipService {
         return "";
     }
 
-    public String recharge(JSONObject jsonObject) throws Exception{
+    public String recharge(JSONObject jsonObject,String user_code,String user_name) throws Exception{
         String status = Common.DATABEAN_CODE_SUCCESS;
         MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
         DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
@@ -181,6 +181,10 @@ public class VipServiceImpl implements VipService {
         String store_code = jsonObject.get("store_code").toString();//操作店仓
         String store_name = jsonObject.get("store_name").toString();//操作店仓
         String date = jsonObject.get("date").toString();//单据日期
+        if (jsonObject.containsKey("user_code") && !jsonObject.getString("user_code").equals(""))
+            user_code = jsonObject.get("user_code").toString();//经办人
+        if (jsonObject.containsKey("user_name") && !jsonObject.getString("user_name").equals(""))
+            user_name = jsonObject.get("user_name").toString();//经办人
 
         DBObject object = new BasicDBObject();
         object.put("corp_code",corp_code);
@@ -196,8 +200,7 @@ public class VipServiceImpl implements VipService {
         object.put("remark",remark);
         if (type.equals("pay")) {
             String pay_type = jsonObject.get("pay_type").toString();//1：直接充值:2：退换转充值
-            String user_code = jsonObject.get("user_code").toString();//经办人
-            String user_name = jsonObject.get("user_name").toString();//经办人
+
             String price = jsonObject.get("price").toString();//吊牌金额
             String pay_price = jsonObject.get("pay_price").toString();//实付金额
             String discount = jsonObject.get("discount").toString();//折扣
@@ -226,12 +229,17 @@ public class VipServiceImpl implements VipService {
                 object.put("check_type","pay"); //充值
                 object.put("billNO",bill_NO);
 
-//                object.put("user_code",user_code);
-//                object.put("user_name",user_name);
-//                object.put("pay_type",pay_type);
-//                object.put("price",price);
-//                object.put("pay_price",pay_price);
-//                object.put("discount",discount);
+                JSONObject content = new JSONObject();
+                content.put("store_code",store_code);
+                content.put("store_code",store_name);
+                content.put("user_code",user_code);
+                content.put("user_name",user_name);
+                content.put("pay_type",pay_type);
+                content.put("price",price);
+                content.put("pay_price",pay_price);
+                content.put("discount",discount);
+
+                object.put("content",content);
                 cursor.save(object);
 
             }else {
@@ -270,12 +278,16 @@ public class VipServiceImpl implements VipService {
                 object.put("_id",corp_code+"_"+bill_id);
                 object.put("check_type","refund"); //退款
                 object.put("billNO",bill_NO);
-//                object.put("refund_type",refund_type);
-//                object.put("sourceNo",sourceNo);
-//                object.put("price",price);
-//                object.put("pay_price",pay_price);
-//                object.put("discount",discount);
-//                object.put("balance",balance);
+
+                JSONObject content = new JSONObject();
+                content.put("store_code",store_code);
+                content.put("store_code",store_name);
+                content.put("user_code",user_code);
+                content.put("user_name",user_name);
+                object.put("refund_type",refund_type);
+                object.put("sourceNo",sourceNo);
+
+                object.put("content",content);
                 cursor.save(object);
             }else {
                 return result_obj.getString("message");
