@@ -39,16 +39,48 @@ var activity={
     selectClick:function () {//input下拉模拟
         $(".setUp_activity_details").on("click",".select_input",function () {
             $(this).nextAll("ul").toggle();
-            var li=$(this).children("li");
+            var li=$(this).nextAll(".activity_select").children("li");
             if(li.length<1){
                 $(".activity_select").css("border","none");
+                var label=$(this).prev("label").html();
+                if(label=="卡类型*"||label=="招募级别*"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有卡类型"
+                    });
+                }else if(label="选择优惠券*"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有优惠券"
+                    });
+                }
             }
         });
         $(".setUp_activity_details").on("click","i",function () {
             $(this).nextAll("ul").toggle();
-            var li=$(this).children("li");
+            var li=$(this).nextAll(".activity_select").children("li");
             if(li.length<1){
                 $(".activity_select").css("border","none");
+                var label=$(this).prevAll("label").html();
+                if(label=="卡类型*"||label=="招募级别*"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有卡类型"
+                    });
+                }else if(label="选择优惠券*"){
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: "该企业下没有优惠券"
+                    });
+                }
             }
         });
         $(document).click(function (e) {
@@ -1088,7 +1120,7 @@ var activity={
                 case "H5活动":type="h5";break;
                 case "促销活动":type="sales";break;
                 case "优惠券活动":type="coupon";break;
-                case "线下邀约活动":type="invite";break;
+                case "线下报名活动":type="invite";break;
                 case "节日活动":type="festival";break;
             }
             activity.getcorplist(list.corp_code);
@@ -1135,7 +1167,7 @@ var activity={
                     $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
                     $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
-                if(type=="线下邀约活动"){
+                if(type=="线下报名活动"){
                     $(".offline_activity").show();
                     if(list.activity_url==""){
                         $("#extend_url").hide();
