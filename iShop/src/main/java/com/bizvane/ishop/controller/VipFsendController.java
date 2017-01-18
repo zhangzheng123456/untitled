@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -215,6 +216,12 @@ public class VipFsendController {
     @ResponseBody
     public String findById(HttpServletRequest request) {
         DataBean bean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String brand_code = request.getSession().getAttribute("brand_code").toString();
+        String area_code = request.getSession().getAttribute("area_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         String data = null;
         try {
             String jsString = request.getParameter("param");
@@ -225,8 +232,11 @@ public class VipFsendController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String vipFsend_id = jsonObject.get("id").toString().trim();
-            //String send_type=jsonObject.get("send_type").toString().trim();
-            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id));
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                corp_code = jsonObject.get("corp_code").toString();
+//            }
+//
+            String info = vipFsendService.getVipFsendById(Integer.valueOf(vipFsend_id),corp_code,role_code,brand_code,area_code,store_code,user_code);
             if (info != null) {
                 bean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 bean.setId("1");
