@@ -431,7 +431,7 @@ $('#toSave').click(function(){
     //var topUpNum = $('#topUpNum').val();//单据编号
     var topData = $('#chooseDate').val();//单据日期
     var topType = $('#execution_input').val(); //充值类型
-    var topUpShop = $('#topUpShop').val();  //充值店仓
+    var topUpShop = $('#topUp').find('.searchable-select-holder').text();  //充值店仓
     var topUpPeople = $('#topUpPeople').val();//经办人
     var topUpCard = $('#vip_card_no').text();//会员卡号
     var topUpVipName = $('#topUpVipName').val();
@@ -509,12 +509,12 @@ function toSave(){
     var refunTypeInput = $('#refunTypeInput').val();
     console.log(refunTypeInput);
     var param = {};
+    param["store_name"] = $('#refund').find('.searchable-select-holder').text();
     param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
     param["vip_id"] = sessionStorage.getItem("id");//会员编号
     param["vip_name"] = $('#vip_name').text();//会员名称
     param["card_no"] = $('#vip_card_no').text();//会员卡号
     param["remark"] = $('#refundNote').val();//备注
-    param["store_name"] = $('#refunShop').val();//充值店铺
     param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
     param["date"] = $('#refundDate').val();//单据日期
     //param["price"] = topUpMoney;//吊牌金额

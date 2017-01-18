@@ -755,8 +755,10 @@ function removeIt2(dom){
     var key = $(dom).parent().attr('id');
     console.log(key);
     $('#stop li').each(function () {
-        console.log('查找匹配');
-        if($(this).attr('id')==key){
+        var val = $(this).find('.goods_code').attr('id');
+        console.log(val);
+        if(val == key){
+            console.log('查找匹配');
             $(this).find('.icon-ishop_6-12').click();
         }
     });
