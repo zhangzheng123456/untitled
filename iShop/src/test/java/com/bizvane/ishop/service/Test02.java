@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.service.imp.CRMInterfaceServiceImpl;
@@ -17,7 +17,6 @@ public class Test02 {
 
 //JSONArray类型可传入数组
 ////
-=======
 //package com.bizvane.ishop.service;
 //
 //import com.bizvane.ishop.service.imp.CRMInterfaceServiceImpl;
@@ -34,7 +33,6 @@ public class Test02 {
 //
 //
 ////JSONArray类型可传入数组
->>>>>>> e6dd0ab827fe854a793bbbd08cf8d3d82c511175
 //////
 ////////
 ////
@@ -51,7 +49,6 @@ public class Test02 {
 ////        map.put("params",expr1);
 ////Object=new com.alibaba.fastjson.JSONObject(map);
 //
-<<<<<<< HEAD
 //        com.alibaba.fastjson.JSONObject json
         CRMInterfaceService crmInterfaceService=new CRMInterfaceServiceImpl();
    HashMap<String,Object> map=new HashMap<String, Object>();
@@ -252,7 +249,7 @@ public class Test02 {
 
     }
 }
-=======
+
 //    //    System.out.println(map.toString());
 ////
 ////        CRMInterfaceServiceImpl crmInterfaceService=new CRMInterfaceServiceImpl();
@@ -326,4 +323,4 @@ public class Test02 {
 //
 //    }
 //}
->>>>>>> e6dd0ab827fe854a793bbbd08cf8d3d82c511175
+
