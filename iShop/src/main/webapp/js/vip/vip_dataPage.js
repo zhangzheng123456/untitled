@@ -16,6 +16,11 @@ $('#toTopUp').click(function(){
     $('#topUpMoneyReality').parent().find('.hint').css('display','none');
     $('#topUpMoney').parent().find('.hint').css('display','none');
     $("body").css({overflow:"hidden"});
+    //充值操作人员
+    if($('#topUpPeople').val()==''){
+        var store_code = $('.searchable-select-item.selected').attr('data-value');
+        topUpPeople(store_code);  //充值弹窗经办人列表
+    }
 });
 //退款弹窗
 $('#toRefund').unbind('click').bind('click',(function(){
@@ -693,11 +698,6 @@ window.onload = function(){
             $('#chooseDate').click(function () {
                 $('.laydate_box').toggle();
             })
-        }
-        //充值操作人员
-        if($('#topUpPeople').val()==''){
-            var store_code = $('.searchable-select-item.selected').attr('data-value');
-            topUpPeople(store_code);  //充值弹窗经办人列表
         }
         //删除多余显示
         $('#topUp').find('.searchable-select').eq(1).remove();
