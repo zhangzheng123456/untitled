@@ -8,6 +8,8 @@
         pageSize:10,
         funcCode:"",
         titleArray:[],
+        list:"",
+        filtrate:"",//筛选的定义的值
         count:"",
         init:function(){
             this.getFunCode();
@@ -16,6 +18,86 @@
         },
         bind:function(){
             this.auditRefuse();
+            this.slideScreen();
+            this.getFileColumn();
+        },
+        getFileColumn:function(){
+            var self=this;
+            //筛选按钮
+            oc.postRequire("get","/list/filter_column?funcCode="+self.funcCode+"","0","",function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var filter=message.filter;
+                    $("#sxk .inputs ul").empty();
+                    var li="";
+                    for(var i=0;i<filter.length;i++){
+                        if(filter[i].type=="text"){
+                            li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                        }else if(filter[i].type=="select"){
+                            var msg=filter[i].value;
+                            var ul="<ul class='isActive_select_down'>";
+                            for(var j=0;j<msg.length;j++){
+                                ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                            }
+                            ul+="</ul>";
+                            li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+                        }
+
+                    }
+                    $("#sxk .inputs ul").html(li);
+                    if(self.filtrate!==""){
+                        $(".sxk").slideDown();
+                        for(var i=0;i<self.list.length;i++){
+                            if($("#"+self.list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
+                                $("#"+self.list[i].screen_key).val(self.list[i].screen_value);
+                            }else if($("#"+self.list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+                                var value=$("#"+self.list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+self.list[i].screen_value+"']").html();
+                                $("#"+self.list[i].screen_key).val(value);
+                            }
+                        }
+                    }
+                    self.filtrateDown();
+                    //筛选的keydow事件
+                    $('#sxk .inputs input').keydown(function(){
+                        var event=window.event||arguments[0];
+                        if(event.keyCode == 13){
+                            getInputValue();
+                        }
+                    })
+                }
+            });
+        },
+        filtrateDown:function (){
+            //筛选select框
+            $(".isActive_select input").click(function (){
+                var ul=$(this).next(".isActive_select_down");
+                if(ul.css("display")=="none"){
+                    ul.show();
+                }else{
+                    ul.hide();
+                }
+            });
+            $(".isActive_select input").blur(function(){
+                var ul=$(this).next(".isActive_select_down");
+                setTimeout(function(){
+                    ul.hide();
+                },200);
+            });
+            $(".isActive_select_down li").click(function () {
+                var html=$(this).text();
+                var code=$(this).attr("data-code");
+                $(this).parents("li").find("input").val(html);
+                $(this).parents("li").find("input").attr("data-code",code);
+                $(".isActive_select_down").hide();
+            })
+        },
+        slideScreen:function(){
+            $("#filtrate").click(function(){//点击筛选框弹出下拉框
+                $(".sxk").slideToggle();
+            });
+            $("#pack_up").click(function(){//点击收回 取消下拉框
+                $(".sxk").slideUp();
+            })
         },
         getFunCode:function(){
             var key_val=sessionStorage.getItem("key_val");//取页面的function_code
@@ -238,7 +320,7 @@
             oc.postRequire("post","/vipCheck/search","",param,function(data){
                 if(data.code=="0"){
                     var messages=JSON.parse(data.message);
-                    var list=JSON.parse(messages.list);
+                    var list=messages.list;
                     audit.count=messages.pages;
                     var pageNum = messages.pageNum;
                     audit.superaddition(list,pageNum);

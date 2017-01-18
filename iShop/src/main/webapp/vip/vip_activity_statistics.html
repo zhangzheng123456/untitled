@@ -46,7 +46,6 @@
             height: 100%
         }
         .activity_statistics_head_center>div,.activity_statistics_head_right>div{
-           max-width: 200px;
             position:absolute;
             margin-top:-10px;
             text-align: center;
@@ -98,20 +97,20 @@
     <div class="main col-lg-12">
         <div class="activity_statistics_head">
             <div class="activity_statistics_head_left">
-                <div class="activity_statistics_head_left_title"><span id="them"></span></div>
-                <div class="activity_statistics_head_left_time"><span id="startTime"></span> 至 <span id="endTime"></span></div>
-                <div><span id="mode"></span> | <span id="corp"></span></div>
+                <div class="activity_statistics_head_left_title"><span id="them">加载中...</span></div>
+                <div class="activity_statistics_head_left_time"><span id="startTime">加载中...</span> 至 <span id="endTime">加载中...</span></div>
+                <div><span id="mode">加载中...</span> | <span id="corp">加载中...</span></div>
             </div>
             <div class="activity_statistics_head_center">
-                <div >
+                <div style="width: 100%">
                     <span>参与门店数</span>
-                    <span class="num" id="store_num"></span>
+                    <span class="num" id="store_num">加载中...</span>
                 </div>
             </div>
             <div class="activity_statistics_head_right">
-                <div >
+                <div style="width:100%;">
                     <span >活动历时</span>
-                    <span class="num" id="activity_all_day"></span>
+                    <span class="num" id="activity_all_day">加载中...</span>
                 </div>
             </div>
         </div>
@@ -187,11 +186,21 @@
     $(function(){
         var oc=new ObjectControl();
         // 给日期类对象添加日期差方法，返回日期与diff参数日期的时间差，单位为天
-        Date.prototype.diffH = function(date){
-            return (this.getTime() - date.getTime())/(60 * 60 * 1000);
-        };
-        Date.prototype.diffD = function(date){
-            return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
+        Date.prototype.diff = function(date){
+            if((this.getTime()-date.getTime())<0){
+                $("#activity_all_day").html("活动时间异常");
+                return;
+            }
+            var time=(this.getTime()-date.getTime())/1000;
+            var d=parseInt(time/(24*60*60));
+            var h=parseInt((time-d*(24*60*60))/(60*60));
+            var m=parseInt((time-d*(24*60*60)-h*(60*60))/60);
+            var s=parseInt(time-d*(24*60*60)-h*(60*60)-m*60);
+                d==0?d="":d=d+"天";
+                h==0?h="":h=h+"时";
+                m==0?m="":m=m+"分";
+                s==0?s="":s=s+"秒";
+                $("#activity_all_day").html(d+h+m+s);
         };
         function getActivityDataInfo(){
             var param={
@@ -207,15 +216,13 @@
                 $("#mode").html(activityVip.run_mode);
                 $("#corp").html(activityVip.corp_name);
                 $("#store_num").html(JSON.parse(activityVip.activity_store_code).length);
+                if(activityVip.start_time=="" || activityVip.start_time==undefined || activityVip.end_time=="" || activityVip.end_time==undefined ){
+                    $("#activity_all_day").html("活动时间异常");
+                    return;
+                }
                 var startTime=new Date(activityVip.start_time.replace(/-/g,"/")); //构造两个日期，活动截止日期和开始日期
                 var endTime=new Date(activityVip.end_time.replace(/-/g,"/"));
-                var diffTime=endTime.diffH(startTime);                            //调用日期差方法，求两日期差，单位 时
-                if(diffTime>24){                                                   // 如果大于24小时 调用日期差方法，求两日期差，单位 天
-                    diffTime=parseInt(endTime.diffD(startTime));
-                    $("#activity_all_day").html(diffTime+"天")
-                }else{
-                    $("#activity_all_day").html(diffTime+"时")
-                }
+                endTime.diff(startTime)
             })
         }
 //    // 构造两个日期，分别是系统时间和2013/04/08 12:43:45
