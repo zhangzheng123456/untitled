@@ -7,6 +7,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.VipRules;
+import com.bizvane.ishop.service.CRMInterfaceService;
 import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.MongoUtils;
@@ -24,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhou on 2017/1/5.
@@ -42,48 +40,7 @@ public class VipCheckController {
     @Autowired
     MongoDBClient mongodbClient;
     @Autowired
-    MongoHelperServiceImpl mongoHelperService;
-
-    /**
-     * 编辑
-     */
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    @ResponseBody
-    public String editVipCheck(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_code").toString();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json-select-------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String id = jsonObject.get("id").toString();
-            String created_date = jsonObject.get("created_date").toString();
-            String pay_type = jsonObject.get("pay_type").toString();
-            String store_name = jsonObject.get("store_name").toString();
-            String user_name = jsonObject.get("user_name").toString();
-            String card_no = jsonObject.get("card_no").toString();
-
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
-            Map keyMap = new HashMap();
-            keyMap.put("_id", id);
-            BasicDBObject queryCondition = new BasicDBObject();
-            queryCondition.putAll(keyMap);
-            DBCursor dbCursor = cursor.find(queryCondition);
-            if (dbCursor.hasNext()){
-
-            }
-
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+    CRMInterfaceService crmInterfaceService;
 
 
     /**
@@ -354,4 +311,160 @@ public class VipCheckController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 审核单据（改mongodb状态）
+     */
+    @RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public String changeStatus(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-select-------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String id = jsonObject.get("id").toString();
+            String status = jsonObject.get("status").toString();
+            String type = jsonObject.get("type").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String billNo = jsonObject.get("billNo").toString();
+
+            int bill_id = Integer.parseInt(id.split("-")[1]);
+            String result = "";
+            if (type.equals("pay")){
+                result = crmInterfaceService.submitPrepaidBill(corp_code,bill_id);
+            }else if (type.equals("refund")){
+                result = crmInterfaceService.submitRefundBill(corp_code,bill_id);
+            }
+            JSONObject result_obj = JSONObject.parseObject(result);
+            String code = result_obj.getString("code");
+            if (code.equals("0")){
+                Map keyMap = new HashMap();
+                keyMap.put("_id", id);
+                BasicDBObject queryCondition = new BasicDBObject();
+                queryCondition.putAll(keyMap);
+                DBCursor dbCursor = cursor.find(queryCondition);
+                if (dbCursor.size() > 0) {
+                    //记录存在，更新
+                    DBObject updateCondition = new BasicDBObject();
+                    updateCondition.put("_id", id);
+                    DBObject updatedValue = new BasicDBObject();
+                    updatedValue.put("check_status", status);
+                    DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                    cursor.update(updateCondition, updateSetValue);
+                }
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 编辑单据
+     * 直接根据展示的字段全部返回
+     */
+    @RequestMapping(value = "/editBill", method = RequestMethod.POST)
+    @ResponseBody
+    public String editBill(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-select-------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String type = jsonObject.get("type").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String id = jsonObject.get("id").toString();
+            String bill_id = id.split("-")[1];
+
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            Iterator<String> it = jsonObject.keySet().iterator();
+            while (it.hasNext()) {
+                String key = it.next();
+                if (key == null) {
+                    continue;
+                }
+                Object value = jsonObject.get(key).toString().trim();
+                map.put(key, value);
+            }
+            map.put("id",bill_id);
+
+            String result = "";
+            if (type.equals("pay")){
+                result = crmInterfaceService.modPrepaidStatus(corp_code,map);
+            }else if (type.equals("refund")){
+                result = crmInterfaceService.modRefundStatus(corp_code,map);
+            }
+            JSONObject result_obj = JSONObject.parseObject(result);
+            String code = result_obj.getString("code");
+            if (code.equals("0")){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(result_obj.getString("message"));
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage(result_obj.getString("message"));
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取单据详情
+     */
+    @RequestMapping(value = "/showBill", method = RequestMethod.POST)
+    @ResponseBody
+    public String showBill(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-select-------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String id = jsonObject.get("id").toString();
+            String billNo = jsonObject.get("billNo").toString();
+            String pay_type = jsonObject.get("pay_type").toString();
+            String store_name = jsonObject.get("store_name").toString();
+            String user_name = jsonObject.get("user_name").toString();
+            String card_no = jsonObject.get("card_no").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
+            Map keyMap = new HashMap();
+            keyMap.put("_id", id);
+            BasicDBObject queryCondition = new BasicDBObject();
+            queryCondition.putAll(keyMap);
+            DBCursor dbCursor = cursor.find(queryCondition);
+            if (dbCursor.hasNext()){
+
+            }
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

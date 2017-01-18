@@ -193,7 +193,7 @@
         Date.prototype.diffD = function(date){
             return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
         };
-        function getActivityData(){
+        function getActivityDataInfo(){
             var param={
                 activity_code:sessionStorage.getItem("activity_code")
             };
@@ -225,7 +225,7 @@
 //        var diff = now.diff(date);
 //    // 打印日期差
 //        alert(diff);
-        getActivityData();
+        getActivityDataInfo();
         $("#active_tabs li").bind("click",function(){
             $(this).addClass("current");
             $(this).siblings().removeClass("current");

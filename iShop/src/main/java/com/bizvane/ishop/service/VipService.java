@@ -16,7 +16,7 @@ public interface VipService {
 
     String saveVipInfo(JSONObject jsonObject, Date now) throws Exception;
 
-    String recharge(JSONObject jsonObject,DBCollection cursor) throws Exception;
+    String recharge(JSONObject jsonObject,String user_code,String user_name) throws Exception;
 
     String sendSMS(String text,String phone) throws Exception;
 }

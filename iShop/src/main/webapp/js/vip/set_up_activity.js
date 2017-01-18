@@ -171,11 +171,11 @@ var activity={
             $(this).parent().parents("li").remove();
         });
         $("#coupon_activity").on("click","#coupon_btn",function () {//新增开卡送券
-            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label>卡类型</label><input class="text_input select_input" data-code type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" data-code type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select vipCardType">'
                 + activity.cache.card_type
                 + '</ul></li></ul><ul class="operate_ul">'
-                + '<li><ul><li><label>选择优惠券</label><input class="text_input select_input" data-code= type="text" placeholder="请选择优惠券" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                + '<li><ul><li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code= type="text" placeholder="请选择优惠券" readonly="readonly"><i class="icon-ishop_8-02"></i>'
                 + '<ul class="activity_select coupon_activity">'
                 + activity.cache.coupon
                 + '</ul></li><li><span class="add_btn">+</span><span class="remove_btn">-</span></li></ul>'
@@ -1083,12 +1083,16 @@ var activity={
                         _param['apply_logo']="";
                         _param['apply_qrcode']="";
                     }else {
+                        var logo=$("#upload_logo").parent().prev("img").attr("src");
+                        if(logo==undefined){
+                            logo="";
+                        }
                         _param["activity_url"]="";
                         _param['apply_title']=$("#invite_title").val();
                         _param['apply_endtime']=$("#offline_end").val();
                         _param['apply_desc']=$("#invite_summary").val();
                         _param['apply_success_tips']=$("#invite_message").val();
-                        _param['apply_logo']=$("#upload_logo").parent().prev("img").attr("src");
+                        _param['apply_logo']=logo;
                         _param['apply_qrcode']="";
                     }
                 }
@@ -1297,7 +1301,7 @@ var activity={
                                         + li
                                         +'</ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>'
                                 }
-                                $("#coupon_activity>div:nth-child(3)").empty().append('<div class="coupon_btn"><span id="coupon_btn">添加</span></div>'+ul);
+                                $("#coupon_activity>div:nth-child(4)").empty().append('<div class="coupon_btn"><span id="coupon_btn">添加</span></div>'+ul);
                         }
                     }
                     $("#coupon_activity").show();

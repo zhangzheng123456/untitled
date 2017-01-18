@@ -4,10 +4,16 @@
 
 //新增页面弹窗事件
 var getNewVip={
+    billNo:[],
     init:function () {
         $('#jurisdiction').on('click', '#add', function (e) {
             whir.loading.add("mask",0.5);//加载等待框
             // $('#loading').remove();
+            $('.vipName').val('');
+            $('.birthday').val('');
+            $('.billNo').val('');
+            $('.phone').val('');
+            $('#content .hint').remove();
             e.stopPropagation();
             $('#get_more').show();
             this.getMoreStore();
@@ -23,16 +29,33 @@ var getNewVip={
             whir.loading.remove('mask');//移除加载框
         });
         $('#get_more_save').click(function () {
-            // if($('#content .vipName').val().trim()==''){this.testInput($('#content .vipName')[0]);return}
-            // if($('#content .cardNo').val().trim()==''){this.testInput($('#content .cardNo')[0]);return}
-            // if($('#content .phone').val().trim()==''){this.testInput($('#content .phone')[0]);return}
-            // if($('#content .birthday').val().trim()==''){this.testInput($('#content .birthday')[0]);return}
-            // if($('#content .vipCardType').val().trim()==''){this.testInput($('#content .vipCardType')[0]);return}
-            // this.postParma();
+            if($('#content .billNo').val().trim()==''){
+                $('#content .billNo').parent().parent().next().find('.content_hint').html('<span class="hint">零售单号不能为空</span>');
+                $('#content .billNo').parent().parent().next().find('.content_hint').show();
+                return
+            }
+            if($('#content .vipName').val().trim()==''){$('#content .vipName').trigger('blur');return}
+            if($('#content .birthday').val().trim()==''){$('#content .birthday').trigger('blur');return}
+            if($('#content .cardNo').val().trim()==''){$('#content .cardNo').trigger('blur');return}
+            if($('#content .phone').val().trim()==''){
+                $('#content .phone').trigger('blur');
+                return
+            }else{
+                if($('#test_2').find('.hint_l').length==1)return;
+            }
+            this.postParma();
         }.bind(this));
         var me=this;
         $('#content').on('blur','input',function () {
-            var html=''
+            var html='';
+            if(this.className=='billNo'){
+                if($(this).val().trim()==''){
+                    $('#content .billNo').parent().parent().next().find('.content_hint').html('<span class="hint">零售单号不能为空</span>');
+                    $('#content .billNo').parent().parent().next().find('.content_hint').show();
+                }else{
+                    $('#content .billNo').parent().parent().next().find('.content_hint').hide();
+                }
+            }
             if(this.className=='vipName'){
                 if($(this).val().trim()==''){
                     if($('#test_1').find('.hint_l').length==1)return;
@@ -59,7 +82,6 @@ var getNewVip={
                     $('#test_2').html(html);
                 }else{
                     var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
-                    console.log();
                     if(!reg.test($(this).val().trim())){
                         html='<span class="hint hint_l" style="display: inline-block;width: 30%;">手机号格式不正确</span>';
                         $('#test_2').html(html);
@@ -71,7 +93,7 @@ var getNewVip={
         });
         //失去焦点
         $('.billNo').focus(function () {
-            $('.down_icon_vip').trigger('click');
+            $('#billNo_drop_down').show();
         });
         $('.down_icon_vip').click(function () {
             $('#billNo_drop_down').toggle();
@@ -88,7 +110,58 @@ var getNewVip={
         $('#billNo_drop_down').on('click','li',function () {
             $(this).addClass('selected').siblings('.selected').removeClass('selected');
             $('.billNo').val(this.innerHTML);
+            $('#content .billNo').parent().parent().next().find('.content_hint').hide();
             $('#billNo_drop_down').toggle();
+        });
+        $('.billNo').bind('input propertychange', function() {
+            var key=this.value;
+            var html_dom=[];
+            var search_dom=[];
+            html_dom=me.billNo.filter(function (val,index,arr) {
+                return val.search(key)!=-1&&(html_dom.join(',').search(val)==-1);
+            });
+            for(var i=0;i<html_dom.length;i++){
+                search_dom.push('<li>'+html_dom[i]+'</li>');
+            }
+            $('#billNo_drop_down').html(search_dom.join(''));
+            $("#billNo_drop_down").niceScroll({
+                cursorborder:"0 none",cursoropacitymin:"0",boxzoom:false,
+                cursorcolor:" #dfdfdf",
+                cursoropacitymax:1,
+                touchbehavior:false,
+                cursorminheight:50,
+
+                cursorwidth:"5px",
+                cursorborderradius:"10px"});
+        });
+        //关闭点击事件
+        $(document).click(function (event) {
+           if(event.target.className=='down_icon_vip')return;
+            //取消事件冒泡
+            var e=arguments.callee.caller.arguments[0]||event;
+            if (e && e.stopPropagation) {
+                e.stopPropagation();
+            } else if (window.event) {
+                window.event.cancelBubble = true;
+            }
+            if($(event.target).parents('#billNo_drop_down').length==0&&(event.target.className!='billNo'))($('#billNo_drop_down').hide());
+        });
+    },
+    getBillNo:function () {
+        var param={};
+        var me=this;
+        param.store_code=String($('#OWN_STORE').val()).search('null')!=-1?'':$('#OWN_STORE').val().split('-')[0];
+        param.corp_code='C10000';
+        oc.postRequire("post","/vip/dayNoVipBill","", param, function(data) {
+            if(data.code==0){
+                var data=JSON.parse(data.message).list
+                var html=[];
+                for(var i=0;i<data.length;i++){
+                    html.push('<li>'+data[i].no+'</li>');
+                    me.billNo.push(data[i].no);
+                }
+                $('#billNo_drop_down').html(html.join(''));
+            }else if(data.code==-1){}
         });
     },
     getparamCtrol:function () {
@@ -132,10 +205,8 @@ var getNewVip={
       var corp_command="/shop/findStore";
       oc.postRequire("get", corp_command,"", "", function(data){
         if(data.code=="0"){
-            console.log(data);
             var msg=JSON.parse(data.message);
             msg=JSON.parse(msg.list);
-            console.log(msg);
             var corp_html='';
             for( var i=0;i<msg.length;i++){
                 corp_html+='<option value="'+msg[i].store_code+'-'+msg[i].corp_code+'">'+msg[i].store_name+'</option>';
@@ -153,6 +224,7 @@ var getNewVip={
                     $("#BRAND_NAME").attr("data-mark","");
                     //调导购
                     me.getMoreStaff();
+                    me.getBillNo();
                 }
             });
             $('#get_more_store .searchable-select-item').click(function(){
@@ -163,9 +235,11 @@ var getNewVip={
                 $("#BRAND_NAME").attr("data-mark","");
                 //调导购
                 me.getMoreStaff();
+                me.getBillNo();
             })
             whir.loading.remove();//移除加载框
             me.getMoreStaff();
+            me.getBillNo();
         }else if(data.code=="-1"){
             art.dialog({
                 time: 1,
@@ -179,12 +253,14 @@ var getNewVip={
     gender:function () {
     $('.searchable-select').remove();
     $('#gender').empty();
+   $('#vipCardType').empty();
     //性别
     var corp_html='<option value="男">男</option>'+'<option value="女">女</option>';
     $("#gender").append(corp_html);
     $('#gender').searchableSelect();
     $('#gender').parent().find('.searchable-select-holder').html('男');
     $('#gender').parent().find('.searchable-select-input').remove();
+
     var corp_htm2='<option value="东鹏玖姿贵宾卡">东鹏玖姿贵宾卡</option>'
         +'<option value="玖姿贵宾卡">玖姿贵宾卡</option>'
         +'<option value="南阳贵宾卡">南阳贵宾卡</option>'
@@ -247,7 +323,7 @@ var getNewVip={
         param.card_no=$('#content').find('.cardNo').val();
         param.vip_name=$('#content').find('.vipName').val();
         param.billNo=$('#content').find('.billNo').val();
-        param.vip_card_type=$('#content').find('.vipCardType').val();
+        param.vip_card_type=$('#vipCardType').val();
         param.birthday=$('#content').find('.birthday').val();
         param.sex=$('#content').find('.gender').val();
         param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[0];
@@ -295,7 +371,6 @@ var getNewVip={
         })
     },
     testInput:function (node) {
-        console.log($(node).parent().prev().html().slice(0,-1))
         if($(node).val().trim()==''){
             var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
         }

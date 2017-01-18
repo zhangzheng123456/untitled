@@ -471,10 +471,17 @@ public class VipActivityController {
                 if (jsonObject.containsKey("start_time")){
                     String start_time = jsonObject.getString("start_time");
                     String end_time = jsonObject.getString("end_time");
-                    vipActivity.setStart_time(start_time);
-                    vipActivity.setEnd_time(end_time);
-                    vipActivityService.updateVipActivity(vipActivity);
-                    vipActivityService.insertSchedule(activity_code,corp_code,end_time,user_code);
+                    if(!start_time.equals("")&&!end_time.equals("")){
+                        vipActivity.setStart_time(start_time);
+                        vipActivity.setEnd_time(end_time);
+                        vipActivityService.updateVipActivity(vipActivity);
+                        vipActivityService.insertSchedule(activity_code,corp_code,end_time,user_code);
+                    }else{
+                        dataBean.setId(id);
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setMessage("活动时间为空");
+                    }
+
                 }
                 if (jsonObject.containsKey("store_code") && !jsonObject.getString("store_code").equals("")){
                     String store_code = jsonObject.getString("store_code");

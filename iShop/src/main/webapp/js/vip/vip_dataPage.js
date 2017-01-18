@@ -2,6 +2,9 @@
  * Created by Administrator on 2016/12/13.
  */
 var oc = new ObjectControl();
+cache={
+     user_code:''
+}
 //充值弹窗
 $('#toTopUp').click(function(){
     $('#topUp').css('display','block');
@@ -15,15 +18,15 @@ $('#toTopUp').click(function(){
     $("body").css({overflow:"hidden"});
 });
 //退款弹窗
-$('#toRefund').click(function(){
+$('#toRefund').unbind('click').bind('click',(function(){
     $('#refund').css('display','block');
     $('#topUp').css('display','none');
     $('.warp').css('display','block');
-    refunBalanceShow();//默认余额退款
+    //refunBalanceShow();//默认余额退款
     $('#refunType li').eq(1).click();
     $('#refunShopSelcet li').eq(0).click();
     $("body").css({overflow:"hidden"});
-});
+}));
 //充值记录弹窗
 $('#toRecord').click(function(){
     $('#topUp').css('display','none');
@@ -56,15 +59,15 @@ $('#record .screen_close').click(function () {
 //    $('.warp').css('display','none');
 //});
 //单据编号
-var mydate = new Date();
-var str = "" + mydate.getFullYear() + "";
-str += (mydate.getMonth()+1) + "";
-str += mydate.getDate() + "";
-str += mydate.getHours() + "";
-str += mydate.getMinutes() + "";
-str += mydate.getSeconds() + "";
-$('#topUpNum').val(str);
-$('#refundNum').val(str);
+//var mydate = new Date();
+//var str = "" + mydate.getFullYear() + "";
+//str += (mydate.getMonth()+1) + "";
+//str += mydate.getDate() + "";
+//str += mydate.getHours() + "";
+//str += mydate.getMinutes() + "";
+//str += mydate.getSeconds() + "";
+//$('#topUpNum').val(str);
+//$('#refundNum').val(str);
 //单据日期
 var mydate = new Date();
 var str = "" + mydate.getFullYear() + "-";
@@ -185,18 +188,57 @@ function topUpShopSelcetClick(dom){
     topUpPeople();  //充值弹窗经办人列表
 }
 //退款店仓
+function refunShop(){
+    var param={};
+    param["pageSize"]='20'
+    param["pageNumber"]='1';
+    param["searchValue"]='';
+    param["corp_code"]=sessionStorage.getItem("corp_code");
+    oc.postRequire("post","/shop/selectByAreaCode","",param,function(data){
+        var msg = JSON.parse(data.message);
+        var list = JSON.parse(msg.list);
+        var listList = list.list;
+        refunShopShow(listList);
+        $('#refunShopSelcet li').each(function () {
+            var val = $(this).text();
+            if(val == ''){
+                $(this).remove();
+                console.log('删除');
+            }
+        });
+    })
+}
+function refunShopShow(listList){
+    for(i=0;i<listList.length;i++){
+        var tempHTML = '<li id=${id} name=${name} onclick="refunShopSelcetClick(this)">${msg}<li>';
+        var html = '';
+        var store_code = listList[i].store_code;
+        var store_name = listList[i].store_name;
+        var nowHTML1 = tempHTML;
+        nowHTML1 = nowHTML1.replace("${id}", store_code);
+        nowHTML1 = nowHTML1.replace("${msg}", store_name);
+        nowHTML1 = nowHTML1.replace("${name}", i);
+        html += nowHTML1;
+        console.log(html);
+        $("#refunShopSelcet").append(html);
+    }
+}
 $('#refunShop').click(function () {
     event.stopPropagation();
     $('#refunType').css('display','none');
     $('#refunShopSelcet').toggle();
 })
 //下拉选择
-$("#refunShopSelcet li").click(function () {
-    var val = $(this).html();
-    $(this).addClass("liactive").siblings("li").removeClass("liactive");
+function refunShopSelcetClick(dom){
+    var val =$(dom).text();
+    var id =$(dom).attr("id");
+    $(dom).addClass("liactive").siblings("li").removeClass("liactive");
     $("#refunShop").val(val);
+    $("#refunShop").attr("data-storecode",id);
     $('#refunShopSelcet').css('display','none');
-});
+    //$("#topUpPeople").val("");
+    //topUpPeople();  //充值弹窗经办人列表
+}
 //经办人
 function topUpPeople(){
     var param={};
@@ -223,9 +265,9 @@ function topUpPeopleShow(msg){
     var html = '';
     for(i=0;i<msg.length;i++){
         var user_name = msg[i].user_name;
-        var user_id = msg[i].user_id;
+        var user_code = msg[i].user_code;
         var nowHTML1 = tempHTML;
-        nowHTML1 = nowHTML1.replace("${id}", user_id);
+        nowHTML1 = nowHTML1.replace("${id}", user_code);
         nowHTML1 = nowHTML1.replace("${msg}", user_name);
         html += nowHTML1;
         $("#topUpPeopleSelect").empty();
@@ -245,6 +287,8 @@ function topUpPeopleClick(dom){
     var val =$(dom).text();
     $(dom).addClass("liactive").siblings("li").removeClass("liactive");
     $("#topUpPeople").val(val);
+    cache.user_code = $(dom).attr('id');
+    console.log(cache.user_code);
     $('#topUpPeopleSelect').css('display','none');
 }
 //vip卡号、vip姓名
@@ -333,12 +377,12 @@ function refunBalanceShow(){
 }
 //保存
 $('#toSave').click(function(){
-    var topUpNum = $('#topUpNum').val();//单据编号
+    //var topUpNum = $('#topUpNum').val();//单据编号
     var topData = $('#chooseDate').val();//单据日期
     var topType = $('#execution_input').val(); //充值类型
     var topUpShop = $('#topUpShop').val();  //充值店仓
     var topUpPeople = $('#topUpPeople').val();//经办人
-    var topUpCard = $('#topUpCard').val();//会员卡号
+    var topUpCard = $('#vip_card_no').text();//会员卡号
     var topUpVipName = $('#topUpVipName').val();
     var topUpMoney = $('#topUpMoney').val(); //吊牌金额
     var topUpMoneyReality = $('#topUpMoneyReality').val(); //实付金额
@@ -378,14 +422,14 @@ $('#toSave').click(function(){
          param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
          param["date"] = topData;//单据日期
          param["pay_type"] = pay_type;//充值类型
-         param["user_code"] = '1000409104';
+         param["user_code"] = cache.user_code;
          param["user_name"] = topUpPeople;//经办人
          param["price"] = topUpMoney;//吊牌金额
          param["pay_price"] = topUpMoneyReality;//实付金额
          param["discount"] = topUpMoneyDiscount;//折扣
-        //param["type"] = 'pay';
+         param["type"] = 'pay';
         //param["billNo"] = topUpNum;//单据编号
-        //param["pay_price"] = topUpMoneyReality;//实付金额
+        // param["pay_price"] = topUpMoneyReality;//实付金额
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
                 $('#topUp').css('display','none');
@@ -398,7 +442,12 @@ $('#toSave').click(function(){
                 });
                 return ;
             } else if (data.code == "-1") {
-                console.log(data.message);
+                art.dialog({
+                    time: 2.2,
+                    lock: true,
+                    cancel: false,
+                    content: data.message
+                });
             }
         });
     }
@@ -411,15 +460,19 @@ function toSave(){
     var param = {};
     param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
     param["vip_id"] = sessionStorage.getItem("id");//会员编号
+    param["vip_name"] = $('#vip_name').text();//会员名称
     param["card_no"] = $('#vip_card_no').text();//会员卡号
+    param["remark"] = $('#refundNote').val();//备注
+    param["store_name"] = $('#refunShop').val();//充值店铺
+    param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
+    param["date"] = $('#refundDate').val();//单据日期
+    //param["price"] = topUpMoney;//吊牌金额
+    param["pay_price"] = $('#refundReality').val();//实付金额
+    param["discount"] = $('#refundMoneyDiscount').val();//折扣
     param["type"] = 'refund';
-    param["billNo"] = $('#refundNum').val();//单据编号
-    param["refund_type"] = refunTypeInput;//退款类型
-    param["remark"] = $('#refundNote').val();//备注
-    param["store_code"] = $('#refunShop').val();//退款店铺
-    param["remark"] = $('#refundNote').val();//备注
     if(refunTypeInput == '按充值单退款'){
         param["sourceNo"] = $('#refunTopUpFrom').val();//来源单号
+        param["pay_type"] ='1'; //充值类型
         if(refunTypeInput!='' && $('#refunTopUpFrom').val() != ''&& $('#refunShop').val() != ''){
             oc.postRequire("post", " /vip/recharge", "", param, function (data) {
                 if (data.code == "0") {
@@ -448,6 +501,7 @@ function toSave(){
     }
     if(refunTypeInput == '余额退款'){
         param["sourceNo"] = $('#refunBalanceFrom').val();//来源单号
+        param["pay_type"] ='2'; //充值类型
         oc.postRequire("post", " /vip/recharge", "", param, function (data) {
             if (data.code == "0") {
                 $('#refund').css('display','none');
@@ -581,6 +635,7 @@ window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop();    //充值弹窗充值店仓列表
     getRecord()  //充值记录数据加载
+    refunShop();
     setInterval(function () {
         $('.laydate_box').css('position','fixed');
         var val = $('.laydate_box').css('display');
