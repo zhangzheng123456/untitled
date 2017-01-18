@@ -530,6 +530,8 @@
 #customer{
     display:none;
     margin-top: 10px;
+    overflow: hidden;
+    min-height: 370px;
 }
 #customer>div{
     float: left;
