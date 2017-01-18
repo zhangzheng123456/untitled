@@ -1254,6 +1254,7 @@ $('#change_save').click(function () {
     param.phone=$('#vip_phone_edit').val();
     param.birthday=$('#vip_birthday_edit').val().split('-').join('');
     param.card_no=$('#vip_card_no_edit').val();
+    param.sex=$("#USER_SEX").val();
     oc.postRequire("post","/vip/updateVip","",param,function(data){
         if(data.code==0){
             art.dialog({
