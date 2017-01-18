@@ -9,6 +9,12 @@ var getNewVip={
         $('#jurisdiction').on('click', '#add', function (e) {
             whir.loading.add("mask",0.5);//加载等待框
             // $('#loading').remove();
+            if(!($('#delete_dom').find('select').css('display')=='inline-flex')){
+                $('#delete_dom').find('select').css('display','inline-flex')
+            }
+            if(!($('#delete_dom2').find('select').css('display')=='inline-flex')){
+                $('#delete_dom2').find('select').css('display','inline-flex')
+            }
             $('.vipName').val('');
             $('.birthday').val('');
             $('.billNo').val('');
@@ -341,12 +347,13 @@ var getNewVip={
                     content: "新增成功"
                 });
             }else if(data.code==-1){
+                var str=data.message==''?'新增失败':data.message;
                 art.dialog({
                     zIndex:10003,
                     time: 1,
                     lock: true,
                     cancel: false,
-                    content: "新增失败"
+                    content: str
                 });
             }
         })

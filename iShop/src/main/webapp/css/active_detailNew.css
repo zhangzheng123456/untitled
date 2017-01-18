@@ -445,6 +445,8 @@
     text-align: center;
     width: 100%;
     max-height:330px;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 #add_store_tb thead,#join_store_tb thead,#vip_status_tb thead{
     background: #efefef;
@@ -456,6 +458,8 @@
 }
 #showList2,#showList3,#vip_status_tb{
     width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 #join_store_tb,#vip_status_tb{
     margin-top: 10px;
