@@ -497,7 +497,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $("#add_one").before('<div class="item_box" id="'+goods_code+'">'+'<div class="item_area"  onclick = "removeIt(this)"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_code+'</div>'+'</li>');
+        $("#add_one").before('<div class="item_box" id="'+goods_code+'">'+'<div class="item_area"  onclick = "removeIt2(this)"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_code+'</div>'+'</li>');
         $(".list_content").eq(1).find('i').css('display','none');
     }
 
@@ -750,15 +750,17 @@ function showImg(storeAs){
 function removeIt(dom){
     $(dom).parent('.item_box').remove();
 }
-////搭配商品
-//$('.goods_add').click(function(){
-//    var img = $(this).parent('li').find('img').attr('src');
-//    var goods_code = $(this).parent('li').find('.goods_code').text();
-//    console.log('选中商品id'+goods_code+','+img);
-//});
-//$('.icon-ishop_6-12').click(function(){
-//    console.log('取消');
-//});
+function removeIt2(dom){
+    $(dom).parent('.item_box').remove();
+    var key = $(dom).parent().attr('id');
+    console.log(key);
+    $('#stop li').each(function () {
+        console.log('查找匹配');
+        if($(this).attr('id')==key){
+            $(this).find('.icon-ishop_6-12').click();
+        }
+    });
+}
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
