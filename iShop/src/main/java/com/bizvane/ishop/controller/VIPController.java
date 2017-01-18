@@ -753,8 +753,7 @@ public class VIPController {
                 String vip_id = vip_ids[i];
                 HashMap<String,Object> vipInfo = new HashMap<String, Object>();
                 vipInfo.put("id",vip_id);
-
-                vipInfo.put("SALESREP_ID__NAME",user_name);
+                vipInfo.put("SALEHREMP_ID__NAME",user_name);
 
                 String result = crmInterfaceService.modInfoVip(corp_code,vipInfo);
                 JSONObject result_obj = JSONObject.parseObject(result);
