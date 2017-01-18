@@ -497,7 +497,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $("#add_one").before('<div class="item_box" onclick = "removeIt(this)"id="'+goods_code+'">'+'<div class="item_area"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_code+'</div>'+'</li>');
+        $("#add_one").before('<div class="item_box" id="'+goods_code+'">'+'<div class="item_area"  onclick = "removeIt(this)"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_code+'</div>'+'</li>');
         $(".list_content").eq(1).find('i').css('display','none');
     }
 
