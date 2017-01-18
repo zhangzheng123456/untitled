@@ -468,15 +468,19 @@ public class VipActivityServiceImpl implements VipActivityService {
     public void updateStatus(String activity_code){
         try {
             VipActivity vipActivity = selActivityByCode(activity_code);
-            String end_time = vipActivity.getEnd_time();
-            String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(end_time));
-            String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
-            long aa = Long.parseLong(st);
-            long bb = Long.parseLong(now);
-            if (aa < bb) {
-                vipActivity.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
-                vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
-                updateVipActivity(vipActivity);
+            if (vipActivity != null){
+                String end_time = vipActivity.getEnd_time();
+                String st = Common.DATETIME_FORMAT_DAY_NUM.format(Common.DATETIME_FORMAT.parse(end_time));
+                String now = Common.DATETIME_FORMAT_DAY_NUM.format(new Date());
+                long aa = Long.parseLong(st);
+                long bb = Long.parseLong(now);
+                if (aa < bb) {
+                    vipActivity.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+                    vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
+                    updateVipActivity(vipActivity);
+                    scheduleJobService.updateSchedule(activity_code,activity_code);
+                }
+            }else {
                 scheduleJobService.updateSchedule(activity_code,activity_code);
             }
         }catch (Exception ex){

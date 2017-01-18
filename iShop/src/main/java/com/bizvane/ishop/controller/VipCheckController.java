@@ -268,29 +268,31 @@ public class VipCheckController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
 
-            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            MongoTemplate mongoTemplate = mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
-            Map keyMap = new HashMap();
-            keyMap.put("_id", id);
-            BasicDBObject queryCondition = new BasicDBObject();
-            queryCondition.putAll(keyMap);
-            DBCursor dbCursor = cursor.find(queryCondition);
+            BasicDBObject dbObject = new BasicDBObject();
+            dbObject.put("_id", id);
+            DBCursor dbCursor = cursor.find(dbObject);
+
             if (dbCursor.size() > 0) {
                 DBObject obj = dbCursor.next();
-                String _id = obj.get("_id").toString();
 
+                JSONObject result = new JSONObject();
+                result.put("list", obj);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(result.toString());
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("error");
             }
-            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
 
-            JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage("信息异常");
+            e.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
