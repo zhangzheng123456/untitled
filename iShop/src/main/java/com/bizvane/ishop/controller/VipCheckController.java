@@ -315,12 +315,12 @@ public class VipCheckController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
-            String status = jsonObject.get("status").toString();
+//            String status = jsonObject.get("status").toString();
             String type = jsonObject.get("type").toString();
-            String billNo = jsonObject.get("billNo").toString();
+//            String billNo = jsonObject.get("billNo").toString();
 
-            String corp_code =id.split("-")[0];
-            int bill_id = Integer.parseInt(id.split("-")[1]);
+            String corp_code =id.split("_")[0];
+            int bill_id = Integer.parseInt(id.split("_")[1]);
             String result = "";
             if (type.equals("pay")){
                 result = crmInterfaceService.submitPrepaidBill(corp_code,bill_id);
@@ -330,28 +330,27 @@ public class VipCheckController {
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
-                Map keyMap = new HashMap();
-                keyMap.put("_id", id);
-                BasicDBObject queryCondition = new BasicDBObject();
-                queryCondition.putAll(keyMap);
-                DBCursor dbCursor = cursor.find(queryCondition);
-                if (dbCursor.size() > 0) {
-                    //记录存在，更新
-                    DBObject updateCondition = new BasicDBObject();
-                    updateCondition.put("_id", id);
-                    DBObject updatedValue = new BasicDBObject();
-                    updatedValue.put("check_status", status);
-                    DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
-                    cursor.update(updateCondition, updateSetValue);
-                }
+                //记录存在，更新
+                DBObject updateCondition = new BasicDBObject();
+                updateCondition.put("_id", id);
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("status", "1");
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage("success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage(result_obj.getString("message"));
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
@@ -364,6 +363,8 @@ public class VipCheckController {
     @ResponseBody
     public String editBill(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
         try {
             String jsString = request.getParameter("param");
             logger.info("json-select-------------" + jsString);
@@ -372,9 +373,11 @@ public class VipCheckController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String type = jsonObject.get("type").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
             String id = jsonObject.get("id").toString();
-            String bill_id = id.split("-")[1];
+            JSONArray content = jsonObject.getJSONArray("content");
+
+            String bill_id = id.split("_")[1];
+            String corp_code =id.split("_")[0];
 
             HashMap<String,Object> map = new HashMap<String, Object>();
             Iterator<String> it = jsonObject.keySet().iterator();
@@ -397,6 +400,13 @@ public class VipCheckController {
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
+                DBObject updateCondition = new BasicDBObject();
+                updateCondition.put("_id", id);
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("content", content);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("1");
                 dataBean.setMessage(result_obj.getString("message"));

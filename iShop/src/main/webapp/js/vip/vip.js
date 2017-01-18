@@ -2022,7 +2022,7 @@ $("#choose_staff .screen_que").click(function () {
     }else  if(li.length==1){
        $("#choose_staff").hide();
        $("#p").hide();
-       var staff_name = $("#choose_staff .screen_content_r ul li span").html();
+       var staff_name = $("#choose_staff .screen_content_r ul li input").attr("data-storename");
        var user_code = $("#choose_staff .screen_content_r ul li").attr("id");
        var store_code = $(tr[0]).attr("data-storeid");
        var vip_id = "";
@@ -2038,6 +2038,7 @@ $("#choose_staff .screen_que").click(function () {
         _param["store_code"]=store_code;
         _param["vip_id"]=vip_id;
         _param["user_code"]=user_code;
+        _param["user_name"]=staff_name;
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/vip/changeVipsUser","",_param,function (data) {
             if(data.code=="0"){
@@ -2046,7 +2047,13 @@ $("#choose_staff .screen_que").click(function () {
                 }
                 whir.loading.remove();//移除加载框
             }else if(data.code == "-1"){
-               console.log(data.message);
+                art.dialog({
+                    time: 1,
+                    lock: true,
+                    cancel: false,
+                    content: "分配失败"
+                });
+               whir.loading.remove();//移除加载框
             }
         })
     }

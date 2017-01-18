@@ -32,6 +32,15 @@
             background-size: 22px 22px;
             margin-left: 28px;
         }
+        .searchable-select-holder,.searchable-select{
+            width: 480px;
+        }
+        .searchable-has-privious{
+            margin-top: 34px;
+        }
+        #OWN_CORP{
+            width: 480px;
+        }
     </style>
     <style>
         body{
@@ -100,12 +109,17 @@
 <body>
 <body>
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="changePage()">秀搭管理</span><i class="icon-ishop_8-03"></i><label>新增秀搭</label></div>
+    <div class="col-lg-12 pre_title"><span>商品管理</span><i class="icon-ishop_8-03"></i><span onclick="toXiuda()">秀搭管理</span><i class="icon-ishop_8-03"></i><label>新增秀搭</label></div>
     <div class="editor_em col-lg-7 editor_line  animated fadeInRight marTop">
         <!--所属企业-->
         <div class="the_listTitle">
            <span>
-               <label class="red">所属企业*</label><input type="text" verify="Empty" maxlength="200"/>
+               <label class="red" style="display: inline">所属企业*</label><!--<input type="text" verify="Empty" maxlength="200"/>-->
+               <li>
+                   <span class="corp_select" style="width: 412px">
+                       <select id="OWN_CORP" style="display: inline-flex"></select>
+                   </span>
+               </li>
                 <div class="hint"><div hintinfo="所属企业不能为空！" class="error_tips">所属企业不能为空！</div></div>
             </span>
         </div>
@@ -153,7 +167,7 @@
         <!--搭配描述-->
         <div class="the_listTitle">
            <span>
-               <label>搭配描述</label><textarea name="" cols="30" rows="10" maxlength="1000"></textarea>
+               <label>搭配描述</label><textarea name="" cols="30" rows="10" maxlength="500"></textarea>
             </span>
         </div>
         <!--列表弹窗-->
