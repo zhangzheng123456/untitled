@@ -13,6 +13,7 @@
             this.backCheck();
             this.showType();
             this.editBill();
+            this.parseAudit();
         },
         backCheck:function(){
             $("#backCheck").bind("click",function(){
@@ -170,14 +171,46 @@
                     editParam[$(allInput[i]).parents("div").attr("id")]=$(allInput[i]).val()
                 }
                 editParam.store_name=$("#OWN_CORP").val();
-                editParam.user_name=$("#user_select").val();
-                editParam.type=$("#type").find("input").val();
+                editParam.user_name=$("#user_select").val()==null?"":$("#user_select").val();
+                editParam.type=$("#type").find("input").val()=="充值"?"pay":$("#type").find("input").val()=="退款"?"refund":"";
                 oc.postRequire("post","/vipCheck/editBill","",editParam,function(data){
                     console.log(data)
                 })
             })
+        },
+        parseAudit: function () {
+            $("#auditSuccess").bind("click",function(){
+                var type=$("#type").find("input").val()=="充值"?"pay":"refund";
+                var params={};
+                params["id"]=sessionStorage.getItem("id");
+                params["type"]=type;
+                oc.postRequire("post","/vipCheck/changeStatus","",params,function(data){
+                    if(data.code=="0"){
+                        frame();
+                        $('.frame').html("操作成功");
+                    }else{
+                        frame();
+                        $('.frame').html(data.message);
+                    }
+                })
+            })
         }
     };
+    //删除弹框
+    function frame(){
+        var def= $.Deferred();
+        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+        $('.frame').remove();
+        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        setTimeout(function(){
+            $(".frame").hide();
+            def.resolve();
+        },2000);
+        return def;
+    }
     $(function(){
         audit_info.init();
     })
