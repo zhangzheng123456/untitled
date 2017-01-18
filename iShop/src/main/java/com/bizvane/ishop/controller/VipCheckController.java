@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.constant.CommonValueCorp;
 import com.bizvane.ishop.entity.VipRules;
 import com.bizvane.ishop.service.CRMInterfaceService;
 import com.bizvane.ishop.service.VipRulesService;
@@ -276,7 +277,15 @@ public class VipCheckController {
 
             if (dbCursor.size() > 0) {
                 DBObject obj = dbCursor.next();
+                String type = obj.get("type").toString();
+                String corp_code = obj.get("corp_code").toString();
 
+                if (obj.containsField("recharge_type")) {
+                    String recharge_type = obj.get("recharge_type").toString();
+                    if (type.equals("充值")){
+//                        obj.put("recharge_type", CommonValueCorp);
+                    }
+                }
                 JSONObject result = new JSONObject();
                 result.put("list", obj);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -315,12 +324,12 @@ public class VipCheckController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String id = jsonObject.get("id").toString();
-            String status = jsonObject.get("status").toString();
+//            String status = jsonObject.get("status").toString();
             String type = jsonObject.get("type").toString();
-            String billNo = jsonObject.get("billNo").toString();
+//            String billNo = jsonObject.get("billNo").toString();
 
-            String corp_code =id.split("-")[0];
-            int bill_id = Integer.parseInt(id.split("-")[1]);
+            String corp_code =id.split("_")[0];
+            int bill_id = Integer.parseInt(id.split("_")[1]);
             String result = "";
             if (type.equals("pay")){
                 result = crmInterfaceService.submitPrepaidBill(corp_code,bill_id);
@@ -330,28 +339,27 @@ public class VipCheckController {
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
-                Map keyMap = new HashMap();
-                keyMap.put("_id", id);
-                BasicDBObject queryCondition = new BasicDBObject();
-                queryCondition.putAll(keyMap);
-                DBCursor dbCursor = cursor.find(queryCondition);
-                if (dbCursor.size() > 0) {
-                    //记录存在，更新
-                    DBObject updateCondition = new BasicDBObject();
-                    updateCondition.put("_id", id);
-                    DBObject updatedValue = new BasicDBObject();
-                    updatedValue.put("check_status", status);
-                    DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
-                    cursor.update(updateCondition, updateSetValue);
-                }
+                //记录存在，更新
+                DBObject updateCondition = new BasicDBObject();
+                updateCondition.put("_id", id);
+                DBObject updatedValue = new BasicDBObject();
+                updatedValue.put("status", "1");
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage("success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage(result_obj.getString("message"));
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
@@ -364,6 +372,8 @@ public class VipCheckController {
     @ResponseBody
     public String editBill(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
         try {
             String jsString = request.getParameter("param");
             logger.info("json-select-------------" + jsString);
@@ -372,31 +382,98 @@ public class VipCheckController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String type = jsonObject.get("type").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
             String id = jsonObject.get("id").toString();
-            String bill_id = id.split("-")[1];
+
+            JSONArray content = jsonObject.getJSONArray("content");
+
+            String bill_id = id.split("_")[1];
+            String corp_code =id.split("_")[0];
 
             HashMap<String,Object> map = new HashMap<String, Object>();
-            Iterator<String> it = jsonObject.keySet().iterator();
-            while (it.hasNext()) {
-                String key = it.next();
-                if (key == null) {
-                    continue;
-                }
-                Object value = jsonObject.get(key).toString().trim();
-                map.put(key, value);
-            }
+//            Iterator<String> it = jsonObject.keySet().iterator();
+//            while (it.hasNext()) {
+//                String key = it.next();
+//                if (key == null) {
+//                    continue;
+//                }
+//                Object value = jsonObject.get(key).toString().trim();
+//                map.put(key, value);
+//            }
             map.put("id",bill_id);
+
+            DBObject updatedValue = new BasicDBObject();
 
             String result = "";
             if (type.equals("pay")){
+                String bill_date = jsonObject.getString("bill_date");
+//                String store_name = jsonObject.getString("store_name");
+//                String user_name = jsonObject.getString("user_name");
+                String recharge_type = jsonObject.getString("recharge_type");
+                if (recharge_type.equals("直接充值"))
+                    recharge_type = "1";
+                if (recharge_type.equals("退换转充值"))
+                    recharge_type = "1";
+                String tag_price = jsonObject.getString("tag_price");
+                String pay_price = jsonObject.getString("pay_price");
+                String active_content = jsonObject.getString("active_content");
+                String remark = jsonObject.getString("remark");
+
+                map.put("bill_date",bill_date);
+//                map.put("store_name",store_name);
+//                map.put("user_name",user_name);
+                map.put("recharge_type",recharge_type);
+                map.put("tag_price",tag_price);
+                map.put("pay_price",pay_price);
+//                map.put("active_content",active_content);
+                map.put("remark",remark);
+
+                updatedValue.put("bill_date",bill_date);
+//                updatedValue.put("store_name",store_name);
+//                updatedValue.put("user_name",user_name);
+                updatedValue.put("recharge_type",recharge_type);
+                updatedValue.put("tag_price",tag_price);
+                updatedValue.put("pay_price",pay_price);
+                updatedValue.put("remark",remark);
+
+                logger.info("-----"+JSON.toJSONString(map));
                 result = crmInterfaceService.modPrepaidStatus(corp_code,map);
             }else if (type.equals("refund")){
+                String bill_date = jsonObject.getString("bill_date");
+//                String store_name = jsonObject.getString("store_name");
+//                String user_name = jsonObject.getString("user_name");
+                String recharge_type = jsonObject.getString("recharge_type");
+                if (recharge_type.equals("按余额退款"))
+                    recharge_type = "BA";
+                if (recharge_type.equals("按充值单退款"))
+                    recharge_type = "VM";
+                String source_no = jsonObject.getString("source_no");
+                String remark = jsonObject.getString("remark");
+
+                map.put("bill_date",bill_date);
+//                map.put("store_name",store_name);
+//                map.put("user_name",user_name);
+                map.put("recharge_type",recharge_type);
+                map.put("source_no",source_no);
+                map.put("remark",remark);
+
+                updatedValue.put("bill_date",bill_date);
+//                updatedValue.put("store_name",store_name);
+//                updatedValue.put("user_name",user_name);
+                updatedValue.put("recharge_type",recharge_type);
+                updatedValue.put("source_no",source_no);
+                updatedValue.put("remark",remark);
+                logger.info("-----"+JSON.toJSONString(map));
+
                 result = crmInterfaceService.modRefundStatus(corp_code,map);
             }
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
+                DBObject updateCondition = new BasicDBObject();
+                updateCondition.put("_id", id);
+                DBObject updateSetValue = new BasicDBObject("$set", updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("1");
                 dataBean.setMessage(result_obj.getString("message"));
@@ -409,6 +486,7 @@ public class VipCheckController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

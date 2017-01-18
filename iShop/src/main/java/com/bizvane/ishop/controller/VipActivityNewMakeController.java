@@ -60,16 +60,20 @@ public class VipActivityNewMakeController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("0");
                 dataBean.setMessage("成功");
-            } else {
+            }else if(count==-1){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("0");
+                dataBean.setMessage("最多只能创建10条任务");
+            }  else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("-1");
-                dataBean.setMessage("失败");
+                dataBean.setMessage("添加任务失败");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
-            dataBean.setMessage("失败");
+            dataBean.setMessage("添加任务失败");
         }
         return dataBean.getJsonStr();
     }
@@ -214,16 +218,20 @@ public class VipActivityNewMakeController {
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId("0");
                     dataBean.setMessage("成功");
+            }else if(count==-1){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("0");
+                dataBean.setMessage("最多只能创建10条任务");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("-1");
-                dataBean.setMessage("失败");
+                dataBean.setMessage("添加任务失败");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
-            dataBean.setMessage("失败");
+            dataBean.setMessage("添加任务失败");
         }
         return dataBean.getJsonStr();
     }
@@ -233,6 +241,7 @@ public class VipActivityNewMakeController {
     @RequestMapping(value = "/addStrategyBySend", method = RequestMethod.POST)
     public String addStrategyBySend(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String result="群发失败";
         try {
             String user_code = request.getSession().getAttribute("user_code").toString();
 
@@ -241,22 +250,22 @@ public class VipActivityNewMakeController {
 
             String message = jsonObj.get("message").toString();
 
-            int count = vipActivityMakeService.addStrategyBySend(message, user_code);
+            result = vipActivityMakeService.addStrategyBySend(message, user_code);
 
-            if (count > 0) {
+            if (result.equals("成功")) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("0");
                 dataBean.setMessage("成功");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("-1");
-                dataBean.setMessage("失败");
+                dataBean.setMessage(result);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
-            dataBean.setMessage("失败");
+            dataBean.setMessage(result);
         }
         return dataBean.getJsonStr();
     }

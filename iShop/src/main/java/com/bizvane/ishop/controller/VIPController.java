@@ -118,7 +118,7 @@ public class VIPController {
             if (code.equals("0")){
                 result = result_obj.getString("rows");
                 JSONObject obj = JSONObject.parseObject(result);
-                vip_id = obj.getString("ID");
+                vip_id = obj.getString("id");
                 card_no = obj.getString("CARDNO");
                 vip_card_type = obj.getString("C_VIPTYPE_ID");
                 //调毛伟栋新增接口
@@ -1225,7 +1225,13 @@ public class VIPController {
             String code = result_obj.getString("code");
             if (code.equals("0")){
                 JSONObject obj_re = result_obj.getJSONObject("rows");
-                obj_re.put("balance",obj_re.getString("TOT_AMT_ACTUAL"));
+                if (type.equals("balances"))
+                    obj_re.put("balance",obj_re.getString("AMOUNT_ACTUAL"));
+                if (type.equals("billNo")){
+                    obj_re.put("price",obj_re.getString("TOT_AMT_ACTUAL"));
+                    obj_re.put("pay_price",obj_re.getString("AMOUNT_ACTUAL"));
+                    obj_re.put("discount",obj_re.getString("DISCOUNT"));
+                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(result_obj.getString("rows"));

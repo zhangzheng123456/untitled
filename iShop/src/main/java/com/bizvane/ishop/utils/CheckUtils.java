@@ -76,7 +76,7 @@ public class CheckUtils {
         }else if(run_mode.equals("sales")){
             result="促销活动";
         }else if(run_mode.equals("h5")){
-            result="H5活动";
+            result="网页活动";
         }else if(run_mode.equals("coupon")){
             result="优惠券活动";
         }else if(run_mode.equals("invite")){

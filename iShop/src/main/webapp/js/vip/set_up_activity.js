@@ -25,6 +25,7 @@ var activity={
         if(activity.activity_code!==null){
             this.activityEdit();
         }else {
+            activity.activity_code="";
             this.getcorplist();
         }
         this.selectClick();
@@ -789,7 +790,7 @@ var activity={
                     var param={};
                     param["corp_code"]=$("#OWN_CORP").val();
                     param["activity_theme"]=theme;
-                    param["activity_code"]="";
+                    param["activity_code"]=activity.activity_code;
                     oc.postRequire("post","/vipActivity/activityThemeExist","0",param,function (data) {
                         if(data.code=="-1"){
                             activity.theme="当前企业下该会员活动标题已存在";
@@ -1100,14 +1101,14 @@ var activity={
             var activity_store_code=JSON.parse(list.activity_store_code);
             switch (list.run_mode){
                 case "招募活动":type="recruit";break;
-                case "H5活动":type="h5";break;
+                case "网页活动":type="h5";break;
                 case "促销活动":type="sales";break;
                 case "优惠券活动":type="coupon";break;
                 case "线下报名活动":type="invite";break;
                 case "节日活动":type="festival";break;
             }
             activity.getcorplist(list.corp_code);
-            $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(),max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
+            $("#activity_start").attr("onclick","laydate({elem:'#activity_start',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '"+list.end_time+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
             $("#activity_start").val(list.start_time);
             $("#activity_end").attr("onclick","laydate({elem:'#activity_end',min:'"+list.start_time+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
             $("#activity_end").val(list.end_time);
@@ -1138,7 +1139,7 @@ var activity={
                     $("#sales_url").val(list.activity_url);
                     $($("#sales_activity").find("input")[1]).val(list.sales_no);
                 }
-                if(type=="H5活动"){
+                if(type=="网页活动"){
                     $("#h5_activity").show();
                     $($("#h5_activity").find("input")[0]).val(list.h5_url);
                 }
@@ -1148,7 +1149,7 @@ var activity={
                     $("#holiday_end").val(list.festival_end);
                     $("#festival_url").val(list.activity_url);
                     $("#holiday_end").attr("onclick","laydate({elem:'#holiday_end',min:'"+list.festival_start+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayEnd})");
-                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
+                    $("#holiday_start").attr("onclick","laydate({elem:'#holiday_start',min:laydate.now(0, 'YYYY/MM/DD 00:00:00'),max: '"+list.festival_end+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:holidayStart})");
                 }
                 if(type=="线下报名活动"){
                     $(".offline_activity").show();

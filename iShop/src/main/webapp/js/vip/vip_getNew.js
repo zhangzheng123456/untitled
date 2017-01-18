@@ -9,6 +9,12 @@ var getNewVip={
         $('#jurisdiction').on('click', '#add', function (e) {
             whir.loading.add("mask",0.5);//加载等待框
             // $('#loading').remove();
+            if(!($('#delete_dom').find('select').css('display')=='inline-flex')){
+                $('#delete_dom').find('select').css('display','inline-flex')
+            }
+            if(!($('#delete_dom2').find('select').css('display')=='inline-flex')){
+                $('#delete_dom2').find('select').css('display','inline-flex')
+            }
             $('.vipName').val('');
             $('.birthday').val('');
             $('.billNo').val('');
@@ -227,6 +233,7 @@ var getNewVip={
                     //调导购
                     me.getMoreStaff();
                     me.getBillNo();
+                    me.getLevel();
                 }
             });
             $('#get_more_store .searchable-select-item').click(function(){
@@ -238,10 +245,12 @@ var getNewVip={
                 //调导购
                 me.getMoreStaff();
                 me.getBillNo();
+                me.getLevel();
             })
             whir.loading.remove();//移除加载框
             me.getMoreStaff();
             me.getBillNo();
+            me.getLevel();
         }else if(data.code=="-1"){
             art.dialog({
                 time: 1,
@@ -263,14 +272,39 @@ var getNewVip={
     $('#gender').parent().find('.searchable-select-holder').html('男');
     $('#gender').parent().find('.searchable-select-input').remove();
 
-    var corp_htm2='<option value="东鹏玖姿贵宾卡">东鹏玖姿贵宾卡</option>'
-        +'<option value="玖姿贵宾卡">玖姿贵宾卡</option>'
-        +'<option value="南阳贵宾卡">南阳贵宾卡</option>'
-        +'<option value="玖姿累积卡">玖姿累积卡</option>';
-        $("#vipCardType").append(corp_htm2);
-        $('#vipCardType').searchableSelect();
-        $('#vipCardType').parent().find('.searchable-select-holder').html('东鹏玖姿贵宾卡');
-        $('#vipCardType').parent().find('.searchable-select-input').remove();
+    // var corp_htm2='<option value="东鹏玖姿贵宾卡">东鹏玖姿贵宾卡</option>'
+    //     +'<option value="玖姿贵宾卡">玖姿贵宾卡</option>'
+    //     +'<option value="南阳贵宾卡">南阳贵宾卡</option>'
+    //     +'<option value="玖姿累积卡">玖姿累积卡</option>';
+    //     $("#vipCardType").append(corp_htm2);
+    //     $('#vipCardType').searchableSelect();
+    //     $('#vipCardType').parent().find('.searchable-select-holder').html('东鹏玖姿贵宾卡');
+    //     $('#vipCardType').parent().find('.searchable-select-input').remove();
+    },
+    getLevel:function () {
+        var _param={};
+        var  code=$('#OWN_STORE').val().split('-');
+        _param.corp_code=code[1];
+        oc.postRequire("post","/vipCardType/getVipCardTypes","", _param, function(data) {
+            if(data.code=="0"){
+                var arr_card=JSON.parse(JSON.parse(data.message).list);
+                var card_html=[];
+                for(var i=0;i<arr_card.length;i++){
+                    card_html.push('<option value="'+arr_card[i].vip_card_type_code+'">'+arr_card[i].vip_card_type_name+'</option>');
+                }
+                $("#vipCardType").append(card_html.join(''));
+                $('#vipCardType').searchableSelect();
+                $('#vipCardType').parent().find('.searchable-select-holder').html('<option value="'+arr_card[0].vip_card_type_code+'">'+arr_card[0].vip_card_type_name+'</option>');
+                $('#vipCardType').parent().find('.searchable-select-input').remove();
+            }else if(data.code=="-1"){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        })
     },
     getMoreStaff:function(){
         whir.loading.add("",0.5);//加载等待框
@@ -331,8 +365,11 @@ var getNewVip={
         param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[0];
         param.user_name=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[1];
         param.store_code=String($('#OWN_STORE').val()).search('null')!=-1?'':$('#OWN_STORE').val().split('-')[0];
+        $('#loading_2').show();
         oc.postRequire("post","/vip/addVip","", param, function(data) {
+            $('#loading_2').hide();
             if(data.code==0){
+                $('#loading').remove();
                 art.dialog({
                     zIndex:10003,
                     time: 1,
@@ -340,13 +377,15 @@ var getNewVip={
                     cancel: false,
                     content: "新增成功"
                 });
+
             }else if(data.code==-1){
+                var str=data.message==''?'新增失败':data.message;
                 art.dialog({
                     zIndex:10003,
                     time: 1,
                     lock: true,
                     cancel: false,
-                    content: "新增失败"
+                    content: str
                 });
             }
         })
