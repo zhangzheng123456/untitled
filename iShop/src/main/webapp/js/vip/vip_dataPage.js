@@ -143,13 +143,16 @@ function topUpShop(a) {
             var msg = JSON.parse(data.message);
             var list = JSON.parse(msg.list);
             var listList = list.list;
+            console.log(listList);
             //topUpShopShow(listList);
-            var corp_html = '';
-            for(i=0;i<listList.length;i++ ) {
-                corp_html += '<option value="' + listList[i].corp_code + '">' + listList[i].corp_name + '</option>';
-                console.log('当前店铺是'+c.corp_name);
-                $("#OWN_CORP").append(corp_html);
+            //var index=0;
+            var corp_html='';
+            //var c=null;
+            for(var i=0;i<listList.length;i++){
+                //c= list.list[index];
+                corp_html+='<option value="'+listList[i].store_code +'">'+listList[i].store_name+'</option>';
             }
+            $("#OWN_CORP").append(corp_html);
             if (a !== "") {
                 $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
             }
@@ -192,6 +195,8 @@ function topUpShop(a) {
                 $('.xingming').empty();
                 $('#all_type .task_allot').html("所属店铺");
                 $("#shop").hide();
+                var store_code = $('.searchable-select-item.selected').attr('data-value');
+                topUpPeople(store_code);  //充值弹窗经办人列表
             })
 
         } else if (data.code == "-1") {
@@ -203,48 +208,6 @@ function topUpShop(a) {
             });
         }
     })
-    topUpPeople();  //充值弹窗经办人列表
-        //$('#topUpShopSelcet li').each(function () {
-        //    var val = $(this).text();
-        //    if(val == ''){
-        //        $(this).remove();
-        //        console.log('删除');
-        //    }
-        //});
-}
-//function topUpShopShow(listList){
-//    for(i=0;i<listList.length;i++){
-//        var tempHTML = '<li id=${id} name=${name} onclick="topUpShopSelcetClick(this)">${msg}<li>';
-//        var html = '';
-//        var store_code = listList[i].store_code;
-//        var store_name = listList[i].store_name;
-//        var nowHTML1 = tempHTML;
-//        nowHTML1 = nowHTML1.replace("${id}", store_code);
-//        nowHTML1 = nowHTML1.replace("${msg}", store_name);
-//        nowHTML1 = nowHTML1.replace("${name}", i);
-//        html += nowHTML1;
-//        console.log(html);
-//        $("#topUpShopSelcet_ul").append(html);
-//    }
-//}
-$('#topUpShop').click(function(){
-    event.stopPropagation();
-    $('#execution').css('display','none');
-    $('#topUpPeopleSelect').css('display','none');
-    $('#topUpPeopleSelect_ul').css('display','none');
-    $('#topUpShopSelcet').toggle();
-    $('#topUpShopSelcet_ul').toggle();
-});
-//下拉选择
-function topUpShopSelcetClick(dom){
-    var val =$(dom).text();
-    var id =$(dom).attr("id");
-    $(dom).addClass("liactive").siblings("li").removeClass("liactive");
-    $("#topUpShop").val(val);
-    $("#topUpShop").attr("data-storecode",id);
-    $('#topUpShopSelcet').css('display','none');
-    $("#topUpPeople").val("");
-    topUpPeople();  //充值弹窗经办人列表
 }
 //退款店仓
 function refunShop(){
@@ -299,10 +262,10 @@ function refunShopSelcetClick(dom){
     //topUpPeople();  //充值弹窗经办人列表
 }
 //经办人
-function topUpPeople(){
+function topUpPeople(store_code){
     var param={};
     // param["store_code"]=sessionStorage.getItem("store_id");
-    param["store_code"]=$("#topUpShop").attr("data-storecode");
+    param["store_code"]=store_code;
     param["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/shop/staff","",param,function(data){
         if(data.code == '0'){
@@ -706,6 +669,11 @@ window.onload = function(){
             $('#chooseDate').click(function () {
                 $('.laydate_box').toggle();
             })
+        }
+        //充值操作人员
+        if($('#topUpPeople').val()==''){
+            var store_code = $('.searchable-select-item.selected').attr('data-value');
+            topUpPeople(store_code);  //充值弹窗经办人列表
         }
     },500);
     $('body').click(function () {
