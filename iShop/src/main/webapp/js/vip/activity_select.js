@@ -109,7 +109,7 @@ $("#staff_shop").click(function(){
     var tp=(arr[3]-$("#screen_shop").height())/2+50;
     $("#screen_shop .screen_content_l").unbind("scroll");
     $("#screen_shop .screen_content_l ul").empty();
-    $("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_shop").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_shop").show();
     $("#screen_staff").hide();
     getstorelist(shop_num);
@@ -139,7 +139,7 @@ $("#staff_area").click(function(){
     var tp=(arr[3]-$("#screen_shop").height())/2+50;
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_area").show();
     $("#screen_staff").hide();
     getarealist(area_num);
@@ -489,7 +489,7 @@ $("#staff_brand").click(function(){
     var left=(arr[0]-$("#screen_shop").width())/2;
     var tp=(arr[3]-$("#screen_shop").height())/2+50;
     $("#screen_brand .screen_content_l ul").empty();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_brand").show();
     $("#screen_staff").hide();
     getbrandlist();
@@ -519,7 +519,7 @@ $("#shop_area").click(function(){
     var tp=(arr[3]-$("#screen_shop").height())/2+50;
     $("#screen_area .screen_content_l").unbind("scroll");
     $("#screen_area .screen_content_l ul").empty();
-    $("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_area").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_area").show();
     $("#screen_shop").hide();
     getarealist(area_num);
@@ -546,7 +546,7 @@ $("#shop_brand").click(function(){
     var left=(arr[0]-$("#screen_shop").width())/2;
     var tp=(arr[3]-$("#screen_shop").height())/2+50;
     $("#screen_brand .screen_content_l ul").empty();
-    $("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+    $("#screen_brand").css({"left":+left+"px","top":+tp+"px","position":"fixed"});
     $("#screen_brand").show();
     $("#screen_shop").hide();
     getbrandlist();
@@ -632,6 +632,7 @@ function getActivityGroup() {
     var _param = {};
     _param["corp_code"] =corp_code;
     _param["search_value"] = $("#group_search_activity").val();
+    whir.loading.add("",0.5);
     oc.postRequire("post", corp_command, "0", _param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
@@ -648,6 +649,7 @@ function getActivityGroup() {
                         + "'></label></div><span class='p16'>"+list[i].vip_group_name+"</span></li>"
                 }
                 $("#screen_group .screen_content_l ul").append(html);
+                whir.loading.remove();//移除加载框
             } else if (list.length <= 0) {
                 //art.dialog({
                 //    time: 1,
@@ -1003,6 +1005,18 @@ $("#search_staff").keydown(function(){
         getstafflist(staff_num,mark);
     }
 });
+//区域搜索
+$("#area_search").keydown(function(){
+    var event=window.event||arguments[0];
+    area_num=1;
+    if(event.keyCode==13){
+        isscroll=false;
+        $("#screen_area .screen_content_l").unbind("scroll");
+        $("#screen_area .screen_content_l ul").empty();
+        getarealist(area_num);
+    }
+});
+
 //店铺放大镜搜索
 $("#store_search_f").click(function(){
     shop_num=1;

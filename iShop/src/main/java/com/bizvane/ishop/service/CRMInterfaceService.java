@@ -41,5 +41,5 @@ public interface CRMInterfaceService {
 
     public  String  getPrepaidOrder(String corpcode,HashMap<String,Object> prepaidMap);
 
-    public  String getRefundOrder(String corpcode,String id);
+    public  String getRefundOrder(String corpcode,HashMap<String,Object> refundMap);
 }
