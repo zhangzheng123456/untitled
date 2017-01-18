@@ -150,7 +150,7 @@ function topUpShop(a) {
             for (index in listList) {
                 c = listList[index];
                 corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
-                console.log(c.corp_name);
+                console.log('当前店铺是'+c.corp_name);
             }
             $("#OWN_CORP").append(corp_html);
             if (a !== "") {
