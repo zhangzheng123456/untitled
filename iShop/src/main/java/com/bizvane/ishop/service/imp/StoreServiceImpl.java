@@ -354,8 +354,10 @@ public class StoreServiceImpl implements StoreService {
             shop.setStreet(jsonObject.get("street").toString().trim());
             if (jsonObject.has("store_location") && !jsonObject.get("store_location").toString().equals("")){
                 String location = jsonObject.get("store_location").toString().trim();
-                shop.setLat(location.split(",")[0]);
-                shop.setLng(location.split(",")[1]);
+                if(location!=null&&!location.equals("")) {
+                    shop.setLat(location.split(",")[0]);
+                    shop.setLng(location.split(",")[1]);
+                }
             }
             Date now = new Date();
             shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -538,11 +540,13 @@ public class StoreServiceImpl implements StoreService {
                 store.setCity(jsonObject.get("city").toString().trim());
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
-                if (jsonObject.has("store_location")){
+                if (jsonObject.has("store_location")) {
                     String location = jsonObject.get("store_location").toString().trim();
                     store.setStore_location(location);
-                    store.setLat(location.split(",")[0]);
-                    store.setLng(location.split(",")[1]);
+                    if (location != null && !location.equals("")) {
+                        store.setLat(location.split(",")[0]);
+                        store.setLng(location.split(",")[1]);
+                    }
                 }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -583,8 +587,11 @@ public class StoreServiceImpl implements StoreService {
                 store.setStreet(jsonObject.get("street").toString().trim());
                 if (jsonObject.has("store_location")){
                     String location = jsonObject.get("store_location").toString().trim();
-                    store.setLat(location.split(",")[0]);
-                    store.setLng(location.split(",")[1]);
+                    if(location!=null&&!location.equals("")){
+                        store.setLat(location.split(",")[0]);
+                        store.setLng(location.split(",")[1]);
+                    }
+
                 }
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
