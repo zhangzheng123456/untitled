@@ -273,6 +273,7 @@ public class VIPRecordController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result1.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
@@ -345,6 +346,7 @@ public class VIPRecordController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result1.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());

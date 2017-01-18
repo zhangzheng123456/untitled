@@ -144,11 +144,10 @@ function topUpShop(a) {
             var list = JSON.parse(msg.list);
             var listList = list.list;
             //topUpShopShow(listList);
-            var index = 0;
             var corp_html = '';
             var c = null;
-            for (index in listList) {
-                c = listList[index];
+            for (i=1;i<listList.length;i++ ) {
+                c = listList[i];
                 corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
                 console.log('当前店铺是'+c.corp_name);
             }

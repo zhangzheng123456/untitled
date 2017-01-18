@@ -164,22 +164,28 @@ public class VIPController {
 
             String vip_name = jsonObject.get("vip_name").toString();
             String birthday = jsonObject.get("birthday").toString();
+            String sex = jsonObject.get("sex").toString();
 
             HashMap<String,Object> vipInfo = new HashMap<String, Object>();
             vipInfo.put("id",vip_id);
             vipInfo.put("VIPNAME",vip_name);
             vipInfo.put("BIRTHDAY",birthday.replace("-",""));
+            vipInfo.put("SEX",sex);
 
             String result = crmInterfaceService.modInfoVip(corp_code,vipInfo);
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
+                String gender = "M";
+                if (sex.equals("女"))
+                    gender = "F";
                 Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
                 Data data_vip_card_no = new Data("vip_card_no", card_no, ValueType.PARAM);
                 Data data_vip_phone = new Data("vip_phone", phone, ValueType.PARAM);
                 Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
                 Data data_name = new Data("name", vip_name, ValueType.PARAM);
                 Data data_birthday = new Data("birthday", birthday, ValueType.PARAM);
+                Data data_gender = new Data("gender", gender, ValueType.PARAM);
 
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_corp_code.key, data_corp_code);
@@ -188,6 +194,7 @@ public class VIPController {
                 datalist.put(data_vip_id.key, data_vip_id);
                 datalist.put(data_name.key, data_name);
                 datalist.put(data_birthday.key, data_birthday);
+                datalist.put(data_gender.key, data_gender);
 
                 DataBox dataBox = iceInterfaceService.iceInterfaceV3("VipProfileBackup", datalist);
                 String status = dataBox.status.toString();
@@ -1095,10 +1102,11 @@ public class VIPController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(status);
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
@@ -1189,6 +1197,8 @@ public class VIPController {
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
+                JSONObject obj_re = result_obj.getJSONObject("rows");
+                obj_re.put("balance",obj_re.getString("TOT_AMT_ACTUAL"));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(result_obj.getString("rows"));
@@ -1404,7 +1414,7 @@ public class VIPController {
             if (box.status.toString().equals("SUCCESS")){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("1");
-                dataBean.setMessage(box.data.get("message").toString());
+                dataBean.setMessage(box.data.get("message").value);
             }else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("1");
