@@ -34,8 +34,6 @@ var activityPlanning={
 		//任务切换
 		var self=this;
 		$("#task").on("click",".tabs_left ul li",function(){
-			console.log(12312);
-			console.log(self.modifieTask());
 			if(self.modifieTask()!=="成功"){
 				return;
 			};
@@ -82,6 +80,9 @@ var activityPlanning={
 		})
 		//添加任务
 		$("#task_add").on("click",function(){
+			setTimeout(function(){
+				self.lay1();
+			},300);
 			self.addTask();
 		});
 		//删除任务
@@ -108,6 +109,7 @@ var activityPlanning={
 		    self.param.tasklist.remove(current);
 			$("#task_title").val("");
 			$("#task_type_code").val("");
+			$("#task_type_code").attr("data-code","");
 			$("#task_description").val("");
 			$('#target_start_time').val("");
 			$('#target_end_time').val("");
@@ -121,7 +123,6 @@ var activityPlanning={
 					$("#task_content").hide();
 				}
 			}
-			laydate.reset();
 			$("#task_titles li.active").remove();
 			$(prev).addClass('active');
 			self.evaluationTask();
@@ -156,13 +157,12 @@ var activityPlanning={
 			}
 			var index=$(this).parents('.input_parent').prev().index();
 			if(index==0){
-				console.log(index);
 				$(this).parents('.input_parent').prev().find(".group_del").hide();
 			}
 			$(this).parents('.input_parent').prev().find(".add_del").show();
 			$(this).parents('.input_parent').remove();
 		})
-		$(".p_task_content").on("click",".input_parent .laydate-icon",function(){
+		$("#p_task_content").on("click",".input_parent .laydate-icon",function(){
 			var id=$(this).attr("id");
 			self.lay2(id);
 		})
@@ -200,6 +200,10 @@ var activityPlanning={
 		//编辑取消
 		$(".p_task_content").on("click",".input_parent .edit_footer_close",function(){
 			$(this).parents('.input_parent').find(".edit_frame").hide()
+			var is_modify=$(this).parents('.input_parent').attr("is_modify");
+			if(is_modify!=="Y"){
+				$(this).parents('.input_parent').find(".edit_content").val("");
+			}
 			whir.loading.remove('mask');
 		});
 		//编辑保存
@@ -219,7 +223,6 @@ var activityPlanning={
 		$("#ticket").on("click",".tabs_left ul li",function(){
 			var index=$(this).index();
 			$(this).addClass("active");
-			console.log(123);
 			$(this).siblings("li").removeClass("active");
 			$("#ticket_content .ticket_content").eq(index).show();
 			$("#ticket_content .ticket_content").eq(index).siblings().hide();
@@ -349,7 +352,6 @@ var activityPlanning={
 	evaluationTask:function(){
 		var nextIndex=$("#task_titles li.active").index();
 		var nextCurrent=this.param.tasklist[nextIndex];
-		console.log(000);
 		if(nextCurrent.is_modify=="Y"){
 			$("#task_title").attr("disabled",true);
 			$("#task_type_code").attr("disabled",true);
@@ -457,7 +459,7 @@ var activityPlanning={
 				time: 1,
 				lock:true,
 				cancel: false,
-				content:"开始时间不能为空"
+				content:"结束时间不能为空"
 			});
 			return;
 		}
@@ -482,7 +484,6 @@ var activityPlanning={
 		return param;
 	},
 	addTask:function(){//添加任务
-		console.log(0);
 		var self=this;
 		$("#task_content").show();
 		var length=$("#task_titles li").length+1;
@@ -491,6 +492,7 @@ var activityPlanning={
 			if(param==undefined){
 				return;
 			}
+			self.param.tasklist.push(param);
 		}
 		// if(length>=6){
 		// 	art.dialog({
@@ -514,7 +516,6 @@ var activityPlanning={
 		}else if(document.title=="创建活动"){
 			$("#task_titles").append("<li class='active'>任务"+length+"</li>");
 		}
-		self.param.tasklist.push(param);
 		$("#task_title").val("");
 		$("#task_type_code").val("");
 		$("#task_type_code").attr("data-code","");
@@ -526,7 +527,6 @@ var activityPlanning={
 	getGroupValue:function(){//获取群发的所有值
 		var type=$("#group .tabs_left ul li.active").attr("data-type");
 		var index=$("#group .tabs_left ul li.active").index();
-		console.log(index);
 		var param={};
 		var wxlist=[];
 		var smslist=[];
@@ -585,8 +585,6 @@ var activityPlanning={
 		if(wxlist.length=="0"&&smslist.length=="0"&&emlist.length=="0"){
 			return;
 		}
-		console.log(wxlist);
-		console.log(smslist);
 		param["wxlist"]=wxlist;
 		param["smslist"]=smslist;
 		param["emlist"]=emlist;
@@ -641,12 +639,20 @@ var activityPlanning={
 	submitGroup:function(){//提交群发
 		var self=this;
 		var param=self.getGroupValue();
-		console.log(param);
 		var def = $.Deferred();
-		if(param==undefined){
+		if(param==undefined&&self.param.group==false){
 			param={};
 			param["activity_vip_code"]=sessionStorage.getItem("activity_code");//活动编号
 		};
+		if(param==undefined&&self.param.group==true){
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content:"请将群发信息填写完整"
+				});
+			def.resolve("失败");
+		}else{
 			if(self.param.group==true){
 				param["send_status"]="Y";
 			}else if(self.param.group==false){
@@ -667,6 +673,7 @@ var activityPlanning={
 				}
 				whir.loading.remove();//移除加载框
 			});
+		}
 		return def;
 	},
 	getPlanningList:function(){//获取列表信息
@@ -677,7 +684,6 @@ var activityPlanning={
 		oc.postRequire("post","/vipActivity/arrange/list","0",param, function (data) {
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);;
-				console.log(message);
 				var wxlist=message.wxlist;
 				var smslist=message.smslist;
 				var emlist=message.emlist;
@@ -736,7 +742,7 @@ var activityPlanning={
 						}
 						wxhtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='wxlist"+i+"' "+disabled+" value='"+wxlist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
+										<label style='color:#c26555;'>发送时间*</label><input id='wxlist"+i+"' "+disabled+" value='"+wxlist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>微信推送配置</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -756,7 +762,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>微信内容</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555'>微信内容*</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -786,7 +792,7 @@ var activityPlanning={
 						}
 						smshtml+="<div class='input_parent' is_modify='"+is_modify+"'>\
 							    	<div class='float'>\
-										<label>发送时间</label><input id='smslist"+i+"' "+disabled+" value='"+smslist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
+										<label style='color:#c26555;'>发送时间*</label><input id='smslist"+i+"' "+disabled+" value='"+smslist[i].send_time+"' type='text' class='text_input laydate-icon' placeholder=''>\
 									</div>\
 									<div class='float margin_left'>短信内容设定</div>\
 									<div class='float group_edit margin_left'>编辑</div>\
@@ -806,7 +812,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>短信内容</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555;'>短信内容*</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -871,8 +877,6 @@ var activityPlanning={
 					for(var i=0;i<tasklist.length;i++){
 						var a=i+1;
 						var taskparam={};
-						console.log(tasklist);
-						console.log(tasklist[i].task_type_code);
 						taskparam["task_title"]=tasklist[i].task_title;//任务标题
 						taskparam["target_start_time"]=tasklist[i].target_start_time;//开始时间
 						taskparam["target_end_time"]=tasklist[i].target_end_time;//结束时间
@@ -911,9 +915,7 @@ var activityPlanning={
 		param["activity_code"]=activity_vip_code;
 		oc.postRequire("post","/vipActivity/select","0",param, function (data) {
 			var message=JSON.parse(data.message);
-			console.log(message);
 			var activityVip=JSON.parse(message.activityVip);
-			console.log(activityVip);
 			$("#activity_theme").html(activityVip.activity_theme);
 			$("#time").html(activityVip.start_time+"至"+activityVip.end_time);
 			$("#corp_name").html(activityVip.run_mode+"&nbsp;|&nbsp;"+activityVip.corp_name);
@@ -992,6 +994,7 @@ var activityPlanning={
 		return def;
 	},
 	lay1:function(){//定义日期格式
+		laydate.reset(); 
 		var start = {
 			elem:"#target_start_time",
 			format: 'YYYY-MM-DD',
@@ -1012,34 +1015,31 @@ var activityPlanning={
 		    istime: false,
 		    istoday: false,
 		    choose: function (datas) {
-		    	console.log(datas);
-		        start.max = datas; //结束日选好后，重置开始日的最大日期
+		        // start.max = datas; //结束日选好后，重置开始日的最大日期
 		    }
 		};
 		laydate(start);
 		laydate(end);
-		console.log(0123123);
 	},
 	getNowFormatDate:function () {//获取当前日期
 		var date = new Date();
-		var seperator1 = "-";
-		var year = date.getFullYear();
-		var month = date.getMonth() + 1;
-		var strDate = date.getDate() + 1;
-		if (month >= 1 && month <= 9) {
-			month = "0" + month;
-		}
-		if (strDate >= 0 && strDate <= 9) {
-			strDate = "0" + strDate;
-		}
-		var currentdate = year + seperator1 + month + seperator1 + strDate;
-		return currentdate
+	    var seperator1 = "-";
+	    var seperator2 = ":";
+	    var month = date.getMonth() + 1;
+	    var strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+	    	 + " " + date.getHours() + seperator2 + date.getMinutes()
+             + seperator2 + date.getSeconds();
+    	return currentdate;
 	},
 	lay2:function(InputID){
-		console.log(InputID);
-		var time=this.getNowFormatDate();
-		var str=time+"  00:00:00";
-		console.log(str);
+		var str=this.getNowFormatDate();
 		var time = {
 			elem:"#"+InputID,
 			format: 'YYYY-MM-DD hh:mm:ss',
