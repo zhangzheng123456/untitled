@@ -283,7 +283,16 @@ public class VipCheckController {
                 if (obj.containsField("recharge_type")) {
                     String recharge_type = obj.get("recharge_type").toString();
                     if (type.equals("充值")){
-//                        obj.put("recharge_type", CommonValueCorp);
+                        if (recharge_type.equals("1"))
+                            obj.put("recharge_type", "直接充值");
+                        if (recharge_type.equals("2"))
+                            obj.put("recharge_type", "退转转充值");
+                    }
+                    if (type.equals("退款")){
+                        if (recharge_type.equals("VM"))
+                            obj.put("recharge_type", "按充值单退款");
+                        if (recharge_type.equals("BA"))
+                            obj.put("recharge_type", "按余额退款");
                     }
                 }
                 JSONObject result = new JSONObject();
@@ -384,7 +393,7 @@ public class VipCheckController {
             String type = jsonObject.get("type").toString();
             String id = jsonObject.get("id").toString();
 
-            JSONArray content = jsonObject.getJSONArray("content");
+//            JSONArray content = jsonObject.getJSONArray("content");
 
             String bill_id = id.split("_")[1];
             String corp_code =id.split("_")[0];
@@ -406,8 +415,8 @@ public class VipCheckController {
             String result = "";
             if (type.equals("pay")){
                 String bill_date = jsonObject.getString("bill_date");
-//                String store_name = jsonObject.getString("store_name");
-//                String user_name = jsonObject.getString("user_name");
+                String store_name = jsonObject.getString("store_name");
+                String user_name = jsonObject.getString("user_name");
                 String recharge_type = jsonObject.getString("recharge_type");
                 if (recharge_type.equals("直接充值"))
                     recharge_type = "1";
@@ -419,8 +428,8 @@ public class VipCheckController {
                 String remark = jsonObject.getString("remark");
 
                 map.put("bill_date",bill_date);
-//                map.put("store_name",store_name);
-//                map.put("user_name",user_name);
+                map.put("store_name",store_name);
+                map.put("user_name",user_name);
                 map.put("recharge_type",recharge_type);
                 map.put("tag_price",tag_price);
                 map.put("pay_price",pay_price);
@@ -428,8 +437,8 @@ public class VipCheckController {
                 map.put("remark",remark);
 
                 updatedValue.put("bill_date",bill_date);
-//                updatedValue.put("store_name",store_name);
-//                updatedValue.put("user_name",user_name);
+                updatedValue.put("store_name",store_name);
+                updatedValue.put("user_name",user_name);
                 updatedValue.put("recharge_type",recharge_type);
                 updatedValue.put("tag_price",tag_price);
                 updatedValue.put("pay_price",pay_price);
@@ -439,8 +448,8 @@ public class VipCheckController {
                 result = crmInterfaceService.modPrepaidStatus(corp_code,map);
             }else if (type.equals("refund")){
                 String bill_date = jsonObject.getString("bill_date");
-//                String store_name = jsonObject.getString("store_name");
-//                String user_name = jsonObject.getString("user_name");
+                String store_name = jsonObject.getString("store_name");
+                String user_name = jsonObject.getString("user_name");
                 String recharge_type = jsonObject.getString("recharge_type");
                 if (recharge_type.equals("按余额退款"))
                     recharge_type = "BA";
@@ -450,15 +459,15 @@ public class VipCheckController {
                 String remark = jsonObject.getString("remark");
 
                 map.put("bill_date",bill_date);
-//                map.put("store_name",store_name);
-//                map.put("user_name",user_name);
+                map.put("store_name",store_name);
+                map.put("user_name",user_name);
                 map.put("recharge_type",recharge_type);
                 map.put("source_no",source_no);
                 map.put("remark",remark);
 
                 updatedValue.put("bill_date",bill_date);
-//                updatedValue.put("store_name",store_name);
-//                updatedValue.put("user_name",user_name);
+                updatedValue.put("store_name",store_name);
+                updatedValue.put("user_name",user_name);
                 updatedValue.put("recharge_type",recharge_type);
                 updatedValue.put("source_no",source_no);
                 updatedValue.put("remark",remark);
@@ -482,6 +491,57 @@ public class VipCheckController {
                 dataBean.setId("1");
                 dataBean.setMessage(result_obj.getString("message"));
             }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 会员信息页面
+     * 获取充值记录
+     */
+    @RequestMapping(value = "/getPayRecord", method = RequestMethod.POST)
+    @ResponseBody
+    public String getPayRecord(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+        DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_check);
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-select-------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            BasicDBObject dbObject = new BasicDBObject();
+            dbObject.put("vip_id", vip_id);
+            dbObject.put("corp_code", corp_code);
+            dbObject.put("type", "pay");
+
+            DBCursor dbCursor = cursor.find(dbObject);
+            ArrayList list = new ArrayList();
+            while (dbCursor.hasNext()) {
+                DBObject obj = dbCursor.next();
+                String recharge_type = obj.get("recharge_type").toString();
+                if (recharge_type.equals("1"))
+                    obj.put("recharge_type", "直接充值");
+                if (recharge_type.equals("2"))
+                    obj.put("recharge_type", "退转转充值");
+                list.add(obj.toMap());
+            }
+            JSONObject result = new JSONObject();
+            result.put("list", list);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
