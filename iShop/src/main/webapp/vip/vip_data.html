@@ -285,6 +285,25 @@
         button{
             outline:none;
         }
+        .vip_sex_select{
+            display: none;
+            width: 420px;
+            position: absolute;
+            left: 120px;
+            top: 30px;
+            z-index: 100;
+            text-indent: 10px;
+            background: #f1f1f1;
+        }
+        .vip_sex_select li{
+            height:30px;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .vip_sex_select li:hover{
+            background: #4a5f7c;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 <body>
@@ -951,13 +970,13 @@
                                 <!--</ul>-->
                             </span>
                             </div>
-                            <div class="item_1">
+                            <div class="item_1" style="position:relative;">
                             <span><label>性别</label><input class="input_select" value="男" type="text" id="USER_SEX"
-                                                          placeholder="" style="background: #dfdfdf" readonly/>
-                                <!--<ul>-->
-                                <!--<li>男</li>-->
-                                <!--<li>女</li>-->
-                                <!--</ul>-->
+                                                         style="background: #ffffff url('../img/btn_dropmenu.png') no-repeat 100% 50%;background-size: 30px" readonly/>
+                                <ul class="vip_sex_select">
+                                <li>男</li>
+                                <li>女</li>
+                                </ul>
                             </span>
                             </div>
                             <div>

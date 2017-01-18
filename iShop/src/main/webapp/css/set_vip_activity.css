@@ -76,6 +76,7 @@
     border: 1px solid #d7d7d7;
     border-radius: 5px;
     margin-left: 10px;
+    background: url('../img/icon_list_down.png') 220px center no-repeat;
 }
 .setUp_activity .screen_area{
     left: 50%;

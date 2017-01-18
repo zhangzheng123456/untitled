@@ -780,3 +780,7 @@ $("#sendAuthcode").click(function () {
         }
     })
 });
+$(".vip_sex_select li").click(function () {
+    $("#USER_SEX").val($(this).html());
+    $(".vip_sex_select").hide();
+});

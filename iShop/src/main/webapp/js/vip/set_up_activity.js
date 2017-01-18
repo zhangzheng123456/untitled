@@ -50,7 +50,7 @@ var activity={
                         cancel: false,
                         content: "该企业下没有卡类型"
                     });
-                }else if(label="选择优惠券*"){
+                }else if(label=="选择优惠券*"){
                     art.dialog({
                         time: 1,
                         lock: true,
@@ -58,34 +58,6 @@ var activity={
                         content: "该企业下没有优惠券"
                     });
                 }
-            }
-        });
-        $(".setUp_activity_details").on("click","i",function () {
-            $(this).nextAll("ul").toggle();
-            var li=$(this).nextAll(".activity_select").children("li");
-            if(li.length<1){
-                $(".activity_select").css("border","none");
-                var label=$(this).prevAll("label").html();
-                if(label=="卡类型*"||label=="招募级别*"){
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: "该企业下没有卡类型"
-                    });
-                }else if(label="选择优惠券*"){
-                    art.dialog({
-                        time: 1,
-                        lock: true,
-                        cancel: false,
-                        content: "该企业下没有优惠券"
-                    });
-                }
-            }
-        });
-        $(document).click(function (e) {
-            if(!($(e.target).is(".icon-ishop_8-02")||$(e.target).is(".select_input"))){
-                $(".select_input").nextAll("ul").hide();
             }
         });
         $(".setUp_activity_details").on("click"," .activity_select li",function () {
@@ -171,11 +143,11 @@ var activity={
             $(this).parent().parents("li").remove();
         });
         $("#coupon_activity").on("click","#coupon_btn",function () {//新增开卡送券
-            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" data-code type="text" placeholder="请选择卡类型" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+            var html='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" data-code type="text" placeholder="请选择卡类型" readonly="readonly">'
                 + '<ul class="activity_select vipCardType">'
                 + activity.cache.card_type
                 + '</ul></li></ul><ul class="operate_ul">'
-                + '<li><ul><li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code= type="text" placeholder="请选择优惠券" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                + '<li><ul><li><label style="color:#c26555;">选择优惠券*</label><input class="text_input select_input" data-code= type="text" placeholder="请选择优惠券" readonly="readonly">'
                 + '<ul class="activity_select coupon_activity">'
                 + activity.cache.coupon
                 + '</ul></li><li><span class="add_btn">+</span><span class="remove_btn">-</span></li></ul>'
@@ -558,10 +530,11 @@ var activity={
                         var input=$("#coupon_activity").find("input");
                         var input_l=$("#recruit_activity").find("input");
                         for(var j=0;j<input.length;j++){
+                            console.log(1);
                             $(input[j]).val("");
                             $(input[j]).attr("data-code","");
                         }
-                        for(var k=0;l<input_l.length;k++){
+                        for(var k=0;k<input_l.length;k++){
                             $(input_l[k]).val("");
                             $(input_l[k]).attr("data-code","");
                         }
@@ -1100,6 +1073,12 @@ var activity={
                     if(data.code=="0"){
                         def.resolve("成功");
                     }else if(data.code=="-1"){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: data.message
+                        });
                         def.resolve("失败");
                     }
                 })
@@ -1213,7 +1192,7 @@ var activity={
                             }else {
                                 display="style='display:block'";
                             }
-                            li+="<li><ul><li><label style='color:#c26555;'>招募级别*</label><input class='text_input select_input' value='"+recruit[i].vip_card_type_name+"' data-code='"+recruit[i].vip_card_type_code+"' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                            li+="<li><ul><li><label style='color:#c26555;'>招募级别*</label><input class='text_input select_input' value='"+recruit[i].vip_card_type_name+"' data-code='"+recruit[i].vip_card_type_code+"' readonly='readonly'>"
                                 +"<ul class='activity_select vipCardType'>"
                                 +"</ul></li><li>"
                                 +"<label style='color:#c26555;'>招募金额*</label><input placeholder='请输入招募最低消费额' value='"+recruit[i].join_threshold+"' class='text_input number_input'></li>"
@@ -1249,7 +1228,7 @@ var activity={
                                         }else {
                                             display="style='display:block'";
                                         }
-                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'>"
                                             +"<ul class='activity_select coupon_activity'></ul>"
                                             +"</li><li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
                                     }
@@ -1270,7 +1249,7 @@ var activity={
                                         }else {
                                             display="style='display:block'";
                                         }
-                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_type[i].coupon_name+"' data-code='"+coupon_type[i].coupon_code+"' placeholder='请选择优惠券' readonly='readonly'>"
                                             +"<ul class='activity_select coupon_activity'></ul>"
                                             +"</li><li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
                                     }
@@ -1292,11 +1271,11 @@ var activity={
                                         }else {
                                             display="style='display:block'";
                                         }
-                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_name[j]+"' data-code='"+coupon_code[j]+"' placeholder='请选择优惠券' readonly='readonly'><i class='icon-ishop_8-02'></i>"
+                                        li+="<li><ul><li><label style='color:#c26555;'>选择优惠券*</label><input class='text_input select_input' value='"+coupon_name[j]+"' data-code='"+coupon_code[j]+"' placeholder='请选择优惠券' readonly='readonly'>"
                                             +"<ul class='activity_select coupon_activity'></ul></li>"
                                             +"<li "+display+"><span class='add_btn'>+</span><span class='remove_btn'>-</span></li></ul></li>"
                                     }
-                                    ul+='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" value="'+coupon_type[i].vip_card_type_name+'" data-code="'+coupon_type[i].vip_card_type_code+'" type="text" readonly="readonly"><i class="icon-ishop_8-02"></i>'
+                                    ul+='<div class="coupon_details_wrap"><ul><li style="margin-right: 5px"><label style="color:#c26555;">卡类型*</label><input class="text_input select_input" value="'+coupon_type[i].vip_card_type_name+'" data-code="'+coupon_type[i].vip_card_type_code+'" type="text" readonly="readonly">'
                                         +'<ul class="activity_select vipCardType"></ul></li></ul><ul class="operate_ul">'
                                         + li
                                         +'</ul><i class="icon-ishop_6-12 coupon_details_close"></i></div>'
