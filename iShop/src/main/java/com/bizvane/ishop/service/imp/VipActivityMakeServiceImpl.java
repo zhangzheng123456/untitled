@@ -470,4 +470,11 @@ public class VipActivityMakeServiceImpl implements VipActivityMakeService{
         return  count;
     }
 
+     @Transactional
+    public int addOrUpdateVip(String screen_value,String target_vips_count,String corp_code,String activity_vip_code) throws Exception{
+        int target_vips = vipActivityService.updActiveCodeByType("target_vips", screen_value, corp_code, activity_vip_code);
+        target_vips += vipActivityService.updActiveCodeByType("target_vips_count", target_vips_count, corp_code, activity_vip_code);
+        target_vips += vipFsendService.updSendByType("sms_vips", screen_value, activity_vip_code);
+        return target_vips;
+    }
 }

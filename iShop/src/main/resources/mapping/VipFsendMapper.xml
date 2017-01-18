@@ -271,4 +271,8 @@
         WHERE def_vip_fsendsms.CORP_CODE = #{corp_code}
         AND   def_vip_fsendsms.activity_vip_code= #{activity_vip_code}
     </select>
+
+    <update id="updSendByType" parameterType="com.bizvane.ishop.entity.VipFsend">
+        UPDATE  def_vip_fsendsms SET ${line_code}=#{line_value} WHERE  activity_vip_code =#{activity_vip_code}
+    </update>
 </mapper>

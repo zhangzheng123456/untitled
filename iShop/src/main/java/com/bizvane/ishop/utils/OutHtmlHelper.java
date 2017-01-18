@@ -30,7 +30,6 @@ public class OutHtmlHelper {
                     "<head>\n" +
                     "    <meta charset=\"UTF-8\">\n" +
                     "    <title>会员相册</title>\n" +
-
                     "    <style>\n" +
                     "        *{\n" +
                     "            margin: 0;\n" +
@@ -69,7 +68,7 @@ public class OutHtmlHelper {
                     "            padding-right: 10px;\n" +
                     "            margin-bottom: 10px;\n" +
                     "            box-sizing: border-box;\n" +
-                    "            height: 160px;\n"+
+                    "            height: 160px;\n" +
                     "        }\n" +
                     "        .album_list ul li div{\n" +
                     "            border: 1px solid #dadada;\n" +
@@ -119,8 +118,8 @@ public class OutHtmlHelper {
                     "            .album_list ul li{\n" +
                     "                width: 12.5%;\n" +
                     "            }\n" +
-                    "        }" +
-                    "         .tip{\n" +
+                    "        }\n" +
+                    "        .tip{\n" +
                     "            text-align: center;\n" +
                     "            font-size: 12px;\n" +
                     "            height: 20px;\n" +
@@ -130,8 +129,8 @@ public class OutHtmlHelper {
                     "    </style>\n" +
                     "</head>");
             builder.append("<body>\n" +
-                    "    <div class=\"album_title\">会员相册</div>" +
-                    "<div class=\"tip\">建议按快捷键 Ctrl+S 将网页保存到本地以便随时查看</div>");
+                    "    <div class=\"album_title\">会员相册</div>\n" +
+                    "    <div class=\"tip\">建议按快捷键 Ctrl+S 将网页保存到本地以便随时查看</div>");
 
             for (int i = 0; i < array.size(); i++) {
                 JSONObject object = JSON.parseObject(array.get(i).toString());
@@ -140,11 +139,11 @@ public class OutHtmlHelper {
                 String phone = object.get("phone").toString();
                 builder.append("<div class=\"line\">");
                 builder.append("<div class=\"album_info\">");
-                builder.append(" <span >"+vip_name+"</span>");
-                builder.append(" <span >手机:</span><span>"+phone+"</span>");
+                builder.append("  <span>"+vip_name+"</span>");
+                builder.append("  <span >手机:</span><span>"+phone+"</span>");
                 builder.append(" <span>卡号:</span><span>"+card_no+"</span>");
                 builder.append("</div>");
-                builder.append("  <div class=\"album_list\">\n" +
+                builder.append(" <div class=\"album_list\">\n" +
                         "            <ul>");
 
                 String album_obj = object.get("album").toString();
@@ -165,6 +164,7 @@ public class OutHtmlHelper {
                 builder.append("</ul>\n" +
                         "        </div>");
             }
+            builder.append("    <div style=\"text-align: right;height: 50px;line-height: 50px\">——数据由<a style=\"cursor: pointer;text-decoration: none;color: #4a5f7c\" href=\"http://www.bizvane.com/\" target=\"_blank\">上海商帆信息科技有限公司提供</a></div>\n");
             builder.append("</body>");
             builder.append("<script>\n" +
                     "        function setHeight() {\n" +
