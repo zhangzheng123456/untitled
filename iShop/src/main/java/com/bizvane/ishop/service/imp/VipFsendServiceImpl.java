@@ -117,6 +117,18 @@ public class VipFsendServiceImpl implements VipFsendService {
                         obj.put("vip_info",arr);
 
                         message=JSON.toJSONString(obj);
+                    }else if(send_scope.equals("vip_condition")){
+                        JSONObject obj=new JSONObject();
+                        JSONObject obj1=new JSONObject();
+                        obj1.put("vip_name","彭旭丽");
+                        obj1.put("vip_id","316424");
+                        obj1.put("is_send","N");
+                        obj1.put("cardno","13016691660");
+                        JSONArray arr=new JSONArray();
+                        arr.add(obj1);
+                        obj.put("vip_info",arr);
+
+                        message=JSON.toJSONString(obj);
                     }
                 }else if(send_type.equals("wxmass")){
                     //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
@@ -147,6 +159,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                             }
                         }
                     }else if(send_scope.equals("vip_group")){
+
                         JSONObject obj=new JSONObject();
                         JSONObject obj1=new JSONObject();
                         obj1.put("vip_name","彭旭丽");
@@ -559,5 +572,10 @@ public class VipFsendServiceImpl implements VipFsendService {
     @Override
     public List<VipFsend> getSendByActivityCode(String corp_code, String activity_vip_code) throws Exception{
         return vipFsendMapper.getSendByActivityCode(corp_code,activity_vip_code);
+    }
+
+    @Override
+    public int updSendByType(String line_code, String line_value, String activity_vip_code) throws Exception {
+        return vipFsendMapper.updSendByType(line_code,line_value,activity_vip_code);
     }
 }

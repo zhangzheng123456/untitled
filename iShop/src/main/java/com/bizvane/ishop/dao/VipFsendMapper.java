@@ -31,4 +31,7 @@ public interface VipFsendMapper {
 
     int delSendByActivityCode(@Param("corp_code")String corp_code,@Param("activity_vip_code")String activity_vip_code);
 
+    int updSendByType(@Param("line_code") String line_code,@Param("line_value") String line_value,@Param("activity_vip_code") String activity_vip_code)throws Exception;
+
+
 }

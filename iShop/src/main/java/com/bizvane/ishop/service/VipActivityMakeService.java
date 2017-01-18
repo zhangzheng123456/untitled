@@ -12,4 +12,6 @@ public interface VipActivityMakeService {
 
      int addStrategyBySend(String message, String user_code) throws Exception ;
 
+    int addOrUpdateVip(String screen_value,String target_vips_count,String corp_code,String activity_vip_code)throws Exception;
+
 }
