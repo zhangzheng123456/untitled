@@ -7,6 +7,7 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css?201715">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
@@ -38,35 +39,57 @@
             letter-spacing: 10px;
             cursor: pointer;
         }
+        .conpany_msg input[disabled]{
+            background-color: #DDDDDD;
+        }
+        /*下拉菜单*/
+        .execution li {
+            cursor: pointer;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 5px;
+        }
+        .execution li:hover {
+            background: #4a5f7c;
+            color: #fff;
+        }
+
+        .execution .liactive {
+            background: #6cc1cb;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i><span id="backCheck">审核管理</span><i class="icon-ishop_8-03"></i>审核详情</div>
+        <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i><span id="backCheck">审核管理</span><i class="icon-ishop_8-03"></i><label>审核详情</label></div>
         <div class="col-lg-12">
             <hr class="hr">
             <div class="operedit_btn">
                 <ul style="overflow: hidden">
                     <li class="performance" id="auditSuccess" style="background-color: #41c7db;display: none"><i class="icon-ishop_6-20"></i>通过审核</li>
+                    <li class="performance" id="keep" style="background-color: #6dc1c8;display: none;margin-right:-180px "><i class="icon-ishop_6-04"></i>保存</li>
                     <!--<li style="background-color: #c4c8d4;display: none" id="auditError"><i class="icon-ishop_6-04"></i>拒绝</li>-->
-                    <li style="background: #4a5f7c" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
+                    <li style="background: #4a5f7c;margin-left: 200px" id="close"><i class="icon-ishop_6-12"></i>关闭</li>
                 </ul>
             </div>
         </div>
         <div class="editor_1 col-lg-7 editor_line animated fadeInRight">
-            <form class="conpany_msg">
-                <div id="billNO"><span><label>单据编号</label><input type="text" readonly></span></div>
-                <div id="pay_type"><span><label>充值方式</label><input type="text" readonly></span></div>
-                <div id="store_name"><span><label>充值店铺</label><input type="text" readonly></span></div>
-                <div id="user_name"><span><label>经办人</label><input type="text" readonly></span></div>
-                <div id="vip_name"><span><label>会员名称</label><input type="text" readonly></span></div>
-                <div id="cardno"><span><label>会员卡号</label><input type="text" readonly></span></div>
-                <div id="price"><span><label>吊牌金额</label><input type="text" readonly></span></div>
-                <div id="pay_price"><span><label>实付金额</label><input type="text" readonly></span></div>
-                <div id="discount"><span><label>折扣</label><input type="text" readonly></span></div>
-                <div id="date"><span><label>充值日期</label><input type="text" readonly></span></div>
-                <div id="check_status"><span><label>审核状态</label><input type="text" readonly></span></div>
-                <div id="check_type"><span><label>待审核类型</label><input type="text" readonly></span></div>
+            <form class="conpany_msg" style="margin-top: 20px">
+                <div id="vip_name"><span><label>会员名称</label><input type="text" readonly disabled></span></div>
+                <div id="card_no"><span><label>会员卡号</label><input type="text" readonly disabled></span></div>
+                <div id="vip_id"><span><label>会员编号</label><input type="text" readonly disabled></span></div>
+                <div id="type"><span><label>待审核类型</label><input type="text" readonly disabled></span></div>
+                <div id="status"><span><label>审核状态</label><input type="text" readonly disabled></span></div>
+                <div id="bill_date"><span><label>单据日期</label><input type="text" readonly></span></div>
+                <div id="store_name"><span><label>退款点仓</label><input type="text" readonly></span></div>
+                <div id="user_name"><span><label>经办人</label><input type="text"  readonly></span></div>
+                <div id="recharge_type"><span><label>退款类型</label><input type="text" readonly></span></div>
+                <div id="source_no"><span><label>退款来源单号</label><input type="text"></span></div>
+                <div id="tag_price"><span><label>折合吊牌金额</label><input type="text"></span></div>
+                <div id="pay_price"><span><label>实付金额</label><input type="text"></span></div>
+                <div id="active_content"><span><label>活动内容</label><input type="text"></span></div>
+                <div id="remark"><span><label>备注</label><input type="text"></span></div>
             </form>
         </div>
         <!--<div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">-->
@@ -78,11 +101,26 @@
                 <!--</ul>-->
             <!--</div>-->
         <!--</div>-->
+        <div class="editor_detail_em col-lg-4  animated fadeInRight">
+            <form class="msg_detail">
+                <div id="created_date">
+                    <span><label>创建时间</label><input type="text" id="created_time" readonly=""></span>
+                </div>
+                <div id="modified_date">
+                    <span><label>修改时间</label><input type="text" id="modify_time" readonly=""></span>
+                </div>
+
+
+            </form>
+        </div>
     </div>
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <script type="text/javascript" src="../js/vip/recharge_audit_info.js"> </script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>
 </html>

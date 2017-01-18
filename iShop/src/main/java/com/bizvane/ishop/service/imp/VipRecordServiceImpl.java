@@ -63,9 +63,11 @@ public class VipRecordServiceImpl implements VipRecordService {
                 }
                 object.put("user_name",user_name);
             }
-            if (obj.containsField("vip_id")){
+            if (obj.containsField("vip_id") && obj.get("vip_id")!=null){
                 String vip_id = obj.get("vip_id").toString();
                 object.put("vip_id",vip_id);
+            }else{
+                object.put("vip_id","");
             }
             if (obj.containsField("vip_name") && obj.get("vip_name") != null){
                 String vip_name = obj.get("vip_name").toString();

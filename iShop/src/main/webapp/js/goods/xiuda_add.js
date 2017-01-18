@@ -54,108 +54,52 @@ var swip_image = [];
         }
         return true;
     };
+    //保存功能
     fabjs.bindbutton=function(){
         $(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
             if(fabjs.firstStep()){
-                var GOODS_CODE='';
-                var nowValLength = $(".conpany_msg .goods_code").length;
-                var goods_match_title = $('#goodsTitle').val();
-                var goods_match_desc = $('#goodsDescribe').val();
-                if(nowValLength<1){
+                var corp_code = $('.earchable-select-item.selected').text();
+                var d_match_title  = $('.the_listTitle').eq(1).find('input').val();
+                var d_match_image = [];
+                $('.list_content .item_box').each(function () {
+                    d_match_image.push($(this).find('img').attr('src'));
+                });
+                console.log(d_match_image);
+                var d_match_desc = $('.the_listTitle textarea').val();
+                var user_code = '';
+                var r_match_goods = [
+                    { 'r_match_goodsCode':'',
+                        'r_match_goodsImage':'',
+                        'r_match_goodsPrice':'',
+                        'r_match_goodsName':''
+                    }
+                ]
+                if(d_match_title.length<1){
                     art.dialog({
-                        time: 2,
+                        time: 1,
                         lock: true,
                         cancel: false,
-                        content:"未添加商品"
+                        content:"秀搭标题不能为空"
                     });
-                }else if(goods_match_title.trim()=='' || goods_match_desc.trim()==''){
+                }else if(d_match_desc.trim()==''){
                     art.dialog({
-                        time: 2,
+                        time: 1,
                         lock: true,
                         cancel: false,
                         content:"商品名称或商品描述未填写"
                     });
                 }else{
-                    $(".conpany_msg .goods_code").each(function () {
-                        var nowVal = $(this).text();
-                        GOODS_CODE += nowVal + ',';
-                    });
-                    var reg = /,$/gi;
-                    GOODS_CODE = GOODS_CODE.replace(reg, "");
-                    var ISACTIVE = "";//是否可用
-                    var input = $(".checkbox_isactive").find("input")[0];
-                    if (input.checked == true) {
-                        ISACTIVE = "Y";
-                    } else if (input.checked == false) {
-                        ISACTIVE = "N";
-                    }
-                    var li = $(".match_goods ul").find("li");
-                    for (var i = 0, matchgoods = ""; i < li.length; i++) {
-                        var r = $(li[i]).attr("id");
-                        if (i < li.length - 1) {
-                            matchgoods += r + ",";
-                        } else {
-                            matchgoods += r;
-                        }
-                    }
-                    var _command = "/defmatch/addMatch";//接口名
-                    var opt = {//返回成功后的操作
-                        success: function () {
-                        }
-                    };
-                    var input=$("#is_active")[0];
-                    if(input.checked==true){
-                        ISACTIVE="Y";
-                    }else if(input.checked==false){
-                        ISACTIVE="N";
-                    }
                     var _params = {
-                        //"corp_code": OWN_CORP,
-                        "goods_code": GOODS_CODE,
-                        "isactive": ISACTIVE,
-                        "goods_match_title": goods_match_title,
-                        "goods_match_desc": goods_match_desc,
+                        "corp_code": corp_code,
+                        "d_match_title ": d_match_title ,
+                        "d_match_image": d_match_image,
+                        "d_match_desc": d_match_desc,
+                        "user_code": user_code,
+                        "r_match_goods:":r_match_goods
                     };
                     console.log(_params);
                     fabjs.ajaxSubmit(_command, _params, opt);
-                } }else{
-                return;
-            }
-        });
-        $("#edit_save").click(function(){
-            if(fabjs.firstStep()){
-                // var ID=sessionStorage.getItem("id");
-                // var OWN_CORP=$("#OWN_CORP").val();
-                var GOODS_CODE=$("#GOODS_CODE").val().trim();
-                var ISACTIVE="";
-                var input=$("#is_active")[0];
-                if(input.checked==true){
-                    ISACTIVE="Y";
-                }else if(input.checked==false){
-                    ISACTIVE="N";
                 }
-                var li=$(".match_goods ul").find("li");
-                for(var i=0,matchgoods="";i<li.length;i++){
-                    var r=$(li[i]).attr("id");
-                    if(i<li.length-1){
-                        matchgoods+=r+",";
-                    }else{
-                        matchgoods+=r;
-                    }
-                }
-                var _command="/goods/fab/edit";//接口名
-                var opt = {//返回成功后的操作
-                    success:function(){
-
-                    }
-                };
-                var _params = {
-                    //"id": ID,
-                    //"corp_code": OWN_CORP,
-                    "goods_code": GOODS_CODE,
-                };
-                fabjs.ajaxSubmit(_command,_params,opt);
-
             }else{
                 return;
             }
@@ -397,15 +341,15 @@ jQuery(document).ready(function(){
     //  	})
     //  }
     // })
-    $(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
-    });
+    //$(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
+    //    $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
+    //});
     $("#edit_close").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/xiuda.html");
     });
-    $("#back_goods_fab").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html")
-    });
+    //$("#back_goods_fab").click(function(){
+    //    $(window.parent.document).find('#iframepage').attr("src","/goods/fab_match.html")
+    //});
 
 });
 // 删除加载的已存在的商品图片
@@ -763,6 +707,85 @@ function removeIt2(dom){
         }
     });
 }
+//所有企业
+function allCorp() {
+    var param = {};
+    //param["pageSize"] = '20'
+    //param["pageNumber"] = '1';
+    //param["searchValue"] = '';
+    //param["corp_code"] = sessionStorage.getItem("corp_code");
+    oc.postRequire("post", "/user/getCorpByUser", "", param, function (data) {
+        if (data.code == "0") {
+            var msg = JSON.parse(data.message);
+            var corps = msg.corps;
+            //var listList = list.list;
+            //console.log(corps);
+            //topUpShopShow(listList);
+            //var index=0;
+            var corp_html='';
+            //var c=null;
+            for(var i=0;i<corps.length;i++){
+                //c= list.list[index];
+                //console.log(corps[i].corp_code);
+                corp_html+='<option value="'+corps[i].corp_code +'">'+corps[i].corp_name+'</option>';
+            }
+            $("#OWN_CORP").append(corp_html);
+            //if (a !== "") {
+            //    $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
+            //}
+            $('.corp_select select').searchableSelect();
+            $('.corp_select .searchable-select-input').keydown(function (event) {
+                var event = window.event || arguments[0];
+                if (event.keyCode == 13) {
+                    $("#USER_PHONE").val("");
+                    $("#USER_EMAIL").val("");
+                    $("#USERID").val("");
+                    $("#user_id").val("");
+                    $("#user_id").attr("data-mark", "");
+                    $("#USERID").attr("data-mark", "");
+                    $("#USER_PHONE").attr("data-mark", "");
+                    $("#USER_EMAIL").attr("data-mark", "");
+                    $("#OWN_RIGHT").val('');
+                    $("#OWN_RIGHT").attr("data-myrcode", "");
+                    $("#OWN_RIGHT").attr("data-myjcode", "");
+                    $("#OWN_STORE").val('');
+                    $("#OWN_STORE").attr("data-myscode", "");
+                    $('.xingming').empty();
+                    $('#all_type .task_allot').html("所属店铺");
+                    $("#shop").hide();
+                }
+            })
+            $('.searchable-select-item').click(function () {
+                $("#USER_PHONE").val("");
+                $("#USER_EMAIL").val("");
+                $("#USERID").val("");
+                $("#user_id").val("");
+                $("#user_id").attr("data-mark", "");
+                $("#USERID").attr("data-mark", "");
+                $("#USER_PHONE").attr("data-mark", "");
+                $("#USER_EMAIL").attr("data-mark", "");
+                $("#OWN_RIGHT").val('');
+                $("#OWN_RIGHT").attr("data-myrcode", "");
+                $("#OWN_RIGHT").attr("data-myjcode", "");
+                $("#OWN_STORE").val('');
+                $("#OWN_STORE").attr("data-myscode", "");
+                $('.xingming').empty();
+                $('#all_type .task_allot').html("所属店铺");
+                $("#shop").hide();
+                //var store_code = $('.searchable-select-item.selected').attr('data-value');
+                //topUpPeople(store_code);  //充值弹窗经办人列表
+            })
+
+        } else if (data.code == "-1") {
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
+        }
+    })
+}
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
@@ -776,8 +799,14 @@ function GetRequest() {
     }
     return theRequest;
 }
+//跳转
+function toXiuda(){
+    window.location.href='/goods/xiuda.html';
+}
 window.onload = function(){
     $('#areaTemp').css('display','none');
     checkTemp();
     addImg();
+    allCorp();
+    //sessionStorage.getItem("corp_code");
 }
