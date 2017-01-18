@@ -476,8 +476,9 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
     $(this).hide();
     $(this).next().show();
     $(this).parent("#search_match_goods ul li").css("background","#cde6e8");
-    var li=$(this).parent("li").html();
-    var goods_code=$(this).parent().find(".goods_code").html();
+    //var li=$(this).parent("li").html();
+    var img = $(this).parent('li').find('img').attr('src');
+    var goods_code=  $(this).parent().find(".goods_code").html();
     var goods_code2=$("#GOODS_CODE").val();
     var len=$(".conpany_msg li").length;
     if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
@@ -496,8 +497,8 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $("#add").before('<li onmousemove="overShow(this)" onmouseout="outHide(this)" id="'+goods_code+'">'+li+'</li>');
-        $(".conpany_msg li i").css('display','none');
+        $("#add_one").before('<div class="item_box" onclick = "removeIt(this)"id="'+goods_code+'">'+'<div class="item_area"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_code+'</div>'+'</li>');
+        $(".list_content").eq(1).find('i').css('display','none');
     }
 
     $(".conpany_msg li i").click(function () {
@@ -736,7 +737,7 @@ function addImg(){
         }
     })
 }
-//搭配图片展现
+//搭配效果图展现
 function showImg(storeAs){
     var tempHTML = '<div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>'
     var html = '';
@@ -749,6 +750,15 @@ function showImg(storeAs){
 function removeIt(dom){
     $(dom).parent('.item_box').remove();
 }
+////搭配商品
+//$('.goods_add').click(function(){
+//    var img = $(this).parent('li').find('img').attr('src');
+//    var goods_code = $(this).parent('li').find('.goods_code').text();
+//    console.log('选中商品id'+goods_code+','+img);
+//});
+//$('.icon-ishop_6-12').click(function(){
+//    console.log('取消');
+//});
 //获取？后缀
 function GetRequest() {
     var url = decodeURI(location.search); //获取url中"?"符后的字串
