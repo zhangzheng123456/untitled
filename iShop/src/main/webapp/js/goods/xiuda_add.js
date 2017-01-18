@@ -754,9 +754,9 @@ function removeIt2(dom){
     $(dom).parent('.item_box').remove();
     var key = $(dom).parent().attr('id');
     console.log(key);
-    $('#stop li').each(function () {
-        var val = $(this).find('.goods_code').attr('id');
-        console.log(val);
+    $('#search_match_goods ul li').each(function () {
+        var val = $(this).find('.goods_code').text();
+        //console.log(val);
         if(val == key){
             console.log('查找匹配');
             $(this).find('.icon-ishop_6-12').click();
