@@ -783,7 +783,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     //获取充值退款详情
     @Override
-    public String getRefundOrder(String corpcode, String id) {
+    public String getRefundOrder(String corpcode, HashMap<String,Object> refundMap) {
 
         String  infos="";
 
@@ -799,8 +799,14 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             map.put("columns",columns);
             JSONObject expr1 = new JSONObject();
-            expr1.put("column", "id");
-            expr1.put("condition", id);
+
+            if(refundMap.get("DOCNO")!=null){
+                expr1.put("column", "DOCNO");
+                expr1.put("condition", refundMap.get("DOCNO").toString());
+            }else{
+                expr1.put("column", "id");
+                expr1.put("condition", refundMap.get("id").toString());
+            }
             map.put("params", expr1);
 
             String info = Rest.query(corpcode,map);
