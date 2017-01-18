@@ -141,16 +141,16 @@ function topUpShop(a) {
     oc.postRequire("post", "/shop/selectByAreaCode", "", param, function (data) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
-            console.log('充值店仓'+msg);
-            //var list = JSON.parse(msg.list);
-            //var listList = list.list;
+            var list = JSON.parse(msg.list);
+            var listList = list.list;
             //topUpShopShow(listList);
             var index = 0;
             var corp_html = '';
             var c = null;
-            for (index in msg.corps) {
-                c = msg.corps[index];
+            for (index in listList) {
+                c = listList[index];
                 corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
+                console.log(c.corp_name);
             }
             $("#OWN_CORP").append(corp_html);
             if (a !== "") {
