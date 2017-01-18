@@ -505,7 +505,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                     modStatus.put("SALESREP_ID__NAME",modStatus.get(key).toString());
                     modStatus.remove(key);
                 }
-                if(key.equals("vip_cardno")){
+                if(key.equals("card_no")){
                     modStatus.put("C_VIP_ID__CARDNO",modStatus.get(key).toString());
                     modStatus.remove(key);
                 }
