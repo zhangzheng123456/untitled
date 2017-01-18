@@ -145,13 +145,11 @@ function topUpShop(a) {
             var listList = list.list;
             //topUpShopShow(listList);
             var corp_html = '';
-            var c = null;
-            for (i=1;i<listList.length;i++ ) {
-                c = listList[i];
-                corp_html += '<option value="' + c.corp_code + '">' + c.corp_name + '</option>';
+            for(i=0;i<listList.length;i++ ) {
+                corp_html += '<option value="' + listList[i].corp_code + '">' + listList[i].corp_name + '</option>';
                 console.log('当前店铺是'+c.corp_name);
+                $("#OWN_CORP").append(corp_html);
             }
-            $("#OWN_CORP").append(corp_html);
             if (a !== "") {
                 $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
             }
