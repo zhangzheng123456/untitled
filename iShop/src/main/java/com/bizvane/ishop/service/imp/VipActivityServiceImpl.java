@@ -493,6 +493,8 @@ public class VipActivityServiceImpl implements VipActivityService {
     public void terminalAct(VipActivity vipActivity) throws Exception {
         try {
             vipActivity.setActivity_state(Common.ACTIVITY_STATUS_2);
+            Date now =new Date();
+            vipActivity.setEnd_time(Common.DATETIME_FORMAT.format(now));
             updateVipActivity(vipActivity);
             String sms_code = vipActivity.getSms_code();
             String activity_code = vipActivity.getActivity_code();

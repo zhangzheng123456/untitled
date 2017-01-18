@@ -196,8 +196,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             String id1 = jsonArray.getJSONObject(0).get("id").toString();
 
             if(code==-1){
-                JSONArray jsonArray1=new JSONArray(info);
-                return  jsonArray1.getJSONObject(0).toString();
+
+                return  jsonArray.getJSONObject(0).toString();
 
             }
             String rows = jsonArray.getJSONObject(0).get("rows").toString();
@@ -253,8 +253,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             String id1 = jsonArray.getJSONObject(0).get("id").toString();
 
             if(code==-1){
-                JSONArray jsonArray1=new JSONArray(info);
-                return  jsonArray1.getJSONObject(0).toString();
+
+                return  jsonArray.getJSONObject(0).toString();
 
             }
             String rows = jsonArray.getJSONObject(0).get("rows").toString();
@@ -298,8 +298,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         if(corpcode.equals("C10016")) {
 
-            int integral_password=(Integer)integral_passwordVip.get("INTEGRAL_PASSWORD");
-            int id=(Integer)integral_passwordVip.get("id");
+            String integral_password=integral_passwordVip.get("INTEGRAL_PASSWORD").toString();
+            String id=integral_passwordVip.get("id").toString();
 
             HashMap<String,Object> map=new HashMap<String, Object>();
             map.put("name","modfiy_integral_password");
@@ -327,8 +327,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         if(corpcode.equals("C10016")) {
 
-            int modfiy_password=(Integer)passwordMap.get("PASS_WORD");
-            int id=(Integer)passwordMap.get("id");
+            String modfiy_password=passwordMap.get("PASS_WORD").toString();
+            String id=passwordMap.get("id").toString();
 
             HashMap<String,Object> map=new HashMap<String, Object>();
             map.put("name","modfiy_password");
@@ -480,45 +480,6 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
-//            if (modStatus.get("BILLDATE") == null) {
-//
-//                return "缺少BILLDATE";
-//            }
-//            if (modStatus.get("RECHARGE_TYPE") == null) {
-//                return "缺少RECHARGE_TYPE";
-//            }
-//            if (modStatus.get("C_VIPMONEY_STORE_ID__NAME") == null) {
-//                return "缺少C_VIPMONEY_STORE_ID__NAME";
-//
-//            }
-//            if (modStatus.get("SALESREP_ID__NAME") == null) {
-//                return "缺少SALESREP_ID__NAME";
-//
-//            }
-//            if (modStatus.get("C_VIP_ID__CARDNO") == null) {
-//                return "缺少C_VIP_ID__CARDNO";
-//
-//            }
-//            if (modStatus.get("TOT_AMT_ACTUAL") == null) {
-//                return "缺少TOT_AMT_ACTUAL";
-//
-//            }
-//
-//            if (modStatus.get("AMOUNT_ACTUAL") == null) {
-//
-//                return "缺少AMOUNT_ACTUAL";
-//            }
-//            if (modStatus.get("ACTIVE_CONTENT") == null) {
-//                return "缺少ACTIVE_CONTENT";
-//
-//            }
-//            if (modStatus.get("AU_STATE") == null) {
-//                errormap.put("message","缺少AU_STATE");
-//                errormap.put("code",-1);
-//                JSONObject jsonObject=new JSONObject(errormap);
-//
-//                return jsonObject.toString();
-//            }
             if (modStatus.get("id") == null) {
 
                 errormap.put("message","缺少id");
@@ -527,6 +488,41 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                 return jsonObject.toString();
             }
 
+            for(String key:modStatus.keySet()){
+                if(key.equals("bill_date")){
+                    modStatus.put("BILLDATE",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("recharge_type")){
+                    modStatus.put("RECHARGE_TYPE",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("store_name")){
+                    modStatus.put("C_VIPMONEY_STORE_ID__NAME",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("user_name")){
+                    modStatus.put("SALESREP_ID__NAME",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("vip_cardno")){
+                    modStatus.put("C_VIP_ID__CARDNO",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("tag_price")){
+                    modStatus.put("TOT_AMT_ACTUAL",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("pay_price")){
+                    modStatus.put("AMOUNT_ACTUAL",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+                if(key.equals("active_content")){
+                    modStatus.put("ACTIVE_CONTENT",modStatus.get(key).toString());
+                    modStatus.remove(key);
+                }
+
+            }
 
             info = Rest.modify("B_VIPMONEY",corpcode, modStatus);
             JSONArray jsonArray=new JSONArray(info);
@@ -589,6 +585,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             }
 
             int id = (Integer) jsonOb.get("objectid");
+            System.out.println("充值退款:"+id);
 
             billinfo= selBill("B_RET_VIPMONEY",corpcode,id);
 
@@ -608,31 +605,36 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
-//            if (modStatusRefund.get("BILLDATE") == null) {
-//                return "缺少BILLDATE";
-//            }
-//            if (modStatusRefund.get("RECHARGE_TYPE") == null) {
-//                return "缺少RECHARGE_TYPE";
-//            }
-//            if (modStatusRefund.get("C_VIPMONEY_STORE_ID__NAME") == null) {
-//                return "缺少C_VIPMONEY_STORE_ID__NAME";
-//            }
-
-//            if (modStatusRefund.get("AU_STATE") == null) {
-//
-//                errormap.put("message","缺少AU_STATE");
-//                errormap.put("code",-1);
-//                JSONObject jsonObject=new JSONObject(errormap);
-//
-//                return jsonObject.toString();
-//            }
-
             if (modStatusRefund.get("id") == null) {
 
                 errormap.put("message","缺少id");
                 errormap.put("code",-1);
                 JSONObject jsonObject=new JSONObject(errormap);
                 return jsonObject.toString();
+            }
+
+            for(String key:modStatusRefund.keySet()){
+
+                if(key.equals("bill_date")){
+                    modStatusRefund.put("BILLDATE",modStatusRefund.get(key).toString());
+                    modStatusRefund.remove(key);
+                }
+                if(key.equals("recharge_type")){
+                    modStatusRefund.put("RECHARGE_TYPE",modStatusRefund.get(key).toString());
+                    modStatusRefund.remove(key);
+                }
+                if(key.equals("store_name")){
+                    modStatusRefund.put("C_VIPMONEY_STORE_ID__NAME",modStatusRefund.get(key).toString());
+                    modStatusRefund.remove(key);
+                }
+                if(key.equals("source_no")){
+                    modStatusRefund.put("ORGDOCNO",modStatusRefund.get(key).toString());
+                    modStatusRefund.remove(key);
+                }
+                if(key.equals("tag_price")){
+                    modStatusRefund.put("TOT_AMT_ACTUAL",modStatusRefund.get(key).toString());
+                    modStatusRefund.remove(key);
+                }
             }
 
             info = Rest.modify("B_RET_VIPMONEY",corpcode, modStatusRefund);
@@ -713,11 +715,12 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     //充值单详情
 
-    public  String  getPrepaidOrder(String corpcode,int id){
+    public  String  getPrepaidOrder(String corpcode,HashMap<String,Object> prepaidMap){
 
         String infos="";
 
         if(corpcode.equals("C10016")) {
+
 
             HashMap<String, Object> map = new HashMap<String, Object>();
             //查询
@@ -728,8 +731,15 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                     , "CREATIONDATE", "MODIFIEDDATE", "STATUSERID", "STATUSTIME", "ISACTIVE"};
             map.put("columns", columns);
             JSONObject expr1 = new JSONObject();
-            expr1.put("column", "id");
-            expr1.put("condition", id);
+
+            if(prepaidMap.get("DOCNO")!=null){
+                expr1.put("column", "DOCNO");
+                expr1.put("condition", prepaidMap.get("DOCNO").toString());
+            }else{
+                expr1.put("column", "id");
+                expr1.put("condition", prepaidMap.get("id").toString());
+            }
+
             map.put("params", expr1);
 
             String info = Rest.query(corpcode, map);
@@ -743,8 +753,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             String id1 = jsonArray.getJSONObject(0).get("id").toString();
 
             if(code==-1){
-                JSONArray jsonArray1=new JSONArray(info);
-                return  jsonArray1.getJSONObject(0).toString();
+
+                return  jsonArray.getJSONObject(0).toString();
 
             }
             String rows = jsonArray.getJSONObject(0).get("rows").toString();
@@ -773,7 +783,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     //获取充值退款详情
     @Override
-    public String getRefundOrder(String corpcode, int id) {
+    public String getRefundOrder(String corpcode, HashMap<String,Object> refundMap) {
 
         String  infos="";
 
@@ -789,13 +799,19 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             map.put("columns",columns);
             JSONObject expr1 = new JSONObject();
-            expr1.put("column", "id");
-            expr1.put("condition", id);
+
+            if(refundMap.get("DOCNO")!=null){
+                expr1.put("column", "DOCNO");
+                expr1.put("condition", refundMap.get("DOCNO").toString());
+            }else{
+                expr1.put("column", "id");
+                expr1.put("condition", refundMap.get("id").toString());
+            }
             map.put("params", expr1);
 
             String info = Rest.query(corpcode,map);
 
-            System.out.println("cccc"+info);
+          //  System.out.println("cccc"+info);
 
 
             HashMap<String, Object> maprows = new HashMap<String, Object>();
@@ -807,8 +823,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             String id1 = jsonArray.getJSONObject(0).get("id").toString();
 
             if(code==-1){
-                JSONArray jsonArray1=new JSONArray(info);
-                return  jsonArray1.getJSONObject(0).toString();
+
+                return  jsonArray.getJSONObject(0).toString();
 
             }
             String rows = jsonArray.getJSONObject(0).get("rows").toString();
@@ -838,7 +854,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     // 获取余额详情  FA_VIPACC
 
-    public  String  getBalance(String corpcode,int vipid){
+    public  String  getBalance(String corpcode,String vipid){
 
         String  infos="";
 
@@ -861,38 +877,39 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
             String info = Rest.query(corpcode,map);
 
-            System.out.println("cccc"+info);
+            System.out.println("获取余额信息"+info);
 
 
             HashMap<String, Object> maprows = new HashMap<String, Object>();
             HashMap<String, Object> maprow = new HashMap<String, Object>();
 
-            JSONArray jsonArray = new JSONArray(info);
-            int code = (Integer) jsonArray.getJSONObject(0).get("code");
-            String message = jsonArray.getJSONObject(0).get("message").toString();
-            String id1 = jsonArray.getJSONObject(0).get("id").toString();
+                JSONArray jsonArray = new JSONArray(info);
+                int code = (Integer) jsonArray.getJSONObject(0).get("code");
+                String message = jsonArray.getJSONObject(0).get("message").toString();
+                String id1 = jsonArray.getJSONObject(0).get("id").toString();
 
-            if(code==-1){
-                JSONArray jsonArray1=new JSONArray(info);
-                return  jsonArray1.getJSONObject(0).toString();
+                if (code == -1) {
 
-            }
-            String rows = jsonArray.getJSONObject(0).get("rows").toString();
-            JSONArray jsonArray1=new JSONArray(rows);
+                    return jsonArray.getJSONObject(0).toString();
 
-            maprows.put("message", message);
-            maprows.put("code", code);
-            maprows.put("id",id1);
+                }
+                String rows = jsonArray.getJSONObject(0).get("rows").toString();
+                JSONArray jsonArray1 = new JSONArray(rows);
 
-            if(jsonArray1.length()>0) {
-                JSONArray rowjsonArray = jsonArray1.getJSONArray(0);
-              for(int i=0;i<rowjsonArray.length();i++){
-                  maprow.put(columns[i],rowjsonArray.get(i).toString());
-              }
-            }
-            maprows.put("rows", maprow);
-            JSONObject jsonObject = new JSONObject(maprows);
-            infos = jsonObject.toString();
+                maprows.put("message", message);
+                maprows.put("code", code);
+                maprows.put("id", id1);
+
+                if (jsonArray1.length() > 0) {
+                    JSONArray rowjsonArray = jsonArray1.getJSONArray(0);
+                    for (int i = 0; i < rowjsonArray.length(); i++) {
+                        maprow.put(columns[i], rowjsonArray.get(i).toString());
+                    }
+                }
+                maprows.put("rows", maprow);
+                JSONObject jsonObject = new JSONObject(maprows);
+                infos = jsonObject.toString();
+
 
         }else{
 

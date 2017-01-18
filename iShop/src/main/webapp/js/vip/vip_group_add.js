@@ -47,7 +47,7 @@ $(function () {
                 var message = JSON.parse(data.message);
                 var action = message.actions;
                 if (action.length <= 0) {
-                    $(".areaadd_oper_btn ul li:nth-of-type(1)").remove();
+                    $(".vip_group_edit_oper_btn ul li:nth-of-type(1)").remove();
                     $("#edit_close").css("margin-left","120px");
                 }
             }

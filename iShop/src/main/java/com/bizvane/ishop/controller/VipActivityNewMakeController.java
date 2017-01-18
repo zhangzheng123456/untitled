@@ -184,8 +184,9 @@ public class VipActivityNewMakeController {
             JSONArray post_array = vipGroupService.vipScreen2Array(screen, corp_code, role_code, brand_code, area_code, store_code, user_code);
 
             String screen_value = post_array.toJSONString();
-            int target_vips = vipActivityService.updActiveCodeByType("target_vips", screen_value, corp_code, activity_vip_code);
-            target_vips += vipActivityService.updActiveCodeByType("target_vips_count", target_vips_count, corp_code, activity_vip_code);
+
+            int target_vips = vipActivityMakeService.addOrUpdateVip(screen_value, target_vips_count, corp_code, activity_vip_code);
+
             System.out.println("=========target_vips=========" + target_vips);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("0");

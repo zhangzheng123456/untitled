@@ -1083,12 +1083,16 @@ var activity={
                         _param['apply_logo']="";
                         _param['apply_qrcode']="";
                     }else {
+                        var logo=$("#upload_logo").parent().prev("img").attr("src");
+                        if(logo==undefined){
+                            logo="";
+                        }
                         _param["activity_url"]="";
                         _param['apply_title']=$("#invite_title").val();
                         _param['apply_endtime']=$("#offline_end").val();
                         _param['apply_desc']=$("#invite_summary").val();
                         _param['apply_success_tips']=$("#invite_message").val();
-                        _param['apply_logo']=$("#upload_logo").parent().prev("img").attr("src");
+                        _param['apply_logo']=logo;
                         _param['apply_qrcode']="";
                     }
                 }
