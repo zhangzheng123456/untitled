@@ -32,6 +32,15 @@
             background-size: 22px 22px;
             margin-left: 28px;
         }
+        .searchable-select-holder,.searchable-select{
+            width: 480px;
+        }
+        .searchable-has-privious{
+            margin-top: 34px;
+        }
+        #OWN_CORP{
+            width: 480px;
+        }
     </style>
     <style>
         body{
@@ -105,7 +114,12 @@
         <!--所属企业-->
         <div class="the_listTitle">
            <span>
-               <label class="red">所属企业*</label><input type="text" verify="Empty" maxlength="200"/>
+               <label class="red" style="display: inline">所属企业*</label><!--<input type="text" verify="Empty" maxlength="200"/>-->
+               <li>
+                   <span class="corp_select" style="width: 412px">
+                       <select id="OWN_CORP" style="display: inline-flex"></select>
+                   </span>
+               </li>
                 <div class="hint"><div hintinfo="所属企业不能为空！" class="error_tips">所属企业不能为空！</div></div>
             </span>
         </div>
