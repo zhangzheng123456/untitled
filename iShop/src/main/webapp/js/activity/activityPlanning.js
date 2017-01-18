@@ -27,7 +27,7 @@ var activityPlanning={
 			// this.getCoupon();
 		}
 		setTimeout(function(){
-			self.lay1();
+			// self.lay1();
 		},1000);
 	},
 	allEvent:function(){
@@ -140,6 +140,7 @@ var activityPlanning={
 			$(html).find(".group_del").show();
 			$(html).find(".edit_frame .edit_content").val("");
 			$(html).find(".edit_frame .edit_content").removeAttr("disabled");
+			$(html).find(".edit_frame .edit_content").attr("data-content","");
 			$(this).parents('.group_parent').append(html);
 
 		})
@@ -631,7 +632,7 @@ var activityPlanning={
 					time: 1,
 					lock: true,
 					cancel: false,
-					content:"添加任务失败"
+					content:data.message
 				});
 				def.resolve("失败");
 			}
@@ -670,7 +671,7 @@ var activityPlanning={
 						time: 1,
 						lock: true,
 						cancel: false,
-						content:"群发失败"
+						content:data.message
 					});
 					def.resolve("失败");
 				}
@@ -765,7 +766,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555'>微信内容*</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要' data-content="+wxlist[i].content+">"+wxlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555'>微信内容*</label><textarea "+disabled+" class='edit_content' placeholder='请输入微信内容' data-content="+wxlist[i].content+">"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -815,7 +816,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555;'>短信内容*</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要' data-content="+smslist[i].content+">"+smslist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555;'>短信内容*</label><textarea class='edit_content' "+disabled+" placeholder='请输入短信内容' data-content="+smslist[i].content+">"+smslist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -959,7 +960,7 @@ var activityPlanning={
 						time: 1,
 						lock: true,
 						cancel: false,
-						content:"添加任务失败"
+						content:data.message
 					});
 					def.resolve("失败");
 				}
@@ -986,7 +987,7 @@ var activityPlanning={
 							time: 1,
 							lock: true,
 							cancel: false,
-							content:"群发失败"
+							content:data.message
 						});
 						def.resolve("失败");
 					},1500);
