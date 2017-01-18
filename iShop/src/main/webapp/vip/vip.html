@@ -362,6 +362,21 @@
         color:#fff;
         cursor: pointer;
     }
+    #loading_2{
+        display: none;
+        width: 120px;height: 50px;background: rgba(0,0,0,0.5);line-height: 50px;text-align: center;
+        position: fixed;
+        top:50%;
+        color:#fff;
+        z-index: 99999;
+        border-radius: 5px;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform:  translate(-50%,-50%);
+        -moz-transform:  translate(-50%,-50%);
+        -ms-transform:  translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%);
+    }
 </style>
 <body>
 <div class="content">
@@ -1133,6 +1148,7 @@
             </ul>
     </div>
 </div>
+<div id="loading_2">加载中...</div>
 <script src="/js/loading.js"></script>
 <!-- 带搜索的下拉框 -->
 <script type="text/javascript" src="../js/jquery.searchableSelect.js?201715"></script>

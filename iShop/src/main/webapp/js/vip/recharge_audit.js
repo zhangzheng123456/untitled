@@ -18,6 +18,7 @@
         },
         bind:function(){
             this.auditRefuse();
+            this.auditParse();
             this.slideScreen();
             this.getFileColumn();
         },
@@ -287,14 +288,14 @@
                 }else{
                     var a=i+1;
                 }
-
+                data[i].status=="0"?data[i].status="未审核":data[i].status=="1"?data[i].status="审核通过":data[i].status="失败";
                 for (var c=0;c<audit.titleArray.length;c++){
                     (function(j){
                         var code=audit.titleArray[j].column_name;
                             TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                     })(c)
                 }
-                $(".table tbody").append("<tr id='"+data[i].billNO+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                $(".table tbody").append("<tr id='"+data[i]._id+"' data-type='"+data[i].type+"' data-status='"+data[i].status+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                     + i
                     + 1
                     + "'/><label for='checkboxTwoInput"
@@ -360,7 +361,13 @@
             $(".table tbody tr").dblclick(function(){
                 var id=$(this).attr("id");
                 sessionStorage.setItem("id",id);
-                $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_audit_info.html");
+                var status=$(this).attr("data-status");
+                if(status=="审核通过"){
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_audit_info.html");
+                }else{
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_oparate.html");
+                }
+
             })
         },
         auditRefuse:function(){
@@ -381,6 +388,44 @@
                 //$("#checkboxTwoInput0").
             })
         },
+        auditParse:function(){
+            var self=this;
+            $("#auditParse").bind("click",function(){
+                var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+                if(tr.length==0){
+                    frame();
+                    $('.frame').html("请先选择");
+                    return;
+                }
+                if(tr.length>1){
+                    frame();
+                    $('.frame').html("暂支持单个文件审核");
+                    return;
+                }
+                for(var i=tr.length-1,ID="";i>=0;i--){
+                    var r=$(tr[i]).attr("id");
+                    var type=$(tr[i]).attr("data-type")=="充值"?"pay":"refund";
+                    if(i>0){
+                        ID+=r+",";
+                    }else{
+                        ID+=r;
+                    }
+                }
+                var params={};
+                params["id"]=ID;
+                params["type"]=type;
+                oc.postRequire("post","/vipCheck/changeStatus","",params,function(data){
+                    if(data.code=="0"){
+                        frame();
+                        $('.frame').html("操作成功");
+                        self.GET(self.inx,self.pageSize);
+                    }else{
+                        frame();
+                        $('.frame').html(data.message);
+                    }
+                })
+            })
+        }
     };
     $(function(){
         audit.init();
