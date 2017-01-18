@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by yanyadong on 2016/1/13.
@@ -488,40 +490,42 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                 return jsonObject.toString();
             }
 
-            for(String key:modStatus.keySet()){
-                if(key.equals("bill_date")){
-                    modStatus.put("BILLDATE",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("recharge_type")){
-                    modStatus.put("RECHARGE_TYPE",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("store_name")){
-                    modStatus.put("C_VIPMONEY_STORE_ID__NAME",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("user_name")){
-                    modStatus.put("SALESREP_ID__NAME",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("card_no")){
-                    modStatus.put("C_VIP_ID__CARDNO",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("tag_price")){
-                    modStatus.put("TOT_AMT_ACTUAL",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("pay_price")){
-                    modStatus.put("AMOUNT_ACTUAL",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-                if(key.equals("active_content")){
-                    modStatus.put("ACTIVE_CONTENT",modStatus.get(key).toString());
-                    modStatus.remove(key);
-                }
-
+            Set<String> keys = modStatus.keySet();
+            if (keys.contains("bill_date")){
+                modStatus.put("BILLDATE",modStatus.get("bill_date").toString());
+                modStatus.remove("bill_date");
+            }
+            if(keys.contains("recharge_type")){
+                modStatus.put("RECHARGE_TYPE",modStatus.get("recharge_type").toString());
+                modStatus.remove("recharge_type");
+            }
+            if(keys.contains("store_name")){
+                modStatus.put("C_VIPMONEY_STORE_ID__NAME",modStatus.get("store_name").toString());
+                modStatus.remove("store_name");
+            }
+            if(keys.contains("user_name")){
+                modStatus.put("SALESREP_ID__NAME",modStatus.get("user_name").toString());
+                modStatus.remove("user_name");
+            }
+            if(keys.contains("card_no")){
+                modStatus.put("C_VIP_ID__CARDNO",modStatus.get("card_no").toString());
+                modStatus.remove("card_no");
+            }
+            if(keys.contains("tag_price")){
+                modStatus.put("TOT_AMT_ACTUAL",modStatus.get("tag_price").toString());
+                modStatus.remove("tag_price");
+            }
+            if(keys.contains("pay_price")){
+                modStatus.put("AMOUNT_ACTUAL",modStatus.get("pay_price").toString());
+                modStatus.remove("pay_price");
+            }
+            if(keys.contains("active_content")){
+                modStatus.put("ACTIVE_CONTENT",modStatus.get("active_content").toString());
+                modStatus.remove("active_content");
+            }
+            if(keys.contains("remark")){
+                modStatus.put("DESCRIPTION",modStatus.get("remark").toString());
+                modStatus.remove("remark");
             }
 
             info = Rest.modify("B_VIPMONEY",corpcode, modStatus);
@@ -613,28 +617,30 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                 return jsonObject.toString();
             }
 
-            for(String key:modStatusRefund.keySet()){
-
-                if(key.equals("bill_date")){
-                    modStatusRefund.put("BILLDATE",modStatusRefund.get(key).toString());
-                    modStatusRefund.remove(key);
-                }
-                if(key.equals("recharge_type")){
-                    modStatusRefund.put("RECHARGE_TYPE",modStatusRefund.get(key).toString());
-                    modStatusRefund.remove(key);
-                }
-                if(key.equals("store_name")){
-                    modStatusRefund.put("C_VIPMONEY_STORE_ID__NAME",modStatusRefund.get(key).toString());
-                    modStatusRefund.remove(key);
-                }
-                if(key.equals("source_no")){
-                    modStatusRefund.put("ORGDOCNO",modStatusRefund.get(key).toString());
-                    modStatusRefund.remove(key);
-                }
-                if(key.equals("tag_price")){
-                    modStatusRefund.put("TOT_AMT_ACTUAL",modStatusRefund.get(key).toString());
-                    modStatusRefund.remove(key);
-                }
+            Set<String> keys = modStatusRefund.keySet();
+            if (keys.contains("bill_date")){
+                modStatusRefund.put("BILLDATE",modStatusRefund.get("bill_date").toString());
+                modStatusRefund.remove("bill_date");
+            }
+            if(keys.contains("recharge_type")){
+                modStatusRefund.put("RECHARGE_TYPE",modStatusRefund.get("recharge_type").toString());
+                modStatusRefund.remove("recharge_type");
+            }
+            if(keys.contains("store_name")){
+                modStatusRefund.put("C_VIPMONEY_STORE_ID__NAME",modStatusRefund.get("store_name").toString());
+                modStatusRefund.remove("store_name");
+            }
+            if(keys.contains("source_no")){
+                modStatusRefund.put("ORGDOCNO",modStatusRefund.get("source_no").toString());
+                modStatusRefund.remove("source_no");
+            }
+            if(keys.contains("tag_price")){
+                modStatusRefund.put("TOT_AMT_ACTUAL",modStatusRefund.get("tag_price").toString());
+                modStatusRefund.remove("tag_price");
+            }
+            if(keys.contains("remark")){
+                modStatusRefund.put("DESCRIPTION",modStatusRefund.get("remark").toString());
+                modStatusRefund.remove("remark");
             }
 
             info = Rest.modify("B_RET_VIPMONEY",corpcode, modStatusRefund);
