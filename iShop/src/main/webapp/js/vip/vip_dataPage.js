@@ -141,6 +141,7 @@ function topUpShop(a) {
     oc.postRequire("post", "/shop/selectByAreaCode", "", param, function (data) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
+            console.log('充值店仓'+msg);
             //var list = JSON.parse(msg.list);
             //var listList = list.list;
             //topUpShopShow(listList);
