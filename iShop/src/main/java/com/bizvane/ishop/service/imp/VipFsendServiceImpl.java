@@ -560,4 +560,9 @@ public class VipFsendServiceImpl implements VipFsendService {
     public List<VipFsend> getSendByActivityCode(String corp_code, String activity_vip_code) throws Exception{
         return vipFsendMapper.getSendByActivityCode(corp_code,activity_vip_code);
     }
+
+    @Override
+    public int updSendByType(String line_code, String line_value, String activity_vip_code) throws Exception {
+        return vipFsendMapper.updSendByType(line_code,line_value,activity_vip_code);
+    }
 }
