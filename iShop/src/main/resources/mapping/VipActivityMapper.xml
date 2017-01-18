@@ -49,7 +49,6 @@
             (
             def_vip_activity.activity_theme LIKE concat('%', #{search_value},'%')
             OR def_vip_activity.run_mode LIKE concat('%', #{search_value},'%')
-            OR def_vip_activity.activity_state LIKE concat('%', #{search_value},'%')
             OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
             )
         </if>
