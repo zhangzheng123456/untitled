@@ -858,6 +858,10 @@ function GetRequest() {
     }
     return theRequest;
 }
+//跳转
+function toXiuda(){
+    window.location.href='/goods/xiuda.html';
+}
 window.onload = function(){
     $('#areaTemp').css('display','none');
     checkTemp();
