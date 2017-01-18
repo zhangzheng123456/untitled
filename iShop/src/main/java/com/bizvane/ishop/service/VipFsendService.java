@@ -36,4 +36,6 @@ public interface VipFsendService {
     List<VipFsend> getSendByActivityCode(String corp_code,String activity_vip_code)throws Exception;
 
 
+    int updSendByType(String line_code, String line_value, String activity_vip_code)throws Exception;
+
 }
