@@ -69,7 +69,7 @@ var getNewVip={
                 if($(this).val().trim()==''){
                     if($('#test_1').find('.hint_r').length==1)return;
                     $('#test_1').show();
-                    html='<span class="hint hint_r" style="float:right;width: 25%;">生日不能为空</span>';
+                    html='<span class="hint hint_r" style="float:right;width: 25%;margin-right: 3%">生日不能为空</span>';
                     $('#test_1').append(html);
                 }else{
                     $('#test_1').find('.hint_r').remove();
@@ -154,11 +154,13 @@ var getNewVip={
         param.corp_code='C10000';
         oc.postRequire("post","/vip/dayNoVipBill","", param, function(data) {
             if(data.code==0){
-                var data=JSON.parse(data.message).list
+                var data=JSON.parse(JSON.parse(data.message).order_list);
                 var html=[];
-                for(var i=0;i<data.length;i++){
-                    html.push('<li>'+data[i].no+'</li>');
-                    me.billNo.push(data[i].no);
+                if(data.length>0){
+                    for(var i=0;i<data.length;i++){
+                        html.push('<li>'+data[i].order_id+'</li>');
+                        me.billNo.push(data[i].order_id);
+                    }
                 }
                 $('#billNo_drop_down').html(html.join(''));
             }else if(data.code==-1){}
@@ -325,7 +327,7 @@ var getNewVip={
         param.billNo=$('#content').find('.billNo').val();
         param.vip_card_type=$('#vipCardType').val();
         param.birthday=$('#content').find('.birthday').val();
-        param.sex=$('#content').find('.gender').val();
+        param.sex=$('#gender').val();
         param.user_code=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[0];
         param.user_name=String($('#OWN_SHOPPERS').val()).search('null')!=-1?'':$('#OWN_SHOPPERS').val().split('-')[1];
         param.store_code=String($('#OWN_STORE').val()).search('null')!=-1?'':$('#OWN_STORE').val().split('-')[0];

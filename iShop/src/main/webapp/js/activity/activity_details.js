@@ -3,8 +3,8 @@ var moreDetail={};//更多详情
 var staffData=[];//页面的数据
 var role=1;
 var show_filtrate='';
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
+// var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+// var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var oc = new ObjectControl();
 var store='';//门店数
 var corp_code='';//当前活动企业号
@@ -16,58 +16,58 @@ var min_date='';
 var nav_role='';//nav显示与否
 var laydate_start={};
 var laydate_end={};
-function stop(){
-    var _params={
-        "id":"",
-        "message":{
-            "id":sessionStorage.getItem('id')
-        }
-    };
-    $.ajax({
-        url: '/activity/changeState',
-        type: 'POST',
-        dataType: "JSON",
-        data:{
-            param:JSON.stringify(_params)
-        },
-        success: function (data) {
-            // $('#stop').html()=='中止活动'?$('#stop').html('恢复活动'):$('#stop').html('中止活动');
-            getSelect(sessionStorage.getItem('id'));
-        },
-        error: function (data) {
-            alert(data.message);
-            whir.loading.remove();//移除加载框
-        }
-    });
-}
-$('#stop').click(function () {
-    whir.loading.add("",0.5);//加载等待框
-    $('#loading').remove();
-    $("#tk").show();
-    $("#tk").css({"left":+left+"px","top":+tp+"px"});
-});
-$('#cancel').click(function () {
-    $("#tk").hide();
-    whir.loading.remove();//移除加载框
-});
-$('#complete').click(function () {
-    stop();
-    $('#stop').remove();
-    $("#tk").hide();
-    whir.loading.remove();//移除加载框
-});
-$('#delete_tk').click(function () {
-    $("#tk").hide();
-    whir.loading.remove();//移除加载框
-});
-//通知相关人
-function notice(){
-    window.location.href = 'activity_noyifyTheExecutor.html';
-}
-//关闭
-function closePage(){
-    window.location.href = 'activity.html';
-}
+// function stop(){
+//     var _params={
+//         "id":"",
+//         "message":{
+//             "id":sessionStorage.getItem('id')
+//         }
+//     };
+//     $.ajax({
+//         url: '/activity/changeState',
+//         type: 'POST',
+//         dataType: "JSON",
+//         data:{
+//             param:JSON.stringify(_params)
+//         },
+//         success: function (data) {
+//             // $('#stop').html()=='中止活动'?$('#stop').html('恢复活动'):$('#stop').html('中止活动');
+//             getSelect(sessionStorage.getItem('id'));
+//         },
+//         error: function (data) {
+//             alert(data.message);
+//             whir.loading.remove();//移除加载框
+//         }
+//     });
+// }
+// $('#stop').click(function () {
+//     whir.loading.add("",0.5);//加载等待框
+//     $('#loading').remove();
+//     $("#tk").show();
+//     $("#tk").css({"left":+left+"px","top":+tp+"px"});
+// });
+// $('#cancel').click(function () {
+//     $("#tk").hide();
+//     whir.loading.remove();//移除加载框
+// });
+// $('#complete').click(function () {
+//     stop();
+//     $('#stop').remove();
+//     $("#tk").hide();
+//     whir.loading.remove();//移除加载框
+// });
+// $('#delete_tk').click(function () {
+//     $("#tk").hide();
+//     whir.loading.remove();//移除加载框
+// });
+// //通知相关人
+// function notice(){
+//     window.location.href = 'activity_noyifyTheExecutor.html';
+// }
+// //关闭
+// function closePage(){
+//     window.location.href = 'activity.html';
+// }
 //仅显示已完成
 $('#showDone').click(function(){
     var data=[];
@@ -156,7 +156,7 @@ $('#empty').click(function(){
     // $('.btnSecond input:checked').removeAttr('checked');
     $('.inputs input').val('');
     $('#showAll').trigger('click');
-    $('#choose').trigger('click');
+    // $('#choose').trigger('click');
     // listShow(staffData);
     // var nowLength = $('.people_title').length;
     // if(nowLength <=0) {
@@ -170,20 +170,20 @@ $('#pack_up').click(function(){
         $(".people").getNiceScroll().resize();
     });
 })
-//查找
-$('#find').click(function(){
-    $('.btnSecond input:checked').removeAttr('checked');
-    var name = $('#p1').val();
-    var num = $('#p2').val();
-    var area = $('#p3').val();
-    var shop = $('#p4').val();
-    search(name,num,area,shop);
-    var nowLength = $('.people_title').length;
-    if(nowLength <=1) {
-        $('#peopleError div').text('暂无匹配数据');
-        $('#peopleError').show();
-    }
-});
+// //查找
+// $('#find').click(function(){
+//     $('.btnSecond input:checked').removeAttr('checked');
+//     var name = $('#p1').val();
+//     var num = $('#p2').val();
+//     var area = $('#p3').val();
+//     var shop = $('#p4').val();
+//     search(name,num,area,shop);
+//     var nowLength = $('.people_title').length;
+//     if(nowLength <=1) {
+//         $('#peopleError div').text('暂无匹配数据');
+//         $('#peopleError').show();
+//     }
+// });
 function searchDown() {
     $('.btnSecond input:checked').removeAttr('checked');
     var name = $('#p1').val();
@@ -414,87 +414,87 @@ function getExecuteDetail(param){
         }
     });
 }
-//获取活动详情
-function getSelect(param){
-    whir.loading.add("",0.5);//加载等待框
-    var _params={
-        "id":"",
-        "message":param
-    };
-
-    $.ajax({
-        url: '/activity/select',
-        type: 'POST',
-        dataType: "JSON",
-        data:{
-            param:JSON.stringify(_params)
-        },
-        success: function (data) {
-            var message = JSON.parse(data.message);
-            var activityVip = JSON.parse(message.activityVip);
-            moreDetail=activityVip;
-            var target_vips_count=activityVip.target_vips_count;
-            var activity_state = activityVip.activity_state;
-            var activity_theme = activityVip.activity_theme;
-            var runMode = activityVip.run_mode;
-            var beiginTime = activityVip.start_time;
-            var endTime = activityVip.end_time;
-            getExecuteDetail(target_vips_count);
-            activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
-            whir.loading.remove();//移除加载框
-            var corp_code = activityVip.corp_code;
-            sessionStorage.setItem("corp_code",corp_code);//存储的方法
-        },
-        error: function (data) {
-            console.log('获取活动详情失败');
-        }
-    });
-}
-//加载统计模块
-function check(a,b){
-    var TheTarget = a;
-    var TheCover = b;
-    // $('#TheTarget').text(TheTarget);
-    // $('#TheCover').text(TheCover);
-    table(TheTarget,TheCover);
-    //canvas
-   // var wd=parseFloat(window.getComputedStyle($('#c1').parent()[0]).width);
-   //  var ht=parseFloat(window.getComputedStyle($('#c1').parent()[0]).height);
-   //  $('#c1').attr('width',wd);
-   //  $('#c1').attr('height',wd);
-   //  // var ctx= $('#c1')[0].getContext('2d')
-   //  // ctx.beginPath();
-   //  // ctx.strokeStyle='red';
-   //  // ctx.arc(wd/2,ht/2,wd/2,0,2*Math.PI);
-   //  // ctx.fill();
-   //  console.log();
-   //  var c=document.getElementById("c1");
-   //  var ctx=c.getContext("2d");
-   //  ctx.beginPath();
-   //  ctx.arc(wd/2,wd/2,50,0,2*Math.PI);
-   //  ctx.stroke();
-}
-//加载活动状态
-function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
-    var beiginTime = beiginTime;
-    var endTime = endTime;
-    var activityState = activityState;
-    var activityTheme = activityTheme;
-    var runMode = runMode;
-    if(activityState =='执行中'){
-        $('#activityState').css('color','#50acb4');
-    }else if(activityState =='尚未开始'){
-        $('#activityState').css('color','red');
-    }else if(activityState =='已结束'){
-        $('#activityState').css('color','blue');
-    }
-    $('#activityState').text(activityState);
-    $('#activityTheme').text(activityTheme);
-    $('#activityState2').text(runMode);
-    $('#beiginTime').text(beiginTime);
-    $('#endTime').text(endTime);
-    $('#activityState').text()=='已结束'?$('#stop').hide():'';
-}
+// //获取活动详情
+// function getSelect(param){
+//     whir.loading.add("",0.5);//加载等待框
+//     var _params={
+//         "id":"",
+//         "message":param
+//     };
+//
+//     $.ajax({
+//         url: '/activity/select',
+//         type: 'POST',
+//         dataType: "JSON",
+//         data:{
+//             param:JSON.stringify(_params)
+//         },
+//         success: function (data) {
+//             var message = JSON.parse(data.message);
+//             var activityVip = JSON.parse(message.activityVip);
+//             moreDetail=activityVip;
+//             var target_vips_count=activityVip.target_vips_count;
+//             var activity_state = activityVip.activity_state;
+//             var activity_theme = activityVip.activity_theme;
+//             var runMode = activityVip.run_mode;
+//             var beiginTime = activityVip.start_time;
+//             var endTime = activityVip.end_time;
+//             getExecuteDetail(target_vips_count);
+//             activityType(activity_state,activity_theme,runMode,beiginTime,endTime);
+//             whir.loading.remove();//移除加载框
+//             var corp_code = activityVip.corp_code;
+//             sessionStorage.setItem("corp_code",corp_code);//存储的方法
+//         },
+//         error: function (data) {
+//             console.log('获取活动详情失败');
+//         }
+//     });
+// }
+// //加载统计模块
+// function check(a,b){
+//     var TheTarget = a;
+//     var TheCover = b;
+//     // $('#TheTarget').text(TheTarget);
+//     // $('#TheCover').text(TheCover);
+//     table(TheTarget,TheCover);
+//     //canvas
+//    // var wd=parseFloat(window.getComputedStyle($('#c1').parent()[0]).width);
+//    //  var ht=parseFloat(window.getComputedStyle($('#c1').parent()[0]).height);
+//    //  $('#c1').attr('width',wd);
+//    //  $('#c1').attr('height',wd);
+//    //  // var ctx= $('#c1')[0].getContext('2d')
+//    //  // ctx.beginPath();
+//    //  // ctx.strokeStyle='red';
+//    //  // ctx.arc(wd/2,ht/2,wd/2,0,2*Math.PI);
+//    //  // ctx.fill();
+//    //  console.log();
+//    //  var c=document.getElementById("c1");
+//    //  var ctx=c.getContext("2d");
+//    //  ctx.beginPath();
+//    //  ctx.arc(wd/2,wd/2,50,0,2*Math.PI);
+//    //  ctx.stroke();
+// }
+// //加载活动状态
+// function activityType(activityState,activityTheme,runMode,beiginTime,endTime){
+//     var beiginTime = beiginTime;
+//     var endTime = endTime;
+//     var activityState = activityState;
+//     var activityTheme = activityTheme;
+//     var runMode = runMode;
+//     if(activityState =='执行中'){
+//         $('#activityState').css('color','#50acb4');
+//     }else if(activityState =='尚未开始'){
+//         $('#activityState').css('color','red');
+//     }else if(activityState =='已结束'){
+//         $('#activityState').css('color','blue');
+//     }
+//     $('#activityState').text(activityState);
+//     $('#activityTheme').text(activityTheme);
+//     $('#activityState2').text(runMode);
+//     $('#beiginTime').text(beiginTime);
+//     $('#endTime').text(endTime);
+//     $('#activityState').text()=='已结束'?$('#stop').hide():'';
+// }
 
 //加载员工列表
 function listShow(userList){
@@ -556,161 +556,161 @@ function listShow(userList){
     //     $('.people').css('padding-right','9px');
     // };
 }
-//插件-饼图
-function table(TheTarget,TheCover) {
-    $('#TheTarget').text(TheTarget);
-    $('#TheCover').text(TheCover);
-    var NoCover = ((TheTarget - TheCover)/TheTarget*100).toFixed(2);
-    // console.log(NoCover);
-    var TheCover = (TheCover/TheTarget*100).toFixed(2);
-    TheCover=TheCover>100?100:TheCover;
-    // console.log('已覆盖'+TheCover+'%');
-    require.config({
-        paths: {
-            echarts: '../js/dist'
-        }
-    });
-    require(
-        [
-            'echarts',
-            'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-            'echarts/chart/radar',
-            'echarts/chart/map',
-            'echarts/chart/bar',
-            'echarts/chart/line'
-        ],
-        function (ec) {
-            var myChart = ec.init(document.getElementById('main'));
-            var labelTop = {
-                normal : {
-                    color:'#7bc7cd',
-                    label : {
-                        show : false,
-                        position : 'center',
-                        formatter : '{b}',
-                        textStyle: {
-                            baseline : 'bottom'
-                        }
-                    },
-                    labelLine : {
-                        show : false
-                    }
-                }
-            };
-            var labelFromatter = {
-                normal : {
-                    label : {
-                        formatter : function (params){
-                            var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
-
-                            data=data>100?100:data;
-                            return data+ '%'
-                        },
-                        textStyle: {
-                            color:'#7bc7cd',
-                            fontSize: 25
-                        }
-                    }
-                },
-            }
-            var labelBottom = {
-                normal : {
-                    color: '#eaeaea',
-                    label : {
-                        show : true,
-                        position : 'center'
-                    },
-                    labelLine : {
-                        show : false
-                    }
-                },
-                emphasis: {
-                    color: '#eaeaea'
-                }
-            };
-            var radius = [55, 70];
-                option = {
-                series : [
-                    {
-                        type : 'pie',
-                        center : ['50%', '50%'],
-                        radius : radius,
-                        x: '0%', // for funnel
-                        itemStyle : labelFromatter,
-                        //var NoCover = TheTarget - TheCover;
-
-                        data : [
-                            {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
-                            {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
-                        ]
-                    }
-                ]
-            };
-            myChart.setOption(option);
-            window.addEventListener("resize", function () {
-                myChart.resize();
-            });
-        }
-    );
-}
-//封装函数
-//jq获取text();
-function getText(name){
-    return $(name).text();
-}
-//jq获取val();
-function getVal(name){
-    return $('name').val();
-}
-//获取更多
-$('#rightMore').click(function () {
-    whir.loading.add("",0.5);//加载等待框
-    $('#loading').hide();
-    $('#fab_describe').empty();
-    //赋值
-    $('#content .content_r ').each(function(a,obj){
-        switch (a){
-            case 0:active();break;
-            case 1:  $(obj).html(moreDetail.activity_theme);;break;
-            case 3: $('#beiginTime_1').html(moreDetail.start_time);$('#endTime_1').html(moreDetail.end_time);break;
-            case 2:  $(obj).html(moreDetail.run_mode);break;
-            case 4:  $(obj).html('已选'+JSON.parse(moreDetail.operators).length+'个');;break;
-            case 5:  $(obj).html('已选'+moreDetail.target_vips_count+'个');break;
-        }
-        function active() {
-            $(obj).html(moreDetail.activity_state);
-            if(moreDetail.activity_state =='执行中'){
-                $(obj).css('color','#50acb4');
-            }else if(moreDetail.activity_state =='尚未开始'){
-                $(obj).css('color','red');
-            }else if(moreDetail.activity_state =='已结束'){
-                $(obj).css('color','blue');
-            }
-        }
-    });
-    $('#fab_describe').append(moreDetail.activity_content);
-    $('#get_more').show();
-});
-$('#get_more .head_span_r').click(function () {
-    $('#get_more').hide();
-    whir.loading.remove();//移除加载框
-});
-//页面加载数据
-//每一条数据的详情按钮
-// $('#peopleContent').on('click','li',function () {
-//     var html='<div class="data_detail" style="float: right;margin-right: 5px;height: 40px"><div class="detail">详情 <span class="icon-ishop_8-03"></span></div></div>';
-//     if( $(this).children().length<=6) {
-//         var user_code = $(this).find('.people_title_num ').html();
-//         $(this).append(html).attr('data_user_code', user_code);
-//         $(this).siblings().each(function () {
-//             if ($(this).children().length == 7) {
-//                 $(this).find('div.data_detail').remove();
+// //插件-饼图
+// function table(TheTarget,TheCover) {
+//     $('#TheTarget').text(TheTarget);
+//     $('#TheCover').text(TheCover);
+//     var NoCover = ((TheTarget - TheCover)/TheTarget*100).toFixed(2);
+//     // console.log(NoCover);
+//     var TheCover = (TheCover/TheTarget*100).toFixed(2);
+//     TheCover=TheCover>100?100:TheCover;
+//     // console.log('已覆盖'+TheCover+'%');
+//     require.config({
+//         paths: {
+//             echarts: '../js/dist'
+//         }
+//     });
+//     require(
+//         [
+//             'echarts',
+//             'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
+//             'echarts/chart/radar',
+//             'echarts/chart/map',
+//             'echarts/chart/bar',
+//             'echarts/chart/line'
+//         ],
+//         function (ec) {
+//             var myChart = ec.init(document.getElementById('main'));
+//             var labelTop = {
+//                 normal : {
+//                     color:'#7bc7cd',
+//                     label : {
+//                         show : false,
+//                         position : 'center',
+//                         formatter : '{b}',
+//                         textStyle: {
+//                             baseline : 'bottom'
+//                         }
+//                     },
+//                     labelLine : {
+//                         show : false
+//                     }
+//                 }
+//             };
+//             var labelFromatter = {
+//                 normal : {
+//                     label : {
+//                         formatter : function (params){
+//                             var data=(100 - params.value).toString().length>3?(100 - params.value).toFixed(2):(100 - params.value);
+//
+//                             data=data>100?100:data;
+//                             return data+ '%'
+//                         },
+//                         textStyle: {
+//                             color:'#7bc7cd',
+//                             fontSize: 25
+//                         }
+//                     }
+//                 },
 //             }
-//             ;
-//         });
-//     }
+//             var labelBottom = {
+//                 normal : {
+//                     color: '#eaeaea',
+//                     label : {
+//                         show : true,
+//                         position : 'center'
+//                     },
+//                     labelLine : {
+//                         show : false
+//                     }
+//                 },
+//                 emphasis: {
+//                     color: '#eaeaea'
+//                 }
+//             };
+//             var radius = [55, 70];
+//                 option = {
+//                 series : [
+//                     {
+//                         type : 'pie',
+//                         center : ['50%', '50%'],
+//                         radius : radius,
+//                         x: '0%', // for funnel
+//                         itemStyle : labelFromatter,
+//                         //var NoCover = TheTarget - TheCover;
+//
+//                         data : [
+//                             {name:'未覆盖会员数', value:NoCover,itemStyle :labelBottom },
+//                             {name:'已覆盖会员数', value:TheCover, itemStyle : labelTop}
+//                         ]
+//                     }
+//                 ]
+//             };
+//             myChart.setOption(option);
+//             window.addEventListener("resize", function () {
+//                 myChart.resize();
+//             });
+//         }
+//     );
+// }
+// //封装函数
+// //jq获取text();
+// function getText(name){
+//     return $(name).text();
+// }
+// //jq获取val();
+// function getVal(name){
+//     return $('name').val();
+// }
+// //获取更多
+// $('#rightMore').click(function () {
+//     whir.loading.add("",0.5);//加载等待框
+//     $('#loading').hide();
+//     $('#fab_describe').empty();
+//     //赋值
+//     $('#content .content_r ').each(function(a,obj){
+//         switch (a){
+//             case 0:active();break;
+//             case 1:  $(obj).html(moreDetail.activity_theme);;break;
+//             case 3: $('#beiginTime_1').html(moreDetail.start_time);$('#endTime_1').html(moreDetail.end_time);break;
+//             case 2:  $(obj).html(moreDetail.run_mode);break;
+//             case 4:  $(obj).html('已选'+JSON.parse(moreDetail.operators).length+'个');;break;
+//             case 5:  $(obj).html('已选'+moreDetail.target_vips_count+'个');break;
+//         }
+//         function active() {
+//             $(obj).html(moreDetail.activity_state);
+//             if(moreDetail.activity_state =='执行中'){
+//                 $(obj).css('color','#50acb4');
+//             }else if(moreDetail.activity_state =='尚未开始'){
+//                 $(obj).css('color','red');
+//             }else if(moreDetail.activity_state =='已结束'){
+//                 $(obj).css('color','blue');
+//             }
+//         }
+//     });
+//     $('#fab_describe').append(moreDetail.activity_content);
+//     $('#get_more').show();
 // });
-//详情弹框
+// $('#get_more .head_span_r').click(function () {
+//     $('#get_more').hide();
+//     whir.loading.remove();//移除加载框
+// });
+// //页面加载数据
+// //每一条数据的详情按钮
+// // $('#peopleContent').on('click','li',function () {
+// //     var html='<div class="data_detail" style="float: right;margin-right: 5px;height: 40px"><div class="detail">详情 <span class="icon-ishop_8-03"></span></div></div>';
+// //     if( $(this).children().length<=6) {
+// //         var user_code = $(this).find('.people_title_num ').html();
+// //         $(this).append(html).attr('data_user_code', user_code);
+// //         $(this).siblings().each(function () {
+// //             if ($(this).children().length == 7) {
+// //                 $(this).find('div.data_detail').remove();
+// //             }
+// //             ;
+// //         });
+// //     }
+// // });
+// //详情弹框
 $('#peopleContent').on('click','li div.data_detail',function () {
     $('#detail').show();
     //获取该行数据
@@ -768,40 +768,6 @@ function getActive() {
     var param={}
     param.activity_code=sessionStorage.getItem('activity_code');
     whir.loading.add("", 0.5);
-    // var xhr = null;
-    // var params={
-    //     "id":"",
-    //     "message":param
-    // };
-    // var xhr_obj={};
-    // xhr_obj.param=JSON.stringify(params);
-    // if(window.XMLHttpRequest){
-    //     xhr = new window.XMLHttpRequest();
-    // }else{ // ie
-    //     xhr = new ActiveObject("Microsoft")
-    // }
-    //
-    // xhr.open('POST',"/vipActivity/select", true);
-    // xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-    // xhr.send(xhr_obj);
-    // // 监听请求状态变化
-    // xhr.onreadystatechange = function(response){
-    //     var time = null;
-    //     var curDate = null;
-    //     if(xhr.readyState===2){
-    //         // 获取响应头里的时间戳
-    //         time = xhr.getResponseHeader("Date");
-    //         console.log(xhr.getAllResponseHeaders())
-    //         curDate = new Date(time);
-    //         console.log(curDate);
-    //     }else if(xhr.readyState===4){
-    //         if (xhr.status==200){// 200 = OK
-    //
-    //         }else{//失败
-    //
-    //         }
-    //     }
-    // }
     oc.postRequire("post","/vipActivity/select","0",param,function(data){
         if(data.code==0){
             var active_data=JSON.parse(JSON.parse(data.message).activityVip);
@@ -961,7 +927,7 @@ function doActiveResponse(active_data) {
     if(start_time<now_judge&&(over_time< now_judge)){//活动已开始并结束
         $('.header_m .p_2').html('0天0小时0分钟0秒');
     }else if(start_time<now_judge&&(over_time >now_judge)){//已经开始但未结束
-            setInterval(function () {
+            var timer=setInterval(function () {
             var now_time=new Date();
             var time=(over_time-now_time.getTime())/1000;
             var d=parseInt(time/(24*60*60));
@@ -973,6 +939,9 @@ function doActiveResponse(active_data) {
             m<=0&&(m=0);
             s<=0&&(s=0);
             $('.header_m .p_2').html(d+'天'+h+'小时'+m+'分钟'+s+'秒');
+             if(d==0&(h==0)&(m==0)&(s==0)){
+                 clearTimeout(timer);
+             }
         },1000);
         var now_time=new Date();
         var time=(over_time-now_time.getTime())/1000;
@@ -1090,6 +1059,7 @@ $('.action_time').click(function () {
         ,max: '2099-06-16 23:59:59'
         ,istoday: false
         , istime: true //是否开启时间选择
+        ,fixed:true
         , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
         ,choose: function(datas){
             laydate_end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -1098,10 +1068,11 @@ $('.action_time').click(function () {
         ,  elem: '#start_time', //需显示日期的元素选择器
     };
     laydate_end= {
-        min: laydate.now()
+        min: laydate.now(1)
         ,max: '2099-06-16 23:59:59'
         , istime: true //是否开启时间选择
         , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
+        ,fixed:true
         ,istoday: false
         ,choose: function(datas){
             laydate_start.max = datas; //结束日选好后，重置开始日的最大日期
@@ -1112,6 +1083,7 @@ $('.action_time').click(function () {
     var n=new Date();
     if(s<n){
         $('#start_time').attr('disabled','disabled');
+        $('#start_time').css('color','#aaa');
         $('#start_time').removeAttr('onclick');
     }
     $('.modify_time_box').show();
@@ -1121,6 +1093,8 @@ $('.action_time').click(function () {
 function actionPost(role,obj) {//第二个参数是store_code
     if(obj){action.store_code=obj;}
     if(role=='action_footer_r'){
+        // var myDate = new Date();
+        // var result=myDate.getFullYear()+'-'+(myDate.getMonth()+1)+'-'+myDate.getDate() +' '+myDate.getHours()+':'+myDate.getMinutes()+":"+myDate.getSeconds();
         action.status=2;
         action.start_time='';
         action.end_time='';
@@ -1201,6 +1175,10 @@ $('#header .btn').click(function () {
 $(document).on('click', function (e) {
     if(e.target.id=='cancel_box'){return};
     if($(e.target).parents('#cancel_box').length==0)$('.action_tip').hide();
+});
+$(function () {
+    getActive();
+    $($('.btnSecond input')[2]).attr('checked','true');
 });
 /************************************************************************************/
 $(".screen_content").on("click","li",function(){
@@ -1993,8 +1971,4 @@ $("#send").click(function(){
         }
         whir.loading.remove();//移除加载框
     })
-});
-$(function () {
-    getActive();
-    $($('.btnSecond input')[2]).attr('checked','true');
 });
