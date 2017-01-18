@@ -220,6 +220,10 @@ function superaddition(data,num){//页面加载循环
                     TD+="<td onmouseover='mapInit(this)' onmouseleave='mapHide(this)' class='location'><span>"
                         + data[i].location
                         + "</span></td>"
+                }else if(code=="store_location"){
+                    TD+="<td onmouseover='mapstore(this)' onmouseleave='mapstoreHide(this)' class='store_location'><span>"
+                        + data[i].store_location
+                        + "</span></td>"
                 }else {
                     TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                 }
@@ -234,10 +238,11 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td>" +
-                        TD +
-            "           <td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 1000px;'></td>" +
-                        "</tr>");
+                        + "</td>"
+                        + TD
+                        + "<td id='ghy"+i+"' onmouseover='mapShow(this)' onmouseleave='mapHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left:40%'></td>"
+                        +"<td id='store"+i+"' onmouseover='mapstoreShow(this)' onmouseleave='mapstoreHide(this)' style='display:none;width:200px;height:200px;border-radius:7px;border:1px solid #d7d7d7;position: absolute;z-index: 1000;left: 75%;'></td>"
+                        +"</tr>");
     }
     whir.loading.remove();//移除加载框
     $(".th th:first-child input").removeAttr("checked");
@@ -832,7 +837,7 @@ $("#input-txt").keydown(function() {
 function mapInit(obj) {
     var val=$(obj).text();
     if(val!==""){
-        $(obj).parents("tr").children("td:last-child").show();
+        $(obj).parents("tr").children("td:nth-child(12)").show();
     }
     for(var j=0;j<$(".table tbody tr").length;j++){
         var map = new BMap.Map('ghy'+j);          // 创建地图实例
@@ -853,9 +858,39 @@ function mapInit(obj) {
         }
     }
 }
-function mapHide(obj) {
+function mapstore(obj) {
+    var val=$(obj).text();
+    if(val!=="0,0"&&val!==""){
+        $(obj).parents("tr").children("td:last-child").show();
+    }
+    for(var j=0;j<$(".table tbody tr").length;j++){
+        var map = new BMap.Map('store'+j);          // 创建地图实例
+        var location=$($(".table tbody tr")[j]).find(".store_location").text();
+        if(location!=="0,0"){
+            location=location.split(",");
+            var x=location[0];
+            var y=location[1];
+            var point = new BMap.Point(y,x);  // 创建点坐标
+            map.centerAndZoom(point, 16);     // 初始化地图，设置中心点坐标和地图级别
+            var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM};
+            map.addControl(new BMap.NavigationControl(opts));
+            // var marker = new BMap.Marker(point);        // 创建标注
+            // map.addOverlay(marker);                     // 将标注添加到地图中
+            var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(50,50));
+            var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+            map.addOverlay(marker2);              // 将标注添加到地图中
+        }
+    }
+}
+function mapstoreHide(obj) {
     $(obj).parents("tr").children("td:last-child").hide();
 }
-function mapShow(obj) {
+function mapstoreShow(obj) {
         $(obj).parents("tr").children("td:last-child").show();
+}
+function mapHide(obj) {
+    $(obj).parents("tr").children("td:nth-child(12)").hide();
+}
+function mapShow(obj) {
+    $(obj).parents("tr").children("td:nth-child(12)").show();
 }

@@ -1247,7 +1247,11 @@ function qjia(){
 }
 //会员资料基本信息更改
 $('#change_save').click(function () {
-    var param={}
+    var name=$("#user_name_edit").val();
+    if(name=="无"){
+        name="";
+    }
+    var param={};
     param.vip_id=$('#vip_name_edit').attr('data_vip_id');
     param.vip_name=$('#vip_name_edit').val();
     param.corp_code=sessionStorage.getItem('corp_code');
@@ -1255,6 +1259,7 @@ $('#change_save').click(function () {
     param.birthday=$('#vip_birthday_edit').val().split('-').join('');
     param.card_no=$('#vip_card_no_edit').val();
     param.sex=$("#USER_SEX").val();
+    param.user_name=name;
     oc.postRequire("post","/vip/updateVip","",param,function(data){
         if(data.code==0){
             art.dialog({
