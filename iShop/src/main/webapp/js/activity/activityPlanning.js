@@ -1000,7 +1000,7 @@ var activityPlanning={
 			format: 'YYYY-MM-DD',
 			min: laydate.now(),
 			max: '2099-06-16 23:59:59',
-			istime: true,
+			istime: false,
 			istoday: false,
 			choose: function(datas) {
 				end.min = datas; //开始日选好后，重置结束日的最小日期
