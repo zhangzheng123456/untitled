@@ -595,3 +595,7 @@ body{
 .tab_list{
     display: none;
 }
+/****下拉样式****/
+.select_input{
+    background: url(../img/icon_list_down.png) no-repeat 97% center;
+}

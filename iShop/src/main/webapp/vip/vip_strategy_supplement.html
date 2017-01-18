@@ -87,13 +87,13 @@
                                 <ul>
                                     <li>
                                         <div>
-                                            <label for="">任务类型</label><input id="task_type_code" type="text" class="text_input" placeholder="请选择任务类型"><span class="icon-ishop_8-02 icon_down"></span>
+                                            <label for="">任务类型</label><input id="task_type_code" type="text" class="text_input" data-code="" placeholder="请选择任务类型"><span class="icon-ishop_8-02 icon_down"></span>
                                             <div class="input_dropdown">
                                             </div>
                                         </div>
-                                        <div class="link">
+                                        <!-- <div class="link">
                                             <input type="text" class="text_input" placeholder="请输入链接" id="task_link">
-                                        </div>
+                                        </div> -->
                                     </li>
                                     <li >
                                         <label for="" style="vertical-align: top;margin-top:5px;">任务简述</label><textarea id="task_description"></textarea>
@@ -134,7 +134,7 @@
                         <div class="group_parent" style="display: block;" id="wxlist">
                             <div class="input_parent">
                                 <div class="float">
-                                    <label for="">发送时间</label><input id="wxlist_time" type="text" class="text_input laydate-icon" placeholder="">
+                                    <label for="" style="color:#c26555;">发送时间*</label><input id="wxlist_time" type="text" class="text_input laydate-icon" placeholder="">
                                 </div>
                                 <div class="float margin_left">微信推送配置</div>
                                 <div class="float group_edit margin_left">编辑</div>
@@ -181,7 +181,7 @@
                                         </div>
                                     </div>
                                     <div class="edit_frame_left">
-                                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">微信内容</label><textarea class="edit_content" placeholder="请输入微信内容"></textarea>
+                                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px; color:#c26555;">微信内容*</label><textarea class="edit_content" placeholder="请输入微信内容"></textarea>
                                     </div>
                                     <div class="edit_footer">
                                         <div class="edit_footer_close">取消</div>
@@ -193,7 +193,7 @@
                         <div class="group_parent" id="smslist">
                             <div class="input_parent">
                                 <div class="float">
-                                    <label for="">发送时间</label><input id="smslist_time" type="text" class="text_input laydate-icon" placeholder="">
+                                    <label for="" style="color:#c26555;">发送时间*</label><input id="smslist_time" type="text" class="text_input laydate-icon" placeholder="">
                                 </div>
                                 <div class="float margin_left">短信内容设定</div>
                                 <div class="float group_edit margin_left">编辑</div>
@@ -214,7 +214,7 @@
                                         </div>
                                     </div>
                                     <div class="edit_frame_left">
-                                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px;">短信内容</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
+                                        <label for="" class="label_frame" style="vertical-align: top;margin-top: 5px; color:#c26555;">短信内容*</label><textarea class="edit_content" placeholder="请输入短信内容"></textarea>
                                     </div>
                                     <div class="edit_footer">
                                         <div class="edit_footer_close">取消</div>
