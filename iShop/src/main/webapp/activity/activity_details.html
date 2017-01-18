@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">-->
     <title>活动详情</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
+    <!--<link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">-->
+    <!--<link href="../css/animate.css" rel="stylesheet">-->
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css?20170105">
     <link rel="stylesheet" type="text/css" href="../css/tips.css?20170105">
@@ -18,40 +18,6 @@
         #peopleContent li{
             cursor: pointer;
         }
-        /*#vip_status{*/
-            /*display: none;*/
-            /*position: fixed;*/
-            /*top: 50%;*/
-            /*left: 50%;*/
-            /*transform: translate(-50%,-45%);*/
-            /*width: 570px;*/
-            /*background: #fff;*/
-            /*border-radius: 5px;*/
-            /*z-index: 99999;*/
-            /*padding: 10px;*/
-        /*}*/
-        /*#vip_status .head_span_r{*/
-            /*float:right;*/
-            /*cursor: pointer;*/
-        /*}*/
-        /*#vip_status table{*/
-            /*width: 100%;*/
-            /*clear:both;*/
-        /*}*/
-        /*#vip_status table tr {*/
-            /*padding-left: 10px;*/
-            /*height: 50px;*/
-            /*line-height: 50px;*/
-            /*color: #434960;*/
-            /*font-weight: normal;*/
-            /*font-size: 14px;*/
-            /*text-align: center;*/
-        /*}*/
-        /*#vip_status table tr th,#vip_status table tr td{*/
-            /*font-weight: normal;*/
-            /*text-align: center;*/
-            /*width: 20%;*/
-        /*}*/
        #table_content{
            height: 300px;
            overflow-y: auto;
@@ -619,65 +585,6 @@
         <!--<span>尚未分配任务</span>-->
     <!--</div>-->
 </div>
-   <!--更多详情页面-->
-    <div id="get_more">
-        <div>
-        <span class="head_span_l">活动详情</span>
-        <span class="head_span_r icon-ishop_6-12" ></span>
-    </div>
-        <ul id="content">
-            <li>
-                <span class="content_l">活动状态</span>
-                <div class="content_r"id="activityState_1">
-                </div>
-            </li>
-            <li>
-                <span class="content_l">活动主题</span>
-                <div class="content_r">
-                </div>
-            </li>
-            <li>
-                <span class="content_l">执行方式</span>
-                <div class="content_r">
-                    测试
-                </div>
-            </li>
-            <li>
-                <span class="content_l">活动时间</span>
-                <div class="content_r">
-                    <span id="beiginTime_1" style="margin-left: 0px"></span> ~ <span id="endTime_1"></span></span>
-                </div>
-            </li>
-            <li>
-                <span class="content_l">执行范围</span>
-                <div class="content_r">
-                    测试
-                </div>
-            </li>
-            <li>
-                <span class="content_l">目标会员</span>
-                <div class="content_r">
-                    测试
-                </div>
-            </li>
-            <li>
-                <span class="content_l">活动描述</span>
-                <div id="fab_describe">
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!--活动详情人员状态-->
-</div>
-<!--弹框提示-->
-<div class="tk" id="tk">
-    <span class="icon-ishop_6-12" id="delete_tk"></span>
-    <p><i class="icon-ishop_6-14"></i>是否确认终止活动?</p>
-    <div class="btn">
-        <em class="cancel" id="cancel">取消</em>
-        <em class="delete" id="complete">确定</em>
-    </div>
-</div>
 <!--side-->
 <div id="side_bar">
     <div class="gotop">
@@ -688,8 +595,9 @@
     </div>
 </div>
 <script src="../js/jquery-2.1.1.min.js"></script>
-<script src="../js/activity/echarts.js"></script>
-<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<!--<script src="../js/activity/echarts.js"></script>-->
+<script src="../js/activity/echarts.simple.min.js"></script>
+<!--<script src="../js/bootstrap.min.js?v=3.4.0"></script>-->
 <script src="../js/loading.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
@@ -703,40 +611,6 @@
 <script src="/js/loading.js?20170105"></script>
 <script type="text/javascript" src="../js/activity/activity_details.js?20170105"></script>
 <script>
-//       setTimeout(function () {
-//           var s=new Date(min_date);
-//           var n=new Date();
-//           console.log(s<n);
-//           if(s<n){
-//               var start = {
-//                   min: '2020-06-16 23:59:59'
-//                   ,istoday: false
-//                   , istime: true //是否开启时间选择
-//                   , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
-//                   ,choose: function(datas){
-//                       end.min = datas; //开始日选好后，重置结束日的最小日期
-//                       end.start = datas //将结束日的初始值设定为开始日
-//                   }
-//                   ,  elem: '#start_time', //需显示日期的元素选择器
-//               };
-//           }else{
-//               start = {
-//                   min: laydate.now()
-//                   ,max: '2099-06-16 23:59:59'
-//                   ,istoday: false
-//                   , istime: true //是否开启时间选择
-//                   , format: 'YYYY-MM-DD hh:mm:ss' //日期格式
-//                   ,choose: function(datas){
-//                       end.min = datas; //开始日选好后，重置结束日的最小日期
-//                       end.start = datas //将结束日的初始值设定为开始日
-//                   }
-//                   ,  elem: '#start_time', //需显示日期的元素选择器
-//               };
-//           }
-//           laydate(start);
-//       },2000)
-//        laydate(start);
-//        laydate(end)
     $(function () {
         $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
