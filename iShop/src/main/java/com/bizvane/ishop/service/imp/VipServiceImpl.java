@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
+import com.bizvane.ishop.controller.VIPController;
 import com.bizvane.ishop.service.CRMInterfaceService;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.VipService;
@@ -13,6 +14,7 @@ import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.mongodb.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,8 @@ public class VipServiceImpl implements VipService {
     IceInterfaceService iceInterfaceService;
     @Autowired
     MongoDBClient mongodbClient;
+
+    private static final Logger logger = Logger.getLogger(VipServiceImpl.class);
 
     public String addVip(HashMap<String,Object> vipInfo) throws Exception{
 
@@ -188,13 +192,11 @@ public class VipServiceImpl implements VipService {
 
         DBObject object = new BasicDBObject();
         object.put("corp_code",corp_code);
-        object.put("check_status","0"); //未审核
+        object.put("status","0"); //未审核
         object.put("vip_id",vip_id);
         object.put("card_no",card_no);
         object.put("vip_name",vip_name);
 
-        object.put("store_code",store_code);
-        object.put("store_name",store_name);
         object.put("created_date",date);
         object.put("modified_date",date);
         object.put("remark",remark);
@@ -217,6 +219,8 @@ public class VipServiceImpl implements VipService {
             map.put("DESCRIPTION",remark);
             String result = crmInterfaceService.addPrepaidDocuments(corp_code,map);
 
+            logger.info("json------------addPrepaidDocuments---" + result);
+
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
             if (code.equals("0")){
@@ -229,24 +233,70 @@ public class VipServiceImpl implements VipService {
                 object.put("check_type","pay"); //充值
                 object.put("billNO",bill_NO);
 
+                JSONArray array = new JSONArray();
                 JSONObject content = new JSONObject();
-                content.put("store_code",store_code);
-                content.put("store_code",store_name);
-                content.put("user_code",user_code);
-                content.put("user_name",user_name);
-                content.put("pay_type",pay_type);
-                content.put("price",price);
-                content.put("pay_price",pay_price);
-                content.put("discount",discount);
+                content.put("show_name","操作店铺");
+                content.put("show_value",store_name);
+                content.put("key","store_name");
 
-                object.put("content",content);
+                JSONObject content1 = new JSONObject();
+                content1.put("show_name","操作店铺编号");
+                content1.put("show_value",store_code);
+                content1.put("key","store_code");
+
+                JSONObject content2 = new JSONObject();
+                content2.put("show_name","操作人");
+                content2.put("show_value",user_name);
+                content2.put("key","user_name");
+
+                JSONObject content3 = new JSONObject();
+                content3.put("show_name","操作人编号");
+                content3.put("show_value",user_code);
+                content3.put("key","user_code");
+
+                JSONObject content4 = new JSONObject();
+                content4.put("show_name","充值类型");
+                content4.put("show_value",pay_type);
+                content4.put("key","recharge_type");
+
+                JSONObject content5 = new JSONObject();
+                content5.put("show_name"," 折合吊牌金额");
+                content5.put("show_value",price);
+                content5.put("key","tag_price");
+
+                JSONObject content6 = new JSONObject();
+                content6.put("show_name"," 实付金额");
+                content6.put("show_value",pay_price);
+                content6.put("key","pay_price");
+
+                JSONObject content7 = new JSONObject();
+                content7.put("show_name"," 活动内容");
+                content7.put("show_value","无");
+                content7.put("key","active_content");
+
+                JSONObject content8 = new JSONObject();
+                content8.put("show_name"," 单据编号");
+                content8.put("show_value", bill_NO);
+                content8.put("key","bill_no");
+
+                array.add(content);
+                array.add(content1);
+                array.add(content2);
+                array.add(content3);
+                array.add(content4);
+                array.add(content5);
+                array.add(content6);
+                array.add(content7);
+                array.add(content8);
+
+                object.put("content",array);
                 cursor.save(object);
 
             }else {
                 return result_obj.getString("message");
             }
         } else if (type.equals("refund")) {
-            String refund_type = jsonObject.get("refund_type").toString();//1:充值单退款，2:余额退款
+            String pay_type = jsonObject.get("pay_type").toString();//1:充值单退款，2:余额退款
             String sourceNo = jsonObject.get("sourceNo").toString();//来源单号
 //            String price = jsonObject.get("price").toString();//吊牌金额
 //            String pay_price = jsonObject.get("pay_price").toString();//实付金额
@@ -255,9 +305,9 @@ public class VipServiceImpl implements VipService {
 
             HashMap<String,Object> map = new HashMap<String, Object>();
             map.put("BILLDATE",date.replace("-",""));
-            if (refund_type.equals("1")){
+            if (pay_type.equals("1")){
                 map.put("RECHARGE_TYPE","VM");
-            }else if (refund_type.equals("2")){
+            }else if (pay_type.equals("2")){
                 map.put("RECHARGE_TYPE","BA");
             }
             map.put("C_VIPMONEY_STORE_ID__NAME",store_name);
@@ -266,6 +316,8 @@ public class VipServiceImpl implements VipService {
 //            map.put("TOT_AMT_ACTUAL",price);
             map.put("DESCRIPTION",remark);
             String result = crmInterfaceService.addRefund(corp_code,map);
+
+            logger.info("json------------addRefund---" + result);
 
             JSONObject result_obj = JSONObject.parseObject(result);
             String code = result_obj.getString("code");
@@ -279,15 +331,51 @@ public class VipServiceImpl implements VipService {
                 object.put("check_type","refund"); //退款
                 object.put("billNO",bill_NO);
 
+                JSONArray array = new JSONArray();
                 JSONObject content = new JSONObject();
-                content.put("store_code",store_code);
-                content.put("store_code",store_name);
-                content.put("user_code",user_code);
-                content.put("user_name",user_name);
-                object.put("refund_type",refund_type);
-                object.put("sourceNo",sourceNo);
+                content.put("show_name","操作店铺");
+                content.put("show_value",store_name);
+                content.put("key","store_name");
 
-                object.put("content",content);
+                JSONObject content1 = new JSONObject();
+                content1.put("show_name","操作店铺编号");
+                content1.put("show_value",store_code);
+                content1.put("key","store_code");
+
+                JSONObject content2 = new JSONObject();
+                content2.put("show_name","操作人");
+                content2.put("show_value",user_name);
+                content2.put("key","user_name");
+
+                JSONObject content3 = new JSONObject();
+                content3.put("show_name","操作人编号");
+                content3.put("show_value",user_code);
+                content3.put("key","user_code");
+
+                JSONObject content4 = new JSONObject();
+                content4.put("show_name","退款类型");
+                content4.put("show_value",pay_type);
+                content4.put("key","recharge_type");
+
+                JSONObject content5 = new JSONObject();
+                content5.put("show_name","来源单号");
+                content5.put("show_value",sourceNo);
+                content5.put("key","sourceNo");
+
+                JSONObject content8 = new JSONObject();
+                content8.put("show_name"," 单据编号");
+                content8.put("show_value", bill_NO);
+                content8.put("key","bill_no");
+
+                array.add(content);
+                array.add(content1);
+                array.add(content2);
+                array.add(content3);
+                array.add(content4);
+                array.add(content5);
+                array.add(content8);
+
+                object.put("content",array);
                 cursor.save(object);
             }else {
                 return result_obj.getString("message");
