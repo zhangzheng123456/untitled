@@ -35,10 +35,7 @@
     $(document).on('click', null, function(event){
       if(_this.searchableElement.has($(event.target)).length === 0)
         _this.hide();
-        console.log(_this.searchableElement.has($(event.target)));
-        console.log(_this);
     });
-
     this.input.on('keydown', function(event){
       event.stopPropagation();
       if(event.which === 13){         //enter
