@@ -34,8 +34,9 @@
                     var list=msg.list;
                     audit_info.corp_code=list.corp_code;
                     if(isOparate){
-                        audit_info.getStoreName()
-                    };
+                        audit_info.getStoreName();
+                    }
+                    list.type=="充值"?$("#recharge_type").find("label").html("充值类型"):"退款类型";
                   $("#page-wrapper .conpany_msg").find(">div").hide();
                   list.status=="0"?list.status="未审核":list.status=="1"?list.status="审核通过":list.status="失败";
                     for(var key in list){
@@ -55,6 +56,11 @@
                     }else{
                         $("#auditSuccess").show();
                         $("#keep").show();
+                        if(list.type=="充值"){
+                            $("#execution").html("<li>直接充值</li><li>退换转充值</li>")
+                        }else if(list.type=="退款"){
+                            $("#execution").html("<li>按余额退款</li><li>按充值单退款</li>")
+                        }
                     }
                 }
             })
@@ -63,7 +69,7 @@
             //日期调用插件
             var bill_date = {
                 elem: '#bill_date_input',
-                format: 'YYYY-MM-DD',
+                format: 'YYYYMMDD',
                 istime: false,
                 max: '2099-06-16 23:59:59', //最大日期
                 istoday: true,
@@ -77,7 +83,7 @@
             })
         },
         getStoreName:function(){
-            oc.postRequire("get","/shop/findStore","","",function(data){
+            oc.postRequire("get","/shop/findStore?corp_code="+audit_info.corp_code,"","",function(data){
                 if(data.code=="0"){
                     var msg=JSON.parse(data.message);
                     msg=JSON.parse(msg.list);
@@ -90,10 +96,11 @@
                     $('.corp_select .searchable-select-input').keydown(function(event){
                         var event=window.event||arguments[0];
                         if(event.keyCode == 13){
+                            audit_info.getUserName();
                         }
                     });
                     $('.searchable-select-item').click(function(){
-
+                           audit_info.getUserName();
                     });
                     audit_info.getUserName();
                 }else if(data.code=="-1"){
@@ -111,6 +118,7 @@
                 store_code:$("#OWN_CORP").val(),
                 corp_code:audit_info.corp_code
             };
+            $('#user_select').empty().next().remove();
             oc.postRequire("post","/shop/staff","",param,function(data){
                 if(data.code=="0"){
                     var msg=JSON.parse(data.message);
@@ -142,9 +150,9 @@
         },
         selectRechargeType:function(){
             $("#recharge_type_input").bind("click",function(){
-                $(this).next().show();
+                $(this).next().toggle()
             });
-            $("#recharge_type_input").next().find("li").bind("click",function(){
+            $("#recharge_type_input").next().on("click","li",function(){
                 var val=$(this).html();
                 $("#recharge_type_input").val(val);
                 $(this).parent().hide();
@@ -174,7 +182,21 @@
                 editParam.user_name=$("#user_select").val()==null?"":$("#user_select").val();
                 editParam.type=$("#type").find("input").val()=="充值"?"pay":$("#type").find("input").val()=="退款"?"refund":"";
                 oc.postRequire("post","/vipCheck/editBill","",editParam,function(data){
-                    console.log(data)
+                    if(data.code==0){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "保存成功"
+                        })
+                    }else{
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: data.message
+                        })
+                    }
                 })
             })
         },
@@ -186,31 +208,24 @@
                 params["type"]=type;
                 oc.postRequire("post","/vipCheck/changeStatus","",params,function(data){
                     if(data.code=="0"){
-                        frame();
-                        $('.frame').html("操作成功");
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "审核成功"
+                        });
                     }else{
-                        frame();
-                        $('.frame').html(data.message);
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: data.message
+                        });
                     }
                 })
             })
         }
     };
-    //删除弹框
-    function frame(){
-        var def= $.Deferred();
-        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
-        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
-        $('.frame').remove();
-        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
-        $(".frame").animate({opacity:"1"},1000);
-        $(".frame").animate({opacity:"0"},1000);
-        setTimeout(function(){
-            $(".frame").hide();
-            def.resolve();
-        },2000);
-        return def;
-    }
     $(function(){
         audit_info.init();
     })

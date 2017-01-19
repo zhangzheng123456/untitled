@@ -27,7 +27,7 @@ var activityPlanning={
 			// this.getCoupon();
 		}
 		setTimeout(function(){
-			self.lay1();
+			// self.lay1();
 		},1000);
 	},
 	allEvent:function(){
@@ -140,6 +140,7 @@ var activityPlanning={
 			$(html).find(".group_del").show();
 			$(html).find(".edit_frame .edit_content").val("");
 			$(html).find(".edit_frame .edit_content").removeAttr("disabled");
+			$(html).find(".edit_frame .edit_content").attr("data-content","");
 			$(this).parents('.group_parent').append(html);
 
 		})
@@ -202,13 +203,16 @@ var activityPlanning={
 			$(this).parents('.input_parent').find(".edit_frame").hide()
 			var is_modify=$(this).parents('.input_parent').attr("is_modify");
 			if(is_modify!=="Y"){
-				$(this).parents('.input_parent').find(".edit_content").val("");
+				var content=$(this).parents('.input_parent').find(".edit_content").attr("data-content");
+				$(this).parents('.input_parent').find(".edit_content").val(content);
 			}
 			whir.loading.remove('mask');
 		});
 		//编辑保存
 		$(".p_task_content").on("click",".input_parent .edit_footer_save",function(){
 			$(this).parents('.input_parent').find(".edit_frame").hide()
+			var content=$(this).parents('.edit_frame').find('.edit_content').val();
+			$(this).parents('.edit_frame').find('.edit_content').attr("data-content",content);
 			whir.loading.remove('mask');
 		})
 		//策略补充
@@ -628,7 +632,7 @@ var activityPlanning={
 					time: 1,
 					lock: true,
 					cancel: false,
-					content:"添加任务失败"
+					content:data.message
 				});
 				def.resolve("失败");
 			}
@@ -667,7 +671,7 @@ var activityPlanning={
 						time: 1,
 						lock: true,
 						cancel: false,
-						content:"群发失败"
+						content:data.message
 					});
 					def.resolve("失败");
 				}
@@ -762,7 +766,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555'>微信内容*</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+wxlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555'>微信内容*</label><textarea "+disabled+" class='edit_content' placeholder='请输入微信内容' data-content="+wxlist[i].content+">"+wxlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -812,7 +816,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555;'>短信内容*</label><textarea class='edit_content' "+disabled+" placeholder='请输入推送摘要'>"+smslist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;color:#c26555;'>短信内容*</label><textarea class='edit_content' "+disabled+" placeholder='请输入短信内容' data-content="+smslist[i].content+">"+smslist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -861,7 +865,7 @@ var activityPlanning={
 					                        </div>\
 					                    </div>\
 					                    <div class='edit_frame_left'>\
-					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要'>"+emlist[i].content+"</textarea>\
+					                        <label  class='label_frame' style='vertical-align: top;margin-top: 5px;'>邮件内容设定</label><textarea "+disabled+" class='edit_content' placeholder='请输入推送摘要' data-content="+emlist[i].content+">"+emlist[i].content+"</textarea>\
 					                    </div>\
 					                    <div class='edit_footer'>\
 					                        <div class='edit_footer_close'>取消</div>\
@@ -956,7 +960,7 @@ var activityPlanning={
 						time: 1,
 						lock: true,
 						cancel: false,
-						content:"添加任务失败"
+						content:data.message
 					});
 					def.resolve("失败");
 				}
@@ -983,7 +987,7 @@ var activityPlanning={
 							time: 1,
 							lock: true,
 							cancel: false,
-							content:"群发失败"
+							content:data.message
 						});
 						def.resolve("失败");
 					},1500);
@@ -1056,9 +1060,3 @@ var activityPlanning={
 $(function(){
 	activityPlanning.init();
 })
-function checkStart(data){
-    $("#target_end_time").attr("onclick","laydate({elem:'#target_end_time',min:'"+data+"',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkEnd})");
-};
-function checkEnd(data){
-    $("#target_start_time").attr("onclick","laydate({elem:'#target_start_time',min:'1900-01-01 00:00:00',max: '"+data+"',istime: true, format: 'YYYY-MM-DD hh:mm:ss',choose:checkStart})");
-};

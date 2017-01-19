@@ -1359,36 +1359,6 @@ public class WebController {
         return dataBean.getJsonStr();
     }
 
-
-    @RequestMapping(value = "/api/quartztest", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
-    @ResponseBody
-    public String quartztest(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String job_name = request.getParameter("job_name");
-            String job_group = request.getParameter("job_group");
-
-            ScheduleJob scheduleJob = new ScheduleJob();
-            scheduleJob.setJob_name(job_name);
-            scheduleJob.setJob_group(job_group);
-            scheduleJob.setFunc("test2");
-            scheduleJob.setCron_expression("0 45 11 9 1 ?");
-
-            scheduleJobService.insert(scheduleJob);
-
-//            scheduleJobService.initScheduleJob();
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage("信息异常");
-        }
-        return dataBean.getJsonStr();
-    }
-
     /**
      * 获取附件门店
      *

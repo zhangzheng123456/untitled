@@ -194,6 +194,9 @@ body{
 .tabs_left{
     float:left;
     color:#4a5f7c;
+    max-width:800px;
+    overflow-x: auto;
+    white-space:nowrap;
 }
 .tabs_right{
     float:right;
@@ -588,6 +591,14 @@ body{
     float: left;
     cursor: pointer;
 }
+#task_titles{
+    margin-top:0;
+}
+#task_titles li{
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+}
 .strategy_footer ul li.active{
     color: #41c7db;
     background-color: #4a5f7c!important;
@@ -597,5 +608,7 @@ body{
 }
 /****下拉样式****/
 .select_input{
-    background: url(../img/icon_list_down.png) no-repeat 97% center;
+    background-image: url(../img/icon_list_down.png);
+    background-position: 97% center;
+    background-repeat: no-repeat;
 }

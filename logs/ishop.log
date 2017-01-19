@@ -1,0 +1,38 @@
+[ishop][INFO] [2017-01-18 16:28:42] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 16:28:42] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1041326823","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 16:28:53] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 16:29:46] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 16:29:46] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1041326823","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 16:30:03] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 16:35:56] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 16:35:56] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1041326823","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 16:36:02] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 17:02:08] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 17:02:08] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1041326823","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 17:02:14] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 19:34:31] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 19:34:31] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1041326823","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 19:34:39] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 22:35:47] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:35:47] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-905329146","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:37:00] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 22:37:14] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:37:14] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-2111181256","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:38:20] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 22:39:14] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:39:14] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1564629011","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:39:55] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 22:44:17] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:44:17] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1521132614","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:46:49] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:46:49] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-148813381","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:48:09] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 22:56:19] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:56:19] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-131709548","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:56:36] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 22:56:58] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1410514922","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 22:56:58] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 22:57:25] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
+[ishop][INFO] [2017-01-18 23:00:26] com.alibaba.druid.pool.DruidDataSource.init(722) | {dataSource-1} inited
+[ishop][INFO] [2017-01-18 23:00:26] com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl.log(77) | {"url":"jdbc:mysql://update.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false","dbType":"mysql","name":"DataSource-1818440653","activeCount":0,"poolingCount":0,"connectCount":0,"closeCount":0}
+[ishop][INFO] [2017-01-18 23:01:11] com.alibaba.druid.pool.DruidDataSource.close(1451) | {dataSource-1} closed
