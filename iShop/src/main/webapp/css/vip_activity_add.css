@@ -569,6 +569,7 @@ body{
     font-size: 20px;
     height: 20px;
     line-height: 20px;
+    font-weight: normal;
 }
 .strategy_head .tabs_left .strategy_time,.strategy_head .tabs_left .strategy_name{
     margin-top: 10px;

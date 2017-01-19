@@ -318,7 +318,6 @@ function refunTopUpShow(){
                     var can_pass = msg.can_pass;
                     var price = msg.price; //吊牌金额
                     var refundMoneyDiscount =pay_price/price;
-                    console.log(msg);
                     $('#refundReality').val(pay_price);
                     $('#refundMoneyDiscount').val(refundMoneyDiscount);
                 } else if (data.code == "-1") {

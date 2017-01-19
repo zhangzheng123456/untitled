@@ -1241,6 +1241,9 @@ function qjia(){
                 $("#grade_change").show();
             }else if(actions[i].act_name=="edit"){
                $("#change_save").show();
+           }else if(actions[i].act_name=="recharge"){
+               $("#toTopUp").show();
+               $("#toRefund").show();
            }
         }
     })

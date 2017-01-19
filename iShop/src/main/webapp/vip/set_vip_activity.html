@@ -23,7 +23,7 @@
                             <li data-id="festival">节日活动</li>
                         </ul>
                     </li>
-                    <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" id="activity_describe" placeholder="请输入活动简介" name="活动简述" maxlength="150"></textarea></li>
+                    <li style="display: inline-flex;"><label>活动简述</label><textarea class="text_introduction" id="activity_describe" placeholder="请输入活动简介" name="活动简述" maxlength="300"></textarea></li>
                    <!--  <li>
                         <li style="margin-right: 35px;"><label>活动链接</label><input placeholder="请输入活动链接" id="activity_link" class="text_input" type="text"></li>
                     </li> -->
@@ -54,12 +54,12 @@
             <div id="sales_activity" style="display: none">
                 <li class="extend_url"><label>推广链接</label><input id="sales_url" placeholder="请输入推广链接" class="text_input url_input" type="text"></li>
                 <ul>
-                    <li><label style="color:#c26555;">设置促销编号*</label><input placeholder="请输入促销编号" class="text_input" type="text"></li>
+                    <li><label style="color:#c26555;">设置促销编号*</label><input placeholder="请输入促销编号" class="text_input" maxlength="50" type="text"></li>
                 </ul>
             </div>
             <div id="h5_activity" style="display: none">
                 <ul>
-                    <li><label style="color:#c26555;">网页活动页面*</label><input placeholder="请输入页面链接" class="text_input" type="text"></li>
+                    <li><label style="color:#c26555;">网页活动页面*</label><input placeholder="请输入页面链接" class="text_input" maxlength="50" type="text"></li>
                 </ul>
             </div>
             <div id="coupon_activity" style="display: none">
@@ -131,7 +131,7 @@
                         <ul>
                             <li><label style="color:#c26555;">报名标题*</label><input placeholder="请输入标题" id="invite_title" class="text_input" type="text" maxlength="50"></li>
                             <li><label style="color:#c26555;">报名截止时间*</label><input id="offline_end" placeholder="请输入截止时间" class="text_input laydate-icon" type="text" readonly="readonly" onclick="laydate({elem:'#offline_end',min:'1900-01-01 00:00:00',max: '2099-12-31 23:59:59',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></li>
-                            <li style="display: inline-flex"><label>报名简介</label><textarea id="invite_summary" placeholder="请输入报名简介"  type="text" maxlength="150"></textarea></li>
+                            <li style="display: inline-flex"><label>报名简介</label><textarea id="invite_summary" placeholder="请输入报名简介"  type="text" maxlength="300"></textarea></li>
                             <li><label style="color:#c26555;">报名成功提示*</label><input placeholder="请输入报名成功提示" id="invite_message" class="text_input" type="text" maxlength="20"></li>
                             <li class="upload_logo"><label>logo图片</label><span><input class="file_input" id="upload_logo" type="file">+</span></li>
                         </ul>

@@ -173,7 +173,7 @@ html{
     height: 29px;
     line-height: 29px;
     color: #888888;
-    margin-right: 3px;"
+    margin-right: 3px;
 }
 .header .center .message-class .tabs-parent .images .img-parent{
     width: 100%;
@@ -325,7 +325,7 @@ padding:25px 15px 0 15px;
     font-size: 14px;
 }
 .right .person-detail .functional_btn{
-    display: inline-block;
+    display: none;
     position: relative;
     margin-left: 10px;
     cursor: pointer;
@@ -337,6 +337,7 @@ padding:25px 15px 0 15px;
     background-color: #fcfcfc;
     color: #888888;
     text-align: center;
+    display: none;
 }
 .right .functional_btn input{
     outline: none;

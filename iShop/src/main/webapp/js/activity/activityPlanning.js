@@ -491,6 +491,15 @@ var activityPlanning={
 		var self=this;
 		$("#task_content").show();
 		var length=$("#task_titles li").length+1;
+		if(length>=11){
+			art.dialog({
+	            time: 1,
+	            lock: true,
+	            cancel: false,
+	            content:"添加任务总数不能超过10个"
+	        });
+			return;
+		}
 		if(length>1){
 			var param=self.checkoutTask();
 			if(param==undefined){
@@ -498,15 +507,6 @@ var activityPlanning={
 			}
 			self.param.tasklist.push(param);
 		}
-		// if(length>=6){
-		// 	art.dialog({
-	 //            time: 1,
-	 //            lock: true,
-	 //            cancel: false,
-	 //            content:"添加任务不能超过5个"
-	 //        });
-		// 	return;
-		// }
 		$("#task_titles li").removeClass('active');
 		if(document.title=="策略补充"){
 			$("#task_titles").append("<li class='active'>任务"+length+" *</li>");
