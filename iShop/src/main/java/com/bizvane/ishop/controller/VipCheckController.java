@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.constant.CommonValueCorp;
+
 import com.bizvane.ishop.entity.VipRules;
 import com.bizvane.ishop.service.CRMInterfaceService;
 import com.bizvane.ishop.service.VipRulesService;
