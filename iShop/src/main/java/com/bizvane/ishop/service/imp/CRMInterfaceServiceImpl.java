@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -482,7 +481,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
-            if (modStatus.get("id") == null) {
+            String id=modStatus.get("id").toString();
+
+            if (id == null&&id.equals("")) {
 
                 errormap.put("message","缺少id");
                 errormap.put("code",-1);
@@ -507,6 +508,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                 modStatus.put("SALESREP_ID__NAME",modStatus.get("user_name").toString());
                 modStatus.remove("user_name");
             }
+            //.....
             if(keys.contains("card_no")){
                 modStatus.put("C_VIP_ID__CARDNO",modStatus.get("card_no").toString());
                 modStatus.remove("card_no");
@@ -609,7 +611,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
-            if (modStatusRefund.get("id") == null) {
+            String id=modStatusRefund.get("id").toString();
+            if (id == null && id.equals("")) {
 
                 errormap.put("message","缺少id");
                 errormap.put("code",-1);
