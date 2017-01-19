@@ -69,11 +69,11 @@ public class VipFsendServiceImpl implements VipFsendService {
      * @throws Exception
      */
     @Override
-    public String getVipFsendById(int id, String role_code, String corp_code, String user_brand_code, String user_area_code, String user_store_code, String user_code) throws Exception {
+    public String getVipFsendById(int id ) throws Exception {
         String message = "";
         VipFsend vipFsend = vipFsendMapper.selectById(id);
         String sms_code = vipFsend.getSms_code();
-        corp_code=vipFsend.getCorp_code();
+        String corp_code=vipFsend.getCorp_code();
         String send_scope = vipFsend.getSend_scope();
         String send_type = vipFsend.getSend_type();
 
@@ -119,67 +119,6 @@ public class VipFsendServiceImpl implements VipFsendService {
                 message = JSON.toJSONString(obj);
             } else if (send_scope.equals("vip_condition")) {
 
-                String sms_vips = vipFsend.getSms_vips();
-                String vip_name = "";
-                String vip_id = "";
-                String cardno = "";
-                if(!sms_vips.equals("")&&sms_vips!=null){
-                    JSONArray screen = JSONArray.parseArray(sms_vips);
-                    DataBox dataBox = vipGroupService.vipScreenBySolr(screen, corp_code, "1", "10", role_code, user_brand_code, user_area_code, user_store_code, user_code);
-                    if(dataBox.data.toString().equals("SUCCESS")){
-                        String result = dataBox.data.get("message").value;
-                        JSONObject result_obj = JSONObject.parseObject(result);
-                        String m= result_obj.getString("count");
-                        JSONObject obj = new JSONObject();
-                        JSONObject obj2 = new JSONObject();
-
-                        JSONArray arr = new JSONArray();
-                        JSONArray all_vip_list = JSONArray.parseArray(result_obj.getString("all_vip_list"));
-                        for (int i = 0; i < all_vip_list.size(); i++) {
-                            JSONObject obj1 = all_vip_list.getJSONObject(i);
-                            vip_name = obj1.getString("vip_name");
-                            vip_id = obj1.getString("vip_id");
-                            cardno = obj1.getString("cardno");
-                            obj2.put("vip_name", vip_name);
-                            obj2.put("vip_id", vip_id);
-                            obj2.put("is_send", "N");
-                            obj2.put("cardno", cardno);
-                            arr.add(obj2);
-                        }
-                        obj.put("vip_info", arr);
-                        message = JSON.toJSONString(obj);
-                    }else{
-                        JSONObject obj = new JSONObject();
-                        JSONObject obj1 = new JSONObject();
-                        obj1.put("vip_name", "彭旭丽");
-                        obj1.put("vip_id", "316424");
-                        obj1.put("is_send", "N");
-                        obj1.put("cardno", "13016691660");
-                        JSONArray arr = new JSONArray();
-                        arr.add(obj1);
-                        obj.put("vip_info", arr);
-
-                        message = JSON.toJSONString(obj);
-
-                    }
-
-                }else{
-                    JSONObject obj = new JSONObject();
-                    JSONObject obj1 = new JSONObject();
-                    obj1.put("vip_name", "彭旭丽");
-                    obj1.put("vip_id", "316424");
-                    obj1.put("is_send", "N");
-                    obj1.put("cardno", "13016691660");
-                    JSONArray arr = new JSONArray();
-                    arr.add(obj1);
-                    obj.put("vip_info", arr);
-
-                    message = JSON.toJSONString(obj);
-
-                }
-
-//                JSONObject sms_vips_obj = JSONObject.parseObject(sms_vips);
-//                JSONArray screen = sms_vips_obj.getJSONArray("conditions");
             }
         } else if (send_type.equals("wxmass")) {
             //如果发送类型是微信群发消息，根据筛选会员方式获取vip_id
@@ -225,18 +164,7 @@ public class VipFsendServiceImpl implements VipFsendService {
                 message = JSON.toJSONString(obj);
 
             } else if (send_scope.equals("vip_condition")) {
-                JSONObject obj = new JSONObject();
-                JSONObject obj1 = new JSONObject();
-                obj1.put("vip_name", "彭旭丽");
-                obj1.put("vip_id", "316424");
-                obj1.put("is_send", "N");
-                obj1.put("is_read", "N");
-                obj1.put("cardno", "13016691660");
-                JSONArray arr = new JSONArray();
-                arr.add(obj1);
-                obj.put("vip_info", arr);
 
-                message = JSON.toJSONString(obj);
             }
         }
 
