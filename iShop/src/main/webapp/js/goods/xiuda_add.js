@@ -58,7 +58,8 @@ var swip_image = [];
     fabjs.bindbutton=function(){
         $(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
             if(fabjs.firstStep()){
-                var corp_code = $('.earchable-select-item.selected').text();
+                var corp_code = $('.searchable-select-items .selected').attr('data-value');
+                console.log('企业编号是'+corp_code);
                 var d_match_title  = $('.the_listTitle').eq(1).find('input').val();
                 var d_match_image = [];
                 $('.list_content').eq(0).find('.item_box').each(function () {
@@ -126,6 +127,8 @@ var swip_image = [];
                 var user_code = message.user_code;
                 var corp_code = message.corp_code;
                 var d_match_code = message.d_match_code;
+                $.cookie('user_code',user_code);
+                $.cookie('corp_code',corp_code);
                 $.cookie('d_match_code',d_match_code);
                 $(window.parent.document).find('#iframepage').attr("src", "/goods/xiuda_editor.html");
             }else if(data.code=="-1"){

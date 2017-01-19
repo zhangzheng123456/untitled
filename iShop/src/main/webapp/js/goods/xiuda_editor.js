@@ -807,10 +807,27 @@ function GetRequest() {
 function toXiuda(){
     window.location.href='/goods/xiuda.html';
 }
+function getPage(){
+    var _params={};
+        _params["corp_code "]='';
+        _params["d_match_code"]=GetRequest().d_match_code;
+        oc.postRequire("post","/api/shopMatch/updGoodsByWx","", _params, function(data){
+            if(data.code=="0"){
+                div.html("");
+                $("#GOODS_CODE").attr("data-mark","Y");
+            }else if(data.code=="-1"){
+                $("#GOODS_CODE").attr("data-mark","N");
+                div.addClass("error_tips");
+                div.html("该编号已经存在！");
+            }
+        })
+}
+function pageVal(){}
 window.onload = function(){
     $('#areaTemp').css('display','none');
     checkTemp();
     addImg();
     allCorp();
-    //sessionStorage.getItem("corp_code");
+    getPage();
+
 }
