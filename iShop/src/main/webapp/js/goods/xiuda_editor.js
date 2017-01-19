@@ -1,4 +1,7 @@
 /**
+ * Created by Administrator on 2017/1/19.
+ */
+/**
  * Created by Administrator on 2017/1/16.
  */
 var oc = new ObjectControl();
@@ -30,7 +33,7 @@ var swip_image = [];
                 this.hiddenHint(hint);
                 return true;
             }else{
-                this.displayHint(hint,"è¯·è¾“å…¥æ•°å­—ï¼");
+                this.displayHint(hint,"ÇëÊäÈëÊı×Ö£¡");
                 return false;
             }
         }else{
@@ -40,11 +43,11 @@ var swip_image = [];
     }
     fabjs.hiddenHint = function(hint){
         hint.removeClass('error_tips');
-        hint.html("");//å…³é—­ï¼Œå¦‚æœæœ‰å‹æƒ…æç¤ºåˆ™æ˜¾ç¤º
+        hint.html("");//¹Ø±Õ£¬Èç¹ûÓĞÓÑÇéÌáÊ¾ÔòÏÔÊ¾
     };
     fabjs.displayHint = function(hint,content){
         hint.addClass("error_tips");
-        if(!content)hint.html(hint.attr("hintInfo"));//é”™è¯¯æç¤º
+        if(!content)hint.html(hint.attr("hintInfo"));//´íÎóÌáÊ¾
         else hint.html(content);
     };
     fabjs.firstStep = function(){
@@ -54,7 +57,7 @@ var swip_image = [];
         }
         return true;
     };
-    //ä¿å­˜åŠŸèƒ½
+    //±£´æ¹¦ÄÜ
     fabjs.bindbutton=function(){
         $(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
             if(fabjs.firstStep()){
@@ -64,10 +67,10 @@ var swip_image = [];
                 $('.list_content').eq(0).find('.item_box').each(function () {
                     d_match_image.push($(this).find('img').attr('src'));
                 });
-                console.log('æ­é…å›¾ç‰‡'+d_match_image);
+                console.log('´îÅäÍ¼Æ¬'+d_match_image);
                 var d_match_desc = $('.the_listTitle textarea').val();
                 var user_code = '';
-                var r_match_num = $('.list_content').eq(1).find('.item_box').length; //æ­é…å•†å“é•¿åº¦
+                var r_match_num = $('.list_content').eq(1).find('.item_box').length; //´îÅäÉÌÆ·³¤¶È
                 var r_match_goods = [];
                 var obj = {};
                 var goodsBox = $('.list_content').eq(1).find('.item_box');
@@ -85,14 +88,14 @@ var swip_image = [];
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content:"ç§€æ­æ ‡é¢˜æˆ–å•†å“æè¿°æœªå¡«å†™"
+                        content:"Ğã´î±êÌâ»òÉÌÆ·ÃèÊöÎ´ÌîĞ´"
                     });
                 }else if(d_match_image.length == 0 || r_match_goods.length == 0){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content:"æ­é…å›¾ç‰‡æˆ–æ­é…å•†å“æœªæ·»åŠ "
+                        content:"´îÅäÍ¼Æ¬»ò´îÅäÉÌÆ·Î´Ìí¼Ó"
                     });
                 }else{
                     var _params = {
@@ -113,14 +116,14 @@ var swip_image = [];
         });
     };
     fabjs.ajaxSubmit=function(_command,_params){
-        whir.loading.add("",0.5);//åŠ è½½ç­‰å¾…æ¡†
+        whir.loading.add("",0.5);//¼ÓÔØµÈ´ı¿ò
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
                 art.dialog({
                     time: 2,
                     lock: true,
                     cancel: false,
-                    content:"ä¿å­˜æˆåŠŸ"
+                    content:"±£´æ³É¹¦"
                 });
                 var message = JSON.parse(data.message);
                 var user_code = message.user_code;
@@ -136,10 +139,10 @@ var swip_image = [];
                     content: data.message
                 });
             }
-            whir.loading.remove();//ç§»é™¤åŠ è½½æ¡†
+            whir.loading.remove();//ÒÆ³ı¼ÓÔØ¿ò
         });
     };
-    var bindFun = function(obj1){//ç»‘å®šå‡½æ•°ï¼Œæ ¹æ®æ ¡éªŒè§„åˆ™è°ƒç”¨ç›¸åº”çš„æ ¡éªŒå‡½æ•°
+    var bindFun = function(obj1){//°ó¶¨º¯Êı£¬¸ù¾İĞ£Ñé¹æÔòµ÷ÓÃÏàÓ¦µÄĞ£Ñéº¯Êı
         var _this;
         if(obj1){
             _this = jQuery(obj1);
@@ -173,12 +176,12 @@ var swip_image = [];
     return obj;
 }));
 jQuery(document).ready(function(){
-    window.fab.init();//åˆå§‹åŒ–
+    window.fab.init();//³õÊ¼»¯
     var a="";
     var b="";
-    if($(".pre_title label").text()=="ç¼–è¾‘å•†å“åŸ¹è®­(FAB)"){
+    if($(".pre_title label").text()=="±à¼­ÉÌÆ·ÅàÑµ(FAB)"){
         var id=sessionStorage.getItem("id");
-        var key_val=sessionStorage.getItem("key_val");//å–é¡µé¢çš„function_code
+        var key_val=sessionStorage.getItem("key_val");//È¡Ò³ÃæµÄfunction_code
         key_val=JSON.parse(key_val);
         var funcCode=key_val.func_code;
         $.get("/detail?funcCode="+funcCode+"", function(data){
@@ -199,12 +202,12 @@ jQuery(document).ready(function(){
         var b="";
         whir.loading.add("",0.5);
         oc.postRequire("post", _command,"", _params, function(data){
-            console.log('è¯·æ±‚å›çš„æ•°æ®');
+            console.log('ÇëÇó»ØµÄÊı¾İ');
             if(data.code=="0"){
                 var m=JSON.parse(data.message);
                 var msg=JSON.parse(m.goods);
                 console.log(msg.goods_description);
-                //å°†è¯»å–åˆ°çš„å–ç‚¹ä¿¡æ¯ä¿å­˜åœ¨æœ¬åœ°
+                //½«¶ÁÈ¡µ½µÄÂôµãĞÅÏ¢±£´æÔÚ±¾µØ
                 sessionStorage.setItem('goods_description',msg.goods_description)
                 var goods_arr=msg.goods_image==''?'':JSON.parse(msg.goods_image);
                 ue.ready(function() {
@@ -213,7 +216,7 @@ jQuery(document).ready(function(){
                 });
                 console.log(goods_arr);
                 // var goods_arr=[];
-                // var filename;//å›¾ç‰‡å
+                // var filename;//Í¼Æ¬Ãû
                 // if(goods_img.indexOf(',')!==-1){
                 // 	goods_arr= goods_img.split(",");
                 // }else{
@@ -222,7 +225,7 @@ jQuery(document).ready(function(){
                 for(var i=0;i<goods_arr.length;i++){
                     swip_image.push(goods_arr[i].image);
                     if(goods_arr[i].image.indexOf('http')==-1)continue;
-                    // if(goods_arr[i].indexOf("/")>0)//å¦‚æœåŒ…å«æœ‰"/"å· ä»æœ€åä¸€ä¸ª"/"å·+1çš„ä½ç½®å¼€å§‹æˆªå–å­—ç¬¦ä¸²
+                    // if(goods_arr[i].indexOf("/")>0)//Èç¹û°üº¬ÓĞ"/"ºÅ ´Ó×îºóÒ»¸ö"/"ºÅ+1µÄÎ»ÖÃ¿ªÊ¼½ØÈ¡×Ö·û´®
                     // {
                     //     filename=goods_arr[i].substring(goods_arr[i].lastIndexOf("/")+1,goods_arr[i].length);
                     var check__or='';
@@ -245,7 +248,7 @@ jQuery(document).ready(function(){
                         +'<div class="diyProgressText">0%</div>'
                         +'</div>'
                         +'<span style="position: absolute;top: 60px;width: 60px;padding-right:4px;margin-top: 2px">'
-                        +'<label>å…¬å¼€</label>'
+                        +'<label>¹«¿ª</label>'
                             // +'<em class="checkbox_isactive"style="position: absolute; top: 0px;left: -9px;">'
                             // +'<input style="width: 30px;margin:0px" checked type="checkbox" value="" name="test" class="check">'
                             // +'<label onclick="public_click(this)"class="check_public"></label>'
@@ -256,12 +259,12 @@ jQuery(document).ready(function(){
                     // }
                 }
                 $(".good_imgs .parentFileBox .fileBoxUl").prepend(img_html);
-                var corp_code=msg.corp_code;//å…¬å¸ç¼–å·
-                var brand_code=msg.brand_code;//å“ç‰Œç¼–å·
+                var corp_code=msg.corp_code;//¹«Ë¾±àºÅ
+                var brand_code=msg.brand_code;//Æ·ÅÆ±àºÅ
                 $("#GOODS_CODE").val(msg.goods_code);
-                $("#GOODS_CODE").attr("data-name",msg.goods_code);//ç¼–è¾‘çš„æ—¶å€™codeåŒºåˆ†
+                $("#GOODS_CODE").attr("data-name",msg.goods_code);//±à¼­µÄÊ±ºòcodeÇø·Ö
                 $("#GOODS_NAME").val(msg.goods_name);
-                $("#GOODS_NAME").attr("data-name",msg.goods_name);//ç¼–è¾‘çš„æ—¶å€™åç§°çš„åŒºåˆ†
+                $("#GOODS_NAME").attr("data-name",msg.goods_name);//±à¼­µÄÊ±ºòÃû³ÆµÄÇø·Ö
                 $("#GOODS_PRICE").val(msg.goods_price);
                 $("#GOODS_QUARTER").val(msg.goods_quarter);
                 $("#GOODS_BAND").val(msg.goods_wave);
@@ -298,7 +301,7 @@ jQuery(document).ready(function(){
                     content: data.message
                 });
             }
-            whir.loading.remove();//ç§»é™¤åŠ è½½æ¡†
+            whir.loading.remove();//ÒÆ³ı¼ÓÔØ¿ò
         });
     }else{
         getcorplist(a,b);
@@ -319,7 +322,7 @@ jQuery(document).ready(function(){
                 }else if(data.code=="-1"){
                     $("#GOODS_CODE").attr("data-mark","N");
                     div.addClass("error_tips");
-                    div.html("è¯¥ç¼–å·å·²ç»å­˜åœ¨ï¼");
+                    div.html("¸Ã±àºÅÒÑ¾­´æÔÚ£¡");
                 }
             })
         }
@@ -338,7 +341,7 @@ jQuery(document).ready(function(){
     //          	div.html("");
     //          	$("#GOODS_NAME").attr("data-mark","Y");
     //          }else if(data.code=="-1"){
-    //          	div.html("è¯¥åç§°å·²ç»å­˜åœ¨ï¼")
+    //          	div.html("¸ÃÃû³ÆÒÑ¾­´æÔÚ£¡")
     //          	div.addClass("error_tips");
     //          	$("#GOODS_NAME").attr("data-mark","N");
     //          }
@@ -356,14 +359,14 @@ jQuery(document).ready(function(){
     //});
 
 });
-// åˆ é™¤åŠ è½½çš„å·²å­˜åœ¨çš„å•†å“å›¾ç‰‡
+// É¾³ı¼ÓÔØµÄÒÑ´æÔÚµÄÉÌÆ·Í¼Æ¬
 // function img_del(obj) {
 // 	$(obj).parent().remove();
 // }
 var num=1;
 var next=false;
 function getcorplist(a,b){
-    //è·å–æ‰€å±ä¼ä¸šåˆ—è¡¨
+    //»ñÈ¡ËùÊôÆóÒµÁĞ±í
     var corp_command="/user/getCorpByUser";
     //oc.postRequire("post", corp_command,"", "", function(data){
     //    if(data.code=="0"){
@@ -380,12 +383,12 @@ function getcorplist(a,b){
     //            $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
     //        }
     //        $("#OWN_CORP").searchableSelect();
-    //        var c=$("#OWN_CORP").val();//å…¬å¸ç¼–å·
+    //        var c=$("#OWN_CORP").val();//¹«Ë¾±àºÅ
     //        getvarbrandlist(c,b);
     //        $('.corp_select .searchable-select-input').keydown(function(event){
     //            var event=window.event||arguments[0];
     //            if(event.keyCode == 13){
-    //                var c=$("#OWN_CORP").val();//å…¬å¸ç¼–å·
+    //                var c=$("#OWN_CORP").val();//¹«Ë¾±àºÅ
     //                getvarbrandlist(c,b);
     //                $("#GOODS_CODE").val("");
     //                $("#GOODS_CODE").attr("data-mark","");
@@ -419,7 +422,7 @@ function getcorplist(a,b){
     //});
 }
 // function goodsAddHide() {
-//åŠ å·æ·»åŠ å•†å“
+//¼ÓºÅÌí¼ÓÉÌÆ·
 $("#search_match_goods ul").on("click",".goods_add",function () {
     $(this).hide();
     $(this).next().show();
@@ -435,14 +438,14 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
             time: 1,
             lock: true,
             cancel: false,
-            content: "è¯·å‹¿é‡å¤æ·»åŠ "
+            content: "ÇëÎğÖØ¸´Ìí¼Ó"
         });
     }else if(len>9){
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
-            content: "æœ€å¤šæ·»åŠ åä¸ª"
+            content: "×î¶àÌí¼ÓÊ®¸ö"
         });
     }
     else  {
@@ -469,7 +472,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         $(this).css("display","inline");
     });
 });
-//hoveræ˜¾ç¤ºå…³é—­æŒ‰é’®
+//hoverÏÔÊ¾¹Ø±Õ°´Å¥
 function overShow(dom){
     $(dom).children('i').css("display","inline");
 }
@@ -477,7 +480,7 @@ function outHide(dom){
     $(dom).children('i').css("display","none");
 }
 
-//å‰å·å–æ¶ˆæ·»åŠ å•†å“
+//²æºÅÈ¡ÏûÌí¼ÓÉÌÆ·
 $("#search_match_goods ul").on("click","li i",function () {
     $(this).prev().show();
     $(this).hide();
@@ -486,7 +489,7 @@ $("#search_match_goods ul").on("click","li i",function () {
     $("#"+goods_code).remove();
 })
 // }
-//åˆ é™¤å›¾ç‰‡
+//É¾³ıÍ¼Æ¬
 Array.prototype.removeByValue = function(val) {
     for(var i=0; i<this.length; i++) {
         if(this[i] == val) {
@@ -501,10 +504,10 @@ $(".good_imgs").on("click",".diyCancel",function(){
     $(this).parent().remove();
 });
 function getmatchgoodsList(a) {
-    //è·å–ç›¸å…³å•†å“æ­é…åˆ—è¡¨
+    //»ñÈ¡Ïà¹ØÉÌÆ·´îÅäÁĞ±í
     var param={};
     var search_value=$("#search").val();
-    var goods_code=''; //æ–°å¢çš„æ—¶å€™goods_codeä¼ ''ï¼Œç¼–è¾‘ä¼ goods_codeï¼Œå¤šä¸ªä»¥é€—å·åˆ†éš”
+    var goods_code=''; //ĞÂÔöµÄÊ±ºògoods_code´«''£¬±à¼­´«goods_code£¬¶à¸öÒÔ¶ººÅ·Ö¸ô
     var pageNumber=a;
     var pageSize=20;
     var corp_code = '';
@@ -513,7 +516,7 @@ function getmatchgoodsList(a) {
     param["pageSize"] =pageSize;
     param["search_value"]=search_value;
     param["corp_code"]=corp_code;
-    whir.loading.add("",0.5);//åŠ è½½ç­‰å¾…æ¡†
+    whir.loading.add("",0.5);//¼ÓÔØµÈ´ı¿ò
     oc.postRequire("post", "/goods/getMatchFab","",param, function(data){
         if(data.code=="0"){
             console.log(data);
@@ -523,7 +526,7 @@ function getmatchgoodsList(a) {
             var list=list.list;
             console.log(list);
             if(list.length<=0){
-                jQuery('#search_match_goods ul').append("<p>æ²¡æœ‰ç›¸å…³å•†å“äº†</p>");
+                jQuery('#search_match_goods ul').append("<p>Ã»ÓĞÏà¹ØÉÌÆ·ÁË</p>");
             }else{
                 var len = $(".conpany_msg li").length;
                 for(var i=0;i<list.length;i++){
@@ -567,14 +570,14 @@ function getmatchgoodsList(a) {
                 content: data.message
             });
         }
-        whir.loading.remove();//ç§»é™¤åŠ è½½æ¡†
+        whir.loading.remove();//ÒÆ³ı¼ÓÔØ¿ò
         // goodsAddHide();
     });
 }
 $("#search_match_goods ul").scroll(function () {
-    var nScrollHight = $(this)[0].scrollHeight;  //åˆå§‹åŒ–çš„é¡¶éƒ¨ï¼Œè·ç¦»å¯è§ï¼ˆå½“å‰åº•éƒ¨ï¼‰çš„é«˜åº¦
-    var nScrollTop = $(this)[0].scrollTop;  //è·ç¦»é¡¶éƒ¨çš„é«˜åº¦
-    var nDivHight=$(this).height();       //å•ä¸ªç›’å­çš„é«˜åº¦
+    var nScrollHight = $(this)[0].scrollHeight;  //³õÊ¼»¯µÄ¶¥²¿£¬¾àÀë¿É¼û£¨µ±Ç°µ×²¿£©µÄ¸ß¶È
+    var nScrollTop = $(this)[0].scrollTop;  //¾àÀë¶¥²¿µÄ¸ß¶È
+    var nDivHight=$(this).height();       //µ¥¸öºĞ×ÓµÄ¸ß¶È
     if(nScrollTop + nDivHight >= nScrollHight){
         if(next){
             return;
@@ -582,7 +585,7 @@ $("#search_match_goods ul").scroll(function () {
         getmatchgoodsList(num);
     };
 })
-//ç‚¹å‡»æ·»åŠ åŒ¹é…å•†å“å¼¹çª—
+//µã»÷Ìí¼ÓÆ¥ÅäÉÌÆ·µ¯´°
 $("#add_one").click(function () {
     $("#goods_box").show();
     $("#search_match_goods").show();
@@ -595,13 +598,13 @@ $("#add_one").click(function () {
         getmatchgoodsList(num);
     }
 });
-//å…³é—­æœç´¢åŒ¹é…å•†å“å¼¹çª—
+//¹Ø±ÕËÑË÷Æ¥ÅäÉÌÆ·µ¯´°
 $("#close_match_goods").click(function () {
     $("#goods_box").hide();
     $("#search_match_goods").hide();
 });
 
-//æœç´¢ç›¸å…³å•†å“
+//ËÑË÷Ïà¹ØÉÌÆ·
 $("#d_search").click(function () {
     jQuery('#search_match_goods ul').empty();
     num=1;
@@ -627,7 +630,7 @@ function public_click(a) {
         $(a).prev().attr('checked','true')
     }
 }
-//å•†å“å›¾ç‰‡æ”¾å¤§
+//ÉÌÆ·Í¼Æ¬·Å´ó
 $(".good_imgs").on("click","div img",function () {
     var src=$(this).attr("src");
     whir.loading.add("",0.5,src);
@@ -638,12 +641,12 @@ $(".good_imgs").on("click","div img",function () {
 function changePage(){
     window.location.href="fab_match.html";
 }
-//ç‚¹å‡»éšè—æé†’
+//µã»÷Òş²ØÌáĞÑ
 function msgHide(){
     $('#areaTemp').css('display','none');
 
 }
-//è¾“å…¥æ¡†ä¸ä¸ºç©ºæ£€æŸ¥
+//ÊäÈë¿ò²»Îª¿Õ¼ì²é
 function checkTemp(){
     $('.the_listTitle').find('input').blur(function(){
         if($(this).val()==''){
@@ -653,7 +656,7 @@ function checkTemp(){
         }
     });
 }
-//æ­é…æ•ˆæœå›¾
+//´îÅäĞ§¹ûÍ¼
 function addImg(){
     var self=this;
     self.client=self.client || new OSS.Wrapper({
@@ -673,7 +676,7 @@ function addImg(){
             self.client.multipartUpload(storeAs, file).then(function (result) {
                 console.log(result);
                 var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/'+result.name;
-                console.log('å‘é€å›¾ç‰‡çš„åœ°å€æ˜¯ï¼š'+storeAs);
+                console.log('·¢ËÍÍ¼Æ¬µÄµØÖ·ÊÇ£º'+storeAs);
                 showImg(storeAs);
                 $("#upFile").val("");
             }).catch(function (err) {
@@ -681,12 +684,12 @@ function addImg(){
             });
         }else
         {
-            console.log("è¯·ç¡®ä¿æ–‡ä»¶ä¸ºå›¾åƒç±»å‹");
+            console.log("ÇëÈ·±£ÎÄ¼şÎªÍ¼ÏñÀàĞÍ");
             return false;
         }
     })
 }
-//æ­é…æ•ˆæœå›¾å±•ç°
+//´îÅäĞ§¹ûÍ¼Õ¹ÏÖ
 function showImg(storeAs){
     var tempHTML = '<div class="item_box"> <div class="item_area" onclick="removeIt(this)">${msg}</div> </div>'
     var html = '';
@@ -708,7 +711,7 @@ function removeIt2(dom){
         }
     });
 }
-//æ‰€æœ‰ä¼ä¸š
+//ËùÓĞÆóÒµ
 function allCorp() {
     var param = {};
     //param["pageSize"] = '20'
@@ -752,7 +755,7 @@ function allCorp() {
                     $("#OWN_STORE").val('');
                     $("#OWN_STORE").attr("data-myscode", "");
                     $('.xingming').empty();
-                    $('#all_type .task_allot').html("æ‰€å±åº—é“º");
+                    $('#all_type .task_allot').html("ËùÊôµêÆÌ");
                     $("#shop").hide();
                 }
             })
@@ -771,10 +774,10 @@ function allCorp() {
                 $("#OWN_STORE").val('');
                 $("#OWN_STORE").attr("data-myscode", "");
                 $('.xingming').empty();
-                $('#all_type .task_allot').html("æ‰€å±åº—é“º");
+                $('#all_type .task_allot').html("ËùÊôµêÆÌ");
                 $("#shop").hide();
                 //var store_code = $('.searchable-select-item.selected').attr('data-value');
-                //topUpPeople(store_code);  //å……å€¼å¼¹çª—ç»åŠäººåˆ—è¡¨
+                //topUpPeople(store_code);  //³äÖµµ¯´°¾­°ìÈËÁĞ±í
             })
 
         } else if (data.code == "-1") {
@@ -787,9 +790,9 @@ function allCorp() {
         }
     })
 }
-//è·å–ï¼Ÿåç¼€
+//»ñÈ¡£¿ºó×º
 function GetRequest() {
-    var url = decodeURI(location.search); //è·å–urlä¸­"?"ç¬¦åçš„å­—ä¸²
+    var url = decodeURI(location.search); //»ñÈ¡urlÖĞ"?"·ûºóµÄ×Ö´®
     var theRequest = new Object();
     if (url.indexOf("?") != -1) {
         var str = url.substr(1);
@@ -800,7 +803,7 @@ function GetRequest() {
     }
     return theRequest;
 }
-//è·³è½¬
+//Ìø×ª
 function toXiuda(){
     window.location.href='/goods/xiuda.html';
 }

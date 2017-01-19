@@ -368,7 +368,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/goods/xiuda_add.html");
     })
     //删除
     $("#remove").click(function(){
