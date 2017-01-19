@@ -63,7 +63,7 @@
             //日期调用插件
             var bill_date = {
                 elem: '#bill_date_input',
-                format: 'YYYY-MM-DD',
+                format: 'YYYYMMDD',
                 istime: false,
                 max: '2099-06-16 23:59:59', //最大日期
                 istoday: true,
@@ -142,7 +142,7 @@
         },
         selectRechargeType:function(){
             $("#recharge_type_input").bind("click",function(){
-                $(this).next().show();
+                $(this).next().toggle()
             });
             $("#recharge_type_input").next().find("li").bind("click",function(){
                 var val=$(this).html();
@@ -174,7 +174,21 @@
                 editParam.user_name=$("#user_select").val()==null?"":$("#user_select").val();
                 editParam.type=$("#type").find("input").val()=="充值"?"pay":$("#type").find("input").val()=="退款"?"refund":"";
                 oc.postRequire("post","/vipCheck/editBill","",editParam,function(data){
-                    console.log(data)
+                    if(data.code==0){
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "保存成功"
+                        })
+                    }else{
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: data.message
+                        })
+                    }
                 })
             })
         },
@@ -186,31 +200,24 @@
                 params["type"]=type;
                 oc.postRequire("post","/vipCheck/changeStatus","",params,function(data){
                     if(data.code=="0"){
-                        frame();
-                        $('.frame').html("操作成功");
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: "审核成功"
+                        });
                     }else{
-                        frame();
-                        $('.frame').html(data.message);
+                        art.dialog({
+                            time: 1,
+                            lock: true,
+                            cancel: false,
+                            content: data.message
+                        });
                     }
                 })
             })
         }
     };
-    //删除弹框
-    function frame(){
-        var def= $.Deferred();
-        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
-        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
-        $('.frame').remove();
-        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
-        $(".frame").animate({opacity:"1"},1000);
-        $(".frame").animate({opacity:"0"},1000);
-        setTimeout(function(){
-            $(".frame").hide();
-            def.resolve();
-        },2000);
-        return def;
-    }
     $(function(){
         audit_info.init();
     })
