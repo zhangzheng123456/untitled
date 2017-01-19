@@ -138,6 +138,7 @@ $("#refunType li").click(function () {
 });
 //充值店仓
 function topUpShop(a) {
+    whir.loading.add("",0.5);
     oc.postRequire("get", "/shop/findStore", "","", function (data) {
         if (data.code == "0") {
             var message=JSON.parse(data.message);
@@ -195,88 +196,13 @@ function topUpShop(a) {
                 content: data.message
             });
         }
+        whir.loading.remove();//移除加载框
     })
 }
-// //退款店仓
-// function refundShop(a) {
-//     var param = {};
-//     param["pageSize"] = '20'
-//     param["pageNumber"] = '1';
-//     param["searchValue"] = '';
-//     param["corp_code"] = sessionStorage.getItem("corp_code");
-//     oc.postRequire("post", "/shop/selectByAreaCode", "", param, function (data) {
-//         if (data.code == "0") {
-//             var msg = JSON.parse(data.message);
-//             var list = JSON.parse(msg.list);
-//             var listList = list.list;
-//             // console.log(listList);
-//             //topUpShopShow(listList);
-//             //var index=0;
-//             var corp_html='';
-//             //var c=null;
-//             for(var i=0;i<listList.length;i++){
-//                 //c= list.list[index];
-//                 corp_html+='<option value="'+listList[i].store_code +'">'+listList[i].store_name+'</option>';
-//             }
-//             $("#OWN_CORP_refund").append(corp_html);
-//             if (a !== "") {
-//                 $("#OWN_CORP_refund option[value='" + a + "']").attr("selected", "true");
-//             }
-//             $('.corp_select select').searchableSelect();
-//             $('.corp_select .searchable-select-input').keydown(function (event) {
-//                 var event = window.event || arguments[0];
-//                 if (event.keyCode == 13) {
-//                     $("#USER_PHONE").val("");
-//                     $("#USER_EMAIL").val("");
-//                     $("#USERID").val("");
-//                     $("#user_id").val("");
-//                     $("#user_id").attr("data-mark", "");
-//                     $("#USERID").attr("data-mark", "");
-//                     $("#USER_PHONE").attr("data-mark", "");
-//                     $("#USER_EMAIL").attr("data-mark", "");
-//                     $("#OWN_RIGHT").val('');
-//                     $("#OWN_RIGHT").attr("data-myrcode", "");
-//                     $("#OWN_RIGHT").attr("data-myjcode", "");
-//                     $("#OWN_STORE").val('');
-//                     $("#OWN_STORE").attr("data-myscode", "");
-//                     $('.xingming').empty();
-//                     $('#all_type .task_allot').html("所属店铺");
-//                     $("#shop").hide();
-//                 }
-//             })
-//             $('.searchable-select-item').click(function () {
-//                 $("#USER_PHONE").val("");
-//                 $("#USER_EMAIL").val("");
-//                 $("#USERID").val("");
-//                 $("#user_id").val("");
-//                 $("#user_id").attr("data-mark", "");
-//                 $("#USERID").attr("data-mark", "");
-//                 $("#USER_PHONE").attr("data-mark", "");
-//                 $("#USER_EMAIL").attr("data-mark", "");
-//                 $("#OWN_RIGHT").val('');
-//                 $("#OWN_RIGHT").attr("data-myrcode", "");
-//                 $("#OWN_RIGHT").attr("data-myjcode", "");
-//                 $("#OWN_STORE").val('');
-//                 $("#OWN_STORE").attr("data-myscode", "");
-//                 $('.xingming').empty();
-//                 $('#all_type .task_allot').html("所属店铺");
-//                 $("#shop").hide();
-//             })
-
-//         } else if (data.code == "-1") {
-//             art.dialog({
-//                 time: 1,
-//                 lock: true,
-//                 cancel: false,
-//                 content: data.message
-//             });
-//         }
-//     })
-// }
 //经办人
 function topUpPeople(store_code,type){
+    whir.loading.add("",0.5);
     var param={};
-    // param["store_code"]=sessionStorage.getItem("store_id");
     param["store_code"]=store_code;
     param["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/shop/staff","",param,function(data){
@@ -321,23 +247,9 @@ function topUpPeople(store_code,type){
         }else if(date.code=="-1"){
             alert(date.message);
         }
+        whir.loading.remove();//移除加载框
     })
 }
-// function topUpPeopleShow(msg){
-//     var tempHTML = '<li id="${id}"onclick="topUpPeopleClick(this)">${msg}<li>';
-//     var html = '';
-//     for(i=0;i<msg.length;i++){
-//         var user_name = msg[i].user_name;
-//         var user_code = msg[i].user_code;
-//         var nowHTML1 = tempHTML;
-//         nowHTML1 = nowHTML1.replace("${id}", user_code);
-//         nowHTML1 = nowHTML1.replace("${msg}", user_name);
-//         html += nowHTML1;
-//         $("#topUpPeopleSelect").empty();
-//         $("#topUpPeopleSelect").html(html);
-//     }
-//     $("#topUpPeopleSelect li").eq(0).click();
-// };
 $('#topUpPeople').click(function(){
     event.stopPropagation();
     $('#execution').css('display','none');
@@ -406,6 +318,7 @@ function refunTopUpShow(){
                     var can_pass = msg.can_pass;
                     var price = msg.price; //吊牌金额
                     var refundMoneyDiscount =pay_price/price;
+                    console.log(msg);
                     $('#refundReality').val(pay_price);
                     $('#refundMoneyDiscount').val(refundMoneyDiscount);
                 } else if (data.code == "-1") {
@@ -533,13 +446,15 @@ function toSave(){
     var refunTypeInput = $('#refunTypeInput').val();
     console.log(refunTypeInput);
     var param = {};
-    param["store_name"] = $('#refund').find('.searchable-select-holder').text();
+    param["store_name"] = $('#OWN_CORP_refund').find("option:selected").text();//充值店铺名称
+    param["store_code"] = $('#OWN_CORP_refund').val();//充值店铺编号
+    param["user_code"] = $('#refundPeople').find("option:selected").text();//经办人
+    param["user_name"] = $('#refundPeople').val();//经办人code
     param["corp_code"] = sessionStorage.getItem("corp_code");//企业编号
     param["vip_id"] = sessionStorage.getItem("id");//会员编号
     param["vip_name"] = $('#vip_name').text();//会员名称
     param["card_no"] = $('#vip_card_no').text();//会员卡号
     param["remark"] = $('#refundNote').val();//备注
-    param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
     param["date"] = $('#refundDate').val();//单据日期
     //param["price"] = topUpMoney;//吊牌金额
     param["pay_price"] = $('#refundReality').val();//实付金额
@@ -644,7 +559,6 @@ function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
-
 //充值记录数据加载
 function getRecord(){
     var length = 100;
@@ -739,6 +653,10 @@ function getPayRecord(){
         
     })
 }
+//来源单号失去焦点或区金额和折扣
+$("#refunTopUpFrom").blur(function(){
+    console.log(123123);
+})
 //遮罩层
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名

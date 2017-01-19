@@ -16,15 +16,12 @@
 .laydate_body .laydate_bottom #laydate_hms,
 .laydate_body .laydate_time,
 .laydate_body .laydate_bottom .laydate_btn a{border:1px solid #B1D2EC;}
-
 .laydate_body .laydate_y .laydate_yms a,
 .laydate_body .laydate_choose,
 .laydate_body .laydate_table thead{background-color:#DEECF8;}
-
 .laydate_body .laydate_box, 
 .laydate_body .laydate_ym .laydate_yms,
 .laydate_body .laydate_time{box-shadow: 2px 2px 5px rgba(0,0,0,.1);}
-
 .laydate_body .laydate_box{border-top:none; border-bottom:none; background-color:#fff; color:#1F547E;}
 .laydate_body .laydate_box input{color:#1F547E;}
 .laydate_body .laydate_box .laydate_void{color:#BDD8EE!important;}
