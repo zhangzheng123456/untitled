@@ -48,19 +48,22 @@
     var oc = new ObjectControl();
     //搜索功能
     $('.title input').focus(function () {
-        $(this).css('background-image','none');
+//        $(this).css('background-image','none');
+        $(this).css('background-color','white');
         $(this).attr('placeholder','');
     });
     $('.title input').blur(function () {
+        $(this).css('background-color','white');
         var val = $(this).val();
         if(val==''){
-            $(this).css('background-image','');
+//            $(this).css('background-image','');
             $(this).attr('placeholder','搜索门店');
         }else{
             return;
         }
     })
     $('.title button').click(function () {
+
         searchPage();
     });
     //获取？后缀
@@ -116,8 +119,8 @@
                     var msg = JSON.parse(data.message);
                     var list =JSON.parse(msg.list);
                     var listList = list.list;
+                    cache.page= 1;
                     pageVal(listList);
-//                    scroll();
                     toNext();
                     changePage();
                 }else if(data.code =='-1'){
@@ -127,7 +130,7 @@
     }
     //页面加载
     function pageVal(list){
-        $('.main').eq(0).children().remove();
+        $('.main').eq(0).find('.area_box').remove();
         //空提示
         if(list.length=='0'){
             $('.main').eq(0).css('display','none');
@@ -201,6 +204,7 @@
             }
             var nowHTML3 = tempHTML3;
             html += nowHTML3;
+            console.log(cache.page)
             if(cache.page ==1){
                 $('.main').eq(0).html(html);
             }else{
@@ -329,6 +333,7 @@
     //跳转
     function toNext(){
         $('.box').click(function () {
+            $('.title input').val('');
             var corp_code =  GetRequest().corp_code;
             var store_code = $(this).attr('id');
             $.cookie('storeListAllKey',$(window).scrollTop());
@@ -353,7 +358,6 @@
         //去边框
         $('.area_box').find(' .box:last').css('border-bottom','none');
         $('.none').unbind('click').bind('click',function () {
-            console.log('为空');
             $('.title input').val('');
             $('.title input').css('background-image','');
             $('.title input').attr('placeholder','搜索门店');
@@ -393,6 +397,7 @@
         $(window).scrollTop(storeListAllKey);
     }
     window.onload= function () {
+
         cache.page = 1;
         cache.num = 'y';
         getPage();

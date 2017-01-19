@@ -25,8 +25,10 @@ body {
   border: 1px solid #e1e1e1;
   color: #888888;
   font-size: 0.38647rem;
-  background: #FFF url("../image/all_0.png") no-repeat 33% 0.28986rem;
-  background-size: 0.43478rem; }
+  /*background: #FFF url("../image/all_0.png") no-repeat 33% 0.28986rem;*/
+  background-size: 0.43478rem;
+  -webkit-tap-highlight-color:rgba(255,255,255,0);
+}
 
 input::-ms-input-placeholder {
   text-align: center; }
