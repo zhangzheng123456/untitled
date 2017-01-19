@@ -34,7 +34,7 @@
                     var list=msg.list;
                     audit_info.corp_code=list.corp_code;
                     if(isOparate){
-                        audit_info.getStoreName();
+                        audit_info.getStoreName(list.store_code,list.user_code);
                     }
                     list.type=="充值"?$("#recharge_type").find("label").html("充值类型"):"退款类型";
                   $("#page-wrapper .conpany_msg").find(">div").hide();
@@ -47,7 +47,6 @@
                             $("#"+key).show();
                             $("#"+key).find("input").val(list[key]);
                         }
-
                     }
                     if(list["status"]=="审核通过"){
                         $("#page-wrapper .conpany_msg").find("input").attr("disabled",true);
@@ -82,7 +81,7 @@
                 laydate(bill_date)
             })
         },
-        getStoreName:function(){
+        getStoreName:function(store_code,user_code){
             oc.postRequire("get","/shop/findStore?corp_code="+audit_info.corp_code,"","",function(data){
                 if(data.code=="0"){
                     var msg=JSON.parse(data.message);
@@ -92,6 +91,7 @@
                         corp_html+='<option value="'+msg[i].store_code+'">'+msg[i].store_name+'</option>';
                     }
                     $("#OWN_CORP").append(corp_html);
+                    $("#OWN_CORP option[value='"+ store_code+"']").attr("selected","true");
                     $("#OWN_CORP").searchableSelect();
                     $('.corp_select .searchable-select-input').keydown(function(event){
                         var event=window.event||arguments[0];
@@ -102,7 +102,7 @@
                     $('.searchable-select-item').click(function(){
                            audit_info.getUserName();
                     });
-                    audit_info.getUserName();
+                    audit_info.getUserName(user_code);
                 }else if(data.code=="-1"){
                     art.dialog({
                         time: 1,
@@ -113,7 +113,7 @@
                 }
             })
         },
-        getUserName:function(){
+        getUserName:function(user_code){
             var param={
                 store_code:$("#OWN_CORP").val(),
                 corp_code:audit_info.corp_code
@@ -129,6 +129,9 @@
                         }
                     }
                     $("#user_select").append(corp_html);
+                    if(user_code!=""){
+                        $("#user_select option[value='"+ user_code+"']").attr("selected","true");
+                    }
                     $('#user_select').searchableSelect();
                     $('#user_select .searchable-select-input').keydown(function(event){
                         var event=window.event||arguments[0];
@@ -156,6 +159,11 @@
                 var val=$(this).html();
                 $("#recharge_type_input").val(val);
                 $(this).parent().hide();
+            });
+            $("#recharge_type_input").blur(function(){
+                setTimeout(function(){
+                    $(this).next().hide();
+                },200)
             })
         },
         showType:function(){
@@ -178,8 +186,10 @@
                 for(var i=0;i<allInput.length;i++){
                     editParam[$(allInput[i]).parents("div").attr("id")]=$(allInput[i]).val()
                 }
-                editParam.store_name=$("#OWN_CORP").val();
-                editParam.user_name=$("#user_select").val()==null?"":$("#user_select").val();
+                editParam.store_code=$("#OWN_CORP").val();
+                editParam.store_name=$("#OWN_CORP").next().find(".searchable-select-holder").html();
+                editParam.user_name=$("#user_select").next().find(".searchable-select-holder").html();
+                editParam.user_code=$("#user_select").val()==null?"":$("#user_select").val();
                 editParam.type=$("#type").find("input").val()=="充值"?"pay":$("#type").find("input").val()=="退款"?"refund":"";
                 oc.postRequire("post","/vipCheck/editBill","",editParam,function(data){
                     if(data.code==0){
