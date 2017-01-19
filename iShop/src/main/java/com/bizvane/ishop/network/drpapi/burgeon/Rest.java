@@ -18,7 +18,7 @@ public class Rest {
 
     private static WebConnection webConnection=new WebConnection();
 
-    public static  String url = "http://60.190.132.114:8080/servlets/binserv/Rest";
+    //public static  String url = "http://60.190.132.114:8080/servlets/binserv/Rest";
 
 
 
@@ -42,7 +42,7 @@ public class Rest {
         createObjectRequestParams.setTransactions(createObjectTrans);
 
         //执行添加
-        String info=getConnection(createObjectRequestParams.getSip_sign(), createObjectRequestParams.getSip_appkey(),
+        String info=getConnection(createObjectRequestParams.getUrl(),createObjectRequestParams.getSip_sign(), createObjectRequestParams.getSip_appkey(),
                 createObjectRequestParams.getAppSecret(), createObjectRequestParams.getSip_timestamp(),
                 createObjectRequestParams.getTransactions());
 
@@ -97,7 +97,7 @@ public class Rest {
 
         System.out.println("trans:..."+queryRequestParams.getTransactions());
         //查询
-        String info=getConnection(queryRequestParams.getSip_sign(),queryRequestParams.getSip_appkey(),
+        String info=getConnection(queryRequestParams.getUrl(),queryRequestParams.getSip_sign(),queryRequestParams.getSip_appkey(),
                 queryRequestParams.getAppSecret(),queryRequestParams.getSip_timestamp(),
                 queryRequestParams.getTransactions());
 
@@ -129,7 +129,7 @@ public class Rest {
         modifyObjectRequestParams.setTransactions(modifyObjectTrans);
 
         //修改
-        String info=getConnection(modifyObjectRequestParams.getSip_sign(),modifyObjectRequestParams.getSip_appkey(),
+        String info=getConnection(modifyObjectRequestParams.getUrl(),modifyObjectRequestParams.getSip_sign(),modifyObjectRequestParams.getSip_appkey(),
                 modifyObjectRequestParams.getAppSecret(),modifyObjectRequestParams.getSip_timestamp(),
                 modifyObjectRequestParams.getTransactions());
 
@@ -158,7 +158,7 @@ public class Rest {
         executeWebActionRequestParams.setTransactions(executeWebActionTrans);
 
         //执行webaction
-        String info=getConnection(executeWebActionRequestParams.getSip_sign(),executeWebActionRequestParams.getSip_appkey(),
+        String info=getConnection(executeWebActionRequestParams.getUrl(),executeWebActionRequestParams.getSip_sign(),executeWebActionRequestParams.getSip_appkey(),
                 executeWebActionRequestParams.getAppSecret(),executeWebActionRequestParams.getSip_timestamp(),
                 executeWebActionRequestParams.getTransactions());
 
@@ -189,7 +189,7 @@ public class Rest {
         executeSQLRequestParams.setTransactions(executeSQLTrans);
 
         //执行添加
-        String info=getConnection(executeSQLRequestParams.getSip_sign(),executeSQLRequestParams.getSip_appkey(),
+        String info=getConnection(executeSQLRequestParams.getUrl(),executeSQLRequestParams.getSip_sign(),executeSQLRequestParams.getSip_appkey(),
                 executeSQLRequestParams.getAppSecret(),executeSQLRequestParams.getSip_timestamp(),
                 executeSQLRequestParams.getTransactions());
 
@@ -220,7 +220,7 @@ public class Rest {
         getObjectRequestParams.setTransactions(getObjectTran);
 
         //执行添加
-        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+        String info=getConnection(getObjectRequestParams.getUrl(),getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
                 getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
                 getObjectRequestParams.getTransactions());
 
@@ -255,7 +255,7 @@ public class Rest {
         getObjectRequestParams.setTransactions(getObjectTran);
 
         //执行添加
-        String info=getConnection(getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
+        String info=getConnection(getObjectRequestParams.getUrl(),getObjectRequestParams.getSip_sign(),getObjectRequestParams.getSip_appkey(),
                 getObjectRequestParams.getAppSecret(),getObjectRequestParams.getSip_timestamp(),
                 getObjectRequestParams.getTransactions());
 
@@ -269,7 +269,7 @@ public class Rest {
 
 
     //网络请求
-    public static String getConnection(String sip_sign,String sip_appkey,String appSecret,String sip_timestamp,
+    public static String getConnection(String url,String sip_sign,String sip_appkey,String appSecret,String sip_timestamp,
                                        String transactions){
 
         HttpResult result=null;
