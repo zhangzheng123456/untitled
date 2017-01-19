@@ -21,11 +21,11 @@ public class CommonValue {
     public final static String CLIENT_SECRET = "D747A297458D75239387F46DC95D2B35";
     public final static String REDIRECT_URL = "http://ishop.dev.bizvane.com/api/weimob/auth";
 
-//    public final static String wechat_url = "http://wechat.app.bizvane.com/app/wechat";
-    public final static String wechat_url = "http://wechat.dev.bizvane.com/app/wechat";
+    public final static String wechat_url = "http://wechat.app.bizvane.com/app/wechat";
+//    public final static String wechat_url = "http://wechat.dev.bizvane.com/app/wechat";
 
-//    public final static String ishop_url = "http://ishop.app.bizvane.com/";
-    public final static String ishop_url = "http://ishop.dev.bizvane.com/";
+    public final static String ishop_url = "http://ishop.app.bizvane.com/";
+//    public final static String ishop_url = "http://ishop.dev.bizvane.com/";
 
     //table名（mongodb）
     //用户行为日志
@@ -57,11 +57,14 @@ public class CommonValue {
     //会员审核
     public final static String table_vip_check = "vip_check";
 
-    //参数
+    //参数定义
+
     //新增会员是否验证单号
     public final static String ADD_VIP_CHECK_BILL = "ADD_VIP_CHECK_BILL";
     //新增会员是否输入卡号
     public final static String ADD_VIP_INPUT_CARDNO = "ADD_VIP_INPUT_CARDNO";
     //员工是否校验手机号
     public final static String IS_CHECK_PHONE = "IS_CHECK_PHONE";
+    //crm数据库连接参数
+    public final static String CRM_DB_ACCOUNT = "CRM_DB_ACCOUNT";
 }

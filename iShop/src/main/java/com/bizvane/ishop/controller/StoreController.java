@@ -322,8 +322,13 @@ public class StoreController {
                 String area_store_code = request.getSession().getAttribute("store_code").toString();
                 list = storeService.selStoreByAreaBrandCode(corp_code,area_code,"","",area_store_code);
             } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)){
-                if (role_code.equals(Common.ROLE_SYS))
-                    corp_code = "C10000";
+                if (role_code.equals(Common.ROLE_SYS)){
+                    if (request.getParameter("corp_code") != null){
+                        corp_code = request.getParameter("corp_code");
+                    }else {
+                        corp_code = "C10000";
+                    }
+                }
                 list = storeService.selStoreByAreaBrandCode(corp_code,"","","","");
             }
             result.put("list", JSON.toJSONString(list));

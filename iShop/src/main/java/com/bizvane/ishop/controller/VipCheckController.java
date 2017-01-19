@@ -6,25 +6,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
-import com.bizvane.ishop.constant.CommonValueCorp;
-import com.bizvane.ishop.entity.VipRules;
 import com.bizvane.ishop.service.CRMInterfaceService;
-import com.bizvane.ishop.service.VipRulesService;
 import com.bizvane.ishop.service.imp.MongoHelperServiceImpl;
 import com.bizvane.ishop.utils.MongoUtils;
-import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.common.service.mongodb.MongoDBClient;
-import com.github.pagehelper.PageInfo;
 import com.mongodb.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -393,21 +386,10 @@ public class VipCheckController {
             String type = jsonObject.get("type").toString();
             String id = jsonObject.get("id").toString();
 
-//            JSONArray content = jsonObject.getJSONArray("content");
-
             String bill_id = id.split("_")[1];
             String corp_code =id.split("_")[0];
 
             HashMap<String,Object> map = new HashMap<String, Object>();
-//            Iterator<String> it = jsonObject.keySet().iterator();
-//            while (it.hasNext()) {
-//                String key = it.next();
-//                if (key == null) {
-//                    continue;
-//                }
-//                Object value = jsonObject.get(key).toString().trim();
-//                map.put(key, value);
-//            }
             map.put("id",bill_id);
 
             DBObject updatedValue = new BasicDBObject();
@@ -415,13 +397,15 @@ public class VipCheckController {
             String result = "";
             if (type.equals("pay")){
                 String bill_date = jsonObject.getString("bill_date");
+                String store_code = jsonObject.getString("store_code");
                 String store_name = jsonObject.getString("store_name");
+                String user_code = jsonObject.getString("user_code");
                 String user_name = jsonObject.getString("user_name");
                 String recharge_type = jsonObject.getString("recharge_type");
                 if (recharge_type.equals("直接充值"))
                     recharge_type = "1";
                 if (recharge_type.equals("退换转充值"))
-                    recharge_type = "1";
+                    recharge_type = "2";
                 String tag_price = jsonObject.getString("tag_price");
                 String pay_price = jsonObject.getString("pay_price");
                 String active_content = jsonObject.getString("active_content");
@@ -439,6 +423,8 @@ public class VipCheckController {
                 updatedValue.put("bill_date",bill_date);
                 updatedValue.put("store_name",store_name);
                 updatedValue.put("user_name",user_name);
+                updatedValue.put("store_code",store_code);
+                updatedValue.put("user_code",user_code);
                 updatedValue.put("recharge_type",recharge_type);
                 updatedValue.put("tag_price",tag_price);
                 updatedValue.put("pay_price",pay_price);
@@ -448,7 +434,9 @@ public class VipCheckController {
                 result = crmInterfaceService.modPrepaidStatus(corp_code,map);
             }else if (type.equals("refund")){
                 String bill_date = jsonObject.getString("bill_date");
+                String store_code = jsonObject.getString("store_code");
                 String store_name = jsonObject.getString("store_name");
+                String user_code = jsonObject.getString("user_code");
                 String user_name = jsonObject.getString("user_name");
                 String recharge_type = jsonObject.getString("recharge_type");
                 if (recharge_type.equals("按余额退款"))
@@ -468,6 +456,8 @@ public class VipCheckController {
                 updatedValue.put("bill_date",bill_date);
                 updatedValue.put("store_name",store_name);
                 updatedValue.put("user_name",user_name);
+                updatedValue.put("store_code",store_code);
+                updatedValue.put("user_code",user_code);
                 updatedValue.put("recharge_type",recharge_type);
                 updatedValue.put("source_no",source_no);
                 updatedValue.put("remark",remark);
