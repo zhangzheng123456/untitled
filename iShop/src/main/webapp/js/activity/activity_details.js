@@ -677,6 +677,7 @@ function doActiveResponse(active_data) {
     }
 
     $('.title_l').html(active_data.activity_theme);
+    $('.title_l').attr('title',active_data.activity_theme);
     $('.time_l').html(active_data.start_time);//处理
     $('.time_r').html(active_data.end_time);
     $('.name_l').html(run_mode);//转换

@@ -61,32 +61,38 @@ var swip_image = [];
                 var corp_code = $('.earchable-select-item.selected').text();
                 var d_match_title  = $('.the_listTitle').eq(1).find('input').val();
                 var d_match_image = [];
-                $('.list_content .item_box').each(function () {
+                $('.list_content').eq(0).find('.item_box').each(function () {
                     d_match_image.push($(this).find('img').attr('src'));
                 });
-                console.log(d_match_image);
+                console.log('搭配图片'+d_match_image);
                 var d_match_desc = $('.the_listTitle textarea').val();
                 var user_code = '';
-                var r_match_goods = [
-                    { 'r_match_goodsCode':'',
-                        'r_match_goodsImage':'',
-                        'r_match_goodsPrice':'',
-                        'r_match_goodsName':''
+                var r_match_num = $('.list_content').eq(1).find('.item_box').length; //搭配商品长度
+                var r_match_goods = [];
+                var obj = {};
+                var goodsBox = $('.list_content').eq(1).find('.item_box');
+                for(i=0;i<r_match_num;i++){
+                    obj[i] = {
+                        'r_match_goodsCode':$(goodsBox[i]).attr('id'),
+                        'r_match_goodsImage': $(goodsBox[i]).find('img').attr('src'),
+                        'r_match_goodsPrice': '',
+                        'r_match_goodsName':$(goodsBox[i]).find('.item_text').text()
                     }
-                ]
-                if(d_match_title.length<1){
+                    r_match_goods.push(obj[i]);
+                }
+                if(d_match_title.length<1||d_match_desc.trim()==''){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content:"秀搭标题不能为空"
+                        content:"秀搭标题或商品描述未填写"
                     });
-                }else if(d_match_desc.trim()==''){
+                }else if(d_match_image.length == 0 || r_match_goods.length == 0){
                     art.dialog({
                         time: 1,
                         lock: true,
                         cancel: false,
-                        content:"商品名称或商品描述未填写"
+                        content:"搭配图片或搭配商品未添加"
                     });
                 }else{
                     var _params = {
@@ -98,32 +104,25 @@ var swip_image = [];
                         "r_match_goods:":r_match_goods
                     };
                     console.log(_params);
-                    fabjs.ajaxSubmit(_command, _params, opt);
+                    var _command = '/api/shopMatch/addGoodsByWx'
+                    fabjs.ajaxSubmit(_command, _params);
                 }
             }else{
                 return;
             }
         });
     };
-    fabjs.ajaxSubmit=function(_command,_params,opt){
+    fabjs.ajaxSubmit=function(_command,_params){
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post", _command,"",_params, function(data){
             if(data.code=="0"){
-                if(_command=="/defmatch/addMatch"){
-                    var message=JSON.parse(data.message);
-                    sessionStorage.setItem("goods_match_code",message.goods_match_code);
-                    sessionStorage.setItem("corp_code",message.corp_code);
-                    $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_matchEditor.html");
-                }
-                if(_command=="/goods/fab/edit"){
-                    art.dialog({
-                        time: 2,
-                        lock: true,
-                        cancel: false,
-                        content:"保存成功"
-                    });
-                    window.location.reload();
-                }
+                art.dialog({
+                    time: 2,
+                    lock: true,
+                    cancel: false,
+                    content:"保存成功"
+                });
+                //window.location.href = '/goods/xiuda_editor.html';
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
@@ -423,6 +422,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
     //var li=$(this).parent("li").html();
     var img = $(this).parent('li').find('img').attr('src');
     var goods_code=  $(this).parent().find(".goods_code").html();
+    var goods_title=  $(this).parent().find(".goods_code").next().html();
     var goods_code2=$("#GOODS_CODE").val();
     var len=$(".conpany_msg li").length;
     if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
@@ -441,7 +441,7 @@ $("#search_match_goods ul").on("click",".goods_add",function () {
         });
     }
     else  {
-        $("#add_one").before('<div class="item_box" id="'+goods_code+'">'+'<div class="item_area"  onclick = "removeIt2(this)"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_code+'</div>'+'</li>');
+        $("#add_one").before('<div class="item_box" id="'+goods_code+'">'+'<div class="item_area"  onclick = "removeIt2(this)"><img src="'+img+'" alt=""/></div> <div class="item_text">'+goods_title+'</div>'+'</li>');
         $(".list_content").eq(1).find('i').css('display','none');
     }
 
@@ -697,12 +697,8 @@ function removeIt(dom){
 function removeIt2(dom){
     $(dom).parent('.item_box').remove();
     var key = $(dom).parent().attr('id');
-    console.log(key);
     $('#search_match_goods ul li').each(function () {
-        var val = $(this).find('.goods_code').text();
-        //console.log(val);
-        if(val == key){
-            console.log('查找匹配');
+        if( $(this).find('.goods_code').text() == key){
             $(this).find('.icon-ishop_6-12').click();
         }
     });
