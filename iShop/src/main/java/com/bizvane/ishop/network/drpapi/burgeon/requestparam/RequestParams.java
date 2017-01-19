@@ -36,7 +36,7 @@ public class RequestParams  {
     }
 
 
-    public  String  connectionDRP(String corpcode) {
+    public  void  connectionDRP(String corpcode) {
         //安正
         try {
             if (corpcode.equals("C10016")) {
@@ -53,7 +53,6 @@ public class RequestParams  {
             ParamConfigure param = paramConfigureService.getParamByKey(CommonValue.CRM_DB_ACCOUNT, Common.IS_ACTIVE_Y);
             List<CorpParam> corpParams = corpParamService.selectByCorpParam(corpcode, String.valueOf(param.getId()), Common.IS_ACTIVE_Y);
 
-
                 if (corpParams.size() > 0) {
                 String value = corpParams.get(0).getParam_value();
                 String[] paramvalues = value.split("§§");
@@ -63,12 +62,13 @@ public class RequestParams  {
                 setSip_sign();
                 setUrl(paramvalues[0].toString());
             }
-       }
-    }catch(Exception e){
-        e.printStackTrace();
-    }
+         }else{
 
-        return "ddd";
+            }
+        }catch(Exception e){
+        e.printStackTrace();
+       }
+
     }
 
 
