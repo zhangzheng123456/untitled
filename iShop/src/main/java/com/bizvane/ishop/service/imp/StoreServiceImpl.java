@@ -540,7 +540,9 @@ public class StoreServiceImpl implements StoreService {
                 store.setCity(jsonObject.get("city").toString().trim());
                 store.setArea(jsonObject.get("area").toString().trim());
                 store.setStreet(jsonObject.get("street").toString().trim());
-                if (jsonObject.has("store_location")) {
+
+                if (jsonObject.has("store_location")&& !jsonObject.get("store_location").toString().trim().equals("")){
+
                     String location = jsonObject.get("store_location").toString().trim();
                     store.setStore_location(location);
                     if (location != null && !location.equals("")) {

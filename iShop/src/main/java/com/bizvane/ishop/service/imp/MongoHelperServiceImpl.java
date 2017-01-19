@@ -272,6 +272,9 @@ public class MongoHelperServiceImpl {
             if(null==object.get("location")){
                 object.put("location","");
             }
+            if(null==object.get("store_location") || object.get("store_location").equals("0.0")){
+                object.put("store_location","");
+            }
             if(status==null||status.equals("")){
                 object.put("status","");
             }else if(status.equals("0")){

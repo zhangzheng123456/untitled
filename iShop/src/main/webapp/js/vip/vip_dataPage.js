@@ -138,148 +138,55 @@ $("#refunType li").click(function () {
 });
 //充值店仓
 function topUpShop(a) {
-    var param = {};
-    param["pageSize"] = '20'
-    param["pageNumber"] = '1';
-    param["searchValue"] = '';
-    param["corp_code"] = sessionStorage.getItem("corp_code");
-    oc.postRequire("post", "/shop/selectByAreaCode", "", param, function (data) {
+    oc.postRequire("get", "/shop/findStore", "","", function (data) {
         if (data.code == "0") {
-            var msg = JSON.parse(data.message);
-            var list = JSON.parse(msg.list);
-            var listList = list.list;
-            console.log(listList);
-            //topUpShopShow(listList);
-            //var index=0;
+            var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
             var corp_html='';
-            //var c=null;
-            for(var i=0;i<listList.length;i++){
-                //c= list.list[index];
-                corp_html+='<option value="'+listList[i].store_code +'">'+listList[i].store_name+'</option>';
+            for(var i=0;i<list.length;i++){
+                corp_html+='<option value="'+list[i].store_code +'">'+list[i].store_name+'</option>';
             }
             $("#OWN_CORP").append(corp_html);
-            if (a !== "") {
-                $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
-            }
-            $('.corp_select select').searchableSelect();
-            $('.corp_select .searchable-select-input').keydown(function (event) {
-                var event = window.event || arguments[0];
-                if (event.keyCode == 13) {
-                    $("#USER_PHONE").val("");
-                    $("#USER_EMAIL").val("");
-                    $("#USERID").val("");
-                    $("#user_id").val("");
-                    $("#user_id").attr("data-mark", "");
-                    $("#USERID").attr("data-mark", "");
-                    $("#USER_PHONE").attr("data-mark", "");
-                    $("#USER_EMAIL").attr("data-mark", "");
-                    $("#OWN_RIGHT").val('');
-                    $("#OWN_RIGHT").attr("data-myrcode", "");
-                    $("#OWN_RIGHT").attr("data-myjcode", "");
-                    $("#OWN_STORE").val('');
-                    $("#OWN_STORE").attr("data-myscode", "");
-                    $('.xingming').empty();
-                    $('#all_type .task_allot').html("所属店铺");
-                    $("#shop").hide();
-                }
-            })
-            $('.searchable-select-item').click(function () {
-                $("#USER_PHONE").val("");
-                $("#USER_EMAIL").val("");
-                $("#USERID").val("");
-                $("#user_id").val("");
-                $("#user_id").attr("data-mark", "");
-                $("#USERID").attr("data-mark", "");
-                $("#USER_PHONE").attr("data-mark", "");
-                $("#USER_EMAIL").attr("data-mark", "");
-                $("#OWN_RIGHT").val('');
-                $("#OWN_RIGHT").attr("data-myrcode", "");
-                $("#OWN_RIGHT").attr("data-myjcode", "");
-                $("#OWN_STORE").val('');
-                $("#OWN_STORE").attr("data-myscode", "");
-                $('.xingming').empty();
-                $('#all_type .task_allot').html("所属店铺");
-                $("#shop").hide();
-                var store_code = $('.searchable-select-item.selected').attr('data-value');
-                topUpPeople(store_code);  //充值弹窗经办人列表
-            })
-
-        } else if (data.code == "-1") {
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
-        }
-    })
-}
-//退款店仓
-function refundShop(a) {
-    var param = {};
-    param["pageSize"] = '20'
-    param["pageNumber"] = '1';
-    param["searchValue"] = '';
-    param["corp_code"] = sessionStorage.getItem("corp_code");
-    oc.postRequire("post", "/shop/selectByAreaCode", "", param, function (data) {
-        if (data.code == "0") {
-            var msg = JSON.parse(data.message);
-            var list = JSON.parse(msg.list);
-            var listList = list.list;
-            console.log(listList);
-            //topUpShopShow(listList);
-            //var index=0;
-            var corp_html='';
-            //var c=null;
-            for(var i=0;i<listList.length;i++){
-                //c= list.list[index];
-                corp_html+='<option value="'+listList[i].store_code +'">'+listList[i].store_name+'</option>';
-            }
             $("#OWN_CORP_refund").append(corp_html);
-            if (a !== "") {
-                $("#OWN_CORP_refund option[value='" + a + "']").attr("selected", "true");
-            }
-            $('.corp_select select').searchableSelect();
-            $('.corp_select .searchable-select-input').keydown(function (event) {
+            $('#OWN_CORP').searchableSelect();
+            $("#OWN_CORP_refund").searchableSelect();
+            var storeCodetopUp=$("#OWN_CORP").val();
+            var storeCoderefund=$("#OWN_CORP_refund").val();
+            topUpPeople(storeCodetopUp,"all");
+            $('#corp_parent .searchable-select-input').keydown(function(event) {
                 var event = window.event || arguments[0];
                 if (event.keyCode == 13) {
-                    $("#USER_PHONE").val("");
-                    $("#USER_EMAIL").val("");
-                    $("#USERID").val("");
-                    $("#user_id").val("");
-                    $("#user_id").attr("data-mark", "");
-                    $("#USERID").attr("data-mark", "");
-                    $("#USER_PHONE").attr("data-mark", "");
-                    $("#USER_EMAIL").attr("data-mark", "");
-                    $("#OWN_RIGHT").val('');
-                    $("#OWN_RIGHT").attr("data-myrcode", "");
-                    $("#OWN_RIGHT").attr("data-myjcode", "");
-                    $("#OWN_STORE").val('');
-                    $("#OWN_STORE").attr("data-myscode", "");
-                    $('.xingming').empty();
-                    $('#all_type .task_allot').html("所属店铺");
-                    $("#shop").hide();
+                    var storeCodetopUp1 = $("#OWN_CORP").val();
+                    if (storeCodetopUp !== storeCodetopUp1) {
+                        storeCodetopUp=storeCodetopUp1;
+                        topUpPeople(storeCodetopUp,"topUp");
+                    }
+                }
+            });
+            $('#corp_parent .searchable-select-item').click(function() {
+                var storeCodetopUp1 = $("#OWN_CORP").val();
+                if (storeCodetopUp !== storeCodetopUp1) {
+                    storeCodetopUp=storeCodetopUp1;
+                    topUpPeople(storeCodetopUp,"topUp");
                 }
             })
-            $('.searchable-select-item').click(function () {
-                $("#USER_PHONE").val("");
-                $("#USER_EMAIL").val("");
-                $("#USERID").val("");
-                $("#user_id").val("");
-                $("#user_id").attr("data-mark", "");
-                $("#USERID").attr("data-mark", "");
-                $("#USER_PHONE").attr("data-mark", "");
-                $("#USER_EMAIL").attr("data-mark", "");
-                $("#OWN_RIGHT").val('');
-                $("#OWN_RIGHT").attr("data-myrcode", "");
-                $("#OWN_RIGHT").attr("data-myjcode", "");
-                $("#OWN_STORE").val('');
-                $("#OWN_STORE").attr("data-myscode", "");
-                $('.xingming').empty();
-                $('#all_type .task_allot').html("所属店铺");
-                $("#shop").hide();
+            $('#refund_parent .searchable-select-input').keydown(function(event) {
+                var event = window.event || arguments[0];
+                if (event.keyCode == 13) {
+                    var storeCoderefund1 = $("#OWN_CORP_refund").val();
+                    if (storeCoderefund !== storeCoderefund1) {
+                        storeCoderefund=storeCoderefund1;
+                        topUpPeople(storeCoderefund,"refund");
+                    }
+                }
+            });
+            $('#refund_parent .searchable-select-item').click(function() {
+                var storeCoderefund1 = $("#OWN_CORP_refund").val();
+                if (storeCoderefund !== storeCoderefund1) {
+                    storeCoderefund=storeCoderefund1;
+                    topUpPeople(storeCoderefund,"refund");
+                }
             })
-
         } else if (data.code == "-1") {
             art.dialog({
                 time: 1,
@@ -290,8 +197,84 @@ function refundShop(a) {
         }
     })
 }
+// //退款店仓
+// function refundShop(a) {
+//     var param = {};
+//     param["pageSize"] = '20'
+//     param["pageNumber"] = '1';
+//     param["searchValue"] = '';
+//     param["corp_code"] = sessionStorage.getItem("corp_code");
+//     oc.postRequire("post", "/shop/selectByAreaCode", "", param, function (data) {
+//         if (data.code == "0") {
+//             var msg = JSON.parse(data.message);
+//             var list = JSON.parse(msg.list);
+//             var listList = list.list;
+//             // console.log(listList);
+//             //topUpShopShow(listList);
+//             //var index=0;
+//             var corp_html='';
+//             //var c=null;
+//             for(var i=0;i<listList.length;i++){
+//                 //c= list.list[index];
+//                 corp_html+='<option value="'+listList[i].store_code +'">'+listList[i].store_name+'</option>';
+//             }
+//             $("#OWN_CORP_refund").append(corp_html);
+//             if (a !== "") {
+//                 $("#OWN_CORP_refund option[value='" + a + "']").attr("selected", "true");
+//             }
+//             $('.corp_select select').searchableSelect();
+//             $('.corp_select .searchable-select-input').keydown(function (event) {
+//                 var event = window.event || arguments[0];
+//                 if (event.keyCode == 13) {
+//                     $("#USER_PHONE").val("");
+//                     $("#USER_EMAIL").val("");
+//                     $("#USERID").val("");
+//                     $("#user_id").val("");
+//                     $("#user_id").attr("data-mark", "");
+//                     $("#USERID").attr("data-mark", "");
+//                     $("#USER_PHONE").attr("data-mark", "");
+//                     $("#USER_EMAIL").attr("data-mark", "");
+//                     $("#OWN_RIGHT").val('');
+//                     $("#OWN_RIGHT").attr("data-myrcode", "");
+//                     $("#OWN_RIGHT").attr("data-myjcode", "");
+//                     $("#OWN_STORE").val('');
+//                     $("#OWN_STORE").attr("data-myscode", "");
+//                     $('.xingming').empty();
+//                     $('#all_type .task_allot').html("所属店铺");
+//                     $("#shop").hide();
+//                 }
+//             })
+//             $('.searchable-select-item').click(function () {
+//                 $("#USER_PHONE").val("");
+//                 $("#USER_EMAIL").val("");
+//                 $("#USERID").val("");
+//                 $("#user_id").val("");
+//                 $("#user_id").attr("data-mark", "");
+//                 $("#USERID").attr("data-mark", "");
+//                 $("#USER_PHONE").attr("data-mark", "");
+//                 $("#USER_EMAIL").attr("data-mark", "");
+//                 $("#OWN_RIGHT").val('');
+//                 $("#OWN_RIGHT").attr("data-myrcode", "");
+//                 $("#OWN_RIGHT").attr("data-myjcode", "");
+//                 $("#OWN_STORE").val('');
+//                 $("#OWN_STORE").attr("data-myscode", "");
+//                 $('.xingming').empty();
+//                 $('#all_type .task_allot').html("所属店铺");
+//                 $("#shop").hide();
+//             })
+
+//         } else if (data.code == "-1") {
+//             art.dialog({
+//                 time: 1,
+//                 lock: true,
+//                 cancel: false,
+//                 content: data.message
+//             });
+//         }
+//     })
+// }
 //经办人
-function topUpPeople(store_code){
+function topUpPeople(store_code,type){
     var param={};
     // param["store_code"]=sessionStorage.getItem("store_id");
     param["store_code"]=store_code;
@@ -299,33 +282,62 @@ function topUpPeople(store_code){
     oc.postRequire("post","/shop/staff","",param,function(data){
         if(data.code == '0'){
             var msg = JSON.parse(data.message);
-            topUpPeopleShow(msg);
-            $('#topUpPeopleSelect li').each(function () {
-                var val = $(this).text();
-                if(val == ''){
-                    $(this).remove();
-                    console.log('删除');
-                }
-            });
+            var html="";
+            if(type=="all"){
+                $("#topUpPeople_parent .searchable-select").remove();
+                $("#refundPeople_parent .searchable-select").remove();
+            };
+            if(type=="topUp"){
+               $("#topUpPeople_parent .searchable-select").remove();
+            };
+            if(type=="refund"){
+                $("#refundPeople_parent .searchable-select").remove();
+            };
+            for(var i=0;i<msg.length;i++){
+                html+="<option value='"+msg[i].user_code+"'>"+msg[i].user_name+"</option>"
+            }
+            if(type=="all"){
+                $("#topUpPeople").html(html);
+                $("#topUpPeople_parent select").searchableSelect();
+                $("#refundPeople").html(html);
+                $("#refundPeople").searchableSelect();
+            };
+            if(type=="topUp"){
+                $("#topUpPeople").html(html);
+                $("#topUpPeople_parent select").searchableSelect();
+            };
+            if(type=="refund"){
+                $("#refundPeople").html(html);
+                $("#refundPeople").searchableSelect();
+            };
+            // topUpPeopleShow(msg);
+            // $('#topUpPeopleSelect li').each(function () {
+            //     var val = $(this).text();
+            //     if(val == ''){
+            //         $(this).remove();
+            //         console.log('删除');
+            //     }
+            // });
+        }else if(date.code=="-1"){
+            alert(date.message);
         }
     })
-
 }
-function topUpPeopleShow(msg){
-    var tempHTML = '<li id="${id}"onclick="topUpPeopleClick(this)">${msg}<li>';
-    var html = '';
-    for(i=0;i<msg.length;i++){
-        var user_name = msg[i].user_name;
-        var user_code = msg[i].user_code;
-        var nowHTML1 = tempHTML;
-        nowHTML1 = nowHTML1.replace("${id}", user_code);
-        nowHTML1 = nowHTML1.replace("${msg}", user_name);
-        html += nowHTML1;
-        $("#topUpPeopleSelect").empty();
-        $("#topUpPeopleSelect").html(html);
-    }
-    $("#topUpPeopleSelect li").eq(0).click();
-}
+// function topUpPeopleShow(msg){
+//     var tempHTML = '<li id="${id}"onclick="topUpPeopleClick(this)">${msg}<li>';
+//     var html = '';
+//     for(i=0;i<msg.length;i++){
+//         var user_name = msg[i].user_name;
+//         var user_code = msg[i].user_code;
+//         var nowHTML1 = tempHTML;
+//         nowHTML1 = nowHTML1.replace("${id}", user_code);
+//         nowHTML1 = nowHTML1.replace("${msg}", user_name);
+//         html += nowHTML1;
+//         $("#topUpPeopleSelect").empty();
+//         $("#topUpPeopleSelect").html(html);
+//     }
+//     $("#topUpPeopleSelect li").eq(0).click();
+// };
 $('#topUpPeople').click(function(){
     event.stopPropagation();
     $('#execution').css('display','none');
@@ -397,7 +409,12 @@ function refunTopUpShow(){
                     $('#refundReality').val(pay_price);
                     $('#refundMoneyDiscount').val(refundMoneyDiscount);
                 } else if (data.code == "-1") {
-                    alert(data.message);
+                    art.dialog({
+                        time: 1,
+                        lock: true,
+                        cancel: false,
+                        content: data.message
+                    });
                 }
             });
         }else{
@@ -422,7 +439,12 @@ function refunBalanceShow(){
             var balance = msg.balance;
             $('#refundBalance').val(balance);
         } else if (data.code == "-1") {
-            alert(data.message);
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
         }
     });
 }
@@ -431,8 +453,10 @@ $('#toSave').click(function(){
     //var topUpNum = $('#topUpNum').val();//单据编号
     var topData = $('#chooseDate').val();//单据日期
     var topType = $('#execution_input').val(); //充值类型
-    var topUpShop = $('#topUp').find('.searchable-select-holder').text();  //充值店仓
-    var topUpPeople = $('#topUpPeople').val();//经办人
+    var topUpShop = $("#OWN_CORP").find("option:selected").text();//充值店铺名称
+    var store_code=$("#OWN_CORP").val();//充值店铺编号
+    var topUpPeople = $('#topUpPeople').find("option:selected").text();//经办人
+    var user_code=$('#topUpPeople').val();//人的code
     var topUpCard = $('#vip_card_no').text();//会员卡号
     var topUpVipName = $('#topUpVipName').val();
     var topUpMoney = $('#topUpMoney').val(); //吊牌金额
@@ -448,15 +472,15 @@ $('#toSave').click(function(){
     //    });
     //}else
      if(topUpMoney == '' || topUpMoneyReality=='' ) {
-         $(".topUp_main").scrollTop($(".topUp_main")[0].scrollHeight);
+        $(".topUp_main").scrollTop($(".topUp_main")[0].scrollHeight);
         art.dialog({
             time: 1,
             lock: true,
             cancel: false,
             content: "折合吊牌金额、实付金额不能为空"
         });
-         $('#topUpMoneyReality').parent().find('.hint').css('display','block');
-         $('#topUpMoney').parent().find('.hint').css('display','block');
+        $('#topUpMoneyReality').parent().find('.hint').css('display','block');
+        $('#topUpMoney').parent().find('.hint').css('display','block');
     }else{
          if(topType == '直接充值'){
              pay_type =1;
@@ -470,10 +494,10 @@ $('#toSave').click(function(){
          param["card_no"] = topUpCard;//会员卡号
          param["remark"] = topUpNote;//备注
          param["store_name"] = topUpShop;//充值店铺
-         param["store_code"] = sessionStorage.getItem("store_id");//店铺编号
+         param["store_code"] = store_code;//充值编号
          param["date"] = topData;//单据日期
          param["pay_type"] = pay_type;//充值类型
-         param["user_code"] = cache.user_code;
+         param["user_code"] = user_code//经办人编号
          param["user_name"] = topUpPeople;//经办人
          param["price"] = topUpMoney;//吊牌金额
          param["pay_price"] = topUpMoneyReality;//实付金额
@@ -681,12 +705,47 @@ $('#chooseDate').click(function () {
     $('#topUpShopSelcet_ul').hide();
     $('#topUpPeopleSelect').hide();
 });
+function getPayRecord(){
+    var param={};
+    var corp_code=sessionStorage.getItem("corp_code");//企业编号
+    var vip_id=sessionStorage.getItem("id");//会员编号
+    param["corp_code"]=corp_code;//"C10016";
+    param["vip_id"]=vip_id//"36637";
+    oc.postRequire("post", "/vipCheck/getPayRecord","", param, function (data) {
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var list=message.list;
+            var html="";
+            if(list.length>0){
+                for(var i=0;i<list.length;i++){
+                    html+="<li><span class='record_num'>"+list[i].bill_no
+                    +"</span><span class='record_type'>"+list[i].recharge_type+
+                    "</span><span class='record_money'>"+list[i].tag_price
+                    +"</span><span class='record_money'>"+list[i].pay_price
+                    +"</span><span class='record_money'>"+list[i].bill_date+"</span></li>"
+                }
+                $("#record_body").html(html);
+            }else if(list.length==0){
+                $("#record_body").html("<li style='line-height: 300px;text-align: center; border-bottom:0px;'>暂无充值记录</li>");
+            }
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock: true,
+                cancel: false,
+                content: data.message
+            });
+        }
+        
+    })
+}
 //遮罩层
 window.onload = function(){
     topUpPerson();  //充值弹窗会员卡号、姓名
     topUpShop(sessionStorage.getItem("corp_code"));    //充值弹窗充值店仓列表
-    refundShop(sessionStorage.getItem("corp_code"))    //充值弹窗退款店仓列表
-    getRecord()  //充值记录数据加载
+    // refundShop(sessionStorage.getItem("corp_code"))    //充值弹窗退款店仓列表
+    getRecord();  //充值记录数据加载
+    getPayRecord();
     setInterval(function () {
         $('.laydate_box').css('position','fixed');
         var val = $('.laydate_box').css('display');
@@ -700,8 +759,8 @@ window.onload = function(){
             })
         }
         //删除多余显示
-        $('#topUp').find('.searchable-select').eq(1).remove();
-        $('#refund').find('.searchable-select').eq(1).remove();
+        // $('#topUp').find('.searchable-select').eq(1).remove();
+        // $('#refund').find('.searchable-select').eq(1).remove();
     },500);
     $('body').click(function () {
         $('#execution').hide();

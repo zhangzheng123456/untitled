@@ -118,7 +118,7 @@ public class VIPController {
             if (code.equals("0")){
                 result = result_obj.getString("rows");
                 JSONObject obj = JSONObject.parseObject(result);
-                vip_id = obj.getString("ID");
+                vip_id = obj.getString("id");
                 card_no = obj.getString("CARDNO");
                 vip_card_type = obj.getString("C_VIPTYPE_ID");
                 //调毛伟栋新增接口

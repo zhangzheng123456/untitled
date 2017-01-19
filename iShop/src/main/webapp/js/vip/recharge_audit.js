@@ -18,8 +18,11 @@
         },
         bind:function(){
             this.auditRefuse();
+            this.auditParse();
             this.slideScreen();
             this.getFileColumn();
+            this.inputTopage();
+            this.setPageSize();
         },
         getFileColumn:function(){
             var self=this;
@@ -190,53 +193,74 @@
                 }
             }();
         },
-        dian:function(inx){//
-            whir.loading.add("",0.5);//加载等待框
-            //if(audit.value=="") {
-                //oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+audit.pageSize
-                //    +"&funcCode="+audit.funcCode+"","","",function(data){
-                audit.param["pageNumber"] = audit.inx;
-                audit.param["pageSize"] = audit.pageSize;
-                audit.param["funcCode"] = audit.funcCode;
-                audit.param["searchValue"] = "";
-                oc.postRequire("post", "/vipCheck/search", "0", audit.param, function (data) {
-                    if (data.code == "0") {
-                        $(".table tbody").empty();
-                        var message = JSON.parse(data.message);
-                        var list = JSON.parse(message.list);
-                        audit.count = list.pages;
-                        var list = list.list;
-                        audit.superaddition(list, inx);
-                        audit.jumpBianse();
-                    } else if (data.code == "-1") {
-                        // alert(data.message);
+        inputTopage:function(){
+            //跳转页面的键盘按下事件
+            $("#input-txt").keydown(function() {
+                var event=window.event||arguments[0];
+                var inx= this.value.replace(/[^0-9]/g, '');
+                inx=parseInt(inx);
+                if (inx > audit.count) {
+                    inx = audit.count
+                }
+                if (inx > 0) {
+                    if (event.keyCode == 13) {
+                        if (audit.filtrate == "") {
+                            audit.GET(audit.inx, audit.pageSize);
+                        }
+                        //else if (filtrate !== "") {
+                        //    _param["pageSize"] = pageSize;
+                        //    _param["pageNumber"]=inx;
+                        //    filtrates(inx, pageSize);
+                        //}
                     }
+                }
+            });
+        },
+        setPageSize:function(){
+            $("#page_row").click(function(){
+                if("block" == $("#liebiao").css("display")){
+                    hideLi();
+                }else{
+                    showLi();
+                }
+            });
+            $("#liebiao li").each(function(i,v){
+                $(this).click(function(){
+                    audit.pageSize=$(this).attr('id');
+                    if(audit.filtrate==""){
+                        audit.inx=1;
+                        audit.GET(audit.inx,audit.pageSize);
+                    }
+                        // else if(value!==""){
+                    //    inx=1;
+                    //    param["pageSize"]=pageSize;
+                    //    param["pageNumber"]=inx;
+                    //    POST(inx,pageSize);
+                    //}else if(filtrate!==""){
+                    //    inx=1;
+                    //    _param["pageNumber"]=inx;
+                    //    _param["pageSize"]=pageSize;
+                    //    filtrates(inx,pageSize);
+                    //}
+                    $("#page_row").val($(this).html());
+                    hideLi();
                 });
-            //}
-            //}else if(audit.value!==""){
-            //    audit.param["pageNumber"]=audit.inx;
-            //    audit.param["pageSize"]=audit.pageSize;
-            //    $("#search").val(audit.value);
-            //    oc.postRequire("post","/interfacers/search","0",audit.param,function(data){
-            //        if(data.code=="0"){
-            //            var message=JSON.parse(data.message);
-            //            var list=JSON.parse(message.list);
-            //            audit.count=list.pages;
-            //            var list=list.list;
-            //            $(".table tbody").empty();
-            //            if(list.length<=0){
-            //                $(".table p").remove();
-            //                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
-            //            }else if(list.length>0){
-            //                $(".table p").remove();
-            //                audit.superaddition(list,inx);
-            //                audit.jumpBianse();
-            //            }
-            //        }else if(data.code=="-1"){
-            //            alert(data.message);
-            //        }
-            //    })
-            //}
+            });
+            function showLi(){
+                $("#liebiao").show();
+            }
+            function hideLi(){
+                $("#liebiao").hide();
+            }
+            $("#page_row").blur(function(){
+                setTimeout(hideLi,200);
+            });
+        },
+        dian:function(inx){//
+            if(audit.filtrate==""){
+                audit.GET(audit.inx,audit.pageSize)
+            }
+
         },
         qjia:function (){
             var self=this;
@@ -287,14 +311,14 @@
                 }else{
                     var a=i+1;
                 }
-
+                data[i].status=="0"?data[i].status="未审核":data[i].status=="1"?data[i].status="审核通过":data[i].status="失败";
                 for (var c=0;c<audit.titleArray.length;c++){
                     (function(j){
                         var code=audit.titleArray[j].column_name;
                             TD+="<td><span title='"+data[i][code]+"'>"+data[i][code]+"</span></td>";
                     })(c)
                 }
-                $(".table tbody").append("<tr id='"+data[i].billNO+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                $(".table tbody").append("<tr id='"+data[i]._id+"' data-type='"+data[i].type+"' data-status='"+data[i].status+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                     + i
                     + 1
                     + "'/><label for='checkboxTwoInput"
@@ -319,6 +343,7 @@
             param["searchValue"]="";
             oc.postRequire("post","/vipCheck/search","",param,function(data){
                 if(data.code=="0"){
+                    $(".table tbody").empty();
                     var messages=JSON.parse(data.message);
                     var list=messages.list;
                     audit.count=messages.pages;
@@ -360,7 +385,13 @@
             $(".table tbody tr").dblclick(function(){
                 var id=$(this).attr("id");
                 sessionStorage.setItem("id",id);
-                $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_audit_info.html");
+                var status=$(this).attr("data-status");
+                if(status=="审核通过"){
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_audit_info.html");
+                }else{
+                    $(window.parent.document).find('#iframepage').attr("src","/vip/recharge_oparate.html");
+                }
+
             })
         },
         auditRefuse:function(){
@@ -381,6 +412,44 @@
                 //$("#checkboxTwoInput0").
             })
         },
+        auditParse:function(){
+            var self=this;
+            $("#auditParse").bind("click",function(){
+                var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+                if(tr.length==0){
+                    frame();
+                    $('.frame').html("请先选择");
+                    return;
+                }
+                if(tr.length>1){
+                    frame();
+                    $('.frame').html("暂支持单个文件审核");
+                    return;
+                }
+                for(var i=tr.length-1,ID="";i>=0;i--){
+                    var r=$(tr[i]).attr("id");
+                    var type=$(tr[i]).attr("data-type")=="充值"?"pay":"refund";
+                    if(i>0){
+                        ID+=r+",";
+                    }else{
+                        ID+=r;
+                    }
+                }
+                var params={};
+                params["id"]=ID;
+                params["type"]=type;
+                oc.postRequire("post","/vipCheck/changeStatus","",params,function(data){
+                    if(data.code=="0"){
+                        frame();
+                        $('.frame').html("操作成功");
+                        self.GET(self.inx,self.pageSize);
+                    }else{
+                        frame();
+                        $('.frame').html(data.message);
+                    }
+                })
+            })
+        }
     };
     $(function(){
         audit.init();
