@@ -18,6 +18,7 @@ public class RequestParams  {
     private String sip_appkey; // 应用程序编号,即为系统用户名
     private String sip_timestamp; // 服务请求时间戳(yyyy-mm-dd hh:mm:ss.xxx)，支持毫秒，若系统不能产生毫秒，必须补足内容，如使用.000
     private String transactions; // 一个transaction里的多个操作将全部成功，或全部失败
+    private  String url;  //服务器地址
 
     public  RequestParams(String corpcode){
 
@@ -27,7 +28,15 @@ public class RequestParams  {
             setAppSecret("lifecycle");
             setSip_timestamp();
             setSip_sign();
+            setUrl("http://60.190.132.114:8080/servlets/binserv/Rest");
         }
+    }
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getSip_sign() {

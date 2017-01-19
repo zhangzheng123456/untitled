@@ -282,6 +282,7 @@ var getNewVip={
     //     $('#vipCardType').parent().find('.searchable-select-input').remove();
     },
     getLevel:function () {
+        $("#vipCardType").empty().next().remove();
         var _param={};
         var  code=$('#OWN_STORE').val().split('-');
         _param.corp_code=code[1];

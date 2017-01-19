@@ -190,7 +190,7 @@ $(function () {
         return true;
     };
     vipjs.bindbutton = function () {
-        $(".areaadd_oper_btn ul li:nth-of-type(1)").click(function () {
+        $(".vip_group_edit_oper_btn ul li:nth-of-type(1)").click(function () {
             var name = $("#vip_id").attr("data-mark");//区域名称是否唯一的标志
             //var num = $("#vip_num").attr("data-mark");//区域编号是否唯一的标志
             if (vipjs.firstStep()) {

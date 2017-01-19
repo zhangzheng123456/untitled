@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -23,40 +22,40 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     /**
      *
-     * @param vipInfo
+     * @param
      * @return
      * 新增字段
      * VIPNAME,SALESREP_ID__NAME,C_VIPTYPE_ID__NAME,DOCNOS,VIPCARDNO__CARDNO,MOBIL,ADDRESS,SEX,BIRTHDAY
      */
 
-     public  String  addVip(String corpcode,HashMap<String,Object> vipInfo) {
+     public  String  addVip(String corpcode,HashMap<String,Object> vipInfomap) {
 
          String vipinfo="";
          HashMap<String,Object> errormap=new HashMap<String, Object>();
 
          if(corpcode.equals("C10016")) {
-             if (vipInfo.get("VIPNAME") == null) {
+             if (vipInfomap.get("VIPNAME") == null) {
 
                  errormap.put("message","缺少VIPNAME");
                  errormap.put("code",-1);
                  JSONObject jsonObject=new JSONObject(errormap);
                  return jsonObject.toString();
              }
-             if (vipInfo.get("SALESREP_ID__NAME") == null) {
+             if (vipInfomap.get("SALESREP_ID__NAME") == null) {
 
                  errormap.put("message","缺少SALESREP_ID__NAME");
                  errormap.put("code",-1);
                  JSONObject jsonObject=new JSONObject(errormap);
                  return jsonObject.toString();
              }
-             if (vipInfo.get("C_VIPTYPE_ID__NAME") == null) {
+             if (vipInfomap.get("C_VIPTYPE_ID__NAME") == null) {
 
                  errormap.put("message","缺少C_VIPTYPE_ID__NAME");
                  errormap.put("code",-1);
                  JSONObject jsonObject=new JSONObject(errormap);
                  return jsonObject.toString();
              }
-             if (vipInfo.get("DOCNOS") == null) {
+             if (vipInfomap.get("DOCNOS") == null) {
 
                  errormap.put("message","缺少DOCNOS");
                  errormap.put("code",-1);
@@ -65,7 +64,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
              }
 
-             if (vipInfo.get("MOBIL") == null) {
+             if (vipInfomap.get("MOBIL") == null) {
 
                  errormap.put("message","缺少MOBIL");
                  errormap.put("code",-1);
@@ -74,7 +73,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
              }
 
-             if (vipInfo.get("SEX") == null) {
+             if (vipInfomap.get("SEX") == null) {
 
                  errormap.put("message","缺少SEX");
                  errormap.put("code",-1);
@@ -82,7 +81,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                  return jsonObject.toString();
 
              }
-             if (vipInfo.get("BIRTHDAY") == null) {
+             if (vipInfomap.get("BIRTHDAY") == null) {
 
                  errormap.put("message","缺少BIRTHDAY");
                  errormap.put("code",-1);
@@ -91,7 +90,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
              }
 
-             String info = Rest.Add("C_VIP_IMP", corpcode,vipInfo);
+             String info = Rest.Add("C_VIP_IMP", corpcode,vipInfomap);
 
              System.out.println("info...." + info);
 
@@ -110,7 +109,10 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
              System.out.println(vipinfo);
 
          }else{
-
+             errormap.put("message","暂不支持该企业");
+             errormap.put("code",-1);
+             JSONObject jsonObject=new JSONObject(errormap);
+             vipinfo=jsonObject.toString();
 
          }
          return vipinfo;
@@ -155,6 +157,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
              info=jsonArray.getJSONObject(0).toString();
          }
          else{
+
+             errormap.put("message","暂不支持该企业");
+             errormap.put("code",-1);
+             JSONObject jsonObject=new JSONObject(errormap);
+             info=jsonObject.toString();
 
          }
 
@@ -297,6 +304,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  modIntegral_passwordVip(String corpcode,HashMap<String,Object> integral_passwordVip){
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
 
         if(corpcode.equals("C10016")) {
 
@@ -315,6 +323,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+            errormap.put("messsage","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
+
         }
 
         return  info;
@@ -326,6 +339,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  modfiy_passwordVip(String corpcode,HashMap<String,Object> passwordMap){
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
 
         if(corpcode.equals("C10016")) {
 
@@ -344,6 +358,10 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+            errormap.put("messsage","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
         }
 
         return  info;
@@ -354,12 +372,17 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
     public String couponInfo(String corpcode,int vipid){
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
             info = Rest.excuteWebaction(corpcode,"C_VIP_TDEFTICKET_GEN",vipid);
             JSONArray jsonArray=new JSONArray(info);
             info=jsonArray.getJSONObject(0).toString();
         }else{
+            errormap.put("messsage","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
 
         }
 
@@ -468,6 +491,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+           billinfo=jsonObject.toString();
+
         }
 
         return billinfo;
@@ -482,7 +510,9 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
-            if (modStatus.get("id") == null) {
+            String id=modStatus.get("id").toString();
+
+            if (id == null&&id.equals("")) {
 
                 errormap.put("message","缺少id");
                 errormap.put("code",-1);
@@ -507,6 +537,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
                 modStatus.put("SALESREP_ID__NAME",modStatus.get("user_name").toString());
                 modStatus.remove("user_name");
             }
+            //.....
             if(keys.contains("card_no")){
                 modStatus.put("C_VIP_ID__CARDNO",modStatus.get("card_no").toString());
                 modStatus.remove("card_no");
@@ -532,6 +563,10 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             JSONArray jsonArray=new JSONArray(info);
             info=jsonArray.getJSONObject(0).toString();
         }else{
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
 
         }
 
@@ -595,6 +630,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            billinfo=jsonObject.toString();
+
         }
         return  billinfo;
 
@@ -609,7 +649,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
         HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
 
-            if (modStatusRefund.get("id") == null) {
+            String id=modStatusRefund.get("id").toString();
+            if (id == null && id.equals("")) {
 
                 errormap.put("message","缺少id");
                 errormap.put("code",-1);
@@ -649,6 +690,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
+
         }
         return  info;
     }
@@ -658,6 +704,8 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public String submitPrepaidBill(String corpcode,int id){
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
+
         if(corpcode.equals("C10016")) {
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("table", "B_VIPMONEY");
@@ -665,6 +713,12 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             info = Rest.submitObject(corpcode, map);
             JSONArray jsonArray = new JSONArray(info);
             info = jsonArray.getJSONObject(0).toString();
+        }else{
+
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
         }
          return  info;
     }
@@ -673,6 +727,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public String submitRefundBill(String corpcode,int id){
 
         String info="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
         if(corpcode.equals("C10016")) {
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("table", "B_RET_VIPMONEY");
@@ -680,6 +735,12 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
             info = Rest.submitObject(corpcode, map);
             JSONArray jsonArray = new JSONArray(info);
             info = jsonArray.getJSONObject(0).toString();
+        }else {
+
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            info=jsonObject.toString();
         }
         return  info;
     }
@@ -724,6 +785,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  getPrepaidOrder(String corpcode,HashMap<String,Object> prepaidMap){
 
         String infos="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
 
         if(corpcode.equals("C10016")) {
 
@@ -782,6 +844,12 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            infos=jsonObject.toString();
+
         }
         return  infos;
     }
@@ -792,6 +860,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public String getRefundOrder(String corpcode, HashMap<String,Object> refundMap) {
 
         String  infos="";
+        HashMap<String,Object>  errormap=new HashMap<String, Object>();
 
         if(corpcode.equals("C10016")) {
 
@@ -852,6 +921,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
         }else{
 
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            infos=jsonObject.toString();
+
         }
         return  infos;
 
@@ -863,6 +937,7 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
     public  String  getBalance(String corpcode,String vipid){
 
         String  infos="";
+        HashMap<String,Object> errormap=new HashMap<String, Object>();
 
         if(corpcode.equals("C10016")) {
 
@@ -918,6 +993,11 @@ public class CRMInterfaceServiceImpl  implements CRMInterfaceService{
 
 
         }else{
+
+            errormap.put("message","暂不支持该企业");
+            errormap.put("code",-1);
+            JSONObject jsonObject=new JSONObject(errormap);
+            infos=jsonObject.toString();
 
         }
         return  infos;

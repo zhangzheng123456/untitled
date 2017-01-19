@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -899,14 +900,27 @@ public class WebController {
         com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
         int pages = 0;
         try {
-            String corp_code = request.getParameter("corp_code");
+            String user_code = request.getSession().getAttribute("user_code")+"";
+            String corp_code = request.getSession().getAttribute("corp_code")+"";
+            String role_code = request.getSession().getAttribute("role_code")+"";
+//            System.out.println("======corp============"+request.getParameter("corp_code"));
+//            System.out.println("======user============"+request.getParameter("user_code"));
+            if(!role_code.trim().equals("null") && role_code.equals(Common.ROLE_SYS)){
+                corp_code="";
+            }else if(role_code.trim().equals("null")){
+                corp_code = request.getParameter("corp_code");
+            }
+            if(user_code.trim().equals("null")) {
+                user_code = request.getParameter("user_code");
+            }
             String pageNumber = request.getParameter("pageNumber");
             String pageSize = request.getParameter("pageSize");
 
             String type = request.getParameter("type");
             int page_number = Integer.valueOf(pageNumber);
             int page_size = Integer.valueOf(pageSize);
-            String user_code = request.getParameter("user_code");
+
+
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_shop_match_def);
 
@@ -920,6 +934,19 @@ public class WebController {
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
                 pages = MongoUtils.getPages(dbCursor2, page_size);
                 dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "d_match_likeCount", -1);
+            }else if(type.equals("web")){
+                BasicDBList value = new BasicDBList();
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                if(!corp_code.equals("")) {
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                }else{
+                    Pattern pattern = Pattern.compile("^.*" + corp_code + ".*$", Pattern.CASE_INSENSITIVE);
+                    value.add(new BasicDBObject("corp_code", pattern));
+                }
+                queryCondition1.put("$and", value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                pages = MongoUtils.getPages(dbCursor2, page_size);
+                dbCursor = MongoUtils.sortAndPage(dbCursor2, page_number, page_size, "created_date", -1);
             }else{
                // BasicDBObject queryCondition = MongoUtils.andOperation2(corp_code,user_code);
                 BasicDBList value = new BasicDBList();
@@ -1030,26 +1057,43 @@ public class WebController {
     public String addGoodsByWx(HttpServletRequest request,HttpServletResponse response) {
         DataBean dataBean = new DataBean();
         try {
-
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
+            String user_code = request.getSession().getAttribute("user_code")+"";
+            String corp_code = request.getSession().getAttribute("corp_code")+"";
+            String role_code = request.getSession().getAttribute("role_code")+"";
+            if(!role_code.trim().equals("null")  && role_code.equals(Common.ROLE_SYS)){
+                corp_code=jsonObject.getString("corp_code");
+            }else if(role_code.trim().equals("null") ){
+                corp_code = jsonObject.getString("corp_code");
+            }
+            if(user_code.trim().equals("null")) {
+                user_code = jsonObject.getString("user_code");
+            }
+
+
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String d_match_code  ="P"+sdf.format(new Date()) + Math.round(Math.random() * 9)+ Math.round(Math.random() * 9)+ Math.round(Math.random() * 9);
-            String corp_code = jsonObject.getString("corp_code");
+
             String d_match_title = jsonObject.getString("d_match_title");
             String d_match_image = jsonObject.getString("d_match_image");
             String d_match_desc = jsonObject.getString("d_match_desc");
             JSONArray r_match_goods= JSON.parseArray(jsonObject.getString("r_match_goods"));
-            String user_code = jsonObject.getString("user_code");
+
 
             shopMatchService.insert(corp_code,d_match_code,d_match_title,d_match_image,d_match_desc,r_match_goods,user_code);
 
+            JSONObject result=new JSONObject();
+            result.put("corp_code",corp_code);
+            result.put("d_match_code",d_match_code);
+            result.put("user_code",user_code);
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("成功");
+            dataBean.setMessage(result.toJSONString());
         } catch (Exception ex) {
             ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1075,14 +1119,26 @@ public class WebController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
 
+            String user_code = request.getSession().getAttribute("user_code")+"";
+            String corp_code = request.getSession().getAttribute("corp_code")+"";
+            String role_code = request.getSession().getAttribute("role_code")+"";
+            if(!role_code.trim().equals("null") && role_code.equals(Common.ROLE_SYS)){
+                corp_code=jsonObject.getString("corp_code");
+            }else if(role_code.trim().equals("null")){
+                corp_code = jsonObject.getString("corp_code");
+            }
+            if(user_code.trim().equals("null")) {
+                user_code = jsonObject.getString("user_code");
+            }
+
          //   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String d_match_code  =jsonObject.getString("d_match_code");
-            String corp_code = jsonObject.getString("corp_code");
+
             String d_match_title = jsonObject.getString("d_match_title");
             String d_match_image = jsonObject.getString("d_match_image");
             String d_match_desc = jsonObject.getString("d_match_desc");
             JSONArray r_match_goods= JSON.parseArray(jsonObject.getString("r_match_goods"));
-            String user_code = jsonObject.getString("user_code");
+
 
 
             BasicDBObject queryCondition = new BasicDBObject();

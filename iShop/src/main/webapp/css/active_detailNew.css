@@ -40,6 +40,15 @@
 }
 .title_l{
     font-size: 20px;
+    display: inline-block;
+    /* max-width: 262px; */
+    max-width: 80%;
+    /* height: 40px; */
+    /* line-height: 39px; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
 }
 .title_action{
     cursor: pointer;
@@ -101,6 +110,7 @@
 }
 #header .btn{
     color:#fff;
+    cursor: pointer;
     font-size: 14px;
     padding: 0;
     width: 140px;
